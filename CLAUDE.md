@@ -18,7 +18,7 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - Punten heten voor de kinderen **sterren**. 1 ster = 1 minuut extra tijd.
 - Geen sterren zonder goedkeuring van een ouder; geen tijd zonder dat een ouder die geeft.
 - Tijd aanvragen in blokken van 15, 30 of 60 min; sterren worden gereserveerd, pas afgeschreven als de ouder op **Toegekend** tikt. **Nu niet** of vervallen = sterren terug.
-- Dagplafond (voorstel 60 min extra per kind) en tijdvenster (bv. 7:00 tot 19:30) worden **op de server** gecontroleerd.
+- Dagplafond (voorstel 60 min extra per kind) en tijdvenster (7:00 tot 20:00) worden **op de server** gecontroleerd.
 - Afkeuren kost niets, geen strafpunten.
 - Elke bij- en afschrijving komt in een puntenlog met reden.
 - Rustige en lerende activiteiten (verhalen, rekenen, kleurplaten) leveren sterren op en tellen **niet** mee voor de app-tijd; spelletjes (memory, penalty's) leveren niets op en tellen **wel** mee.
@@ -33,17 +33,19 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - `prototypes/spelletjes.html`: werkend prototype van Memory en Rekenen (vanilla JS). Gebruik de logica en de stijl als referentie.
 - `prototypes/penalty.html`: werkend prototype van Penalty's (schieten met een veeg, canvas). De keeper-modus moet nog gebouwd worden.
 
-## Nog te beslissen (vraag dit eerst aan de gebruiker)
+## Beslist (21 oktober 2026)
 
-1. Platform van de app: web-app (PWA) of Flutter. Voorstel om mee te starten: PWA met React, Vite en TypeScript, omdat de prototypes al web zijn.
-2. Backend: zelf hosten (NAS, Raspberry Pi) of een dienst zoals Supabase of Firebase.
-3. Meldingen naar ouders: web-push of Telegram.
-4. Puntenwaarden, dagplafond en tijdvenster bevestigen.
-
-Begin niet met bouwen voor punten 1 en 2 bevestigd zijn.
+1. Platform: PWA met React, Vite en TypeScript.
+2. Backend: Supabase (gratis plan); saldo, dagplafond en tijdvenster als Postgres-functies.
+3. Meldingen naar ouders: web-push (alle toestellen zijn Android; geen Telegram).
+4. Tijdvenster voor aanvragen: 7:00 tot 20:00. Overige waarden zoals in `docs/spec.md`.
+5. MVP in twee delen: eerst de sterrenlus (taken, goedkeuren, tijd aanvragen, saldo), daarna activiteiten en verhalen.
+6. Hosting: Vercel (voorstel, nog te bevestigen).
 
 ## Werkwijze
 
+- Commando's: `npm run dev`, `npm test`, `npm run lint`, `npm run build`.
+- Spelregels staan in `src/lib/regels.ts`; startdata van het gezin in `src/data/gezin.ts`.
 - Bouw in fases: eerst de MVP uit `docs/spec.md`, daarna fase 2.
 - Kindschermen eerst ontwerpen voor tablet liggend (1194 × 834), ouderschermen voor gsm (390 × 844).
 - Grote aanraakvlakken: minstens 48 px voor ouders, 64 px of meer voor kinderen.

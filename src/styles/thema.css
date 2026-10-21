@@ -1,0 +1,49 @@
+/* Kleuren en lettertypes uit docs/ontwerp.md; het donkere thema komt uit prototypes/spelletjes.html. */
+:root {
+  color-scheme: light;
+  --bg: #EEF3F8; --surface: #FFFFFF; --ink: #1C2433; --muted: #4E5A6B; --line: #D5DCE4; --soft: #EEF3F8;
+  --gold: #F2B33D; --gold-edge: #B8800F; --gold-bg: #FFF4D6; --gold-ink: #6B4A00;
+  --ok: #1F7A4A; --ok-bg: #DDF2E6; --ok-ink: #155C37; --warn: #C2541A; --warn-bg: #FCE9DD; --warn-ink: #9A3F10;
+  --on-solid: #FFFFFF; --shade: #C9D3DE;
+  --luca: #2D6BD6; --luca-tint: #E3EDFC; --luca-banner: #16264A;
+  --yuna: #C2541A; --yuna-tint: #FCE9DD;
+  --feline: #1F7A4A; --feline-tint: #DDF2E6;
+  --verhalen: #7A3DB0; --verhalen-tint: #F1E6FA;
+  --kid: #2D6BD6; --kid-tint: #E3EDFC;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #121A2A; --surface: #1C2638; --ink: #EEF2F8; --muted: #A9B4C4; --line: #34425A; --soft: #243149;
+    --gold-bg: #3A2F12; --gold-ink: #F7D58A; --ok: #5CC48A; --ok-bg: #163826; --ok-ink: #9BE3B9;
+    --warn: #F08A50; --warn-bg: #3D2214; --warn-ink: #F5A57A; --on-solid: #10182A; --shade: #0C1220;
+    --luca: #7FA6F0; --luca-tint: #22345A; --yuna: #F29A63; --yuna-tint: #43281A; --feline: #66CC93; --feline-tint: #183A28;
+    --verhalen: #C49AEB; --verhalen-tint: #34224A;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #121A2A; --surface: #1C2638; --ink: #EEF2F8; --muted: #A9B4C4; --line: #34425A; --soft: #243149;
+  --gold-bg: #3A2F12; --gold-ink: #F7D58A; --ok: #5CC48A; --ok-bg: #163826; --ok-ink: #9BE3B9;
+  --warn: #F08A50; --warn-bg: #3D2214; --warn-ink: #F5A57A; --on-solid: #10182A; --shade: #0C1220;
+  --luca: #7FA6F0; --luca-tint: #22345A; --yuna: #F29A63; --yuna-tint: #43281A; --feline: #66CC93; --feline-tint: #183A28;
+  --verhalen: #C49AEB; --verhalen-tint: #34224A;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { height: 100%; }
+body {
+  margin: 0; min-height: 100%;
+  background: var(--bg); color: var(--ink);
+  font-family: Nunito, system-ui, sans-serif; font-weight: 600;
+  -webkit-tap-highlight-color: transparent;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.kind-luca { --kid: var(--luca); --kid-tint: var(--luca-tint); }
+.kind-yuna { --kid: var(--yuna); --kid-tint: var(--yuna-tint); }
+.kind-feline { --kid: var(--feline); --kid-tint: var(--feline-tint); }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, a:focus-visible { outline: 4px solid var(--kid); outline-offset: 3px; }
+.display { font-family: 'Baloo 2', Nunito, sans-serif; font-weight: 800; }
+.ic { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
