@@ -1,0 +1,451 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Spelletjes: memory en rekenen</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  color-scheme: light;
+  --bg: #E8EEF6; --surface: #FFFFFF; --ink: #1C2433; --muted: #4E5A6B; --line: #D5DCE4; --soft: #EEF3F8;
+  --gold: #F2B33D; --gold-edge: #B8800F; --gold-bg: #FFF4D6; --gold-ink: #6B4A00;
+  --ok: #1F7A4A; --ok-bg: #DDF2E6; --ok-ink: #155C37; --warn: #C2541A; --warn-bg: #FCE9DD; --warn-ink: #9A3F10;
+  --on-solid: #FFFFFF; --back: #2D6BD6; --back-star: #5C8EE6; --shade: #C9D3DE;
+  --luca: #2D6BD6; --luca-tint: #E3EDFC; --yuna: #C2541A; --yuna-tint: #FCE9DD; --feline: #1F7A4A; --feline-tint: #DDF2E6;
+  --kid: #2D6BD6; --kid-tint: #E3EDFC;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #121A2A; --surface: #1C2638; --ink: #EEF2F8; --muted: #A9B4C4; --line: #34425A; --soft: #243149;
+    --gold-bg: #3A2F12; --gold-ink: #F7D58A; --ok: #5CC48A; --ok-bg: #163826; --ok-ink: #9BE3B9;
+    --warn: #F08A50; --warn-bg: #3D2214; --warn-ink: #F5A57A; --on-solid: #10182A; --back: #3E6FD1; --back-star: #7FA6EC; --shade: #0C1220;
+    --luca: #7FA6F0; --luca-tint: #22345A; --yuna: #F29A63; --yuna-tint: #43281A; --feline: #66CC93; --feline-tint: #183A28;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #121A2A; --surface: #1C2638; --ink: #EEF2F8; --muted: #A9B4C4; --line: #34425A; --soft: #243149;
+  --gold-bg: #3A2F12; --gold-ink: #F7D58A; --ok: #5CC48A; --ok-bg: #163826; --ok-ink: #9BE3B9;
+  --warn: #F08A50; --warn-bg: #3D2214; --warn-ink: #F5A57A; --on-solid: #10182A; --back: #3E6FD1; --back-star: #7FA6EC; --shade: #0C1220;
+  --luca: #7FA6F0; --luca-tint: #22345A; --yuna: #F29A63; --yuna-tint: #43281A; --feline: #66CC93; --feline-tint: #183A28;
+}
+html { height: 100%; }
+body { margin: 0; min-height: 100%; background: var(--bg); color: var(--ink); font-family: Nunito, system-ui, sans-serif; -webkit-tap-highlight-color: transparent; }
+body.kid-luca { --kid: var(--luca); --kid-tint: var(--luca-tint); }
+body.kid-yuna { --kid: var(--yuna); --kid-tint: var(--yuna-tint); }
+body.kid-feline { --kid: var(--feline); --kid-tint: var(--feline-tint); }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible { outline: 4px solid var(--kid); outline-offset: 3px; }
+.display { font-family: 'Baloo 2', Nunito, sans-serif; font-weight: 800; }
+.ic { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+.bar { max-width: 1180px; margin: 0 auto; padding: 20px clamp(16px, 3vw, 32px) 8px; display: flex; align-items: center; gap: 14px; }
+.round { width: 56px; height: 56px; border: 0; border-radius: 50%; background: var(--surface); display: grid; place-items: center; flex-shrink: 0; }
+.bar h1 { margin: 0; font-size: clamp(26px, 3.4vw, 36px); line-height: 1.1; flex-grow: 1; }
+.pill { height: 56px; padding: 0 18px 0 12px; border-radius: 28px; background: var(--surface); display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 18px; }
+.pill b { font-family: 'Baloo 2', Nunito, sans-serif; font-size: 28px; }
+.hidden { visibility: hidden; }
+
+main { max-width: 1180px; margin: 0 auto; padding: 8px clamp(16px, 3vw, 32px) 32px; }
+.center { min-height: calc(100dvh - 120px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 40px; text-align: center; }
+.big-title { margin: 0; font-size: clamp(40px, 6vw, 64px); line-height: 1; }
+.choices { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(16px, 3vw, 40px); }
+.kid-btn { width: clamp(150px, 22vw, 240px); aspect-ratio: 4 / 5; border: 0; border-radius: 36px; background: var(--surface); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 16px; box-shadow: 0 6px 0 var(--shade); }
+.kid-btn .face { width: 62%; aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center; font-size: clamp(56px, 8vw, 92px); line-height: 1; }
+.kid-btn span:last-child { font-size: clamp(26px, 3.4vw, 38px); }
+.game-btn { width: clamp(220px, 30vw, 320px); aspect-ratio: 1; border: 0; border-radius: 40px; background: var(--surface); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 14px; box-shadow: 0 6px 0 var(--shade); }
+.game-btn .tile { width: 45%; aspect-ratio: 1; border-radius: 30px; background: var(--kid-tint); color: var(--kid); display: grid; place-items: center; }
+.game-btn .name { font-size: clamp(28px, 3.4vw, 40px); line-height: 1; }
+.game-btn .sub { font-size: 17px; font-weight: 700; color: var(--muted); }
+
+.chips { display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 4px; border-radius: 28px; background: var(--surface); }
+.chip { height: 48px; padding: 0 18px; border: 0; border-radius: 24px; background: transparent; color: var(--muted); font-weight: 800; font-size: 17px; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--bg); }
+
+.mem-wrap { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; justify-content: center; }
+.mem-board { flex: 999 1 520px; display: flex; flex-direction: column; align-items: center; gap: 18px; min-width: 0; }
+.grid { display: grid; gap: clamp(10px, 1.6vw, 18px); width: 100%; }
+.card { aspect-ratio: 1; border: 0; padding: 0; background: transparent; perspective: 900px; }
+.card .inner { position: relative; width: 100%; height: 100%; transition: transform .35s ease; transform-style: preserve-3d; }
+.card.up .inner { transform: rotateY(180deg); }
+.card .side { position: absolute; inset: 0; border-radius: 22px; display: grid; place-items: center; backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.card .back { background: var(--back); }
+.card .front { background: var(--surface); transform: rotateY(180deg); border: 4px solid var(--line); box-sizing: border-box; }
+.card.match .front { border-color: var(--ok); }
+.card.match .inner { opacity: .55; }
+.card svg { width: 54%; height: 54%; }
+.side-panel { flex: 1 1 240px; max-width: 320px; display: flex; flex-direction: column; gap: 14px; }
+.stat { border-radius: 28px; background: var(--surface); padding: 18px 22px; text-align: left; }
+.stat div:first-child { font-size: 17px; font-weight: 700; color: var(--muted); }
+.stat .n { font-size: 48px; line-height: 1.05; }
+.stat .n small { font-size: 24px; color: var(--muted); }
+.cheer { border-radius: 28px; background: var(--ok-bg); color: var(--ok-ink); padding: 18px 22px; font-size: 24px; line-height: 1.2; text-align: left; }
+.solid { height: 64px; border: 0; border-radius: 32px; background: var(--kid); color: var(--on-solid); font-size: 20px; font-weight: 800; padding: 0 32px; }
+
+.math-wrap { display: flex; flex-wrap: wrap; gap: 24px; align-items: stretch; }
+.math-card { flex: 999 1 520px; min-width: 0; border-radius: 36px; background: var(--surface); padding: clamp(20px, 3vw, 36px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; min-height: 460px; box-sizing: border-box; text-align: center; }
+.dots { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.dots span { width: 22px; height: 22px; border-radius: 50%; background: var(--line); }
+.dots .now { background: var(--kid); }
+.dots .good { background: var(--ok); }
+.dots .late { background: var(--warn); }
+.sum { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 18px; font-size: clamp(56px, 8vw, 92px); line-height: 1; }
+.answer { min-width: 1.9em; height: 1.45em; box-sizing: border-box; border-radius: 26px; border: 5px solid var(--kid); display: grid; place-items: center; padding: 0 .2em; }
+.answer.good { border-color: var(--ok); color: var(--ok); }
+.answer.bad { border-color: var(--warn); color: var(--warn); }
+.feedback { min-height: 36px; font-size: 24px; font-weight: 800; }
+.feedback.good { color: var(--ok); }
+.feedback.bad { color: var(--warn-ink); }
+.count { display: grid; grid-template-columns: repeat(5, 56px); gap: 14px; justify-content: center; }
+.count span { width: 56px; height: 56px; border-radius: 50%; background: var(--gold); box-shadow: inset 0 -5px 0 rgba(0,0,0,.12); }
+.pad { flex: 1 1 320px; max-width: 380px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; align-content: center; margin: 0 auto; }
+.key { height: clamp(76px, 11vw, 100px); border: 0; border-radius: 28px; background: var(--surface); font-family: 'Baloo 2', Nunito, sans-serif; font-weight: 800; font-size: 42px; box-shadow: 0 5px 0 var(--shade); }
+.key:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--shade); }
+.key.del { background: var(--warn-bg); color: var(--warn-ink); }
+.key.ok { background: var(--ok); color: var(--on-solid); }
+.opts { flex: 1 1 320px; max-width: 380px; display: flex; flex-direction: column; gap: 16px; justify-content: center; margin: 0 auto; }
+.opt { height: 110px; border: 0; border-radius: 32px; background: var(--surface); font-family: 'Baloo 2', Nunito, sans-serif; font-weight: 800; font-size: 56px; box-shadow: 0 5px 0 var(--shade); }
+.opt.bad { background: var(--warn-bg); color: var(--warn-ink); }
+.opt.good { background: var(--ok-bg); color: var(--ok-ink); }
+.done-title { margin: 0; font-size: clamp(40px, 5vw, 60px); line-height: 1.05; }
+.done-sub { font-size: 22px; font-weight: 700; color: var(--muted); }
+.earned { display: flex; align-items: center; gap: 10px; border-radius: 24px; background: var(--gold-bg); color: var(--gold-ink); padding: 14px 22px; font-size: 22px; font-weight: 800; }
+
+@media (prefers-reduced-motion: reduce) {
+  .card .inner { transition: none; }
+}
+</style>
+</head>
+<body>
+<div class="bar">
+  <button class="round hidden" id="back" type="button" aria-label="Terug">
+    <svg class="ic" width="28" height="28" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6l6-6"/></svg>
+  </button>
+  <h1 class="display" id="title">Spelletjes</h1>
+  <div class="pill hidden" id="stars" aria-live="polite">
+    <svg width="30" height="30" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.7 5.6l6.1.9l-4.4 4.3l1 6.1L12 17l-5.4 2.9l1-6.1L3.2 9.5l6.1-.9z" fill="var(--gold)" stroke="var(--gold-edge)" stroke-width="1.2" stroke-linejoin="round"/></svg>
+    <b id="starsN">0</b><span>vandaag</span>
+  </div>
+  <button class="round" id="sound" type="button" aria-label="Geluid uit" aria-pressed="true">
+    <svg class="ic" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><path id="soundPath" d="M4 10h4l5-4v12l-5-4H4zM16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11"/></svg>
+  </button>
+</div>
+<main id="app"></main>
+
+<script>
+(() => {
+  const STAR = 'M12 3l2.7 5.6l6.1.9l-4.4 4.3l1 6.1L12 17l-5.4 2.9l1-6.1L3.2 9.5l6.1-.9z';
+  const KIDS = {
+    luca: { name: 'Luca', mem: 'groot', math: 'tot100' },
+    yuna: { name: 'Yuna', mem: 'middel', math: 'tot20' },
+    feline: { name: 'Feline', mem: 'klein', math: 'tellen' }
+  };
+  const MEM = {
+    klein: { label: '3 paren', pairs: 3, cols: 3 },
+    middel: { label: '6 paren', pairs: 6, cols: 4 },
+    groot: { label: '8 paren', pairs: 8, cols: 4 }
+  };
+  const MATH = {
+    tellen: { label: 'Tellen', choice: true },
+    tot10: { label: 'Tot 10', choice: true },
+    tot20: { label: 'Tot 20' },
+    tot100: { label: 'Tot 100' },
+    tafels: { label: 'Tafels' }
+  };
+  const PICS = [
+    ['Dino', '#2E9A45', 'M4 17c0-4 3-6 7-6h4l2-5h3v3h-2l-1 4v5M7 17v3M13 17v3M4 15l-2 2'],
+    ['Auto', '#D93A3A', 'M3 15l2-5h10l3 4h3v3H3zM7 18a1.5 1.5 0 1 0 0-.01M17 18a1.5 1.5 0 1 0 0-.01M7 10l1.5-3h5L15 10'],
+    ['Zon', '#D99A00', 'M12 16a4 4 0 1 0 0-8a4 4 0 0 0 0 8zM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4'],
+    ['Vis', '#2F7BD8', 'M3 12c3-5 9-6 13-2l4-3v10l-4-3c-4 4-10 3-13-2zM8 11h.01'],
+    ['Raket', '#8E44C9', 'M12 3c3 2 5 6 4 11h-8C7 9 9 5 12 3zM8 14l-3 4h4M16 14l3 4h-4M12 9h.01M10 18l2 3l2-3'],
+    ['Appel', '#E0672E', 'M12 7c-3-2-8-1-8 5c0 5 3 9 6 9c1 0 1.5-.5 2-.5s1 .5 2 .5c3 0 6-4 6-9c0-6-5-7-8-5zM12 7c0-2 1-4 3-4'],
+    ['Boot', '#1D9AA8', 'M3 15h18l-3 5H6zM12 4v11M12 4l6 8h-6'],
+    ['Ballon', '#D6458E', 'M12 3a5 6 0 1 0 0 12a5 6 0 0 0 0-12zM12 15l-1 2h2zM12 17c0 2 1 3 0 4']
+  ];
+
+  const app = document.getElementById('app');
+  const back = document.getElementById('back');
+  const title = document.getElementById('title');
+  const starsBox = document.getElementById('stars');
+  const starsN = document.getElementById('starsN');
+  const soundBtn = document.getElementById('sound');
+  const soundPath = document.getElementById('soundPath');
+
+  const store = {
+    get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+    set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+  };
+
+  const S = { kid: null, view: 'kids', stars: { luca: 0, yuna: 0, feline: 0 }, sound: store.get('sound') !== 'off' };
+  let audio = null;
+  function beep(freqs) {
+    if (!S.sound) return;
+    try {
+      audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+      let t = audio.currentTime;
+      freqs.forEach((f) => {
+        const o = audio.createOscillator(), g = audio.createGain();
+        o.type = 'sine'; o.frequency.value = f;
+        g.gain.setValueAtTime(0.0001, t);
+        g.gain.exponentialRampToValueAtTime(0.18, t + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + 0.18);
+        o.connect(g); g.connect(audio.destination); o.start(t); o.stop(t + 0.2);
+        t += 0.12;
+      });
+    } catch (e) {}
+  }
+  const yay = () => beep([523, 659, 784]);
+  const oops = () => beep([330, 262]);
+  const flip = () => beep([700]);
+
+  function paintSound() {
+    soundBtn.setAttribute('aria-pressed', String(S.sound));
+    soundBtn.setAttribute('aria-label', S.sound ? 'Geluid uit' : 'Geluid aan');
+    soundPath.setAttribute('d', S.sound ? 'M4 10h4l5-4v12l-5-4H4zM16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11' : 'M4 10h4l5-4v12l-5-4H4zM16 9l5 6M21 9l-5 6');
+  }
+  soundBtn.addEventListener('click', () => { S.sound = !S.sound; store.set('sound', S.sound ? 'on' : 'off'); paintSound(); });
+  paintSound();
+
+  const rand = (a, b) => a + Math.floor(Math.random() * (b - a + 1));
+  const shuffle = (xs) => { const a = xs.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+  const svg = (d, size, color) => `<svg class="ic" width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"${color ? ` style="color:${color}"` : ''}><path d="${d}"/></svg>`;
+
+  function chrome() {
+    document.body.className = S.kid ? 'kid-' + S.kid : '';
+    back.classList.toggle('hidden', S.view === 'kids');
+    starsBox.classList.toggle('hidden', !S.kid);
+    if (S.kid) starsN.textContent = S.stars[S.kid];
+  }
+
+  function go(view) { S.view = view; render(); window.scrollTo(0, 0); }
+  back.addEventListener('click', () => {
+    if (S.view === 'menu') { S.kid = null; go('kids'); }
+    else go('menu');
+  });
+
+  function render() {
+    if (S.view === 'kids') viewKids();
+    else if (S.view === 'menu') viewMenu();
+    else if (S.view === 'memory') viewMemory();
+    else if (S.view === 'math') viewMath();
+    chrome();
+  }
+
+  function viewKids() {
+    title.textContent = 'Spelletjes';
+    app.innerHTML = `<div class="center">
+      <h2 class="big-title display">Wie speelt er?</h2>
+      <div class="choices">${Object.entries(KIDS).map(([id, k]) => `
+        <button class="kid-btn" type="button" data-kid="${id}">
+          <span class="face display" style="background:var(--${id}-tint);color:var(--${id})">${k.name[0]}</span>
+          <span class="display">${k.name}</span>
+        </button>`).join('')}
+      </div></div>`;
+    app.querySelectorAll('[data-kid]').forEach((b) => b.addEventListener('click', () => {
+      S.kid = b.dataset.kid;
+      S.memLevel = KIDS[S.kid].mem;
+      S.mathLevel = KIDS[S.kid].math;
+      go('menu');
+    }));
+  }
+
+  function viewMenu() {
+    const k = KIDS[S.kid];
+    title.textContent = 'Hoi ' + k.name + '!';
+    app.innerHTML = `<div class="center">
+      <h2 class="big-title display">Wat wil je spelen?</h2>
+      <div class="choices">
+        <button class="game-btn" type="button" data-go="memory">
+          <span class="tile">${svg('M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z', 64)}</span>
+          <span class="name display">Memory</span>
+          <span class="sub">Zoek de paren</span>
+        </button>
+        <button class="game-btn" type="button" data-go="math">
+          <span class="tile">${svg('M5 7h6M8 4v6M14 7h5M5 17l5-5M10 17l-5-5M14 14h5M14 18h5', 64)}</span>
+          <span class="name display">Rekenen</span>
+          <span class="sub">2 goed in één keer = 1 ster</span>
+        </button>
+      </div></div>`;
+    app.querySelectorAll('[data-go]').forEach((b) => b.addEventListener('click', () => {
+      if (b.dataset.go === 'memory') newMemory(); else newMath();
+      go(b.dataset.go);
+    }));
+  }
+
+  /* ---------- Memory ---------- */
+  function newMemory() {
+    const lv = MEM[S.memLevel];
+    const pics = shuffle(PICS).slice(0, lv.pairs);
+    S.mem = { deck: shuffle([...pics.keys(), ...pics.keys()]).map((i) => pics[i]), open: [], matched: [], moves: 0, busy: false };
+  }
+  function bestKey() { return 'memory-best-' + S.kid + '-' + S.memLevel; }
+
+  function viewMemory() {
+    title.textContent = 'Memory';
+    const lv = MEM[S.memLevel];
+    const rows = Math.ceil(lv.pairs * 2 / lv.cols);
+    const m = S.mem;
+    const found = m.matched.length / 2;
+    const won = found === lv.pairs;
+    const best = store.get(bestKey());
+    app.innerHTML = `
+      <div class="mem-wrap">
+        <div class="mem-board">
+          <div class="chips" role="group" aria-label="Moeilijkheid">${Object.entries(MEM).map(([id, l]) =>
+            `<button class="chip" type="button" data-lv="${id}" aria-pressed="${id === S.memLevel}">${l.label}</button>`).join('')}</div>
+          <div class="grid" style="grid-template-columns:repeat(${lv.cols},minmax(0,1fr));max-width:min(100%, calc((100dvh - 260px) * ${lv.cols} / ${rows}), ${lv.cols * 170}px)">
+            ${m.deck.map((p, i) => {
+              const up = m.open.includes(i) || m.matched.includes(i);
+              const match = m.matched.includes(i);
+              return `<button class="card${up ? ' up' : ''}${match ? ' match' : ''}" type="button" data-i="${i}" aria-label="${up ? p[0] : 'Kaart ' + (i + 1)}">
+                <span class="inner">
+                  <span class="side back"><svg width="46%" height="46%" viewBox="0 0 24 24" aria-hidden="true"><path d="${STAR}" fill="var(--back-star)"/></svg></span>
+                  <span class="side front">${svg(p[2], 64, p[1])}</span>
+                </span></button>`;
+            }).join('')}
+          </div>
+        </div>
+        <div class="side-panel">
+          <div class="stat"><div>Paren gevonden</div><div class="n display">${found} <small>van ${lv.pairs}</small></div></div>
+          <div class="stat"><div>Beurten</div><div class="n display">${m.moves}</div></div>
+          ${won ? `<div class="cheer display">Super, alles gevonden in ${m.moves} beurten!${best && Number(best) === m.moves ? ' Nieuw record!' : ''}</div>` :
+            (best ? `<div class="stat"><div>Jouw record</div><div class="n display">${best} <small>beurten</small></div></div>` : '')}
+          <button class="solid" type="button" id="again">${won ? 'Nog eens spelen' : 'Opnieuw beginnen'}</button>
+        </div>
+      </div>`;
+    app.querySelectorAll('[data-lv]').forEach((b) => b.addEventListener('click', () => { S.memLevel = b.dataset.lv; newMemory(); render(); }));
+    app.querySelectorAll('[data-i]').forEach((b) => b.addEventListener('click', () => pickCard(Number(b.dataset.i))));
+    document.getElementById('again').addEventListener('click', () => { newMemory(); render(); });
+  }
+
+  function pickCard(i) {
+    const m = S.mem;
+    if (m.busy || m.open.includes(i) || m.matched.includes(i)) return;
+    flip();
+    m.open.push(i);
+    if (m.open.length < 2) { render(); return; }
+    m.moves++;
+    const [a, b] = m.open;
+    if (m.deck[a][0] === m.deck[b][0]) {
+      m.matched.push(a, b); m.open = [];
+      const lv = MEM[S.memLevel];
+      if (m.matched.length / 2 === lv.pairs) {
+        const best = Number(store.get(bestKey()) || 0);
+        if (!best || m.moves < best) store.set(bestKey(), String(m.moves));
+        setTimeout(yay, 250);
+      } else setTimeout(() => beep([660, 880]), 200);
+      render();
+    } else {
+      m.busy = true; render();
+      setTimeout(() => { m.open = []; m.busy = false; render(); }, 950);
+    }
+  }
+
+  /* ---------- Rekenen ---------- */
+  function problem(level) {
+    if (level === 'tellen') { const n = rand(1, 10); return { kind: 'count', n, a: n, q: 'Hoeveel ballen?' }; }
+    if (level === 'tafels') { const a = rand(1, 10), b = rand(2, 10); return { q: `${b} × ${a}`, a: a * b }; }
+    const max = level === 'tot10' ? 10 : level === 'tot20' ? 20 : 100;
+    if (Math.random() < 0.5) {
+      const lo = max === 100 ? 10 : 1;
+      const a = rand(lo, max - (max === 100 ? 5 : 1));
+      const b = rand(max === 100 ? 5 : 1, max - a);
+      return { q: `${a} + ${b}`, a: a + b };
+    }
+    const a = rand(max === 100 ? 20 : 2, max);
+    const b = rand(max === 100 ? 5 : 1, a - 1);
+    return { q: `${a} − ${b}`, a: a - b };
+  }
+  function choicesFor(ans, level) {
+    const max = level === 'tellen' ? 10 : 20;
+    const set = new Set([ans]);
+    while (set.size < 3) { const c = ans + rand(-3, 3); if (c >= 0 && c <= max) set.add(c); }
+    return shuffle([...set]);
+  }
+  function newMath() {
+    const ps = [];
+    for (let i = 0; i < 10; i++) {
+      let p; do { p = problem(S.mathLevel); } while (ps.some((x) => x.q === p.q && x.n === p.n));
+      if (MATH[S.mathLevel].choice) p.options = choicesFor(p.a, S.mathLevel);
+      ps.push(p);
+    }
+    S.math = { ps, idx: 0, input: '', results: [], feedback: '', state: null, wrong: [], busy: false, paid: false };
+  }
+
+  function viewMath() {
+    title.textContent = 'Rekenen';
+    const m = S.math;
+    const lv = MATH[S.mathLevel];
+    const finished = m.idx >= m.ps.length;
+    const correct = m.results.filter(Boolean).length;
+    const earned = Math.floor(correct / 2);
+    const chips = `<div class="chips" role="group" aria-label="Niveau">${Object.entries(MATH).map(([id, l]) =>
+      `<button class="chip" type="button" data-lv="${id}" aria-pressed="${id === S.mathLevel}">${l.label}</button>`).join('')}</div>`;
+    const dots = `<div class="dots" role="img" aria-label="Som ${Math.min(m.idx + 1, 10)} van 10">${m.ps.map((_, i) =>
+      `<span class="${i < m.results.length ? (m.results[i] ? 'good' : 'late') : (i === m.idx ? 'now' : '')}"></span>`).join('')}</div>`;
+
+    if (finished) {
+      if (!m.paid) { S.stars[S.kid] += earned; m.paid = true; if (earned) setTimeout(yay, 150); }
+      app.innerHTML = `<div style="display:flex;flex-direction:column;gap:18px;align-items:flex-start">${chips}
+        <div class="math-card">${dots}
+          <h2 class="done-title display">Klaar! ${correct} van 10 in één keer goed</h2>
+          ${earned ? `<div class="earned"><svg width="34" height="34" viewBox="0 0 24 24" aria-hidden="true"><path d="${STAR}" fill="var(--gold)" stroke="var(--gold-edge)" stroke-width="1.2"/></svg>Je verdiende ${earned} ${earned === 1 ? 'ster' : 'sterren'}</div>`
+            : `<div class="done-sub">Nog 2 in één keer goed voor een ster. Probeer nog een rondje!</div>`}
+          <button class="solid" type="button" id="again">Nog een rondje</button>
+        </div></div>`;
+      bindMathChips();
+      document.getElementById('again').addEventListener('click', () => { newMath(); render(); });
+      return;
+    }
+
+    const p = m.ps[m.idx];
+    const question = p.kind === 'count'
+      ? `<div class="display" style="font-size:30px">${p.q}</div><div class="count" aria-label="${p.n} ballen" role="img">${'<span></span>'.repeat(p.n)}</div>`
+      : `<div class="sum display"><span>${p.q}</span><span>=</span><span class="answer ${m.state || ''}" aria-live="polite">${lv.choice ? (m.state === 'good' ? p.a : '?') : (m.input || '?')}</span></div>`;
+    const input = lv.choice
+      ? `<div class="opts">${p.options.map((o) => `<button class="opt${m.wrong.includes(o) ? ' bad' : ''}${m.state === 'good' && o === p.a ? ' good' : ''}" type="button" data-opt="${o}">${o}</button>`).join('')}</div>`
+      : `<div class="pad">${['1','2','3','4','5','6','7','8','9'].map((d) => `<button class="key" type="button" data-d="${d}">${d}</button>`).join('')}
+          <button class="key del" type="button" data-del aria-label="Wissen">${svg('M9 6h11v12H9l-6-6zM12 10l4 4M16 10l-4 4', 40)}</button>
+          <button class="key" type="button" data-d="0">0</button>
+          <button class="key ok" type="button" data-ok aria-label="Controleer">OK</button></div>`;
+    app.innerHTML = `<div style="display:flex;flex-direction:column;gap:18px;align-items:flex-start">${chips}
+      <div class="math-wrap" style="width:100%">
+        <div class="math-card">${dots}${question}<div class="feedback ${m.state || ''}" aria-live="polite">${m.feedback}</div></div>
+        ${input}
+      </div></div>`;
+    bindMathChips();
+    app.querySelectorAll('[data-d]').forEach((b) => b.addEventListener('click', () => { if (m.busy || m.input.length >= 3) return; m.input += b.dataset.d; m.feedback = ''; m.state = null; render(); }));
+    const del = app.querySelector('[data-del]'); if (del) del.addEventListener('click', () => { if (m.busy) return; m.input = m.input.slice(0, -1); m.feedback = ''; m.state = null; render(); });
+    const ok = app.querySelector('[data-ok]'); if (ok) ok.addEventListener('click', () => { if (m.input) answer(Number(m.input)); });
+    app.querySelectorAll('[data-opt]').forEach((b) => b.addEventListener('click', () => answer(Number(b.dataset.opt))));
+  }
+  function bindMathChips() {
+    app.querySelectorAll('[data-lv]').forEach((b) => b.addEventListener('click', () => { S.mathLevel = b.dataset.lv; newMath(); render(); }));
+  }
+  function answer(val) {
+    const m = S.math;
+    if (m.busy) return;
+    const p = m.ps[m.idx];
+    const first = m.results.length === m.idx;
+    if (val === p.a) {
+      if (first) m.results.push(true);
+      m.state = 'good'; m.feedback = 'Goed zo!'; m.busy = true; yay(); render();
+      setTimeout(() => { m.idx++; m.input = ''; m.state = null; m.feedback = ''; m.wrong = []; m.busy = false; render(); }, 800);
+    } else {
+      if (first) m.results.push(false);
+      m.state = 'bad'; m.feedback = 'Bijna! Probeer nog eens.'; m.input = ''; m.wrong.push(val); oops(); render();
+    }
+  }
+
+  render();
+})();
+</script>
+</body>
+</html>

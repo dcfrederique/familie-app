@@ -1,0 +1,52 @@
+# Familie-app: taken, sterren en spelen
+
+Gezinsapp waarin drie kinderen sterren verdienen met taken en rustige activiteiten, en die sterren inwisselen voor extra schermtijd. Een ouder keurt alles goed en zet de minuten zelf in Google Family Link: er is **geen** koppeling met Google.
+
+Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
+
+## Gebruikers
+
+| Wie | Toestel | Aanpak |
+| --- | --- | --- |
+| Luca (8) | Tablet, liggend | Leest zelf; thema dino's en auto's; rekenen tot 100, tafels, penalty's |
+| Yuna (6) | Tablet, liggend | Korte woorden met grote prentjes, voorleesknop; rekenen tot 20 |
+| Feline (4) | Tablet, liggend | Werkt zonder lezen: prentjes, voorleesknop per taak, sterren tellen; vraagt zelf geen tijd aan |
+| 2 ouders | Gsm | Taken toewijzen, goedkeuren, tijd toekennen, activiteiten per kind beheren |
+
+## Kernregels (niet zonder overleg wijzigen)
+
+- Punten heten voor de kinderen **sterren**. 1 ster = 1 minuut extra tijd.
+- Geen sterren zonder goedkeuring van een ouder; geen tijd zonder dat een ouder die geeft.
+- Tijd aanvragen in blokken van 15, 30 of 60 min; sterren worden gereserveerd, pas afgeschreven als de ouder op **Toegekend** tikt. **Nu niet** of vervallen = sterren terug.
+- Dagplafond (voorstel 60 min extra per kind) en tijdvenster (bv. 7:00 tot 19:30) worden **op de server** gecontroleerd.
+- Afkeuren kost niets, geen strafpunten.
+- Elke bij- en afschrijving komt in een puntenlog met reden.
+- Rustige en lerende activiteiten (verhalen, rekenen, kleurplaten) leveren sterren op en tellen **niet** mee voor de app-tijd; spelletjes (memory, penalty's) leveren niets op en tellen **wel** mee.
+- Geen beschermde personages of merken in prenten, iconen of thema's (geen Spider-Man, Disney enz.): alles is eigen ontwerp.
+- Ouder-acties altijd achter pincode of biometrie, ook op het toestel van een kind.
+
+## Documentatie in deze map
+
+- `docs/spec.md`: functionele specificatie (flows, datamodel, activiteiten, schermen, features per fase, initiële data).
+- `docs/ontwerp.md`: visuele stijl (kleuren, lettertypes, iconen, layout per toestel) en link naar het schermontwerp.
+- `docs/verhalen.md`: de 30 verhalen die als initiële data in de app moeten.
+- `prototypes/spelletjes.html`: werkend prototype van Memory en Rekenen (vanilla JS). Gebruik de logica en de stijl als referentie.
+- `prototypes/penalty.html`: werkend prototype van Penalty's (schieten met een veeg, canvas). De keeper-modus moet nog gebouwd worden.
+
+## Nog te beslissen (vraag dit eerst aan de gebruiker)
+
+1. Platform van de app: web-app (PWA) of Flutter. Voorstel om mee te starten: PWA met React, Vite en TypeScript, omdat de prototypes al web zijn.
+2. Backend: zelf hosten (NAS, Raspberry Pi) of een dienst zoals Supabase of Firebase.
+3. Meldingen naar ouders: web-push of Telegram.
+4. Puntenwaarden, dagplafond en tijdvenster bevestigen.
+
+Begin niet met bouwen voor punten 1 en 2 bevestigd zijn.
+
+## Werkwijze
+
+- Bouw in fases: eerst de MVP uit `docs/spec.md`, daarna fase 2.
+- Kindschermen eerst ontwerpen voor tablet liggend (1194 × 834), ouderschermen voor gsm (390 × 844).
+- Grote aanraakvlakken: minstens 48 px voor ouders, 64 px of meer voor kinderen.
+- Licht en donker thema ondersteunen.
+- Schrijf tests voor de sterrenlogica (reserveren, toekennen, terugboeken, dagplafond).
+- Content (verhalen, taken, spelletjes-niveaus) als data, niet hardcoded in componenten.
