@@ -1,15 +1,17 @@
 import { Link } from 'react-router-dom'
-import { kinderen } from '../data/gezin.ts'
+import { kleurKlasse } from '../data/gezin.ts'
+import { useSessie } from '../lib/sessie.tsx'
 import './schermen.css'
 
 export default function WieSpeelt() {
+  const { kinderen } = useSessie()
   return (
     <main className="wie">
       <h1 className="display wie-titel">Wie speelt er?</h1>
       <div className="wie-keuzes">
         {kinderen.map((kind) => (
-          <Link key={kind.id} to={`/kind/${kind.id}`} className={`wie-kind kind-${kind.id}`}>
-            <span className="wie-gezicht display" aria-hidden="true">{kind.initiaal}</span>
+          <Link key={kind.id} to={`/kind/${kind.id}`} className={`wie-kind ${kleurKlasse(kind)}`}>
+            <span className="wie-gezicht display" aria-hidden="true">{kind.naam.charAt(0)}</span>
             <span className="display">{kind.naam}</span>
           </Link>
         ))}

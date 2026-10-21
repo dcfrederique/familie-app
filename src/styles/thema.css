@@ -40,9 +40,10 @@ body {
   padding-top: env(safe-area-inset-top, 0px);
   padding-bottom: env(safe-area-inset-bottom, 0px);
 }
-.kind-luca { --kid: var(--luca); --kid-tint: var(--luca-tint); }
-.kind-yuna { --kid: var(--yuna); --kid-tint: var(--yuna-tint); }
-.kind-feline { --kid: var(--feline); --kid-tint: var(--feline-tint); }
+.kleur-blauw { --kid: var(--luca); --kid-tint: var(--luca-tint); }
+.kleur-oranje { --kid: var(--yuna); --kid-tint: var(--yuna-tint); }
+.kleur-groen { --kid: var(--feline); --kid-tint: var(--feline-tint); }
+.kleur-paars { --kid: var(--verhalen); --kid-tint: var(--verhalen-tint); }
 button { font: inherit; color: inherit; cursor: pointer; }
 button:focus-visible, a:focus-visible { outline: 4px solid var(--kid); outline-offset: 3px; }
 .display { font-family: 'Baloo 2', Nunito, sans-serif; font-weight: 800; }

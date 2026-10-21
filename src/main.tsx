@@ -10,11 +10,14 @@ import '@fontsource/nunito/latin-700.css'
 import '@fontsource/nunito/latin-800.css'
 import './styles/thema.css'
 import App from './App.tsx'
+import { SessieProvider } from './lib/sessie.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
-      <App />
+      <SessieProvider>
+        <App />
+      </SessieProvider>
     </BrowserRouter>
   </StrictMode>,
 )

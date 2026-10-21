@@ -12,4 +12,6 @@ psql "$db" -q -v ON_ERROR_STOP=1 -f supabase/tests/opzet.sql
 for m in supabase/migrations/*.sql; do
   psql "$db" -q -v ON_ERROR_STOP=1 -f "$m"
 done
-psql "$db" -v ON_ERROR_STOP=1 -f supabase/tests/sterren.test.sql
+for t in supabase/tests/*.test.sql; do
+  psql "$db" -v ON_ERROR_STOP=1 -f "$t"
+done
