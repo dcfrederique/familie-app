@@ -1,0 +1,641 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mijn figuurtje</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+/* Mockup "Mijn figuurtje": kleerkast links het figuurtje, rechts categorieën en keuzes. Tablet liggend 1194 × 834. */
+:root {
+  color-scheme: light;
+  --bg: #E8EEF6; --surface: #FFFFFF; --ink: #1C2433; --muted: #4E5A6B; --line: #D5DCE4; --soft: #EEF3F8;
+  --gold: #F2B33D; --gold-edge: #B8800F; --gold-bg: #FFF4D6; --gold-ink: #6B4A00;
+  --ok: #1F7A4A; --ok-bg: #DDF2E6; --ok-ink: #155C37;
+  --on-solid: #FFFFFF; --shade: #C9D3DE; --banner: #16264A; --banner-ink: #FFFFFF;
+  --luca: #2D6BD6; --luca-tint: #E3EDFC; --yuna: #C2541A; --yuna-tint: #FCE9DD; --feline: #1F7A4A; --feline-tint: #DDF2E6;
+  --kid: #2D6BD6; --kid-tint: #E3EDFC;
+  --proto: #6A5BD1; --proto-bg: #F0EEFC;
+  --font-display: 'Baloo 2', Nunito, system-ui, sans-serif;
+  --font-body: Nunito, system-ui, sans-serif;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #121A2A; --surface: #1C2638; --ink: #EEF2F8; --muted: #A9B4C4; --line: #34425A; --soft: #243149;
+    --gold-bg: #3A2F12; --gold-ink: #F7D58A; --ok: #5CC48A; --ok-bg: #163826; --ok-ink: #9BE3B9;
+    --on-solid: #10182A; --shade: #0C1220; --banner: #0E1830; --banner-ink: #EEF2F8;
+    --luca: #7FA6F0; --luca-tint: #22345A; --yuna: #F29A63; --yuna-tint: #43281A; --feline: #66CC93; --feline-tint: #183A28;
+    --proto: #A99CF2; --proto-bg: #26223F;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #121A2A; --surface: #1C2638; --ink: #EEF2F8; --muted: #A9B4C4; --line: #34425A; --soft: #243149;
+  --gold-bg: #3A2F12; --gold-ink: #F7D58A; --ok: #5CC48A; --ok-bg: #163826; --ok-ink: #9BE3B9;
+  --on-solid: #10182A; --shade: #0C1220; --banner: #0E1830; --banner-ink: #EEF2F8;
+  --luca: #7FA6F0; --luca-tint: #22345A; --yuna: #F29A63; --yuna-tint: #43281A; --feline: #66CC93; --feline-tint: #183A28;
+  --proto: #A99CF2; --proto-bg: #26223F;
+}
+html { height: 100%; }
+body { margin: 0; min-height: 100%; background: var(--bg); color: var(--ink); font-family: var(--font-body); -webkit-tap-highlight-color: transparent; }
+body.kid-luca { --kid: var(--luca); --kid-tint: var(--luca-tint); }
+body.kid-yuna { --kid: var(--yuna); --kid-tint: var(--yuna-tint); }
+body.kid-feline { --kid: var(--feline); --kid-tint: var(--feline-tint); }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible { outline: 4px solid var(--kid); outline-offset: 3px; }
+.display { font-family: var(--font-display); font-weight: 800; }
+.ic { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); box-sizing: border-box; }
+
+/* Prototype-balk: hoort niet bij de app */
+.proto { border-bottom: 2px dashed var(--proto); background: var(--proto-bg); color: var(--proto); }
+.proto .wrap { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; padding-block: 10px; font-size: 14px; font-weight: 800; }
+.proto .group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.proto .lbl { text-transform: uppercase; letter-spacing: .06em; font-size: 12px; }
+.proto button { height: 34px; padding: 0 12px; border: 2px solid var(--proto); border-radius: 17px; background: transparent; color: var(--proto); font-weight: 800; font-size: 14px; }
+.proto button[aria-pressed="true"] { background: var(--proto); color: var(--proto-bg); }
+.proto button:focus-visible { outline-color: var(--proto); }
+
+/* Bovenbalk van de kindschermen */
+.bar { display: flex; align-items: center; gap: 14px; padding-block: 20px 8px; }
+.round { width: 64px; height: 64px; border: 0; border-radius: 50%; background: var(--surface); display: grid; place-items: center; flex-shrink: 0; }
+.bar h1 { margin: 0; font-size: clamp(26px, 3.4vw, 36px); line-height: 1.1; flex-grow: 1; text-wrap: balance; }
+.goal { display: flex; align-items: center; gap: 12px; height: 64px; padding: 0 20px 0 14px; border-radius: 32px; background: var(--surface); min-width: 0; }
+.goal b { font-family: var(--font-display); font-size: 28px; line-height: 1; font-variant-numeric: tabular-nums; }
+.goal .txt { display: flex; flex-direction: column; gap: 5px; font-size: 14px; font-weight: 700; color: var(--muted); min-width: 0; }
+.meter { width: 150px; max-width: 100%; height: 10px; border-radius: 5px; background: var(--gold-bg); overflow: hidden; }
+.meter i { display: block; height: 100%; background: var(--gold); border-radius: 5px; }
+.starrow { display: flex; gap: 6px; }
+.starrow svg { width: 34px; height: 34px; }
+
+/* Kleerkast */
+.kast { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; padding-block: 8px 28px; }
+.stage { position: relative; border-radius: 40px; background: var(--surface); display: flex; align-items: flex-end; justify-content: center; min-height: 520px; overflow: hidden; }
+.stage::before { content: ""; position: absolute; left: 12%; right: 12%; bottom: 34px; height: 52px; border-radius: 50%; background: var(--kid-tint); }
+.stage .fig { position: relative; width: min(100%, 320px); height: auto; margin-bottom: 40px; }
+.fig.hop { animation: hop .35s ease; }
+@keyframes hop { 40% { transform: translateY(-18px) scaleY(1.03); } 100% { transform: none; } }
+.tip { position: absolute; left: 20px; right: 20px; top: 20px; padding: 16px 20px; border-radius: 24px; background: var(--gold-bg); color: var(--gold-ink); font-size: 20px; font-weight: 800; line-height: 1.25; display: flex; gap: 12px; align-items: center; }
+.tip svg { flex-shrink: 0; }
+
+.panel { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.tab { height: 76px; border: 0; border-radius: 24px; background: var(--surface); color: var(--muted); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-weight: 800; font-size: 15px; }
+.tab[aria-pressed="true"] { background: var(--kid); color: var(--on-solid); }
+.items { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; border-radius: 32px; background: var(--surface); padding: 16px; }
+.item { position: relative; border: 0; padding: 0 0 8px; border-radius: 22px; background: var(--soft); display: flex; flex-direction: column; align-items: center; gap: 2px; box-shadow: inset 0 0 0 3px transparent; min-width: 0; }
+.item svg.thumb { width: 100%; aspect-ratio: 1; height: auto; max-width: 100%; display: block; }
+.item .nm { font-size: 14px; font-weight: 800; color: var(--muted); padding: 0 4px; text-align: center; line-height: 1.15; min-height: 1.15em; }
+.item[aria-pressed="true"] { background: var(--kid-tint); box-shadow: inset 0 0 0 4px var(--kid); }
+.item[aria-pressed="true"] .nm { color: var(--ink); }
+.item.locked svg.thumb { opacity: .35; filter: grayscale(1); }
+.item .lock { position: absolute; top: 8px; right: 8px; width: 34px; height: 34px; border-radius: 50%; background: var(--surface); color: var(--muted); display: grid; place-items: center; }
+.item .need { position: absolute; left: 10px; right: 10px; bottom: 34px; display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 13px; font-weight: 800; color: var(--gold-ink); }
+.item .need .meter { width: 100%; height: 8px; }
+.item .new { position: absolute; top: 8px; left: 8px; padding: 2px 10px; border-radius: 12px; background: var(--gold); color: #3A2A00; font-size: 12px; font-weight: 800; }
+.swatches { display: flex; flex-wrap: wrap; gap: 12px; padding: 14px 16px; border-radius: 32px; background: var(--surface); }
+.sw { width: 56px; height: 56px; border-radius: 50%; border: 4px solid var(--surface); box-shadow: 0 0 0 2px var(--line); }
+.sw[aria-pressed="true"] { box-shadow: 0 0 0 4px var(--kid); }
+.actions { display: flex; gap: 12px; margin-top: auto; }
+.act { height: 72px; border: 0; border-radius: 36px; background: var(--surface); display: flex; align-items: center; justify-content: center; gap: 10px; padding: 0 24px; font-weight: 800; font-size: 20px; box-shadow: 0 5px 0 var(--shade); }
+.act:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--shade); }
+.act.solid { flex-grow: 1; background: var(--kid); color: var(--on-solid); }
+.act:disabled { opacity: .45; cursor: default; }
+
+/* Feline: grotere vlakken, geen tekst */
+.feline .tabs { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.feline .tab { height: 96px; border-radius: 30px; }
+.feline .items { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.feline .item { padding-bottom: 0; border-radius: 28px; }
+.feline .sw { width: 72px; height: 72px; }
+.feline .act { height: 96px; min-width: 96px; border-radius: 48px; }
+
+/* Nieuw stuk vrijgespeeld */
+.feest { position: relative; display: flex; flex-direction: column; align-items: center; gap: 18px; padding-block: 24px 36px; text-align: center; }
+.rays { position: relative; width: min(460px, 100%); aspect-ratio: 1; max-width: 100%; display: grid; place-items: center; }
+.rays::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: repeating-conic-gradient(var(--gold-bg) 0 12deg, var(--bg) 12deg 24deg); }
+.rays .fig { position: relative; width: 62%; height: auto; }
+.burst { position: absolute; width: 44px; height: 44px; }
+.feest h2 { margin: 0; font-size: clamp(44px, 6vw, 68px); line-height: 1; }
+.feest p { margin: 0; font-size: 24px; font-weight: 700; color: var(--muted); max-width: 30ch; }
+.feest .row { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; }
+@media (prefers-reduced-motion: no-preference) {
+  .burst { animation: pop 1.6s ease-in-out infinite alternate; }
+  .rays::before { animation: spin 40s linear infinite; }
+}
+@keyframes pop { from { transform: scale(.8) rotate(-8deg); } to { transform: scale(1.1) rotate(8deg); } }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Wie speelt er */
+.who { display: flex; flex-direction: column; align-items: center; gap: 36px; padding-block: 40px; text-align: center; }
+.who h2 { margin: 0; font-size: clamp(40px, 6vw, 64px); line-height: 1; }
+.choices { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(16px, 3vw, 40px); }
+.kid-btn { width: clamp(160px, 24vw, 250px); border: 0; border-radius: 36px; background: var(--surface); display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 14px 14px 22px; box-shadow: 0 6px 0 var(--shade); }
+.kid-btn .face { width: 100%; aspect-ratio: 1; border-radius: 28px; overflow: hidden; display: block; }
+.kid-btn .face svg { width: 100%; height: 100%; display: block; }
+.kid-btn span:last-child { font-size: clamp(26px, 3.4vw, 36px); }
+.lockbtn { width: 56px; height: 56px; border: 0; border-radius: 50%; background: var(--surface); color: var(--muted); display: grid; place-items: center; }
+
+/* Startscherm (uitsnede) */
+.hero { position: relative; border-radius: 40px; padding: 22px 24px; display: flex; align-items: center; gap: 18px; overflow: hidden; margin-top: 20px; }
+.hero.dark { background: var(--banner); color: var(--banner-ink); }
+.hero.light { background: var(--surface); }
+.me { position: relative; width: 120px; height: 120px; border: 0; padding: 0; border-radius: 50%; background: var(--kid-tint); overflow: hidden; flex-shrink: 0; box-shadow: 0 0 0 5px var(--gold); }
+.me svg { width: 100%; height: 100%; display: block; }
+.me .pen { position: absolute; right: 4px; bottom: 4px; width: 36px; height: 36px; border-radius: 50%; background: var(--gold); color: #3A2A00; display: grid; place-items: center; }
+.hero h2 { margin: 0; font-size: clamp(30px, 4vw, 42px); line-height: 1.05; }
+.hero .sub { font-size: 18px; font-weight: 700; opacity: .8; }
+.hero .pillstar { margin-left: auto; display: flex; align-items: center; gap: 8px; height: 56px; padding: 0 20px 0 14px; border-radius: 28px; background: var(--surface); color: var(--ink); font-weight: 800; }
+.hero .pillstar b { font-family: var(--font-display); font-size: 26px; }
+.callout { margin: 16px 0 0 34px; display: inline-flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: 20px; border: 2px dashed var(--proto); color: var(--proto); font-weight: 800; font-size: 16px; }
+.ghost { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 20px; padding-bottom: 28px; }
+.ghost div { height: 200px; border-radius: 32px; background: var(--surface); opacity: .55; display: grid; place-items: center; font-family: var(--font-display); font-weight: 800; font-size: 22px; color: var(--muted); }
+
+/* Ouder (gsm) */
+.phone { width: min(390px, 100%); margin: 24px auto 32px; border-radius: 36px; background: var(--bg); box-shadow: 0 0 0 10px var(--surface), 0 0 0 12px var(--line); padding: 20px 16px 24px; box-sizing: border-box; display: flex; flex-direction: column; gap: 14px; }
+.phone .top { display: flex; align-items: center; gap: 12px; }
+.phone .top .round { width: 48px; height: 48px; }
+.phone h2 { margin: 0; font-size: 28px; flex-grow: 1; }
+.phone .mini { width: 48px; height: 48px; border-radius: 50%; overflow: hidden; background: var(--kid-tint); }
+.pcard { border-radius: 20px; background: var(--surface); padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.pcard h3 { margin: 0; font-size: 18px; }
+.pcard p { margin: 0; color: var(--muted); font-size: 15px; font-weight: 600; line-height: 1.4; }
+.prow { display: flex; align-items: center; gap: 14px; }
+.prow .pv { width: 96px; height: 120px; border-radius: 16px; background: var(--kid-tint); flex-shrink: 0; }
+.prow .pv svg { width: 100%; height: 100%; }
+.ptxt { display: flex; flex-direction: column; gap: 4px; font-size: 15px; font-weight: 700; min-width: 0; }
+.ptxt span { color: var(--muted); font-weight: 600; }
+.outline { height: 48px; border: 2px solid var(--line); border-radius: 24px; background: transparent; font-weight: 800; font-size: 16px; }
+.switch { display: flex; align-items: center; justify-content: space-between; gap: 12px; font-weight: 800; }
+.tog { width: 56px; height: 32px; border: 0; border-radius: 16px; background: var(--line); position: relative; flex-shrink: 0; }
+.tog::after { content: ""; position: absolute; top: 4px; left: 4px; width: 24px; height: 24px; border-radius: 50%; background: var(--surface); transition: left .15s; }
+.tog[aria-checked="true"] { background: var(--ok); }
+.tog[aria-checked="true"]::after { left: 28px; }
+.steps { display: flex; flex-wrap: wrap; gap: 6px; }
+.steps span { padding: 4px 10px; border-radius: 12px; background: var(--soft); font-size: 13px; font-weight: 800; color: var(--muted); font-variant-numeric: tabular-nums; }
+.steps span.done { background: var(--gold-bg); color: var(--gold-ink); }
+
+.toast { position: fixed; left: 50%; bottom: calc(24px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); padding: 14px 24px; border-radius: 28px; background: var(--ok); color: var(--on-solid); font-weight: 800; font-size: 20px; }
+
+@media (max-width: 860px) {
+  .kast { grid-template-columns: minmax(0, 1fr); }
+  .stage { min-height: 420px; }
+  .stage .fig { width: min(70%, 280px); }
+  .items { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .feline .tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .ghost { grid-template-columns: minmax(0, 1fr); }
+  .hero { flex-wrap: wrap; }
+  .hero .pillstar { margin-left: 0; }
+}
+@media (max-width: 480px) {
+  .tabs { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .items, .feline .items { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .actions { flex-wrap: wrap; }
+  .goal .txt { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fig.hop { animation: none; }
+}
+</style>
+</head>
+<body class="kid-luca">
+<div class="proto" aria-label="Instellingen van het prototype">
+  <div class="wrap">
+    <div class="group"><span class="lbl">Prototype</span></div>
+    <div class="group" id="pKid"><span class="lbl">Kind</span></div>
+    <div class="group" id="pView"><span class="lbl">Scherm</span></div>
+    <div class="group" id="pMode"><span class="lbl">Stukken</span></div>
+  </div>
+</div>
+<main id="app"></main>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+(() => {
+  // ---------- Kleuren en catalogus (data, zoals in de app) ----------
+  const HUID = { geel: '#F6C944', licht: '#F7D9C4', perzik: '#EEC09C', goud: '#D9A06F', bruin: '#A86B45', donker: '#6E4630' };
+  const HAARK = { zwart: '#2B2420', bruin: '#6B4226', kastanje: '#9A4A22', blond: '#E2B65A', rood: '#C8501E', blauw: '#3E7BE0', roze: '#E46AA8', paars: '#8E44C9' };
+  const KLEDK = { rood: '#D93A3A', oranje: '#E8772E', geel: '#F2C230', groen: '#2E9A45', blauw: '#2D6BD6', jeans: '#3F5E8C', paars: '#8E44C9', roze: '#E46AA8', wit: '#F4F6F9', donker: '#2B3240' };
+  const INK = '#1C2433';
+  const STAR = 'M12 3l2.7 5.6l6.1.9l-4.4 4.3l1 6.1L12 17l-5.4 2.9l1-6.1L3.2 9.5l6.1-.9z';
+
+  // d = aantal ooit verdiende sterren om het stuk vrij te spelen (0 = meteen vrij); f = ook voor Feline
+  const CATS = [
+    { id: 'huid', naam: 'Huid', vb: '24 -12 152 160', f: true,
+      ic: 'M12 3c3 4 6 7 6 11a6 6 0 0 1-12 0c0-4 3-7 6-11z',
+      items: Object.keys(HUID).map((k) => ({ id: k, naam: k[0].toUpperCase() + k.slice(1), d: 0, f: true })) },
+    { id: 'gezicht', naam: 'Gezicht', vb: '50 30 100 100', f: false,
+      ic: 'M12 21a9 9 0 1 0 0-18a9 9 0 0 0 0 18zM9 10h.01M15 10h.01M8.5 14.5a4.5 4.5 0 0 0 7 0',
+      items: [
+        { id: 'lach', naam: 'Lach', d: 0 }, { id: 'groot', naam: 'Grote lach', d: 0 }, { id: 'knipoog', naam: 'Knipoog', d: 0 },
+        { id: 'verbaasd', naam: 'Verbaasd', d: 25 }, { id: 'tong', naam: 'Tong uit', d: 50 }, { id: 'stoer', naam: 'Stoer', d: 100 }] },
+    { id: 'haar', naam: 'Haar', vb: '24 -12 152 160', f: true, kleur: 'haarKleur', pal: HAARK,
+      ic: 'M5 20v-8a7 7 0 0 1 14 0v8M5 12c4 0 7-2 8-5c1 3 3 5 6 5',
+      items: [
+        { id: 'kort', naam: 'Kort', d: 0, f: true }, { id: 'stekels', naam: 'Stekels', d: 0 }, { id: 'pony', naam: 'Pony', d: 0 },
+        { id: 'lang', naam: 'Lang', d: 0, f: true }, { id: 'staartjes', naam: 'Staartjes', d: 0, f: true }, { id: 'krullen', naam: 'Krullen', d: 25, f: true },
+        { id: 'knot', naam: 'Knotje', d: 50, f: true }, { id: 'geen', naam: 'Geen', d: 0, f: true }] },
+    { id: 'hoofd', naam: 'Hoofd', vb: '24 -12 152 160', f: true,
+      ic: 'M5 15a7 7 0 0 1 14 0zM3 15h18v3H3z',
+      items: [
+        { id: 'geen', naam: 'Niets', d: 0, f: true }, { id: 'pet', naam: 'Pet', d: 0, f: true }, { id: 'muts', naam: 'Muts', d: 25, f: true },
+        { id: 'konijn', naam: 'Konijnenoren', d: 50, f: true }, { id: 'dino', naam: 'Dino-kap', d: 100, f: true },
+        { id: 'helm', naam: 'Racehelm', d: 150 }, { id: 'kroon', naam: 'Kroontje', d: 250, f: true }] },
+    { id: 'shirt', naam: 'Shirt', vb: '24 100 152 128', f: true, kleur: 'shirtKleur', pal: KLEDK,
+      ic: 'M8 4l-5 3l2 4l3-1v10h8V10l3 1l2-4l-5-3a4 4 0 0 1-8 0z',
+      items: [
+        { id: 'tshirt', naam: 'T-shirt', d: 0, f: true }, { id: 'ster', naam: 'Met ster', d: 0, f: true }, { id: 'streep', naam: 'Gestreept', d: 25, f: true },
+        { id: 'bliksem', naam: 'Bliksem', d: 50, f: true }, { id: 'nummer8', naam: 'Nummer 8', d: 100 },
+        { id: 'dino', naam: 'Met dino', d: 150, f: true }, { id: 'regenjas', naam: 'Regenjas', d: 250, f: true }] },
+    { id: 'broek', naam: 'Broek', vb: '30 186 140 104', f: true, kleur: 'broekKleur', pal: KLEDK,
+      ic: 'M7 3h10l1 18h-4l-2-11l-2 11H6z',
+      items: [
+        { id: 'lang', naam: 'Lange broek', d: 0, f: true }, { id: 'short', naam: 'Short', d: 0, f: true },
+        { id: 'rok', naam: 'Rok', d: 0, f: true }, { id: 'salopette', naam: 'Salopette', d: 50, f: true }] },
+    { id: 'schoenen', naam: 'Schoenen', vb: '40 232 120 60', f: false, kleur: 'schoenKleur', pal: KLEDK,
+      ic: 'M3 18v-7h5l2 2h4l7 3v2zM3 18h18',
+      items: [{ id: 'sport', naam: 'Sportschoenen', d: 0 }, { id: 'laarzen', naam: 'Laarzen', d: 25 }, { id: 'bloot', naam: 'Blote voeten', d: 0 }] },
+    { id: 'extra', naam: 'Extra', vb: '-4 -12 208 302', f: true,
+      ic: 'M12 3l2 6l6 2l-6 2l-2 6l-2-6l-6-2l6-2z',
+      items: [
+        { id: 'geen', naam: 'Niets', d: 0, f: true }, { id: 'bril', naam: 'Bril', d: 25, f: true }, { id: 'voetbal', naam: 'Voetbal', d: 50, f: true },
+        { id: 'knuffel', naam: 'Knuffeldino', d: 100, f: true }, { id: 'toverstaf', naam: 'Toverstaf', d: 150, f: true }, { id: 'cape', naam: 'Cape', d: 400, f: true }] }
+  ];
+  const CAT = Object.fromEntries(CATS.map((c) => [c.id, c]));
+
+  const KIDS = {
+    luca: { naam: 'Luca', leest: true, verdiend: 140, nieuw: ['hoofd', 'helm'],
+      cfg: { huid: 'licht', gezicht: 'stoer', haar: 'stekels', haarKleur: 'bruin', hoofd: 'geen', shirt: 'nummer8', shirtKleur: 'rood', broek: 'lang', broekKleur: 'jeans', schoenen: 'sport', schoenKleur: 'wit', extra: 'voetbal' } },
+    yuna: { naam: 'Yuna', leest: true, verdiend: 85, nieuw: ['hoofd', 'dino'],
+      cfg: { huid: 'perzik', gezicht: 'groot', haar: 'staartjes', haarKleur: 'kastanje', hoofd: 'geen', shirt: 'ster', shirtKleur: 'oranje', broek: 'rok', broekKleur: 'paars', schoenen: 'laarzen', schoenKleur: 'geel', extra: 'geen' } },
+    feline: { naam: 'Feline', leest: false, verdiend: 22, nieuw: ['extra', 'toverstaf'],
+      cfg: { huid: 'licht', gezicht: 'lach', haar: 'krullen', haarKleur: 'blond', hoofd: 'konijn', shirt: 'tshirt', shirtKleur: 'roze', broek: 'salopette', broekKleur: 'jeans', schoenen: 'sport', schoenKleur: 'roze', extra: 'knuffel' } }
+  };
+
+  // ---------- Het figuurtje tekenen (gelaagde SVG, vlakke vormen) ----------
+  let uid = 0;
+  function shade(hex, f) {
+    const n = parseInt(hex.slice(1), 16);
+    const c = [n >> 16, (n >> 8) & 255, n & 255].map((v) => Math.max(0, Math.min(255, Math.round(v * f))));
+    return '#' + c.map((v) => v.toString(16).padStart(2, '0')).join('');
+  }
+  const light = (hex) => { const n = parseInt(hex.slice(1), 16); return ((n >> 16) * 299 + ((n >> 8) & 255) * 587 + (n & 255) * 114) / 1000 > 170; };
+  const CAP = 'M60 72C58 36 76 22 100 22C124 22 142 36 140 72L134 66C126 54 112 50 100 52C88 50 74 54 66 66Z';
+
+  function hairBack(c, col) {
+    if (c.haar === 'lang') return `<path d="M56 150L56 66C56 30 76 20 100 20C124 20 144 30 144 66L144 150Q100 160 56 150Z" fill="${col}"/>`;
+    if (c.haar === 'staartjes') return `<circle cx="44" cy="76" r="17" fill="${col}"/><circle cx="156" cy="76" r="17" fill="${col}"/>`;
+    if (c.haar === 'krullen') return `<circle cx="60" cy="92" r="13" fill="${col}"/><circle cx="140" cy="92" r="13" fill="${col}"/>`;
+    return '';
+  }
+  function hairFront(c, col) {
+    switch (c.haar) {
+      case 'kort': case 'lang': return `<path d="${CAP}" fill="${col}"/>`;
+      case 'staartjes': return `<path d="${CAP}" fill="${col}"/><circle cx="60" cy="72" r="6" fill="#E46AA8"/><circle cx="140" cy="72" r="6" fill="#E46AA8"/>`;
+      case 'stekels': return `<path d="M60 72L62 44L72 46L74 24L88 38L100 12L112 38L126 24L128 46L138 44L140 72L134 64C120 52 80 52 66 64Z" fill="${col}"/>`;
+      case 'pony': return `<path d="M60 80C58 36 76 22 100 22C124 22 142 36 140 80L134 70L134 62L124 64L116 58L108 65L100 58L92 65L84 58L76 64L66 62L66 70Z" fill="${col}"/>`;
+      case 'krullen': return [[62, 68], [64, 48], [76, 32], [94, 24], [112, 24], [128, 32], [138, 48], [138, 68], [84, 46], [116, 46], [100, 40]]
+        .map(([x, y]) => `<circle cx="${x}" cy="${y}" r="13" fill="${col}"/>`).join('');
+      case 'knot': return `<circle cx="100" cy="16" r="15" fill="${col}"/><path d="${CAP}" fill="${col}"/>`;
+      default: return '';
+    }
+  }
+  function hat(c) {
+    switch (c.hoofd) {
+      case 'pet': return '<path d="M62 58C62 30 78 20 100 20C122 20 138 30 138 58Z" fill="#D93A3A"/><path d="M96 56L150 56Q162 57 158 64L96 64Z" fill="#A82828"/><circle cx="100" cy="21" r="4" fill="#A82828"/>';
+      case 'muts': return '<path d="M60 62C60 28 78 16 100 16C122 16 140 28 140 62Z" fill="#2D6BD6"/><rect x="58" y="52" width="84" height="14" rx="7" fill="#5C8EE6"/><circle cx="100" cy="13" r="10" fill="#F4F6F9"/>';
+      case 'kroon': return '<path d="M68 50L68 20L84 34L100 10L116 34L132 20L132 50Z" fill="#F2B33D" stroke="#B8800F" stroke-width="2" stroke-linejoin="round"/><circle cx="100" cy="40" r="4.5" fill="#D93A3A"/><circle cx="82" cy="42" r="3.5" fill="#2D6BD6"/><circle cx="118" cy="42" r="3.5" fill="#2E9A45"/>';
+      case 'helm': return '<path fill-rule="evenodd" d="M56 114L56 64C56 26 76 12 100 12C124 12 144 26 144 64L144 114ZM70 60L130 60L130 102Q100 112 70 102Z" fill="#F4F6F9" stroke="#AEB9C6" stroke-width="2"/><path d="M92 13Q100 12 108 13L108 60L92 60Z" fill="#D93A3A"/><path d="M70 60L130 60" stroke="#2B3240" stroke-width="4"/><circle cx="64" cy="86" r="5" fill="#2D6BD6"/><circle cx="136" cy="86" r="5" fill="#2D6BD6"/>';
+      case 'dino': return '<path d="M80 24L88 4L96 22ZM96 20L104 0L112 20ZM108 22L118 4L122 26Z" fill="#2A7F45"/><path d="M56 104L56 62C56 28 76 18 100 18C124 18 144 28 144 62L144 104L136 104L136 66C126 54 74 54 64 66L64 104Z" fill="#3DAA60"/><path d="M66 64L71 72L76 62L82 70L88 60L94 68L100 59L106 68L112 60L118 70L124 62L129 72L134 64" fill="#F4F6F9"/><circle cx="76" cy="38" r="7" fill="#F4F6F9"/><circle cx="77" cy="38" r="3.5" fill="#1C2433"/><circle cx="124" cy="38" r="7" fill="#F4F6F9"/><circle cx="123" cy="38" r="3.5" fill="#1C2433"/>';
+      case 'konijn': return '<ellipse cx="80" cy="14" rx="10" ry="24" fill="#F4F6F9" stroke="#D5DCE4" stroke-width="2" transform="rotate(-10 80 14)"/><ellipse cx="80" cy="16" rx="4.5" ry="16" fill="#F4A6C6" transform="rotate(-10 80 16)"/><ellipse cx="120" cy="14" rx="10" ry="24" fill="#F4F6F9" stroke="#D5DCE4" stroke-width="2" transform="rotate(10 120 14)"/><ellipse cx="120" cy="16" rx="4.5" ry="16" fill="#F4A6C6" transform="rotate(10 120 16)"/><path d="M62 50Q100 22 138 50" fill="none" stroke="#E46AA8" stroke-width="7" stroke-linecap="round"/>';
+      default: return '';
+    }
+  }
+  function face(c) {
+    const e = (x, r = 4.5) => `<circle cx="${x}" cy="72" r="${r}" fill="${INK}"/>`;
+    const smile = `<path d="M84 88Q100 100 116 88" fill="none" stroke="${INK}" stroke-width="4" stroke-linecap="round"/>`;
+    const cheeks = '<circle cx="76" cy="88" r="6" fill="#F28B9A" opacity=".45"/><circle cx="124" cy="88" r="6" fill="#F28B9A" opacity=".45"/>';
+    switch (c.gezicht) {
+      case 'groot': return cheeks + e(86) + e(114) + `<path d="M82 85Q100 108 118 85Z" fill="${INK}"/><path d="M90 96Q100 102 110 96Q100 92 90 96Z" fill="#F28B9A"/>`;
+      case 'knipoog': return cheeks + e(86) + `<path d="M108 73Q114 66 120 73" fill="none" stroke="${INK}" stroke-width="4" stroke-linecap="round"/>` + smile;
+      case 'verbaasd': return e(86, 5.5) + e(114, 5.5) + `<path d="M79 60Q86 55 93 60M107 60Q114 55 121 60" fill="none" stroke="${INK}" stroke-width="3.5" stroke-linecap="round"/><circle cx="100" cy="94" r="6.5" fill="${INK}"/>`;
+      case 'tong': return cheeks + e(86) + e(114) + `<path d="M92 94Q93 106 100 106Q107 106 108 94Z" fill="#E8607A"/><path d="M84 90Q100 98 116 90" fill="none" stroke="${INK}" stroke-width="4" stroke-linecap="round"/>`;
+      case 'stoer': return e(86) + e(114) + `<path d="M78 62L93 66M122 62L107 66" fill="none" stroke="${INK}" stroke-width="4" stroke-linecap="round"/><path d="M88 92Q104 97 116 86" fill="none" stroke="${INK}" stroke-width="4" stroke-linecap="round"/>`;
+      default: return cheeks + e(86) + e(114) + smile;
+    }
+  }
+  function print(c, col, clip) {
+    const on = (pref) => (light(col) ? INK : pref);
+    switch (c.shirt) {
+      case 'ster': return `<path d="${STAR}" transform="translate(81 139) scale(1.6)" fill="${col === KLEDK.geel ? '#FFFFFF' : '#F2C230'}"/>`;
+      case 'bliksem': return `<path d="M106 132L88 162L100 162L94 188L116 152L103 152L112 132Z" fill="${col === KLEDK.geel ? '#FFFFFF' : '#F2C230'}"/>`;
+      case 'nummer8': return `<circle cx="100" cy="158" r="18" fill="${light(col) ? INK : '#FFFFFF'}"/><text x="100" y="168" text-anchor="middle" font-family="Baloo 2, Nunito, sans-serif" font-weight="800" font-size="28" fill="${col}">8</text>`;
+      case 'streep': return `<g clip-path="url(#${clip})" fill="${on('#FFFFFF')}" opacity=".85"><rect x="50" y="132" width="100" height="10"/><rect x="50" y="154" width="100" height="10"/><rect x="50" y="176" width="100" height="10"/></g>`;
+      case 'dino': { const g = col === KLEDK.groen ? '#FFFFFF' : '#2E9A45'; return `<g fill="${g}"><ellipse cx="96" cy="168" rx="16" ry="10"/><path d="M104 164L110 144L122 144L122 152L115 152L112 166Z"/><path d="M82 166L66 158L82 174Z"/><rect x="88" y="174" width="6" height="10" rx="2"/><rect x="100" y="174" width="6" height="10" rx="2"/></g>`; }
+      case 'regenjas': return `<path d="M100 118V218" stroke="${shade(col, .7)}" stroke-width="3"/><rect x="72" y="176" width="18" height="14" rx="3" fill="${shade(col, .85)}"/><rect x="110" y="176" width="18" height="14" rx="3" fill="${shade(col, .85)}"/>`;
+      default: return '';
+    }
+  }
+
+  function figure(c, o = {}) {
+    const id = 'f' + (++uid);
+    const skin = HUID[c.huid], skinD = shade(skin, .8);
+    const hair = HAARK[c.haarKleur], shirt = KLEDK[c.shirtKleur], pants = KLEDK[c.broekKleur], shoe = KLEDK[c.schoenKleur];
+    const covered = c.hoofd === 'helm' || c.hoofd === 'dino';
+    const torso = 'M72 116L128 116Q134 116 135 122L142 200L58 200L65 122Q66 116 72 116Z';
+    const s = [];
+    if (o.bg) s.push(`<rect x="-20" y="-20" width="240" height="340" style="fill:${o.bg}"/>`);
+    s.push(`<defs><clipPath id="${id}"><path d="${torso}"/></clipPath></defs>`);
+    if (!covered) s.push(hairBack(c, hair));
+    if (c.extra === 'cape') s.push('<path d="M66 118L134 118L164 262Q100 274 36 262Z" fill="#D93A3A"/>');
+    // benen en broek
+    const legSkin = (y) => `<rect x="66" y="${y}" width="30" height="${270 - y}" fill="${skin}"/><rect x="104" y="${y}" width="30" height="${270 - y}" fill="${skin}"/>`;
+    if (c.broek === 'rok') {
+      s.push(legSkin(208), `<path d="M62 196L138 196L152 244Q100 254 48 244Z" fill="${pants}"/>`);
+    } else {
+      s.push(`<rect x="60" y="196" width="80" height="16" rx="4" fill="${pants}"/>`);
+      if (c.broek === 'short') s.push(legSkin(232), `<rect x="62" y="206" width="36" height="28" rx="4" fill="${pants}"/><rect x="102" y="206" width="36" height="28" rx="4" fill="${pants}"/>`);
+      else s.push(`<rect x="62" y="206" width="36" height="64" rx="4" fill="${pants}"/><rect x="102" y="206" width="36" height="64" rx="4" fill="${pants}"/>`);
+      s.push(`<path d="M100 212V270" stroke="${shade(pants, .75)}" stroke-width="3"/>`);
+    }
+    // schoenen
+    if (c.schoenen === 'laarzen') s.push(`<rect x="60" y="244" width="38" height="40" rx="7" fill="${shoe}"/><rect x="102" y="244" width="38" height="40" rx="7" fill="${shoe}"/><rect x="60" y="244" width="38" height="8" rx="4" fill="${shade(shoe, .8)}"/><rect x="102" y="244" width="38" height="8" rx="4" fill="${shade(shoe, .8)}"/>`);
+    else if (c.schoenen === 'bloot') s.push(`<ellipse cx="80" cy="274" rx="20" ry="8" fill="${skin}"/><ellipse cx="120" cy="274" rx="20" ry="8" fill="${skin}"/>`);
+    else s.push(`<path d="M58 264h42v12q0 8-8 8h-26q-8 0-8-8z" fill="${shoe}" stroke="${shade(shoe, .75)}" stroke-width="2"/><path d="M100 264h42v12q0 8-8 8h-26q-8 0-8-8z" fill="${shoe}" stroke="${shade(shoe, .75)}" stroke-width="2"/><rect x="60" y="279" width="38" height="4" fill="${shade(shoe, .75)}"/><rect x="102" y="279" width="38" height="4" fill="${shade(shoe, .75)}"/>`);
+    // armen en handen
+    const arm = shade(shirt, .92);
+    s.push(`<rect x="40" y="120" width="22" height="66" rx="11" fill="${arm}" transform="rotate(10 52 124)"/><rect x="138" y="120" width="22" height="66" rx="11" fill="${arm}" transform="rotate(-10 148 124)"/>`);
+    s.push(`<circle cx="40" cy="192" r="12" fill="${skin}"/><circle cx="40" cy="194" r="5" fill="${skinD}"/><circle cx="160" cy="192" r="12" fill="${skin}"/><circle cx="160" cy="194" r="5" fill="${skinD}"/>`);
+    // romp
+    if (c.shirt === 'regenjas') s.push(`<rect x="58" y="190" width="84" height="30" rx="5" fill="${shirt}"/>`);
+    s.push(`<path d="${torso}" fill="${shirt}"/><path d="M86 116Q100 130 114 116Z" fill="${shade(shirt, .8)}"/>`);
+    s.push(print(c, shirt, id));
+    if (c.broek === 'salopette') s.push(`<path d="M82 150L76 118M118 150L124 118" stroke="${pants}" stroke-width="7" stroke-linecap="round"/><rect x="78" y="148" width="44" height="54" rx="5" fill="${pants}"/><circle cx="84" cy="156" r="3.5" fill="#F2C230"/><circle cx="116" cy="156" r="3.5" fill="#F2C230"/><rect x="90" y="166" width="20" height="14" rx="3" fill="${shade(pants, .85)}"/>`);
+    // hoofd
+    s.push(`<rect x="88" y="102" width="24" height="18" fill="${skinD}"/><rect x="86" y="26" width="28" height="16" rx="4" fill="${skin}"/><rect x="64" y="36" width="72" height="74" rx="22" fill="${skin}"/>`);
+    s.push(face(c));
+    if (c.extra === 'bril') s.push(`<g fill="#FFFFFF" fill-opacity=".25" stroke="${INK}" stroke-width="3.5"><circle cx="86" cy="72" r="11"/><circle cx="114" cy="72" r="11"/></g><path d="M97 72H103M75 70L65 66M125 70L135 66" stroke="${INK}" stroke-width="3.5" stroke-linecap="round"/>`);
+    if (!covered) s.push(hairFront(c, hair));
+    s.push(hat(c));
+    // extra's vooraan
+    if (c.extra === 'voetbal') s.push(`<circle cx="166" cy="216" r="18" fill="#F4F6F9" stroke="${INK}" stroke-width="2.5"/><path d="M166 208l7 5l-3 8h-8l-3-8z" fill="${INK}"/><path d="M166 208V198M173 213l9-3M170 221l5 8M162 221l-5 8M159 213l-9-3" stroke="${INK}" stroke-width="2"/>`);
+    if (c.extra === 'toverstaf') s.push(`<path d="M162 190L180 146" stroke="#6B4A00" stroke-width="5" stroke-linecap="round"/><path d="${STAR}" transform="translate(166 126) scale(1.25)" fill="#F2B33D" stroke="#B8800F" stroke-width="1.2"/>`);
+    if (c.extra === 'knuffel') s.push('<g transform="translate(8 196)"><path d="M6 30L-6 22L8 38Z" fill="#2E9A45"/><ellipse cx="22" cy="32" rx="18" ry="13" fill="#3DAA60"/><circle cx="36" cy="14" r="10" fill="#3DAA60"/><circle cx="39" cy="12" r="2.5" fill="#1C2433"/><rect x="12" y="40" width="7" height="10" rx="3" fill="#2E9A45"/><rect x="26" y="40" width="7" height="10" rx="3" fill="#2E9A45"/><path d="M14 20L18 14L22 20L26 14L30 20" fill="#2A7F45"/></g>');
+    const vb = o.vb || '-4 -12 208 302';
+    return `<svg class="${o.cls || ''}" viewBox="${vb}" ${o.id ? `id="${o.id}"` : ''} role="img" aria-label="${o.label || 'Figuurtje'}">${s.join('')}</svg>`;
+  }
+
+  // ---------- Toestand ----------
+  const S = {
+    kid: 'luca', view: 'kast', mode: 'C', cat: 'haar',
+    cfg: Object.fromEntries(Object.entries(KIDS).map(([k, v]) => [k, { ...v.cfg }])),
+    hist: { luca: [], yuna: [], feline: [] },
+    preview: null, tip: '', tipTimer: 0, nieuwGezien: {}
+  };
+  const app = document.getElementById('app');
+  const toastEl = document.getElementById('toast');
+  const kid = () => KIDS[S.kid];
+  const isF = () => S.kid === 'feline';
+  const need = (it) => (S.mode === 'A' ? 0 : isF() ? Math.ceil(it.d * 0.2) : it.d);
+  const locked = (it) => need(it) > kid().verdiend;
+  const cats = () => CATS.filter((c) => !isF() || c.f);
+  const itemsOf = (c) => c.items.filter((it) => !isF() || it.f);
+  const ic = (d, size = 26) => `<svg class="ic" width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${d}"/></svg>`;
+  const star = (size = 28, empty = false) => `<svg width="${size}" height="${size}" viewBox="0 0 24 24" aria-hidden="true"><path d="${STAR}" style="fill:${empty ? 'none' : 'var(--gold)'};stroke:${empty ? 'var(--muted)' : 'var(--gold-edge)'}" stroke-width="1.4" stroke-linejoin="round"/></svg>`;
+  const LOCK = 'M6 11h12v9H6zM8 11V8a4 4 0 0 1 8 0v3';
+  const SPEAK = 'M4 10h4l5-4v12l-5-4H4zM16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11';
+
+  function speak(t) {
+    try {
+      const u = new SpeechSynthesisUtterance(t);
+      u.lang = 'nl-BE'; u.rate = 0.9;
+      speechSynthesis.cancel(); speechSynthesis.speak(u);
+    } catch (e) {}
+  }
+  function toast(t) {
+    toastEl.textContent = t; toastEl.hidden = false;
+    clearTimeout(toast.t); toast.t = setTimeout(() => { toastEl.hidden = true; }, 1800);
+  }
+  function nextGoal() {
+    const all = CATS.flatMap((c) => itemsOf(c).map((it) => ({ c, it, n: need(it) })));
+    const up = all.filter((x) => x.n > kid().verdiend).sort((a, b) => a.n - b.n);
+    const vrij = all.filter((x) => x.n <= kid().verdiend).length;
+    return { next: up[0], vrij, totaal: all.length, drempels: [...new Set(all.map((x) => x.n).filter((n) => n > 0))].sort((a, b) => a - b) };
+  }
+
+  // ---------- Prototype-balk ----------
+  const pBtn = (grp, key, opts) => {
+    const g = document.getElementById(grp);
+    g.querySelectorAll('button').forEach((b) => b.remove());
+    opts.forEach(([v, t]) => {
+      const b = document.createElement('button');
+      b.type = 'button'; b.textContent = t; b.setAttribute('aria-pressed', String(S[key] === v));
+      b.addEventListener('click', () => { S[key] = v; S.preview = null; S.tip = ''; if (key === 'kid' && isF() && !CAT[S.cat].f) S.cat = 'haar'; render(); });
+      g.appendChild(b);
+    });
+  };
+  function paintProto() {
+    pBtn('pKid', 'kid', [['luca', 'Luca'], ['yuna', 'Yuna'], ['feline', 'Feline']]);
+    pBtn('pView', 'view', [['kast', 'Kleerkast'], ['nieuw', 'Nieuw stuk'], ['wie', 'Wie speelt er'], ['start', 'Startscherm'], ['ouder', 'Ouder']]);
+    pBtn('pMode', 'mode', [['C', 'Vrijspelen met sterren'], ['A', 'Alles vrij']]);
+  }
+
+  // ---------- Schermen ----------
+  function render() {
+    document.body.className = 'kid-' + S.kid;
+    paintProto();
+    ({ kast: viewKast, nieuw: viewNieuw, wie: viewWie, start: viewStart, ouder: viewOuder })[S.view]();
+  }
+
+  function goalPill() {
+    if (S.mode === 'A') return '';
+    const g = nextGoal(), v = kid().verdiend;
+    if (!g.next) return `<div class="goal">${star(30)}<b>${v}</b><div class="txt">Alles vrijgespeeld!</div></div>`;
+    const prev = Math.max(0, ...g.drempels.filter((n) => n <= v));
+    const pct = Math.round(((v - prev) / (g.next.n - prev)) * 100);
+    if (isF()) {
+      const filled = Math.round(pct / 20);
+      return `<div class="goal" aria-label="Nog even sterren verdienen voor een verrassing"><div class="starrow">${[0, 1, 2, 3, 4].map((i) => star(34, i >= filled)).join('')}</div></div>`;
+    }
+    return `<div class="goal">${star(30)}<b>${v}</b><div class="txt"><span>Nog ${g.next.n - v} sterren tot een verrassing</span><span class="meter"><i style="width:${pct}%"></i></span></div></div>`;
+  }
+
+  function viewKast() {
+    const c = CAT[S.cat], cfg = S.cfg[S.kid], show = S.preview || cfg, f = isF();
+    const tabs = cats().map((x) => `<button class="tab" type="button" data-cat="${x.id}" aria-pressed="${x.id === S.cat}" aria-label="${x.naam}">${ic(x.ic, f ? 40 : 28)}${f ? '' : `<span>${x.naam}</span>`}</button>`).join('');
+    const items = itemsOf(c).map((it) => {
+      const lk = locked(it), n = need(it);
+      const nw = S.mode === 'C' && kid().nieuw[0] === c.id && kid().nieuw[1] === it.id && S.nieuwGezien[S.kid];
+      return `<button class="item${lk ? ' locked' : ''}" type="button" data-item="${it.id}" aria-pressed="${cfg[c.id] === it.id}" aria-label="${it.naam}${lk ? ', op slot' : ''}">
+        ${figure({ ...cfg, [c.id]: it.id }, { vb: c.vb, cls: 'thumb', label: it.naam })}
+        ${lk ? `<span class="lock">${ic(LOCK, 20)}</span>${f ? '' : `<span class="need">nog ${n - kid().verdiend} ★<span class="meter"><i style="width:${Math.round(kid().verdiend / n * 100)}%"></i></span></span>`}` : ''}
+        ${nw ? '<span class="new">Nieuw</span>' : ''}
+        ${f ? '' : `<span class="nm">${it.naam}</span>`}
+      </button>`;
+    }).join('');
+    const sw = c.kleur ? `<div class="swatches" role="group" aria-label="Kleur">${Object.entries(c.pal).map(([k, v]) => `<button class="sw" type="button" data-kleur="${k}" style="background:${v}" aria-pressed="${cfg[c.kleur] === k}" aria-label="${k}"></button>`).join('')}</div>` : '';
+    app.innerHTML = `<div class="wrap ${f ? 'feline' : ''}">
+      <div class="bar">
+        <button class="round" type="button" data-go="start" aria-label="Terug">${ic('M15 18l-6-6l6-6', 30)}</button>
+        ${f ? `<button class="round" type="button" data-say="Kies je kleren" aria-label="Voorlezen">${ic(SPEAK, 28)}</button><h1></h1>` : '<h1 class="display">Mijn figuurtje</h1>'}
+        ${goalPill()}
+      </div>
+      <div class="kast">
+        <section class="stage" aria-label="Je figuurtje">
+          ${S.tip ? `<div class="tip">${ic(LOCK, 28)}<span>${S.tip}</span></div>` : ''}
+          ${figure(show, { cls: 'fig', id: 'big', label: 'Figuurtje van ' + kid().naam })}
+        </section>
+        <section class="panel">
+          <div class="tabs">${tabs}</div>
+          <div class="items">${items}</div>
+          ${sw}
+          <div class="actions">
+            <button class="act" type="button" data-act="undo" aria-label="Ongedaan maken" ${S.hist[S.kid].length ? '' : 'disabled'}>${ic('M9 14L4 9l5-5M4 9h10a6 6 0 0 1 0 12h-3', 28)}${f ? '' : '<span>Terug</span>'}</button>
+            <button class="act" type="button" data-act="dice" aria-label="Verrassing">${ic('M5 4h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zM8.5 8.5h.01M15.5 15.5h.01M12 12h.01M15.5 8.5h.01M8.5 15.5h.01', 28)}${f ? '' : '<span>Verrassing</span>'}</button>
+            <button class="act solid" type="button" data-act="klaar" aria-label="Klaar">${ic('M5 12l5 5l9-10', 32)}${f ? '' : '<span>Klaar</span>'}</button>
+          </div>
+        </section>
+      </div>
+    </div>`;
+  }
+
+  function change(patch) {
+    S.hist[S.kid].push({ ...S.cfg[S.kid] });
+    Object.assign(S.cfg[S.kid], patch);
+    S.preview = null; S.tip = '';
+    render(); hop();
+  }
+  function hop() {
+    const b = document.getElementById('big');
+    if (b) { b.classList.remove('hop'); void b.getBoundingClientRect(); b.classList.add('hop'); }
+  }
+  function pickItem(id) {
+    const c = CAT[S.cat], it = c.items.find((x) => x.id === id);
+    if (isF()) speak(it.naam);
+    if (locked(it)) {
+      clearTimeout(S.tipTimer);
+      const rest = need(it) - kid().verdiend;
+      S.preview = { ...S.cfg[S.kid], [c.id]: id };
+      S.tip = isF() ? 'Nog even sterren sparen!' : `Nog ${rest} sterren verdienen, dan is ${it.naam.toLowerCase()} van jou.`;
+      if (isF()) speak('Nog even sterren sparen');
+      render(); hop();
+      S.tipTimer = setTimeout(() => { S.preview = null; S.tip = ''; if (S.view === 'kast') render(); }, 2600);
+      return;
+    }
+    change({ [c.id]: id });
+  }
+  function dice() {
+    const pick = (xs) => xs[Math.floor(Math.random() * xs.length)];
+    const patch = {};
+    cats().forEach((c) => {
+      patch[c.id] = pick(itemsOf(c).filter((it) => !locked(it))).id;
+      if (c.kleur) patch[c.kleur] = pick(Object.keys(c.pal));
+    });
+    if (isF()) speak('Verrassing!');
+    change(patch);
+  }
+
+  function viewNieuw() {
+    const [cid, iid] = kid().nieuw, c = CAT[cid], it = c.items.find((x) => x.id === iid), f = isF();
+    const cfg = { ...S.cfg[S.kid], [cid]: iid };
+    const n = S.mode === 'A' ? 0 : need(it);
+    // In het prototype: doen alsof de ouder net de sterren goedkeurde die deze mijlpaal halen
+    kid().verdiend = Math.max(kid().verdiend, n);
+    const bursts = [[6, 14], [82, 8], [2, 70], [86, 66], [44, -2]].map(([x, y], i) => `<span class="burst" style="left:${x}%;top:${y}%;animation-delay:${i * .25}s">${star(44)}</span>`).join('');
+    app.innerHTML = `<div class="wrap"><div class="feest">
+      <div class="rays">${bursts}${figure(cfg, { cls: 'fig', label: kid().naam + ' met ' + it.naam })}</div>
+      ${f ? `<div class="starrow">${[0, 1, 2, 3, 4].map(() => star(44)).join('')}</div>` : `<h2 class="display">Nieuw!</h2><p>Je hebt ${n || ''} sterren verdiend en ${it.naam.toLowerCase()} vrijgespeeld.</p>`}
+      <div class="row">
+        <button class="act" type="button" data-go="kast" aria-label="Later">${ic('M15 18l-6-6l6-6', 28)}${f ? '' : '<span>Later</span>'}</button>
+        <button class="act solid" type="button" data-act="aandoen" aria-label="Aandoen">${ic('M5 12l5 5l9-10', 32)}${f ? '' : '<span>Aandoen</span>'}</button>
+      </div>
+    </div></div>`;
+    if (f) speak('Nieuw! Kijk eens wat je hebt gekregen.');
+  }
+
+  function viewWie() {
+    app.innerHTML = `<div class="wrap"><div class="who">
+      <h2 class="display">Wie speelt er?</h2>
+      <div class="choices">${Object.entries(KIDS).map(([id, k]) => `
+        <button class="kid-btn" type="button" data-kid="${id}" style="--kid-tint:var(--${id}-tint)">
+          <span class="face">${figure(S.cfg[id], { vb: '20 -14 160 200', bg: 'var(--kid-tint)', label: k.naam })}</span>
+          <span class="display">${k.naam}</span>
+        </button>`).join('')}
+      </div>
+      <button class="lockbtn" type="button" data-go="ouder" aria-label="Ouders">${ic(LOCK, 24)}</button>
+    </div></div>`;
+  }
+
+  function viewStart() {
+    const k = kid(), dark = S.kid === 'luca', f = isF();
+    app.innerHTML = `<div class="wrap">
+      <div class="hero ${dark ? 'dark' : 'light'}">
+        <button class="me" type="button" data-go="kast" aria-label="Mijn figuurtje aankleden">
+          ${figure(S.cfg[S.kid], { vb: '24 -14 152 170', label: 'Mijn figuurtje' })}
+          <span class="pen">${ic('M4 20h4L19 9l-4-4L4 16zM13 7l4 4', 20)}</span>
+        </button>
+        <div><h2 class="display">Hoi ${k.naam}!</h2>${f ? '' : `<div class="sub">${dark ? 'Nog 8 taken tot de finish' : 'Nog 5 taken vandaag'}</div>`}</div>
+        <div class="pillstar">${star(28)}<b>40</b>${f ? '' : '<span>sterren</span>'}</div>
+      </div>
+      <div class="callout">${ic('M12 19V5M5 12l7-7l7 7', 22)}Het figuurtje vervangt de letter. Tik erop om de kleerkast te openen.</div>
+      <div class="ghost"><div>Taken</div><div>Taken</div><div>Spelen en leren</div></div>
+    </div>`;
+  }
+
+  function viewOuder() {
+    const k = kid(), g = nextGoal(), on = S.mode === 'C';
+    app.innerHTML = `<div class="wrap"><div class="phone">
+      <div class="top">
+        <button class="round" type="button" data-go="wie" aria-label="Terug">${ic('M15 18l-6-6l6-6', 24)}</button>
+        <h2 class="display">${k.naam}</h2>
+        <div class="mini">${figure(S.cfg[S.kid], { vb: '40 10 120 110', label: k.naam })}</div>
+      </div>
+      <div class="pcard">
+        <h3>Figuurtje</h3>
+        <div class="prow">
+          <div class="pv">${figure(S.cfg[S.kid], { label: k.naam })}</div>
+          <div class="ptxt">${on ? `${g.vrij} van ${g.totaal} stukken vrij<span>${k.verdiend} sterren verdiend in totaal${g.next ? `. Volgende: ${g.next.it.naam.toLowerCase()} bij ${g.next.n}.` : '.'}</span>` : `Alle ${g.totaal} stukken vrij<span>Vrijspelen staat uit.</span>`}</div>
+        </div>
+        <button class="outline" type="button" data-act="reset">Terugzetten naar basisfiguurtje</button>
+      </div>
+      <div class="pcard">
+        <div class="switch"><span>Stukken vrijspelen met sterren</span><button class="tog" type="button" role="switch" aria-checked="${on}" data-act="toggle" aria-label="Stukken vrijspelen met sterren"></button></div>
+        <p>Nieuwe stukken gaan open als ${k.naam} genoeg sterren verdiend heeft. Het saldo blijft hetzelfde: vrijspelen kost geen minuten.</p>
+        ${on ? `<div class="steps">${g.drempels.map((n) => `<span class="${n <= k.verdiend ? 'done' : ''}">${n} ★</span>`).join('')}</div>` : ''}
+      </div>
+    </div></div>`;
+  }
+
+  const BASIS = { huid: 'licht', gezicht: 'lach', haar: 'kort', haarKleur: 'bruin', hoofd: 'geen', shirt: 'tshirt', broek: 'lang', broekKleur: 'jeans', schoenen: 'sport', schoenKleur: 'wit', extra: 'geen' };
+  const THEMAKLEUR = { luca: 'blauw', yuna: 'oranje', feline: 'groen' };
+
+  app.addEventListener('click', (e) => {
+    const t = e.target.closest('button');
+    if (!t) return;
+    const d = t.dataset;
+    if (d.cat) { S.cat = d.cat; S.preview = null; S.tip = ''; if (isF()) speak(CAT[d.cat].naam); render(); }
+    else if (d.item) pickItem(d.item);
+    else if (d.kleur) { if (isF()) speak(d.kleur); change({ [CAT[S.cat].kleur]: d.kleur }); }
+    else if (d.say) speak(d.say);
+    else if (d.kid) { S.kid = d.kid; S.view = 'start'; render(); }
+    else if (d.go) { S.view = d.go; S.preview = null; S.tip = ''; render(); window.scrollTo(0, 0); }
+    else if (d.act === 'undo') { const h = S.hist[S.kid].pop(); if (h) { S.cfg[S.kid] = h; render(); hop(); } }
+    else if (d.act === 'dice') dice();
+    else if (d.act === 'klaar') { S.hist[S.kid] = []; S.view = 'start'; render(); toast(isF() ? '✓' : 'Bewaard!'); if (isF()) speak('Mooi!'); }
+    else if (d.act === 'aandoen') { const [cid, iid] = kid().nieuw; S.nieuwGezien[S.kid] = true; S.cat = cid; S.view = 'kast'; change({ [cid]: iid }); }
+    else if (d.act === 'reset') { S.cfg[S.kid] = { ...BASIS, shirtKleur: THEMAKLEUR[S.kid] }; S.hist[S.kid] = []; render(); toast('Teruggezet'); }
+    else if (d.act === 'toggle') { S.mode = S.mode === 'C' ? 'A' : 'C'; render(); }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
