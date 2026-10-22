@@ -1,6 +1,9 @@
 import type { Session } from '@supabase/supabase-js'
-import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react'
 import { demoGebruikers, type Gebruiker } from '../data/gezin.ts'
+import { demoBron } from './bron/demoBron.ts'
+import { supabaseBron } from './bron/supabaseBron.ts'
+import type { Bron } from './bron/types.ts'
 import { supabase } from './supabase.ts'
 
 export interface Account {
@@ -23,6 +26,8 @@ interface Sessie {
   gebruikers: Gebruiker[]
   kinderen: Gebruiker[]
   isAnoniem: boolean
+  /** Gegevens en acties; null zolang er geen gezin is. */
+  bron: Bron | null
   herlaad: () => Promise<void>
   afmelden: () => Promise<void>
 }
@@ -71,7 +76,10 @@ export function SessieProvider({ children }: { children: ReactNode }) {
   }, [laadGezin])
 
   const herlaad = useCallback(async () => {
-    if (!supabase) return
+    if (!supabase) {
+      setGebruikers([...demoGebruikers])
+      return
+    }
     const { data } = await supabase.auth.getSession()
     await laadGezin(data.session)
   }, [laadGezin])
@@ -80,6 +88,12 @@ export function SessieProvider({ children }: { children: ReactNode }) {
     await supabase?.auth.signOut()
   }, [])
 
+  const bron = useMemo<Bron | null>(() => {
+    if (status === 'demo') return demoBron(demoGebruikers.filter((g) => g.rol === 'kind'))
+    if (status === 'klaar' && supabase && account) return supabaseBron(supabase, account.gezin_id)
+    return null
+  }, [status, account])
+
   const waarde: Sessie = {
     status,
     sessie,
@@ -87,6 +101,7 @@ export function SessieProvider({ children }: { children: ReactNode }) {
     gebruikers,
     kinderen: gebruikers.filter((g) => g.rol === 'kind'),
     isAnoniem: Boolean(sessie?.user.is_anonymous),
+    bron,
     herlaad,
     afmelden,
   }
@@ -107,6 +122,12 @@ export function foutmelding(fout: { message: string } | null | undefined): strin
   if (m.includes('Email not confirmed')) return 'Bevestig eerst je e-mailadres via de mail die je kreeg.'
   if (m.includes('User already registered')) return 'Er bestaat al een account met dit e-mailadres. Meld je aan.'
   if (m.includes('Password should be')) return 'Kies een wachtwoord van minstens 6 tekens.'
+  if (m.includes('boven dagplafond')) return 'Dat is meer dan de extra tijd die vandaag nog mag.'
+  if (m.includes('te weinig sterren')) return 'Daarvoor heb je nog te weinig sterren.'
+  if (m.includes('buiten tijdvenster')) return 'Extra tijd vragen kan nu niet meer.'
+  if (m.includes('taak al ingediend')) return 'Deze taak is al afgevinkt.'
+  if (m.includes('foto nodig')) return 'Neem eerst een foto.'
+  if (m.includes('code ongeldig of verlopen')) return 'Die code klopt niet of is verlopen.'
   if (m.includes('Anonymous sign-ins are disabled')) return 'Tablets koppelen staat nog uit in Supabase (Anonymous sign-ins).'
   return m.charAt(0).toUpperCase() + m.slice(1)
 }

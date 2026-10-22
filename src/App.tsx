@@ -1,8 +1,12 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { useSessie } from './lib/sessie.tsx'
+import ExtraTijd from './schermen/ExtraTijd.tsx'
+import Goedkeuren from './schermen/Goedkeuren.tsx'
 import GezinInstellen from './schermen/GezinInstellen.tsx'
+import KinderenBeheer from './schermen/KinderenBeheer.tsx'
 import KindStart from './schermen/KindStart.tsx'
 import OuderStart from './schermen/OuderStart.tsx'
+import TakenBeheer from './schermen/TakenBeheer.tsx'
 import Toestellen from './schermen/Toestellen.tsx'
 import Welkom from './schermen/Welkom.tsx'
 import WieSpeelt from './schermen/WieSpeelt.tsx'
@@ -24,7 +28,11 @@ export default function App() {
       <Route path="/" element={<Navigate to={start} replace />} />
       <Route path="/kinderen" element={<WieSpeelt />} />
       <Route path="/kind/:id" element={<KindStart />} />
+      <Route path="/kind/:id/tijd" element={<ExtraTijd />} />
       <Route path="/ouder" element={<OuderStart />} />
+      <Route path="/ouder/goedkeuren" element={<Goedkeuren />} />
+      <Route path="/ouder/taken" element={<TakenBeheer />} />
+      <Route path="/ouder/kinderen" element={<KinderenBeheer />} />
       <Route path="/ouder/toestellen" element={<Toestellen />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
