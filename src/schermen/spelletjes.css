@@ -147,3 +147,7 @@
 @keyframes huppel { 50% { transform: translateY(-18px); } }
 @keyframes glinster { from { opacity: .3; transform: scale(.7); } }
 @media (prefers-reduced-motion: reduce) { .was-bad.feest .was-tekening, .glinster { animation: none; } }
+
+/* Racen */
+.harten { display: flex; gap: 2px; }
+.spel-score { display: inline-flex; align-items: center; gap: 8px; }

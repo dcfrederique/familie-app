@@ -13,6 +13,7 @@ import Kleurplaat, { KleurplaatLijst } from './schermen/Kleurplaten.tsx'
 import Verhaal from './schermen/Verhaal.tsx'
 import Verhalen from './schermen/Verhalen.tsx'
 import OuderStart from './schermen/OuderStart.tsx'
+import Racen from './schermen/Racen.tsx'
 import Rekenen from './schermen/Rekenen.tsx'
 import Spelen from './schermen/Spelen.tsx'
 import TakenBeheer from './schermen/TakenBeheer.tsx'
@@ -44,6 +45,7 @@ export default function App() {
       <Route path="/kind/:id/memory" element={<Memory />} />
       <Route path="/kind/:id/penalty" element={<Penalty />} />
       <Route path="/kind/:id/huisdier" element={<Huisdier />} />
+      <Route path="/kind/:id/racen" element={<Racen />} />
       <Route path="/kind/:id/verhalen" element={<Verhalen />} />
       <Route path="/kind/:id/verhaal/:nr" element={<Verhaal />} />
       <Route path="/kind/:id/kleurplaten" element={<KleurplaatLijst />} />
