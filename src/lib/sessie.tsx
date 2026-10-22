@@ -56,12 +56,13 @@ export function SessieProvider({ children }: { children: ReactNode }) {
       setStatus('zonder-gezin')
       return
     }
-    const { data: leden } = await supabase
-      .from('gebruikers')
-      .select('id, naam, rol, thema, kan_lezen, vraagt_zelf_tijd, volgorde')
-      .order('volgorde')
+    const velden = 'id, naam, rol, thema, kan_lezen, vraagt_zelf_tijd, volgorde'
+    let { data: leden, error } = await supabase.from('gebruikers')
+      .select(`${velden}, figuurtje, figuurtje_alles_vrij`).order('volgorde') as { data: Partial<Gebruiker>[] | null; error: unknown }
+    // Zolang migratie 20261022001000_figuurtje nog niet gedraaid is, bestaan die kolommen niet.
+    if (error) ({ data: leden } = await supabase.from('gebruikers').select(velden).order('volgorde'))
     setAccount(acc as Account)
-    setGebruikers((leden ?? []) as Gebruiker[])
+    setGebruikers((leden ?? []).map((g) => ({ ...g, figuurtje: g.figuurtje ?? null, figuurtje_alles_vrij: g.figuurtje_alles_vrij ?? false })) as Gebruiker[])
     setStatus('klaar')
   }, [])
 

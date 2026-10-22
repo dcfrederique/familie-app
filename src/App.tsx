@@ -5,6 +5,7 @@ import Goedkeuren from './schermen/Goedkeuren.tsx'
 import GezinInstellen from './schermen/GezinInstellen.tsx'
 import KinderenBeheer from './schermen/KinderenBeheer.tsx'
 import KindStart from './schermen/KindStart.tsx'
+import Kleerkast from './schermen/Kleerkast.tsx'
 import Memory from './schermen/Memory.tsx'
 import OuderStart from './schermen/OuderStart.tsx'
 import Rekenen from './schermen/Rekenen.tsx'
@@ -32,6 +33,7 @@ export default function App() {
       <Route path="/kinderen" element={<WieSpeelt />} />
       <Route path="/kind/:id" element={<KindStart />} />
       <Route path="/kind/:id/tijd" element={<ExtraTijd />} />
+      <Route path="/kind/:id/figuurtje" element={<Kleerkast />} />
       <Route path="/kind/:id/spelen" element={<Spelen />} />
       <Route path="/kind/:id/rekenen" element={<Rekenen />} />
       <Route path="/kind/:id/memory" element={<Memory />} />

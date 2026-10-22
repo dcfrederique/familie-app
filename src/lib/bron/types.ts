@@ -1,4 +1,5 @@
 // Gemeenschappelijke vorm van de gegevens, voor Supabase en voor de demo zonder Supabase.
+import type { Figuurtje } from '../../data/figuurtje.ts'
 import type { Kleur } from '../../data/gezin.ts'
 import type { Activiteit } from '../regels.ts'
 
@@ -70,6 +71,7 @@ export interface KindWijziging {
   kan_lezen?: boolean
   vraagt_zelf_tijd?: boolean
   thema?: Kleur
+  figuurtje_alles_vrij?: boolean
 }
 
 export interface Spelregels {
@@ -93,12 +95,16 @@ export interface Bron {
   saldi(): Promise<Record<string, Saldo>>
   log(kindId: string): Promise<LogRegel[]>
   spelregels(): Promise<Spelregels>
+  /** Ooit verdiende sterren per kind (alle bijschrijvingen samen), voor het vrijspelen van het figuurtje. */
+  verdiend(): Promise<Record<string, number>>
 
   taakIndienen(kindId: string, taakId: string, foto: Blob | null): Promise<void>
   tijdAanvragen(kindId: string, minuten: number): Promise<void>
   /** Bewaart een afgewerkte activiteit; geeft de sterren terug die op goedkeuring wachten. */
   activiteitOpslaan(kindId: string, activiteit: Activiteit, inhoud: ActiviteitRegel['inhoud'], duurSeconden: number): Promise<number>
   activiteitenTeBeoordelen(): Promise<ActiviteitRegel[]>
+  /** Bewaart het figuurtje; null zet het terug naar het basisfiguurtje. De server controleert de drempels. */
+  figuurtjeBewaren(kindId: string, figuurtje: Figuurtje | null): Promise<void>
 
   inzendingBeoordelen(id: string, goed: boolean, pin: string | null): Promise<OuderUitkomst>
   verzoekBehandelen(id: string, toekennen: boolean, reden: string | null, pin: string | null): Promise<OuderUitkomst>

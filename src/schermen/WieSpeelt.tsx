@@ -1,6 +1,9 @@
 import { Link } from 'react-router-dom'
+import { figuurtjeVan } from '../data/figuurtje.ts'
 import { kleurKlasse } from '../data/gezin.ts'
 import { useSessie } from '../lib/sessie.tsx'
+import Figuurtje, { borstbeeldUitsnede } from './Figuurtje.tsx'
+import './figuurtje.css'
 import './schermen.css'
 
 export default function WieSpeelt() {
@@ -11,7 +14,9 @@ export default function WieSpeelt() {
       <div className="wie-keuzes">
         {kinderen.map((kind) => (
           <Link key={kind.id} to={`/kind/${kind.id}`} className={`wie-kind ${kleurKlasse(kind)}`}>
-            <span className="wie-gezicht display" aria-hidden="true">{kind.naam.charAt(0)}</span>
+            <span className="wie-gezicht met-figuurtje" aria-hidden="true">
+              <Figuurtje figuurtje={figuurtjeVan(kind)} uitsnede={borstbeeldUitsnede} />
+            </span>
             <span className="display">{kind.naam}</span>
           </Link>
         ))}

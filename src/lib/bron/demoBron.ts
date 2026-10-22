@@ -1,5 +1,6 @@
 // Demo zonder Supabase: alles in het geheugen van de browser, met dezelfde spelregels.
 // Handig om de schermen te bekijken voor de database gekoppeld is. Pincode in de demo: 1234.
+import { controleer, type Figuurtje } from '../../data/figuurtje.ts'
 import type { Gebruiker } from '../../data/gezin.ts'
 import { dagVan } from '../datum.ts'
 import { activiteitOmschrijving, activiteitSterren, blokKeuzes, regels as standaardRegels } from '../regels.ts'
@@ -79,6 +80,10 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
     },
     async log(kind) { return t.log.filter((l) => l.kind_id === kind).slice().reverse() },
     async spelregels() { return { ...t.regels } },
+    async verdiend() {
+      return Object.fromEntries(kinderen.map((k) => [k.id,
+        t.log.filter((l) => l.kind_id === k.id && l.delta > 0).reduce((s, l) => s + l.delta, 0)]))
+    },
 
     async taakIndienen(kind, taakId, foto) {
       const taak = t.taken.find((x) => x.id === taakId)
@@ -108,6 +113,16 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       return sterren
     },
     async activiteitenTeBeoordelen() { return t.activiteiten.filter((a) => a.status === 'ingediend') },
+    async figuurtjeBewaren(kindId, figuurtje: Figuurtje | null) {
+      const k = kinderen.find((x) => x.id === kindId)
+      if (!k) throw new Error('kind niet gevonden')
+      if (figuurtje) {
+        const verdiend = t.log.filter((l) => l.kind_id === kindId && l.delta > 0).reduce((s, l) => s + l.delta, 0)
+        const reden = controleer(figuurtje, { verdiend, allesVrij: k.figuurtje_alles_vrij, kanLezen: k.kan_lezen })
+        if (reden) throw new Error(reden)
+      }
+      k.figuurtje = figuurtje && { ...figuurtje }
+    },
 
     async inzendingBeoordelen(inzId, goed, pin): Promise<OuderUitkomst> {
       if (!pinOk(pin)) return 'pincode_fout'

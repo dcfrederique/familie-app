@@ -70,6 +70,13 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
       return { ...data, venster_van: data!.venster_van.slice(0, 5), venster_tot: data!.venster_tot.slice(0, 5) } as Spelregels
     },
 
+    async verdiend() {
+      const { data, error } = await sb.from('kind_verdiend').select('kind_id, verdiend')
+      // Zonder migratie 20261022001000_figuurtje is alleen het basispakket vrij.
+      if (error) return {}
+      return Object.fromEntries((data ?? []).map((r) => [r.kind_id as string, r.verdiend as number]))
+    },
+
     async taakIndienen(kindId, taakId, foto) {
       let pad: string | null = null
       if (foto) {
@@ -89,6 +96,10 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
         { p_kind: kindId, p_activiteit: activiteit, p_inhoud: inhoud, p_duur_seconden: Math.round(duurSeconden) })
       fout(error)
       return data as number
+    },
+    async figuurtjeBewaren(kindId, figuurtje) {
+      const { error } = await sb.rpc('figuurtje_bewaren', { p_kind: kindId, p_figuurtje: figuurtje })
+      fout(error)
     },
     async activiteitenTeBeoordelen() {
       const { data, error } = await sb.from('activiteitlog')

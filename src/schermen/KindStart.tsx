@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { Banner } from '../data/banners.tsx'
 import { kleurKlasse, type Gebruiker } from '../data/gezin.ts'
+import { figuurtjeVan } from '../data/figuurtje.ts'
 import { Prentje } from '../data/prentjes.tsx'
 import { bannerVoorKleur, tegelsVoor, type ActiviteitTegel } from '../data/thema.ts'
 import type { Taak, Tijdverzoek } from '../lib/bron/types.ts'
@@ -10,6 +11,8 @@ import { useGegevens } from '../lib/gegevens.ts'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import { takenVoorKind, type TaakStatus } from '../lib/takenstatus.ts'
 import { kanVoorlezen, leesVoor } from '../lib/voorlezen.ts'
+import Figuurtje, { hoofdUitsnede } from './Figuurtje.tsx'
+import NieuwStuk from './NieuwStuk.tsx'
 import { Ster, SterrenPil } from './onderdelen.tsx'
 import './schermen.css'
 
@@ -25,10 +28,11 @@ export default function KindStart() {
 
   const { data, ververs } = useGegevens(bron && kind ? async () => {
     const zestigDagenTerug = dagVan(new Date(Date.now() - 60 * 86400_000))
-    const [taken, inzendingen, saldi, verzoeken] = await Promise.all([
-      bron.taken(), bron.inzendingenVanaf(zestigDagenTerug), bron.saldi(), bron.verzoeken(vandaag()),
+    const [taken, inzendingen, saldi, verzoeken, verdiend] = await Promise.all([
+      bron.taken(), bron.inzendingenVanaf(zestigDagenTerug), bron.saldi(), bron.verzoeken(vandaag()), bron.verdiend(),
     ])
-    return { taken, inzendingen, saldo: saldi[kind.id], verzoeken: verzoeken.filter((v) => v.kind_id === kind.id) }
+    return { taken, inzendingen, saldo: saldi[kind.id], verzoeken: verzoeken.filter((v) => v.kind_id === kind.id),
+             verdiend: verdiend[kind.id] ?? 0 }
   } : null, [bron, kind?.id])
 
   if (!kind) return <Navigate to="/kinderen" replace />
@@ -46,6 +50,7 @@ export default function KindStart() {
         <Afvinken kind={kind} taak={gekozen} sluit={() => setGekozen(null)}
                   klaar={async (foto) => { await bron.taakIndienen(kind.id, gekozen.id, foto); setGekozen(null); await ververs() }} />
       )}
+      {!gekozen && <NieuwStuk kind={kind} verdiend={data?.verdiend} />}
     </div>
   )
 }
@@ -62,7 +67,7 @@ function StartLezer({ kind, lijst, geladen, vrij, verzoeken, kies }: {
       <svg className="ic" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M15 18l-6-6l6-6" /></svg>
     </Link>
   )
-  const avatar = <span className="avatar display" aria-hidden="true">{kind.naam[0]}</span>
+  const avatar = <Avatar kind={kind} />
   const titel = <h1 className="kop-titel display">Hoi {kind.naam}!</h1>
 
   return (
@@ -178,7 +183,7 @@ function StartPrenten({ kind, lijst, geladen, kies }: { kind: Gebruiker; lijst: 
       <svg className="ic" viewBox="0 0 24 24" width="32" height="32" aria-hidden="true"><path d="M15 18l-6-6l6-6" /></svg>
     </Link>
   )
-  const avatar = <span className="avatar display" aria-hidden="true">{kind.naam[0]}</span>
+  const avatar = <Avatar kind={kind} />
   const titel = <h1 className="kop-titel display">Hoi {kind.naam}!</h1>
   const voorlees = kanVoorlezen() && (
     <button type="button" className="rond" aria-label="Lees voor" onClick={() => leesVoor(begroeting)}>
@@ -282,6 +287,18 @@ function Afvinken({ kind, taak, sluit, klaar }: {
         </div>
       </div>
     </div>
+  )
+}
+
+/** Het figuurtje in een rondje; tikken opent de kleerkast. */
+function Avatar({ kind }: { kind: Gebruiker }) {
+  return (
+    <Link to={`/kind/${kind.id}/figuurtje`} className="avatar met-figuurtje" aria-label="Mijn figuurtje aankleden">
+      <Figuurtje figuurtje={figuurtjeVan(kind)} uitsnede={hoofdUitsnede} />
+      <span className="avatar-pen" aria-hidden="true">
+        <svg className="ic" viewBox="0 0 24 24" width="16" height="16"><path d="M4 20h4L19 9l-4-4L4 16zM13 7l4 4" /></svg>
+      </span>
+    </Link>
   )
 }
 

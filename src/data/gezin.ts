@@ -1,4 +1,5 @@
 // Gegevens van het gezin zoals de app ze gebruikt. Zonder Supabase (demo) komen ze uit startdata.
+import type { Figuurtje } from './figuurtje.ts'
 
 export type Kleur = 'blauw' | 'oranje' | 'groen' | 'paars' | 'roze' | 'lila'
 
@@ -12,6 +13,10 @@ export interface Gebruiker {
   /** Feline vraagt zelf geen tijd aan. */
   vraagt_zelf_tijd: boolean
   volgorde: number
+  /** Eigen figuurtje; null = basisfiguurtje in de kleur van het thema. */
+  figuurtje: Figuurtje | null
+  /** Ouder zette vrijspelen met sterren uit: alle stukken zijn vrij. */
+  figuurtje_alles_vrij: boolean
 }
 
 export interface NieuwKind {
@@ -32,9 +37,11 @@ const kleuren: Kleur[] = ['blauw', 'roze', 'lila', 'groen']
 
 /** Startdata voor de demo zonder Supabase. */
 export const demoGebruikers: Gebruiker[] = [
-  { id: 'mama', naam: 'Mama', rol: 'ouder', thema: null, kan_lezen: true, vraagt_zelf_tijd: true, volgorde: 1 },
+  { id: 'mama', naam: 'Mama', rol: 'ouder', thema: null, kan_lezen: true, vraagt_zelf_tijd: true, volgorde: 1,
+    figuurtje: null, figuurtje_alles_vrij: false },
   ...startKinderen.map((k, i) => ({
     id: k.naam.toLowerCase(), rol: 'kind' as const, thema: kleuren[i % 4], volgorde: 10 + i, ...k,
+    figuurtje: null, figuurtje_alles_vrij: false,
   })),
 ]
 

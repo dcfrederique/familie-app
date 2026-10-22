@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react'
+import { figuurtjeVan } from '../data/figuurtje.ts'
 import { kleurKlasse, type Gebruiker, type Kleur } from '../data/gezin.ts'
 import { themaKeuzes } from '../data/thema.ts'
 import type { KindWijziging, Spelregels } from '../lib/bron/types.ts'
@@ -6,7 +7,9 @@ import { useGegevens } from '../lib/gegevens.ts'
 import { regels as standaard } from '../lib/regels.ts'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import OuderKader, { ouderPin, pinOpnieuw } from './OuderKader.tsx'
+import Figuurtje, { hoofdUitsnede } from './Figuurtje.tsx'
 import { SterrenPil } from './onderdelen.tsx'
+import './figuurtje.css'
 
 // Per kind: saldo, tijd geven, instellingen en geschiedenis. Onderaan de spelregels van het gezin.
 export default function KinderenBeheer() {
@@ -57,7 +60,7 @@ function KindBeheer({ kind, vrij, magBeheren, ververs }: {
   return (
     <section className={`kaart kind-kaart ${kleurKlasse(kind)}`}>
       <div className="kind-kaart-kop">
-        <span className="mini-gezicht display" aria-hidden="true">{kind.naam.charAt(0)}</span>
+        <span className="mini-gezicht met-figuurtje" aria-hidden="true"><Figuurtje figuurtje={figuurtjeVan(kind)} uitsnede={hoofdUitsnede} /></span>
         <h2 className="display">{kind.naam}</h2>
         <SterrenPil aantal={vrij} />
       </div>
@@ -80,6 +83,7 @@ function KindBeheer({ kind, vrij, magBeheren, ververs }: {
           </label>
         </div>
       )}
+      {magBeheren && <FiguurtjeBeheer kind={kind} />}
       <button type="button" className="knop knop-licht" onClick={() => setOpen(!open)}>
         {open ? 'Geschiedenis verbergen' : 'Geschiedenis'}
       </button>
@@ -96,6 +100,44 @@ function KindBeheer({ kind, vrij, magBeheren, ververs }: {
         </ul>
       )}
     </section>
+  )
+}
+
+/** Figuurtje: vrijspelen met sterren aan of uit, en terugzetten naar het basisfiguurtje. */
+function FiguurtjeBeheer({ kind }: { kind: Gebruiker }) {
+  const { bron, herlaad } = useSessie()
+  const [melding, setMelding] = useState('')
+
+  async function doe(actie: () => Promise<void>, gelukt: string) {
+    setMelding('')
+    try {
+      await actie()
+      await herlaad()
+      setMelding(gelukt)
+    } catch (e) {
+      setMelding(foutmelding(e as Error))
+    }
+  }
+
+  return (
+    <div className="figuurtje-beheer">
+      <span className="voorbeeld" aria-hidden="true"><Figuurtje figuurtje={figuurtjeVan(kind)} /></span>
+      <div className="vinkjes">
+        <label>
+          <input type="checkbox" checked={!kind.figuurtje_alles_vrij}
+                 onChange={(e) => doe(() => bron!.kindAanpassen(kind.id, { figuurtje_alles_vrij: !e.target.checked }), 'Bewaard.')} />
+          {' '}Stukken van het figuurtje vrijspelen met sterren
+        </label>
+        <p>{kind.figuurtje_alles_vrij
+          ? 'Alle stukken zijn vrij.'
+          : 'Nieuwe stukken gaan open bij 25, 50, 100, 150, 250 en 400 ooit verdiende sterren (een vijfde voor wie niet leest). Het saldo blijft hetzelfde.'}</p>
+        <button type="button" className="knop-klein" disabled={!kind.figuurtje}
+                onClick={() => doe(() => bron!.figuurtjeBewaren(kind.id, null), 'Teruggezet naar het basisfiguurtje.')}>
+          Figuurtje terugzetten
+        </button>
+        {melding && <p className="tip" role="status">{melding}</p>}
+      </div>
+    </div>
   )
 }
 

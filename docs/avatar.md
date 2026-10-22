@@ -1,6 +1,6 @@
 # Use case: Mijn figuurtje
 
-Status: voorstel (22 oktober 2026). Beslist: ontgrendelen met optie C (mijlpalen). Mockup: `prototypes/avatar.html`.
+Status: gebouwd (22 oktober 2026), ontgrendelen met optie C (mijlpalen). Mockup: `prototypes/avatar.html`. Code: `src/data/figuurtje.ts`, `src/schermen/Kleerkast.tsx`, migratie `20261022001000_figuurtje.sql`.
 
 ## Doel
 
@@ -93,17 +93,23 @@ Zo blijven de kernregels intact: niemand verliest sterren, een ouder keurt nog a
 
 ## Aanvaardingscriteria
 
-- [ ] Een kind kan zijn figuurtje openen vanaf het startscherm in één tik.
-- [ ] Elke keuze is meteen zichtbaar op het grote figuurtje, zonder laadtijd.
-- [ ] Klaar bewaart; het nieuwe figuurtje staat meteen op het startscherm en bij Wie speelt er.
-- [ ] Feline kan zonder lezen een figuurtje maken: alleen iconen, voorlezen bij elke tik, aanraakvlakken van minstens 96 px.
-- [ ] Aanraakvlakken voor Luca en Yuna minstens 64 px.
-- [ ] Licht en donker thema.
-- [ ] (Optie C) Stukken op slot zijn zichtbaar met het aantal sterren dat nog nodig is; vrijspelen kost geen saldo.
-- [ ] Geen merknamen of beschermde personages in tekst of tekeningen.
+- [x] Een kind kan zijn figuurtje openen vanaf het startscherm in één tik.
+- [x] Elke keuze is meteen zichtbaar op het grote figuurtje, zonder laadtijd.
+- [x] Klaar bewaart; het nieuwe figuurtje staat meteen op het startscherm en bij Wie speelt er.
+- [x] Feline kan zonder lezen een figuurtje maken: alleen iconen, voorlezen bij elke tik, aanraakvlakken van minstens 96 px.
+- [x] Aanraakvlakken voor Luca en Yuna minstens 64 px.
+- [x] Licht en donker thema.
+- [x] (Optie C) Stukken op slot zijn zichtbaar met het aantal sterren dat nog nodig is; vrijspelen kost geen saldo.
+- [x] Geen merknamen of beschermde personages in tekst of tekeningen.
 
-## Open vragen
+## Keuzes bij het bouwen (22 oktober 2026)
 
-1. Bewaren met de knop Klaar, of automatisch bij elke tik (eenvoudiger voor Feline)?
-2. Mogen de ouders ook een figuurtje maken voor de ouder-app?
-3. Hoort dit bij de MVP of bij fase 2? Voorstel: fase 2, samen met "thema kiezen per kind" en "reeksen en badges".
+Frederique vroeg om te bouwen en redelijke standaarden te kiezen. Aan te passen als het anders moet:
+
+1. **Bewaren met Klaar**, niet automatisch. Zo werken Terug (ongedaan maken) en Verrassing zonder dat er meteen iets bewaard is. Terug zonder Klaar laat het oude figuurtje staan.
+2. **Geen figuurtje voor ouders**. In de ouder-app staat het hoofdje van het kind naast de naam.
+3. **Meteen gebouwd**, niet uitgesteld naar fase 2.
+4. **Minder lezen = een vijfde van de drempel**: geldt voor elk kind waarbij "Kan lezen" uit staat (nu Feline).
+5. **Vrijspelen aan/uit per kind** in Kinderen; uit betekent alles vrij. Daar staat ook Figuurtje terugzetten.
+6. **Feestscherm** verschijnt op het startscherm als er sinds het vorige bezoek op die tablet iets vrijgespeeld is. De tablet onthoudt wat al gevierd is; de eerste keer wordt niets gevierd.
+7. **Ooit verdiend** = de som van alle bijschrijvingen in het puntenlog (goedgekeurde taken en activiteiten, correcties). Extra tijd telt niet af.

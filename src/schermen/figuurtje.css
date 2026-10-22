@@ -1,0 +1,89 @@
+/* Figuurtje: kleerkast en feestscherm (tablet liggend 1194 × 834), naar prototypes/avatar.html */
+.kleerkast { max-width: 1194px; margin: 0 auto; padding: 24px 32px 32px; display: flex; flex-direction: column; gap: 20px; }
+.kleerkast .kop-titel { flex-grow: 1; }
+.kleerkast-inhoud { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 24px; }
+
+.mijlpaal { display: flex; align-items: center; gap: 10px; min-height: 64px; padding: 0 20px 0 14px; border-radius: 32px; background: var(--surface); }
+.mijlpaal b { font-size: 28px; line-height: 1; font-variant-numeric: tabular-nums; }
+.mijlpaal-tekst { display: flex; flex-direction: column; gap: 5px; font-size: 14px; font-weight: 700; color: var(--muted); }
+.mijlpaal .leeg path { fill: var(--surface); stroke: var(--muted); }
+.meter { display: block; width: 150px; max-width: 100%; height: 10px; border-radius: 5px; background: var(--gold-bg); overflow: hidden; }
+.meter i { display: block; height: 100%; border-radius: 5px; background: var(--gold); }
+
+.podium { position: relative; min-height: 520px; border-radius: 40px; background: var(--surface); display: flex; align-items: flex-end; justify-content: center; overflow: hidden; }
+.podium::before { content: ""; position: absolute; left: 12%; right: 12%; bottom: 34px; height: 52px; border-radius: 50%; background: var(--kid-tint); }
+.podium-figuur { position: relative; width: min(100%, 320px); height: auto; margin-bottom: 40px; }
+.podium-figuur.proef { opacity: .8; }
+.podium-tip { position: absolute; z-index: 1; left: 20px; right: 20px; top: 20px; margin: 0; padding: 16px 20px; border-radius: 24px; background: var(--gold-bg); color: var(--gold-ink); font-size: 20px; font-weight: 800; line-height: 1.25; display: flex; gap: 12px; align-items: center; }
+.podium-tip svg { flex-shrink: 0; }
+.huppel { animation: huppel .35s ease; }
+@keyframes huppel { 40% { transform: translateY(-18px) scaleY(1.03); } 100% { transform: none; } }
+
+.kast { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
+.kast-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.kast-tab { min-height: 76px; border: 0; border-radius: 24px; background: var(--surface); color: var(--muted); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-weight: 800; font-size: 15px; }
+.kast-tab[aria-selected="true"] { background: var(--kid); color: var(--on-solid); }
+.kast-keuzes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; padding: 16px; border-radius: 32px; background: var(--surface); }
+.kast-keuze { position: relative; min-width: 0; border: 0; padding: 0 0 8px; border-radius: 22px; background: var(--soft); display: flex; flex-direction: column; align-items: center; gap: 2px; }
+.kast-keuze[aria-pressed="true"] { background: var(--kid-tint); box-shadow: inset 0 0 0 4px var(--kid); }
+.kast-prent { display: block; width: 100%; height: auto; aspect-ratio: 1; }
+.kast-keuze.op-slot .kast-prent { opacity: .35; filter: grayscale(1); }
+.kast-naam { padding: 0 4px; font-size: 14px; font-weight: 800; line-height: 1.15; color: var(--muted); text-align: center; }
+.kast-keuze[aria-pressed="true"] .kast-naam { color: var(--ink); }
+.slotje { position: absolute; top: 8px; right: 8px; width: 34px; height: 34px; border-radius: 50%; background: var(--surface); color: var(--muted); display: grid; place-items: center; }
+.nog { position: absolute; left: 10px; right: 10px; bottom: 34px; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 2px 4px; font-size: 13px; font-weight: 800; color: var(--gold-ink); }
+.nog .meter { width: 100%; height: 8px; }
+.kast-kleuren { display: flex; flex-wrap: wrap; gap: 12px; padding: 14px 16px; border-radius: 32px; background: var(--surface); }
+.kast-kleur { width: 56px; height: 56px; border-radius: 50%; border: 4px solid var(--surface); box-shadow: 0 0 0 2px var(--line); }
+.kast-kleur[aria-pressed="true"] { box-shadow: 0 0 0 4px var(--kid); }
+.kast-acties { display: flex; gap: 12px; margin-top: auto; }
+.kast-actie { min-height: 72px; padding: 0 24px; border: 0; border-radius: 36px; background: var(--surface); display: flex; align-items: center; justify-content: center; gap: 10px; font-weight: 800; font-size: 20px; box-shadow: 0 5px 0 var(--shade); }
+.kast-actie:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--shade); }
+.kast-actie:disabled { opacity: .45; }
+.kast-actie.klaar { flex-grow: 1; background: var(--kid); color: var(--on-solid); }
+
+/* Voor wie niet leest: minder en grotere keuzes, geen tekst */
+.prenten .kast-tabs { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.prenten .kast-tab { min-height: 88px; border-radius: 30px; }
+.prenten .kast-keuzes { grid-template-columns: repeat(3, minmax(0, 150px)); justify-content: center; gap: 16px; }
+.prenten .kast-keuze { padding-bottom: 0; border-radius: 28px; }
+.prenten .kast-kleur { width: 64px; height: 64px; }
+.prenten .kast-actie { min-height: 96px; min-width: 96px; border-radius: 48px; }
+
+/* Figuurtje in een rondje (startscherm) en op Wie speelt er */
+.avatar.met-figuurtje { padding: 0; border: 0; position: relative; text-decoration: none; }
+.avatar.met-figuurtje > svg { width: 100%; height: 100%; display: block; border-radius: 50%; }
+.avatar-pen { position: absolute; right: -4px; bottom: -4px; width: 26px; height: 26px; border-radius: 50%; background: var(--gold); color: #3A2A00; display: grid; place-items: center; }
+.wie-gezicht.met-figuurtje { border-radius: 28px; overflow: hidden; }
+.wie-gezicht.met-figuurtje svg { width: 100%; height: 100%; display: block; }
+.mini-gezicht.met-figuurtje { padding: 0; overflow: hidden; }
+.mini-gezicht.met-figuurtje svg { width: 100%; height: 100%; display: block; }
+
+/* Feestscherm bij een nieuw stuk */
+.feest { display: flex; flex-direction: column; align-items: center; gap: 16px; text-align: center; max-width: 520px; }
+.feest-stralen { position: relative; width: min(360px, 70vw); aspect-ratio: 1; display: grid; place-items: center; }
+.feest-stralen::before { content: ""; position: absolute; inset: 0; border-radius: 50%; background: repeating-conic-gradient(var(--gold-bg) 0 12deg, var(--surface) 12deg 24deg); }
+.feest-stralen svg.feest-figuur { position: relative; width: 62%; height: auto; }
+.feest h2 { margin: 0; font-size: clamp(40px, 6vw, 60px); line-height: 1; }
+.feest p { margin: 0; font-size: 22px; color: var(--muted); }
+.feest .dialoog-knoppen { justify-content: center; }
+
+/* Ouder: figuurtje per kind */
+.figuurtje-beheer { display: flex; align-items: center; gap: 14px; margin-top: 12px; }
+.figuurtje-beheer .voorbeeld { width: 72px; height: 90px; flex-shrink: 0; border-radius: 14px; background: var(--kid-tint); }
+.figuurtje-beheer .voorbeeld svg { width: 100%; height: 100%; }
+.figuurtje-beheer p { font-size: 15px; }
+
+@media (max-width: 860px) {
+  .kleerkast { padding: 16px; }
+  .kleerkast .kop-titel { flex-grow: 1; }
+.kleerkast-inhoud { grid-template-columns: minmax(0, 1fr); }
+  .podium { min-height: 380px; }
+  .podium-figuur { width: min(70%, 260px); }
+  .kast-keuzes { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .prenten .kast-tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .mijlpaal-tekst { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .huppel { animation: none; }
+}
