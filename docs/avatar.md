@@ -1,6 +1,6 @@
 # Use case: Mijn figuurtje
 
-Status: voorstel (22 oktober 2026), nog niet beslist. Mockup: `prototypes/avatar.html`.
+Status: voorstel (22 oktober 2026). Beslist: ontgrendelen met optie C (mijlpalen). Mockup: `prototypes/avatar.html`.
 
 ## Doel
 
@@ -66,9 +66,9 @@ Alles is eigen ontwerp: geen merken, geen bekende personages en geen merknaam (d
 
 De catalogus is data (bv. `src/data/figuurtje.ts`), niet hardcoded in componenten, zodat we later makkelijk stukken toevoegen.
 
-## Ontgrendelen met sterren: voorstel
+## Ontgrendelen met sterren
 
-Te beslissen door de ouders. Drie mogelijkheden:
+**Beslist (22 oktober 2026): optie C, vrijspelen met mijlpalen.** De drie mogelijkheden die bekeken zijn:
 
 | | A. Alles vrij | B. Kopen met sterren | C. Vrijspelen met mijlpalen (aanbevolen) |
 | --- | --- | --- | --- |
@@ -78,7 +78,7 @@ Te beslissen door de ouders. Drie mogelijkheden:
 | Nieuwe regels nodig | Geen | Afschrijving zonder ouder, log, prijzen, terugbetalen | Alleen drempels; telt uit het bestaande puntenlog |
 | Voor Feline | Ok | Moeilijk (sparen en kiezen) | Ok: ze ziet de sterrenrij vollopen |
 
-**Aanbeveling: C.** Ongeveer de helft van de catalogus is vanaf de start vrij, zodat het meteen leuk is. De rest gaat open bij mijlpalen op het totaal aantal ooit verdiende sterren (goedgekeurde taken en activiteiten; tijdaanvragen tellen niet af). Voorstel drempels: 25, 50, 100, 150, 250, 400, 600 sterren, met per mijlpaal 1 à 3 nieuwe stukken. Voor Feline lagere drempels (10, 20, 40, ...) omdat ze minder sterren haalt. Later kunnen ook reeksen (bv. 5 dagen na elkaar tanden poetsen = kroontje) stukken vrijspelen; dat sluit aan bij "reeksen en badges" in fase 2.
+**Gekozen: C.** Ongeveer de helft van de catalogus is vanaf de start vrij, zodat het meteen leuk is. De rest gaat open bij mijlpalen op het totaal aantal ooit verdiende sterren (goedgekeurde taken en activiteiten; tijdaanvragen tellen niet af). Voorstel drempels: 25, 50, 100, 150, 250, 400, 600 sterren, met per mijlpaal 1 à 3 nieuwe stukken. Voor Feline lagere drempels (10, 20, 40, ...) omdat ze minder sterren haalt. Later kunnen ook reeksen (bv. 5 dagen na elkaar tanden poetsen = kroontje) stukken vrijspelen; dat sluit aan bij "reeksen en badges" in fase 2.
 
 Zo blijven de kernregels intact: niemand verliest sterren, een ouder keurt nog altijd elke ster goed (dus ook elke mijlpaal), en er komt geen nieuwe munt bij.
 
@@ -104,7 +104,6 @@ Zo blijven de kernregels intact: niemand verliest sterren, een ouder keurt nog a
 
 ## Open vragen
 
-1. Welke optie voor ontgrendelen: A, B of C?
-2. Bewaren met de knop Klaar, of automatisch bij elke tik (eenvoudiger voor Feline)?
-3. Mogen de ouders ook een figuurtje maken voor de ouder-app?
-4. Hoort dit bij de MVP of bij fase 2? Voorstel: fase 2, samen met "thema kiezen per kind" en "reeksen en badges".
+1. Bewaren met de knop Klaar, of automatisch bij elke tik (eenvoudiger voor Feline)?
+2. Mogen de ouders ook een figuurtje maken voor de ouder-app?
+3. Hoort dit bij de MVP of bij fase 2? Voorstel: fase 2, samen met "thema kiezen per kind" en "reeksen en badges".
