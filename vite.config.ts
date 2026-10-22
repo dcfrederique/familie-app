@@ -11,6 +11,8 @@ export default defineConfig({
       includeAssets: ['icon.svg'],
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
+        // Meldingen voor ouders: push en klikken op een melding (public/push-sw.js).
+        importScripts: ['push-sw.js'],
       },
       manifest: {
         name: 'Sterren',
