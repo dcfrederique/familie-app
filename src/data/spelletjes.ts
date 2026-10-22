@@ -67,7 +67,7 @@ export const spelMenu: SpelInfo[] = [
   { sleutel: 'koken', naam: 'Koken', uitleg: 'Volg het recept', drempel: 50,
     icoon: 'M3 11h14v3a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5zM17 12h4M7 8c0-1.5 1.5-1.5 1.5-3M11.5 8c0-1.5 1.5-1.5 1.5-3' },
   { sleutel: 'touwspringen', naam: 'Touwspringen', uitleg: 'Spring op het juiste moment', drempel: 75,
-    icoon: 'M12 3.5a2 2 0 1 0 0 .01M12 7v6M9 20l3-7l3 7M8.5 9.5h7M5 9c-2.5 7 0 12 7 12s9.5-5 7-12' },
+    icoon: 'M12 4a1.8 1.8 0 1 0 0 .01M12 7.5v6M9.5 19l2.5-5.5l2.5 5.5M8 10.5l4-1.5l4 1.5M5 7v5M19 7v5M5 12c0 9 14 9 14 0' },
   { sleutel: 'basket', naam: 'Basket', uitleg: 'Veeg de bal in de ring', drempel: 100,
     icoon: 'M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18zM3 12h18M12 3v18M5.6 5.6c3 3 3 9.8 0 12.8M18.4 5.6c-3 3-3 9.8 0 12.8' },
 ]

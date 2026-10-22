@@ -49,6 +49,13 @@ Feline vraagt zelf geen tijd aan; dat beslissen de ouders.
 | Verhalen | Tekening + grote tekst per bladzijde; Voorlezen laat het voorgelezen woord oplichten; voor Feline en Yuna standaard aan | 5 per uitgelezen verhaal | Nee |
 | Kleurplaten | Lijndiktes, vlak inkleuren, gum, ongedaan maken, grote kleurknoppen | 3 per afgewerkte plaat | Nee |
 | Tekenen | Vrij tekenen; tekeningen gaan naar het gezinsalbum | Geen | Nee |
+| Huisdier wassen | Hondje, poes, konijn of pony: schrobben, spoelen, drogen, versieren; zonder tijd of fouten | Geen | Ja |
+| Racen | Drie rijstroken, tik naast de auto om te sturen; ontwijken en sterretjes pakken; Rustig, Snel, Turbo; record per niveau | Geen | Ja |
+| Koken | Recept met prentjes, juiste ingrediënten in de pan, roeren; Klein, Groot, Chef (kaartje verdwijnt) | Geen | Ja |
+| Touwspringen | Het eigen figuurtje springt touw: tik als het touw onderaan is; Traag, Normaal, Snel; record per niveau | Geen | Ja |
+| Basket | Veeg de bal naar de ring; raak 2, swish 3; 10 ballen; ring beweegt vanaf Normaal | Geen | Ja |
+
+De vijf laatste spelletjes gaan open met ooit verdiende sterren; zie `docs/spelletjes.md`.
 
 ## Schermen
 

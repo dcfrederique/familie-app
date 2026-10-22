@@ -1,5 +1,6 @@
 import { Navigate, Route, Routes } from 'react-router-dom'
 import { useSessie } from './lib/sessie.tsx'
+import Basket from './schermen/Basket.tsx'
 import ExtraTijd from './schermen/ExtraTijd.tsx'
 import Goedkeuren from './schermen/Goedkeuren.tsx'
 import GezinInstellen from './schermen/GezinInstellen.tsx'
@@ -50,6 +51,7 @@ export default function App() {
       <Route path="/kind/:id/racen" element={<Racen />} />
       <Route path="/kind/:id/koken" element={<Koken />} />
       <Route path="/kind/:id/touwspringen" element={<Touwspringen />} />
+      <Route path="/kind/:id/basket" element={<Basket />} />
       <Route path="/kind/:id/verhalen" element={<Verhalen />} />
       <Route path="/kind/:id/verhaal/:nr" element={<Verhaal />} />
       <Route path="/kind/:id/kleurplaten" element={<KleurplaatLijst />} />
