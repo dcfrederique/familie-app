@@ -1,0 +1,92 @@
+{
+  "nr": 30,
+  "titel": "Dirk de draak en de vulkaan",
+  "reeks": "avonturiers",
+  "leeftijd": 8,
+  "thema": "Helpen",
+  "bladzijden": [
+    {
+      "tekst": "Naast de heuvel van Dirk de draak ligt een oude vulkaan. Al honderd jaar slaapt hij. Maar vanochtend voelt Dirk de grond trillen onder zijn poten.",
+      "prent": {
+        "decor": "vulkaan",
+        "figuren": [
+          "dirk",
+          "vulkaan"
+        ]
+      }
+    },
+    {
+      "tekst": "Rommel, rommel. Uit de top komt rook. Dan spuit er een fontein van gloeiend rode lava omhoog. De lava stroomt langzaam de berg af, recht naar het dorp beneden.",
+      "prent": {
+        "decor": "vulkaan",
+        "figuren": [
+          "vulkaan:uitbarsting",
+          "dorp"
+        ]
+      }
+    },
+    {
+      "tekst": "In het dorp rennen de mensen hun huizen uit. De bakker, de boer en alle kinderen. \"Dirk, help ons!\" roepen ze. Maar wat kan een draak doen tegen een vulkaan?",
+      "prent": {
+        "decor": "dorp",
+        "figuren": [
+          "bakker",
+          "dirk",
+          "jongen"
+        ]
+      }
+    },
+    {
+      "tekst": "Dirk denkt na. Vuur kan hij spuwen, maar dat helpt hier niet. Dan ziet hij het grote meer achter het bos glinsteren. Water! Hij heeft een idee.",
+      "prent": {
+        "decor": "meer",
+        "figuren": [
+          "dirk",
+          "meer"
+        ]
+      }
+    },
+    {
+      "tekst": "Dirk duikt in het meer en zuigt zijn buik vol water, zo vol als een ballon. Dan vliegt hij naar de lava en spuit. Pssssj! Een wolk van stoom stijgt op en de lava wordt zwart en hard.",
+      "prent": {
+        "decor": "vulkaan",
+        "figuren": [
+          "dirk:spuit",
+          "vulkaan"
+        ]
+      }
+    },
+    {
+      "tekst": "Heen en weer vliegt Dirk. Naar het meer, naar de lava, naar het meer, naar de lava. Hij is moe, zijn vleugels doen pijn, maar hij stopt niet.",
+      "prent": {
+        "decor": "vulkaan",
+        "figuren": [
+          "dirk",
+          "meer"
+        ]
+      }
+    },
+    {
+      "tekst": "Bij de laatste vlucht stopt de lava vlak voor het eerste huis. De vulkaan zucht nog één keer, en valt dan weer in slaap. Het dorp is gered!",
+      "prent": {
+        "decor": "dorp",
+        "figuren": [
+          "dirk",
+          "vulkaan:slaapt",
+          "huis"
+        ]
+      }
+    },
+    {
+      "tekst": "Die avond is er feest. De bakker bakt een taart zo groot als een kar. De kinderen hangen een slinger op met \"Dank je, Dirk!\" En Dirk, die is na één stuk taart al in slaap gevallen. Welterusten, Dirk.",
+      "prent": {
+        "decor": "nacht-feest",
+        "figuren": [
+          "dirk:slaapt",
+          "taart",
+          "sterren"
+        ]
+      }
+    }
+  ]
+}

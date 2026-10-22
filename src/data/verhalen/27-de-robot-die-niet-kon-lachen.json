@@ -1,0 +1,79 @@
+{
+  "nr": 27,
+  "titel": "De robot die niet kon lachen",
+  "reeks": "avonturiers",
+  "leeftijd": 8,
+  "thema": "Vriendschap",
+  "bladzijden": [
+    {
+      "tekst": "In de klas van juf Anja komt een nieuwe leerling: robot B-12. Hij rekent sneller dan een rekenmachine en kent alle hoofdsteden van de wereld. Maar hij kan één ding niet. Lachen.",
+      "prent": {
+        "decor": "klas",
+        "figuren": [
+          "robot"
+        ]
+      }
+    },
+    {
+      "tekst": "Als de kinderen een grap vertellen, kijkt B-12 hen alleen maar aan. \"Analyse: deze zin bevat een woordspeling. Grappigheid: zeventien procent.\" Niemand weet wat ze daarop moeten zeggen.",
+      "prent": {
+        "decor": "klas",
+        "figuren": [
+          "jongen",
+          "robot",
+          "meisje"
+        ]
+      }
+    },
+    {
+      "tekst": "Mila besluit hem te helpen. \"Lachen leer je niet uit een boek,\" zegt ze. Ze trekken gekke gezichten. Ze vertellen moppen over kippen. B-12 noteert alles, maar zijn mond blijft een rechte streep.",
+      "prent": {
+        "decor": "speelplaats",
+        "figuren": [
+          "meisje",
+          "robot"
+        ]
+      }
+    },
+    {
+      "tekst": "Ze proberen kietelen, maar robots zijn niet kietelig. Ze spelen een filmpje met een vallende taart. \"Waarom gooit die man voedsel weg?\" vraagt B-12.",
+      "prent": {
+        "decor": "klas",
+        "figuren": [
+          "robot",
+          "taart",
+          "jongen"
+        ]
+      }
+    },
+    {
+      "tekst": "Op het schoolfeest moet B-12 een liedje zingen. Hij maakt een foutje in zijn programma. In plaats van te zingen, begint hij te blaffen als een hond. Woef, woef, piep!",
+      "prent": {
+        "decor": "feest",
+        "figuren": [
+          "robot:blaft"
+        ]
+      }
+    },
+    {
+      "tekst": "De zaal is stil. B-12 kijkt naar zijn eigen handen. En dan gebeurt het: uit zijn luidspreker komt een raar geluid. \"Hihihi … ik ben een robothond!\" B-12 lacht. Om zijn eigen fout.",
+      "prent": {
+        "decor": "feest",
+        "figuren": [
+          "robot:lacht"
+        ]
+      }
+    },
+    {
+      "tekst": "Iedereen lacht mee, en niemand lacht hem uit. \"Nu snap ik het,\" zegt B-12. \"Lachen is het leukst samen.\" Sindsdien vertelt hij elke ochtend een mop. Ze zijn verschrikkelijk slecht, en daarom juist zo grappig.",
+      "prent": {
+        "decor": "klas",
+        "figuren": [
+          "jongen",
+          "robot:lacht",
+          "meisje"
+        ]
+      }
+    }
+  ]
+}

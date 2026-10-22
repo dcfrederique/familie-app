@@ -1,0 +1,92 @@
+{
+  "nr": 28,
+  "titel": "Storm bij de vuurtoren",
+  "reeks": "avonturiers",
+  "leeftijd": 8,
+  "thema": "Moed",
+  "bladzijden": [
+    {
+      "tekst": "Tom logeert bij zijn oom Kees, de wachter van de vuurtoren. Elke avond klimmen ze samen de honderd treden op om de grote lamp aan te zetten. Het licht draait rond en wijst de schepen de weg.",
+      "prent": {
+        "decor": "kust",
+        "figuren": [
+          "vuurtoren",
+          "wachter",
+          "jongen"
+        ]
+      }
+    },
+    {
+      "tekst": "Op een avond steekt er een zware storm op. De golven slaan tegen de rotsen en de wind giert rond de toren. Ver op zee zien ze de lichtjes van een vissersboot.",
+      "prent": {
+        "decor": "storm",
+        "figuren": [
+          "vuurtoren",
+          "boot"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan gebeurt het: de grote lamp flikkert en gaat uit. Het is pikdonker. Zonder licht weet de boot niet waar de gevaarlijke rotsen liggen.",
+      "prent": {
+        "decor": "storm-donker",
+        "figuren": [
+          "vuurtoren:uit",
+          "boot"
+        ]
+      }
+    },
+    {
+      "tekst": "Oom Kees vindt het probleem snel: een kabel is gebroken, achter in een smal luik. \"Mijn handen zijn te groot,\" zegt hij. \"Ik kan er niet bij.\" Hij kijkt naar Tom.",
+      "prent": {
+        "decor": "binnen-toren",
+        "figuren": [
+          "wachter",
+          "jongen",
+          "zaklamp"
+        ]
+      }
+    },
+    {
+      "tekst": "Tom slikt. Het luik is donker en de toren kraakt in de wind. Maar hij denkt aan de vissers op de boot. Hij neemt de zaklamp tussen zijn tanden en kruipt naar binnen.",
+      "prent": {
+        "decor": "binnen-toren",
+        "figuren": [
+          "jongen",
+          "zaklamp"
+        ]
+      }
+    },
+    {
+      "tekst": "Oom Kees roept wat hij moet doen. \"De rode draad bij de rode, de blauwe bij de blauwe. Draai de schroef vast.\" Tom zijn vingers trillen, maar hij doet het precies zoals oom zegt.",
+      "prent": {
+        "decor": "binnen-toren",
+        "figuren": [
+          "wachter",
+          "jongen"
+        ]
+      }
+    },
+    {
+      "tekst": "Klik! Het licht springt weer aan en draait zijn grote cirkel over de zee. De vissersboot draait net op tijd weg van de rotsen en vaart veilig de haven binnen.",
+      "prent": {
+        "decor": "storm",
+        "figuren": [
+          "vuurtoren",
+          "boot"
+        ]
+      }
+    },
+    {
+      "tekst": "De volgende ochtend komen de vissers een mand vol verse vis brengen. \"Voor de dappere jongen van de vuurtoren,\" zeggen ze. Tom bloost. Hij was bang, maar hij heeft het toch gedaan.",
+      "prent": {
+        "decor": "kust",
+        "figuren": [
+          "wachter",
+          "jongen",
+          "vis"
+        ]
+      }
+    }
+  ]
+}

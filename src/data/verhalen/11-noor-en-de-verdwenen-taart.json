@@ -1,0 +1,59 @@
+{
+  "nr": 11,
+  "titel": "Noor en de verdwenen taart",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Speuren",
+  "bladzijden": [
+    {
+      "tekst": "Vandaag is Noor jarig. Op de tafel stond een grote taart met aardbeien. Maar nu is de taart weg!",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor kijkt goed rond. Op de vloer ligt een kruimel. En daar nog een. Een spoor!",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "noor",
+          "kruimels"
+        ]
+      }
+    },
+    {
+      "tekst": "Ze volgt de kruimels door de gang. Ze gaan langs de trap en onder de stoel door.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor:spiegel",
+          "kruimels"
+        ]
+      }
+    },
+    {
+      "tekst": "Het spoor stopt bij de mand van Bob, de hond. Bob kijkt heel onschuldig. Maar zijn snoet zit vol room.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "hond:room"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor moet lachen. \"Bob, jij bent een taartdief!\" Gelukkig had papa nog een tweede taart in de kast.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "noor",
+          "taart",
+          "hond"
+        ]
+      }
+    }
+  ]
+}

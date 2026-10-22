@@ -1,0 +1,53 @@
+{
+  "nr": 10,
+  "titel": "Welterusten, boerderij",
+  "reeks": "kleine-oortjes",
+  "leeftijd": 4,
+  "thema": "Bedtijd",
+  "bladzijden": [
+    {
+      "tekst": "De zon gaat onder op de boerderij. Het is tijd om te slapen.",
+      "prent": {
+        "decor": "boerderij",
+        "figuren": [
+          "zon",
+          "koe",
+          "varken",
+          "kip"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Welterusten,\" zegt de koe. Boe. \"Welterusten,\" zegt het varken. Knor.",
+      "prent": {
+        "decor": "boerderij-avond",
+        "figuren": [
+          "koe",
+          "varken"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Welterusten,\" zegt het schaap. Bèè. \"Welterusten,\" zegt de kip. Tok.",
+      "prent": {
+        "decor": "boerderij-avond",
+        "figuren": [
+          "schaap",
+          "kip"
+        ]
+      }
+    },
+    {
+      "tekst": "Alle dieren slapen. Het is helemaal stil. Sst … welterusten, boerderij.",
+      "prent": {
+        "decor": "nacht",
+        "figuren": [
+          "koe:slaapt",
+          "schaap:slaapt",
+          "varken:slaapt",
+          "maan"
+        ]
+      }
+    }
+  ]
+}

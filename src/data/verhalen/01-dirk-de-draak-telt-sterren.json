@@ -1,0 +1,50 @@
+{
+  "nr": 1,
+  "titel": "Dirk de draak telt sterren",
+  "reeks": "kleine-oortjes",
+  "leeftijd": 4,
+  "thema": "Slapengaan",
+  "bladzijden": [
+    {
+      "tekst": "Op een hoge heuvel woonde Dirk de draak. Dirk was groot en groen, maar hij was altijd een beetje moe.",
+      "prent": {
+        "decor": "nacht",
+        "figuren": [
+          "dirk",
+          "maan"
+        ]
+      }
+    },
+    {
+      "tekst": "Elke avond telde hij de sterren. Eén, twee, drie, vier … en dan viel hij al in slaap.",
+      "prent": {
+        "decor": "nacht",
+        "figuren": [
+          "dirk:slaapt",
+          "sterren"
+        ]
+      }
+    },
+    {
+      "tekst": "Op een nacht miste er één ster. Dirk zocht en zocht, tot hij hem vond: hij lag te glimmen op zijn eigen staart!",
+      "prent": {
+        "decor": "nacht",
+        "figuren": [
+          "dirk",
+          "ster@22,78"
+        ]
+      }
+    },
+    {
+      "tekst": "Dirk legde de ster voorzichtig terug aan de hemel. Hij gaapte heel groot. Welterusten, Dirk.",
+      "prent": {
+        "decor": "nacht",
+        "figuren": [
+          "dirk:slaapt",
+          "maan",
+          "sterren"
+        ]
+      }
+    }
+  ]
+}

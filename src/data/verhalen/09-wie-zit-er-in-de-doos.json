@@ -1,0 +1,47 @@
+{
+  "nr": 9,
+  "titel": "Wie zit er in de doos?",
+  "reeks": "kleine-oortjes",
+  "leeftijd": 4,
+  "thema": "Raden",
+  "bladzijden": [
+    {
+      "tekst": "Er staat een doos in de gang. De doos heeft kleine gaatjes. Wat zou erin zitten?",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Krab, krab, krab. Er krabt iets in de doos! Is het een hond? Nee, een hond blaft.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "doos",
+          "hond"
+        ]
+      }
+    },
+    {
+      "tekst": "Miauw! Er miauwt iets in de doos. En nu spint het: rrrr, rrrr.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "De doos gaat open. Het is een klein poesje! Welkom thuis, poesje.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "doos:open",
+          "poes"
+        ]
+      }
+    }
+  ]
+}

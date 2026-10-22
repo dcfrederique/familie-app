@@ -1,0 +1,49 @@
+{
+  "nr": 3,
+  "titel": "Pip wil ook zwemmen",
+  "reeks": "kleine-oortjes",
+  "leeftijd": 4,
+  "thema": "Durven",
+  "bladzijden": [
+    {
+      "tekst": "Alle pinguïns springen in het water. Plons, plons, plons! Maar Pip blijft op het ijs staan.",
+      "prent": {
+        "decor": "zee",
+        "figuren": [
+          "pip",
+          "pipmama"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Ik durf niet,\" zegt Pip. Mama zegt: \"We doen het samen. Eerst één teen.\"",
+      "prent": {
+        "decor": "zee",
+        "figuren": [
+          "pipmama",
+          "pip"
+        ]
+      }
+    },
+    {
+      "tekst": "Eén teen. Brr, koud! Dan één voet. Hé, dat gaat wel!",
+      "prent": {
+        "decor": "zee",
+        "figuren": [
+          "pip",
+          "pipmama"
+        ]
+      }
+    },
+    {
+      "tekst": "En dan … plons! Pip zwemt. \"Kijk mama, ik kan het!\"",
+      "prent": {
+        "decor": "zee",
+        "figuren": [
+          "pip:zwemt",
+          "pipmama:zwemt"
+        ]
+      }
+    }
+  ]
+}

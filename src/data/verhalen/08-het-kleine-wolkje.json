@@ -1,0 +1,49 @@
+{
+  "nr": 8,
+  "titel": "Het kleine wolkje",
+  "reeks": "kleine-oortjes",
+  "leeftijd": 4,
+  "thema": "Samen",
+  "bladzijden": [
+    {
+      "tekst": "Hoog in de lucht woont een klein wolkje. De bloemen beneden hebben dorst.",
+      "prent": {
+        "decor": "lucht",
+        "figuren": [
+          "wolkje",
+          "bloem*3"
+        ]
+      }
+    },
+    {
+      "tekst": "Wolkje doet heel hard zijn best. Maar er valt maar één druppel. Plip.",
+      "prent": {
+        "decor": "lucht",
+        "figuren": [
+          "wolkje",
+          "bloem*3"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan komen de andere wolkjes erbij. Samen zijn ze een grote wolk.",
+      "prent": {
+        "decor": "lucht",
+        "figuren": [
+          "wolk*3"
+        ]
+      }
+    },
+    {
+      "tekst": "Het regent! De bloemen drinken en staan weer recht. Dank je wel, wolkjes!",
+      "prent": {
+        "decor": "weide",
+        "figuren": [
+          "wolk",
+          "regen",
+          "bloem*4"
+        ]
+      }
+    }
+  ]
+}

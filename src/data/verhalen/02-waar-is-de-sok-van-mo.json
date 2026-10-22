@@ -1,0 +1,52 @@
+{
+  "nr": 2,
+  "titel": "Waar is de sok van Mo?",
+  "reeks": "kleine-oortjes",
+  "leeftijd": 4,
+  "thema": "Zoeken, kleuren",
+  "bladzijden": [
+    {
+      "tekst": "Mo de muis heeft één rode sok. Waar is de andere rode sok?",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "mo",
+          "sok"
+        ]
+      }
+    },
+    {
+      "tekst": "Zit hij in de kast? Nee, daar ligt een blauwe trui. Ligt hij onder het bed? Nee, daar ligt een gele bal.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "kast",
+          "mo",
+          "bed",
+          "bal"
+        ]
+      }
+    },
+    {
+      "tekst": "Zit hij in de tuin? Nee, daar staat een groene boom en een witte bloem.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "boom",
+          "mo",
+          "bloem"
+        ]
+      }
+    },
+    {
+      "tekst": "Kijk eens naar de kat! De rode sok ligt op zijn kop. Wat een grappige muts, kat!",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "mo",
+          "kat:sok"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "nr": 23,
+  "titel": "Missie Maan",
+  "reeks": "avonturiers",
+  "leeftijd": 8,
+  "thema": "Ruimte",
+  "bladzijden": [
+    {
+      "tekst": "Sam en Jade bouwen in de woonkamer een raket van kartonnen dozen. Ze tekenen knoppen, plakken een raam en maken helmen van een vergiet. \"Missie Maan begint morgen,\" zegt Jade.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "jongen",
+          "raket:karton",
+          "meisje"
+        ]
+      }
+    },
+    {
+      "tekst": "Die nacht droomt Sam dat de raket echt trilt. \"Tien, negen, acht …\" telt Jade. Bij nul schieten ze met een donderend geraas door het dak, de sterren in.",
+      "prent": {
+        "decor": "ruimte",
+        "figuren": [
+          "raket",
+          "sterren"
+        ]
+      }
+    },
+    {
+      "tekst": "Ze vliegen langs de wolken en zien de aarde kleiner worden. Blauw en groen, met witte slierten. \"Ze lijkt op een knikker,\" fluistert Sam.",
+      "prent": {
+        "decor": "ruimte",
+        "figuren": [
+          "aarde",
+          "raket"
+        ]
+      }
+    },
+    {
+      "tekst": "Met een zachte bons landen ze op de maan. Ze maken grote sprongen, want op de maan ben je bijna zo licht als een veertje. Ze planten een vlag die ze zelf getekend hebben.",
+      "prent": {
+        "decor": "maan",
+        "figuren": [
+          "jongen",
+          "vlag",
+          "meisje"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan ziet Jade een grijze wolk naderen. \"Maanstorm!\" roept ze. Stof en steentjes vliegen rond. Ze rennen terug naar de raket en trekken de deur dicht.",
+      "prent": {
+        "decor": "maan",
+        "figuren": [
+          "maanstorm",
+          "raket"
+        ]
+      }
+    },
+    {
+      "tekst": "De motor sputtert. Sam slaat met zijn vuist op het dashboard, net zoals in de film. Vroem! De raket schiet weg, net voor de storm hen bereikt.",
+      "prent": {
+        "decor": "ruimte",
+        "figuren": [
+          "raket",
+          "sterren"
+        ]
+      }
+    },
+    {
+      "tekst": "Ze landen met een plof in de woonkamer. Sam wordt wakker. Het ruikt naar pannenkoeken. Naast hem ligt de kartonnen raket, en op zijn helm zit een beetje grijs stof.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "raket:karton",
+          "jongen"
+        ]
+      }
+    }
+  ]
+}

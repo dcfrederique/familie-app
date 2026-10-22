@@ -1,0 +1,68 @@
+{
+  "nr": 15,
+  "titel": "Het paard dat wilde dansen",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Doorzetten",
+  "bladzijden": [
+    {
+      "tekst": "Paard wil dansen. Hij springt en draait in de wei.",
+      "prent": {
+        "decor": "weide",
+        "figuren": [
+          "paard"
+        ]
+      }
+    },
+    {
+      "tekst": "De andere dieren lachen. \"Een paard kan niet dansen,\" zegt Koe. \"Je hebt veel te lange benen,\" zegt Schaap.",
+      "prent": {
+        "decor": "weide",
+        "figuren": [
+          "koe",
+          "paard",
+          "schaap"
+        ]
+      }
+    },
+    {
+      "tekst": "Paard is even verdrietig. Maar hij geeft niet op. Elke ochtend oefent hij in de wei.",
+      "prent": {
+        "decor": "weide-ochtend",
+        "figuren": [
+          "paard"
+        ]
+      }
+    },
+    {
+      "tekst": "Hij leert een draai. Hij leert een sprong. Hij leert zelfs op twee benen staan.",
+      "prent": {
+        "decor": "weide",
+        "figuren": [
+          "paard:spiegel"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan is het feest op de boerderij. De muziek begint. Paard danst zo mooi dat iedereen stil wordt.",
+      "prent": {
+        "decor": "feest",
+        "figuren": [
+          "paard"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Mogen wij meedoen?\" vragen Koe en Schaap. En die avond danst de hele boerderij.",
+      "prent": {
+        "decor": "feest",
+        "figuren": [
+          "koe",
+          "paard",
+          "schaap",
+          "kip"
+        ]
+      }
+    }
+  ]
+}

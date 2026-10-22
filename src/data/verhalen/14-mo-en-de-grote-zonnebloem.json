@@ -1,0 +1,72 @@
+{
+  "nr": 14,
+  "titel": "Mo en de grote zonnebloem",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Geduld, planten",
+  "bladzijden": [
+    {
+      "tekst": "Mo de muis vindt een zonnebloempit. Hij stopt de pit in de grond.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "mo",
+          "pit"
+        ]
+      }
+    },
+    {
+      "tekst": "Elke dag geeft Mo water. Maar er gebeurt niets. \"Wanneer komt de bloem?\" vraagt hij.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "mo",
+          "gieter"
+        ]
+      }
+    },
+    {
+      "tekst": "Na een week ziet hij een klein groen sprietje. Mo danst van blijdschap.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "mo",
+          "spruit"
+        ]
+      }
+    },
+    {
+      "tekst": "Het plantje groeit en groeit. Het wordt groter dan Mo, groter dan de hond, groter dan de deur.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "mo",
+          "zonnebloem:half",
+          "hond"
+        ]
+      }
+    },
+    {
+      "tekst": "En dan, op een zonnige ochtend, gaat de bloem open. Ze is hoger dan het huis!",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "huis",
+          "zonnebloem:groot",
+          "mo"
+        ]
+      }
+    },
+    {
+      "tekst": "In de herfst geeft de bloem honderd nieuwe pitten. \"Wachten was moeilijk,\" zegt Mo, \"maar het was de moeite waard.\"",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "mo",
+          "pit",
+          "zonnebloem:groot"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "nr": 17,
+  "titel": "Het geheim van de oude kast",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Avontuur",
+  "bladzijden": [
+    {
+      "tekst": "Bij oma staat een oude kast. Lien speelt verstoppertje en kruipt erin, tussen de jassen.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "kast",
+          "meisje"
+        ]
+      }
+    },
+    {
+      "tekst": "Achter de jassen voelt ze iets kouds. Het is een klein deurtje!",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "kast:open"
+        ]
+      }
+    },
+    {
+      "tekst": "Lien duwt het open. Ze staat in een bos vol sneeuw. Het is heel stil.",
+      "prent": {
+        "decor": "sneeuwbos",
+        "figuren": [
+          "meisje"
+        ]
+      }
+    },
+    {
+      "tekst": "Een vos met een rode sjaal komt naar haar toe. \"Ben je verdwaald? Volg mijn sporen maar.\"",
+      "prent": {
+        "decor": "sneeuwbos",
+        "figuren": [
+          "meisje",
+          "vos"
+        ]
+      }
+    },
+    {
+      "tekst": "Ze lopen samen door het bos tot aan een lantaarn. Daar is het deurtje weer.",
+      "prent": {
+        "decor": "sneeuwbos",
+        "figuren": [
+          "lantaarn",
+          "vos",
+          "meisje"
+        ]
+      }
+    },
+    {
+      "tekst": "Lien kruipt terug in de kast. Op haar mouw ligt nog een sneeuwvlok. Was het echt gebeurd?",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "meisje",
+          "kast"
+        ]
+      }
+    }
+  ]
+}

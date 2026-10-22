@@ -1,0 +1,67 @@
+{
+  "nr": 16,
+  "titel": "Dirk de draak krijgt de hik",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Oplossingen zoeken",
+  "bladzijden": [
+    {
+      "tekst": "Dirk de draak heeft de hik. Hik! Bij elke hik komt er een vlammetje uit zijn neus.",
+      "prent": {
+        "decor": "dorp",
+        "figuren": [
+          "dirk:vuur"
+        ]
+      }
+    },
+    {
+      "tekst": "Hik! Daar gaat een strobaal in brand. Gelukkig is de boer snel met een emmer water.",
+      "prent": {
+        "decor": "dorp",
+        "figuren": [
+          "dirk:vuur"
+        ]
+      }
+    },
+    {
+      "tekst": "Dirk probeert alles. Water drinken. Op zijn kop staan. Zijn adem inhouden. Maar het helpt niet.",
+      "prent": {
+        "decor": "dorp",
+        "figuren": [
+          "dirk"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan komt de bakker. \"Mijn oven is koud en ik moet brood bakken. Wil jij helpen?\"",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "bakker",
+          "dirk"
+        ]
+      }
+    },
+    {
+      "tekst": "Hik! Het vuur in de oven brandt. Hik! Het brood wordt mooi bruin.",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "dirk:vuur",
+          "oven"
+        ]
+      }
+    },
+    {
+      "tekst": "Als het brood klaar is, is de hik weg. Dirk krijgt het eerste warme broodje.",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "bakker",
+          "dirk",
+          "brood"
+        ]
+      }
+    }
+  ]
+}

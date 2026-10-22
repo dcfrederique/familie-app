@@ -1,0 +1,45 @@
+{
+  "nr": 4,
+  "titel": "Eén, twee, drie eendjes",
+  "reeks": "kleine-oortjes",
+  "leeftijd": 4,
+  "thema": "Tellen tot 5",
+  "bladzijden": [
+    {
+      "tekst": "Bij de vijver is het stil. Daar komt één eendje. Kwak!",
+      "prent": {
+        "decor": "vijver",
+        "figuren": [
+          "eend"
+        ]
+      }
+    },
+    {
+      "tekst": "Daar komt nog een eendje. En nog een. Hoeveel zijn het er nu? Eén, twee, drie!",
+      "prent": {
+        "decor": "vijver",
+        "figuren": [
+          "eend*3"
+        ]
+      }
+    },
+    {
+      "tekst": "Daar komen er nog twee aan. Waggel, waggel. Tel je mee? Eén, twee, drie, vier, vijf!",
+      "prent": {
+        "decor": "vijver",
+        "figuren": [
+          "eend*5"
+        ]
+      }
+    },
+    {
+      "tekst": "Vijf eendjes zwemmen samen in de vijver. Kwak, kwak, kwak, kwak, kwak!",
+      "prent": {
+        "decor": "vijver",
+        "figuren": [
+          "eend:zwemt*5"
+        ]
+      }
+    }
+  ]
+}

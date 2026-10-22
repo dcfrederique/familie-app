@@ -1,0 +1,69 @@
+{
+  "nr": 20,
+  "titel": "Een dag als juf",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Je inleven",
+  "bladzijden": [
+    {
+      "tekst": "Konijntje Fien mag vandaag juf zijn. Ze zet de bril van de juf op. Wat spannend!",
+      "prent": {
+        "decor": "klas",
+        "figuren": [
+          "juf"
+        ]
+      }
+    },
+    {
+      "tekst": "Eerst moet ze de kinderen tellen. Maar ze lopen allemaal rond. Een, twee … waar is de vos nu?",
+      "prent": {
+        "decor": "klas",
+        "figuren": [
+          "juf",
+          "vos",
+          "eekhoorn"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan moet ze een verhaal vertellen. Maar de eekhoorn praat en de beer valt bijna in slaap.",
+      "prent": {
+        "decor": "klas",
+        "figuren": [
+          "eekhoorn",
+          "juf",
+          "beer:slaapt"
+        ]
+      }
+    },
+    {
+      "tekst": "Op de speelplaats valt de vos. Fien troost hem en zoekt een pleister.",
+      "prent": {
+        "decor": "speelplaats",
+        "figuren": [
+          "juf",
+          "vos"
+        ]
+      }
+    },
+    {
+      "tekst": "Na school is Fien heel moe. \"Juf zijn is hard werken,\" zegt ze.",
+      "prent": {
+        "decor": "klas",
+        "figuren": [
+          "juf"
+        ]
+      }
+    },
+    {
+      "tekst": "De volgende dag geeft Fien de echte juf een tekening. \"Dank je wel, juf. Voor alles.\"",
+      "prent": {
+        "decor": "klas",
+        "figuren": [
+          "juf",
+          "tekening"
+        ]
+      }
+    }
+  ]
+}

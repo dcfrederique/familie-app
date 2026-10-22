@@ -1,0 +1,67 @@
+{
+  "nr": 19,
+  "titel": "De vlieger die weg wilde",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Thuis",
+  "bladzijden": [
+    {
+      "tekst": "In het park vliegt een rode vlieger. Hij wil hoger en verder. Ruk! Het touwtje breekt.",
+      "prent": {
+        "decor": "park",
+        "figuren": [
+          "vlieger",
+          "jongen"
+        ]
+      }
+    },
+    {
+      "tekst": "De wind neemt de vlieger mee. Hij ziet hoge bergen met sneeuw op de top.",
+      "prent": {
+        "decor": "bergen",
+        "figuren": [
+          "vlieger"
+        ]
+      }
+    },
+    {
+      "tekst": "Hij vliegt over de zee. De golven zijn groot en de meeuwen roepen.",
+      "prent": {
+        "decor": "open-zee",
+        "figuren": [
+          "vlieger",
+          "boot"
+        ]
+      }
+    },
+    {
+      "tekst": "Hij zweeft over een drukke stad met hoge torens en veel lawaai.",
+      "prent": {
+        "decor": "stad",
+        "figuren": [
+          "vlieger"
+        ]
+      }
+    },
+    {
+      "tekst": "Alles is mooi, maar de vlieger mist zijn park. Hij mist de jongen die altijd met hem speelt.",
+      "prent": {
+        "decor": "lucht",
+        "figuren": [
+          "vlieger",
+          "wolk"
+        ]
+      }
+    },
+    {
+      "tekst": "De wind draait en brengt hem terug. De jongen vangt hem. \"Daar ben je!\" Thuis is toch het fijnst.",
+      "prent": {
+        "decor": "park",
+        "figuren": [
+          "jongen",
+          "vlieger:laag"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "nr": 25,
+  "titel": "Detective Daan en de verdwenen fiets",
+  "reeks": "avonturiers",
+  "leeftijd": 8,
+  "thema": "Logisch denken",
+  "bladzijden": [
+    {
+      "tekst": "Buurvrouw Rita staat bij haar voordeur met haar handen in het haar. \"Mijn gele fiets is weg! Hij stond hier vanochtend nog.\" Daan pakt zijn notitieboekje. Een zaak voor detective Daan.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "buurvrouw",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Eerste aanwijzing: in de modder bij het hek staan bandensporen. Het zijn smalle sporen met een zigzag. Ze lopen naar links, richting het park.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "daan",
+          "sporen"
+        ]
+      }
+    },
+    {
+      "tekst": "Tweede aanwijzing: aan de struik hangt een groene handschoen, een kinderhandschoen. Daan stopt hem in een zakje. \"Wie heeft er zulke kleine handen?\" denkt hij.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "struik",
+          "handschoen",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan vraagt rond. Meneer Jozef van de krant zegt: \"Ik zag een meisje met een groene muts op een gele fiets. Ze reed wiebelend naar het park.\"",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "opa",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "In het park volgt Daan de zigzagsporen. Ze stoppen bij een bank. Daar zit een meisje met een groene muts en één groene handschoen. Ze huilt.",
+      "prent": {
+        "decor": "park",
+        "figuren": [
+          "daan",
+          "meisje",
+          "fiets:geel"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Ik wilde leren fietsen,\" snikt ze. \"Ik heb er geen, en de fiets van Rita stond er altijd. Ik wilde hem echt terugbrengen, maar ik ben gevallen en ik durfde niet meer.\"",
+      "prent": {
+        "decor": "park",
+        "figuren": [
+          "meisje",
+          "fiets:geel",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan geeft haar de handschoen terug. Samen brengen ze de fiets terug naar Rita. Het meisje zegt sorry. Rita kijkt eerst streng, maar dan zachter.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "buurvrouw",
+          "meisje",
+          "fiets:geel",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Weet je wat,\" zegt Rita. \"Elke woensdag mag je op mijn fiets oefenen. Als je het eerst vraagt.\" Daan klapt zijn boekje dicht. Zaak opgelost.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "buurvrouw",
+          "meisje",
+          "daan"
+        ]
+      }
+    }
+  ]
+}

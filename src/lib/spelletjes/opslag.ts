@@ -27,3 +27,16 @@ export function recordBewaren(kind: string, sleutel: string, beurten: number, ho
 
 export const geluidAan = () => lees('geluid') !== 'uit'
 export const geluidBewaren = (aan: boolean) => schrijf('geluid', aan ? 'aan' : 'uit')
+
+/** Verhalen die het kind op dit toestel al uitlas (voor een vinkje in de lijst). */
+export const gelezenVerhalen = (kind: string): number[] =>
+  (lees(`gelezen-${kind}`) ?? '').split(',').filter(Boolean).map(Number)
+export function verhaalGelezen(kind: string, nr: number) {
+  const al = gelezenVerhalen(kind)
+  if (!al.includes(nr)) schrijf(`gelezen-${kind}`, [...al, nr].join(','))
+}
+export const voorlezenAan = (kind: string, standaard: boolean) => {
+  const v = lees(`voorlezen-${kind}`)
+  return v === null ? standaard : v === 'aan'
+}
+export const voorlezenBewaren = (kind: string, aan: boolean) => schrijf(`voorlezen-${kind}`, aan ? 'aan' : 'uit')

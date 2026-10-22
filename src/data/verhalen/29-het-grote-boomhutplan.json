@@ -1,0 +1,97 @@
+{
+  "nr": 29,
+  "titel": "Het grote boomhutplan",
+  "reeks": "avonturiers",
+  "leeftijd": 8,
+  "thema": "Rekenen, samenwerken",
+  "bladzijden": [
+    {
+      "tekst": "Lars, Amira en Jonas willen een boomhut bouwen in de grote eik achter de school. Ze maken een tekening. De vloer moet vier planken breed zijn en de muren drie planken hoog.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "jongen",
+          "meisje",
+          "daan",
+          "boom"
+        ]
+      }
+    },
+    {
+      "tekst": "Opa Wim geeft hen een stapel planken. Ze tellen samen: tien, twintig, vierentwintig planken. \"Hoeveel hebben we nodig voor de vloer en vier muren van drie planken?\" vraagt Amira.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "opa",
+          "planken",
+          "meisje"
+        ]
+      }
+    },
+    {
+      "tekst": "Jonas rekent: vier planken voor de vloer, en vier keer drie is twaalf voor de muren. Vier plus twaalf is zestien. \"Dan houden we er nog acht over voor een dak en een ladder!\"",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "daan",
+          "planken"
+        ]
+      }
+    },
+    {
+      "tekst": "Maar dan beginnen ze te ruziën. Lars wil de hamer, Jonas wil de hamer, en Amira wil ook de hamer. Er is maar één hamer. Het werk staat helemaal stil.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "jongen",
+          "meisje",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "\"We moeten het eerlijk verdelen,\" zegt Amira. Ze kijkt op de klok. \"We werken zestig minuten. Dat is twintig minuten hameren voor ieder.\" De anderen knikken. Wie niet hamert, zaagt of meet.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "meisje",
+          "daan",
+          "jongen"
+        ]
+      }
+    },
+    {
+      "tekst": "Het werkt beter dan gedacht. Lars meet, Jonas zaagt en Amira timmert. Daarna wisselen ze. De vloer ligt er na het eerste uur, de muren na het tweede.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "boomhut:half",
+          "jongen",
+          "meisje"
+        ]
+      }
+    },
+    {
+      "tekst": "De ladder krijgt zes treden. Voor het dak gebruiken ze de laatste twee planken. Ze rekenen nog één keer na: zestien plus zes plus twee is vierentwintig. Geen enkele plank over!",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "boomhut",
+          "jongen"
+        ]
+      }
+    },
+    {
+      "tekst": "Die avond zitten ze met z'n drieën in hun hut en eten ze een appel. \"Samen bouwen is beter dan alleen,\" zegt Jonas. \"En rekenen ook,\" lacht Amira.",
+      "prent": {
+        "decor": "bos-avond",
+        "figuren": [
+          "boomhut",
+          "jongen",
+          "meisje",
+          "daan"
+        ]
+      }
+    }
+  ]
+}

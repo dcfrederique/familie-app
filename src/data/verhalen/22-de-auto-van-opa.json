@@ -1,0 +1,94 @@
+{
+  "nr": 22,
+  "titel": "De auto van opa",
+  "reeks": "avonturiers",
+  "leeftijd": 8,
+  "thema": "Oud en nieuw",
+  "bladzijden": [
+    {
+      "tekst": "In de garage van opa staat een oude blauwe auto onder een laken. Luuk mag er nooit aankomen. Maar vandaag is opa even weg, en het laken is half afgegleden.",
+      "prent": {
+        "decor": "garage",
+        "figuren": [
+          "oudeauto",
+          "jongen"
+        ]
+      }
+    },
+    {
+      "tekst": "Luuk gaat achter het stuur zitten. Plots knippert een lamp. \"Goeiemiddag,\" zegt een krakerige stem. \"Ik ben Bertha. Ik heb lang geslapen.\" Luuk valt bijna van de stoel.",
+      "prent": {
+        "decor": "garage",
+        "figuren": [
+          "oudeauto:ogen",
+          "jongen"
+        ]
+      }
+    },
+    {
+      "tekst": "Opa komt binnen en lacht. \"Dus je hebt Bertha ontmoet. Ze praat alleen tegen mensen die ze vertrouwt.\" Hij poetst haar lampen. \"Vandaag is er een autoshow in de stad. Zullen we?\"",
+      "prent": {
+        "decor": "garage",
+        "figuren": [
+          "opa",
+          "oudeauto:ogen",
+          "jongen"
+        ]
+      }
+    },
+    {
+      "tekst": "Op de autoshow staan glimmende nieuwe auto's. Ze zijn snel en stil en hebben grote schermen. \"Wat doet dat oude blik hier?\" zegt een rode sportwagen. Bertha zegt niets.",
+      "prent": {
+        "decor": "stad",
+        "figuren": [
+          "auto:rood",
+          "oudeauto",
+          "auto:geel"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan begint het hard te regenen. Alle nieuwe auto's willen naar huis, maar de weg naar de parking staat onder water. Hun elektronica begint te piepen.",
+      "prent": {
+        "decor": "storm-stad",
+        "figuren": [
+          "auto:rood",
+          "oudeauto"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Volg mij maar,\" zegt Bertha. Zij heeft hoge wielen en een stoere motor. Langzaam rijdt ze door het water, en alle auto's rijden achter haar aan.",
+      "prent": {
+        "decor": "storm-stad",
+        "figuren": [
+          "auto:geel",
+          "auto:rood",
+          "oudeauto:ogen"
+        ]
+      }
+    },
+    {
+      "tekst": "Op de parking vertelt Bertha haar geheim. Zestig jaar geleden bracht ze een dokter door een sneeuwstorm naar een baby die ziek was. Die baby was opa.",
+      "prent": {
+        "decor": "stad",
+        "figuren": [
+          "opa",
+          "oudeauto:ogen",
+          "jongen"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Oud is niet hetzelfde als nutteloos,\" zegt opa. Luuk aait het stuur. Vanaf nu helpt hij opa elke zaterdag om Bertha te poetsen.",
+      "prent": {
+        "decor": "garage",
+        "figuren": [
+          "opa",
+          "oudeauto:ogen",
+          "jongen"
+        ]
+      }
+    }
+  ]
+}

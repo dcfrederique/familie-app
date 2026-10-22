@@ -1,0 +1,67 @@
+{
+  "nr": 13,
+  "titel": "De tovenares die moest niezen",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Humor",
+  "bladzijden": [
+    {
+      "tekst": "Tovenares Tilda kan heel goed toveren. Maar vandaag is ze verkouden.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "tovenares"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Ha … ha … hatsjoe!\" Floep! Daar zit een kikker met een hoed op haar tafel.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "tovenares",
+          "kikker:hoed"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Hatsjoe!\" Floep! Nu regent het knopen. Rode, blauwe en gele knopen, overal!",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "tovenares",
+          "knopen"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Hatsjoe!\" Floep! De bezem begint te dansen en de kat krijgt groene haren.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "tovenares",
+          "kat:groen"
+        ]
+      }
+    },
+    {
+      "tekst": "De kikker geeft haar een zakdoek. Tilda snuit haar neus. Toet! Nu is alles weer gewoon.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "kikker:hoed",
+          "tovenares"
+        ]
+      }
+    },
+    {
+      "tekst": "Alleen de kikker wil zijn hoed houden. \"Die staat mij goed,\" zegt hij.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "kikker:hoed"
+        ]
+      }
+    }
+  ]
+}

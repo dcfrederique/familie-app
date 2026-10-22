@@ -1,0 +1,51 @@
+{
+  "nr": 5,
+  "titel": "Beer ruimt op",
+  "reeks": "kleine-oortjes",
+  "leeftijd": 4,
+  "thema": "Opruimen",
+  "bladzijden": [
+    {
+      "tekst": "Beer wil met zijn bal spelen. Maar waar is de bal? Overal ligt speelgoed.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "beer",
+          "speelgoed"
+        ]
+      }
+    },
+    {
+      "tekst": "Konijn komt helpen. \"We ruimen samen op,\" zegt Konijn. De blokken in de bak.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "konijn",
+          "speelgoed",
+          "beer"
+        ]
+      }
+    },
+    {
+      "tekst": "De autootjes op de plank. De knuffels in de mand. Het gaat snel met z'n tweeën!",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "beer",
+          "konijn"
+        ]
+      }
+    },
+    {
+      "tekst": "En kijk, daar ligt de bal! Beer en Konijn spelen samen in de opgeruimde kamer.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "beer",
+          "bal",
+          "konijn"
+        ]
+      }
+    }
+  ]
+}

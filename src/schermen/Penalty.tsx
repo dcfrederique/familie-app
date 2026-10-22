@@ -108,7 +108,7 @@ function PenaltySpel({ kind }: { kind: Gebruiker }) {
             <h2 className="display klaar-titel">
               {modus === 'schieten' ? `${raak} van ${reeksLengte} gescoord!` : `${raak} van ${reeksLengte} niet binnen!`}
             </h2>
-            <p className="klaar-uitleg">{punten} punten{nieuwRecord ? ': nieuw record!' : best !== null ? ` (record: ${best})` : ''}</p>
+            <p className="klaar-uitleg">{punten} {punten === 1 ? 'punt' : 'punten'}{nieuwRecord ? ': nieuw record!' : best !== null ? ` (record: ${best})` : ''}</p>
             <div className="knoppen-rij">
               <Link to={`/kind/${kind.id}/spelen`} className="groot-knop licht">Stoppen</Link>
               <button type="button" className="groot-knop" onClick={() => opnieuw()}>Nog eens</button>

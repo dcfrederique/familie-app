@@ -1,0 +1,71 @@
+{
+  "nr": 18,
+  "titel": "Twee eekhoorns ruilen",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Broers en zussen",
+  "bladzijden": [
+    {
+      "tekst": "Eekhoorn Ella verzamelt nootjes. Haar zus Elin houdt het nest netjes.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "eekhoorn",
+          "eekhoorn2"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Jouw werk is veel makkelijker,\" zegt Ella. \"Nee, het jouwe,\" zegt Elin. \"Laten we ruilen!\"",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "eekhoorn",
+          "eekhoorn2"
+        ]
+      }
+    },
+    {
+      "tekst": "Elin gaat nootjes zoeken. Ze klimt in hoge bomen en zoekt tussen de blaadjes. Het is zwaar werk.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "eekhoorn2",
+          "boom",
+          "noot"
+        ]
+      }
+    },
+    {
+      "tekst": "Ella ruimt het nest op. Maar de wind blaast alle blaadjes weer naar binnen. Ze begint opnieuw.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "eekhoorn",
+          "boom"
+        ]
+      }
+    },
+    {
+      "tekst": "'s Avonds zijn ze allebei moe. \"Jouw werk is ook moeilijk,\" zeggen ze samen.",
+      "prent": {
+        "decor": "bos-avond",
+        "figuren": [
+          "eekhoorn",
+          "eekhoorn2"
+        ]
+      }
+    },
+    {
+      "tekst": "Vanaf nu helpen ze elkaar. Zo is het werk snel klaar en hebben ze meer tijd om te spelen.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "eekhoorn",
+          "noot",
+          "eekhoorn2"
+        ]
+      }
+    }
+  ]
+}

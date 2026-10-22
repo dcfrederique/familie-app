@@ -1,0 +1,77 @@
+{
+  "nr": 26,
+  "titel": "De dino die bang was van muizen",
+  "reeks": "avonturiers",
+  "leeftijd": 8,
+  "thema": "Angst overwinnen",
+  "bladzijden": [
+    {
+      "tekst": "In het groene dal woont Bram, de grootste dino die er ooit was. Hij is zo groot dat zijn kop boven de bomen uitsteekt. Iedereen denkt dat Bram nergens bang voor is.",
+      "prent": {
+        "decor": "dal",
+        "figuren": [
+          "grotedino"
+        ]
+      }
+    },
+    {
+      "tekst": "Maar Bram heeft een geheim. Hij is doodsbang van muizen. Als hij er één ziet, springt hij gillend op een rots, en dat is niet zo makkelijk voor een dino van tien ton.",
+      "prent": {
+        "decor": "dal",
+        "figuren": [
+          "grotedino",
+          "mo"
+        ]
+      }
+    },
+    {
+      "tekst": "Op een dag is er onweer. Een bliksem slaat een boom om, en die valt precies op de staart van Bram. Hij zit vast en kan niet meer weg.",
+      "prent": {
+        "decor": "dal-storm",
+        "figuren": [
+          "grotedino",
+          "boom:om"
+        ]
+      }
+    },
+    {
+      "tekst": "De andere dino's duwen en trekken, maar de boom is te zwaar. Dan hoort Bram een klein stemmetje bij zijn poot. Het is een muis. \"Ik ben Mo. Ik kan je helpen.\"",
+      "prent": {
+        "decor": "dal-storm",
+        "figuren": [
+          "grotedino",
+          "mo"
+        ]
+      }
+    },
+    {
+      "tekst": "Bram wil gillen, maar hij houdt zich in. Mo kruipt onder de boom en knaagt en knaagt. Zijn tandjes zijn klein, maar heel scherp.",
+      "prent": {
+        "decor": "dal",
+        "figuren": [
+          "boom:om",
+          "mo"
+        ]
+      }
+    },
+    {
+      "tekst": "Krak! De boom breekt in twee en Bram is vrij. Hij kijkt naar het kleine muisje. Zijn hart klopt nog snel, maar niet meer van angst.",
+      "prent": {
+        "decor": "dal",
+        "figuren": [
+          "grotedino",
+          "mo"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Dank je wel, Mo,\" zegt Bram. \"Ik was altijd bang van jullie, maar ik kende jullie gewoon niet.\" Vanaf die dag zit Mo vaak op de kop van Bram, met het mooiste uitzicht van het hele dal.",
+      "prent": {
+        "decor": "dal",
+        "figuren": [
+          "grotedino:mo"
+        ]
+      }
+    }
+  ]
+}

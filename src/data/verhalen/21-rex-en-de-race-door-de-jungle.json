@@ -1,0 +1,91 @@
+{
+  "nr": 21,
+  "titel": "Rex en de race door de jungle",
+  "reeks": "avonturiers",
+  "leeftijd": 8,
+  "thema": "Eerlijk spelen",
+  "bladzijden": [
+    {
+      "tekst": "Diep in de jungle wordt elk jaar de grote dinorace gelopen. Rex is een jonge dino met snelle poten en een lange staart. Dit jaar mag hij voor het eerst meedoen. Zijn hart bonst als een trommel.",
+      "prent": {
+        "decor": "jungle",
+        "figuren": [
+          "rex"
+        ]
+      }
+    },
+    {
+      "tekst": "Aan de start staan tien dino's. Naast Rex staat Bruno, een grote paarse dino die al drie keer gewonnen heeft. \"Jij haalt de finish nooit, kleintje,\" gromt Bruno. Rex zegt niets en kijkt naar de weg.",
+      "prent": {
+        "decor": "jungle",
+        "figuren": [
+          "rex",
+          "dino:paars",
+          "dino:oranje"
+        ]
+      }
+    },
+    {
+      "tekst": "Het startschot knalt! De dino's stormen weg door de varens. Rex springt over boomstammen en glijdt onder lianen door. Hij haalt de ene na de andere in.",
+      "prent": {
+        "decor": "jungle",
+        "figuren": [
+          "dino:oranje",
+          "rex:spiegel"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan ziet Rex iets vreemds. Bruno neemt een geheim paadje door de struiken. Dat is valsspelen! Zo is hij de anderen ineens ver voor.",
+      "prent": {
+        "decor": "jungle",
+        "figuren": [
+          "dino:paars",
+          "struik"
+        ]
+      }
+    },
+    {
+      "tekst": "Vlak voor de rivier hoort Rex iemand roepen. Een klein groen dinootje is gevallen en zit vast tussen twee stenen. Alle andere lopers rennen voorbij.",
+      "prent": {
+        "decor": "rivier",
+        "figuren": [
+          "dino:groen:klein",
+          "steen"
+        ]
+      }
+    },
+    {
+      "tekst": "Rex twijfelt geen seconde. Hij stopt, duwt de stenen opzij en helpt het dinootje recht. \"Gaat het?\" vraagt hij. Samen lopen ze verder, niet heel snel, maar wel samen.",
+      "prent": {
+        "decor": "rivier",
+        "figuren": [
+          "rex",
+          "dino:groen:klein"
+        ]
+      }
+    },
+    {
+      "tekst": "Bruno komt als eerste over de finish. Rex en het groene dinootje komen als laatsten binnen. Maar de oude scheidsrechter heeft alles gezien vanaf zijn hoge boom.",
+      "prent": {
+        "decor": "finish",
+        "figuren": [
+          "dino:paars",
+          "rex",
+          "dino:groen:klein"
+        ]
+      }
+    },
+    {
+      "tekst": "\"De beker voor de beste sportman gaat naar Rex,\" zegt hij. Iedereen juicht. Bruno kijkt naar zijn poten. \"Volgend jaar loop ik eerlijk,\" mompelt hij. En Rex weet: winnen is niet alles.",
+      "prent": {
+        "decor": "finish",
+        "figuren": [
+          "rex",
+          "beker",
+          "dino:groen:klein"
+        ]
+      }
+    }
+  ]
+}

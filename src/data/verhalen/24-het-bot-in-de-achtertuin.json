@@ -1,0 +1,83 @@
+{
+  "nr": 24,
+  "titel": "Het bot in de achtertuin",
+  "reeks": "avonturiers",
+  "leeftijd": 8,
+  "thema": "Ontdekken",
+  "bladzijden": [
+    {
+      "tekst": "Ruben graaft een gat in de achtertuin om een boom te planten. Plots raakt zijn schop iets hards. Hij veegt de aarde weg. Het is een wit bot!",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "jongen",
+          "bot"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Een dinobot!\" roept Ruben. Hij wikkelt het voorzichtig in een handdoek. Hij tekent het, meet het en schrijft alles op in een schrift, net als een echte onderzoeker.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "jongen",
+          "bot",
+          "boek"
+        ]
+      }
+    },
+    {
+      "tekst": "Zaterdag gaan ze naar het natuurmuseum. Een vriendelijke onderzoekster met een loep bekijkt het bot heel lang. Ruben houdt zijn adem in.",
+      "prent": {
+        "decor": "museum",
+        "figuren": [
+          "onderzoekster",
+          "bot",
+          "jongen"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Het is een kippenbot,\" zegt ze. \"Waarschijnlijk van een soep van een paar jaar geleden.\" Ruben voelt zijn wangen warm worden. Wat dom van hem.",
+      "prent": {
+        "decor": "museum",
+        "figuren": [
+          "onderzoekster",
+          "kip",
+          "jongen"
+        ]
+      }
+    },
+    {
+      "tekst": "Maar de onderzoekster lacht niet. \"Jij hebt gedaan wat echte onderzoekers doen. Je hebt gezocht, gemeten en het opgeschreven. Dat is het belangrijkste.\" Ze nodigt hem uit op een uitstap.",
+      "prent": {
+        "decor": "museum",
+        "figuren": [
+          "skelet",
+          "onderzoekster",
+          "jongen"
+        ]
+      }
+    },
+    {
+      "tekst": "Een week later staan ze in een oude zandgroeve. Ruben zoekt urenlang. Zijn knieën zijn vuil en zijn handen moe.",
+      "prent": {
+        "decor": "groeve",
+        "figuren": [
+          "jongen",
+          "onderzoekster"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan glinstert er iets in de steen. Een schelp, maar van steen! \"Een fossiel van miljoenen jaren oud,\" zegt de onderzoekster. Ruben straalt. Zijn eerste echte vondst.",
+      "prent": {
+        "decor": "groeve",
+        "figuren": [
+          "jongen",
+          "schelp"
+        ]
+      }
+    }
+  ]
+}

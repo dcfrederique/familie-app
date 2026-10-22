@@ -1,0 +1,70 @@
+{
+  "nr": 12,
+  "titel": "Pip gaat naar school",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Nieuw zijn",
+  "bladzijden": [
+    {
+      "tekst": "Het is de eerste schooldag van Pip. Hij is nieuw in de klas en kent niemand.",
+      "prent": {
+        "decor": "klas",
+        "figuren": [
+          "pip"
+        ]
+      }
+    },
+    {
+      "tekst": "De andere kinderen praten en lachen. Pip zit stil op zijn stoel. Zijn buik doet een beetje raar.",
+      "prent": {
+        "decor": "klas",
+        "figuren": [
+          "pip",
+          "konijn",
+          "eekhoorn"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan gaat de bel. Iedereen rent naar de speelplaats. Pip eet zijn koek alleen.",
+      "prent": {
+        "decor": "speelplaats",
+        "figuren": [
+          "pip",
+          "koek"
+        ]
+      }
+    },
+    {
+      "tekst": "Naast hem zit een vos. Die heeft geen koek mee. Pip breekt zijn koek in twee. \"Wil jij de helft?\"",
+      "prent": {
+        "decor": "speelplaats",
+        "figuren": [
+          "pip",
+          "koek",
+          "vos"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Graag!\" zegt Vos. Ze eten samen en spelen tikkertje tot de bel gaat.",
+      "prent": {
+        "decor": "speelplaats",
+        "figuren": [
+          "pip",
+          "vos"
+        ]
+      }
+    },
+    {
+      "tekst": "Die avond zegt Pip tegen mama: \"Ik heb een vriend. Morgen wil ik weer naar school!\"",
+      "prent": {
+        "decor": "huis",
+        "figuren": [
+          "pipmama",
+          "pip"
+        ]
+      }
+    }
+  ]
+}

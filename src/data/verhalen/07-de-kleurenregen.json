@@ -1,0 +1,57 @@
+{
+  "nr": 7,
+  "titel": "De kleurenregen",
+  "reeks": "kleine-oortjes",
+  "leeftijd": 4,
+  "thema": "Kleuren",
+  "bladzijden": [
+    {
+      "tekst": "Het is een grijze dag. De lucht is grijs. Het gras is grijs. Iedereen is een beetje stil.",
+      "prent": {
+        "decor": "grijs",
+        "figuren": [
+          "konijn",
+          "eend",
+          "beer"
+        ]
+      }
+    },
+    {
+      "tekst": "Plots begint het te regenen. Maar het zijn geen gewone druppels. Het regent kleuren!",
+      "prent": {
+        "decor": "weide",
+        "figuren": [
+          "kleurregen",
+          "konijn",
+          "eend"
+        ]
+      }
+    },
+    {
+      "tekst": "Kikker vangt groen. Eend vangt geel. Vos vangt oranje. Konijn vangt roze.",
+      "prent": {
+        "decor": "weide",
+        "figuren": [
+          "kleurregen",
+          "kikker",
+          "eend",
+          "vos",
+          "konijn"
+        ]
+      }
+    },
+    {
+      "tekst": "Nu is alles weer vrolijk. Welke kleur vang jij?",
+      "prent": {
+        "decor": "weide",
+        "figuren": [
+          "regenboog",
+          "kikker",
+          "eend",
+          "vos",
+          "konijn"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "nr": 6,
+  "titel": "Tanden poetsen met Tijs",
+  "reeks": "kleine-oortjes",
+  "leeftijd": 4,
+  "thema": "Tanden poetsen",
+  "bladzijden": [
+    {
+      "tekst": "Tijs het nijlpaard heeft heel grote tanden. Wel twintig!",
+      "prent": {
+        "decor": "badkamer",
+        "figuren": [
+          "tijs"
+        ]
+      }
+    },
+    {
+      "tekst": "Tijs pakt zijn tandenborstel. Hij zingt een liedje: \"Boven poets ik, poets, poets, poets!\"",
+      "prent": {
+        "decor": "badkamer",
+        "figuren": [
+          "tijs",
+          "tandenborstel"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Onder poets ik, poets, poets, poets! Links en rechts, en achteraan.\"",
+      "prent": {
+        "decor": "badkamer",
+        "figuren": [
+          "tijs",
+          "tandenborstel"
+        ]
+      }
+    },
+    {
+      "tekst": "Spoelen, spugen, klaar! Tijs lacht. Al zijn tanden blinken.",
+      "prent": {
+        "decor": "badkamer",
+        "figuren": [
+          "tijs:lacht"
+        ]
+      }
+    }
+  ]
+}
