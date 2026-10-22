@@ -184,3 +184,8 @@
 @keyframes plons { from { transform: translateY(-60px); opacity: 0; } }
 @keyframes schud { 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
 @media (prefers-reduced-motion: reduce) { .in-pan, .kast-ding.schud, .kook-klaar .gerecht { animation: none; } }
+
+/* Touwspringen */
+.touw-veld { background: linear-gradient(#BFE3FA, #E8F5FD 70%); touch-action: manipulation; user-select: none; cursor: pointer; }
+.touw-veld > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.touw-teller { position: absolute; left: 24px; top: 12px; font-size: clamp(64px, 10vw, 120px); line-height: 1; color: #1C2433; opacity: .85; pointer-events: none; }

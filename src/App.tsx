@@ -19,6 +19,7 @@ import Rekenen from './schermen/Rekenen.tsx'
 import Spelen from './schermen/Spelen.tsx'
 import TakenBeheer from './schermen/TakenBeheer.tsx'
 import Toestellen from './schermen/Toestellen.tsx'
+import Touwspringen from './schermen/Touwspringen.tsx'
 import Welkom from './schermen/Welkom.tsx'
 import WieSpeelt from './schermen/WieSpeelt.tsx'
 
@@ -48,6 +49,7 @@ export default function App() {
       <Route path="/kind/:id/huisdier" element={<Huisdier />} />
       <Route path="/kind/:id/racen" element={<Racen />} />
       <Route path="/kind/:id/koken" element={<Koken />} />
+      <Route path="/kind/:id/touwspringen" element={<Touwspringen />} />
       <Route path="/kind/:id/verhalen" element={<Verhalen />} />
       <Route path="/kind/:id/verhaal/:nr" element={<Verhaal />} />
       <Route path="/kind/:id/kleurplaten" element={<KleurplaatLijst />} />
