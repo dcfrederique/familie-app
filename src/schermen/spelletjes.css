@@ -1,5 +1,4 @@
 /* Spelletjes: overgenomen uit prototypes/spelletjes.html. */
-button.rond { border: 0; }
 .groot-knop { text-decoration: none; padding: 0 28px; }
 
 .spel-menu { min-height: calc(100dvh - 140px); display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: clamp(16px, 3vw, 40px); }
