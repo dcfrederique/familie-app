@@ -45,7 +45,9 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 ## Werkwijze
 
 - Commando's: `npm run dev`, `npm test`, `npm run lint`, `npm run build`.
-- Spelregels staan in `src/lib/regels.ts`; startdata van het gezin in `src/data/gezin.ts`.
+- Spelregels staan in `src/lib/regels.ts` (app) en in de Postgres-functies van `supabase/migrations/` (server, leidend).
+- Gegevens via `src/lib/bron/`: `supabaseBron` met database, `demoBron` in het geheugen als `.env.local` geen key heeft (pincode demo: 1234).
+- Databasetests: `scripts/test-db.sh` (Postgres 16).
 - Bouw in fases: eerst de MVP uit `docs/spec.md`, daarna fase 2.
 - Kindschermen eerst ontwerpen voor tablet liggend (1194 × 834), ouderschermen voor gsm (390 × 844).
 - Grote aanraakvlakken: minstens 48 px voor ouders, 64 px of meer voor kinderen.

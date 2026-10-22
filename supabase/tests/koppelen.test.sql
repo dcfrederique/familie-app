@@ -49,6 +49,12 @@ select pg_temp.gelijk((select string_agg(naam || ':' || rol || ':' || coalesce(t
                       'Mama:ouder:-,Papa:ouder:-,Luca:kind:blauw,Yuna:kind:oranje,Feline:kind:groen', 'profielen');
 select pg_temp.gelijk((select vraagt_zelf_tijd from public.gebruikers where naam = 'Feline'), false, 'Feline');
 select pg_temp.gelijk(public.is_ouder_account(), true, 'mama is ouder');
+select pg_temp.gelijk((select count(*) from public.taken), 10::bigint, 'voorbeeldtaken');
+select pg_temp.gelijk((select string_agg(g.naam, ',' order by g.volgorde) from public.taak_kinderen tk
+                       join public.taken t on t.id = tk.taak_id join public.gebruikers g on g.id = tk.kind_id
+                       where t.titel = 'Pyjama aandoen'), 'Feline', 'pyjama voor wie niet leest');
+select pg_temp.gelijk((select count(*) from public.taak_kinderen tk join public.taken t on t.id = tk.taak_id
+                       where t.titel = 'Tanden poetsen'), 3::bigint, 'tanden voor iedereen');
 
 \echo '2. Pincode'
 select pg_temp.gelijk(public.heeft_pin(), false, 'nog geen pin');

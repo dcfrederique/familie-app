@@ -5,7 +5,23 @@ import { actievePin, ontgrendel, vergrendel } from '../lib/ouderslot.ts'
 import { supabase } from '../lib/supabase.ts'
 import './schermen.css'
 
-const tabs = ['Vandaag', 'Goedkeuren', 'Taken', 'Kinderen'] as const
+const tabs = [
+  { naam: 'Vandaag', pad: '/ouder' },
+  { naam: 'Goedkeuren', pad: '/ouder/goedkeuren' },
+  { naam: 'Taken', pad: '/ouder/taken' },
+  { naam: 'Kinderen', pad: '/ouder/kinderen' },
+] as const
+
+/** De pincode die ouder-acties meesturen: null op een ouder-gsm (het account volstaat). */
+export function ouderPin(soort: 'ouder' | 'tablet' | undefined): string | null {
+  return soort === 'tablet' ? actievePin() : null
+}
+
+/** Na 'pincode_fout' (slot verlopen of pin gewijzigd) opnieuw vragen. */
+export function pinOpnieuw() {
+  vergrendel()
+  window.location.reload()
+}
 
 // Gemeenschappelijk kader voor de ouderschermen (gsm). Op een tablet eerst de pincode.
 export default function OuderKader({ titel, children }: { titel: string; children: ReactNode }) {
@@ -25,9 +41,8 @@ export default function OuderKader({ titel, children }: { titel: string; childre
       </header>
       <main className="ouder-inhoud">{children}</main>
       <nav className="ouder-nav" aria-label="Hoofdmenu">
-        {/* Goedkeuren, Taken en Kinderen volgen in stap 5. */}
         {tabs.map((tab) => (
-          <button key={tab} type="button" aria-current={tab === titel ? 'page' : undefined}>{tab}</button>
+          <NavLink key={tab.pad} to={tab.pad} end>{tab.naam}</NavLink>
         ))}
       </nav>
     </div>
