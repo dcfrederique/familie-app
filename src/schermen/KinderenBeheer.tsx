@@ -1,6 +1,7 @@
 import { useState, type FormEvent } from 'react'
-import { kleurKlasse, type Gebruiker } from '../data/gezin.ts'
-import type { Spelregels } from '../lib/bron/types.ts'
+import { kleurKlasse, type Gebruiker, type Kleur } from '../data/gezin.ts'
+import { themaKeuzes } from '../data/thema.ts'
+import type { KindWijziging, Spelregels } from '../lib/bron/types.ts'
 import { useGegevens } from '../lib/gegevens.ts'
 import { regels as standaard } from '../lib/regels.ts'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
@@ -47,7 +48,7 @@ function KindBeheer({ kind, vrij, magBeheren, ververs }: {
     }
   }
 
-  async function wijzig(w: { kan_lezen?: boolean; vraagt_zelf_tijd?: boolean }) {
+  async function wijzig(w: KindWijziging) {
     if (!bron) return
     await bron.kindAanpassen(kind.id, w)
     await herlaad()
@@ -71,6 +72,12 @@ function KindBeheer({ kind, vrij, magBeheren, ververs }: {
         <div className="vinkjes">
           <label><input type="checkbox" checked={kind.kan_lezen} onChange={(e) => wijzig({ kan_lezen: e.target.checked })} /> Kan lezen</label>
           <label><input type="checkbox" checked={kind.vraagt_zelf_tijd} onChange={(e) => wijzig({ vraagt_zelf_tijd: e.target.checked })} /> Vraagt zelf tijd</label>
+          <label className="veld">
+            <span>Thema</span>
+            <select value={kind.thema ?? 'blauw'} onChange={(e) => wijzig({ thema: e.target.value as Kleur })}>
+              {themaKeuzes.map((t) => <option key={t.kleur} value={t.kleur}>{t.naam}</option>)}
+            </select>
+          </label>
         </div>
       )}
       <button type="button" className="knop knop-licht" onClick={() => setOpen(!open)}>

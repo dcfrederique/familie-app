@@ -1,16 +1,31 @@
 // Hoe het startscherm van een kind eruitziet (docs/ontwerp.md en het schermontwerp). Content als data.
 import type { Gebruiker } from './gezin.ts'
 
-/** 'race': donkere banner met raceauto nr. 8, dino en vulkaan (thema dino's en auto's). */
-export type Banner = 'race' | null
+/**
+ * 'race': donkere banner met raceauto nr. 8, dino en vulkaan (dino's en auto's).
+ * 'kasteel': roze prinsessenkasteel met regenboog. 'tuin': lila feeëntuin met bloemen en vlinders.
+ */
+export type Banner = 'race' | 'kasteel' | 'tuin' | null
 
-/** Thema per kleur. Kiezen per kind is voor fase 2; nu hoort blauw bij dino's en auto's. */
+/** Thema per kleur; een ouder kiest het per kind bij Kinderen. */
 export const bannerVoorKleur: Record<NonNullable<Gebruiker['thema']>, Banner> = {
   blauw: 'race',
   oranje: null,
   groen: null,
   paars: null,
+  roze: 'kasteel',
+  lila: 'tuin',
 }
+
+/** Keuzes voor de ouder, in volgorde. */
+export const themaKeuzes: { kleur: NonNullable<Gebruiker['thema']>; naam: string }[] = [
+  { kleur: 'blauw', naam: "Dino's en auto's" },
+  { kleur: 'roze', naam: 'Prinsessenkasteel' },
+  { kleur: 'lila', naam: 'Feeëntuin' },
+  { kleur: 'oranje', naam: 'Oranje' },
+  { kleur: 'groen', naam: 'Groen' },
+  { kleur: 'paars', naam: 'Paars' },
+]
 
 export interface ActiviteitTegel {
   sleutel: string

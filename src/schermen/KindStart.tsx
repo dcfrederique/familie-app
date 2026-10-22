@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
-import { RaceBanner } from '../data/banners.tsx'
+import { Banner } from '../data/banners.tsx'
 import { kleurKlasse, type Gebruiker } from '../data/gezin.ts'
 import { Prentje } from '../data/prentjes.tsx'
 import { bannerVoorKleur, tegelsVoor, type ActiviteitTegel } from '../data/thema.ts'
@@ -67,16 +67,18 @@ function StartLezer({ kind, lijst, geladen, vrij, verzoeken, kies }: {
 
   return (
     <div className={`kind-scherm${banner ? ' met-banner' : ''}`}>
-      {banner === 'race' ? (
-        <header className="banner">
-          <RaceBanner />
+      {banner ? (
+        <header className={`banner banner-${banner}`}>
+          <Banner soort={banner} />
           <div className="banner-inhoud">
             <div className="kop">
               {terug}{avatar}
               <div className="kop-tekst">
                 {titel}
                 {geladen && <p className="kop-sub">
-                  {nogTeDoen === 0 ? 'Alles gedaan, finish!' : `Nog ${nogTeDoen} ${nogTeDoen === 1 ? 'taak' : 'taken'} tot de finish`}
+                  {banner === 'race'
+                    ? (nogTeDoen === 0 ? 'Alles gedaan, finish!' : `Nog ${nogTeDoen} ${nogTeDoen === 1 ? 'taak' : 'taken'} tot de finish`)
+                    : `Al ${gedaan} van de ${lijst.length} taken gedaan vandaag`}
                 </p>}
               </div>
             </div>
@@ -104,7 +106,7 @@ function StartLezer({ kind, lijst, geladen, vrij, verzoeken, kies }: {
         </section>
 
         <aside className="kind-zijkant" aria-labelledby="spelen-titel">
-          <h2 id="spelen-titel" className="sectie-titel display">{banner ? 'Spelen en leren' : 'Spelen en maken'}</h2>
+          <h2 id="spelen-titel" className="sectie-titel display">{banner === 'race' ? 'Spelen en leren' : 'Spelen en maken'}</h2>
           <div className="tegels">
             {tegelsVoor(kind).map((t) => <Tegel key={t.sleutel} tegel={t} kindId={kind.id} />)}
           </div>
@@ -170,28 +172,43 @@ function StartPrenten({ kind, lijst, geladen, kies }: { kind: Gebruiker; lijst: 
     ? `Hoi ${kind.naam}! Vandaag geen taakjes. Lekker spelen!`
     : `Hoi ${kind.naam}! Je hebt al ${gedaan} van de ${lijst.length} taakjes gedaan.`
 
+  const banner = kind.thema ? bannerVoorKleur[kind.thema] : null
+  const terug = (
+    <Link to="/kinderen" className="rond" aria-label="Terug naar wie speelt er">
+      <svg className="ic" viewBox="0 0 24 24" width="32" height="32" aria-hidden="true"><path d="M15 18l-6-6l6-6" /></svg>
+    </Link>
+  )
+  const avatar = <span className="avatar display" aria-hidden="true">{kind.naam[0]}</span>
+  const titel = <h1 className="kop-titel display">Hoi {kind.naam}!</h1>
+  const voorlees = kanVoorlezen() && (
+    <button type="button" className="rond" aria-label="Lees voor" onClick={() => leesVoor(begroeting)}>
+      <Luidspreker grootte={34} />
+    </button>
+  )
+  const voortgang = geladen && lijst.length > 0 && (
+    <span className="voortgang" role="img" aria-label={`Vandaag ${gedaan} van ${lijst.length} taken gedaan`}>
+      {lijst.map(({ taak, status }) => (
+        <span key={taak.id} className={status === 'gedaan' ? '' : 'leeg'}><Ster grootte={44} /></span>
+      ))}
+    </span>
+  )
   return (
-    <div className="kind-scherm">
-      <header className="kop kop-groot">
-        <Link to="/kinderen" className="rond" aria-label="Terug naar wie speelt er">
-          <svg className="ic" viewBox="0 0 24 24" width="32" height="32" aria-hidden="true"><path d="M15 18l-6-6l6-6" /></svg>
-        </Link>
-        <span className="avatar display" aria-hidden="true">{kind.naam[0]}</span>
-        <h1 className="kop-titel display">Hoi {kind.naam}!</h1>
-        {kanVoorlezen() && (
-          <button type="button" className="rond" aria-label="Lees voor" onClick={() => leesVoor(begroeting)}>
-            <Luidspreker grootte={34} />
-          </button>
-        )}
-        <span style={{ flexGrow: 1 }} />
-        {geladen && lijst.length > 0 && (
-          <span className="voortgang" role="img" aria-label={`Vandaag ${gedaan} van ${lijst.length} taken gedaan`}>
-            {lijst.map(({ taak, status }) => (
-              <span key={taak.id} className={status === 'gedaan' ? '' : 'leeg'}><Ster grootte={44} /></span>
-            ))}
-          </span>
-        )}
-      </header>
+    <div className={`kind-scherm${banner ? ' met-banner' : ''}`}>
+      {banner ? (
+        <header className={`banner banner-${banner} kop-groot`}>
+          <Banner soort={banner} />
+          <div className="banner-inhoud">
+            <div className="kop">{terug}{avatar}{titel}{voorlees}</div>
+            {voortgang}
+          </div>
+        </header>
+      ) : (
+        <header className="kop kop-groot">
+          {terug}{avatar}{titel}{voorlees}
+          <span style={{ flexGrow: 1 }} />
+          {voortgang}
+        </header>
+      )}
 
       <main className={`prent-raster${lijst.length === 5 ? ' veel' : ''}`}>
         {lijst.map(({ taak, status }) => (

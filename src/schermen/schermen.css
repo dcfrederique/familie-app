@@ -91,6 +91,21 @@
 .banner .avatar { width: 60px; height: 60px; font-size: 36px; background: #E3EDFC; color: #2D6BD6; }
 .banner .sterren-pil { align-self: flex-start; background: #FFFFFF; color: #1C2433; }
 .banner .sterren-pil span { color: #4E5A6B; }
+/* Lichte banners (prinsessenkasteel, feeëntuin): donkere tekst, ook in het donkere thema */
+.banner-kasteel { background: #FBDCEB; color: #4A1631; }
+.banner-tuin { background: #ECE1FA; color: #3B1F5C; }
+.banner-kasteel .kop-titel, .banner-tuin .kop-titel { color: inherit; }
+.banner-kasteel .kop-sub { color: #7A2E55; }
+.banner-tuin .kop-sub { color: #5E3E86; }
+.banner-kasteel .rond, .banner-tuin .rond { background: #FFFFFF; color: var(--kid); }
+.banner-kasteel .avatar { background: #FFFFFF; color: #C2337A; }
+.banner-tuin .avatar { background: #FFFFFF; color: #8A3FC0; }
+.banner-kasteel .voortgang, .banner-tuin .voortgang { align-self: flex-start; background: #FFFFFF; }
+.banner-kasteel .voortgang .leeg path, .banner-tuin .voortgang .leeg path { fill: #FFFFFF; stroke: #9AA6B5; }
+.kleur-roze .met-banner .extra-tijd-knop { background: #8E2459; }
+.kleur-lila .met-banner .extra-tijd-knop { background: #5A2A86; }
+.met-banner .prent-kaart { min-height: 300px; }
+.met-banner .prent-kaart .taak-prent { margin-top: 20px; }
 
 .sterren-pil span { font-size: 18px; font-weight: 700; }
 .kop .sterren-pil { background: var(--surface); color: var(--ink); }

@@ -1,4 +1,5 @@
 // Gemeenschappelijke vorm van de gegevens, voor Supabase en voor de demo zonder Supabase.
+import type { Kleur } from '../../data/gezin.ts'
 import type { Activiteit } from '../regels.ts'
 
 export type Herhaling = 'eenmalig' | 'elke_dag' | 'schooldagen'
@@ -65,6 +66,12 @@ export interface LogRegel {
   tijdstip: string
 }
 
+export interface KindWijziging {
+  kan_lezen?: boolean
+  vraagt_zelf_tijd?: boolean
+  thema?: Kleur
+}
+
 export interface Spelregels {
   dagplafond_minuten: number
   venster_van: string
@@ -102,5 +109,5 @@ export interface Bron {
   taakOpslaan(taak: NieuweTaak): Promise<void>
   taakVerwijderen(id: string): Promise<void>
   spelregelsOpslaan(regels: Spelregels): Promise<void>
-  kindAanpassen(id: string, wijziging: { kan_lezen?: boolean; vraagt_zelf_tijd?: boolean }): Promise<void>
+  kindAanpassen(id: string, wijziging: KindWijziging): Promise<void>
 }

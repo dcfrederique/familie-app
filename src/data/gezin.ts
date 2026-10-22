@@ -1,6 +1,6 @@
 // Gegevens van het gezin zoals de app ze gebruikt. Zonder Supabase (demo) komen ze uit startdata.
 
-export type Kleur = 'blauw' | 'oranje' | 'groen' | 'paars'
+export type Kleur = 'blauw' | 'oranje' | 'groen' | 'paars' | 'roze' | 'lila'
 
 export interface Gebruiker {
   id: string
@@ -27,7 +27,8 @@ export const startKinderen: NieuwKind[] = [
   { naam: 'Feline', kan_lezen: false, vraagt_zelf_tijd: false },
 ]
 
-const kleuren: Kleur[] = ['blauw', 'oranje', 'groen', 'paars']
+/** Thema's voor de demo: Luca dino's en auto's, Yuna het prinsessenkasteel, Feline de feeëntuin. */
+const kleuren: Kleur[] = ['blauw', 'roze', 'lila', 'groen']
 
 /** Startdata voor de demo zonder Supabase. */
 export const demoGebruikers: Gebruiker[] = [
