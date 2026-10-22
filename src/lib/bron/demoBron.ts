@@ -2,8 +2,8 @@
 // Handig om de schermen te bekijken voor de database gekoppeld is. Pincode in de demo: 1234.
 import type { Gebruiker } from '../../data/gezin.ts'
 import { dagVan } from '../datum.ts'
-import { blokKeuzes, regels as standaardRegels } from '../regels.ts'
-import type { Bron, Inzending, LogRegel, NieuweTaak, OuderUitkomst, Spelregels, Taak, Tijdverzoek } from './types.ts'
+import { activiteitOmschrijving, activiteitSterren, blokKeuzes, regels as standaardRegels } from '../regels.ts'
+import type { ActiviteitRegel, Bron, Inzending, LogRegel, NieuweTaak, OuderUitkomst, Spelregels, Taak, Tijdverzoek } from './types.ts'
 
 const DEMO_PIN = '1234'
 
@@ -11,6 +11,7 @@ interface Toestand {
   taken: Taak[]
   inzendingen: Inzending[]
   verzoeken: Tijdverzoek[]
+  activiteiten: ActiviteitRegel[]
   log: LogRegel[]
   regels: Spelregels
 }
@@ -37,6 +38,7 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
     })),
     inzendingen: [],
     verzoeken: [],
+    activiteiten: [],
     // Wat startsaldo, zodat Extra tijd vragen meteen te proberen is.
     log: kinderen.map((k, i) => ({ id: i + 1, kind_id: k.id, delta: 40, reden: 'Startsaldo (demo)', tijdstip: nu })),
     regels: {
@@ -96,6 +98,17 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
                          vervalt_op: new Date(nu.getTime() + 2 * 3600_000).toISOString() })
     },
 
+    async activiteitOpslaan(kind, activiteit, inhoud, duurSeconden) {
+      const nu = new Date()
+      const al = t.activiteiten.filter((a) => a.kind_id === kind && a.dag === dagVan(nu) && a.status !== 'afgekeurd')
+        .reduce((s, a) => s + a.sterren, 0)
+      const sterren = Math.max(0, Math.min(activiteitSterren(activiteit, inhoud), standaardRegels.activiteitSterrenPerDag - al))
+      t.activiteiten.push({ id: id(), kind_id: kind, activiteit, inhoud, duur_seconden: Math.round(duurSeconden), sterren,
+                            status: sterren > 0 ? 'ingediend' : null, tijdstip: nu.toISOString(), dag: dagVan(nu) })
+      return sterren
+    },
+    async activiteitenTeBeoordelen() { return t.activiteiten.filter((a) => a.status === 'ingediend') },
+
     async inzendingBeoordelen(inzId, goed, pin): Promise<OuderUitkomst> {
       if (!pinOk(pin)) return 'pincode_fout'
       const inz = t.inzendingen.find((i) => i.id === inzId && i.status === 'ingediend')
@@ -127,6 +140,15 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
                          aangevraagd_op: nu, dag: dagVan(new Date()), vervalt_op: nu })
       boek(kind, -minuten, `Extra tijd: ${minuten} min`)
       return 'toegekend'
+    },
+    async activiteitBeoordelen(aId, goed, pin): Promise<OuderUitkomst> {
+      if (!pinOk(pin)) return 'pincode_fout'
+      const a = t.activiteiten.find((x) => x.id === aId && x.status === 'ingediend')
+      if (!a) throw new Error('activiteit al beoordeeld')
+      a.status = goed ? 'goedgekeurd' : 'afgekeurd'
+      const bij = Math.max(0, Math.min(a.sterren, t.regels.max_saldo - saldo(a.kind_id)))
+      if (goed && bij > 0) boek(a.kind_id, bij, activiteitOmschrijving(a))
+      return a.status
     },
     async fotoUrl(pad) { return pad },
 

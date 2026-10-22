@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { binnenTijdvenster, blokKeuzes } from './regels.ts'
+import { activiteitSterren, binnenTijdvenster, blokKeuzes } from './regels.ts'
 
 const om = (uu: number, mm = 0) => new Date(2026, 9, 21, uu, mm)
 
@@ -31,5 +31,16 @@ describe('blokKeuzes', () => {
 
   it('schakelt alles uit buiten het tijdvenster', () => {
     expect(blokKeuzes(300, 0, om(20, 30)).every((b) => b.reden === 'buiten tijdvenster')).toBe(true)
+  })
+})
+
+describe('activiteitSterren', () => {
+  it('volgt de tabel uit de spec', () => {
+    expect(activiteitSterren('rekenen', { goed: 7 })).toBe(3)
+    expect(activiteitSterren('rekenen', { goed: 99 })).toBe(5)
+    expect(activiteitSterren('verhaal')).toBe(5)
+    expect(activiteitSterren('kleurplaat')).toBe(3)
+    expect(activiteitSterren('memory')).toBe(0)
+    expect(activiteitSterren('penalty_schieten')).toBe(0)
   })
 })

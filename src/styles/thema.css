@@ -10,6 +10,7 @@
   --feline: #1F7A4A; --feline-tint: #DDF2E6;
   --verhalen: #7A3DB0; --verhalen-tint: #F1E6FA;
   --kid: #2D6BD6; --kid-tint: #E3EDFC;
+  --achter: #2D6BD6; --achter-ster: #5C8EE6;
 }
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
@@ -19,6 +20,7 @@
     --warn: #F08A50; --warn-bg: #3D2214; --warn-ink: #F5A57A; --on-solid: #10182A; --shade: #0C1220;
     --luca: #7FA6F0; --luca-tint: #22345A; --yuna: #F29A63; --yuna-tint: #43281A; --feline: #66CC93; --feline-tint: #183A28;
     --verhalen: #C49AEB; --verhalen-tint: #34224A;
+    --achter: #3E6FD1; --achter-ster: #7FA6EC;
   }
 }
 :root[data-theme="dark"] {
@@ -28,6 +30,7 @@
   --warn: #F08A50; --warn-bg: #3D2214; --warn-ink: #F5A57A; --on-solid: #10182A; --shade: #0C1220;
   --luca: #7FA6F0; --luca-tint: #22345A; --yuna: #F29A63; --yuna-tint: #43281A; --feline: #66CC93; --feline-tint: #183A28;
   --verhalen: #C49AEB; --verhalen-tint: #34224A;
+  --achter: #3E6FD1; --achter-ster: #7FA6EC;
 }
 
 *, *::before, *::after { box-sizing: border-box; }

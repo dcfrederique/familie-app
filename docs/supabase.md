@@ -5,7 +5,7 @@ Project: `https://oyqwhrttwaatqymjomtc.supabase.co`
 ## 1. Database
 
 Voer in de Supabase-console, **SQL Editor**, de bestanden in `supabase/migrations/` uit, in volgorde van naam.
-Een script dat al gedraaid heeft, draai je niet opnieuw. `20261022000300_voorbeeldtaken_fotos.sql` maakt ook de privé-opslag `fotos` aan voor bewijsfoto's. Of met de Supabase CLI:
+Een script dat al gedraaid heeft, draai je niet opnieuw. `20261022000300_voorbeeldtaken_fotos.sql` maakt ook de privé-opslag `fotos` aan voor bewijsfoto's; `20261022000400_activiteiten.sql` voegt het activiteitlog toe (sterren uit rekenen, na goedkeuring). Of met de Supabase CLI:
 `supabase link --project-ref oyqwhrttwaatqymjomtc` en daarna `supabase db push`.
 
 ## 2. Instellingen bij Authentication

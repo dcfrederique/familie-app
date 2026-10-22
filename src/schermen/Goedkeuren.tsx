@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Prentje } from '../data/prentjes.tsx'
-import type { Inzending, OuderUitkomst, Tijdverzoek } from '../lib/bron/types.ts'
+import type { ActiviteitRegel, Inzending, OuderUitkomst, Tijdverzoek } from '../lib/bron/types.ts'
 import { uurMinuut } from '../lib/datum.ts'
 import { useGegevens } from '../lib/gegevens.ts'
+import { activiteitOmschrijving } from '../lib/regels.ts'
 import { useSessie } from '../lib/sessie.tsx'
 import OuderKader, { ouderPin, pinOpnieuw } from './OuderKader.tsx'
 
-// Goedkeuren: eerst tijdverzoeken (die hebben haast), dan afgevinkte taken.
+// Goedkeuren: eerst tijdverzoeken (die hebben haast), dan afgevinkte taken en activiteiten.
 export default function Goedkeuren() {
   const { bron, account, kinderen } = useSessie()
   const [fout, setFout] = useState('')
@@ -14,10 +15,10 @@ export default function Goedkeuren() {
   const naam = (id: string) => kinderen.find((k) => k.id === id)?.naam ?? 'Kind'
 
   const { data, ververs } = useGegevens(bron ? async () => {
-    const [verzoeken, inzendingen, taken, saldi] = await Promise.all([
-      bron.openVerzoeken(), bron.teBeoordelen(), bron.taken(), bron.saldi(),
+    const [verzoeken, inzendingen, activiteiten, taken, saldi] = await Promise.all([
+      bron.openVerzoeken(), bron.teBeoordelen(), bron.activiteitenTeBeoordelen(), bron.taken(), bron.saldi(),
     ])
-    return { verzoeken, inzendingen, taken, saldi }
+    return { verzoeken, inzendingen, activiteiten, taken, saldi }
   } : null, [bron])
 
   async function doe(actie: (pin: string | null) => Promise<OuderUitkomst>) {
@@ -38,11 +39,15 @@ export default function Goedkeuren() {
       for (const i of data.inzendingen) {
         if (await bron.inzendingBeoordelen(i.id, true, pin) === 'pincode_fout') return 'pincode_fout'
       }
+      for (const a of data.activiteiten) {
+        if (await bron.activiteitBeoordelen(a.id, true, pin) === 'pincode_fout') return 'pincode_fout'
+      }
       return 'goedgekeurd'
     })
   }
 
-  const leeg = data && data.verzoeken.length === 0 && data.inzendingen.length === 0
+  const leeg = data && data.verzoeken.length === 0 && data.inzendingen.length === 0 && data.activiteiten.length === 0
+  const aantal = data ? data.inzendingen.length + data.activiteiten.length : 0
   return (
     <OuderKader titel="Goedkeuren">
       {fout && <p className="fout" role="alert">{fout}</p>}
@@ -53,9 +58,9 @@ export default function Goedkeuren() {
                  behandel={(toekennen, reden) => doe((pin) => bron!.verzoekBehandelen(v.id, toekennen, reden, pin))} />
       ))}
 
-      {data && data.inzendingen.length > 1 && (
+      {aantal > 1 && (
         <button type="button" className="knop knop-primair" disabled={bezig} onClick={allesGoed}>
-          Alle {data.inzendingen.length} taken goedkeuren
+          Alle {aantal} goedkeuren
         </button>
       )}
       {data?.inzendingen.map((i) => {
@@ -66,6 +71,10 @@ export default function Goedkeuren() {
                           beoordeel={(goed) => doe((pin) => bron!.inzendingBeoordelen(i.id, goed, pin))} />
         )
       })}
+      {data?.activiteiten.map((a) => (
+        <ActiviteitKaart key={a.id} activiteit={a} naam={naam(a.kind_id)} bezig={bezig}
+                         beoordeel={(goed) => doe((pin) => bron!.activiteitBeoordelen(a.id, goed, pin))} />
+      ))}
     </OuderKader>
   )
 }
@@ -121,6 +130,27 @@ function InzendingKaart({ inzending, naam, titel, prentje, sterren, bezig, beoor
         </div>
       </div>
       {foto && <img className="bewijs" src={foto} alt={`Foto van ${naam}`} />}
+      <div className="knoppen">
+        <button type="button" className="knop" disabled={bezig} onClick={() => beoordeel(false)}>Afkeuren</button>
+        <button type="button" className="knop knop-goed" disabled={bezig} onClick={() => beoordeel(true)}>Goedkeuren</button>
+      </div>
+    </section>
+  )
+}
+
+function ActiviteitKaart({ activiteit, naam, bezig, beoordeel }: {
+  activiteit: ActiviteitRegel; naam: string; bezig: boolean; beoordeel: (goed: boolean) => void
+}) {
+  const minuten = Math.max(1, Math.round(activiteit.duur_seconden / 60))
+  return (
+    <section className="kaart kaart-inzending">
+      <div className="inzending-kop">
+        <span className="mini-prent"><Prentje naam="ster" grootte={32} /></span>
+        <div>
+          <h2 className="display">{activiteitOmschrijving(activiteit)}</h2>
+          <p>{naam} · {uurMinuut(activiteit.tijdstip)} · {minuten} min · {activiteit.sterren} sterren</p>
+        </div>
+      </div>
       <div className="knoppen">
         <button type="button" className="knop" disabled={bezig} onClick={() => beoordeel(false)}>Afkeuren</button>
         <button type="button" className="knop knop-goed" disabled={bezig} onClick={() => beoordeel(true)}>Goedkeuren</button>

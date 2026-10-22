@@ -7,6 +7,8 @@ export const regels = {
   dagplafondMinuten: 60,
   tijdvenster: { van: '07:00', tot: '20:00' },
   maxSpaarsaldo: 300,
+  /** Hoeveel sterren activiteiten per kind per dag hoogstens opleveren (voorstel). */
+  activiteitSterrenPerDag: 20,
 }
 
 export type Blok = (typeof regels.blokken)[number]
@@ -43,4 +45,30 @@ export function blokKeuzes(saldo: number, extraVandaag: number, moment: Date): B
     else if (sterren > saldo) reden = 'te weinig sterren'
     return { minuten, sterren, beschikbaar: reden === undefined, reden }
   })
+}
+
+export type Activiteit = 'memory' | 'penalty_schieten' | 'penalty_keepen' | 'rekenen' | 'verhaal' | 'kleurplaat' | 'tekenen'
+
+/**
+ * Sterren voor een afgewerkte activiteit (docs/spec.md, Activiteiten), nog vóór het dagplafond.
+ * Spelletjes leveren niets op. De server rekent zelf hetzelfde uit (activiteit_opslaan).
+ */
+export function activiteitSterren(activiteit: Activiteit, inhoud: { goed?: number } = {}): number {
+  if (activiteit === 'rekenen') return Math.floor(Math.min(10, Math.max(0, inhoud.goed ?? 0)) / 2)
+  if (activiteit === 'verhaal') return 5
+  if (activiteit === 'kleurplaat') return 3
+  return 0
+}
+
+/** Zelfde tekst als activiteit_omschrijving op de server, voor het goedkeurscherm en het log. */
+export function activiteitOmschrijving({ activiteit, inhoud }: { activiteit: Activiteit; inhoud: { goed?: number; sommen?: number; titel?: string } }): string {
+  switch (activiteit) {
+    case 'rekenen': return `Rekenen: ${inhoud.goed ?? 0} van ${inhoud.sommen ?? 10} in één keer goed`
+    case 'verhaal': return `Verhaal: ${inhoud.titel ?? 'uitgelezen'}`
+    case 'kleurplaat': return `Kleurplaat: ${inhoud.titel ?? 'afgewerkt'}`
+    case 'memory': return 'Memory'
+    case 'penalty_schieten': return "Penalty's schieten"
+    case 'penalty_keepen': return "Penalty's keepen"
+    default: return 'Tekenen'
+  }
 }
