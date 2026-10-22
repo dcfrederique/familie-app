@@ -49,3 +49,20 @@ export function Chips<T extends string>({ label, opties, gekozen, kies }: {
     </div>
   )
 }
+
+/** Stoppen of nog eens, na een spelletje. Wie niet leest ziet alleen de iconen. */
+export function EindKnoppen({ kind, opnieuw }: { kind: Gebruiker; opnieuw: () => void }) {
+  const lezer = kind.kan_lezen
+  return (
+    <div className="knoppen-rij">
+      <Link to={`/kind/${kind.id}/spelen`} className="groot-knop licht" aria-label="Stoppen">
+        <svg className="ic" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+        {lezer && 'Stoppen'}
+      </Link>
+      <button type="button" className="groot-knop" aria-label="Nog eens" onClick={opnieuw}>
+        <svg className="ic" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M4 12a8 8 0 1 0 2.5-5.8M4 4v5h5" /></svg>
+        {lezer && 'Nog eens'}
+      </button>
+    </div>
+  )
+}

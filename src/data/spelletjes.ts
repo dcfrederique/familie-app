@@ -1,4 +1,5 @@
 // Niveaus en prentjes van de spelletjes (uit prototypes/spelletjes.html). Content als data.
+import { prentenDeler } from './figuurtje.ts'
 import type { Gebruiker } from './gezin.ts'
 
 export type MemoryNiveau = 'klein' | 'middel' | 'groot'
@@ -43,9 +44,41 @@ export function startNiveaus(kind: Gebruiker, kinderen: Gebruiker[]): { memory: 
   return oudsteLezer?.id === kind.id ? { memory: 'groot', rekenen: 'tot100' } : { memory: 'middel', rekenen: 'tot20' }
 }
 
+export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket'
+
+export interface SpelInfo {
+  sleutel: SpelSleutel
+  naam: string
+  uitleg: string
+  icoon: string
+  /** Ooit verdiende sterren om het spelletje vrij te spelen (docs/spelletjes.md); 0 = meteen vrij. */
+  drempel: number
+}
+
 /** Het menu Spelen. Sterren en of het meetelt voor app-tijd: zie docs/spec.md, Activiteiten. */
-export const spelMenu: { sleutel: 'memory' | 'rekenen' | 'penalty'; naam: string; uitleg: string; icoon: string }[] = [
-  { sleutel: 'rekenen', naam: 'Rekenen', uitleg: '2 goed in één keer = 1 ster', icoon: 'M5 7h6M8 4v6M14 7h5M5 17l5-5M10 17l-5-5M14 14h5M14 18h5' },
-  { sleutel: 'memory', naam: 'Memory', uitleg: 'Zoek de paren', icoon: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z' },
-  { sleutel: 'penalty', naam: "Penalty's", uitleg: 'Schieten of keepen', icoon: 'M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18zM12 7l4 3-1.5 4.5h-5L8 10zM12 3v4M16 10l4.5-1.5M14.5 14.5l2.5 4M9.5 14.5l-2.5 4M8 10l-4.5-1.5' },
+export const spelMenu: SpelInfo[] = [
+  { sleutel: 'rekenen', naam: 'Rekenen', uitleg: '2 goed in één keer = 1 ster', drempel: 0, icoon: 'M5 7h6M8 4v6M14 7h5M5 17l5-5M10 17l-5-5M14 14h5M14 18h5' },
+  { sleutel: 'memory', naam: 'Memory', uitleg: 'Zoek de paren', drempel: 0, icoon: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z' },
+  { sleutel: 'penalty', naam: "Penalty's", uitleg: 'Schieten of keepen', drempel: 0, icoon: 'M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18zM12 7l4 3-1.5 4.5h-5L8 10zM12 3v4M16 10l4.5-1.5M14.5 14.5l2.5 4M9.5 14.5l-2.5 4M8 10l-4.5-1.5' },
+  { sleutel: 'huisdier', naam: 'Huisdier wassen', uitleg: 'Schrobben, spoelen, drogen', drempel: 20,
+    icoon: 'M8 11a2 2 0 1 1 0-4a2 2 0 0 1 0 4zM16 11a2 2 0 1 1 0-4a2 2 0 0 1 0 4zM4.5 15a1.8 1.8 0 1 1 0-3.6a1.8 1.8 0 0 1 0 3.6zM19.5 15a1.8 1.8 0 1 1 0-3.6a1.8 1.8 0 0 1 0 3.6zM12 13c-3 0-5 3-5 5s2 2 5 2s5 0 5-2s-2-5-5-5z' },
+  { sleutel: 'racen', naam: 'Racen', uitleg: 'Ontwijk en pak sterretjes', drempel: 30,
+    icoon: 'M3 15l2-5h10l3 4h3v3H3zM7 18a1.5 1.5 0 1 0 0-.01M17 18a1.5 1.5 0 1 0 0-.01M7 10l1.5-3h5L15 10' },
+  { sleutel: 'koken', naam: 'Koken', uitleg: 'Volg het recept', drempel: 50,
+    icoon: 'M3 11h14v3a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5zM17 12h4M7 8c0-1.5 1.5-1.5 1.5-3M11.5 8c0-1.5 1.5-1.5 1.5-3' },
+  { sleutel: 'touwspringen', naam: 'Touwspringen', uitleg: 'Spring op het juiste moment', drempel: 75,
+    icoon: 'M12 3.5a2 2 0 1 0 0 .01M12 7v6M9 20l3-7l3 7M8.5 9.5h7M5 9c-2.5 7 0 12 7 12s9.5-5 7-12' },
+  { sleutel: 'basket', naam: 'Basket', uitleg: 'Veeg de bal in de ring', drempel: 100,
+    icoon: 'M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18zM3 12h18M12 3v18M5.6 5.6c3 3 3 9.8 0 12.8M18.4 5.6c-3 3-3 9.8 0 12.8' },
 ]
+
+/** Wie niet leest haalt minder sterren: de drempels zijn dan een vijfde, zoals bij het figuurtje. */
+export function spelDrempel(spel: SpelInfo, v: { allesVrij: boolean; kanLezen: boolean }): number {
+  if (v.allesVrij) return 0
+  return v.kanLezen ? spel.drempel : Math.ceil(spel.drempel / prentenDeler)
+}
+
+/** Hoeveel sterren nog te verdienen tot het spelletje opengaat (0 = vrij). */
+export function nogTeVerdienen(spel: SpelInfo, v: { verdiend: number; allesVrij: boolean; kanLezen: boolean }): number {
+  return Math.max(0, spelDrempel(spel, v) - v.verdiend)
+}

@@ -43,6 +43,13 @@ select public.koppelen(:'code');
 select pg_temp.gelijk(public.activiteit_opslaan(:'kim', 'memory', '{"paren": 6, "beurten": 9}', 120), 0, 'memory');
 select pg_temp.gelijk((select status::text from public.activiteitlog where activiteit = 'memory'), null::text, 'geen status');
 select pg_temp.fout(format('select public.activiteit_opslaan(%L, ''memory'')', :'ouder'), 'kind niet gevonden');
+
+-- Nieuwe spelletjes leveren ook geen sterren op
+select pg_temp.gelijk(public.activiteit_opslaan(:'kim', 'racen', '{"punten": 120, "niveau": "rustig"}', 90), 0, 'racen');
+select pg_temp.gelijk(public.activiteit_opslaan(:'kim', 'koken', '{"titel": "Pizza"}', 60), 0, 'koken');
+select pg_temp.gelijk(public.activiteit_omschrijving('koken', '{"titel": "Pizza"}'), 'Koken: Pizza', 'omschrijving koken');
+select pg_temp.gelijk(public.activiteit_omschrijving('basket', '{}'), 'Basket', 'omschrijving basket');
+select pg_temp.fout(format('select public.activiteit_opslaan(%L, ''verstoppertje'')', :'kim'), 'activiteitlog_activiteit_check');
 select pg_temp.fout(format('select public.activiteit_opslaan(%L, ''schaken'')', :'kim'), 'activiteitlog_activiteit_check');
 
 \echo '2. Rekenen: 1 ster per 2 sommen in één keer goed, berekend op de server'

@@ -6,6 +6,7 @@ import GezinInstellen from './schermen/GezinInstellen.tsx'
 import KinderenBeheer from './schermen/KinderenBeheer.tsx'
 import KindStart from './schermen/KindStart.tsx'
 import Kleerkast from './schermen/Kleerkast.tsx'
+import Huisdier from './schermen/Huisdier.tsx'
 import Memory from './schermen/Memory.tsx'
 import Penalty from './schermen/Penalty.tsx'
 import Kleurplaat, { KleurplaatLijst } from './schermen/Kleurplaten.tsx'
@@ -42,6 +43,7 @@ export default function App() {
       <Route path="/kind/:id/rekenen" element={<Rekenen />} />
       <Route path="/kind/:id/memory" element={<Memory />} />
       <Route path="/kind/:id/penalty" element={<Penalty />} />
+      <Route path="/kind/:id/huisdier" element={<Huisdier />} />
       <Route path="/kind/:id/verhalen" element={<Verhalen />} />
       <Route path="/kind/:id/verhaal/:nr" element={<Verhaal />} />
       <Route path="/kind/:id/kleurplaten" element={<KleurplaatLijst />} />

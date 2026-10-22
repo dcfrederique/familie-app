@@ -48,6 +48,7 @@ export function blokKeuzes(saldo: number, extraVandaag: number, moment: Date): B
 }
 
 export type Activiteit = 'memory' | 'penalty_schieten' | 'penalty_keepen' | 'rekenen' | 'verhaal' | 'kleurplaat' | 'tekenen'
+  | 'racen' | 'basket' | 'koken' | 'touwspringen' | 'huisdier'
 
 /**
  * Sterren voor een afgewerkte activiteit (docs/spec.md, Activiteiten), nog vóór het dagplafond.
@@ -69,6 +70,11 @@ export function activiteitOmschrijving({ activiteit, inhoud }: { activiteit: Act
     case 'memory': return 'Memory'
     case 'penalty_schieten': return "Penalty's schieten"
     case 'penalty_keepen': return "Penalty's keepen"
+    case 'racen': return 'Racen'
+    case 'basket': return 'Basket'
+    case 'koken': return inhoud.titel ? `Koken: ${inhoud.titel}` : 'Koken'
+    case 'touwspringen': return 'Touwspringen'
+    case 'huisdier': return inhoud.titel ? `Huisdier wassen: ${inhoud.titel}` : 'Huisdier wassen'
     default: return 'Tekenen'
   }
 }

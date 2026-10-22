@@ -47,3 +47,7 @@ export function kleurplaatLezen(kind: string, plaat: string): (string | null)[] 
 }
 export const kleurplaatBewaren = (kind: string, plaat: string, kleuren: (string | null)[] | null) =>
   schrijf(`kleurplaat-${plaat}-${kind}`, JSON.stringify(kleuren))
+
+/** Spelletjes die het kind op dit toestel al eens opende (voor het label Nieuw! in het menu). */
+export const spelGeopend = (kind: string, spel: string) => lees(`spel-geopend-${spel}-${kind}`) === 'ja'
+export const spelOpenen = (kind: string, spel: string) => schrijf(`spel-geopend-${spel}-${kind}`, 'ja')
