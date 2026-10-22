@@ -44,7 +44,7 @@ export interface ActiviteitRegel {
   id: string
   kind_id: string
   activiteit: Activiteit
-  inhoud: { goed?: number; sommen?: number; niveau?: string; titel?: string; beurten?: number; paren?: number }
+  inhoud: { goed?: number; sommen?: number; niveau?: string; titel?: string; beurten?: number; paren?: number; punten?: number; raak?: number; schoten?: number }
   duur_seconden: number
   sterren: number
   /** null als de activiteit geen sterren oplevert */

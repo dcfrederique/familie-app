@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { spelMenu } from '../data/spelletjes.ts'
 import SpelKader from './SpelKader.tsx'
 
-// Kiezen wat je speelt. Rekenen levert sterren op, memory is gewoon voor de fun.
+// Kiezen wat je speelt. Rekenen levert sterren op, memory en penalty's zijn gewoon voor de fun.
 export default function Spelen() {
   return (
     <SpelKader titel="Spelen" terug={(id) => `/kind/${id}`}>

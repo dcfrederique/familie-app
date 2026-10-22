@@ -44,7 +44,8 @@ export function startNiveaus(kind: Gebruiker, kinderen: Gebruiker[]): { memory: 
 }
 
 /** Het menu Spelen. Sterren en of het meetelt voor app-tijd: zie docs/spec.md, Activiteiten. */
-export const spelMenu: { sleutel: 'memory' | 'rekenen'; naam: string; uitleg: string; icoon: string }[] = [
+export const spelMenu: { sleutel: 'memory' | 'rekenen' | 'penalty'; naam: string; uitleg: string; icoon: string }[] = [
   { sleutel: 'rekenen', naam: 'Rekenen', uitleg: '2 goed in één keer = 1 ster', icoon: 'M5 7h6M8 4v6M14 7h5M5 17l5-5M10 17l-5-5M14 14h5M14 18h5' },
   { sleutel: 'memory', naam: 'Memory', uitleg: 'Zoek de paren', icoon: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z' },
+  { sleutel: 'penalty', naam: "Penalty's", uitleg: 'Schieten of keepen', icoon: 'M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18zM12 7l4 3-1.5 4.5h-5L8 10zM12 3v4M16 10l4.5-1.5M14.5 14.5l2.5 4M9.5 14.5l-2.5 4M8 10l-4.5-1.5' },
 ]

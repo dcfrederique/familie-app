@@ -49,7 +49,7 @@ const icoon = {
 
 /** De tegels rechts op het startscherm, in volgorde. Wie niet leest krijgt ronde knoppen zonder tekst. */
 export const activiteitTegels: ActiviteitTegel[] = [
-  { sleutel: 'spelletjes', naam: 'Spelletjes', uitleg: 'Memory', icoon: icoon.spel, kleur: 'blauw', pad: 'spelen', voor: 'alle' },
+  { sleutel: 'spelletjes', naam: 'Spelletjes', uitleg: "Memory, penalty's", icoon: icoon.spel, kleur: 'blauw', pad: 'spelen', voor: 'alle' },
   { sleutel: 'rekenen', naam: 'Rekenen', uitleg: '+1 per 2 goed', icoon: icoon.rekenen, kleur: 'goud', pad: 'rekenen', voor: 'alle' },
   { sleutel: 'verhalen', naam: 'Verhalen', uitleg: '+5 per verhaal', icoon: icoon.boek, kleur: 'paars', pad: null, voor: 'alle' },
   { sleutel: 'kleurplaten', naam: 'Kleurplaten', uitleg: '+3 per plaat', icoon: icoon.palet, kleur: 'oranje', pad: null, voor: 'alle' },
