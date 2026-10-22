@@ -8,6 +8,7 @@ import KindStart from './schermen/KindStart.tsx'
 import Kleerkast from './schermen/Kleerkast.tsx'
 import Memory from './schermen/Memory.tsx'
 import Penalty from './schermen/Penalty.tsx'
+import Kleurplaat, { KleurplaatLijst } from './schermen/Kleurplaten.tsx'
 import Verhaal from './schermen/Verhaal.tsx'
 import Verhalen from './schermen/Verhalen.tsx'
 import OuderStart from './schermen/OuderStart.tsx'
@@ -43,6 +44,8 @@ export default function App() {
       <Route path="/kind/:id/penalty" element={<Penalty />} />
       <Route path="/kind/:id/verhalen" element={<Verhalen />} />
       <Route path="/kind/:id/verhaal/:nr" element={<Verhaal />} />
+      <Route path="/kind/:id/kleurplaten" element={<KleurplaatLijst />} />
+      <Route path="/kind/:id/kleurplaat/:sleutel" element={<Kleurplaat />} />
       <Route path="/ouder" element={<OuderStart />} />
       <Route path="/ouder/goedkeuren" element={<Goedkeuren />} />
       <Route path="/ouder/taken" element={<TakenBeheer />} />

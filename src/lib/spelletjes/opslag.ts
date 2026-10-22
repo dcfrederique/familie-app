@@ -40,3 +40,10 @@ export const voorlezenAan = (kind: string, standaard: boolean) => {
   return v === null ? standaard : v === 'aan'
 }
 export const voorlezenBewaren = (kind: string, aan: boolean) => schrijf(`voorlezen-${kind}`, aan ? 'aan' : 'uit')
+
+/** Kleuren van een kleurplaat die nog niet af is, zodat het kind later verder kan. */
+export function kleurplaatLezen(kind: string, plaat: string): (string | null)[] | null {
+  try { return JSON.parse(lees(`kleurplaat-${plaat}-${kind}`) ?? 'null') } catch { return null }
+}
+export const kleurplaatBewaren = (kind: string, plaat: string, kleuren: (string | null)[] | null) =>
+  schrijf(`kleurplaat-${plaat}-${kind}`, JSON.stringify(kleuren))

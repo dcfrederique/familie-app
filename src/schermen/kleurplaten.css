@@ -1,0 +1,16 @@
+/* Kleurplaten: grote plaat links, kleuren en knoppen rechts (tablet liggend). */
+.kleur-raster { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 18px; }
+.verhaal-kaart .kleurplaat { display: block; width: 100%; aspect-ratio: 4 / 3; background: #fff; }
+.kleuren { display: grid; grid-template-columns: minmax(0, 1fr) 236px; gap: 20px; align-items: start; }
+.kleur-blad { border-radius: 28px; overflow: hidden; background: #fff; box-shadow: 0 6px 0 var(--shade); }
+.kleur-blad .kleurplaat { display: block; width: 100%; height: auto; max-height: calc(100dvh - 150px); touch-action: manipulation; cursor: pointer; }
+.kleur-gereedschap { display: flex; flex-direction: column; gap: 16px; border-radius: 28px; background: var(--surface); padding: 18px; }
+.kleur-palet { display: grid; grid-template-columns: repeat(3, 64px); gap: 10px; justify-content: center; }
+.kleur-knop { width: 64px; height: 64px; border-radius: 50%; border: 4px solid var(--surface); box-shadow: 0 0 0 2px var(--line); }
+.kleur-knop[aria-pressed='true'] { box-shadow: 0 0 0 5px var(--ink); transform: scale(1.06); }
+.kleur-acties { display: flex; gap: 12px; justify-content: center; }
+.kleur-acties .rond.groot { width: 72px; height: 72px; background: var(--kid-tint); }
+.kleur-acties .rond[aria-pressed='true'] { background: var(--kid); color: var(--on-solid); }
+.kleur-acties .rond:disabled { opacity: .35; }
+.lezer-klaar .kleurplaat { width: 100%; max-width: 480px; border-radius: 24px; background: #fff; }
+@media (max-width: 860px), (orientation: portrait) { .kleuren { grid-template-columns: 1fr; } .kleur-palet { grid-template-columns: repeat(6, 56px); } .kleur-knop { width: 56px; height: 56px; } }
