@@ -151,3 +151,36 @@
 /* Racen */
 .harten { display: flex; gap: 2px; }
 .spel-score { display: inline-flex; align-items: center; gap: 8px; }
+
+/* Koken */
+.recept-knop svg { aspect-ratio: 200 / 140; }
+.kook-klaar .gerecht { width: min(520px, 80%); animation: huppel .6s ease-in-out 2; }
+.kook-klaar .knoppen-rij { width: min(560px, 100%); }
+.kook { display: grid; grid-template-columns: minmax(220px, 300px) 1fr; gap: 24px; align-items: start; }
+.recept-kaart { border-radius: 32px; background: var(--gold-bg); color: var(--gold-ink); padding: 20px; display: flex; flex-direction: column; gap: 14px; box-shadow: 0 6px 0 var(--shade); transform: rotate(-1.5deg); }
+.recept-kaart h2 { margin: 0; font-size: 32px; text-align: center; }
+.recept-lijst { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+.recept-ding { position: relative; aspect-ratio: 1; border-radius: 22px; background: var(--surface); display: grid; place-items: center; padding: 10px; }
+.recept-ding svg:first-child { width: 100%; height: 100%; }
+.recept-ding b { font-size: 48px; color: var(--muted); }
+.recept-ding.erin { background: var(--ok-bg); }
+.recept-ding .vink { position: absolute; right: -6px; top: -6px; width: 36px; height: 36px; padding: 4px; border-radius: 50%; background: var(--ok); color: #fff; }
+.kook-rechts { display: flex; flex-direction: column; align-items: center; gap: 16px; min-width: 0; }
+.pan { width: min(100%, 420px); }
+.in-pan { animation: plons .45s ease-out; }
+.kast { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 12px; width: 100%; }
+.kast-ding {
+  min-height: 104px; border: 0; border-radius: 24px; background: var(--surface); color: var(--ink); box-shadow: 0 5px 0 var(--shade);
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 8px; font-weight: 800; font-size: 15px;
+}
+.kast-ding svg { width: 64px; height: 64px; }
+.kast-ding.weg { opacity: .25; box-shadow: none; }
+.kast-ding.schud { animation: schud .4s; }
+.kook-roeren { min-height: calc(100dvh - 140px); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; }
+.kook-roeren .spel-balk.groot { width: min(520px, 90%); }
+.roer-vlak { position: relative; width: min(640px, 90vw); touch-action: none; cursor: grab; }
+.roer-vlak .pan { width: 100%; }
+.lepel { position: absolute; width: 40px; height: 120px; pointer-events: none; }
+@keyframes plons { from { transform: translateY(-60px); opacity: 0; } }
+@keyframes schud { 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+@media (prefers-reduced-motion: reduce) { .in-pan, .kast-ding.schud, .kook-klaar .gerecht { animation: none; } }

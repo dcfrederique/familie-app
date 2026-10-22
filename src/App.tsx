@@ -9,6 +9,7 @@ import Kleerkast from './schermen/Kleerkast.tsx'
 import Huisdier from './schermen/Huisdier.tsx'
 import Memory from './schermen/Memory.tsx'
 import Penalty from './schermen/Penalty.tsx'
+import Koken from './schermen/Koken.tsx'
 import Kleurplaat, { KleurplaatLijst } from './schermen/Kleurplaten.tsx'
 import Verhaal from './schermen/Verhaal.tsx'
 import Verhalen from './schermen/Verhalen.tsx'
@@ -46,6 +47,7 @@ export default function App() {
       <Route path="/kind/:id/penalty" element={<Penalty />} />
       <Route path="/kind/:id/huisdier" element={<Huisdier />} />
       <Route path="/kind/:id/racen" element={<Racen />} />
+      <Route path="/kind/:id/koken" element={<Koken />} />
       <Route path="/kind/:id/verhalen" element={<Verhalen />} />
       <Route path="/kind/:id/verhaal/:nr" element={<Verhaal />} />
       <Route path="/kind/:id/kleurplaten" element={<KleurplaatLijst />} />
