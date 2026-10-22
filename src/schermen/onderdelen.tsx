@@ -9,11 +9,12 @@ export function Ster({ grootte = 30 }: { grootte?: number }) {
   )
 }
 
-export function SterrenPil({ aantal }: { aantal: number }) {
+export function SterrenPil({ aantal, metWoord = false }: { aantal: number; metWoord?: boolean }) {
   return (
     <span className="sterren-pil" aria-label={`${aantal} sterren`}>
       <Ster />
       <b className="display">{aantal}</b>
+      {metWoord && <span>sterren</span>}
     </span>
   )
 }

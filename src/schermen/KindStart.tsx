@@ -1,8 +1,10 @@
 import { useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
+import { RaceBanner } from '../data/banners.tsx'
 import { kleurKlasse, type Gebruiker } from '../data/gezin.ts'
 import { Prentje } from '../data/prentjes.tsx'
-import type { Taak } from '../lib/bron/types.ts'
+import { bannerVoorKleur, tegelsVoor, type ActiviteitTegel } from '../data/thema.ts'
+import type { Taak, Tijdverzoek } from '../lib/bron/types.ts'
 import { dagVan, vandaag } from '../lib/datum.ts'
 import { useGegevens } from '../lib/gegevens.ts'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
@@ -11,7 +13,10 @@ import { kanVoorlezen, leesVoor } from '../lib/voorlezen.ts'
 import { Ster, SterrenPil } from './onderdelen.tsx'
 import './schermen.css'
 
-// Startscherm van een kind: taken als grote kaarten, rechts spelen en extra tijd vragen.
+type Lijst = { taak: Taak; status: TaakStatus }[]
+
+// Startscherm van een kind: taken links, spelen en extra tijd rechts.
+// Wie leest krijgt kaarten met tekst (Luca met de racebanner), wie niet leest grote prenten (Feline).
 export default function KindStart() {
   const { id } = useParams()
   const { kinderen, bron } = useSessie()
@@ -28,48 +33,14 @@ export default function KindStart() {
 
   if (!kind) return <Navigate to="/kinderen" replace />
   const lijst = data ? takenVoorKind(data.taken, kind.id, data.inzendingen, new Date()) : []
-  const wachtend = data?.verzoeken.filter((v) => v.status === 'aangevraagd') ?? []
-  const leest = kind.kan_lezen
+  const vrij = data?.saldo?.vrij ?? 0
+  const kies = (taak: Taak) => setGekozen(taak)
 
   return (
     <div className={`kind ${kleurKlasse(kind)}`}>
-      <header className="balk">
-        <Link to="/kinderen" className="rond" aria-label="Terug naar wie speelt er">
-          <svg className="ic" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
-        </Link>
-        <h1 className="display balk-titel">{leest ? `Dag ${kind.naam}!` : kind.naam}</h1>
-        <SterrenPil aantal={data?.saldo?.vrij ?? 0} />
-      </header>
-
-      <main className={`kind-inhoud ${leest ? 'kind-raster' : 'kind-raster kind-raster-groot'}`}>
-        <section aria-label="Taken">
-          {!leest && data && <SterrenRij aantal={data.saldo?.vrij ?? 0} />}
-          <div className={leest ? 'taken-raster' : 'taken-raster taken-groot'}>
-            {lijst.map(({ taak, status }) => (
-              <TaakKaart key={taak.id} taak={taak} status={status} leest={leest} onKies={() => setGekozen(taak)} />
-            ))}
-          </div>
-          {data && lijst.length === 0 && <p className="leeg">Vandaag geen taken. Lekker spelen!</p>}
-        </section>
-
-        <aside className="kind-zijkant">
-          <Link to={`/kind/${kind.id}/spelen`} className="spelen-knop" aria-label="Spelen">
-            <svg className="ic" viewBox="0 0 24 24" width="48" height="48" aria-hidden="true"><path d="M6 9h12a3 3 0 0 1 3 3v3a3 3 0 0 1-5 2l-1-1H9l-1 1a3 3 0 0 1-5-2v-3a3 3 0 0 1 3-3zM8 11v4M6 13h4M16 12h.01M18 14h.01" /></svg>
-            {leest && <span className="display">Spelen</span>}
-          </Link>
-          {kind.vraagt_zelf_tijd && (
-            <>
-              <Link to={`/kind/${kind.id}/tijd`} className="extra-tijd-knop">
-                <svg className="ic" viewBox="0 0 24 24" width="48" height="48" aria-hidden="true"><circle cx="12" cy="13" r="8" /><path d="M12 9v4l2.5 2.5M9 2h6" /></svg>
-                <span className="display">Extra tijd vragen</span>
-              </Link>
-              {wachtend.length > 0 && (
-                <p className="zijkant-melding">{wachtend.reduce((s, v) => s + v.minuten, 0)} minuten: wacht op mama of papa</p>
-              )}
-            </>
-          )}
-        </aside>
-      </main>
+      {kind.kan_lezen
+        ? <StartLezer kind={kind} lijst={lijst} geladen={!!data} vrij={vrij} verzoeken={data?.verzoeken ?? []} kies={kies} />
+        : <StartPrenten kind={kind} lijst={lijst} geladen={!!data} kies={kies} />}
 
       {gekozen && bron && (
         <Afvinken kind={kind} taak={gekozen} sluit={() => setGekozen(null)}
@@ -79,25 +50,179 @@ export default function KindStart() {
   )
 }
 
-function TaakKaart({ taak, status, leest, onKies }: { taak: Taak; status: TaakStatus; leest: boolean; onKies: () => void }) {
+function StartLezer({ kind, lijst, geladen, vrij, verzoeken, kies }: {
+  kind: Gebruiker; lijst: Lijst; geladen: boolean; vrij: number; verzoeken: Tijdverzoek[]; kies: (t: Taak) => void
+}) {
+  const banner = kind.thema ? bannerVoorKleur[kind.thema] : null
+  const gedaan = lijst.filter((t) => t.status === 'gedaan').length
+  const nogTeDoen = lijst.filter((t) => t.status === 'te_doen').length
+  const wachtend = verzoeken.filter((v) => v.status === 'aangevraagd')
+  const terug = (
+    <Link to="/kinderen" className="rond" aria-label="Terug naar wie speelt er">
+      <svg className="ic" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M15 18l-6-6l6-6" /></svg>
+    </Link>
+  )
+  const avatar = <span className="avatar display" aria-hidden="true">{kind.naam[0]}</span>
+  const titel = <h1 className="kop-titel display">Hoi {kind.naam}!</h1>
+
+  return (
+    <div className={`kind-scherm${banner ? ' met-banner' : ''}`}>
+      {banner === 'race' ? (
+        <header className="banner">
+          <RaceBanner />
+          <div className="banner-inhoud">
+            <div className="kop">
+              {terug}{avatar}
+              <div className="kop-tekst">
+                {titel}
+                {geladen && <p className="kop-sub">
+                  {nogTeDoen === 0 ? 'Alles gedaan, finish!' : `Nog ${nogTeDoen} ${nogTeDoen === 1 ? 'taak' : 'taken'} tot de finish`}
+                </p>}
+              </div>
+            </div>
+            <SterrenPil aantal={vrij} metWoord />
+          </div>
+        </header>
+      ) : (
+        <header className="kop">
+          {terug}{avatar}
+          <div className="kop-tekst">
+            {titel}
+            {geladen && lijst.length > 0 && <p className="kop-sub">Al {gedaan} van de {lijst.length} taken gedaan vandaag</p>}
+          </div>
+          <SterrenPil aantal={vrij} metWoord />
+        </header>
+      )}
+
+      <main className="kind-start">
+        <section aria-labelledby="taken-titel">
+          <h2 id="taken-titel" className="sectie-titel display">Mijn taken vandaag</h2>
+          <div className="taken-raster">
+            {lijst.map(({ taak, status }) => <TaakKaart key={taak.id} taak={taak} status={status} kies={() => kies(taak)} />)}
+          </div>
+          {geladen && lijst.length === 0 && <p className="leeg">Vandaag geen taken. Lekker spelen!</p>}
+        </section>
+
+        <aside className="kind-zijkant" aria-labelledby="spelen-titel">
+          <h2 id="spelen-titel" className="sectie-titel display">{banner ? 'Spelen en leren' : 'Spelen en maken'}</h2>
+          <div className="tegels">
+            {tegelsVoor(kind).map((t) => <Tegel key={t.sleutel} tegel={t} kindId={kind.id} />)}
+          </div>
+          {kind.vraagt_zelf_tijd && (
+            <>
+              <Link to={`/kind/${kind.id}/tijd`} className="extra-tijd-knop display">
+                <Klok grootte={34} /> Extra tijd vragen
+              </Link>
+              {wachtend.length > 0 && (
+                <p className="zijkant-melding">{wachtend.reduce((s, v) => s + v.minuten, 0)} minuten: wacht op mama of papa</p>
+              )}
+            </>
+          )}
+        </aside>
+      </main>
+    </div>
+  )
+}
+
+function TaakKaart({ taak, status, kies }: { taak: Taak; status: TaakStatus; kies: () => void }) {
   const tekst = status === 'wacht' ? 'Wacht op mama of papa' : status === 'gedaan' ? 'Gedaan!' : `${taak.sterren} sterren`
   return (
     <div className={`taak-kaart taak-${status}`}>
-      <button type="button" className="taak-knop" disabled={status !== 'te_doen'} onClick={onKies}
-              aria-label={`${taak.titel}, ${tekst}`}>
-        <span className="taak-prent"><Prentje naam={taak.prentje} grootte={leest ? 56 : 80} /></span>
-        {leest && <span className="taak-titel">{taak.titel}</span>}
-        <span className="taak-status">
-          {status === 'gedaan' ? <Vinkje /> : status === 'wacht' ? <Zandloper /> : <><Ster grootte={22} /> {taak.sterren}</>}
-          {leest && status !== 'te_doen' && <span>{tekst}</span>}
-        </span>
-      </button>
       {kanVoorlezen() && (
         <button type="button" className="voorlees-knop" aria-label={`Voorlezen: ${taak.titel}`}
                 onClick={() => leesVoor(`${taak.titel}. ${tekst}.`)}>
           <Luidspreker />
         </button>
       )}
+      <span className="taak-badge" aria-label={`${taak.sterren} sterren`}>+{taak.sterren} <Ster grootte={16} /></span>
+      <span className="taak-prent"><Prentje naam={taak.prentje} grootte={44} /></span>
+      <span className="taak-titel display">{taak.titel}</span>
+      {status === 'te_doen' && (
+        <button type="button" className="taak-klaar" onClick={kies} aria-label={`${taak.titel}: klaar!`}>
+          {taak.foto_nodig && <Camera grootte={24} />} Klaar!
+        </button>
+      )}
+      {status === 'wacht' && <span className="taak-status"><Klok grootte={22} /> Wacht op mama of papa</span>}
+      {status === 'gedaan' && <span className="taak-status"><Vinkje grootte={26} /> Gedaan!</span>}
+    </div>
+  )
+}
+
+function Tegel({ tegel, kindId }: { tegel: ActiviteitTegel; kindId: string }) {
+  const inhoud = (
+    <>
+      <span className={`tegel-icoon tint-${tegel.kleur}`}>
+        <svg className="ic" viewBox="0 0 24 24" width="38" height="38" aria-hidden="true"><path d={tegel.icoon} /></svg>
+      </span>
+      <span className="tegel-naam display">{tegel.naam}</span>
+      <span className="tegel-uitleg">{tegel.pad ? tegel.uitleg : 'Binnenkort'}</span>
+    </>
+  )
+  return tegel.pad
+    ? <Link to={`/kind/${kindId}/${tegel.pad}`} className="tegel">{inhoud}</Link>
+    : <div className="tegel tegel-later" aria-disabled="true">{inhoud}</div>
+}
+
+/** Voor wie niet leest: grote prenten, voorleesknoppen en ronde knoppen zonder tekst. */
+function StartPrenten({ kind, lijst, geladen, kies }: { kind: Gebruiker; lijst: Lijst; geladen: boolean; kies: (t: Taak) => void }) {
+  const gedaan = lijst.filter((t) => t.status === 'gedaan').length
+  const begroeting = lijst.length === 0
+    ? `Hoi ${kind.naam}! Vandaag geen taakjes. Lekker spelen!`
+    : `Hoi ${kind.naam}! Je hebt al ${gedaan} van de ${lijst.length} taakjes gedaan.`
+
+  return (
+    <div className="kind-scherm">
+      <header className="kop kop-groot">
+        <Link to="/kinderen" className="rond" aria-label="Terug naar wie speelt er">
+          <svg className="ic" viewBox="0 0 24 24" width="32" height="32" aria-hidden="true"><path d="M15 18l-6-6l6-6" /></svg>
+        </Link>
+        <span className="avatar display" aria-hidden="true">{kind.naam[0]}</span>
+        <h1 className="kop-titel display">Hoi {kind.naam}!</h1>
+        {kanVoorlezen() && (
+          <button type="button" className="rond" aria-label="Lees voor" onClick={() => leesVoor(begroeting)}>
+            <Luidspreker grootte={34} />
+          </button>
+        )}
+        <span style={{ flexGrow: 1 }} />
+        {geladen && lijst.length > 0 && (
+          <span className="voortgang" role="img" aria-label={`Vandaag ${gedaan} van ${lijst.length} taken gedaan`}>
+            {lijst.map(({ taak, status }) => (
+              <span key={taak.id} className={status === 'gedaan' ? '' : 'leeg'}><Ster grootte={44} /></span>
+            ))}
+          </span>
+        )}
+      </header>
+
+      <main className={`prent-raster${lijst.length === 5 ? ' veel' : ''}`}>
+        {lijst.map(({ taak, status }) => (
+          <div key={taak.id} className={`prent-kaart taak-${status}`}>
+            {kanVoorlezen() && (
+              <button type="button" className="voorlees-knop" aria-label={`Luister: ${taak.titel}`}
+                      onClick={() => leesVoor(status === 'wacht' ? `${taak.titel}. Mama of papa kijkt nog.` : taak.titel)}>
+                <Luidspreker />
+              </button>
+            )}
+            <span className="taak-prent"><Prentje naam={taak.prentje} grootte={84} /></span>
+            <span className="prent-naam">{taak.titel}</span>
+            {status === 'te_doen' && (
+              <button type="button" className="rond-groot klaar" aria-label={`${taak.titel}: klaar`} onClick={() => kies(taak)}>
+                <Vinkje grootte={48} />
+              </button>
+            )}
+            {status === 'wacht' && <span className="rond-groot wacht" role="img" aria-label="Wacht op mama of papa"><Zandloper /></span>}
+            {status === 'gedaan' && <span className="rond-groot gedaan" role="img" aria-label="Gedaan"><Ster grootte={56} /></span>}
+          </div>
+        ))}
+      </main>
+
+      <nav className="ronde-tegels" aria-label="Spelen">
+        {tegelsVoor(kind).map((t) => {
+          const icoon = <svg className="ic" viewBox="0 0 24 24" width="80" height="80" aria-hidden="true"><path d={t.icoon} /></svg>
+          return t.pad
+            ? <Link key={t.sleutel} to={`/kind/${kind.id}/${t.pad}`} className={`ronde-tegel tint-${t.kleur}`} aria-label={t.naam}>{icoon}</Link>
+            : <span key={t.sleutel} className={`ronde-tegel tint-${t.kleur} tegel-later`} role="img" aria-label={`${t.naam}, binnenkort`}>{icoon}</span>
+        })}
+      </nav>
     </div>
   )
 }
@@ -128,14 +253,14 @@ function Afvinken({ kind, taak, sluit, klaar }: {
           <label className="foto-knop">
             <input type="file" accept="image/*" capture="environment" hidden
                    onChange={(e) => setFoto(e.target.files?.[0] ?? null)} />
-            {foto ? <img src={URL.createObjectURL(foto)} alt="Jouw foto" /> : <><Camera /> <span>Foto nemen</span></>}
+            {foto ? <img src={URL.createObjectURL(foto)} alt="Jouw foto" /> : <><Camera grootte={40} /> <span>Foto nemen</span></>}
           </label>
         )}
         {fout && <p className="fout" role="alert">{fout}</p>}
         <div className="dialoog-knoppen">
           <button type="button" className="groot-knop licht" onClick={sluit}>Nog niet</button>
           <button type="button" className="groot-knop" disabled={bezig || (taak.foto_nodig && !foto)} onClick={bevestig}>
-            <Vinkje /> Ja, klaar!
+            <Vinkje grootte={28} /> Ja, klaar!
           </button>
         </div>
       </div>
@@ -143,18 +268,8 @@ function Afvinken({ kind, taak, sluit, klaar }: {
   )
 }
 
-/** Voor wie niet leest: de sterren als rij om te tellen. */
-function SterrenRij({ aantal }: { aantal: number }) {
-  const getoond = Math.min(aantal, 20)
-  return (
-    <div className="sterren-rij" aria-label={`${aantal} sterren`}>
-      {Array.from({ length: getoond }, (_, i) => <Ster key={i} grootte={36} />)}
-      {aantal > getoond && <span className="display">+{aantal - getoond}</span>}
-    </div>
-  )
-}
-
-const Vinkje = () => <svg className="ic" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M5 12l5 5 9-10" /></svg>
-const Zandloper = () => <svg className="ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true"><path d="M7 3h10M7 21h10M8 3c0 5 8 5 8 9s-8 4-8 9M16 3c0 5-8 5-8 9s8 4 8 9" /></svg>
-const Luidspreker = () => <svg className="ic" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M4 9v6h4l5 4V5L8 9z" /><path d="M16 9a4 4 0 0 1 0 6M19 6a8 8 0 0 1 0 12" /></svg>
-const Camera = () => <svg className="ic" viewBox="0 0 24 24" width="40" height="40" aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>
+const Vinkje = ({ grootte }: { grootte: number }) => <svg className="ic" viewBox="0 0 24 24" width={grootte} height={grootte} aria-hidden="true"><path d="M5 12l5 5L20 7" /></svg>
+const Klok = ({ grootte }: { grootte: number }) => <svg className="ic" viewBox="0 0 24 24" width={grootte} height={grootte} aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18a9 9 0 0 0 0 18zM12 7v5l3 2" /></svg>
+const Zandloper = () => <svg className="ic" viewBox="0 0 24 24" width="44" height="44" aria-hidden="true"><path d="M7 3h10M7 21h10M8 3c0 5 8 5 8 9s-8 4-8 9M16 3c0 5-8 5-8 9s8 4 8 9" /></svg>
+const Luidspreker = ({ grootte = 28 }: { grootte?: number }) => <svg className="ic" viewBox="0 0 24 24" width={grootte} height={grootte} aria-hidden="true"><path d="M4 10h4l5-4v12l-5-4H4z" /><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11" /></svg>
+const Camera = ({ grootte }: { grootte: number }) => <svg className="ic" viewBox="0 0 24 24" width={grootte} height={grootte} aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>
