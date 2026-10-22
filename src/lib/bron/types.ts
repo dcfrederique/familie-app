@@ -1,4 +1,5 @@
 // Gemeenschappelijke vorm van de gegevens, voor Supabase en voor de demo zonder Supabase.
+import type { Activiteit } from '../regels.ts'
 
 export type Herhaling = 'eenmalig' | 'elke_dag' | 'schooldagen'
 export type InzendingStatus = 'ingediend' | 'goedgekeurd' | 'afgekeurd'
@@ -35,6 +36,19 @@ export interface Tijdverzoek {
   aangevraagd_op: string
   dag: string
   vervalt_op: string
+}
+
+export interface ActiviteitRegel {
+  id: string
+  kind_id: string
+  activiteit: Activiteit
+  inhoud: { goed?: number; sommen?: number; niveau?: string; titel?: string; beurten?: number; paren?: number }
+  duur_seconden: number
+  sterren: number
+  /** null als de activiteit geen sterren oplevert */
+  status: InzendingStatus | null
+  tijdstip: string
+  dag: string
 }
 
 export interface Saldo {
@@ -75,10 +89,14 @@ export interface Bron {
 
   taakIndienen(kindId: string, taakId: string, foto: Blob | null): Promise<void>
   tijdAanvragen(kindId: string, minuten: number): Promise<void>
+  /** Bewaart een afgewerkte activiteit; geeft de sterren terug die op goedkeuring wachten. */
+  activiteitOpslaan(kindId: string, activiteit: Activiteit, inhoud: ActiviteitRegel['inhoud'], duurSeconden: number): Promise<number>
+  activiteitenTeBeoordelen(): Promise<ActiviteitRegel[]>
 
   inzendingBeoordelen(id: string, goed: boolean, pin: string | null): Promise<OuderUitkomst>
   verzoekBehandelen(id: string, toekennen: boolean, reden: string | null, pin: string | null): Promise<OuderUitkomst>
   tijdGeven(kindId: string, minuten: number, pin: string | null): Promise<OuderUitkomst>
+  activiteitBeoordelen(id: string, goed: boolean, pin: string | null): Promise<OuderUitkomst>
   fotoUrl(pad: string): Promise<string | null>
 
   taakOpslaan(taak: NieuweTaak): Promise<void>

@@ -11,7 +11,7 @@ import { kanVoorlezen, leesVoor } from '../lib/voorlezen.ts'
 import { Ster, SterrenPil } from './onderdelen.tsx'
 import './schermen.css'
 
-// Startscherm van een kind: taken als grote kaarten, rechts extra tijd vragen.
+// Startscherm van een kind: taken als grote kaarten, rechts spelen en extra tijd vragen.
 export default function KindStart() {
   const { id } = useParams()
   const { kinderen, bron } = useSessie()
@@ -52,17 +52,23 @@ export default function KindStart() {
           {data && lijst.length === 0 && <p className="leeg">Vandaag geen taken. Lekker spelen!</p>}
         </section>
 
-        {kind.vraagt_zelf_tijd && (
-          <aside className="kind-zijkant">
-            <Link to={`/kind/${kind.id}/tijd`} className="extra-tijd-knop">
-              <svg className="ic" viewBox="0 0 24 24" width="48" height="48" aria-hidden="true"><circle cx="12" cy="13" r="8" /><path d="M12 9v4l2.5 2.5M9 2h6" /></svg>
-              <span className="display">Extra tijd vragen</span>
-            </Link>
-            {wachtend.length > 0 && (
-              <p className="zijkant-melding">{wachtend.reduce((s, v) => s + v.minuten, 0)} minuten: wacht op mama of papa</p>
-            )}
-          </aside>
-        )}
+        <aside className="kind-zijkant">
+          <Link to={`/kind/${kind.id}/spelen`} className="spelen-knop" aria-label="Spelen">
+            <svg className="ic" viewBox="0 0 24 24" width="48" height="48" aria-hidden="true"><path d="M6 9h12a3 3 0 0 1 3 3v3a3 3 0 0 1-5 2l-1-1H9l-1 1a3 3 0 0 1-5-2v-3a3 3 0 0 1 3-3zM8 11v4M6 13h4M16 12h.01M18 14h.01" /></svg>
+            {leest && <span className="display">Spelen</span>}
+          </Link>
+          {kind.vraagt_zelf_tijd && (
+            <>
+              <Link to={`/kind/${kind.id}/tijd`} className="extra-tijd-knop">
+                <svg className="ic" viewBox="0 0 24 24" width="48" height="48" aria-hidden="true"><circle cx="12" cy="13" r="8" /><path d="M12 9v4l2.5 2.5M9 2h6" /></svg>
+                <span className="display">Extra tijd vragen</span>
+              </Link>
+              {wachtend.length > 0 && (
+                <p className="zijkant-melding">{wachtend.reduce((s, v) => s + v.minuten, 0)} minuten: wacht op mama of papa</p>
+              )}
+            </>
+          )}
+        </aside>
       </main>
 
       {gekozen && bron && (

@@ -1,5 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
-import type { Bron, Inzending, LogRegel, NieuweTaak, OuderUitkomst, Saldo, Spelregels, Taak, Tijdverzoek } from './types.ts'
+import type { ActiviteitRegel, Bron, Inzending, LogRegel, NieuweTaak, OuderUitkomst, Saldo, Spelregels, Taak, Tijdverzoek } from './types.ts'
 
 function fout(error: { message: string } | null) {
   if (error) throw new Error(error.message)
@@ -84,6 +84,19 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
       const { error } = await sb.rpc('tijd_aanvragen', { p_kind: kindId, p_minuten: minuten })
       fout(error)
     },
+    async activiteitOpslaan(kindId, activiteit, inhoud, duurSeconden) {
+      const { data, error } = await sb.rpc('activiteit_opslaan',
+        { p_kind: kindId, p_activiteit: activiteit, p_inhoud: inhoud, p_duur_seconden: Math.round(duurSeconden) })
+      fout(error)
+      return data as number
+    },
+    async activiteitenTeBeoordelen() {
+      const { data, error } = await sb.from('activiteitlog')
+        .select('id, kind_id, activiteit, inhoud, duur_seconden, sterren, status, tijdstip, dag')
+        .eq('status', 'ingediend').order('tijdstip')
+      fout(error)
+      return (data ?? []) as ActiviteitRegel[]
+    },
 
     async inzendingBeoordelen(id, goed, pin) {
       const { data, error } = await sb.rpc('inzending_beoordelen', { p_inzending: id, p_goedkeuren: goed, p_pin: pin })
@@ -98,6 +111,11 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
     },
     async tijdGeven(kindId, minuten, pin) {
       const { data, error } = await sb.rpc('tijd_geven', { p_kind: kindId, p_minuten: minuten, p_pin: pin })
+      fout(error)
+      return data as OuderUitkomst
+    },
+    async activiteitBeoordelen(id, goed, pin) {
+      const { data, error } = await sb.rpc('activiteit_beoordelen', { p_activiteit: id, p_goedkeuren: goed, p_pin: pin })
       fout(error)
       return data as OuderUitkomst
     },

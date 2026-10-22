@@ -36,6 +36,7 @@ Feline vraagt zelf geen tijd aan; dat beslissen de ouders.
 | Dagplafond extra tijd | 60 min per kind |
 | Tijdvenster aanvragen | 7:00 tot 20:00 |
 | Maximum spaarsaldo | 300 sterren |
+| Sterren uit activiteiten per dag | 20 per kind; ook die pas na goedkeuring van een ouder |
 
 ## Activiteiten
 
