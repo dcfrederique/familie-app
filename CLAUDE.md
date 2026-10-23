@@ -32,6 +32,7 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - `docs/verhalen.md`: de 30 verhalen die als initiële data in de app moeten.
 - `prototypes/spelletjes.html`: werkend prototype van Memory en Rekenen (vanilla JS). Gebruik de logica en de stijl als referentie.
 - `prototypes/penalty.html`: werkend prototype van Penalty's (schieten met een veeg, canvas). De keeper-modus moet nog gebouwd worden.
+- `docs/huis.md` en `prototypes/huis.html`: use case en klikbaar prototype van Mijn huis (huis groeit met verdiende sterren, zelf aankleden); nog niet in de app.
 
 ## Beslist (21 oktober 2026)
 
