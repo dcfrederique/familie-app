@@ -4,38 +4,33 @@ import type { Gebruiker } from '../data/gezin.ts'
 import { afDrempel, kleurplaten, type Kleurplaat, type Vlak } from '../data/kleurplaten.ts'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import { geluid } from '../lib/spelletjes/geluid.ts'
-import { kleurplaatBewaren, kleurplaatLezen } from '../lib/spelletjes/opslag.ts'
+import { kleurplaatBewaren, kleurplaatLezen, tekeningLezen } from '../lib/spelletjes/opslag.ts'
+import { strepenUit } from '../lib/tekenen/tekening.ts'
 import { Ster } from './onderdelen.tsx'
 import SpelKader from './SpelKader.tsx'
 import './kleurplaten.css'
 import './verhalen.css'
 import { ThemaFeest } from './ThemaDelen.tsx'
 import Bladzijden, { kaartMaat } from './Bladzijden.tsx'
+import { KleurKiezer, palet } from './KleurKiezer.tsx'
 
 const INKT = '#26303A'
-const palet = ['#E53935', '#F2994A', '#F7D046', '#7CC36E', '#2E8A3C', '#5DB7E8', '#2D6BD6', '#8E6CC9',
-  '#F28DB2', '#8B5E3C', '#F5CBA7', '#26303A']
-
-// Vrij kiezen: twaalf tinten in vijf helderheden, plus grijzen en huidskleuren.
-const hsl = (h: number, s: number, l: number) => {
-  const f = (n: number) => {
-    const k = (n + h / 30) % 12, a = (s / 100) * Math.min(l / 100, 1 - l / 100)
-    return Math.round(255 * (l / 100 - a * Math.max(-1, Math.min(k - 3, 9 - k, 1)))).toString(16).padStart(2, '0')
-  }
-  return `#${f(0)}${f(8)}${f(4)}`.toUpperCase()
-}
-const vrijeKleuren = [
-  ...[88, 74, 58, 44, 30].flatMap((l) => Array.from({ length: 12 }, (_, i) => hsl(i * 30, 80, l))),
-  '#FFFFFF', '#E0E0E0', '#B0B0B0', '#808080', '#505050', '#000000',
-  '#FDE3CF', '#F3C9A1', '#E0A878', '#C68642', '#8D5524', '#5C3A21',
-]
 
 // Kiezen welke plaat je inkleurt.
 export function KleurplaatLijst() {
   return (
     <SpelKader titel="Kleurplaten" scherm="kleurplaten" terug={(id) => `/kind/${id}`}>
       {(kind) => (
-        <Bladzijden items={kleurplaten} maat={kaartMaat} className="kleur-raster" label="Meer kleurplaten" toon={(p) => {
+        <Bladzijden items={[null, ...kleurplaten]} maat={kaartMaat} className="kleur-raster" label="Meer kleurplaten" toon={(p) => {
+            if (!p) {
+              return (
+                <Link key="tekenen" to={`/kind/${kind.id}/tekenen`} className="verhaal-kaart" aria-label="Zelf tekenen">
+                  <LeegBlad />
+                  {strepenUit(tekeningLezen(kind.id)).length > 0 && <span className="kleur-bezig">Verder tekenen</span>}
+                  <span className="verhaal-kaart-titel">Zelf tekenen</span>
+                </Link>
+              )
+            }
             const bezig = kleurplaatLezen(kind.id, p.sleutel)
             return (
               <Link key={p.sleutel} to={`/kind/${kind.id}/kleurplaat/${p.sleutel}`} className="verhaal-kaart" aria-label={p.titel}>
@@ -57,6 +52,26 @@ export default function KleurplaatScherm() {
     <SpelKader titel={plaat?.titel ?? 'Kleurplaat'} terug={(id) => `/kind/${id}/kleurplaten`}>
       {(kind) => plaat ? <Inkleuren key={plaat.sleutel} kind={kind} plaat={plaat} /> : <Navigate to={`/kind/${kind.id}/kleurplaten`} replace />}
     </SpelKader>
+  )
+}
+
+/** Prent voor 'Zelf tekenen': een wit blad met een paar krabbels en een potlood. */
+function LeegBlad() {
+  return (
+    <svg viewBox="0 0 400 300" className="kleurplaat" role="img" aria-label="Wit blad">
+      <g fill="none" strokeLinecap="round" strokeWidth={9}>
+        <path d="M60 210c30-60 60-60 80 0s50 60 80 0" stroke="#5DB7E8" />
+        <path d="M90 90c20-30 60-30 70 0" stroke="#F2994A" />
+        <circle cx="300" cy="80" r="30" stroke="#F7D046" />
+        <path d="M70 250h120" stroke="#7CC36E" />
+      </g>
+      <g transform="rotate(-45 290 200)" stroke={INKT} strokeWidth={3} strokeLinejoin="round">
+        <polygon points="220,200 240,192 240,208" fill="#E53935" />
+        <polygon points="240,192 258,184 258,216 240,208" fill="#F3C9A1" />
+        <rect x="258" y="184" width="90" height="32" fill="#E53935" />
+        <rect x="348" y="184" width="20" height="32" rx="4" fill="#F28DB2" />
+      </g>
+    </svg>
   )
 }
 
@@ -164,24 +179,7 @@ function Inkleuren({ kind, plaat }: { kind: Gebruiker; plaat: Kleurplaat }) {
         </div>
         <button type="button" className="groot-knop" disabled={gekleurd < afDrempel} onClick={af}>Klaar!</button>
       </div>
-      {kiezer && (
-        <div className="dialoog-achtergrond" role="dialog" aria-modal="true" aria-label="Kies een kleur" onClick={() => setKiezer(false)}>
-          <div className="kleur-kiezer" onClick={(e) => e.stopPropagation()}>
-            <div className="kleur-kiezer-kop">
-              <h2 className="display">Kies een kleur</h2>
-              <button type="button" className="rond groot" aria-label="Sluiten" onClick={() => setKiezer(false)}>
-                <svg className="ic" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
-              </button>
-            </div>
-            <div className="kleur-kiezer-raster">
-              {vrijeKleuren.map((k) => (
-                <button key={k} type="button" className="kleur-vak" style={{ background: k }} aria-pressed={kleur === k}
-                        aria-label={`Kleur ${k}`} onClick={() => vrijGekozen(k)} />
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+      {kiezer && <KleurKiezer kleur={kleur} kies={vrijGekozen} sluit={() => setKiezer(false)} />}
     </div>
   )
 }

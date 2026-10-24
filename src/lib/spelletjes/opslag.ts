@@ -58,3 +58,9 @@ export function puzzelAf(kind: string, sleutel: string) {
   const al = puzzelsAf(kind)
   if (!al.includes(sleutel)) schrijf(`puzzels-af-${kind}`, [...al, sleutel].join(','))
 }
+
+/** Vrije tekening die nog niet af is (strepen als JSON). */
+export function tekeningLezen(kind: string): unknown {
+  try { return JSON.parse(lees(`tekening-${kind}`) ?? 'null') } catch { return null }
+}
+export const tekeningBewaren = (kind: string, strepen: unknown[] | null) => schrijf(`tekening-${kind}`, JSON.stringify(strepen))

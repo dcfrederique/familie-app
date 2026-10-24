@@ -27,3 +27,33 @@
 .kleur-acties .rond:disabled { opacity: .35; }
 .lezer-klaar .kleurplaat { width: 100%; max-width: 480px; border-radius: 24px; background: #fff; }
 @media (max-width: 860px), (orientation: portrait) { .kleuren { grid-template-columns: 1fr; } .kleur-palet, .kleur-eigen { grid-template-columns: repeat(6, 56px); } .kleur-knop { width: 56px; height: 56px; } .kleur-kiezer-raster { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+
+/* Zelf tekenen (Tekenen.tsx): wit blad links, gereedschap rechts; het blad past altijd zonder scrollen. */
+.teken-vak { min-width: 0; }
+.tekenen { display: grid; grid-template-columns: minmax(0, 1fr) 272px; gap: 20px; align-items: start; }
+.teken-blad {
+  margin: 0 auto; width: 100%; aspect-ratio: 4 / 3;
+  border-radius: 28px; overflow: hidden; background: #fff; box-shadow: 0 6px 0 var(--shade);
+}
+.teken-blad canvas { display: block; width: 100%; height: 100%; touch-action: none; cursor: crosshair; user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
+.teken-gereedschap { gap: 12px; padding: 14px; }
+.teken-rij { display: flex; gap: 8px; justify-content: center; }
+.teken-knop { width: 56px; height: 56px; padding: 0; border: 0; border-radius: 18px; background: var(--kid-tint); display: grid; place-items: center; }
+.teken-knop[aria-pressed='true'] { background: var(--kid); box-shadow: 0 0 0 3px var(--ink); }
+.teken-palet { display: grid; grid-template-columns: repeat(4, 52px); gap: 9px; justify-content: center; }
+.teken-gereedschap .kleur-knop { width: 52px; height: 52px; border-width: 3px; }
+.thema-race .teken-gereedschap .kleur-knop { height: 58px; }
+.teken-gereedschap .kleur-acties .rond.groot { width: 64px; height: 64px; }
+.teken-gereedschap .groot-knop { min-height: 64px; }
+@media (max-width: 860px), (orientation: portrait) {
+  .tekenen { grid-template-columns: 1fr; }
+    .teken-palet { grid-template-columns: repeat(8, 44px); }
+  .teken-gereedschap .kleur-knop { width: 44px; height: 44px; }
+}
+.teken-acties { align-items: center; gap: 10px; }
+.teken-acties .groot-knop { flex: 1; min-width: 0; }
+.thema-race .teken-knop { background: #E8EEF6; }
+.thema-race .teken-knop[aria-pressed='true'] { background: var(--kid); box-shadow: 0 0 0 3px #FFFFFF; }
+.thema-race .teken-palet { row-gap: 16px; padding-top: 6px; }
+/* De kop met een thema heeft een marge bovenaan; zonder flow-root schuift die de pagina 20px te ver en moet je scrollen. */
+.kind:has(.tekenen, .teken-klaar, .kleuren) { display: flow-root; }
