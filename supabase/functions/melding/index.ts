@@ -29,6 +29,7 @@ Deno.serve(async (req) => {
     bericht = JSON.stringify({ titel: melding.titel, tekst: melding.tekst, url: '/ouder/goedkeuren' })
   }
   let verstuurd = 0
+  const fouten: string[] = []
   await Promise.all((abonnementen ?? []).map(async (a) => {
     try {
       await webpush.sendNotification({ endpoint: a.endpoint, keys: { p256dh: a.p256dh, auth: a.auth } }, bericht, { TTL: 3600 })
@@ -38,7 +39,9 @@ Deno.serve(async (req) => {
       const code = (e as { statusCode?: number }).statusCode
       if (code === 404 || code === 410) await db.rpc('push_vervallen', { p_endpoint: a.endpoint })
       else console.error('melding mislukt', code, (e as Error).message)
+      // Ook in het antwoord, zodat het in net._http_response en Meldingen nakijken te lezen is.
+      fouten.push(`${code ?? '?'}: ${((e as { body?: string }).body ?? (e as Error).message).slice(0, 150)}`)
     }
   }))
-  return new Response(JSON.stringify({ verstuurd }), { headers: { 'content-type': 'application/json' } })
+  return new Response(JSON.stringify({ verstuurd, fouten }), { headers: { 'content-type': 'application/json' } })
 })

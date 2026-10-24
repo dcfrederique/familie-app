@@ -24,5 +24,5 @@ jobs:
           q 'extensies' "select extname, extversion from pg_extension where extname in ('pg_net','pg_cron','supabase_vault')"
           q 'abonnementen (ouder-gsm''s)' "select gezin_id, count(*), max(aangemaakt) laatst from public.push_abonnementen group by 1"
           q 'triggers op de drie tabellen' "select c.relname tabel, t.tgname trigger, p.proname functie, t.tgenabled from pg_trigger t join pg_class c on c.oid = t.tgrelid join pg_proc p on p.oid = t.tgfoid where not t.tgisinternal and c.relname in ('inzendingen','tijdverzoeken','activiteitlog') order by 1"
-          q 'laatste webhook-antwoorden' "select id, created, status_code, left(content, 120) inhoud, error_msg, timed_out from net._http_response order by created desc limit 15"
+          q 'laatste webhook-antwoorden' "select id, created, status_code, left(content, 400) inhoud, error_msg, timed_out from net._http_response order by created desc limit 15"
           q 'laatste inzendingen/activiteiten' "(select 'inzending' soort, tijdstip from public.inzendingen order by tijdstip desc limit 3) union all (select 'tijdverzoek', aangevraagd_op from public.tijdverzoeken order by aangevraagd_op desc limit 3)"
