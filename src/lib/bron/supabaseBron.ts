@@ -1,5 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
-import type { ActiviteitRegel, Bron, Inzending, LogRegel, NieuweTaak, OuderUitkomst, Saldo, Spelregels, Taak, Tijdverzoek } from './types.ts'
+import type { ActiviteitRegel, Bron, SpraakToken, Inzending, LogRegel, NieuweTaak, OuderUitkomst, Saldo, Spelregels, Taak, Tijdverzoek } from './types.ts'
 
 function fout(error: { message: string } | null) {
   if (error) throw new Error(error.message)
@@ -96,6 +96,12 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
         { p_kind: kindId, p_activiteit: activiteit, p_inhoud: inhoud, p_duur_seconden: Math.round(duurSeconden) })
       fout(error)
       return data as number
+    },
+    async spraakToken(kindId, gebruikt) {
+      const { data, error } = await sb.functions.invoke<SpraakToken>('spraak-token', { body: { kind: kindId, gebruikt: Math.round(gebruikt) } })
+      fout(error)
+      if (!data) throw new Error('geen antwoord van spraak-token')
+      return data
     },
     async figuurtjeBewaren(kindId, figuurtje) {
       const { error } = await sb.rpc('figuurtje_bewaren', { p_kind: kindId, p_figuurtje: figuurtje })

@@ -1,0 +1,41 @@
+# Maakt prenten met Azure OpenAI (docs/prenten.md). Handmatig: Actions → Prenten maken → Run workflow.
+# De prenten komen als zip onderaan de run (artefact "prenten-<reeks>"); open index.html om ze te bekijken.
+# Zonder de secrets AZURE_OPENAI_ENDPOINT, AZURE_OPENAI_KEY en AZURE_OPENAI_DEPLOYMENT slaat hij zich over.
+name: Prenten maken
+
+on:
+  workflow_dispatch:
+    inputs:
+      reeks:
+        description: Welke reeks (proef = de 10 proefprenten)
+        default: proef
+      kwaliteit:
+        description: low (±€0,01 per prent), medium (±€0,04) of high
+        default: medium
+
+jobs:
+  prenten:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      AZURE_OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
+      AZURE_OPENAI_KEY: ${{ secrets.AZURE_OPENAI_KEY }}
+      AZURE_OPENAI_DEPLOYMENT: ${{ secrets.AZURE_OPENAI_DEPLOYMENT }}
+    steps:
+      - if: env.AZURE_OPENAI_ENDPOINT == '' || env.AZURE_OPENAI_KEY == '' || env.AZURE_OPENAI_DEPLOYMENT == ''
+        run: echo "::notice::Secrets voor Azure OpenAI ontbreken, geen prenten gemaakt (zie docs/prenten.md)."
+      - if: env.AZURE_OPENAI_ENDPOINT != '' && env.AZURE_OPENAI_KEY != '' && env.AZURE_OPENAI_DEPLOYMENT != ''
+        uses: actions/checkout@v5
+      - if: env.AZURE_OPENAI_ENDPOINT != '' && env.AZURE_OPENAI_KEY != '' && env.AZURE_OPENAI_DEPLOYMENT != ''
+        uses: actions/setup-node@v5
+        with:
+          node-version: 24
+      - if: env.AZURE_OPENAI_ENDPOINT != '' && env.AZURE_OPENAI_KEY != '' && env.AZURE_OPENAI_DEPLOYMENT != ''
+        name: Prenten maken
+        run: node scripts/maak-prenten.ts "${{ inputs.reeks }}" --kwaliteit "${{ inputs.kwaliteit }}"
+      - if: always() && env.AZURE_OPENAI_ENDPOINT != '' && env.AZURE_OPENAI_KEY != '' && env.AZURE_OPENAI_DEPLOYMENT != ''
+        uses: actions/upload-artifact@v5
+        with:
+          name: prenten-${{ inputs.reeks }}
+          path: prenten/${{ inputs.reeks }}
+          if-no-files-found: ignore

@@ -45,7 +45,7 @@ export interface ActiviteitRegel {
   id: string
   kind_id: string
   activiteit: Activiteit
-  inhoud: { goed?: number; sommen?: number; niveau?: string; titel?: string; beurten?: number; paren?: number; punten?: number; raak?: number; schoten?: number; stukjes?: number }
+  inhoud: { goed?: number; woorden?: number; sommen?: number; niveau?: string; titel?: string; beurten?: number; paren?: number; punten?: number; raak?: number; schoten?: number; stukjes?: number }
   duur_seconden: number
   sterren: number
   /** null als de activiteit geen sterren oplevert */
@@ -86,6 +86,9 @@ export interface Welkom {
   thema: Kleur
 }
 
+/** Antwoord van de Edge Function spraak-token: een token, of resterend 0 als de leestijd van vandaag op is. */
+export type SpraakToken = { token: string; regio: string; resterend: number } | { resterend: 0 }
+
 export interface Spelregels {
   dagplafond_minuten: number
   venster_van: string
@@ -115,6 +118,11 @@ export interface Bron {
   /** Bewaart een afgewerkte activiteit; geeft de sterren terug die op goedkeuring wachten. */
   activiteitOpslaan(kindId: string, activiteit: Activiteit, inhoud: ActiviteitRegel['inhoud'], duurSeconden: number): Promise<number>
   activiteitenTeBeoordelen(): Promise<ActiviteitRegel[]>
+  /**
+   * Token voor spraakherkenning bij "Ik lees zelf"; gebruikt = seconden meegeluisterd sinds de vorige vraag.
+   * Gooit een fout als spraakherkenning niet beschikbaar is (demo, geen secrets, oude migratie).
+   */
+  spraakToken(kindId: string, gebruikt: number): Promise<SpraakToken>
   /** Bewaart het figuurtje; null zet het terug naar het basisfiguurtje. De server controleert de drempels. */
   figuurtjeBewaren(kindId: string, figuurtje: Figuurtje | null): Promise<void>
   /** Bewaart het welkomstpad; geeft de welkomstbonus terug (0 als die al gegeven was). */

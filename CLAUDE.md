@@ -36,6 +36,7 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - `prototypes/penalty.html`: werkend prototype van Penalty's (schieten met een veeg, canvas). De keeper-modus moet nog gebouwd worden.
 - `docs/hosting.md`: hosting op Azure Static Web Apps, automatisch deployen, en de klikstappen voor de hele Azure-setup (Speech, back-ups).
 - `docs/huis.md` en `prototypes/huis.html`: use case en klikbaar prototype van Mijn huis (huis groeit met verdiende sterren, zelf aankleden); nog niet in de app.
+- `docs/azure-extra.md` en `docs/prenten.md`: Azure-extra's (back-up, leesoefening Ik lees zelf, prenten met Azure OpenAI) en het stappenplan voor de prenten.
 - `docs/tablet-per-kind.md`: tablet vastzetten op één kind en het welkomstpad (figuurtje, verjaardag, thema, welkomstbonus).
 - `prototypes/thema-subschermen.html`: mockup van het kinderthema (race, kasteel, tuin) in de subschermen; zit in de app via `src/data/themaPrenten.ts`, `src/schermen/ThemaDelen.tsx` en `src/schermen/thema-schermen.css`.
 - `docs/ouderdeel.md` en `prototypes/ouderdeel.html`: plan en mockup van het ouderdeel als beheertoepassing met hamburgermenu, en latere onderdelen (onze taken, boodschappen, notities, gezondheid). Fase 1 (menu, zijbalk op pc, IBM Plex Sans, rechte hoeken) zit in de app; de latere onderdelen nog niet.

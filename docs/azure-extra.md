@@ -1,6 +1,6 @@
 # Drie extra's met Azure (plan)
 
-Stand: 24 oktober 2026. Nog niets gebouwd. Frederique koos op 24 oktober deze drie om uit te werken. De voorleesstem staat apart in `docs/voorleesstem.md` en blijft Azure Speech (Dena of Arnaud).
+Stand: 24 oktober 2026. Back-up (1) en leesoefening (2) gebouwd, prenten (3) voorbereid tot de proef (`docs/prenten.md`). Frederique koos op 24 oktober deze drie om uit te werken. De voorleesstem staat apart in `docs/voorleesstem.md` en blijft Azure Speech (Dena of Arnaud).
 
 | # | Wat | Kost | Volgorde |
 | --- | --- | --- | --- |
@@ -54,7 +54,14 @@ Bewijsfoto's in Supabase Storage nemen we niet mee: die zijn alleen nodig tot ee
 
 **Kost:** F0 geeft 5 uur spraakherkenning per maand. Dat is ±10 minuten per dag voor Yuna en Luca samen. We zetten in de app een plafond van 5 minuten lezen per kind per dag. Is de 5 uur toch op, dan weigert Azure tot de volgende maand en valt de knop **Ik lees zelf** weg; voorlezen werkt gewoon verder. Een factuur is niet mogelijk.
 
-**Wat Frederique doet:** niets extra, de Speech-resource uit `docs/voorleesstem.md` volstaat. De sleutel komt ook als secret in Supabase (**Edge Functions → Secrets**: `AZURE_SPEECH_KEY`, `AZURE_SPEECH_REGION`).
+**Stand:** gebouwd op 24 oktober 2026. Migratie `20261024000400_leesoefening.sql`, Edge Function `supabase/functions/spraak-token`, woordvergelijking `src/lib/meelezen.ts` (met tests), meeluisteren `src/lib/meeluisteren.ts` en `src/lib/zelfLezen.ts`, knop **Ik lees zelf** in `src/schermen/Verhaal.tsx`. Keuzes die we in de proefweek kunnen bijstellen:
+
+- Het telt als **zelf gelezen** als minstens de helft van de woorden van het verhaal goed gehoord is; anders gewoon als verhaal. Allebei 5 sterren (na goedkeuring); de ouder ziet bij het goedkeuren hoeveel woorden goed waren.
+- Een bladzijde die helemaal gelezen is, mag meteen verder; anders geldt de gewone minimumtijd per bladzijde.
+- Plafond: 300 seconden spraakherkenning per kind per dag (`gezinnen.spraak_seconden_per_dag`, server). De app meldt elke minuut hoeveel er gebruikt is en haalt dan ook een verse token.
+- Stap 2.1 (kan Azure Nederlands beoordelen?) zit in **Actions → Azure controleren**: die laat Dena een zin inspreken, stuurt die naar de spraakherkenning (nl-BE en nl-NL) met uitspraakbeoordeling en toont wat er herkend werd. Met een kinderstem testen kan alleen op de tablet.
+
+**Wat Frederique doet:** migratie draaien en de Edge Function `spraak-token` zetten, met de Speech-sleutel als secret (klikstappen in `docs/supabase.md`, stap 4). De sleutel komt ook als secret in Supabase (**Edge Functions → Secrets**: `AZURE_SPEECH_KEY`, `AZURE_SPEECH_REGION`).
 
 **Stappen:**
 
@@ -65,6 +72,8 @@ Bewijsfoto's in Supabase Storage nemen we niet mee: die zijn alleen nodig tot ee
 5. Proefweek: herkent het genoeg, is het niet frustrerend? Bijstellen hoe streng het is.
 
 ## 3. Beeldgeneratie: 100 verhalen, kleurplaten en puzzels
+
+**Stand:** op 24 oktober 2026 koos Frederique om dit nu voor te bereiden. Stijlgids, 10 proefopdrachten, script en workflow staan klaar; het stappenplan voor Azure OpenAI staat in `docs/prenten.md`.
 
 **Idee:** de verhalen uitbreiden van 30 naar **100**, met echte prenten in plaats van de huidige SVG-vormpjes, en met dezelfde beeldstijl ook nieuwe kleurplaten en een nieuw spel **Puzzels**. Dit doen we als één project, wanneer we de volgende ronde spelletjes bouwen, zodat er één stijlgids is en alles in één keer gegenereerd wordt.
 

@@ -5,7 +5,7 @@ Project: `https://oyqwhrttwaatqymjomtc.supabase.co`
 ## 1. Database
 
 Voer in de Supabase-console, **SQL Editor**, de bestanden in `supabase/migrations/` uit, in volgorde van naam.
-Een script dat al gedraaid heeft, draai je niet opnieuw. `20261022000300_voorbeeldtaken_fotos.sql` maakt ook de privé-opslag `fotos` aan voor bewijsfoto's; `20261022000400_activiteiten.sql` voegt het activiteitlog toe (sterren uit rekenen, na goedkeuring). `20261022001000_figuurtje.sql` voegt het eigen figuurtje per kind toe; zonder die migratie toont de app het basisfiguurtje maar kan een kind niets bewaren. `20261024000200_tablet_per_kind.sql` laat elke tablet bij één kind horen en voegt het welkomstpad toe (`docs/tablet-per-kind.md`); zonder die migratie werkt de tablet zoals vroeger (Wie speelt er?). Of met de Supabase CLI:
+Een script dat al gedraaid heeft, draai je niet opnieuw. `20261022000300_voorbeeldtaken_fotos.sql` maakt ook de privé-opslag `fotos` aan voor bewijsfoto's; `20261022000400_activiteiten.sql` voegt het activiteitlog toe (sterren uit rekenen, na goedkeuring). `20261022001000_figuurtje.sql` voegt het eigen figuurtje per kind toe; zonder die migratie toont de app het basisfiguurtje maar kan een kind niets bewaren. `20261024000200_tablet_per_kind.sql` laat elke tablet bij één kind horen en voegt het welkomstpad toe (`docs/tablet-per-kind.md`); zonder die migratie werkt de tablet zoals vroeger (Wie speelt er?). `20261024000400_leesoefening.sql` voegt **Ik lees zelf** toe (`docs/azure-extra.md`, stap 2); daarvoor is ook de Edge Function `spraak-token` nodig (zie onder). Of met de Supabase CLI:
 `supabase link --project-ref oyqwhrttwaatqymjomtc` en daarna `supabase db push`.
 
 ## 2. Instellingen bij Authentication
@@ -19,6 +19,14 @@ Een script dat al gedraaid heeft, draai je niet opnieuw. `20261022000300_voorbee
 1. Op de gsm van de eerste ouder: **Ik ben mama of papa**, account maken, gezin aanmaken (kinderen staan al ingevuld), pincode instellen.
 2. **Toestellen > Tablet koppelen** geeft een code van 8 tekens, 30 minuten geldig. Op de tablet: **Tablet van de kinderen** en de code intypen. Daarna kiest het kind **Wie ben jij?** en doorloopt het welkomstpad; vanaf dan opent de tablet altijd bij dat kind.
 3. **Toestellen > Gsm van … koppelen** geeft een code voor de andere ouder. Die maakt eerst een account en kiest dan **Ik heb een code**.
+
+## 4. Edge Function spraak-token (Ik lees zelf)
+
+1. **Edge Functions → Deploy a new function → Via Editor**. Naam `spraak-token`, plak de inhoud van `supabase/functions/spraak-token/index.ts`. **Verify JWT** blijft **aan** (alleen een aangemelde tablet of gsm mag een token vragen).
+2. **Edge Functions → Secrets**: `AZURE_SPEECH_KEY` en `AZURE_SPEECH_REGION`, dezelfde waarden als de GitHub-secrets van de voorleesstem.
+3. Testen: op de tablet van Yuna of Luca een verhaal uit Grote ogen of Avonturiers openen en op **Ik lees zelf** tikken. De eerste keer vraagt de tablet of de app de microfoon mag gebruiken: **Toestaan**. Fouten zie je bij Edge Functions → spraak-token → Logs.
+
+Zonder de functie of de migratie toont de knop een melding en leest het kind gewoon zoals vroeger.
 
 ## Regels
 

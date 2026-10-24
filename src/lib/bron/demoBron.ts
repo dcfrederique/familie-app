@@ -113,6 +113,7 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
                             status: sterren > 0 ? 'ingediend' : null, tijdstip: nu.toISOString(), dag: dagVan(nu) })
       return sterren
     },
+    async spraakToken() { throw new Error('spraakherkenning werkt niet in de demo') },
     async activiteitenTeBeoordelen() { return t.activiteiten.filter((a) => a.status === 'ingediend') },
     async figuurtjeBewaren(kindId, figuurtje: Figuurtje | null) {
       const k = kinderen.find((x) => x.id === kindId)

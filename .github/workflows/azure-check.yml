@@ -15,6 +15,9 @@ jobs:
       SPEECH_REGION: ${{ secrets.AZURE_SPEECH_REGION }}
       BACKUP: ${{ secrets.AZURE_BACKUP_CONNECTION_STRING }}
       DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+      OPENAI_ENDPOINT: ${{ secrets.AZURE_OPENAI_ENDPOINT }}
+      OPENAI_KEY: ${{ secrets.AZURE_OPENAI_KEY }}
+      OPENAI_DEPLOYMENT: ${{ secrets.AZURE_OPENAI_DEPLOYMENT }}
       VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
       VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
       VITE_VAPID_PUBLIC_KEY: ${{ vars.VITE_VAPID_PUBLIC_KEY }}
@@ -30,6 +33,9 @@ jobs:
           staat "secret AZURE_SPEECH_REGION" "$SPEECH_REGION"
           staat "secret AZURE_BACKUP_CONNECTION_STRING" "$BACKUP"
           staat "secret SUPABASE_DB_URL" "$DB_URL"
+          staat "secret AZURE_OPENAI_ENDPOINT (prenten, later)" "$OPENAI_ENDPOINT"
+          staat "secret AZURE_OPENAI_KEY (prenten, later)" "$OPENAI_KEY"
+          staat "secret AZURE_OPENAI_DEPLOYMENT (prenten, later)" "$OPENAI_DEPLOYMENT"
 
       - name: Supabase bereikbaar
         if: env.VITE_SUPABASE_URL != '' && env.VITE_SUPABASE_PUBLISHABLE_KEY != ''
@@ -54,6 +60,31 @@ jobs:
               --data "$ssml")
             echo "$stem: HTTP $code, $(stat -c %s "proef/$stem.mp3") bytes"
             [ "$code" = 200 ]
+          done
+
+      # Leesoefening (docs/azure-extra.md, stap 2.1): kan Azure Vlaams herkennen, en kent de uitspraakbeoordeling
+      # Nederlands? We laten Dena een zin inspreken en sturen die terug naar de spraakherkenning.
+      - name: Spraakherkenning en uitspraakbeoordeling
+        if: env.SPEECH_KEY != '' && env.SPEECH_REGION != ''
+        run: |
+          tekst='Mo de muis vindt een zonnebloempit. Hij stopt de pit in de grond.'
+          ssml="<speak version='1.0' xml:lang='nl-BE'><voice name='nl-BE-DenaNeural'>$tekst</voice></speak>"
+          curl -sSf -o proef/zin.wav -X POST "https://$SPEECH_REGION.tts.speech.microsoft.com/cognitiveservices/v1" \
+            -H "Ocp-Apim-Subscription-Key: $SPEECH_KEY" -H 'Content-Type: application/ssml+xml' \
+            -H 'X-Microsoft-OutputFormat: riff-16khz-16bit-mono-pcm' -H 'User-Agent: familie-app' --data "$ssml"
+          code=$(curl -sS -o /dev/null -w '%{http_code}' -X POST "https://$SPEECH_REGION.api.cognitive.microsoft.com/sts/v1.0/issueToken" \
+            -H "Ocp-Apim-Subscription-Key: $SPEECH_KEY" -H 'Content-Length: 0')
+          echo "::notice title=Token voor de app::HTTP $code"
+          [ "$code" = 200 ]
+          beoordeling=$(printf '{"ReferenceText":"%s","GradingSystem":"HundredMark","Granularity":"Word"}' "$tekst" | base64 -w0)
+          for taal in nl-BE nl-NL; do
+            curl -sS -o "proef/herkend-$taal.json" -X POST \
+              "https://$SPEECH_REGION.stt.speech.microsoft.com/speech/recognition/conversation/cognitiveservices/v1?language=$taal&format=detailed" \
+              -H "Ocp-Apim-Subscription-Key: $SPEECH_KEY" -H 'Content-Type: audio/wav; codecs=audio/pcm; samplerate=16000' \
+              -H "Pronunciation-Assessment: $beoordeling" --data-binary @proef/zin.wav
+            herkend=$(jq -r '.DisplayText // .RecognitionStatus // "?"' "proef/herkend-$taal.json")
+            score=$(jq -r '.NBest[0].PronunciationAssessment.AccuracyScore // .NBest[0].AccuracyScore // "geen"' "proef/herkend-$taal.json")
+            echo "::notice title=Herkenning $taal::$herkend | uitspraakscore: $score"
           done
 
       - name: Proefopnames bewaren

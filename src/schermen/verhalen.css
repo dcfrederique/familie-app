@@ -34,3 +34,17 @@
   .lezer { grid-template-columns: 1fr; }
 }
 @media (prefers-reduced-motion: reduce) { .lezer-zinnen span { transition: none; } }
+
+/* Ik lees zelf: woorden kleuren groen als ze goed gelezen zijn; een gemist woord kan je aantikken. */
+.zelf-balk { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin: 0; font-weight: 700; }
+.zelf-knop { display: inline-flex; align-items: center; gap: 8px; min-height: 64px; }
+.zelf-tekst { flex: 1; }
+.zelf-melding { color: var(--warn-ink); }
+.zelf-luistert { width: 16px; height: 16px; border-radius: 50%; background: var(--warn); animation: zelf-puls 1.2s ease-in-out infinite; }
+@keyframes zelf-puls { 50% { transform: scale(1.4); opacity: .5; } }
+.lezer-zinnen.zelf button { all: unset; cursor: pointer; border-radius: 8px; padding: 0 2px; transition: background-color .12s; }
+.lezer-zinnen.zelf button.goed { background: var(--ok-bg); color: var(--ok-ink); }
+.lezer-zinnen.zelf button.mis { background: var(--warn-bg); color: var(--warn-ink); text-decoration: underline dotted; }
+.lezer-zinnen.zelf button.volgend { box-shadow: inset 0 -3px 0 var(--kid); }
+.lezer-zinnen.zelf button:focus-visible { outline: 3px solid var(--kid); }
+@media (prefers-reduced-motion: reduce) { .zelf-luistert { animation: none; } .lezer-zinnen.zelf button { transition: none; } }

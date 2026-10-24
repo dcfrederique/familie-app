@@ -27,3 +27,6 @@ dist-ssr
 .env
 .env.*
 !.env.example
+
+# Gegenereerde prenten (komen in Azure Blob, niet in de repo)
+prenten/
