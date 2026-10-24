@@ -31,6 +31,7 @@ Het donkere thema staat uitgewerkt in de CSS-variabelen van `prototypes/spelletj
 - Iconen: eigen lijniconen in een 24 × 24 viewBox, stroke 2, afgeronde hoeken en uiteinden.
 - Prenten: vlakke SVG-vormen, effen kleuren, geen verlopen; nachtscènes op `#1E2D55`.
 - Geen beschermde personages of logo's.
+- App-icoon (gekozen 24 oktober 2026): C, "Onder één dak", het hele gezin als figuurtjes in een huisje met een ster op de schoorsteen. De vier voorstellen staan in `docs/iconen/`; `node scripts/maak-iconen.ts` tekent ze opnieuw (ook `public/icon.svg`).
 
 ## Layout
 
