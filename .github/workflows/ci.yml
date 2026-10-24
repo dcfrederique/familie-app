@@ -84,6 +84,18 @@ jobs:
         run: echo "::notice::Meldingen niet uitgerold (op main nodig; secrets SUPABASE_ACCESS_TOKEN, VAPID_PRIVATE_KEY en variabele VITE_VAPID_PUBLIC_KEY, zie docs/meldingen.md)."
       - if: env.KLAAR == 'true'
         uses: actions/checkout@v5
+      # De private key moet bij de public key horen waarmee de app zich aanmeldt, anders weigert Google elke melding (403).
+      - if: env.KLAAR == 'true'
+        run: |
+          node -e "
+            const c = require('crypto').createECDH('prime256v1')
+            c.setPrivateKey(Buffer.from(process.env.VAPID_PRIVATE_KEY.trim(), 'base64url'))
+            const afgeleid = c.getPublicKey().toString('base64url')
+            if (afgeleid !== process.env.VAPID_PUBLIC_KEY.trim()) {
+              console.log('::error::VAPID_PRIVATE_KEY hoort niet bij VITE_VAPID_PUBLIC_KEY. Genereer een nieuw paar (npx web-push generate-vapid-keys) en zet beide opnieuw (docs/meldingen.md).')
+              process.exit(1)
+            }
+            console.log('VAPID-sleutels horen bij elkaar.')"
       - if: env.KLAAR == 'true'
         uses: supabase/setup-cli@v1
         with:
