@@ -93,6 +93,13 @@ Dit gebeurt in twee fases: eerst uitdenken (ontwerp), daarna coderen (bouw).
 - Nieuwe spelletjes en unlockables liggen **niet** meteen in de winkel: de ouders geven ze vrij in
   Kinderen → Winkelaanbod (`docs/winkelaanbod.md`). Laat `standaard_vrij` dus op `false` (de standaard) en
   meld in het nieuwtje en het bericht aan de ouders dat het spelletje klaarstaat om vrij te geven
+- Naast het spelletje mag de nacht ook nieuwe stukken maken voor elk type van het Winkelaanbod: stukken voor
+  het figuurtje (`src/data/figuurtje.ts`) en voor Mijn huis (`src/data/huis.ts`, dak, muren, deur, ramen, tuin,
+  extraatjes). Kies ze bij het thema van het verhaal (bv. een pompoen in de tuin, een sinterklaasmuts, een
+  kerstkrans aan de deur). Elk stuk heeft een prijs in lijn met de bestaande stukken en een rij in de
+  servercatalogus (`figuurtje_stukken` of `huis_stukken`, nieuwe migratie; `huis.test.ts` en `figuurtje.test.ts`
+  houden data en migratie gelijk). Ze beginnen niet vrijgegeven, net als de spelletjes. Het plan noemt ze
+  apart (wat, prijs, tekening), en de bouw doet alleen de stukken uit het plan. Geen beschermde personages.
 
 ## Seizoenen en feesten
 Laat verhalen (en waar het past ook spelletjes, bv. andere prenten, kleuren of voorwerpen) aansluiten
