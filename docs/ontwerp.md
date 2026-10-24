@@ -6,6 +6,7 @@ Schermontwerp (13 schermen, Memory, Rekenen en Verhaal lezen zijn speelbaar): ht
 
 - Titels en cijfers: **Baloo 2** (600, 700, 800)
 - Tekst: **Nunito** (600, 700, 800)
+- Ouderschermen: **Manrope** (500, 600, 700) voor titels en tekst, soberder dan de kinderkant (zie `docs/ouderdeel.md`).
 
 ## Kleuren (licht thema)
 
