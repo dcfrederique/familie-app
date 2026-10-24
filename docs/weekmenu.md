@@ -17,4 +17,4 @@ Idee van de ouders (24 oktober 2026): in het ouderdeel per dag de **warme maalti
 
 ## Database
 
-Migratie `20261024000600_weekmenu.sql`: tabel `weekmenu (gezin_id, dag, gerecht, prentje)`. Het hele gezin leest (ook de tablets), alleen een ouder-account schrijft (RLS). Zonder migratie toont de app gewoon geen menu. Tests: `supabase/tests/weekmenu.test.sql`.
+Migratie `20261024000600_weekmenu.sql` (draait automatisch via de CI-job `migraties`): tabel `weekmenu (gezin_id, dag, gerecht, prentje)`. Het hele gezin leest (ook de tablets), alleen een ouder-account schrijft (RLS). Zonder migratie toont de app gewoon geen menu. Tests: `supabase/tests/weekmenu.test.sql`.

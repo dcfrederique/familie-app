@@ -44,12 +44,33 @@ jobs:
       - run: scripts/test-db.sh
         env:
           DATABASE_URL: postgres://postgres@localhost:5432/postgres
+      # Het migratiescript op de testdatabase: alles staat er al, dus het mag niets opnieuw draaien.
+      - run: scripts/migraties.sh | tee uit.txt && grep -q 'Klaar. 0 nieuwe' uit.txt
+        env:
+          SUPABASE_DB_URL: postgres://postgres@localhost:5432/familie_test
+
+  # Nieuwe migraties op de echte Supabase-database, alleen voor main en pas als alle tests groen zijn.
+  # Zonder het secret SUPABASE_DB_URL (session pooler, docs/hosting.md) slaat deze job zich over.
+  migraties:
+    needs: [bouwen-en-testen, database]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+      OP_MAIN: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' }}
+    steps:
+      - if: env.OP_MAIN == 'true' && env.SUPABASE_DB_URL == ''
+        run: echo "::notice::Secret SUPABASE_DB_URL ontbreekt, migraties niet uitgevoerd."
+      - if: env.OP_MAIN == 'true' && env.SUPABASE_DB_URL != ''
+        uses: actions/checkout@v5
+      - if: env.OP_MAIN == 'true' && env.SUPABASE_DB_URL != ''
+        run: scripts/migraties.sh
 
   # Naar Azure Static Web Apps, pas als alle tests groen zijn (docs/hosting.md).
   # Push op main = de echte app; een PR krijgt een eigen voorbeeld-adres.
   # Zonder het secret AZURE_STATIC_WEB_APPS_API_TOKEN slaat deze job zich over.
   deployen:
-    needs: [bouwen-en-testen, database]
+    needs: [bouwen-en-testen, database, migraties]
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     permissions:

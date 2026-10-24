@@ -4,7 +4,9 @@ Project: `https://oyqwhrttwaatqymjomtc.supabase.co`
 
 ## 1. Database
 
-Voer in de Supabase-console, **SQL Editor**, de bestanden in `supabase/migrations/` uit, in volgorde van naam.
+**Sinds 24 oktober 2026 gebeurt dit automatisch.** De CI-job `migraties` voert na elke push op `main`, als alle tests groen zijn, de nieuwe bestanden uit `supabase/migrations/` uit op de echte database (`scripts/migraties.sh`, secret `SUPABASE_DB_URL`). Wat gedraaid heeft staat in `supabase_migrations.schema_migrations` (dezelfde tabel als de Supabase CLI). De eerste keer zoekt het script zelf uit welke migraties al met de hand gedraaid hadden. Elke migratie loopt in één transactie: mislukt ze, dan verandert er niets en wordt de app niet gedeployed.
+
+Met de hand (alleen nog als de job niet kan draaien): voer in de Supabase-console, **SQL Editor**, de bestanden in `supabase/migrations/` uit, in volgorde van naam.
 Een script dat al gedraaid heeft, draai je niet opnieuw. `20261022000300_voorbeeldtaken_fotos.sql` maakt ook de privé-opslag `fotos` aan voor bewijsfoto's; `20261022000400_activiteiten.sql` voegt het activiteitlog toe (sterren uit rekenen; sinds de winkel zonder goedkeuring). `20261022001000_figuurtje.sql` voegt het eigen figuurtje per kind toe; zonder die migratie toont de app het basisfiguurtje maar kan een kind niets bewaren. `20261024000200_tablet_per_kind.sql` laat elke tablet bij één kind horen en voegt het welkomstpad toe (`docs/tablet-per-kind.md`); zonder die migratie werkt de tablet zoals vroeger (Wie speelt er?). `20261024000400_leesoefening.sql` voegt **Ik lees zelf** toe (`docs/azure-extra.md`, stap 2); daarvoor is ook de Edge Function `spraak-token` nodig (zie onder). `20261024000500_sterren_kopen.sql` zet de winkel aan (spelletjes en stukken kopen met sterren, sterren uit spelletjes meteen erbij, `docs/winkel.md`); zonder die migratie kan een kind niets kopen. Of met de Supabase CLI:
 `supabase link --project-ref oyqwhrttwaatqymjomtc` en daarna `supabase db push`.
 
