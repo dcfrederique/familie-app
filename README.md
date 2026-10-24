@@ -1,4 +1,4 @@
-# Familie-app: Sterren
+# Familie
 
 Gezinsapp waarin de kinderen sterren verdienen met taken en die inwisselen voor extra schermtijd. Zie `CLAUDE.md` en `docs/spec.md`.
 

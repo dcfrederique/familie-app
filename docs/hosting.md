@@ -11,6 +11,8 @@ Stand: 24 oktober 2026. De app draait op **Azure Static Web Apps (Free)**. Elke 
 
 Het hoofdadres stuurt zelf door: een ouder-gsm komt op `/ouder`, een gekoppelde tablet op het eigen kind, een nieuwe tablet op het koppelscherm. Scan de QR-codes hieronder met de camera van het toestel.
 
+De app heet op het startscherm **Familie**. Staat ze nog als "Sterren" op een toestel (van vóór 24 oktober 2026), verwijder het icoon dan en zet de app opnieuw op het startscherm: Android en iOS nemen een nieuwe naam niet altijd vanzelf over. De gegevens blijven gewoon bewaard.
+
 | App | Ouderschermen |
 | --- | --- |
 | ![QR-code app](qr/app.svg) | ![QR-code ouderschermen](qr/ouder.svg) |
@@ -118,5 +120,5 @@ In Azure staat alles in één resource group `familie-app`: de Static Web App, d
 
 ## Later, optioneel
 
-- **Eigen domein** (bv. `sterren.jouwdomein.be`): Static Web App → **Custom domains** → **+ Add**, een CNAME bij je domeinregistrar. Https blijft gratis. Pas daarna ook de Site URL in Supabase aan.
+- **Eigen domein** (bv. `familie.jouwdomein.be`): Static Web App → **Custom domains** → **+ Add**, een CNAME bij je domeinregistrar. Https blijft gratis. Pas daarna ook de Site URL in Supabase aan.
 - **Kostenalarm**: **Cost Management → Budgets** → budget van €5 per maand met een mail bij 80%. Het Visual Studio-abonnement heeft ook een bestedingslimiet, maar een mail is vroeger.

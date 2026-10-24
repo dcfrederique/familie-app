@@ -22,9 +22,9 @@ export default defineConfig({
         }],
       },
       manifest: {
-        name: 'Sterren',
-        short_name: 'Sterren',
-        description: 'Taken doen, sterren verdienen en inwisselen voor extra tijd.',
+        name: 'Familie',
+        short_name: 'Familie',
+        description: 'De gezinsapp: taken doen, sterren verdienen en inwisselen voor extra tijd.',
         lang: 'nl-BE',
         start_url: '/',
         display: 'standalone',
