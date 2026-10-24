@@ -21,6 +21,14 @@ staat, en die sterren gaan echt van hun saldo af. Dit vervangt optie C uit `docs
 - Alles wat een kind met het oude systeem al had vrijgespeeld, blijft van hem of haar zonder iets af te schrijven
   (de migratie zet dat als aankoop van 0 sterren in de tabel `aankopen`).
 
+## De winkel van een kind
+
+Op het startscherm zijn de sterren een knop naar de **Winkel** (`/kind/:id/winkel`, `src/schermen/Winkel.tsx`); wie
+niet leest heeft een rond winkeltje in de kop. De winkel toont alles wat te koop is in één overzicht, met twee tabs:
+Spelletjes en Figuurtje. Eerst wat het kind nu kan kopen, dan waarvoor het spaart (met een balkje), en wat al van het
+kind is achteraan met "Van jou" (tik = spelen of aandoen). Alleen wat de ouders vrijgaven en voor dit kind tonen
+(`docs/winkelaanbod.md`). Kopen kan ook nog gewoon in Spelen en in de kleerkast.
+
 ## Sterren uit spelletjes: meteen erbij
 
 Lerende spelletjes (rekenen, verhalen, kleurplaten) leveren hun sterren **meteen** op, zonder goedkeuring. Het

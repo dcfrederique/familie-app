@@ -24,6 +24,7 @@ import TakenBeheer from './schermen/TakenBeheer.tsx'
 import Toestellen from './schermen/Toestellen.tsx'
 import Spelregels from './schermen/Spelregels.tsx'
 import Winkelaanbod from './schermen/Winkelaanbod.tsx'
+import Winkel from './schermen/Winkel.tsx'
 import Nieuwtjes from './schermen/Nieuwtjes.tsx'
 import PincodeBeheer from './schermen/PincodeBeheer.tsx'
 import Weekmenu from './schermen/Weekmenu.tsx'
@@ -60,6 +61,7 @@ export default function App() {
         <Route path="tijd" element={<ExtraTijd />} />
         <Route path="figuurtje" element={<Kleerkast />} />
         <Route path="spelen" element={<Spelen />} />
+        <Route path="winkel" element={<Winkel />} />
         <Route path="rekenen" element={<Rekenen />} />
         <Route path="memory" element={<Memory />} />
         <Route path="penalty" element={<Penalty />} />

@@ -14,7 +14,7 @@ import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import { takenVoorKind, type TaakStatus } from '../lib/takenstatus.ts'
 import { gebruikStem, kanVoorlezen, leesVoor } from '../lib/voorlezen.ts'
 import Figuurtje, { hoofdUitsnede } from './Figuurtje.tsx'
-import { Ster, SterrenPil } from './onderdelen.tsx'
+import { Ster, SterrenNaarWinkel, WinkelIcoon } from './onderdelen.tsx'
 import './schermen.css'
 import Bladzijden from './Bladzijden.tsx'
 
@@ -88,7 +88,7 @@ function StartLezer({ kind, lijst, geladen, vrij, verzoeken, eten, kies }: {
               </div>
             </div>
             <div className="banner-rij">
-              <SterrenPil aantal={vrij} metWoord />
+              <SterrenNaarWinkel kindId={kind.id} aantal={vrij} metWoord />
               {eten && <Vanavond eten={eten} />}
             </div>
           </div>
@@ -101,7 +101,7 @@ function StartLezer({ kind, lijst, geladen, vrij, verzoeken, eten, kies }: {
             {geladen && lijst.length > 0 && <p className="kop-sub">Al {gedaan} van de {lijst.length} taken gedaan vandaag</p>}
           </div>
           {eten && <Vanavond eten={eten} />}
-          <SterrenPil aantal={vrij} metWoord />
+          <SterrenNaarWinkel kindId={kind.id} aantal={vrij} metWoord />
         </header>
       )}
 
@@ -194,6 +194,11 @@ function StartPrenten({ kind, lijst, geladen, eten, kies }: {
     </button>
   )
   const vanavond = eten && <Vanavond eten={eten} rond />
+  const winkel = (
+    <Link to={`/kind/${kind.id}/winkel`} className="rond" aria-label="Winkel" onClick={() => leesVoor('Winkel')}>
+      <WinkelIcoon grootte={34} />
+    </Link>
+  )
   const voortgang = geladen && lijst.length > 0 && (
     <span className="voortgang" role="img" aria-label={`Vandaag ${gedaan} van ${lijst.length} taken gedaan`}>
       {lijst.map(({ taak, status }) => (
@@ -207,13 +212,13 @@ function StartPrenten({ kind, lijst, geladen, eten, kies }: {
         <header className={`banner banner-${banner} kop-groot`}>
           <Banner soort={banner} />
           <div className="banner-inhoud">
-            <div className="kop">{terug}{avatar}{titel}{voorlees}{vanavond}</div>
+            <div className="kop">{terug}{avatar}{titel}{voorlees}{winkel}{vanavond}</div>
             {voortgang}
           </div>
         </header>
       ) : (
         <header className="kop kop-groot">
-          {terug}{avatar}{titel}{voorlees}{vanavond}
+          {terug}{avatar}{titel}{voorlees}{winkel}{vanavond}
           <span style={{ flexGrow: 1 }} />
           {voortgang}
         </header>

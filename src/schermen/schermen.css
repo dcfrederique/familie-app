@@ -350,3 +350,7 @@ button.rond { border: 0; }
 .tablet-lijst li span { color: var(--muted); font-size: 14px; }
 .tablet-lijst .knoppen { margin-top: 0; }
 .kind-kaart .leeftijd { font-size: 16px; font-weight: 700; color: var(--muted); }
+
+/* Naar de winkel vanaf het startscherm: de sterren en het winkeltje zijn één knop. */
+a.sterren-pil { text-decoration: none; }
+.sterren-pil .winkel-in-pil { margin-left: 4px; color: currentColor; opacity: .8; }
