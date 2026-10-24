@@ -3,7 +3,7 @@
 export type MenuIcoon =
   | 'vandaag' | 'goedkeuren' | 'taken' | 'kinderen' | 'spelregels'
   | 'onzetaken' | 'boodschappen' | 'notities' | 'gewicht' | 'profiel' | 'fitness' | 'lopen'
-  | 'weekmenu' | 'toestellen' | 'pincode' | 'winkels' | 'nieuw' | 'aanbod' | 'melding'
+  | 'chat' | 'weekmenu' | 'toestellen' | 'pincode' | 'winkels' | 'nieuw' | 'aanbod' | 'melding'
 
 export interface MenuItem {
   naam: string
@@ -11,7 +11,7 @@ export interface MenuItem {
   /** Leeg: komt later. */
   pad?: string
   /** Toont een getal: wat op goedkeuring wacht, je taken in Onze taken voor vandaag en eerder, of nieuw winkelaanbod. */
-  teller?: 'goedkeuren' | 'onzetaken' | 'aanbod'
+  teller?: 'goedkeuren' | 'onzetaken' | 'aanbod' | 'chat'
   alleenOuderGsm?: boolean
 }
 
@@ -43,6 +43,7 @@ export const ouderMenu: MenuGroep[] = [
     { naam: 'Onze taken', icoon: 'onzetaken', pad: '/ouder/onze-taken', teller: 'onzetaken' },
     { naam: 'Boodschappen', icoon: 'boodschappen', pad: '/ouder/boodschappen' },
     { naam: 'Notities', icoon: 'notities', pad: '/ouder/notities' },
+    { naam: 'Chat met de kinderen', icoon: 'chat', pad: '/ouder/chat', teller: 'chat' },
   ] },
   { naam: 'Gezondheid', alleenOuderGsm: true, items: [
     { naam: 'Gewicht', icoon: 'gewicht', pad: '/ouder/gewicht' },

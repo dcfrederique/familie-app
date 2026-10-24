@@ -16,6 +16,7 @@ import { gebruikStem, kanVoorlezen, leesVoor } from '../lib/voorlezen.ts'
 import Figuurtje, { hoofdUitsnede } from './Figuurtje.tsx'
 import { Ster, SterrenNaarWinkel, WinkelIcoon } from './onderdelen.tsx'
 import './schermen.css'
+import './chat.css'
 import Bladzijden from './Bladzijden.tsx'
 
 const TAAK_MAAT = { breed: 230, hoog: 240, gap: 14, maxHoog: 290 }
@@ -33,12 +34,13 @@ export default function KindStart() {
 
   const { data, ververs } = useGegevens(bron && kind ? async () => {
     const zestigDagenTerug = dagVan(new Date(Date.now() - 60 * 86400_000))
-    const [taken, inzendingen, saldi, verzoeken, menu] = await Promise.all([
+    const [taken, inzendingen, saldi, verzoeken, menu, chat] = await Promise.all([
       bron.taken(), bron.inzendingenVanaf(zestigDagenTerug), bron.saldi(), bron.verzoeken(vandaag()),
-      bron.weekmenu(vandaag(), vandaag()),
+      bron.weekmenu(vandaag(), vandaag()), kind.chat_aan ? bron.chatOverzicht().catch(() => []) : [],
     ])
-    return { taken, inzendingen, saldo: saldi[kind.id], verzoeken: verzoeken.filter((v) => v.kind_id === kind.id), eten: menu[0] }
-  } : null, [bron, kind?.id])
+    return { taken, inzendingen, saldo: saldi[kind.id], verzoeken: verzoeken.filter((v) => v.kind_id === kind.id), eten: menu[0],
+             ongelezen: chat.find((o) => o.kind_id === kind.id)?.ongelezen ?? 0 }
+  } : null, [bron, kind?.id, kind?.chat_aan])
 
   if (!kind) return <Navigate to="/kinderen" replace />
   const lijst = data ? takenVoorKind(data.taken, kind.id, data.inzendingen, new Date()) : []
@@ -48,8 +50,8 @@ export default function KindStart() {
   return (
     <div className={`kind ${kleurKlasse(kind)}`}>
       {kind.kan_lezen
-        ? <StartLezer kind={kind} lijst={lijst} geladen={!!data} vrij={vrij} verzoeken={data?.verzoeken ?? []} eten={data?.eten} kies={kies} />
-        : <StartPrenten kind={kind} lijst={lijst} geladen={!!data} eten={data?.eten} kies={kies} />}
+        ? <StartLezer kind={kind} lijst={lijst} geladen={!!data} vrij={vrij} verzoeken={data?.verzoeken ?? []} eten={data?.eten} ongelezen={data?.ongelezen ?? 0} kies={kies} />
+        : <StartPrenten kind={kind} lijst={lijst} geladen={!!data} eten={data?.eten} ongelezen={data?.ongelezen ?? 0} kies={kies} />}
 
       {gekozen && bron && (
         <Afvinken kind={kind} taak={gekozen} sluit={() => setGekozen(null)}
@@ -59,8 +61,8 @@ export default function KindStart() {
   )
 }
 
-function StartLezer({ kind, lijst, geladen, vrij, verzoeken, eten, kies }: {
-  kind: Gebruiker; lijst: Lijst; geladen: boolean; vrij: number; verzoeken: Tijdverzoek[]; eten?: Maaltijd; kies: (t: Taak) => void
+function StartLezer({ kind, lijst, geladen, vrij, verzoeken, eten, ongelezen, kies }: {
+  kind: Gebruiker; lijst: Lijst; geladen: boolean; vrij: number; verzoeken: Tijdverzoek[]; eten?: Maaltijd; ongelezen: number; kies: (t: Taak) => void
 }) {
   const banner = kind.thema ? bannerVoorKleur[kind.thema] : null
   const gedaan = lijst.filter((t) => t.status === 'gedaan').length
@@ -88,6 +90,7 @@ function StartLezer({ kind, lijst, geladen, vrij, verzoeken, eten, kies }: {
               </div>
             </div>
             <div className="banner-rij">
+              <ChatKnop kind={kind} ongelezen={ongelezen} />
               <SterrenNaarWinkel kindId={kind.id} aantal={vrij} metWoord />
               {eten && <Vanavond eten={eten} />}
             </div>
@@ -101,6 +104,7 @@ function StartLezer({ kind, lijst, geladen, vrij, verzoeken, eten, kies }: {
             {geladen && lijst.length > 0 && <p className="kop-sub">Al {gedaan} van de {lijst.length} taken gedaan vandaag</p>}
           </div>
           {eten && <Vanavond eten={eten} />}
+          <ChatKnop kind={kind} ongelezen={ongelezen} />
           <SterrenNaarWinkel kindId={kind.id} aantal={vrij} metWoord />
         </header>
       )}
@@ -176,8 +180,8 @@ function Tegel({ tegel, kindId }: { tegel: ActiviteitTegel; kindId: string }) {
 }
 
 /** Voor wie niet leest: grote prenten, voorleesknoppen en ronde knoppen zonder tekst. */
-function StartPrenten({ kind, lijst, geladen, eten, kies }: {
-  kind: Gebruiker; lijst: Lijst; geladen: boolean; eten?: Maaltijd; kies: (t: Taak) => void
+function StartPrenten({ kind, lijst, geladen, eten, ongelezen, kies }: {
+  kind: Gebruiker; lijst: Lijst; geladen: boolean; eten?: Maaltijd; ongelezen: number; kies: (t: Taak) => void
 }) {
   const gedaan = lijst.filter((t) => t.status === 'gedaan').length
   const begroeting = lijst.length === 0
@@ -194,6 +198,7 @@ function StartPrenten({ kind, lijst, geladen, eten, kies }: {
     </button>
   )
   const vanavond = eten && <Vanavond eten={eten} rond />
+  const chat = <ChatKnop kind={kind} ongelezen={ongelezen} />
   const winkel = (
     <Link to={`/kind/${kind.id}/winkel`} className="rond" aria-label="Winkel" onClick={() => leesVoor('Winkel')}>
       <WinkelIcoon grootte={34} />
@@ -212,13 +217,13 @@ function StartPrenten({ kind, lijst, geladen, eten, kies }: {
         <header className={`banner banner-${banner} kop-groot`}>
           <Banner soort={banner} />
           <div className="banner-inhoud">
-            <div className="kop">{terug}{avatar}{titel}{voorlees}{winkel}{vanavond}</div>
+            <div className="kop">{terug}{avatar}{titel}{voorlees}{winkel}{chat}{vanavond}</div>
             {voortgang}
           </div>
         </header>
       ) : (
         <header className="kop kop-groot">
-          {terug}{avatar}{titel}{voorlees}{winkel}{vanavond}
+          {terug}{avatar}{titel}{voorlees}{winkel}{chat}{vanavond}
           <span style={{ flexGrow: 1 }} />
           {voortgang}
         </header>
@@ -318,6 +323,18 @@ function Vanavond({ eten, rond = false }: { eten: Maaltijd; rond?: boolean }) {
       {prent}
       <span className="vanavond-tekst"><small>Vanavond eten we</small><b>{eten.gerecht}</b></span>
     </button>
+  )
+}
+
+/** Rond knopje naar de berichten voor mama en papa, met het aantal nieuwe antwoorden; alleen als een ouder de chat aanzette. */
+function ChatKnop({ kind, ongelezen }: { kind: Gebruiker; ongelezen: number }) {
+  if (!kind.chat_aan) return null
+  return (
+    <Link to={`/kind/${kind.id}/chat`} className="rond chat-knop" aria-label={ongelezen > 0 ? `Berichten, ${ongelezen} nieuw` : 'Berichten voor mama en papa'}
+          onClick={() => { if (!kind.kan_lezen) leesVoor('Berichten') }}>
+      <svg className="ic" viewBox="0 0 24 24" width="32" height="32" aria-hidden="true"><path d="M4 5h16v11H10l-5 4v-4H4z" /></svg>
+      {ongelezen > 0 && <span className="chat-bolletje" aria-hidden="true">{ongelezen}</span>}
+    </Link>
   )
 }
 

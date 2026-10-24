@@ -6,7 +6,7 @@ self.addEventListener('push', (event) => {
     body: data.tekst || '',
     icon: '/icon-192.png',
     badge: '/badge-96.png', // wit huisje op transparant: Android gebruikt enkel de vorm in de statusbalk,
-    tag: 'goedkeuren',
+    tag: data.tag || 'goedkeuren',
     renotify: true,
     data: { url: data.url || '/ouder/goedkeuren' },
   }))

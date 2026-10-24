@@ -42,6 +42,7 @@ const iconen: Record<MenuIcoon | 'menu' | 'bel' | 'terug', ReactNode> = {
   profiel: <><circle cx="12" cy="8.5" r="3.5" /><path d="M5 20c.8-3.8 3.6-6 7-6s6.2 2.2 7 6" /></>,
   fitness: <path d="M6.5 8v8M17.5 8v8M3.5 10v4M20.5 10v4M6.5 12h11" />,
   lopen: <><circle cx="14" cy="4.5" r="2" /><path d="M10 21l2.5-5.5-3-3 2-4.5 3 3 3.5 1M8.5 12l-2 3H3M12.5 15.5L16 18l1 3" /></>,
+  chat: <path d="M4 5h16v11H10l-5 4v-4H4z" />,
   weekmenu: <path d="M5 3v6a2 2 0 0 0 4 0V3M7 11v10M18 21V3c-2.5 1-4 4-4 9h4" />,
   melding: <path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15L6 16zM10 20.5a2.2 2.2 0 0 0 4 0" />,
   toestellen: <><rect x="7" y="3" width="10" height="18" rx="2.5" /><path d="M11 18h2" /></>,
@@ -63,11 +64,12 @@ function useMenuGegevens() {
   const opGsm = status === 'demo' || account?.soort === 'ouder'
   const ik = account?.ouder_id ?? gebruikers.find((g) => g.rol === 'ouder')?.id ?? null
   const { data } = useGegevens(bron ? async () => {
-    const [v, i, a, saldi, onze, aanbod] = await Promise.all([bron.openVerzoeken(), bron.teBeoordelen(), bron.activiteitenTeBeoordelen(), bron.saldi(),
+    const [v, i, a, saldi, onze, aanbod, chat] = await Promise.all([bron.openVerzoeken(), bron.teBeoordelen(), bron.activiteitenTeBeoordelen(), bron.saldi(),
                                                               opGsm ? bron.ouderTaken().catch(() => []) : [],
-                                                              opGsm ? bron.aanbod().catch(() => null) : null])
+                                                              opGsm ? bron.aanbod().catch(() => null) : null,
+                                                              opGsm ? bron.chatOverzicht().catch(() => []) : []])
     return { wachtend: v.length + i.length + a.length, saldi, onzeTaken: teDoenVandaag(onze, ik, vandaag()),
-             nieuwAanbod: aanbod?.nieuw.length ?? 0 }
+             nieuwAanbod: aanbod?.nieuw.length ?? 0, chat: chat.reduce((n, o) => n + o.ongelezen, 0) }
   } : null, [bron, opGsm, ik])
   return data ?? null
 }
@@ -140,6 +142,9 @@ function Kader({ titel, wachtend, children }: { titel: string; wachtend?: number
                   {item.teller === 'goedkeuren' && teller > 0 && <span className="item-teller">{teller}</span>}
                   {item.teller === 'aanbod' && (menuGegevens?.nieuwAanbod ?? 0) > 0 && (
                     <span className="item-teller item-teller-taken" aria-label={`${menuGegevens!.nieuwAanbod} nieuw`}>{menuGegevens!.nieuwAanbod}</span>
+                  )}
+                  {item.teller === 'chat' && (menuGegevens?.chat ?? 0) > 0 && (
+                    <span className="item-teller item-teller-taken" aria-label={`${menuGegevens!.chat} ongelezen`}>{menuGegevens!.chat}</span>
                   )}
                   {item.teller === 'onzetaken' && (menuGegevens?.onzeTaken ?? 0) > 0 && (
                     <span className="item-teller item-teller-taken" aria-label={`${menuGegevens!.onzeTaken} te doen`}>{menuGegevens!.onzeTaken}</span>

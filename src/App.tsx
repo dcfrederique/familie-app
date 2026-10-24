@@ -36,6 +36,8 @@ import Winkels from './schermen/Winkels.tsx'
 import Gewicht from './schermen/Gewicht.tsx'
 import MijnProfiel from './schermen/MijnProfiel.tsx'
 import Touwspringen from './schermen/Touwspringen.tsx'
+import Chat from './schermen/Chat.tsx'
+import OuderChat from './schermen/OuderChat.tsx'
 import Welkom from './schermen/Welkom.tsx'
 import Welkomstpad from './schermen/Welkomstpad.tsx'
 import WieSpeelt from './schermen/WieSpeelt.tsx'
@@ -77,6 +79,7 @@ export default function App() {
         <Route path="kleurplaten" element={<KleurplaatLijst />} />
         <Route path="kleurplaat/:sleutel" element={<Kleurplaat />} />
         <Route path="tekenen" element={<Tekenen />} />
+        <Route path="chat" element={<Chat />} />
       </Route>
       <Route path="/ouder" element={<OuderStart />} />
       <Route path="/ouder/goedkeuren" element={<Goedkeuren />} />
@@ -91,6 +94,7 @@ export default function App() {
       <Route path="/ouder/weekmenu" element={<Weekmenu />} />
       <Route path="/ouder/onze-taken" element={<OnzeTaken />} />
       <Route path="/ouder/notities" element={<Notities />} />
+      <Route path="/ouder/chat" element={<OuderChat />} />
       <Route path="/ouder/boodschappen" element={<Boodschappen />} />
       <Route path="/ouder/winkels" element={<Winkels />} />
       <Route path="/ouder/gewicht" element={<Gewicht />} />

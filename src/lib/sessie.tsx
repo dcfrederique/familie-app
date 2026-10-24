@@ -74,10 +74,11 @@ export function SessieProvider({ children }: { children: ReactNode }) {
       return
     }
     const velden = 'id, naam, rol, thema, kan_lezen, vraagt_zelf_tijd, volgorde'
-    // Zolang een migratie nog niet gedraaid is (figuurtje 20261022001000, voorleesstem 20261024000100),
+    // Zolang een migratie nog niet gedraaid is (figuurtje 20261022001000, voorleesstem 20261024000100, chat 20261024001400),
     // bestaan die kolommen niet: dan vragen we telkens minder op.
     let leden: Partial<Gebruiker>[] | null = null
-    for (const extra of [', figuurtje, figuurtje_alles_vrij, voorleesstem, geboortedatum, welkom_klaar',
+    for (const extra of [', figuurtje, figuurtje_alles_vrij, voorleesstem, geboortedatum, welkom_klaar, chat_aan',
+      ', figuurtje, figuurtje_alles_vrij, voorleesstem, geboortedatum, welkom_klaar',
       ', figuurtje, figuurtje_alles_vrij, voorleesstem', ', figuurtje, figuurtje_alles_vrij', '']) {
       const { data, error } = await supabase.from('gebruikers').select(velden + extra).order('volgorde')
       leden = data as Partial<Gebruiker>[] | null
@@ -86,7 +87,7 @@ export function SessieProvider({ children }: { children: ReactNode }) {
     setAccount(acc as Account)
     setGebruikers((leden ?? []).map((g) => ({
       ...g, figuurtje: g.figuurtje ?? null, figuurtje_alles_vrij: g.figuurtje_alles_vrij ?? false, voorleesstem: g.voorleesstem ?? 'afwisselend',
-      geboortedatum: g.geboortedatum ?? null, welkom_klaar: g.welkom_klaar ?? true,
+      geboortedatum: g.geboortedatum ?? null, welkom_klaar: g.welkom_klaar ?? true, chat_aan: g.chat_aan ?? false,
     })) as Gebruiker[])
     setStatus('klaar')
   }, [])

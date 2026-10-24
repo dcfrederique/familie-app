@@ -1,10 +1,10 @@
 // Edge Function "melding": stuurt een web-push naar de gsm's van de ouders.
-// Wordt aangeroepen door drie Database Webhooks (insert op inzendingen, tijdverzoeken en activiteitlog).
+// Wordt aangeroepen door triggers op inzendingen, tijdverzoeken, activiteitlog en berichten (chat).
 // Geheimen (Supabase → Edge Functions → Secrets): VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY, MELDING_GEHEIM.
 import webpush from 'npm:web-push@3.6.7'
 import { createClient } from 'npm:@supabase/supabase-js@2'
 
-const tabellen = new Set(['inzendingen', 'tijdverzoeken', 'activiteitlog'])
+const tabellen = new Set(['inzendingen', 'tijdverzoeken', 'activiteitlog', 'berichten'])
 
 webpush.setVapidDetails('mailto:meldingen@sterren.app', Deno.env.get('VAPID_PUBLIC_KEY')!, Deno.env.get('VAPID_PRIVATE_KEY')!)
 const db = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!)
@@ -26,7 +26,9 @@ Deno.serve(async (req) => {
     const { data: melding } = await db.rpc('melding_tekst', { p_tabel: table, p_id: record.id }).maybeSingle()
     if (!melding) return new Response('geen melding')
     abonnementen = (await db.rpc('push_abonnementen_voor', { p_gezin: melding.gezin_id })).data
-    bericht = JSON.stringify({ titel: melding.titel, tekst: melding.tekst, url: '/ouder/goedkeuren' })
+    bericht = table === 'berichten'
+      ? JSON.stringify({ titel: melding.titel, tekst: melding.tekst, url: '/ouder/chat', tag: 'chat' })
+      : JSON.stringify({ titel: melding.titel, tekst: melding.tekst, url: '/ouder/goedkeuren' })
   }
   let verstuurd = 0
   const fouten: string[] = []

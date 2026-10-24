@@ -79,6 +79,7 @@ function KindBeheer({ kind, vrij, magBeheren, ververs }: {
       {magBeheren && (
         <div className="vinkjes">
           <label><input type="checkbox" checked={kind.kan_lezen} onChange={(e) => wijzig({ kan_lezen: e.target.checked })} /> Kan lezen</label>
+          <label><input type="checkbox" checked={kind.chat_aan} onChange={(e) => wijzig({ chat_aan: e.target.checked })} /> Mag berichten sturen naar mama en papa</label>
           <label><input type="checkbox" checked={kind.vraagt_zelf_tijd} onChange={(e) => wijzig({ vraagt_zelf_tijd: e.target.checked })} /> Vraagt zelf tijd</label>
           <label className="veld">
             <span>Thema</span>

@@ -1,0 +1,59 @@
+/* Chat tussen kinderen en ouders (docs/chat.md). Kinderen: afgerond en in de kleur van hun thema (--kid); ouders: recht en zakelijk (--accent). */
+
+.gesprek { --c: var(--kid, var(--accent)); --c-tint: var(--kid-tint, var(--accent-tint)); display: flex; flex-direction: column; min-height: 0; gap: 12px; }
+.gesprek-lijst { flex: 1 1 auto; min-height: 220px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; padding: 12px; background: var(--surface); border: 2px solid var(--c-tint); }
+.gesprek-kind .gesprek-lijst { border-radius: 24px; }
+.gesprek-ouder .gesprek-lijst { border: 1px solid var(--line); max-height: 60dvh; padding: 16px; }
+.gesprek-leeg, .gesprek-uit { margin: auto; text-align: center; color: var(--muted); font-size: 18px; max-width: 28ch; }
+.gesprek-kind .gesprek-leeg { font-size: 22px; }
+.gesprek-dag { display: flex; flex-direction: column; gap: 8px; }
+.dag-kop { margin: 4px 0; text-align: center; font-size: 13px; color: var(--muted); }
+.dag-kop span { background: var(--soft); padding: 2px 10px; }
+.gesprek-kind .dag-kop span { border-radius: 99px; }
+
+.bericht { position: relative; max-width: min(78%, 520px); padding: 8px 12px 6px; display: flex; flex-direction: column; gap: 2px; overflow-wrap: anywhere; }
+.bericht.mijn { align-self: flex-end; background: var(--c); color: var(--on-solid); }
+.bericht.andere { align-self: flex-start; background: var(--c-tint); color: var(--ink); }
+.gesprek-kind .bericht { border-radius: 20px; font-size: 20px; padding: 10px 16px 8px; }
+.gesprek-kind .bericht.mijn { border-bottom-right-radius: 6px; }
+.gesprek-kind .bericht.andere { border-bottom-left-radius: 6px; }
+.bericht-voet { font-size: 12px; opacity: .75; align-self: flex-end; }
+.bericht.met-sticker { align-items: center; }
+.bericht-emoji { font-size: 44px; line-height: 1.1; }
+.bericht-luister { align-self: flex-start; margin-top: 4px; width: 48px; height: 48px; border: 0; border-radius: 50%; background: var(--surface); color: var(--c); display: grid; place-items: center; }
+
+.gesprek-schrijf { display: flex; flex-direction: column; gap: 10px; }
+.gesprek-ok { margin: 0; text-align: center; font-weight: 800; color: var(--ok-ink); background: var(--ok-bg); padding: 6px 12px; }
+.gesprek-kind .gesprek-ok { border-radius: 16px; }
+.stickers { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; }
+.stickers.groot { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
+.sticker { border: 2px solid var(--c-tint); background: var(--surface); color: var(--ink); border-radius: 18px; padding: 8px; display: flex; align-items: center; gap: 8px; font: inherit; font-size: 15px; font-weight: 700; min-height: 56px; cursor: pointer; text-align: left; box-shadow: 0 3px 0 var(--c-tint); }
+.sticker:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--c-tint); }
+.sticker:disabled { opacity: .55; }
+.sticker-emoji { font-size: 30px; line-height: 1; }
+.stickers.groot .sticker { flex-direction: column; justify-content: center; min-height: 120px; border-radius: 26px; }
+.stickers.groot .sticker-emoji { font-size: 64px; }
+
+.gesprek-form { display: flex; gap: 8px; }
+.gesprek-form input { flex: 1 1 auto; min-width: 0; font: inherit; font-size: 18px; padding: 12px 14px; border: 2px solid var(--c-tint); background: var(--surface); color: var(--ink); }
+.gesprek-kind .gesprek-form input { border-radius: 99px; padding-inline: 20px; }
+.gesprek-ouder .gesprek-form input { border: 1px solid var(--line); font-size: 16px; border-radius: 0; }
+.gesprek-verstuur { flex: none; width: 56px; border: 0; background: var(--c); color: var(--on-solid); display: grid; place-items: center; cursor: pointer; }
+.gesprek-kind .gesprek-verstuur { border-radius: 50%; height: 56px; }
+.gesprek-verstuur:disabled { opacity: .45; cursor: default; }
+
+/* Kindscherm: de lijst vult de hoogte tussen kop en schrijfvak */
+.kind-inhoud:has(.gesprek-kind) { display: flex; flex-direction: column; min-height: 0; }
+.kind .gesprek-kind { flex: 1 1 auto; height: calc(100dvh - 150px); max-width: 980px; width: 100%; margin: 0 auto; padding: 0 16px 16px; }
+.kind .gesprek-kind .gesprek-lijst { flex: 1 1 0; }
+
+/* Ouders: kind kiezen */
+.chat-kinderen { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 2px; }
+.chat-kind { flex: none; display: flex; align-items: center; gap: 10px; padding: 8px 12px; background: var(--surface); border: 1px solid var(--line); color: var(--ink); font: inherit; cursor: pointer; text-align: left; min-width: 150px; }
+.chat-kind.is-gekozen { border-color: var(--accent); box-shadow: inset 3px 0 0 var(--accent); }
+.chat-kind-tekst { display: flex; flex-direction: column; min-width: 0; }
+.chat-kind-tekst small { color: var(--muted); max-width: 22ch; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+/* Knop met bolletje op het startscherm van het kind */
+.rond.chat-knop { position: relative; }
+.chat-bolletje { position: absolute; top: -4px; right: -4px; min-width: 26px; height: 26px; padding: 0 6px; border-radius: 99px; background: var(--warn); color: #fff; font-weight: 800; font-size: 15px; display: grid; place-items: center; }

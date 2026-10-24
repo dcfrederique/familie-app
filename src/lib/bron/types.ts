@@ -79,6 +79,31 @@ export interface KindWijziging {
   geboortedatum?: string | null
   /** false toont het welkomstpad opnieuw (zonder nieuwe bonus). */
   welkom_klaar?: boolean
+  /** Het kind mag berichten sturen naar de ouders (docs/chat.md). */
+  chat_aan?: boolean
+}
+
+/** Een bericht in de chat tussen een kind en de ouders (docs/chat.md). */
+export interface Bericht {
+  id: string
+  kind_id: string
+  van: 'kind' | 'ouder'
+  /** Welke ouder schreef; null bij een bericht van het kind. */
+  ouder_id: string | null
+  tekst: string
+  /** Sleutel uit data/stickers.ts; null = gewoon bericht. */
+  sticker: string | null
+  gelezen_op: string | null
+  aangemaakt_op: string
+}
+
+/** Per kind: wat nog ongelezen is voor de aanroeper, en het laatste bericht. */
+export interface ChatOverzicht {
+  kind_id: string
+  ongelezen: number
+  laatste_op: string | null
+  laatste_van: 'kind' | 'ouder' | null
+  laatste_tekst: string | null
 }
 
 /** Wat het kind kiest in het welkomstpad. */
@@ -192,6 +217,10 @@ export interface Bron {
   ouderTaken(): Promise<OuderTaak[]>
   /** Je eigen notities en de gedeelde van je partner. Alleen voor een ouder-account. */
   notities(): Promise<Notitie[]>
+  /** De laatste berichten van het gesprek met een kind, oudste eerst (migratie 20261024001400_chat). */
+  chatBerichten(kindId: string): Promise<Bericht[]>
+  /** Ongelezen en laatste bericht per kind; een tablet krijgt enkel het eigen kind. */
+  chatOverzicht(): Promise<ChatOverzicht[]>
   /** De winkels van het gezin, in de volgorde van de ouders. Alleen voor een ouder-account. */
   winkels(): Promise<Winkel[]>
   /** Alles wat nog gekocht moet worden, en wat de laatste 60 dagen gekocht is (om winkels en ingrediënten te onthouden). */
@@ -238,6 +267,10 @@ export interface Bron {
   /** Afvinken of terugzetten; een herhalende taak krijgt bij afvinken meteen de volgende keer erbij. */
   ouderTaakAfvinken(id: string, gedaan: boolean): Promise<void>
   ouderTaakVerwijderen(id: string): Promise<void>
+  /** Een bericht of sticker sturen: een kind naar de ouders, een ouder naar het kind. Bij een sticker staat de zin in `tekst`. */
+  chatSturen(kindId: string, tekst: string, sticker?: string | null): Promise<void>
+  /** Het gesprek is geopend: wat de ander schreef, is gelezen. */
+  chatGelezen(kindId: string): Promise<void>
   notitieOpslaan(notitie: NieuweNotitie): Promise<void>
   notitieVerwijderen(id: string): Promise<void>
   winkelOpslaan(winkel: Pick<Winkel, 'naam' | 'volgorde'> & { id?: string }): Promise<void>

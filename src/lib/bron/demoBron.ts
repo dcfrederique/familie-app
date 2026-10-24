@@ -7,7 +7,7 @@ import type { Gebruiker } from '../../data/gezin.ts'
 import { dagVan } from '../datum.ts'
 import { activiteitOmschrijving, activiteitSterren, blokKeuzes, regels as standaardRegels } from '../regels.ts'
 import type { Weging } from '../gewicht.ts'
-import type { ActiviteitRegel, Boodschap, Bron, GezondheidProfiel, Inzending, LogRegel, Maaltijd, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Spelregels, Taak, Tijdverzoek, Winkel } from './types.ts'
+import type { ActiviteitRegel, Bericht, Boodschap, Bron, GezondheidProfiel, Inzending, LogRegel, Maaltijd, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Spelregels, Taak, Tijdverzoek, Winkel } from './types.ts'
 
 const DEMO_PIN = '1234'
 const WELKOM = 'Welkom! Je eerste sterren'
@@ -23,6 +23,7 @@ interface Toestand {
   weekmenu: Maaltijd[]
   ouderTaken: OuderTaak[]
   notities: Notitie[]
+  berichten: Bericht[]
   winkels: Winkel[]
   boodschappen: Boodschap[]
   profiel: GezondheidProfiel | null
@@ -64,6 +65,7 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
       { id: 'ot-1', titel: 'Vuilnis buiten zetten', datum: dagVan(new Date()), wie: null, herhaling: 'wekelijks', gedaan_op: null, gedaan_door: null },
       { id: 'ot-2', titel: 'Auto naar de keuring', datum: dagVan(new Date(Date.now() + 4 * 86400_000)), wie: 'mama', herhaling: 'eenmalig', gedaan_op: null, gedaan_door: null },
     ],
+    berichten: [],
     notities: [
       { id: 'no-1', eigenaar: 'mama', gedeeld: true, titel: 'Maten kinderen', tekst: 'Luca 134, schoen 33\nYuna 122, schoen 29\nFeline 110, schoen 26',
         lijst: null, vastgezet: true, bijgewerkt_op: nu },
@@ -92,6 +94,9 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
     },
   }
 }
+
+/** In de demo is er één browser: de schermen van de ouders zitten onder /ouder, de rest is het kind. */
+const demoKant = (): 'kind' | 'ouder' => (location.pathname.startsWith('/ouder') ? 'ouder' : 'kind')
 
 export function demoBron(kinderen: Gebruiker[]): Bron {
   const t = nieuweToestand(kinderen)
@@ -309,6 +314,27 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       }
     },
     async ouderTaakVerwijderen(taakId) { t.ouderTaken = t.ouderTaken.filter((x) => x.id !== taakId) },
+    async chatBerichten(kindId) { return t.berichten.filter((b) => b.kind_id === kindId) },
+    async chatOverzicht() {
+      const kant = demoKant()
+      return kinderen.map((k) => {
+        const eigen = t.berichten.filter((b) => b.kind_id === k.id)
+        const laatste = eigen[eigen.length - 1]
+        return { kind_id: k.id, ongelezen: eigen.filter((b) => !b.gelezen_op && b.van !== kant).length,
+                 laatste_op: laatste?.aangemaakt_op ?? null, laatste_van: laatste?.van ?? null, laatste_tekst: laatste?.tekst ?? null }
+      })
+    },
+    async chatSturen(kindId, tekst, sticker = null) {
+      const kant = demoKant()
+      const kind = kinderen.find((k) => k.id === kindId)
+      if (kant === 'kind' && !kind?.chat_aan) throw new Error('chat staat uit')
+      t.berichten.push({ id: id(), kind_id: kindId, van: kant, ouder_id: kant === 'ouder' ? 'mama' : null, tekst: tekst.trim(), sticker,
+                         gelezen_op: null, aangemaakt_op: new Date().toISOString() })
+    },
+    async chatGelezen(kindId) {
+      const kant = demoKant()
+      for (const b of t.berichten) if (b.kind_id === kindId && b.van !== kant && !b.gelezen_op) b.gelezen_op = new Date().toISOString()
+    },
     async notitieOpslaan({ id: notitieId, titel, tekst, lijst, gedeeld, vastgezet }) {
       const nu = new Date().toISOString()
       const notitie = { titel, tekst, lijst, gedeeld, vastgezet }

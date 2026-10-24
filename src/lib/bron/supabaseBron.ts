@@ -1,6 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Aanbod } from '../../data/aanbod.ts'
-import type { ActiviteitRegel, Boodschap, Bron, GezondheidProfiel, SpraakToken, Inzending, LogRegel, Maaltijd, NieuweNotitie, NieuweOuderTaak, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Saldo, Spelregels, Taak, Tijdverzoek, Winkel } from './types.ts'
+import type { ActiviteitRegel, Bericht, Boodschap, Bron, ChatOverzicht, GezondheidProfiel, SpraakToken, Inzending, LogRegel, Maaltijd, NieuweNotitie, NieuweOuderTaak, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Saldo, Spelregels, Taak, Tijdverzoek, Winkel } from './types.ts'
 
 // Postgres numeric komt als tekst of getal binnen.
 const getal = (w: unknown) => (w === null || w === undefined ? null : Number(w))
@@ -115,6 +115,16 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
         .or(`gedaan_op.is.null,gedaan_op.gte.${week}`).order('datum', { nullsFirst: false }).order('aangemaakt_op')
       fout(error)
       return (data ?? []) as OuderTaak[]
+    },
+    async chatBerichten(kindId) {
+      const { data, error } = await sb.rpc('chat_berichten', { p_kind: kindId })
+      fout(error)
+      return (data ?? []) as Bericht[]
+    },
+    async chatOverzicht() {
+      const { data, error } = await sb.rpc('chat_overzicht')
+      fout(error)
+      return (data ?? []) as ChatOverzicht[]
     },
     async notities() {
       const { data, error } = await sb.from('notities').select('id, eigenaar, gedeeld, titel, tekst, lijst, vastgezet, bijgewerkt_op')
@@ -272,6 +282,12 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
     },
     async ouderTaakVerwijderen(id) {
       fout((await sb.from('ouder_taken').delete().eq('id', id)).error)
+    },
+    async chatSturen(kindId, tekst, sticker = null) {
+      fout((await sb.rpc('chat_sturen', { p_kind: kindId, p_tekst: tekst, p_sticker: sticker })).error)
+    },
+    async chatGelezen(kindId) {
+      fout((await sb.rpc('chat_gelezen', { p_kind: kindId })).error)
     },
     async notitieOpslaan({ id, titel, tekst, lijst, gedeeld, vastgezet }: NieuweNotitie) {
       // Enkel deze kolommen: de eigenaar verandert nooit.
