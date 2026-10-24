@@ -8,7 +8,7 @@ Zo werkt het: de gsm van een ouder bewaart een abonnement in `push_abonnementen`
 
 1. **Migratie**: voer `supabase/migrations/20261022000500_meldingen.sql` uit in de SQL Editor.
 2. **Sleutels maken** (lokaal, in de projectmap): `npx web-push generate-vapid-keys`. Je krijgt een public en een private key.
-   - De **public key** zet je in `.env.local` als `VITE_VAPID_PUBLIC_KEY=...` (en later ook bij Vercel).
+   - De **public key** zet je in `.env.local` als `VITE_VAPID_PUBLIC_KEY=...` (en als variabele in GitHub, zie `docs/hosting.md` stap 2).
    - De **private key** komt nergens in de code of in git, alleen bij de secrets van stap 3.
 3. **Edge Function**: Supabase → Edge Functions → Deploy a new function → Via Editor. Naam `melding`, plak de inhoud van `supabase/functions/melding/index.ts`, en zet **Verify JWT** uit (de functie controleert zelf een geheim).
    Bij Edge Functions → Secrets voeg je toe:
@@ -23,7 +23,7 @@ Zo werkt het: de gsm van een ouder bewaart een abonnement in `push_abonnementen`
 
 ## Goed om te weten
 
-- Meldingen werken alleen via https, dus pas als de app gehost is (bv. op Vercel); op `localhost` van je pc niet op de gsm.
+- Meldingen werken alleen via https, dus pas als de app gehost is (op Azure, zie `docs/hosting.md`); op `localhost` van je pc niet op de gsm.
 - Spelletjes zonder sterren (memory, penalty's) geven geen melding.
 - Een gsm die de melding niet meer kan ontvangen, wordt automatisch uit de lijst gehaald.
 - Testen zonder kind: voeg een taak in via de app op de tablet en kijk of de melding binnenkomt; bij Edge Functions → melding → Logs zie je eventuele fouten.

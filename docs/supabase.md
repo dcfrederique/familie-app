@@ -12,7 +12,7 @@ Een script dat al gedraaid heeft, draai je niet opnieuw. `20261022000300_voorbee
 
 - **Sign In / Providers > Allow anonymous sign-ins**: aanzetten. Tablets melden zich anoniem aan en koppelen met een code.
 - **Sign In / Providers > Email > Confirm email**: mag aan blijven (dan krijg je een bevestigingsmail) of uit voor sneller testen.
-- **URL Configuration > Site URL**: het adres van de app (bv. de Vercel-URL), zodat de link in de bevestigingsmail klopt.
+- **URL Configuration > Site URL**: het adres van de app (de Azure-URL uit `docs/hosting.md`), zodat de link in de bevestigingsmail klopt.
 
 ## 3. In de app
 
@@ -26,3 +26,22 @@ Alle sterrenregels zitten in Postgres-functies: indienen, goedkeuren, reserveren
 vervallen (elke 5 minuten via pg_cron), dagplafond, tijdvenster en spaarmaximum. Ouder-acties op een tablet
 vragen de pincode (na 5 fouten 10 minuten geblokkeerd).
 Tests: `scripts/test-db.sh` (lokale Postgres 16 nodig) of de CI-job `database`.
+
+## Back-up terugzetten
+
+Elke zondagnacht zet `.github/workflows/backup.yml` een back-up in Azure (Storage-account → container `backups`, één bestand per week, 90 dagen bewaard; opzetten in `docs/hosting.md` stap 5). Zo'n bestand bevat de gebruikers uit `auth` (alleen data) en het volledige schema `public` (tabellen, functies, RLS, grants en data). Bewijsfoto's zitten er niet in.
+
+Terugzetten in een **nieuw, leeg** Supabase-project (niet over een bestaand project heen):
+
+1. Azure: Storage-account → **Containers → backups** → het bestand → **Download**.
+2. Nieuw Supabase-project aanmaken, zelfde instellingen als in stap 2 hierboven. Voer **geen** migraties uit: die zitten al in de back-up.
+3. In Supabase: **Connect → Session pooler** en kopieer de URI (met wachtwoord).
+4. Op een pc met Postgres 17 (`psql`):
+   ```bash
+   gunzip -c 2026-10-26.sql.gz | psql "<URI van het nieuwe project>" -v ON_ERROR_STOP=1
+   ```
+5. De taak van pg_cron (verzoeken laten vervallen) zit niet in de back-up: voer in de **SQL Editor** het bestand `supabase/migrations/20261021000100_vervallen_cron.sql` nog eens uit.
+6. Bewijsfoto's opnieuw: de opslag `fotos` aanmaken zoals in `20261022000300_voorbeeldtaken_fotos.sql` (alleen het deel over storage).
+7. Pas `VITE_SUPABASE_URL` en `VITE_SUPABASE_PUBLISHABLE_KEY` aan in GitHub (variabelen) en de secrets van `keep-alive.yml` en `backup.yml`; de volgende commit op `main` zet de app over. Tablets en gsm's blijven aangemeld zolang hun token geldig is, anders opnieuw koppelen.
+
+Probeer dit één keer echt uit met een proefproject, anders weet je niet of de back-up deugt.

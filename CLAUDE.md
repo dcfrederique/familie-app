@@ -32,6 +32,7 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - `docs/verhalen.md`: de 30 verhalen die als initiële data in de app moeten.
 - `prototypes/spelletjes.html`: werkend prototype van Memory en Rekenen (vanilla JS). Gebruik de logica en de stijl als referentie.
 - `prototypes/penalty.html`: werkend prototype van Penalty's (schieten met een veeg, canvas). De keeper-modus moet nog gebouwd worden.
+- `docs/hosting.md`: hosting op Azure Static Web Apps, automatisch deployen, en de klikstappen voor de hele Azure-setup (Speech, back-ups).
 - `docs/huis.md` en `prototypes/huis.html`: use case en klikbaar prototype van Mijn huis (huis groeit met verdiende sterren, zelf aankleden); nog niet in de app.
 
 ## Beslist (21 oktober 2026)
@@ -41,7 +42,7 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 3. Meldingen naar ouders: web-push (alle toestellen zijn Android; geen Telegram).
 4. Tijdvenster voor aanvragen: 7:00 tot 20:00. Overige waarden zoals in `docs/spec.md`.
 5. MVP in twee delen: eerst de sterrenlus (taken, goedkeuren, tijd aanvragen, saldo), daarna activiteiten en verhalen.
-6. Hosting: Vercel (voorstel, nog te bevestigen).
+6. Hosting: Azure Static Web Apps (Free), elke commit op `main` gaat na groene CI automatisch online (beslist 24 oktober 2026, `docs/hosting.md`).
 
 ## Werkwijze
 

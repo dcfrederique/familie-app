@@ -1,0 +1,51 @@
+# Wekelijkse back-up van de Supabase-database naar Azure Blob Storage (docs/azure-extra.md, terugzetten: docs/supabase.md).
+# Zonder de secrets SUPABASE_DB_URL en AZURE_BACKUP_CONNECTION_STRING slaat hij zich over.
+name: Back-up database
+
+on:
+  schedule:
+    - cron: '23 2 * * 0' # zondagnacht, 02:23 UTC
+  workflow_dispatch:
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+      AZURE_BACKUP_CONNECTION_STRING: ${{ secrets.AZURE_BACKUP_CONNECTION_STRING }}
+    steps:
+      - if: env.SUPABASE_DB_URL == '' || env.AZURE_BACKUP_CONNECTION_STRING == ''
+        run: echo "::notice::Secrets ontbreken, geen back-up gemaakt."
+
+      # Supabase draait Postgres 17; pg_dump moet minstens even nieuw zijn.
+      - if: env.SUPABASE_DB_URL != '' && env.AZURE_BACKUP_CONNECTION_STRING != ''
+        name: pg_dump 17 installeren
+        run: |
+          sudo apt-get install -y -qq postgresql-common > /dev/null
+          sudo /usr/share/postgresql-common/pgdg/apt.postgresql.org.sh -y > /dev/null
+          sudo apt-get install -y -qq postgresql-client-17 > /dev/null
+
+      # Twee delen in één bestand: eerst de gebruikers uit auth (alleen data, het schema maakt Supabase zelf),
+      # daarna ons eigen schema public volledig (tabellen, functies, RLS, grants en data).
+      - if: env.SUPABASE_DB_URL != '' && env.AZURE_BACKUP_CONNECTION_STRING != ''
+        name: Dump maken
+        run: |
+          naam="$(date -u +%F).sql.gz"
+          echo "NAAM=$naam" >> "$GITHUB_ENV"
+          pg=/usr/lib/postgresql/17/bin/pg_dump
+          {
+            $pg "$SUPABASE_DB_URL" --data-only --no-owner --no-privileges -t auth.users -t auth.identities
+            # Zonder --no-privileges: de grants voor anon en authenticated zijn nodig voor de app.
+            $pg "$SUPABASE_DB_URL" --no-owner --schema=public
+          } | gzip -9 > "$naam"
+          ls -lh "$naam"
+          # Een lege of afgebroken dump mag niet als geslaagd tellen.
+          zcat "$naam" | grep -q 'CREATE TABLE public.gezinnen'
+
+      - if: env.SUPABASE_DB_URL != '' && env.AZURE_BACKUP_CONNECTION_STRING != ''
+        name: Naar Azure Blob
+        run: |
+          az storage blob upload --only-show-errors \
+            --connection-string "$AZURE_BACKUP_CONNECTION_STRING" \
+            --container-name backups --name "$NAAM" --file "$NAAM" --tier Cool --overwrite

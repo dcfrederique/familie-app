@@ -38,7 +38,7 @@ Dezelfde Postgres, maar dan bij Azure. Onze SQL-functies, triggers en tests blij
 | `auth.uid()` in onze RLS-regels | Kleine shimfunctie die de gebruiker uit het token leest (PostgREST zet dat token al in de sessie, net als bij Supabase) |
 | Storage (foto's) | **Blob Storage**, uploaden via een tijdelijke SAS-link uit de API |
 | Database Webhook + Edge Function `melding` | Azure Function die na een nieuwe inzending/verzoek de push stuurt (web-push werkt even goed vanuit Node of C#) |
-| Hosting (nu Vercel) | Vercel houden, of **Static Web Apps Free** |
+| Hosting | **Static Web Apps Free** (sinds 24 oktober 2026, `docs/hosting.md`) |
 
 - **Kost per maand** (West-Europa, ongeveer): B1ms ±€13–15, 32 GB opslag ±€3,5, back-ups 7 dagen inbegrepen, Container Apps / Functions / Blob / Static Web Apps binnen de gratis hoeveelheden ±€0–1. **Totaal ±€18–20 per maand, ongeveer 15% van het tegoed.** Er pauzeert niets.
 - **Werk**: middelgroot, ±2 à 3 werksessies. De spelregels blijven, het werk zit in login, foto's, meldingen en de koppeling in `src/lib/bron/` (die laag hebben we al apart gehouden, dus de schermen veranderen niet).

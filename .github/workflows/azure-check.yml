@@ -1,0 +1,76 @@
+# Handmatig starten (Actions → Azure controleren → Run workflow) nadat je de secrets uit docs/hosting.md hebt gezet.
+# Kijkt elk onderdeel na en maakt met de Speech-sleutel een proefopname met Dena en met Arnaud (te downloaden onderaan de run).
+name: Azure controleren
+
+on:
+  workflow_dispatch:
+
+jobs:
+  controleren:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SWA_TOKEN: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+      SPEECH_KEY: ${{ secrets.AZURE_SPEECH_KEY }}
+      SPEECH_REGION: ${{ secrets.AZURE_SPEECH_REGION }}
+      BACKUP: ${{ secrets.AZURE_BACKUP_CONNECTION_STRING }}
+      DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+      VITE_SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+      VITE_SUPABASE_PUBLISHABLE_KEY: ${{ vars.VITE_SUPABASE_PUBLISHABLE_KEY }}
+      VITE_VAPID_PUBLIC_KEY: ${{ vars.VITE_VAPID_PUBLIC_KEY }}
+    steps:
+      - name: Wat is ingevuld?
+        run: |
+          staat() { if [ -n "$2" ]; then echo "✅ $1"; else echo "⬜ $1 ontbreekt"; fi; }
+          staat "secret AZURE_STATIC_WEB_APPS_API_TOKEN" "$SWA_TOKEN"
+          staat "variabele VITE_SUPABASE_URL" "$VITE_SUPABASE_URL"
+          staat "variabele VITE_SUPABASE_PUBLISHABLE_KEY" "$VITE_SUPABASE_PUBLISHABLE_KEY"
+          staat "variabele VITE_VAPID_PUBLIC_KEY (meldingen)" "$VITE_VAPID_PUBLIC_KEY"
+          staat "secret AZURE_SPEECH_KEY" "$SPEECH_KEY"
+          staat "secret AZURE_SPEECH_REGION" "$SPEECH_REGION"
+          staat "secret AZURE_BACKUP_CONNECTION_STRING" "$BACKUP"
+          staat "secret SUPABASE_DB_URL" "$DB_URL"
+
+      - name: Supabase bereikbaar
+        if: env.VITE_SUPABASE_URL != '' && env.VITE_SUPABASE_PUBLISHABLE_KEY != ''
+        run: |
+          code=$(curl -sS -o /dev/null -w '%{http_code}' -H "apikey: $VITE_SUPABASE_PUBLISHABLE_KEY" "$VITE_SUPABASE_URL/auth/v1/settings")
+          echo "Supabase auth: HTTP $code"
+          [ "$code" = 200 ]
+
+      - name: Speech-sleutel en proefopnames
+        if: env.SPEECH_KEY != '' && env.SPEECH_REGION != ''
+        run: |
+          mkdir proef
+          tekst='Op een hoge heuvel woonde Dirk de draak. Dirk was groot en groen, maar hij was altijd een beetje moe.'
+          for stem in Dena Arnaud; do
+            ssml="<speak version='1.0' xml:lang='nl-BE'><voice name='nl-BE-${stem}Neural'><prosody rate='-10%'>$tekst</prosody></voice></speak>"
+            code=$(curl -sS -o "proef/$stem.mp3" -w '%{http_code}' -X POST \
+              "https://$SPEECH_REGION.tts.speech.microsoft.com/cognitiveservices/v1" \
+              -H "Ocp-Apim-Subscription-Key: $SPEECH_KEY" \
+              -H 'Content-Type: application/ssml+xml' \
+              -H 'X-Microsoft-OutputFormat: audio-24khz-48kbitrate-mono-mp3' \
+              -H 'User-Agent: familie-app' \
+              --data "$ssml")
+            echo "$stem: HTTP $code, $(stat -c %s "proef/$stem.mp3") bytes"
+            [ "$code" = 200 ]
+          done
+
+      - name: Proefopnames bewaren
+        if: env.SPEECH_KEY != '' && env.SPEECH_REGION != ''
+        uses: actions/upload-artifact@v4
+        with:
+          name: proefopnames-stem
+          path: proef/
+
+      - name: Blob-container backups
+        if: env.BACKUP != ''
+        run: |
+          az storage container show --only-show-errors --connection-string "$BACKUP" --name backups --query name -o tsv
+          echo "Laatste back-ups:"
+          az storage blob list --only-show-errors --connection-string "$BACKUP" --container-name backups \
+            --query "[-5:].{naam:name, grootte:properties.contentLength}" -o table
+
+      - name: Database-verbinding voor back-ups
+        if: env.DB_URL != ''
+        run: psql "$DB_URL" -tAc "select 'Postgres ' || current_setting('server_version')"

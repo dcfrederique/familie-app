@@ -14,6 +14,8 @@ Alle drie draaien op het Visual Studio-abonnement. Zie `docs/azure.md` over het 
 
 ## 1. Back-ups naar Azure Blob Storage
 
+**Stand:** gebouwd op 24 oktober 2026 (`.github/workflows/backup.yml`); de klikstappen staan nu in `docs/hosting.md` stap 5.
+
 **Waarom:** Supabase Free maakt geen back-ups die je zelf kunt terugzetten. Gaat er iets mis (een foute migratie, een per ongeluk gewist kind), dan is de puntengeschiedenis weg.
 
 **Hoe:** een GitHub Action (`.github/workflows/backup.yml`) draait elke zondagnacht:

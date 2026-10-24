@@ -6,7 +6,7 @@ Gezinsapp waarin de kinderen sterren verdienen met taken en die inwisselen voor 
 
 - PWA met React, Vite en TypeScript
 - Supabase (database, login, opslag)
-- Hosting: Vercel (`vercel.json` stuurt alle routes naar de app)
+- Hosting: Azure Static Web Apps, automatisch na groene CI op `main` (zie `docs/hosting.md`)
 
 ## Lokaal starten
 

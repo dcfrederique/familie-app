@@ -36,6 +36,8 @@ Het eerste idee was een Supabase Edge Function die Azure aanroept en de audio in
 
 ### 1. Speech-resource aanmaken (Frederique, ±10 minuten)
 
+Ook opgenomen in `docs/hosting.md` stap 4. Daarna maakt **Actions → Azure controleren** meteen de proefopnames van stap 2.
+
 1. Ga naar [portal.azure.com](https://portal.azure.com) en log in met het account van je Visual Studio-abonnement.
 2. Zoek bovenaan **Speech** en kies **Speech services** (onder Azure AI services), dan **Create**.
 3. Vul in:
@@ -55,7 +57,7 @@ Wil je zelf lokaal opnames kunnen maken, zet dezelfde twee waarden dan in een be
 
 ### 2. Proefopname en stemkeuze
 
-Een klein script maakt van bladzijde 1 van "Dirk de draak telt sterren" een mp3 met Dena en een met Arnaud. Frederique luistert en kiest de stem (en eventueel het tempo). De keuze komt in dit document.
+Gebouwd: de workflow `azure-check.yml` (zie `docs/hosting.md` stap 6) maakt van bladzijde 1 van "Dirk de draak telt sterren" een mp3 met Dena en een met Arnaud. Frederique luistert en kiest de stem (en eventueel het tempo). De keuze komt in dit document.
 
 ### 3. Script dat de verhalen inspreekt (`scripts/maak-stem.ts`)
 
@@ -65,7 +67,7 @@ Een klein script maakt van bladzijde 1 van "Dirk de draak telt sterren" een mp3 
 - Schrijft naar `public/stem/verhalen/<nr>/<bladzijde>.mp3` en `.json`, plus de titel als `titel.mp3`.
 - Houdt per bestand een hash bij van tekst + stem + tempo (`public/stem/index.json`). Alleen gewijzigde bladzijden worden opnieuw gemaakt, dus een tikfout verbeteren kost een paar honderd tekens, niet 20.000.
 - Wacht tussen verzoeken zodat het onder 20 per minuut blijft, en probeert bij een 429 later opnieuw.
-- Schatting grootte: ±25 minuten audio voor alle verhalen, ±10 MB. Dat kan gewoon in de repo en kost niets op Vercel.
+- Schatting grootte: ±25 minuten audio voor alle verhalen, ±10 MB. Dat kan gewoon in de repo en kost niets op Static Web Apps.
 - Test: een unit-test op het opbouwen van de SSML (speciale tekens zoals `&` en `<` escapen) en op het omzetten van woordtijden naar woordnummers zoals `woordGrenzen()` ze telt.
 
 ### 4. GitHub Action die het script draait
