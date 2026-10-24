@@ -1,0 +1,67 @@
+/* Mijn huis (docs/huis.md, prototypes/huis.html). De bouwplaats leent de opmaak van de kleerkast (figuurtje.css). */
+
+/* Buiten: overdag blauwe lucht, in het donkere thema (en bij Luca's racethema) nacht met verlichte ramen. */
+.huis-scene, .huis-podium {
+  --huis-lucht1: #7EC3F2; --huis-lucht2: #D4EEFF; --huis-zon: #FFD24A; --huis-maan: 0; --huis-sterren: 0; --huis-wolk: #FFFFFF;
+  --huis-heuvel: #A6D98C; --huis-gras: #7CC46A; --huis-gras2: #6AB55A; --huis-glas: #BFE3FA; --huis-pad: #E2D9C6; --huis-rook: #E6EAF0;
+}
+.huis-scene { display: block; width: 100%; height: auto; }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .huis-scene, :root:not([data-theme="light"]) .huis-podium {
+    --huis-lucht1: #0D1836; --huis-lucht2: #2A3C6C; --huis-zon: #F4EFD8; --huis-maan: 1; --huis-sterren: 1; --huis-wolk: #33416A;
+    --huis-heuvel: #1E3B4C; --huis-gras: #2E5A3A; --huis-gras2: #264E30; --huis-glas: #FFD66B; --huis-pad: #5E5A52; --huis-rook: #7A859A;
+  }
+}
+:root[data-theme="dark"] .huis-scene, :root[data-theme="dark"] .huis-podium, .thema-race .huis-scene, .thema-race .huis-podium {
+  --huis-lucht1: #0D1836; --huis-lucht2: #2A3C6C; --huis-zon: #F4EFD8; --huis-maan: 1; --huis-sterren: 1; --huis-wolk: #33416A;
+  --huis-heuvel: #1E3B4C; --huis-gras: #2E5A3A; --huis-gras2: #264E30; --huis-glas: #FFD66B; --huis-pad: #5E5A52; --huis-rook: #7A859A;
+}
+.huis-gebouw { transform-box: fill-box; transform-origin: 50% 100%; }
+.huis-rook circle { fill: var(--huis-rook); transform-box: fill-box; transform-origin: center; opacity: .7; }
+.huis-lampje { transform-box: fill-box; transform-origin: center; }
+@media (prefers-reduced-motion: no-preference) {
+  .huis-rook circle { opacity: 0; animation: huis-rook 3s ease-out infinite; }
+  .huis-rook circle:nth-child(2) { animation-delay: 1s; }
+  .huis-rook circle:nth-child(3) { animation-delay: 2s; }
+  .huis-lampje { animation: huis-twinkel 1.4s ease-in-out infinite alternate; }
+  .wiebel .huis-gebouw { animation: huis-wiebel .42s ease; }
+  .groei .huis-gebouw { animation: huis-groei .9s cubic-bezier(.2, 1.4, .4, 1) .2s both; }
+}
+@keyframes huis-rook { 0% { transform: translateY(14px) scale(.5); opacity: 0; } 30% { opacity: .85; } 100% { transform: translateY(-34px) scale(1.25); opacity: 0; } }
+@keyframes huis-twinkel { from { opacity: .5; } to { opacity: 1; } }
+@keyframes huis-wiebel { 30% { transform: scale(1.03, .96); } 65% { transform: scale(.98, 1.03); } 100% { transform: none; } }
+@keyframes huis-groei { from { transform: scale(.35); opacity: 0; } }
+
+/* Bouwplaats */
+/* Het huis staat onderaan; de lucht vult de rest van de hoogte. */
+.huisbouw .kleerkast-inhoud { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.huis-podium { position: relative; min-height: 420px; border-radius: 40px; overflow: hidden; background: var(--huis-lucht1); display: flex; flex-direction: column; justify-content: flex-end; }
+.huis-podium > .huis-scene { max-height: 100%; }
+.huis-podium > .huis-scene.proef { opacity: .85; }
+.huis-naar-kast { position: absolute; right: 14px; top: 14px; width: 56px; height: 56px; border-radius: 50%; background: var(--surface); color: var(--kid); display: grid; place-items: center; box-shadow: 0 4px 0 var(--shade); }
+.huisbouw .kast-tabs { grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }
+.huisbouw .kast-tab { font-size: 14px; }
+.huisbouw.prenten .kast-tabs { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+.huis-hint { margin: -6px 0 0; font-size: 16px; font-weight: 700; color: var(--muted); }
+.huis-keuzes .kast-keuzes { align-content: start; }
+.huis-plaats { position: absolute; top: 8px; left: 8px; width: 30px; height: 30px; border-radius: 50%; background: var(--kid); color: var(--on-solid); display: grid; place-items: center; font-size: 16px; }
+.thema-race .huisbouw .kast-tab { font-size: 12px; letter-spacing: .02em; }
+.thema-tuin .huisbouw.prenten .kast-tabs { gap: 12px; padding: 6px 10px; }
+
+/* Feest: het huis is gegroeid */
+.huis-feest { width: min(640px, 100%); }
+.huis-feest-stralen { position: relative; width: 100%; padding: 18px; box-sizing: border-box; border-radius: 32px; overflow: hidden; }
+.huis-feest-stralen::before { content: ""; position: absolute; inset: -50%; background: repeating-conic-gradient(var(--gold-bg) 0 10deg, var(--surface) 10deg 20deg); }
+.huis-feest-stralen > .huis-scene { position: relative; border-radius: 24px; }
+.huis-feest p { margin: 0; font-size: 20px; color: var(--muted); }
+
+/* Knop naar het huis op het startscherm, naast het figuurtje */
+.huis-knop { position: relative; width: 64px; height: 64px; flex-shrink: 0; border-radius: 50%; overflow: hidden; background: var(--kid-tint); display: block; }
+.huis-knop > .huis-scene { width: 100%; height: 100%; }
+.kop-groot .huis-knop { width: 72px; height: 72px; }
+.banner .huis-knop { width: 60px; height: 60px; background: #E3EDFC; }
+
+@media (max-width: 860px) {
+  .huisbouw .kast-tabs { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .huisbouw.prenten .kast-tabs { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}

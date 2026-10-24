@@ -7,6 +7,7 @@ import GezinInstellen from './schermen/GezinInstellen.tsx'
 import KinderenBeheer from './schermen/KinderenBeheer.tsx'
 import KindStart from './schermen/KindStart.tsx'
 import Kleerkast from './schermen/Kleerkast.tsx'
+import MijnHuis from './schermen/Huis.tsx'
 import Huisdier from './schermen/Huisdier.tsx'
 import Puzzels from './schermen/Puzzels.tsx'
 import Memory from './schermen/Memory.tsx'
@@ -63,6 +64,7 @@ export default function App() {
         <Route path="welkom" element={<Welkomstpad />} />
         <Route path="tijd" element={<ExtraTijd />} />
         <Route path="figuurtje" element={<Kleerkast />} />
+        <Route path="huis" element={<MijnHuis />} />
         <Route path="spelen" element={<Spelen />} />
         <Route path="winkel" element={<Winkel />} />
         <Route path="rekenen" element={<Rekenen />} />

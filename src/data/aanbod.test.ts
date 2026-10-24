@@ -28,5 +28,7 @@ describe('winkelaanbod', () => {
     expect(aanbodItems.filter((i) => i.soort === 'spel')).toHaveLength(spelMenu.length)
     expect(aanbodItems.filter((i) => i.soort !== 'spel').every((i) => i.prijs > 0)).toBe(true)
     expect(aanbodItems.some((i) => i.soort === 'hoofd' && i.sleutel === 'kroon')).toBe(true)
+    expect(aanbodItems.some((i) => i.deel === 'huis' && i.soort === 'huis' && i.sleutel === 'toren')).toBe(true)
+    expect(aanbodItems.some((i) => i.soort === 'huis' && i.sleutel === 'hutje')).toBe(false)
   })
 })

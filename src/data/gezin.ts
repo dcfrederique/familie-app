@@ -1,5 +1,6 @@
 // Gegevens van het gezin zoals de app ze gebruikt. Zonder Supabase (demo) komen ze uit startdata.
 import type { Figuurtje } from './figuurtje.ts'
+import type { Huis } from './huis.ts'
 import type { StemKeuze } from '../lib/stem.ts'
 
 export type Kleur = 'blauw' | 'oranje' | 'groen' | 'paars' | 'roze' | 'lila'
@@ -18,6 +19,8 @@ export interface Gebruiker {
   figuurtje: Figuurtje | null
   /** Ouder zette vrijspelen met sterren uit: alle stukken zijn vrij. */
   figuurtje_alles_vrij: boolean
+  /** Mijn huis (docs/huis.md); null = het hutje om mee te starten. */
+  huis: Huis | null
   /** Welke stem voorleest (docs/voorleesstem.md); een ouder kiest bij Kinderen. */
   voorleesstem: StemKeuze
   /** 'JJJJ-MM-DD', of null als niemand ze invulde. */
@@ -47,10 +50,10 @@ const kleuren: Kleur[] = ['blauw', 'roze', 'lila', 'groen']
 /** Startdata voor de demo zonder Supabase. */
 export const demoGebruikers: Gebruiker[] = [
   { id: 'mama', naam: 'Mama', rol: 'ouder', thema: null, kan_lezen: true, vraagt_zelf_tijd: true, volgorde: 1,
-    figuurtje: null, figuurtje_alles_vrij: false, voorleesstem: 'afwisselend', geboortedatum: null, welkom_klaar: true, chat_aan: false },
+    figuurtje: null, figuurtje_alles_vrij: false, huis: null, voorleesstem: 'afwisselend', geboortedatum: null, welkom_klaar: true, chat_aan: false },
   ...startKinderen.map((k, i) => ({
     id: k.naam.toLowerCase(), rol: 'kind' as const, thema: kleuren[i % 4], volgorde: 10 + i, ...k,
-    figuurtje: null, figuurtje_alles_vrij: false, voorleesstem: 'afwisselend' as const,
+    figuurtje: null, figuurtje_alles_vrij: false, huis: null, voorleesstem: 'afwisselend' as const,
     // In de demo doorloopt elk kind het welkomstpad als je het op deze tablet kiest.
     geboortedatum: null, welkom_klaar: false, chat_aan: true,
   })),

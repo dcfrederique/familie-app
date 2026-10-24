@@ -99,7 +99,7 @@ const boom = (x: number, y: number, s: number) => g(x, y, s, `<path d="M-14 0V-8
 const tuinBasis = () => `<rect width="1000" height="190" fill="#ECE3FA"/><circle cx="945" cy="64" r="30" fill="#FFF0A8"/>
   ${sterretjes(10)}<ellipse cx="280" cy="232" rx="420" ry="74" fill="#C7E8C0"/><ellipse cx="840" cy="236" rx="380" ry="80" fill="#AEDDA2"/>`
 
-const prenten: Record<Thema, Record<ThemaScherm, () => string>> = {
+const prenten: Record<Thema, Record<Exclude<ThemaScherm, 'huis'>, () => string>> = {
   race: {
     spelen: () => raceBasis() + vulkaan(640, 158, 0.95) + dino(820, 150, 0.85) + vlag(905, 30, 0.8) + stoplicht(470, 120) + `<g class="thema-rij">${auto(0, 160, 0.75)}</g>`,
     verhalen: () => raceBasis() + '<circle cx="590" cy="58" r="26" fill="#F6E7B4"/>' + vulkaan(800, 158, 1.2) + dino(600, 150, 0.75) +
@@ -145,6 +145,7 @@ const cache = new Map<string, string>()
 /** SVG-inhoud van de kopprent; berekend bij het eerste gebruik. */
 export function kopPrent(thema: Thema, scherm: ThemaScherm): string {
   const sleutel = `${thema}/${scherm}`
-  if (!cache.has(sleutel)) cache.set(sleutel, prenten[thema][scherm]())
+  // Mijn huis leent de prent van Spelletjes: de pitstop, het kasteel, het paddenstoelendorp.
+  if (!cache.has(sleutel)) cache.set(sleutel, prenten[thema][scherm === 'huis' ? 'spelen' : scherm]())
   return cache.get(sleutel)!
 }

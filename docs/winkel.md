@@ -50,6 +50,11 @@ deze wijziging nog op goedkeuring wachten, blijven gewoon in Goedkeuren staan.
 Figuurtje: de basisstukken zijn gratis; de andere kosten 10, 15, 20, 25, 35 of 50 sterren (de cape is het duurst).
 Alle kleuren zijn gratis.
 
+Mijn huis (`docs/huis.md`): het hutje en de basisstukken zijn gratis. Groter bouwen kost 25 (huisje), 50 (verdieping),
+80 (groot huis met garage) of 120 sterren (torenhuis); dak, muren, deur, ramen, tuin en extraatjes kosten 10 tot 60
+sterren. Alles in de Huis-tab van de winkel of meteen op Mijn huis; wie niet leest betaalt de helft. Prijzen in
+`src/data/huis.ts` en `supabase/migrations/20261024001700_mijn_huis.sql` (tabel `huis_stukken`).
+
 De prijzen staan als data in `src/data/spelletjes.ts` en `src/data/figuurtje.ts`, en op de server in
 `supabase/migrations/20261024000500_sterren_kopen.sql` (tabel `spel_prijzen`, kolom `figuurtje_stukken.prijs`).
 De tests in `src/data/*.test.ts` houden de twee gelijk.

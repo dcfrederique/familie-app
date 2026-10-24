@@ -21,7 +21,7 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - Dagplafond (voorstel 60 min extra per kind) en tijdvenster (7:00 tot 20:00) worden **op de server** gecontroleerd.
 - Afkeuren kost niets, geen strafpunten.
 - Zonder goedkeuring: de eenmalige welkomstbonus van 10 sterren op het einde van het welkomstpad, en de sterren uit lerende spelletjes (rekenen, verhalen, kleurplaten), die er meteen bij komen binnen het dagplafond voor activiteiten (beide gevraagd door de ouders, 24 oktober 2026).
-- Nieuwe spelletjes en stukken voor het figuurtje koopt het kind zelf met sterren; die gaan van het vrije saldo af (`docs/winkel.md`).
+- Nieuwe spelletjes en stukken voor het figuurtje en Mijn huis koopt het kind zelf met sterren; die gaan van het vrije saldo af (`docs/winkel.md`).
 - De ouders kiezen wat in de winkel ligt en per kind wat het ziet (Kinderen → Winkelaanbod, `docs/winkelaanbod.md`); de server controleert. Ze kunnen ook de prijs per item aanpassen. Nieuw aanbod ligt er pas na vrijgave door een ouder.
 - Elke tablet hoort bij één kind (`docs/tablet-per-kind.md`); een ander kind kiezen kan alleen met de pincode of vanaf de gsm van een ouder.
 - Elke bij- en afschrijving komt in een puntenlog met reden.
@@ -38,7 +38,7 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - `prototypes/spelletjes.html`: werkend prototype van Memory en Rekenen (vanilla JS). Gebruik de logica en de stijl als referentie.
 - `prototypes/penalty.html`: werkend prototype van Penalty's (schieten met een veeg, canvas). De keeper-modus moet nog gebouwd worden.
 - `docs/hosting.md`: hosting op Azure Static Web Apps, automatisch deployen, en de klikstappen voor de hele Azure-setup (Speech, back-ups).
-- `docs/huis.md` en `prototypes/huis.html`: use case en klikbaar prototype van Mijn huis (huis groeit met verdiende sterren, zelf aankleden); nog niet in de app.
+- `docs/huis.md` en `prototypes/huis.html`: Mijn huis (eigen huis naast het figuurtje, zelf aankleden). Zit in de app: groter bouwen en stukken koopt het kind met sterren in de winkel (Huis-tab), zoals het figuurtje; scherm `src/schermen/Huis.tsx`, data `src/data/huis.ts`, tekening `src/lib/huis/tekenen.ts`.
 - `docs/azure-extra.md` en `docs/prenten.md`: Azure-extra's (back-up, leesoefening Ik lees zelf, prenten met Azure OpenAI) en het stappenplan voor de prenten.
 - `docs/winkel.md`: sterren inwisselen voor spelletjes en stukken van het figuurtje, en sterren uit spelletjes zonder goedkeuring.
 - `docs/winkelaanbod.md`: de ouders geven spelletjes en stukken vrij voor de winkel (in fases) en kiezen per kind wat het ziet.
@@ -87,9 +87,9 @@ Dit gebeurt in twee fases: eerst uitdenken (ontwerp), daarna coderen (bouw).
 - Verhalen: 300 tot 600 woorden, met een duidelijk begin, midden en einde
 - Spelletjes: eenvoudig, speelbaar op een tablet, zonder lezen speelbaar voor de jongste
 - Verhalen zijn meteen beschikbaar. Elk nieuw spelletje en elke nieuwe unlockable
-  (stukken voor het figuurtje, later ook Mijn huis) is te koop met sterren in de winkel:
-  geef het een `prijs` in de data (zie `src/data/spelletjes.ts`, `docs/winkel.md`) en een rij in
-  de servercatalogus (`spel_prijzen` via een nieuwe migratie)
+  (stukken voor het figuurtje of Mijn huis) is te koop met sterren in de winkel:
+  geef het een `prijs` in de data (zie `src/data/spelletjes.ts`, `src/data/huis.ts`, `docs/winkel.md`) en een rij in
+  de servercatalogus (`spel_prijzen`, `figuurtje_stukken` of `huis_stukken` via een nieuwe migratie)
 - Nieuwe spelletjes en unlockables liggen **niet** meteen in de winkel: de ouders geven ze vrij in
   Kinderen → Winkelaanbod (`docs/winkelaanbod.md`). Laat `standaard_vrij` dus op `false` (de standaard) en
   meld in het nieuwtje en het bericht aan de ouders dat het spelletje klaarstaat om vrij te geven

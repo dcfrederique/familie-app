@@ -42,4 +42,6 @@ afgerond. Een nieuwe prijs geldt voor wat nog niet gekocht is; wat al gekocht is
 - Tests: `supabase/tests/winkelaanbod.test.sql` en `src/data/aanbod.test.ts`.
 - App: `src/data/aanbod.ts` (regel `inAanbod` en de lijst `aanbodItems`), `bron.aanbod()`, `aanbodVrijgeven`,
   `aanbodVoorKind`; scherm `src/schermen/Winkelaanbod.tsx`; Spelen en Kleerkast filteren erop.
-- Later ook Mijn huis: voeg de soort toe aan de check van `aanbod` en `aanbod_verborgen`, en de items aan `aanbodItems`.
+- Mijn huis (migratie `20261024001700_mijn_huis.sql`): soorten `huis`, `dak`, `muur`, `deur`, `ramen`, `tuin` en
+  `huisextra` in `aanbod`, `aanbod_verborgen` en `aankopen`; catalogus `huis_stukken` met `standaard_vrij` (alles
+  `false`: het huis ligt pas in de winkel als een ouder het vrijgeeft). Ouderscherm: tab Huis.

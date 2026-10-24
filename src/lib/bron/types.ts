@@ -1,6 +1,7 @@
 // Gemeenschappelijke vorm van de gegevens, voor Supabase en voor de demo zonder Supabase.
 import type { Aanbod } from '../../data/aanbod.ts'
 import type { Figuurtje } from '../../data/figuurtje.ts'
+import type { Huis } from '../../data/huis.ts'
 import type { Kleur } from '../../data/gezin.ts'
 import type { Activiteit } from '../regels.ts'
 import type { Weging } from '../gewicht.ts'
@@ -242,10 +243,12 @@ export interface Bron {
    * Gooit een fout als spraakherkenning niet beschikbaar is (demo, geen secrets, oude migratie).
    */
   spraakToken(kindId: string, gebruikt: number): Promise<SpraakToken>
-  /** Koopt een spelletje (soort 'spel') of een stuk van het figuurtje; de sterren gaan van het vrije saldo. */
+  /** Koopt een spelletje (soort 'spel'), een stuk van het figuurtje of van het huis; de sterren gaan van het vrije saldo. */
   kopen(kindId: string, soort: string, sleutel: string, naam: string): Promise<void>
   /** Bewaart het figuurtje; null zet het terug naar het basisfiguurtje. De server controleert of alles gekocht is. */
   figuurtjeBewaren(kindId: string, figuurtje: Figuurtje | null): Promise<void>
+  /** Bewaart Mijn huis (docs/huis.md); null zet het terug naar het hutje. De server controleert of alles gekocht is. */
+  huisBewaren(kindId: string, huis: Huis | null): Promise<void>
   /** Bewaart het welkomstpad; geeft de welkomstbonus terug (0 als die al gegeven was). */
   welkomAfronden(kindId: string, welkom: Welkom): Promise<number>
 

@@ -5,6 +5,7 @@ import {
   bezitSleutel, figuurtjeVan, prijsVoor, zichtbareCategorieen, zichtbareStukken, type Bezit,
 } from '../data/figuurtje.ts'
 import type { Gebruiker } from '../data/gezin.ts'
+import { heeftHuisStuk, huisCategorie, huisVan, isHuisCategorie, zichtbareHuisCategorieen, zichtbareHuisStukken } from '../data/huis.ts'
 import { spelMenu, spelPrijs } from '../data/spelletjes.ts'
 import { zin } from '../data/zinnen.ts'
 import { useGegevens } from '../lib/gegevens.ts'
@@ -12,12 +13,16 @@ import { useSessie } from '../lib/sessie.tsx'
 import { geluid } from '../lib/spelletjes/geluid.ts'
 import { leesVoor } from '../lib/voorlezen.ts'
 import Figuurtje from './Figuurtje.tsx'
+import { HuisKeuzePrent } from './HuisPrent.tsx'
+import Bladzijden from './Bladzijden.tsx'
 import KoopVraag from './KoopVraag.tsx'
 import { Ster, SterrenPil } from './onderdelen.tsx'
 import SpelKader from './SpelKader.tsx'
 import './winkel.css'
 
-type Deel = 'spel' | 'figuurtje'
+type Deel = 'spel' | 'figuurtje' | 'huis'
+
+const WINKEL_MAAT = { breed: 170, hoog: 220, gap: 20, maxHoog: 250 }
 
 interface WinkelItem {
   sleutel: string
@@ -32,11 +37,11 @@ interface WinkelItem {
 }
 
 // De winkel van een kind (docs/winkel.md): alles wat het met sterren kan kopen in één overzicht, spelletjes en
-// stukken voor het figuurtje. Wat de ouders niet vrijgaven of voor dit kind verbergen, staat er niet
+// stukken voor het figuurtje en voor Mijn huis. Wat de ouders niet vrijgaven of voor dit kind verbergen, staat er niet
 // (docs/winkelaanbod.md). Bereikbaar via de sterren en het winkeltje op het startscherm.
 export default function Winkel() {
   return (
-    <SpelKader titel="Winkel" terug={(id) => `/kind/${id}`}>
+    <SpelKader titel="Winkel" terug={(id) => `/kind/${id}`} vol>
       {(kind) => <WinkelInhoud kind={kind} />}
     </SpelKader>
   )
@@ -73,10 +78,21 @@ function WinkelInhoud({ kind }: { kind: Gebruiker }) {
     prent: () => <Figuurtje figuurtje={{ ...huidig, [c.id]: s.id }} uitsnede={c.uitsnede} />,
     naar: `/kind/${kind.id}/figuurtje?aandoen=${c.id}:${s.id}`,
   })))
-  const zichtbaar = (i: WinkelItem) => inAanbod(aanbod, kind.id, i.sleutel, data.eigen.has(i.sleutel) || huidig[i.soort as keyof typeof huidig] === i.id)
+  const huis = huisVan(kind)
+  const huisStukken: WinkelItem[] = zichtbareHuisCategorieen(lezer).flatMap((c) => zichtbareHuisStukken(c, lezer).map((s) => metPrijs(aanbod, c.id, s.id, s)).filter((s) => s.prijs > 0).map((s) => ({
+    sleutel: bezitSleutel(c.id, s.id), soort: c.id, id: s.id, naam: s.naam, prijs: prijsVoor(s, v),
+    eigen: prijsVoor(s, v) === 0 || data.eigen.has(bezitSleutel(c.id, s.id)),
+    prent: () => <HuisKeuzePrent huis={huis} cat={c} stuk={s.id} />,
+    naar: `/kind/${kind.id}/huis?bouw=${c.id}:${s.id}`,
+  })))
+  // Wat het kind nu draagt of in zijn huis heeft, blijft te zien (ook als een ouder het uit de winkel haalde).
+  const inGebruik = (i: WinkelItem) => isHuisCategorie(i.soort)
+    ? heeftHuisStuk(huis, huisCategorie(i.soort), i.id)
+    : huidig[i.soort as keyof typeof huidig] === i.id
+  const zichtbaar = (i: WinkelItem) => inAanbod(aanbod, kind.id, i.sleutel, data.eigen.has(i.sleutel) || inGebruik(i))
   // Eerst wat je nu kunt kopen, dan waarvoor je spaart (goedkoopst eerst), en wat al van jou is achteraan.
   const orde = (i: WinkelItem) => (i.eigen ? 2 : vrij >= i.prijs ? 0 : 1)
-  const lijst = (deel === 'spel' ? spellen : stukken).filter(zichtbaar)
+  const lijst = ({ spel: spellen, figuurtje: stukken, huis: huisStukken })[deel].filter(zichtbaar)
     .sort((a, b) => orde(a) - orde(b) || a.prijs - b.prijs)
 
   function opSlot(i: WinkelItem) {
@@ -104,49 +120,48 @@ function WinkelInhoud({ kind }: { kind: Gebruiker }) {
         <div className="chips" role="group" aria-label="Wat wil je zien?">
           {tab('spel', 'Spelletjes', 'M6 12h4M8 10v4M15 11h.01M18 13h.01M7 6h10a5 5 0 0 1 5 5v2a5 5 0 0 1-9 3h-2a5 5 0 0 1-9-3v-2a5 5 0 0 1 5-5z')}
           {tab('figuurtje', 'Figuurtje', 'M12 7a3 3 0 1 0 0-.01M6 21v-3a6 6 0 0 1 12 0v3')}
+          {tab('huis', 'Mijn huis', 'M3 11l9-7l9 7M5 9.5V20h14V9.5M10 20v-6h4v6')}
         </div>
         <SterrenPil aantal={vrij} metWoord={lezer} />
       </div>
 
       {lijst.length === 0 && <p className="leeg">{lezer ? 'Hier ligt nu niets. Kijk later nog eens!' : ''}</p>}
-      <ul className="winkel-raster">
-        {lijst.map((i) => {
-          const teKoop = !i.eigen && vrij >= i.prijs
-          const deelGespaard = Math.min(1, vrij / Math.max(1, i.prijs))
-          const inhoud = (
-            <>
-              <span className={`winkel-prent${i.soort === 'spel' ? ' is-spel' : ''}`}>{i.prent(64)}</span>
-              {lezer && <span className="winkel-naam display">{i.naam}</span>}
-              {i.eigen ? (
-                <span className="winkel-eigen display">
-                  <svg className="ic" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 12l5 5l9-10" /></svg>
-                  {lezer && 'Van jou'}
-                </span>
-              ) : (
-                <>
-                  <span className="winkel-prijs display"><Ster grootte={22} />{i.prijs}</span>
-                  {!teKoop && (
-                    <span className="spel-balk" role="img" aria-label={`${Math.min(vrij, i.prijs)} van ${i.prijs} sterren`}>
-                      <span style={{ width: `${Math.round(deelGespaard * 100)}%` }} />
-                    </span>
-                  )}
-                </>
-              )}
-              {tip?.sleutel === i.sleutel && <span className="spel-tip" role="status">{tip.tekst}</span>}
-            </>
-          )
-          return (
-            <li key={i.sleutel}>
-              {i.eigen ? (
-                <Link to={i.naar} className="winkel-kaart is-eigen" aria-label={`${i.naam}, van jou`}>{inhoud}</Link>
-              ) : (
-                <button type="button" className={`winkel-kaart${teKoop ? ' te-koop' : ''}`}
-                        aria-label={`${i.naam}, kost ${i.prijs} sterren`} onClick={() => opSlot(i)}>{inhoud}</button>
-              )}
-            </li>
-          )
-        })}
-      </ul>
+      <Bladzijden key={deel} items={lijst} maat={WINKEL_MAAT} className="winkel-raster" label="Meer in de winkel" toon={(i) => {
+        const teKoop = !i.eigen && vrij >= i.prijs
+        const deelGespaard = Math.min(1, vrij / Math.max(1, i.prijs))
+        const inhoud = (
+          <>
+            <span className={`winkel-prent${i.soort === 'spel' ? ' is-spel' : ''}`}>{i.prent(64)}</span>
+            {lezer && <span className="winkel-naam display">{i.naam}</span>}
+            {i.eigen ? (
+              <span className="winkel-eigen display">
+                <svg className="ic" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d="M5 12l5 5l9-10" /></svg>
+                {lezer && 'Van jou'}
+              </span>
+            ) : (
+              <>
+                <span className="winkel-prijs display"><Ster grootte={22} />{i.prijs}</span>
+                {!teKoop && (
+                  <span className="spel-balk" role="img" aria-label={`${Math.min(vrij, i.prijs)} van ${i.prijs} sterren`}>
+                    <span style={{ width: `${Math.round(deelGespaard * 100)}%` }} />
+                  </span>
+                )}
+              </>
+            )}
+            {tip?.sleutel === i.sleutel && <span className="spel-tip" role="status">{tip.tekst}</span>}
+          </>
+        )
+        return (
+          <div key={i.sleutel} className="winkel-vak">
+            {i.eigen ? (
+              <Link to={i.naar} className="winkel-kaart is-eigen" aria-label={`${i.naam}, van jou`}>{inhoud}</Link>
+            ) : (
+              <button type="button" className={`winkel-kaart${teKoop ? ' te-koop' : ''}`}
+                      aria-label={`${i.naam}, kost ${i.prijs} sterren`} onClick={() => opSlot(i)}>{inhoud}</button>
+            )}
+          </div>
+        )
+      }} />
 
       {koop && bron && (
         <KoopVraag kind={kind} naam={koop.naam} prijs={koop.prijs} vrij={vrij} prent={koop.prent(110)}

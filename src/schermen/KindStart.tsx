@@ -3,6 +3,7 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { Banner } from '../data/banners.tsx'
 import { kleurKlasse, type Gebruiker } from '../data/gezin.ts'
 import { figuurtjeVan } from '../data/figuurtje.ts'
+import { huisVan } from '../data/huis.ts'
 import { maaltijdPrentje } from '../data/maaltijden.ts'
 import { MaaltijdPrent } from '../data/maaltijdPrenten.tsx'
 import { Prentje } from '../data/prentjes.tsx'
@@ -14,6 +15,7 @@ import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import { takenVoorKind, type TaakStatus } from '../lib/takenstatus.ts'
 import { gebruikStem, kanVoorlezen, leesVoor } from '../lib/voorlezen.ts'
 import Figuurtje, { hoofdUitsnede } from './Figuurtje.tsx'
+import HuisPrent from './HuisPrent.tsx'
 import { Ster, SterrenNaarWinkel, WinkelIcoon } from './onderdelen.tsx'
 import './schermen.css'
 import './chat.css'
@@ -71,7 +73,7 @@ function StartLezer({ kind, lijst, geladen, vrij, verzoeken, eten, ongelezen, ki
   const nogTeDoen = lijst.filter((t) => t.status === 'te_doen').length
   const wachtend = verzoeken.filter((v) => v.status === 'aangevraagd')
   const terug = <Terug grootte={28} />
-  const avatar = <Avatar kind={kind} />
+  const avatar = <><Avatar kind={kind} /><HuisKnop kind={kind} /></>
   const titel = <h1 className="kop-titel display">Hoi {kind.naam}!</h1>
 
   return (
@@ -192,7 +194,7 @@ function StartPrenten({ kind, lijst, geladen, eten, ongelezen, kies }: {
 
   const banner = kind.thema ? bannerVoorKleur[kind.thema] : null
   const terug = <Terug grootte={32} />
-  const avatar = <Avatar kind={kind} />
+  const avatar = <><Avatar kind={kind} /><HuisKnop kind={kind} /></>
   const titel = <h1 className="kop-titel display">Hoi {kind.naam}!</h1>
   const voorlees = kanVoorlezen() && (
     <button type="button" className="rond" aria-label="Lees voor" onClick={() => leesVoor(begroeting)}>
@@ -348,6 +350,16 @@ function Avatar({ kind }: { kind: Gebruiker }) {
       <span className="avatar-pen" aria-hidden="true">
         <svg className="ic" viewBox="0 0 24 24" width="16" height="16"><path d="M4 20h4L19 9l-4-4L4 16zM13 7l4 4" /></svg>
       </span>
+    </Link>
+  )
+}
+
+/** Mijn huis in het klein, naast het figuurtje; tikken opent het huis. */
+function HuisKnop({ kind }: { kind: Gebruiker }) {
+  return (
+    <Link to={`/kind/${kind.id}/huis`} className="huis-knop" aria-label="Mijn huis"
+          onClick={() => { if (!kind.kan_lezen) leesVoor('Mijn huis') }}>
+      <HuisPrent huis={huisVan(kind)} kaal />
     </Link>
   )
 }

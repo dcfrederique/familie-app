@@ -4,9 +4,9 @@ import { useGegevens } from '../lib/gegevens.ts'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import OuderKader, { KindAvatar } from './OuderKader.tsx'
 
-type Deel = 'spel' | 'figuurtje'
+type Deel = AanbodItem['deel']
 
-// Winkelaanbod (docs/winkelaanbod.md): de ouders leggen spelletjes en stukken voor het figuurtje in de winkel van de
+// Winkelaanbod (docs/winkelaanbod.md): de ouders leggen spelletjes en stukken voor het figuurtje en het huis in de winkel van de
 // kinderen, zodat nieuwe dingen in fases vrijkomen, en kiezen per kind wat het te zien krijgt. De server controleert.
 export default function Winkelaanbod() {
   const { bron, account, status, kinderen } = useSessie()
@@ -32,7 +32,7 @@ export default function Winkelaanbod() {
   const dicht = new Set(aanbod?.dicht ?? [])
   const items = aanbodMetPrijzen(aanbod ?? leegAanbod)
   const nieuw = items.filter((i) => aanbod?.nieuw.includes(aanbodSleutel(i)))
-  const getoond = items.filter((i) => (deel === 'spel') === (i.soort === 'spel') && !nieuw.includes(i))
+  const getoond = items.filter((i) => i.deel === deel && !nieuw.includes(i))
   const groepen = [...new Set(getoond.map((i) => i.groep))]
 
   const vrijgeven = (lijst: AanbodItem[], vrij: boolean) =>
@@ -89,7 +89,7 @@ export default function Winkelaanbod() {
   return (
     <OuderKader titel="Winkelaanbod">
       <p className="tip">
-        Wat in de winkel ligt, kunnen de kinderen kopen met hun sterren. Nieuwe spelletjes van de nachtelijke bouw liggen er
+        Wat in de winkel ligt, kunnen de kinderen kopen met hun sterren: spelletjes, stukken voor het figuurtje en voor Mijn huis. Nieuwe dingen liggen er
         pas als jullie ze vrijgeven. Je kunt ook de prijs aanpassen (0 = gratis); wie niet leest betaalt de helft. Tik op een kind om het voor dat kind te verbergen, ook als het al gekocht is.
       </p>
       {melding && <p className="tip" role="status">{melding}</p>}
@@ -119,6 +119,7 @@ export default function Winkelaanbod() {
       <div className="schakelaar" role="group" aria-label="Wat">
         <button type="button" aria-pressed={deel === 'spel'} onClick={() => setDeel('spel')}>Spelletjes</button>
         <button type="button" aria-pressed={deel === 'figuurtje'} onClick={() => setDeel('figuurtje')}>Figuurtje</button>
+        <button type="button" aria-pressed={deel === 'huis'} onClick={() => setDeel('huis')}>Huis</button>
       </div>
 
       {aanbod && groepen.map((g) => {

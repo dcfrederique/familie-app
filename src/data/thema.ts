@@ -62,11 +62,11 @@ export const tegelsVoor = (kind: Gebruiker) =>
 export const themaVan = (kind: Pick<Gebruiker, 'thema'>): Banner => (kind.thema ? bannerVoorKleur[kind.thema] : null)
 
 /** Welke kopprent een subscherm krijgt; 'spel' is de lage kop boven een spelletje, verhaal of kleurplaat. */
-export type ThemaScherm = 'spelen' | 'verhalen' | 'kleurplaten' | 'figuurtje' | 'spel'
+export type ThemaScherm = 'spelen' | 'verhalen' | 'kleurplaten' | 'figuurtje' | 'huis' | 'spel'
 
 /** Ondertitel onder de schermtitel, per thema (alleen voor wie leest). */
 export const themaOndertitels: Record<NonNullable<Banner>, Record<ThemaScherm, string>> = {
-  race: { spelen: 'De pitstop', verhalen: 'Lezen bij de vulkaan', kleurplaten: 'De spuitgarage', figuurtje: 'Op het podium', spel: '' },
-  kasteel: { spelen: 'De speelzaal', verhalen: 'De koninklijke bieb', kleurplaten: 'De schilderszaal', figuurtje: 'Spiegeltje aan de wand', spel: '' },
-  tuin: { spelen: 'Het paddenstoelendorp', verhalen: 'De verhalenboom', kleurplaten: 'De waslijn', figuurtje: 'De feeënkring', spel: '' },
+  race: { spelen: 'De pitstop', verhalen: 'Lezen bij de vulkaan', kleurplaten: 'De spuitgarage', figuurtje: 'Op het podium', huis: 'Mijn garage', spel: '' },
+  kasteel: { spelen: 'De speelzaal', verhalen: 'De koninklijke bieb', kleurplaten: 'De schilderszaal', figuurtje: 'Spiegeltje aan de wand', huis: 'Mijn eigen kasteeltje', spel: '' },
+  tuin: { spelen: 'Het paddenstoelendorp', verhalen: 'De verhalenboom', kleurplaten: 'De waslijn', figuurtje: 'De feeënkring', huis: 'Mijn feeënhuisje', spel: '' },
 }

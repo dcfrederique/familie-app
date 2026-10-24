@@ -17,4 +17,13 @@
 .winkel-prijs { display: inline-flex; align-items: center; gap: 4px; font-size: 22px; font-variant-numeric: tabular-nums; }
 .winkel-eigen { display: inline-flex; align-items: center; gap: 4px; padding: 4px 12px; border-radius: 16px; background: var(--kid-tint); color: var(--kid); font-size: 17px; }
 .winkel .spel-balk { width: 70%; }
+.winkel-vak { min-width: 0; display: flex; }
+.winkel-vak > .winkel-kaart { flex: 1; }
+
+/* Op tablet en pc vult de winkel het scherm en bladert hij in plaats van te scrollen. */
+@media (min-width: 961px) and (min-height: 560px) {
+  .kind-vol .winkel { flex: 1; min-height: 0; }
+  .bladzijden.vast > .winkel-raster { align-content: start; padding: 4px 0 8px; }
+  .bladzijden.vast > .winkel-raster .winkel-kaart { min-height: 0; padding-block: 10px; }
+}
 

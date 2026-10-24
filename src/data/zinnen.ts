@@ -11,6 +11,8 @@ export const zin = {
   sparen: 'Nog even sterren sparen!',
   kopenVraag: 'Wil je dit kopen met je sterren? Tik op het vinkje.',
   gekocht: 'Hoera! Dat is nu van jou.',
+  huisBouwen: 'Maak je huis mooi! Tik op het vinkje als je klaar bent.',
+  huisGegroeid: 'Hoera! Je huis is gegroeid!',
   kokenKiezen: 'Wat ga je koken?',
   kokenZoeken: 'Zoek wat er op het kaartje staat.',
   kokenRoeren: 'Roer maar goed rond!',

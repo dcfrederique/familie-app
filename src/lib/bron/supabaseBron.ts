@@ -83,16 +83,18 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
       return uit
     },
     async aanbod() {
-      const [spel, stukken, keuzes, verborgen] = await Promise.all([
+      const [spel, stukken, huis, keuzes, verborgen] = await Promise.all([
         sb.from('spel_prijzen').select('sleutel, standaard_vrij'),
         sb.from('figuurtje_stukken').select('soort, sleutel, standaard_vrij').gt('prijs', 0),
+        sb.from('huis_stukken').select('soort, sleutel, standaard_vrij').gt('prijs', 0),
         sb.from('aanbod').select('soort, sleutel, vrijgegeven, prijs'),
         sb.from('aanbod_verborgen').select('kind_id, soort, sleutel'),
       ])
       // Zonder migratie 20261024001100_winkelaanbod ligt alles in de winkel.
       if (spel.error || stukken.error || keuzes.error || verborgen.error) return { dicht: [], nieuw: [], verborgen: {}, prijzen: {} }
       const gekozen = new Map((keuzes.data ?? []).filter((k) => k.vrijgegeven !== null).map((k) => [`${k.soort}:${k.sleutel}`, k.vrijgegeven as boolean]))
-      const catalogus = [...(spel.data ?? []).map((r) => ({ ...r, soort: 'spel' })), ...(stukken.data ?? [])]
+      // Zonder migratie 20261024001700_mijn_huis is er nog geen huis in de winkel (kopen kan dan ook niet).
+      const catalogus = [...(spel.data ?? []).map((r) => ({ ...r, soort: 'spel' })), ...(stukken.data ?? []), ...(huis.error ? [] : huis.data ?? [])]
       const uit: Aanbod = { dicht: [], nieuw: [], verborgen: {}, prijzen: {} }
       for (const k of keuzes.data ?? []) if (k.prijs !== null) uit.prijzen[`${k.soort}:${k.sleutel}`] = k.prijs
       for (const r of catalogus) {
@@ -185,6 +187,9 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
     async kopen(kindId, soort, sleutel, naam) {
       const { error } = await sb.rpc('kopen', { p_kind: kindId, p_soort: soort, p_sleutel: sleutel, p_naam: naam })
       fout(error)
+    },
+    async huisBewaren(kindId, huis) {
+      fout((await sb.rpc('huis_bewaren', { p_kind: kindId, p_huis: huis })).error)
     },
     async figuurtjeBewaren(kindId, figuurtje) {
       const { error } = await sb.rpc('figuurtje_bewaren', { p_kind: kindId, p_figuurtje: figuurtje })

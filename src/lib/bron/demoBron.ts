@@ -2,6 +2,7 @@
 // Handig om de schermen te bekijken voor de database gekoppeld is. Pincode in de demo: 1234.
 import { inAanbod, metPrijs, type Aanbod } from '../../data/aanbod.ts'
 import { bezitSleutel, categorieen, controleer, prijsVoor, type Figuurtje } from '../../data/figuurtje.ts'
+import { controleerHuis, huisCategorieen, type Huis } from '../../data/huis.ts'
 import { spelMenu } from '../../data/spelletjes.ts'
 import type { Gebruiker } from '../../data/gezin.ts'
 import { dagVan } from '../datum.ts'
@@ -183,7 +184,7 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       if (!k) throw new Error('kind niet gevonden')
       const stuk = soort === 'spel'
         ? spelMenu.find((s) => s.sleutel === sleutel)
-        : categorieen.find((c) => c.id === soort)?.stukken.find((s) => s.id === sleutel)
+        : [...categorieen, ...huisCategorieen].find((c) => c.id === soort)?.stukken.find((s) => s.id === sleutel)
       if (!stuk) throw new Error(`onbekend stuk: ${sleutel}`)
       const prijs = prijsVoor(metPrijs(t.aanbod, soort, sleutel, stuk), { allesVrij: k.figuurtje_alles_vrij, kanLezen: k.kan_lezen })
       const eigen = (t.aankopen[kindId] ??= [])
@@ -204,6 +205,17 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
         if (reden) throw new Error(reden)
       }
       k.figuurtje = figuurtje && { ...figuurtje }
+    },
+
+    async huisBewaren(kindId, huis: Huis | null) {
+      const k = kinderen.find((x) => x.id === kindId)
+      if (!k) throw new Error('kind niet gevonden')
+      if (huis) {
+        const eigen = new Set(t.aankopen[kindId] ?? [])
+        const reden = controleerHuis(huis, { eigen, allesVrij: k.figuurtje_alles_vrij, kanLezen: k.kan_lezen })
+        if (reden) throw new Error(reden)
+      }
+      k.huis = huis && { ...huis, tuin: [...huis.tuin], extra: [...huis.extra] }
     },
 
     async welkomAfronden(kindId, w) {
