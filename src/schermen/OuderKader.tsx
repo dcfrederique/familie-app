@@ -3,7 +3,9 @@ import { Link, NavLink, useLocation } from 'react-router-dom'
 import { figuurtjeVan } from '../data/figuurtje.ts'
 import { kleurKlasse, type Gebruiker } from '../data/gezin.ts'
 import { ouderMenu, type MenuIcoon } from '../data/ouderMenu.ts'
+import { vandaag } from '../lib/datum.ts'
 import { useGegevens } from '../lib/gegevens.ts'
+import { teDoenVandaag } from '../lib/onzetaken.ts'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import { actievePin, ontgrendel, vergrendel } from '../lib/ouderslot.ts'
 import { supabase } from '../lib/supabase.ts'
@@ -47,13 +49,17 @@ function Icoon({ naam }: { naam: keyof typeof iconen }) {
   return <svg className="ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">{iconen[naam]}</svg>
 }
 
-/** Wat het menu toont: aantal dingen dat op goedkeuring wacht en het vrije saldo per kind. */
+/** Wat het menu toont: aantal dingen dat op goedkeuring wacht, je taken voor vandaag en het vrije saldo per kind. */
 function useMenuGegevens() {
-  const { bron } = useSessie()
+  const { bron, account, status, gebruikers } = useSessie()
+  // Onze taken bestaan alleen op de gsm van een ouder; zonder migratie gewoon geen teller.
+  const opGsm = status === 'demo' || account?.soort === 'ouder'
+  const ik = account?.ouder_id ?? gebruikers.find((g) => g.rol === 'ouder')?.id ?? null
   const { data } = useGegevens(bron ? async () => {
-    const [v, i, a, saldi] = await Promise.all([bron.openVerzoeken(), bron.teBeoordelen(), bron.activiteitenTeBeoordelen(), bron.saldi()])
-    return { wachtend: v.length + i.length + a.length, saldi }
-  } : null, [bron])
+    const [v, i, a, saldi, onze] = await Promise.all([bron.openVerzoeken(), bron.teBeoordelen(), bron.activiteitenTeBeoordelen(), bron.saldi(),
+                                                      opGsm ? bron.ouderTaken().catch(() => []) : []])
+    return { wachtend: v.length + i.length + a.length, saldi, onzeTaken: teDoenVandaag(onze, ik, vandaag()) }
+  } : null, [bron, opGsm, ik])
   return data ?? null
 }
 
@@ -122,7 +128,10 @@ function Kader({ titel, wachtend, children }: { titel: string; wachtend?: number
               {groep.items.filter((item) => !(opTablet && item.alleenOuderGsm)).map((item) => item.pad ? (
                 <NavLink key={item.naam} to={item.pad} end className="menu-item">
                   <Icoon naam={item.icoon} /><span>{item.naam}</span>
-                  {item.teller && teller > 0 && <span className="item-teller">{teller}</span>}
+                  {item.teller === 'goedkeuren' && teller > 0 && <span className="item-teller">{teller}</span>}
+                  {item.teller === 'onzetaken' && (menuGegevens?.onzeTaken ?? 0) > 0 && (
+                    <span className="item-teller item-teller-taken" aria-label={`${menuGegevens!.onzeTaken} te doen`}>{menuGegevens!.onzeTaken}</span>
+                  )}
                 </NavLink>
               ) : (
                 <span key={item.naam} className="menu-item is-later" aria-disabled="true">

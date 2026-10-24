@@ -52,6 +52,8 @@
 a.menu-item:hover { background: var(--menu-hover); }
 .menu-item.active { border-left-color: var(--accent); background: var(--accent-tint); color: var(--accent); font-weight: 500; }
 .menu-item.is-later { color: var(--later); cursor: default; }
+/* Teller van Onze taken: in de accentkleur, zodat hij niet als goedkeuren leest */
+.menu-item .item-teller-taken { background: var(--accent); color: #fff; }
 .item-teller { min-width: 22px; height: 20px; padding: 0 6px; background: var(--gold); color: #3A2600; font-size: 12px; font-weight: 600; display: grid; place-items: center; font-variant-numeric: tabular-nums; }
 .menu-kind { grid-template-columns: 28px 1fr auto; gap: 10px; min-height: 40px; font-size: 14px; }
 .menu-kind .avatar-mini { width: 28px; height: 28px; margin-left: -4px; }
@@ -145,6 +147,11 @@ button.vink-tekst:not(:disabled) { cursor: pointer; }
 .vink-tekst b { font-weight: 500; overflow-wrap: anywhere; }
 .vink-tekst small { font-size: 13px; color: var(--muted); }
 .vink-rij.is-gedaan .vink-tekst b { text-decoration: line-through; color: var(--muted); font-weight: 400; }
+.lijst-kop a { font-size: 13px; font-weight: 500; text-transform: none; letter-spacing: 0; color: var(--accent); }
+a.vink-tekst { text-decoration: none; }
+.vink-tekst small.is-te-laat { color: var(--warn-ink); font-weight: 500; }
+.mijn-taken-leeg { margin: 0; padding: 12px; }
+.mijn-taken-meer { margin: 4px 8px 8px; }
 .notitie-acties { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .notitie-zoek { min-height: 44px; border: 1px solid var(--line); padding: 0 12px; font: inherit; background: var(--surface); color: var(--ink); flex: 1; min-width: 160px; }
 .notitie { display: grid; gap: 8px; align-content: start; }

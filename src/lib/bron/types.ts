@@ -97,7 +97,7 @@ export interface Maaltijd {
   prentje: string | null
 }
 
-export type OuderHerhaling = 'eenmalig' | 'wekelijks' | 'maandelijks'
+export type OuderHerhaling = 'eenmalig' | 'dagelijks' | 'wekelijks' | 'maandelijks'
 
 /** Een taak voor de ouders zelf (Onze taken, docs/ouderdeel.md): zonder sterren of goedkeuring. */
 export interface OuderTaak {

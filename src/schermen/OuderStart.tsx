@@ -7,6 +7,7 @@ import { takenVoorKind } from '../lib/takenstatus.ts'
 import { SterrenPil } from './onderdelen.tsx'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import { supabase } from '../lib/supabase.ts'
+import { MijnTaken } from './OnzeTaken.tsx'
 import OuderKader, { KindAvatar } from './OuderKader.tsx'
 
 // Vandaag: wat op jou wacht en per kind sterren, taken en extra tijd.
@@ -42,6 +43,7 @@ export default function OuderStart() {
           <p>Goedkeuringen en tijdverzoeken verschijnen hier.</p>
         </section>
       ))}
+      <MijnTaken />
       {data && kinderen.map((kind) => {
         const lijst = takenVoorKind(data.taken, kind.id, data.inzendingen, new Date())
         const gedaan = lijst.filter((t) => t.status === 'gedaan').length

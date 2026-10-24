@@ -260,7 +260,8 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       }
       if (taak.herhaling !== 'eenmalig' && taak.datum) {
         const d = new Date(`${taak.datum}T12:00`)
-        if (taak.herhaling === 'wekelijks') d.setDate(d.getDate() + 7)
+        if (taak.herhaling === 'dagelijks') d.setDate(d.getDate() + 1)
+        else if (taak.herhaling === 'wekelijks') d.setDate(d.getDate() + 7)
         else d.setMonth(d.getMonth() + 1)
         const volgende = id()
         volgendeVan.set(taakId, volgende)

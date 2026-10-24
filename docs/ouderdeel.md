@@ -54,7 +54,7 @@ Alles hieronder is alleen voor de ouders. De tabletaccounts van de kinderen moge
 - Voorbeelden: vuilnis buiten zetten (dinsdag), schoolreis betalen, auto naar keuring.
 - Tabel `ouder_taken` (gezin_id, titel, datum, wie, herhaling, gedaan_op, gedaan_door).
 
-**Zo gebouwd (24 oktober 2026):** snel toevoegen bovenaan (zonder datum, voor samen) of met **Met datum…** het volledige formulier. Groepen Te laat, Vandaag, Deze week, Later, Zonder datum en Gedaan deze week. Een wekelijkse of maandelijkse taak heeft een datum; afvinken maakt meteen de volgende keer aan (Postgres-functie `ouder_taak_afvinken`), terugzetten haalt die weer weg. `wie` is de id van een ouder, of leeg voor samen.
+**Zo gebouwd (24 oktober 2026):** snel toevoegen bovenaan (zonder datum, voor samen) of met **Met datum…** het volledige formulier. Groepen Te laat, Vandaag, Deze week, Later, Zonder datum en Gedaan deze week. Een taak die elke dag, week of maand terugkomt heeft een datum (elke dag sinds migratie `20261024000800_onze_taken_elke_dag`); afvinken maakt meteen de volgende keer aan (Postgres-functie `ouder_taak_afvinken`), terugzetten haalt die weer weg. `wie` is de id van een ouder, of leeg voor samen. In het menu staat bij Onze taken een teller met jouw taken (en die van samen) voor vandaag en eerder; op **Vandaag** staat het blok **Jouw taken** met die taken chronologisch, afvinken kan er meteen (`src/lib/onzetaken.ts`).
 
 ### Boodschappen
 

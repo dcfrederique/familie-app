@@ -54,6 +54,11 @@ select public.ouder_taak_afvinken(:'vuilnis', true);
 select pg_temp.gelijk((select count(*) from public.ouder_taken where titel = 'Vuilnis buiten'), 2::bigint, 'twee keer afvinken maakt er geen derde bij');
 select public.ouder_taak_afvinken(:'vuilnis', false);
 select pg_temp.gelijk((select count(*) from public.ouder_taken where titel = 'Vuilnis buiten'), 1::bigint, 'terugzetten haalt de volgende weg');
+insert into public.ouder_taken (gezin_id, titel, datum, herhaling) values (:'gezin', 'Planten water', '2026-10-27', 'dagelijks')
+  returning id as planten \gset
+select public.ouder_taak_afvinken(:'planten', true);
+select pg_temp.gelijk((select datum from public.ouder_taken where vorige_id = :'planten'), '2026-10-28'::date, 'elke dag: morgen erbij');
+delete from public.ouder_taken where titel = 'Planten water';
 
 \echo '2. De partner ziet de taken; de tablet ziet niets'
 select pg_temp.als('00000000-0000-0000-0000-000000000802', false);

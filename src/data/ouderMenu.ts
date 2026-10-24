@@ -10,8 +10,8 @@ export interface MenuItem {
   icoon: MenuIcoon
   /** Leeg: komt later. */
   pad?: string
-  /** Toont het aantal dingen dat op goedkeuring wacht. */
-  teller?: boolean
+  /** Toont een getal: wat op goedkeuring wacht, of je taken in Onze taken voor vandaag en eerder. */
+  teller?: 'goedkeuren' | 'onzetaken'
   alleenOuderGsm?: boolean
 }
 
@@ -29,7 +29,7 @@ export interface MenuGroep {
 export const ouderMenu: MenuGroep[] = [
   { items: [
     { naam: 'Vandaag', icoon: 'vandaag', pad: '/ouder' },
-    { naam: 'Goedkeuren', icoon: 'goedkeuren', pad: '/ouder/goedkeuren', teller: true },
+    { naam: 'Goedkeuren', icoon: 'goedkeuren', pad: '/ouder/goedkeuren', teller: 'goedkeuren' },
   ] },
   { naam: 'Kinderen', metKinderen: true, items: [
     { naam: 'Taken van de kinderen', icoon: 'taken', pad: '/ouder/taken' },
@@ -38,7 +38,7 @@ export const ouderMenu: MenuGroep[] = [
   ] },
   { naam: 'Wij', alleenOuderGsm: true, items: [
     { naam: 'Weekmenu', icoon: 'weekmenu', pad: '/ouder/weekmenu' },
-    { naam: 'Onze taken', icoon: 'onzetaken', pad: '/ouder/onze-taken' },
+    { naam: 'Onze taken', icoon: 'onzetaken', pad: '/ouder/onze-taken', teller: 'onzetaken' },
     { naam: 'Boodschappen', icoon: 'boodschappen' },
     { naam: 'Notities', icoon: 'notities', pad: '/ouder/notities' },
   ] },

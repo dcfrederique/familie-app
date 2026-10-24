@@ -1,11 +1,13 @@
 import { useState, type FormEvent } from 'react'
+import { Link } from 'react-router-dom'
 import type { NieuweOuderTaak, OuderHerhaling, OuderTaak } from '../lib/bron/types.ts'
 import { dagVan, vandaag } from '../lib/datum.ts'
 import { useGegevens } from '../lib/gegevens.ts'
+import { mijnOpenTaken } from '../lib/onzetaken.ts'
 import { useSessie } from '../lib/sessie.tsx'
 import OuderKader from './OuderKader.tsx'
 
-const herhalingTekst: Record<OuderHerhaling, string> = { eenmalig: 'Eenmalig', wekelijks: 'Elke week', maandelijks: 'Elke maand' }
+const herhalingTekst: Record<OuderHerhaling, string> = { eenmalig: 'Eenmalig', dagelijks: 'Elke dag', wekelijks: 'Elke week', maandelijks: 'Elke maand' }
 
 const datumTekst = (dag: string) => (dag === vandaag() ? 'vandaag'
   : new Date(`${dag}T12:00`).toLocaleDateString('nl-BE', { weekday: 'short', day: 'numeric', month: 'short' }))
@@ -104,7 +106,7 @@ export default function OnzeTaken() {
           </ul>
         </section>
       ))}
-      <p className="tip">Geen sterren, geen goedkeuring: afvinken en klaar. Een taak die elke week of maand terugkomt, staat na het afvinken meteen klaar voor de volgende keer. De kinderen zien deze lijst niet.</p>
+      <p className="tip">Geen sterren, geen goedkeuring: afvinken en klaar. Een taak die elke dag, week of maand terugkomt, staat na het afvinken meteen klaar voor de volgende keer. De kinderen zien deze lijst niet.</p>
     </OuderKader>
   )
 }
@@ -168,5 +170,52 @@ function TaakFormulier({ taak, ouders, ik, bewaar, annuleer, weg }: {
         {weg && <button type="button" className="knop knop-licht knop-weg" onClick={() => void weg()}>Verwijderen</button>}
       </div>
     </form>
+  )
+}
+
+/** Op Vandaag: je eigen taken en die van samen, chronologisch, met afvinken. Alleen op de gsm van een ouder. */
+export function MijnTaken() {
+  const { bron, account, status, gebruikers } = useSessie()
+  const opGsm = status === 'demo' || account?.soort === 'ouder'
+  const ik = account?.ouder_id ?? gebruikers.find((g) => g.rol === 'ouder')?.id ?? null
+  const { data, fout, ververs } = useGegevens(bron && opGsm ? () => bron.ouderTaken() : null, [bron, opGsm])
+  const [toonAlles, setToonAlles] = useState(false)
+  // Zonder migratie (of op een tablet) blijft dit blok gewoon weg.
+  if (!opGsm || fout || !data) return null
+
+  const dag = vandaag()
+  const open = mijnOpenTaken(data, ik)
+  const zichtbaar = toonAlles ? open : open.slice(0, 6)
+  return (
+    <section className="kaart kaart-breed lijst-kaart mijn-taken" aria-label="Jouw taken">
+      <h2 className="lijst-kop">Jouw taken<Link to="/ouder/onze-taken">Alle taken</Link></h2>
+      {open.length === 0 && <p className="mijn-taken-leeg">Niets op je lijst. <Link to="/ouder/onze-taken">Taak toevoegen</Link></p>}
+      <ul className="vink-lijst">
+        {zichtbaar.map((t) => {
+          const teLaat = t.datum !== null && t.datum < dag
+          return (
+            <li key={t.id} className="vink-rij">
+              <button type="button" className="vink" aria-pressed={false} aria-label={`${t.titel}: afvinken`}
+                      onClick={() => void bron!.ouderTaakAfvinken(t.id, true).then(ververs)}>
+                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
+              </button>
+              <Link to="/ouder/onze-taken" className="vink-tekst">
+                <b>{t.titel}</b>
+                <small className={teLaat ? 'is-te-laat' : undefined}>
+                  {[t.datum ? (teLaat ? `te laat, ${datumTekst(t.datum)}` : datumTekst(t.datum)) : 'geen datum',
+                    t.herhaling !== 'eenmalig' ? herhalingTekst[t.herhaling].toLowerCase() : ''].filter(Boolean).join(' · ')}
+                </small>
+              </Link>
+              {t.wie === null && <span className="label">Samen</span>}
+            </li>
+          )
+        })}
+      </ul>
+      {open.length > 6 && !toonAlles && (
+        <button type="button" className="knop knop-klein knop-licht mijn-taken-meer" onClick={() => setToonAlles(true)}>
+          Nog {open.length - 6} tonen
+        </button>
+      )}
+    </section>
   )
 }
