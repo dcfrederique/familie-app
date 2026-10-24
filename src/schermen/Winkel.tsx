@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react'
 import { Link } from 'react-router-dom'
-import { inAanbod, leegAanbod } from '../data/aanbod.ts'
+import { inAanbod, leegAanbod, metPrijs } from '../data/aanbod.ts'
 import {
   bezitSleutel, figuurtjeVan, prijsVoor, zichtbareCategorieen, zichtbareStukken, type Bezit,
 } from '../data/figuurtje.ts'
@@ -61,13 +61,13 @@ function WinkelInhoud({ kind }: { kind: Gebruiker }) {
   const huidig = figuurtjeVan(kind)
   const vrij = data.vrij
 
-  const spellen: WinkelItem[] = spelMenu.filter((s) => s.prijs > 0).map((s) => ({
+  const spellen: WinkelItem[] = spelMenu.map((s) => metPrijs(aanbod, 'spel', s.sleutel, s)).filter((s) => s.prijs > 0).map((s) => ({
     sleutel: bezitSleutel('spel', s.sleutel), soort: 'spel', id: s.sleutel, naam: s.naam, prijs: spelPrijs(s, v),
     eigen: spelPrijs(s, v) === 0 || data.eigen.has(bezitSleutel('spel', s.sleutel)),
     prent: (maat) => <svg className="ic" viewBox="0 0 24 24" width={maat} height={maat} aria-hidden="true"><path d={s.icoon} /></svg>,
     naar: `/kind/${kind.id}/${s.sleutel}`,
   }))
-  const stukken: WinkelItem[] = zichtbareCategorieen(lezer).flatMap((c) => zichtbareStukken(c, lezer).filter((s) => s.prijs > 0).map((s) => ({
+  const stukken: WinkelItem[] = zichtbareCategorieen(lezer).flatMap((c) => zichtbareStukken(c, lezer).map((s) => metPrijs(aanbod, c.id, s.id, s)).filter((s) => s.prijs > 0).map((s) => ({
     sleutel: bezitSleutel(c.id, s.id), soort: c.id, id: s.id, naam: s.naam, prijs: prijsVoor(s, v),
     eigen: prijsVoor(s, v) === 0 || data.eigen.has(bezitSleutel(c.id, s.id)),
     prent: () => <Figuurtje figuurtje={{ ...huidig, [c.id]: s.id }} uitsnede={c.uitsnede} />,

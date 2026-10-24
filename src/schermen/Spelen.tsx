@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { inAanbod, leegAanbod } from '../data/aanbod.ts'
+import { inAanbod, leegAanbod, metPrijs } from '../data/aanbod.ts'
 import { bezitSleutel } from '../data/figuurtje.ts'
 import type { Gebruiker } from '../data/gezin.ts'
 import { spelIsVrij, spelMenu, spelPrijs, type SpelInfo } from '../data/spelletjes.ts'
@@ -46,9 +46,10 @@ function SpelMenu({ kind }: { kind: Gebruiker }) {
   const v = { eigen: data?.eigen ?? new Set<string>(), allesVrij: kind.figuurtje_alles_vrij, kanLezen: kind.kan_lezen }
   const vrij = data?.vrij ?? 0
   // Wat de ouders niet in de winkel legden of voor dit kind verbergen, staat er niet (docs/winkelaanbod.md).
-  const spellen = spelMenu.filter((s) => {
+  const aanbod = data?.aanbod ?? leegAanbod
+  const spellen = spelMenu.map((s) => metPrijs(aanbod, 'spel', s.sleutel, s)).filter((s) => {
     const sleutel = bezitSleutel('spel', s.sleutel)
-    return inAanbod(data?.aanbod ?? leegAanbod, kind.id, sleutel, v.eigen.has(sleutel))
+    return inAanbod(aanbod, kind.id, sleutel, v.eigen.has(sleutel))
   })
 
   function opSlot(s: SpelInfo, prijs: number) {

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom'
-import { inAanbod, leegAanbod } from '../data/aanbod.ts'
+import { inAanbod, leegAanbod, metPrijs } from '../data/aanbod.ts'
 import {
   bezitSleutel, categorie, figuurtjeVan, isVrij, prijsVoor, verrassing, zichtbareCategorieen, zichtbareStukken,
   type Bezit, type Categorie, type Figuurtje as FiguurtjeData, type Stuk,
@@ -66,7 +66,10 @@ export default function Kleerkast() {
   const info = categorie(cat)
   // Wat het kind nu draagt blijft te zien, ook als een ouder het uit de winkel haalde (docs/winkelaanbod.md).
   const bewaard = figuurtjeVan(kind)
-  const teZien = (c: Categorie, s: Stuk) => s.prijs === 0 || inAanbod(winkel?.aanbod ?? leegAanbod, kind.id,
+  const aanbod = winkel?.aanbod ?? leegAanbod
+  // Het stuk met de prijs die de ouders instelden.
+  const tel = (c: Categorie, s: Stuk) => metPrijs(aanbod, c, s.id, s)
+  const teZien = (c: Categorie, s: Stuk) => tel(c, s).prijs === 0 || inAanbod(winkel?.aanbod ?? leegAanbod, kind.id,
     bezitSleutel(c, s.id), v.eigen.has(bezitSleutel(c, s.id)) || bewaard[c] === s.id)
   const zeg = (tekst: string) => { if (!lezer) leesVoor(tekst) }
 
@@ -77,7 +80,8 @@ export default function Kleerkast() {
     setHuppel((n) => n + 1)
   }
 
-  function kies(stuk: Stuk) {
+  function kies(gekozen: Stuk) {
+    const stuk = tel(cat, gekozen)
     zeg(stuk.naam)
     const nieuw = { ...figuurtje!, [cat]: stuk.id }
     if (isVrij(cat, stuk, v)) return wijzig(nieuw)
@@ -163,7 +167,7 @@ export default function Kleerkast() {
             </div>
 
             <div className="kast-keuzes" role="tabpanel">
-              {zichtbareStukken(info, lezer).filter((s) => teZien(cat, s)).map((s) => {
+              {zichtbareStukken(info, lezer).filter((s) => teZien(cat, s)).map(tel.bind(null, cat)).map((s) => {
                 const eigen = isVrij(cat, s, v)
                 const prijs = prijsVoor(s, v)
                 return (

@@ -86,14 +86,15 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
       const [spel, stukken, keuzes, verborgen] = await Promise.all([
         sb.from('spel_prijzen').select('sleutel, standaard_vrij'),
         sb.from('figuurtje_stukken').select('soort, sleutel, standaard_vrij').gt('prijs', 0),
-        sb.from('aanbod').select('soort, sleutel, vrijgegeven'),
+        sb.from('aanbod').select('soort, sleutel, vrijgegeven, prijs'),
         sb.from('aanbod_verborgen').select('kind_id, soort, sleutel'),
       ])
       // Zonder migratie 20261024001100_winkelaanbod ligt alles in de winkel.
-      if (spel.error || stukken.error || keuzes.error || verborgen.error) return { dicht: [], nieuw: [], verborgen: {} }
-      const gekozen = new Map((keuzes.data ?? []).map((k) => [`${k.soort}:${k.sleutel}`, k.vrijgegeven as boolean]))
+      if (spel.error || stukken.error || keuzes.error || verborgen.error) return { dicht: [], nieuw: [], verborgen: {}, prijzen: {} }
+      const gekozen = new Map((keuzes.data ?? []).filter((k) => k.vrijgegeven !== null).map((k) => [`${k.soort}:${k.sleutel}`, k.vrijgegeven as boolean]))
       const catalogus = [...(spel.data ?? []).map((r) => ({ ...r, soort: 'spel' })), ...(stukken.data ?? [])]
-      const uit: Aanbod = { dicht: [], nieuw: [], verborgen: {} }
+      const uit: Aanbod = { dicht: [], nieuw: [], verborgen: {}, prijzen: {} }
+      for (const k of keuzes.data ?? []) if (k.prijs !== null) uit.prijzen[`${k.soort}:${k.sleutel}`] = k.prijs
       for (const r of catalogus) {
         const sleutel = `${r.soort}:${r.sleutel}`
         const keuze = gekozen.get(sleutel)
@@ -261,6 +262,10 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
     },
     async aanbodVrijgeven(soort, sleutel, vrijgegeven) {
       fout((await sb.from('aanbod').upsert({ gezin_id: gezinId, soort, sleutel, vrijgegeven, gewijzigd_op: new Date().toISOString() },
+                                           { onConflict: 'gezin_id,soort,sleutel' })).error)
+    },
+    async aanbodPrijs(soort, sleutel, prijs) {
+      fout((await sb.from('aanbod').upsert({ gezin_id: gezinId, soort, sleutel, prijs, gewijzigd_op: new Date().toISOString() },
                                            { onConflict: 'gezin_id,soort,sleutel' })).error)
     },
     async aanbodVoorKind(kindId, soort, sleutel, zichtbaar) {

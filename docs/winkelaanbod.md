@@ -22,6 +22,13 @@ Winkels). Het menu toont een getal als er nieuw aanbod is dat nog geen ouder bek
 - De schakelaar "Figuurtje en spelletjes kopen met sterren" bij Kinderen en tijd blijft: uit = alles gratis, maar
   alleen voor wat in de winkel ligt.
 
+## Prijs instellen
+
+Bij elk spelletje en elk stuk dat iets kost, staat de prijs in een invulveld (0 tot 500 sterren; 0 = gratis).
+Tik buiten het veld of op Enter om te bewaren. Staat er een eigen prijs, dan verschijnt "Standaard (15)" om terug te
+gaan naar de prijs uit de catalogus. Wie niet leest betaalt nog altijd de helft van de ingestelde prijs, naar boven
+afgerond. Een nieuwe prijs geldt voor wat nog niet gekocht is; wat al gekocht is, blijft gekocht.
+
 ## Techniek
 
 - Migratie `supabase/migrations/20261024001100_winkelaanbod.sql`:
@@ -30,6 +37,8 @@ Winkels). Het menu toont een getal als er nieuw aanbod is dat nog geen ouder bek
   - functie `in_aanbod(kind, soort, sleutel)`; `kopen` weigert wat niet in de winkel ligt ("nog niet in de winkel")
     en `figuurtje_bewaren` met "alles vrij" ook;
   - schrijven alleen vanaf een ouder-account (RLS met `is_ouder_account()`), lezen voor het hele gezin.
+- Migratie `20261024001500_aanbod_prijs.sql`: kolom `aanbod.prijs` (vrijgegeven mag nu leeg zijn: dan geldt `standaard_vrij`),
+  functie `winkel_prijs`; `kopen` en `figuurtje_bewaren` gebruiken de ingestelde prijs.
 - Tests: `supabase/tests/winkelaanbod.test.sql` en `src/data/aanbod.test.ts`.
 - App: `src/data/aanbod.ts` (regel `inAanbod` en de lijst `aanbodItems`), `bron.aanbod()`, `aanbodVrijgeven`,
   `aanbodVoorKind`; scherm `src/schermen/Winkelaanbod.tsx`; Spelen en Kleerkast filteren erop.

@@ -88,6 +88,22 @@ delete from public.aanbod_verborgen;
 select pg_temp.gelijk((select count(*) from public.aanbod_verborgen), 1::bigint, 'tablet wist niets');
 select pg_temp.gelijk((select count(*) from public.aanbod), 3::bigint, 'tablet leest het aanbod');
 
+\echo '8. De ouders stellen de prijs in'
+select pg_temp.als('00000000-0000-0000-0000-000000000c01', false);
+update public.gebruikers set figuurtje_alles_vrij = false, kan_lezen = false where id = :'pim';
+select pg_temp.gelijk(public.in_aanbod(:'lex', 'spel', 'koken'), true, 'koken vrij');
+insert into public.aanbod (gezin_id, soort, sleutel, prijs) values (:'gezin', 'spel', 'koken', 5);
+select pg_temp.gelijk(public.in_aanbod(:'lex', 'spel', 'koken'), true, 'alleen een prijs laat het vrijgegeven');
+select pg_temp.gelijk(public.kopen(:'lex', 'spel', 'koken', 'Koken'), 40, 'koken kost 5 in plaats van 25');
+select pg_temp.gelijk(public.kopen(:'pim', 'spel', 'koken', 'Koken'), 97, 'Pim betaalt de helft van 5, naar boven afgerond (3)');
+insert into public.aanbod (gezin_id, soort, sleutel, prijs) values (:'gezin', 'extra', 'cape', 0)
+  on conflict (gezin_id, soort, sleutel) do update set prijs = excluded.prijs;
+select pg_temp.fout(format('update public.aanbod set prijs = -1 where sleutel = ''koken'''), 'aanbod_prijs_check');
+select pg_temp.gelijk(public.kopen(:'pim', 'extra', 'cape', 'Cape'), 97, 'cape gratis gezet');
+select pg_temp.als('00000000-0000-0000-0000-000000000c02', true);
+select pg_temp.fout(format('update public.aanbod set prijs = 1 where sleutel = ''koken'''), 'row-level security');
+select pg_temp.gelijk((select prijs from public.aanbod where sleutel = 'koken'), 5, 'tablet wijzigt niets');
+
 \echo '7. Andere gezinnen zien en wijzigen niets'
 select pg_temp.als('00000000-0000-0000-0000-000000000c03', false);
 select public.gezin_aanmaken('Buren', 'Buur', '[{"naam": "Bo"}]');

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { aanbodItems, aanbodSleutel, type AanbodItem } from '../data/aanbod.ts'
+import { aanbodMetPrijzen, aanbodSleutel, leegAanbod, type AanbodItem } from '../data/aanbod.ts'
 import { useGegevens } from '../lib/gegevens.ts'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import OuderKader, { KindAvatar } from './OuderKader.tsx'
@@ -30,21 +30,41 @@ export default function Winkelaanbod() {
   }
 
   const dicht = new Set(aanbod?.dicht ?? [])
-  const nieuw = aanbodItems.filter((i) => aanbod?.nieuw.includes(aanbodSleutel(i)))
-  const getoond = aanbodItems.filter((i) => (deel === 'spel') === (i.soort === 'spel') && !nieuw.includes(i))
+  const items = aanbodMetPrijzen(aanbod ?? leegAanbod)
+  const nieuw = items.filter((i) => aanbod?.nieuw.includes(aanbodSleutel(i)))
+  const getoond = items.filter((i) => (deel === 'spel') === (i.soort === 'spel') && !nieuw.includes(i))
   const groepen = [...new Set(getoond.map((i) => i.groep))]
 
   const vrijgeven = (lijst: AanbodItem[], vrij: boolean) =>
     doe(async () => { for (const i of lijst) await bron!.aanbodVrijgeven(i.soort, i.sleutel, vrij) })
 
-  const rij = (i: AanbodItem) => {
+  const prijsOpslaan = (i: AanbodItem, tekst: string) => {
+    const prijs = Math.min(500, Math.max(0, Math.round(Number(tekst))))
+    if (tekst.trim() === '' || Number.isNaN(prijs)) return ververs()
+    return doe(() => bron!.aanbodPrijs(i.soort, i.sleutel, prijs))
+  }
+
+  const rij = (i: AanbodItem & { standaard: number }) => {
     const sleutel = aanbodSleutel(i)
     const open = !dicht.has(sleutel)
     return (
       <li key={sleutel} className={`aanbod-rij${open ? '' : ' is-dicht'}`}>
         <div className="aanbod-naam">
           <strong>{i.naam}</strong>
-          <span className="tip">{i.prijs ? `${i.prijs} sterren` : 'gratis'}</span>
+          {i.standaard > 0 ? (
+            <label className="aanbod-prijs">
+              <input type="number" inputMode="numeric" min={0} max={500} key={`${aanbodSleutel(i)}:${i.prijs}`} defaultValue={i.prijs}
+                     aria-label={`Prijs van ${i.naam} in sterren`}
+                     onBlur={(e) => { if (Number(e.target.value) !== i.prijs) prijsOpslaan(i, e.target.value) }}
+                     onKeyDown={(e) => { if (e.key === 'Enter') e.currentTarget.blur() }} />
+              {' '}sterren
+              {i.prijs !== i.standaard && (
+                <button type="button" className="knop-klein" onClick={() => doe(() => bron!.aanbodPrijs(i.soort, i.sleutel, null))}>
+                  Standaard ({i.standaard})
+                </button>
+              )}
+            </label>
+          ) : <span className="tip">gratis</span>}
         </div>
         <label className="aanbod-vrij">
           <input type="checkbox" checked={open} onChange={(e) => vrijgeven([i], e.target.checked)} />
@@ -70,7 +90,7 @@ export default function Winkelaanbod() {
     <OuderKader titel="Winkelaanbod">
       <p className="tip">
         Wat in de winkel ligt, kunnen de kinderen kopen met hun sterren. Nieuwe spelletjes van de nachtelijke bouw liggen er
-        pas als jullie ze vrijgeven. Tik op een kind om het voor dat kind te verbergen, ook als het al gekocht is.
+        pas als jullie ze vrijgeven. Je kunt ook de prijs aanpassen (0 = gratis); wie niet leest betaalt de helft. Tik op een kind om het voor dat kind te verbergen, ook als het al gekocht is.
       </p>
       {melding && <p className="tip" role="status">{melding}</p>}
 

@@ -263,6 +263,8 @@ export interface Bron {
   kindAanpassen(id: string, wijziging: KindWijziging): Promise<void>
   /** Legt een spelletje (soort 'spel') of een stuk van het figuurtje in de winkel, of haalt het eruit. */
   aanbodVrijgeven(soort: string, sleutel: string, vrijgegeven: boolean): Promise<void>
+  /** Zet een eigen prijs in sterren (null = terug naar de standaardprijs). */
+  aanbodPrijs(soort: string, sleutel: string, prijs: number | null): Promise<void>
   /** Toont het een kind of verbergt het voor dat kind. */
   aanbodVoorKind(kindId: string, soort: string, sleutel: string, zichtbaar: boolean): Promise<void>
   /** Bewaart de maaltijd van een dag; een leeg gerecht haalt de dag uit het weekmenu. */

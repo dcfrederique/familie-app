@@ -22,7 +22,7 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - Afkeuren kost niets, geen strafpunten.
 - Zonder goedkeuring: de eenmalige welkomstbonus van 10 sterren op het einde van het welkomstpad, en de sterren uit lerende spelletjes (rekenen, verhalen, kleurplaten), die er meteen bij komen binnen het dagplafond voor activiteiten (beide gevraagd door de ouders, 24 oktober 2026).
 - Nieuwe spelletjes en stukken voor het figuurtje koopt het kind zelf met sterren; die gaan van het vrije saldo af (`docs/winkel.md`).
-- De ouders kiezen wat in de winkel ligt en per kind wat het ziet (Kinderen → Winkelaanbod, `docs/winkelaanbod.md`); de server controleert. Nieuw aanbod ligt er pas na vrijgave door een ouder.
+- De ouders kiezen wat in de winkel ligt en per kind wat het ziet (Kinderen → Winkelaanbod, `docs/winkelaanbod.md`); de server controleert. Ze kunnen ook de prijs per item aanpassen. Nieuw aanbod ligt er pas na vrijgave door een ouder.
 - Elke tablet hoort bij één kind (`docs/tablet-per-kind.md`); een ander kind kiezen kan alleen met de pincode of vanaf de gsm van een ouder.
 - Elke bij- en afschrijving komt in een puntenlog met reden.
 - Een ouder kan sterren zelf bijgeven of afnemen (Kinderen en tijd, bron `ouder` in het puntenlog, reden optioneel); afnemen kan niet meer dan het vrije saldo (gereserveerde sterren blijven staan). Het kind krijgt een melding op het startscherm.

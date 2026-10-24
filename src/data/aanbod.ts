@@ -10,9 +10,17 @@ export interface Aanbod {
   nieuw: string[]
   /** Per kind wat het niet te zien krijgt, ook als het gekocht is. */
   verborgen: Record<string, string[]>
+  /** Eigen prijs van de ouders per sleutel; zonder eigen prijs geldt de prijs uit de data. */
+  prijzen: Record<string, number>
 }
 
-export const leegAanbod: Aanbod = { dicht: [], nieuw: [], verborgen: {} }
+export const leegAanbod: Aanbod = { dicht: [], nieuw: [], verborgen: {}, prijzen: {} }
+
+/** Het stuk of spelletje met de prijs die de ouders instelden (docs/winkelaanbod.md). */
+export const metPrijs = <T extends { prijs: number }>(a: Aanbod, soort: string, id: string, item: T): T => {
+  const eigen = a.prijzen[bezitSleutel(soort, id)]
+  return eigen === undefined ? item : { ...item, prijs: eigen }
+}
 
 /**
  * Ziet dit kind het in de winkel? Verborgen voor dit kind: nee. Anders als het in de winkel ligt of al van het
@@ -39,5 +47,9 @@ export const aanbodItems: AanbodItem[] = [
     soort: c.id as AanbodItem['soort'], sleutel: s.id, naam: s.naam, prijs: s.prijs, groep: `Figuurtje: ${c.naam.toLowerCase()}`,
   }))),
 ]
+
+/** De items van Winkelaanbod met de ingestelde prijs; `standaard` blijft de prijs uit de data. */
+export const aanbodMetPrijzen = (a: Aanbod): (AanbodItem & { standaard: number })[] =>
+  aanbodItems.map((i) => ({ ...metPrijs(a, i.soort, i.sleutel, i), standaard: i.prijs }))
 
 export const aanbodSleutel = (i: Pick<AanbodItem, 'soort' | 'sleutel'>) => bezitSleutel(i.soort, i.sleutel)

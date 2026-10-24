@@ -1,6 +1,6 @@
 // Demo zonder Supabase: alles in het geheugen van de browser, met dezelfde spelregels.
 // Handig om de schermen te bekijken voor de database gekoppeld is. Pincode in de demo: 1234.
-import { inAanbod, type Aanbod } from '../../data/aanbod.ts'
+import { inAanbod, metPrijs, type Aanbod } from '../../data/aanbod.ts'
 import { bezitSleutel, categorieen, controleer, prijsVoor, type Figuurtje } from '../../data/figuurtje.ts'
 import { spelMenu } from '../../data/spelletjes.ts'
 import type { Gebruiker } from '../../data/gezin.ts'
@@ -57,7 +57,7 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
     // Wat startsaldo, zodat Extra tijd vragen meteen te proberen is.
     log: kinderen.map((k, i) => ({ id: i + 1, kind_id: k.id, delta: 40, reden: 'Startsaldo (demo)', tijdstip: nu })),
     aankopen: {},
-    aanbod: { dicht: [], nieuw: [], verborgen: {} },
+    aanbod: { dicht: [], nieuw: [], verborgen: {}, prijzen: {} },
     // Vandaag al iets op het menu, zodat het startscherm van de kinderen het meteen toont.
     weekmenu: [{ dag: dagVan(new Date()), gerecht: 'Spaghetti bolognese', prentje: null }],
     // Een paar voorbeelden zodat Onze taken en Notities niet leeg openen.
@@ -144,7 +144,7 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
     async aankopen() { return Object.fromEntries(Object.entries(t.aankopen).map(([k, v]) => [k, [...v]])) },
     async aanbod() {
       const a = t.aanbod
-      return { dicht: [...a.dicht], nieuw: [...a.nieuw], verborgen: Object.fromEntries(Object.entries(a.verborgen).map(([k, v]) => [k, [...v]])) }
+      return { dicht: [...a.dicht], nieuw: [...a.nieuw], prijzen: { ...a.prijzen }, verborgen: Object.fromEntries(Object.entries(a.verborgen).map(([k, v]) => [k, [...v]])) }
     },
 
     async taakIndienen(kind, taakId, foto) {
@@ -185,7 +185,7 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
         ? spelMenu.find((s) => s.sleutel === sleutel)
         : categorieen.find((c) => c.id === soort)?.stukken.find((s) => s.id === sleutel)
       if (!stuk) throw new Error(`onbekend stuk: ${sleutel}`)
-      const prijs = prijsVoor(stuk, { allesVrij: k.figuurtje_alles_vrij, kanLezen: k.kan_lezen })
+      const prijs = prijsVoor(metPrijs(t.aanbod, soort, sleutel, stuk), { allesVrij: k.figuurtje_alles_vrij, kanLezen: k.kan_lezen })
       const eigen = (t.aankopen[kindId] ??= [])
       if (prijs === 0 || eigen.includes(bezitSleutel(soort, sleutel))) return
       if (!inAanbod(t.aanbod, kindId, bezitSleutel(soort, sleutel), false)) throw new Error(`nog niet in de winkel: ${sleutel}`)
@@ -287,6 +287,11 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       const s = bezitSleutel(soort, sleutel)
       t.aanbod.nieuw = t.aanbod.nieuw.filter((x) => x !== s)
       t.aanbod.dicht = t.aanbod.dicht.filter((x) => x !== s).concat(vrijgegeven ? [] : [s])
+    },
+    async aanbodPrijs(soort, sleutel, prijs) {
+      const s = bezitSleutel(soort, sleutel)
+      if (prijs === null) delete t.aanbod.prijzen[s]
+      else t.aanbod.prijzen[s] = prijs
     },
     async aanbodVoorKind(kindId, soort, sleutel, zichtbaar) {
       const s = bezitSleutel(soort, sleutel)

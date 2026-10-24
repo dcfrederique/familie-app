@@ -308,3 +308,5 @@ a.vink-tekst { text-decoration: none; }
 .aanbod-kind[aria-pressed="true"] { color: var(--ink); text-decoration: none; opacity: 1; border-color: var(--accent); }
 .aanbod-knoppen { display: flex; gap: 6px; }
 .ouder .lijst-kop .knop-klein { text-transform: none; letter-spacing: 0; }
+.aanbod-prijs { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 14px; color: var(--muted); }
+.aanbod-prijs input { width: 76px; min-height: 40px; padding: 0 8px; font-size: 16px; text-align: right; }
