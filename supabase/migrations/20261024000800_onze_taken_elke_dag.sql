@@ -1,7 +1,9 @@
 -- Onze taken: ook elke dag herhalen (gevraagd door Frederique, 24 oktober 2026).
 
-alter table public.ouder_taken drop constraint ouder_taken_herhaling_check;
-alter table public.ouder_taken add constraint ouder_taken_herhaling_check
+-- Nieuwe naam voor de check: zo faalt een tweede keer draaien met 'bestaat al' (42710), wat
+-- scripts/migraties.sh nodig heeft om te herkennen dat deze migratie al gedraaid heeft.
+alter table public.ouder_taken drop constraint if exists ouder_taken_herhaling_check;
+alter table public.ouder_taken add constraint ouder_taken_herhaling_soort
   check (herhaling in ('eenmalig', 'dagelijks', 'wekelijks', 'maandelijks'));
 
 create or replace function public.ouder_taak_afvinken(p_taak uuid, p_gedaan boolean) returns void
