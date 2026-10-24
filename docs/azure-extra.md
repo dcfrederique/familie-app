@@ -1,6 +1,6 @@
 # Drie extra's met Azure (plan)
 
-Stand: 24 oktober 2026. Back-up (1) en leesoefening (2) gebouwd, prenten (3) voorbereid tot de proef (`docs/prenten.md`). Frederique koos op 24 oktober deze drie om uit te werken. De voorleesstem staat apart in `docs/voorleesstem.md` en blijft Azure Speech (Dena of Arnaud).
+Stand: 24 oktober 2026. Back-up (1) en leesoefening (2) gebouwd, prenten (3) zonder Azure, zelf getekend (`docs/prenten.md`). Frederique koos op 24 oktober deze drie om uit te werken. De voorleesstem staat apart in `docs/voorleesstem.md` en blijft Azure Speech (Dena of Arnaud).
 
 | # | Wat | Kost | Volgorde |
 | --- | --- | --- | --- |
@@ -73,7 +73,7 @@ Bewijsfoto's in Supabase Storage nemen we niet mee: die zijn alleen nodig tot ee
 
 ## 3. Beeldgeneratie: 100 verhalen, kleurplaten en puzzels
 
-**Stand:** op 24 oktober 2026 koos Frederique om dit nu voor te bereiden. Stijlgids, 10 proefopdrachten, script en workflow staan klaar; het stappenplan voor Azure OpenAI staat in `docs/prenten.md`.
+**Stand:** op 24 oktober 2026 afgevoerd: het beeldmodel kreeg geen quotum en de setup was te omslachtig. Claude tekent de prenten nu zelf als SVG in een rijkere stijl (`docs/prenten.md`). Wat hieronder staat, is het oorspronkelijke plan.
 
 **Idee:** de verhalen uitbreiden van 30 naar **100**, met echte prenten in plaats van de huidige SVG-vormpjes, en met dezelfde beeldstijl ook nieuwe kleurplaten en een nieuw spel **Puzzels**. Dit doen we als één project, wanneer we de volgende ronde spelletjes bouwen, zodat er één stijlgids is en alles in één keer gegenereerd wordt.
 

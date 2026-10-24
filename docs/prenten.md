@@ -1,6 +1,10 @@
 # Prenten met Azure OpenAI
 
-Stand: 24 oktober 2026, voorbereid. Plan en kosten: `docs/azure-extra.md`, deel 3. Frederique koos op 24 oktober om dit nu voor te bereiden.
+**Beslist 24 oktober 2026: geen Azure OpenAI.** Het aanmaken van het beeldmodel liep vast op quotum en was te omslachtig. Claude tekent de prenten zelf als SVG in een rijkere stijl (goedgekeurd door Frederique op 24 oktober): vlak, twee à drie tinten per kleur, wangetjes en glans in de ogen, wolken, graspollen en bloempjes. Dirk, Mo en Pip staan in die stijl in `src/data/verhaalFiguren.tsx`, de details in `src/data/verhaalPrent.tsx`. Kost niets, geen Azure, alles in de repo.
+
+Wat hieronder staat (script, workflow, stappenplan Azure OpenAI) blijft liggen voor als we later toch AI-prenten willen.
+
+Plan en kosten van het oorspronkelijke idee: `docs/azure-extra.md`, deel 3.
 
 ## Wat er klaarstaat
 

@@ -80,27 +80,44 @@ function mens(m: Mens): Figuur {
 }
 
 // ---------- dieren ----------
+// Dirk, Mo en Pip in de rijkere stijl (goedgekeurd 24 oktober 2026, docs/prenten.md): vlak, twee à drie tinten
+// per kleur, wangetjes en glans in de ogen. Getekend op een groter raster en geschaald naar h.
+const Wang = ({ x, y, r = 6 }: { x: number; y: number; r?: number }) => (
+  <ellipse cx={x} cy={y} rx={r} ry={r * 0.65} fill="#F28B9B" opacity={0.55} />
+)
+const GrootOog = ({ x, y, r, dicht }: { x: number; y: number; r: number; dicht: boolean }) => dicht
+  ? <path d={`M${x - r} ${y}q${r} ${r * 1.1} ${r * 2} 0`} stroke={INKT} strokeWidth={r * 0.5} fill="none" strokeLinecap="round" />
+  : <><ellipse cx={x} cy={y} rx={r} ry={r * 1.15} fill={INKT} /><circle cx={x + r * 0.35} cy={y - r * 0.4} r={r * 0.38} fill="#fff" /></>
+
 const dirk: Figuur = {
   h: 105,
   teken: (mods) => {
     const dicht = mods.includes('slaapt')
     return (
-      <g>
-        <path d="M-38 -26q-30 6 -50 22l-10 -8 2 14 12 2q22 -14 52 -16z" fill="#3FA34D" />
-        <path d="M-6 -62q-26 -48 -50 -40q14 10 6 22q-12 -4 -16 6q16 4 18 18z" fill="#2E8A3C" />
-        <ellipse cx={0} cy={-34} rx={42} ry={32} fill="#3FA34D" />
-        <ellipse cx={8} cy={-28} rx={24} ry={22} fill="#A8D86E" />
-        <rect x={-26} y={-12} width={14} height={12} rx={5} fill="#2E8A3C" /><rect x={14} y={-12} width={14} height={12} rx={5} fill="#2E8A3C" />
-        <path d="M-12 -64l5 -10 5 10M2 -66l5 -10 5 10" fill="#2E8A3C" />
-        <circle cx={34} cy={-74} r={22} fill="#3FA34D" />
-        <ellipse cx={52} cy={-68} rx={15} ry={11} fill="#3FA34D" />
-        <path d="M24 -94l4 -12 6 10M38 -94l6 -10 2 12" fill="#FFE9A8" />
-        <circle cx={60} cy={-71} r={1.8} fill={INKT} />
-        <Oog x={38} y={-80} dicht={dicht} r={3.4} />
-        <path d="M44 -62q8 4 14 0" stroke={INKT} strokeWidth={1.6} fill="none" strokeLinecap="round" />
-        {dicht && <Zz x={56} y={-96} />}
-        {mods.includes('vuur') && <path d="M66 -70q18 -10 30 -2q-10 0 -8 6q10 0 14 8q-14 -4 -22 2q-6 -10 -14 -14z" fill="#F2994A" />}
-        {mods.includes('spuit') && <path d="M66 -70q30 -6 60 20" stroke="#5DB7E8" strokeWidth={7} fill="none" strokeLinecap="round" />}
+      <g transform="scale(0.57)">
+        <path d="M-56 -30q-38 4 -54 -26q16 8 22 -2q-2 18 32 20z" fill="#2E8A3C" />
+        <path d="M-110 -56l-14 -6 6 14z" fill="#F2B33D" />
+        <path d="M-18 -112q-40 -60 -78 -46q22 12 12 30q-22 -6 -28 10q26 6 30 30z" fill="#2E8A3C" />
+        <path d="M-30 -112q-30 -36 -54 -34q12 10 6 22z" fill="#58B868" />
+        <ellipse cx={0} cy={-58} rx={64} ry={54} fill="#3FA34D" />
+        <ellipse cx={14} cy={-48} rx={38} ry={38} fill="#B5DE7A" />
+        {[0, 1, 2, 3].map((i) => <path key={i} d={`M${-10 + i * 2} ${-76 + i * 16}q24 6 48 0`} stroke="#9BCB62" strokeWidth={3} fill="none" strokeLinecap="round" />)}
+        <path d="M-34 -108l10 -18 10 18zM-6 -114l10 -18 10 18zM22 -110l10 -16 8 18z" fill="#2E8A3C" />
+        <rect x={-40} y={-14} width={26} height={22} rx={10} fill="#2E8A3C" /><rect x={18} y={-14} width={26} height={22} rx={10} fill="#2E8A3C" />
+        <path d="M-36 8h4M-28 8h4M22 8h4M30 8h4" stroke="#FFE9A8" strokeWidth={3} strokeLinecap="round" />
+        <path d="M30 -62q22 -4 30 10" stroke="#3FA34D" strokeWidth={14} fill="none" strokeLinecap="round" />
+        <circle cx={54} cy={-126} r={40} fill="#3FA34D" />
+        <ellipse cx={86} cy={-112} rx={28} ry={21} fill="#3FA34D" />
+        <ellipse cx={90} cy={-106} rx={20} ry={12} fill="#58B868" />
+        <circle cx={100} cy={-116} r={2.6} fill={INKT} /><circle cx={108} cy={-112} r={2.6} fill={INKT} />
+        <path d="M34 -160l4 -22 12 18zM62 -164l12 -18 2 22z" fill="#FFE9A8" />
+        <GrootOog x={62} y={-134} r={6.5} dicht={dicht} />
+        <Wang x={78} y={-110} r={8} />
+        <path d="M74 -98q12 8 26 -2" stroke={INKT} strokeWidth={3} fill="none" strokeLinecap="round" />
+        {dicht && <g transform="scale(1.75)"><Zz x={56} y={-96} /></g>}
+        {mods.includes('vuur') && <path d="M114 -116q30 -18 52 -4q-18 0 -14 10q18 0 24 14q-24 -6 -38 4q-10 -16 -24 -24z" fill="#F2994A" />}
+        {mods.includes('vuur') && <path d="M118 -114q16 -8 28 -2q-8 2 -6 8q-10 -2 -22 -6z" fill="#F7D774" />}
+        {mods.includes('spuit') && <path d="M114 -116q52 -10 104 34" stroke="#5DB7E8" strokeWidth={12} fill="none" strokeLinecap="round" />}
       </g>
     )
   },
@@ -109,15 +126,19 @@ const dirk: Figuur = {
 const mo: Figuur = {
   h: 42,
   teken: (mods) => (
-    <g>
-      <path d="M-18 -10q-20 0 -24 -16" stroke="#F2A7B6" strokeWidth={2.5} fill="none" strokeLinecap="round" />
-      <ellipse cx={-2} cy={-14} rx={18} ry={13} fill="#9AA0A6" />
-      <circle cx={14} cy={-26} r={11} fill="#9AA0A6" />
-      <circle cx={8} cy={-38} r={8} fill="#9AA0A6" /><circle cx={8} cy={-38} r={5} fill="#F2A7B6" />
-      <circle cx={21} cy={-36} r={7} fill="#9AA0A6" /><circle cx={21} cy={-36} r={4.5} fill="#F2A7B6" />
-      <circle cx={25} cy={-24} r={2.5} fill="#E57373" />
-      <Oog x={17} y={-28} r={2} dicht={mods.includes('slaapt')} />
-      <ellipse cx={-10} cy={-1} rx={5} ry={2.5} fill="#F2A7B6" /><ellipse cx={6} cy={-1} rx={5} ry={2.5} fill="#F2A7B6" />
+    <g transform="scale(0.44)">
+      <path d="M-30 -14q-36 4 -44 -28q-4 -18 10 -22" stroke="#F2A7B6" strokeWidth={4} fill="none" strokeLinecap="round" />
+      <ellipse cx={0} cy={-28} rx={32} ry={26} fill="#9AA0A6" />
+      <ellipse cx={8} cy={-22} rx={18} ry={16} fill="#C4C8CC" />
+      <ellipse cx={-16} cy={-2} rx={10} ry={5} fill="#F2A7B6" /><ellipse cx={14} cy={-2} rx={10} ry={5} fill="#F2A7B6" />
+      <circle cx={26} cy={-56} r={21} fill="#9AA0A6" />
+      <circle cx={12} cy={-80} r={15} fill="#9AA0A6" /><circle cx={12} cy={-80} r={10} fill="#F2A7B6" />
+      <circle cx={40} cy={-78} r={13} fill="#9AA0A6" /><circle cx={40} cy={-78} r={8.5} fill="#F2A7B6" />
+      <ellipse cx={44} cy={-50} rx={10} ry={8} fill="#C4C8CC" />
+      <circle cx={53} cy={-52} r={4.5} fill="#E57373" />
+      <GrootOog x={32} y={-60} r={3.6} dicht={mods.includes('slaapt')} />
+      <Wang x={38} y={-46} r={5} />
+      <path d="M46 -56l14 -4M46 -52l15 1" stroke="#6B7178" strokeWidth={1.4} strokeLinecap="round" />
     </g>
   ),
 }
@@ -126,15 +147,18 @@ function pinguin(h: number): Figuur {
   return {
     h,
     teken: (mods) => (
-      <g transform={`scale(${h / 55})`}>
-        <ellipse cx={-6} cy={-1} rx={7} ry={3} fill="#F2994A" /><ellipse cx={7} cy={-1} rx={7} ry={3} fill="#F2994A" />
-        <ellipse cx={0} cy={-24} rx={17} ry={23} fill="#2B3440" />
-        <ellipse cx={3} cy={-20} rx={11} ry={17} fill="#F4F6F8" />
-        <path d="M-16 -32q-10 10 -4 22" stroke="#2B3440" strokeWidth={6} fill="none" strokeLinecap="round" />
-        <circle cx={2} cy={-44} r={12} fill="#2B3440" />
-        <ellipse cx={5} cy={-42} rx={7} ry={6} fill="#F4F6F8" />
-        <path d="M11 -42l9 2 -9 3z" fill="#F2994A" />
-        <Oog x={6} y={-45} r={2} dicht={mods.includes('slaapt')} />
+      <g transform={`scale(${(h / 55) * 0.46})`}>
+        <ellipse cx={-12} cy={-2} rx={13} ry={6} fill="#F2994A" /><ellipse cx={14} cy={-2} rx={13} ry={6} fill="#F2994A" />
+        <ellipse cx={0} cy={-46} rx={34} ry={44} fill="#2B3440" />
+        <ellipse cx={6} cy={-40} rx={22} ry={34} fill="#F4F6F8" />
+        <path d="M-30 -62q-22 18 -10 44" stroke="#2B3440" strokeWidth={12} fill="none" strokeLinecap="round" />
+        <path d="M34 -62q18 10 18 30" stroke="#2B3440" strokeWidth={10} fill="none" strokeLinecap="round" />
+        <circle cx={4} cy={-90} r={25} fill="#2B3440" />
+        <ellipse cx={10} cy={-86} rx={15} ry={13} fill="#F4F6F8" />
+        <path d="M22 -86l16 4 -16 6z" fill="#F2994A" />
+        <GrootOog x={12} y={-92} r={3.6} dicht={mods.includes('slaapt')} />
+        <Wang x={6} y={-78} r={5} />
+        {h < 60 && <path d="M-4 -114q4 -10 10 -2q4 -8 8 0" stroke="#2B3440" strokeWidth={4} fill="none" strokeLinecap="round" />}
       </g>
     ),
   }

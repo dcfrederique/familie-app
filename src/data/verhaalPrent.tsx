@@ -58,6 +58,22 @@ const Slingers = () => (
   <g>{[0, 1, 2, 3, 4, 5, 6, 7].map((i) => <path key={i} d={`M${i * 50} 20l12 18 12 -18`} fill={['#E53935', '#F7C531', '#3FA34D', '#3D7DD8'][i % 4]} />)}<path d="M0 20q200 20 400 0" stroke="#9AA0A6" fill="none" /></g>
 )
 
+// Kleine details die elke buitenprent rijker maken (stijl van 24 oktober 2026, docs/prenten.md).
+const Wolk = ({ x, y, s = 1 }: { x: number; y: number; s?: number }) => (
+  <g transform={`translate(${x} ${y}) scale(${s})`} fill="#fff" opacity={0.95}>
+    <ellipse cx={0} cy={0} rx={23} ry={11} /><ellipse cx={-15} cy={4} rx={15} ry={8} /><ellipse cx={17} cy={4} rx={17} ry={8} /><ellipse cx={3} cy={-7} rx={14} ry={10} />
+  </g>
+)
+const Pol = ({ x, y, kleur }: { x: number; y: number; kleur: string }) => (
+  <path d={`M${x - 5} ${y}q2 -7 5 -8q-1 4 1 8q2 -6 6 -6q-3 3 -2 6z`} fill={kleur} />
+)
+const Bloempje = ({ x, y, kleur }: { x: number; y: number; kleur: string }) => (
+  <g><path d={`M${x} ${y}v-8`} stroke="#3F8F4A" strokeWidth={1.5} />
+    {[0, 72, 144, 216, 288].map((a) => <circle key={a} cx={x + Math.cos(a * Math.PI / 180) * 3} cy={y - 10 + Math.sin(a * Math.PI / 180) * 3} r={2.5} fill={kleur} />)}
+    <circle cx={x} cy={y - 10} r={2} fill="#F2B33D" /></g>
+)
+const grasKleur: Partial<Record<keyof typeof grond, string>> = { gras: '#4FA75A', donkergras: '#2F5E3E', jungle: '#2E7A3A' }
+
 const decors: Record<string, Decor> = {
   nacht: { lucht: 'nacht', grond: 'donkergras', horizon: 175, achter: <Heuvels kleur="#2E5E3E" /> },
   'nacht-feest': { lucht: 'nacht', grond: 'donkergras', horizon: 175, achter: <><Heuvels kleur="#2E5E3E" /><Slingers /></> },
@@ -165,7 +181,13 @@ export function PrentTekening({ prent, idVoorvoegsel = 'l' }: { prent: PrentData
       <defs><linearGradient id={id} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={boven} /><stop offset="1" stopColor={onder} /></linearGradient></defs>
       <rect width={B} height={H} fill={`url(#${id})`} />
       {d.achter}
+      {/* Geen extra wolken als een wolk zelf meespeelt (Het kleine wolkje). */}
+      {d.lucht === 'dag' && horizon > 120 && !prent.figuren.some((f) => f.startsWith('wolk')) && <><Wolk x={64} y={40} s={0.8} /><Wolk x={318} y={28} s={0.65} /></>}
       <rect x={0} y={horizon} width={B} height={H - horizon} fill={grond[d.grond]} />
+      {grasKleur[d.grond] && H - horizon > 30 && <>
+        {[[24, 244], [150, 240], [262, 246], [380, 238]].map(([x, y]) => <Pol key={x} x={x} y={y} kleur={grasKleur[d.grond]!} />)}
+        {d.grond === 'gras' && <><Bloempje x={44} y={246} kleur="#F28B9B" /><Bloempje x={356} y={244} kleur="#F2B33D" /></>}
+      </>}
       {d.voor}
       {volgorde.map((g, i) => {
         const f = figuren[g.naam]
