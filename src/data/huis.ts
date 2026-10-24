@@ -86,7 +86,7 @@ export const zichtbareHuisStukken = (c: HuisCategorieInfo, kanLezen: boolean) =>
 export const isHuisStukVrij = (cat: HuisCategorie, stuk: Stuk, v: Bezit) =>
   prijsVoor(stuk, v) === 0 || v.eigen.has(bezitSleutel(cat, stuk.id))
 
-const themaDeur: Record<Kleur, keyof typeof deurKleuren> = { blauw: 'blauw', oranje: 'oranje', groen: 'groen', paars: 'paars', roze: 'roze', lila: 'paars' }
+const themaDeur: Record<Kleur, keyof typeof deurKleuren> = { blauw: 'blauw', oranje: 'oranje', groen: 'groen', paars: 'paars', roze: 'roze', lila: 'paars', gras: 'groen' }
 
 /** Startpunt voor wie nog niets bouwde: een hutje met de deur in de kleur van het thema. */
 export function basisHuis(thema: Kleur | null): Huis {

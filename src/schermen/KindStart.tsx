@@ -73,7 +73,7 @@ function StartLezer({ kind, lijst, geladen, vrij, verzoeken, eten, ongelezen, ki
   const nogTeDoen = lijst.filter((t) => t.status === 'te_doen').length
   const wachtend = verzoeken.filter((v) => v.status === 'aangevraagd')
   const terug = <Terug grootte={28} />
-  const avatar = <><Avatar kind={kind} /><HuisKnop kind={kind} /></>
+  const avatar = <><Avatar kind={kind} /><HuisKnop kind={kind} /><ThemaKnop kind={kind} /></>
   const titel = <h1 className="kop-titel display">Hoi {kind.naam}!</h1>
 
   return (
@@ -89,7 +89,9 @@ function StartLezer({ kind, lijst, geladen, vrij, verzoeken, eten, ongelezen, ki
                 {geladen && <p className="kop-sub">
                   {banner === 'race'
                     ? (nogTeDoen === 0 ? 'Alles gedaan, finish!' : `Nog ${nogTeDoen} ${nogTeDoen === 1 ? 'taak' : 'taken'} tot de finish`)
-                    : `Al ${gedaan} van de ${lijst.length} taken gedaan vandaag`}
+                    : banner === 'voetbal'
+                      ? (nogTeDoen === 0 ? 'Alles gedaan, goal!' : `Nog ${nogTeDoen} ${nogTeDoen === 1 ? 'taak' : 'taken'} tot de goal`)
+                      : `Al ${gedaan} van de ${lijst.length} taken gedaan vandaag`}
                 </p>}
               </div>
             </div>
@@ -194,7 +196,7 @@ function StartPrenten({ kind, lijst, geladen, eten, ongelezen, kies }: {
 
   const banner = kind.thema ? bannerVoorKleur[kind.thema] : null
   const terug = <Terug grootte={32} />
-  const avatar = <><Avatar kind={kind} /><HuisKnop kind={kind} /></>
+  const avatar = <><Avatar kind={kind} /><HuisKnop kind={kind} /><ThemaKnop kind={kind} /></>
   const titel = <h1 className="kop-titel display">Hoi {kind.naam}!</h1>
   const voorlees = kanVoorlezen() && (
     <button type="button" className="rond" aria-label="Lees voor" onClick={() => leesVoor(begroeting)}>
@@ -360,6 +362,18 @@ function HuisKnop({ kind }: { kind: Gebruiker }) {
     <Link to={`/kind/${kind.id}/huis`} className="huis-knop" aria-label="Mijn huis"
           onClick={() => { if (!kind.kan_lezen) leesVoor('Mijn huis') }}>
       <HuisPrent huis={huisVan(kind)} kaal />
+    </Link>
+  )
+}
+
+/** Penseel naast het huis: het kind kiest zelf een ander thema (Mijn thema). */
+function ThemaKnop({ kind }: { kind: Gebruiker }) {
+  return (
+    <Link to={`/kind/${kind.id}/thema`} className="rond thema-knop" aria-label="Mijn thema"
+          onClick={() => { if (!kind.kan_lezen) leesVoor('Mijn thema') }}>
+      <svg className="ic" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true">
+        <path d="M12 3a9 9 0 1 0 0 18c1.5 0 2-1 2-2s-1-1.5-1-2.5S14 15 15 15h2a4 4 0 0 0 4-4c0-4.5-4-8-9-8zM7.5 11h.01M10 7.5h.01M15 8h.01" />
+      </svg>
     </Link>
   )
 }

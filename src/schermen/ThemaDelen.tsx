@@ -1,6 +1,6 @@
 import { createContext, useContext, type ReactNode } from 'react'
 import { themaOndertitels, type Banner, type ThemaScherm } from '../data/thema.ts'
-import { auto, bloem, geblokt, glinster, hart, kroon, kopPrent, vlinder } from '../data/themaPrenten.ts'
+import { auto, bal, beker, bloem, geblokt, glinster, hart, kroon, kopPrent, vlinder } from '../data/themaPrenten.ts'
 import './thema-schermen.css'
 
 // Bouwstenen die per thema anders getekend worden (prototypes/thema-subschermen.html):
@@ -37,7 +37,7 @@ export function ThemaKop({ thema, scherm, titel, lezer, links, rechts }: {
   )
 }
 
-/** Teken in een tegel die nog op slot zit: rolluik en stoplicht, kasteeldeur, of een slapend huisje. */
+/** Teken in een tegel die nog op slot zit: rolluik en stoplicht, kasteeldeur, een doelnet of een slapend huisje. */
 export function ThemaSlot({ thema }: { thema: Thema }) {
   if (thema === 'race') return (
     <>
@@ -50,6 +50,7 @@ export function ThemaSlot({ thema }: { thema: Thema }) {
       <svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="4" fill="#F2B33D" /><path d="M10 12h4l1 8H9z" fill="#F2B33D" /></svg>
     </span>
   )
+  if (thema === 'voetbal') return <span className="thema-net" aria-hidden="true" />
   return (
     <span className="thema-slaap" aria-hidden="true">
       <svg viewBox="0 0 30 10"><path d="M3 3q4 5 8 0M19 3q4 5 8 0" stroke="#7A5A3C" strokeWidth="2.4" fill="none" strokeLinecap="round" /></svg>
@@ -58,7 +59,7 @@ export function ThemaSlot({ thema }: { thema: Thema }) {
   )
 }
 
-/** Hoe ver het kind al is: een auto op weg naar de finish, een regenboog die volloopt, of vijf bloemetjes. */
+/** Hoe ver het kind al is: een auto op weg naar de finish, een regenboog die volloopt, een bal op weg naar het doel, of vijf bloemetjes. */
 export function ThemaVoortgang({ thema, deel, label }: { thema: Thema; deel: number; label: string }) {
   const d = Math.max(0, Math.min(1, deel))
   if (thema === 'race') return (
@@ -69,6 +70,12 @@ export function ThemaVoortgang({ thema, deel, label }: { thema: Thema; deel: num
   )
   if (thema === 'kasteel') return (
     <span className="thema-regenboog" role="img" aria-label={label}><i style={{ width: `${Math.round(d * 100)}%` }} /></span>
+  )
+  if (thema === 'voetbal') return (
+    <span className="thema-veld" role="img" aria-label={label}>
+      <span className="thema-veld-bal" style={{ left: `${4 + d * 76}%` }}>{svg('-22 -22 44 44', bal(0, 0, 1))}</span>
+      <span className="thema-veld-doel">{svg('-84 -80 168 84', '<path d="M-80 2V-76H80V2" stroke="#fff" stroke-width="12" fill="#fff" fill-opacity=".3"/>')}</span>
+    </span>
   )
   const open = Math.floor(d * 5)
   return (
@@ -81,17 +88,19 @@ export function ThemaVoortgang({ thema, deel, label }: { thema: Thema; deel: num
   )
 }
 
-/** Wat net vrijkwam: een NIEUW-bordje, een kroontje of een vlinder. */
+/** Wat net vrijkwam: een NIEUW-bordje, een kroontje, een bal of een vlinder. */
 export function ThemaNieuw({ thema }: { thema: Thema }) {
   if (thema === 'race') return <span className="thema-nieuw race display">NIEUW</span>
   if (thema === 'kasteel') return <span className="thema-nieuw">{svg('-50 -56 100 60', kroon(0, 0, 1))}</span>
+  if (thema === 'voetbal') return <span className="thema-nieuw voetbal">{svg('-22 -22 44 44', bal(0, 0, 1))}</span>
   return <span className="thema-nieuw">{svg('-34 -34 68 60', vlinder(0, 0, 1.2, '#F59AC8', '#B98CE6'))}</span>
 }
 
-/** Klaar of gelezen: een geblokte vlag, een kroontje of een vlinder. */
+/** Klaar of gelezen: een geblokte vlag, een kroontje, een beker of een vlinder. */
 export function ThemaVink({ thema }: { thema: Thema }) {
   if (thema === 'race') return <span className="thema-vink race">{svg('0 0 40 40', `<rect x="2" y="2" width="3" height="36" fill="#C9D3DE"/>${geblokt(5, 2, 30, 20, 5)}`)}</span>
   if (thema === 'kasteel') return <span className="thema-vink kasteel">{svg('-50 -56 100 60', kroon(0, 0, 1))}</span>
+  if (thema === 'voetbal') return <span className="thema-vink voetbal">{svg('-50 -74 100 88', beker(0, 0, 1))}</span>
   return <span className="thema-vink tuin">{svg('-34 -34 68 60', vlinder(0, 0, 1.2, '#FFC27A', '#F59AC8'))}</span>
 }
 
@@ -113,6 +122,9 @@ export function ThemaFeest() {
         else if (thema === 'kasteel') vorm = <span style={{ width: maat * 1.4, height: maat * 1.2 }}>{i % 2
           ? svg('-16 -16 32 26', hart(0, 0, 1, ['#F28AB8', '#C2337A', '#F2B33D'][i % 3]))
           : svg('-12 -12 24 24', glinster(0, 0, 1, ['#F2B33D', '#FFFFFF', '#B98CE6'][i % 3]))}</span>
+        else if (thema === 'voetbal') vorm = i % 3 === 0
+          ? <span style={{ width: maat * 1.4, height: maat * 1.4 }}>{svg('-22 -22 44 44', bal(0, 0, 1))}</span>
+          : <span style={{ width: maat, height: maat / 2, background: ['#1E8A3C', '#FFFFFF', '#F2B33D', '#4D9BE8'][i % 4] }} />
         else vorm = i % 4 === 0
           ? <span style={{ width: maat * 2.4, height: maat * 2 }}>{svg('-34 -34 68 60', vlinder(0, 0, 1.2, ['#F59AC8', '#FFC27A', '#B9D3F5'][i % 3], '#B98CE6'))}</span>
           : <span className="blad" style={{ width: maat, height: maat * 1.6, background: ['#F59AC8', '#FFC27A', '#B98CE6', '#AEDDA2'][i % 4] }} />

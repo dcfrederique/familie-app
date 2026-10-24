@@ -208,6 +208,9 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
       const { error } = await sb.rpc('figuurtje_bewaren', { p_kind: kindId, p_figuurtje: figuurtje })
       fout(error)
     },
+    async themaKiezen(kindId, thema) {
+      fout((await sb.rpc('thema_kiezen', { p_kind: kindId, p_thema: thema })).error)
+    },
     async welkomAfronden(kindId, w) {
       const { data, error } = await sb.rpc('welkom_afronden',
         { p_kind: kindId, p_figuurtje: w.figuurtje, p_geboortedatum: w.geboortedatum, p_thema: w.thema })

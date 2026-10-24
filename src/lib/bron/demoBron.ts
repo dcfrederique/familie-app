@@ -236,6 +236,12 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       k.huis = huis && { ...huis, tuin: [...huis.tuin], extra: [...huis.extra] }
     },
 
+    async themaKiezen(kindId, thema) {
+      const k = kinderen.find((x) => x.id === kindId)
+      if (!k) throw new Error('kind niet gevonden')
+      k.thema = thema
+    },
+
     async welkomAfronden(kindId, w) {
       await this.figuurtjeBewaren(kindId, w.figuurtje)
       const k = kinderen.find((x) => x.id === kindId)!

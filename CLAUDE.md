@@ -43,7 +43,7 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - `docs/winkel.md`: sterren inwisselen voor spelletjes en stukken van het figuurtje, en sterren uit spelletjes zonder goedkeuring.
 - `docs/winkelaanbod.md`: de ouders geven spelletjes en stukken vrij voor de winkel (in fases) en kiezen per kind wat het ziet.
 - `docs/tablet-per-kind.md`: tablet vastzetten op één kind en het welkomstpad (figuurtje, verjaardag, thema, welkomstbonus).
-- `prototypes/thema-subschermen.html`: mockup van het kinderthema (race, kasteel, tuin) in de subschermen; zit in de app via `src/data/themaPrenten.ts`, `src/schermen/ThemaDelen.tsx` en `src/schermen/thema-schermen.css`.
+- `prototypes/thema-subschermen.html`: mockup van het kinderthema (race, kasteel, tuin; voetbal kwam er later bij) in de subschermen; zit in de app via `src/data/themaPrenten.ts`, `src/schermen/ThemaDelen.tsx` en `src/schermen/thema-schermen.css`.
 - `docs/weekmenu.md`: weekmenu met de warme maaltijd per dag (ouderdeel Wij → Weekmenu), de kinderen zien die van vandaag op hun startscherm.
 - `docs/ouderdeel.md` en `prototypes/ouderdeel.html`: plan en mockup van het ouderdeel als beheertoepassing met hamburgermenu, en latere onderdelen (onze taken, boodschappen, notities, gezondheid). Fase 1 (menu, zijbalk op pc, IBM Plex Sans, rechte hoeken), Onze taken, Notities, Boodschappen en Gewicht zitten in de app (alleen voor ouder-accounts, RLS); Fitness en Loopschema nog niet.
 - `docs/gewicht.md`: Gezondheid → Gewicht en Mijn profiel (wegingen, BMI, grafiek met doel), privé per ouder.

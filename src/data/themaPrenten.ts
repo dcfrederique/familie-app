@@ -99,6 +99,41 @@ const boom = (x: number, y: number, s: number) => g(x, y, s, `<path d="M-14 0V-8
 const tuinBasis = () => `<rect width="1000" height="190" fill="#ECE3FA"/><circle cx="945" cy="64" r="30" fill="#FFF0A8"/>
   ${sterretjes(10)}<ellipse cx="280" cy="232" rx="420" ry="74" fill="#C7E8C0"/><ellipse cx="840" cy="236" rx="380" ry="80" fill="#AEDDA2"/>`
 
+/* ── Voetbal ── */
+const vijfhoek = (x: number, y: number, r: number, draai = -90) => Array.from({ length: 5 }, (_, i) => {
+  const a = (draai + i * 72) * Math.PI / 180
+  return `${i ? 'L' : 'M'}${(x + Math.cos(a) * r).toFixed(1)} ${(y + Math.sin(a) * r).toFixed(1)}`
+}).join('') + 'Z'
+/** Witte bal met zwarte vlakjes, rond (0, 0) met straal 20. */
+export const bal = (x: number, y: number, s: number) => g(x, y, s, `<circle r="20" fill="#fff" stroke="#1C2433" stroke-width="2.4"/>
+  <path d="${vijfhoek(0, 0, 7)}" fill="#1C2433"/>${[0, 1, 2, 3, 4].map((i) => {
+    const a = (-90 + i * 72) * Math.PI / 180, bx = Math.cos(a) * 15, by = Math.sin(a) * 15
+    return `<path d="M${(Math.cos(a) * 7).toFixed(1)} ${(Math.sin(a) * 7).toFixed(1)}L${bx.toFixed(1)} ${by.toFixed(1)}" stroke="#1C2433" stroke-width="2"/><path d="${vijfhoek(bx, by, 4.2, -90 + i * 72 + 36)}" fill="#1C2433"/>`
+  }).join('')}`)
+/** Doel van voren met een net; (0, 0) is het midden op de grond. */
+export const doel = (x: number, y: number, s: number) => g(x, y, s, `<path d="M-80 0V-76H80V0" fill="#fff" fill-opacity=".25"/>
+  ${Array.from({ length: 15 }, (_, i) => `<path d="M${-80 + i * 11.4} -76V0" stroke="#fff" stroke-width="1.6" opacity=".75"/>`).join('')}
+  ${Array.from({ length: 7 }, (_, i) => `<path d="M-80 ${-76 + i * 11}H80" stroke="#fff" stroke-width="1.6" opacity=".75"/>`).join('')}
+  <path d="M-80 2V-76H80V2" stroke="#fff" stroke-width="7" fill="none" stroke-linejoin="round"/>`)
+const hoekvlag = (x: number, y: number, s: number) => g(x, y, s, `<rect x="-2.5" y="-70" width="5" height="70" fill="#fff"/>
+  <path d="M2 -70L34 -60L2 -48Z" fill="#F2B33D" class="thema-wuif"/>`)
+const lamp = (x: number, y: number, s: number) => g(x, y, s, `<rect x="-4" y="-100" width="8" height="100" fill="#8A97AE"/>
+  <rect x="-26" y="-126" width="52" height="30" rx="4" fill="#5B6B8C"/>
+  ${[-16, 0, 16].map((cx) => `<circle cx="${cx}" cy="-118" r="5" fill="#FFF4B8"/><circle cx="${cx}" cy="-104" r="5" fill="#FFF4B8"/>`).join('')}`)
+const kegel = (x: number, y: number, s = 1) => g(x, y, s, '<path d="M-14 0L-5 -30H5L14 0Z" fill="#F07A2A"/><path d="M-9 -14H9" stroke="#fff" stroke-width="4"/><rect x="-18" y="-3" width="36" height="5" rx="2" fill="#D9601A"/>')
+/** Truitje met een rugnummer; (0, 0) is het midden. */
+export const truitje = (x: number, y: number, s: number, kleur: string, nr: number) => g(x, y, s, `<path d="M-14 -40Q0 -32 14 -40L42 -26L32 -6L24 -10V36H-24V-10L-32 -6L-42 -26Z" fill="${kleur}" stroke="#fff" stroke-width="3" stroke-linejoin="round"/>
+  <text x="0" y="16" text-anchor="middle" font-family="Baloo 2, Nunito, sans-serif" font-weight="800" font-size="30" fill="#fff">${nr}</text>`)
+const tribune = () => {
+  const k = ['#F2B33D', '#E23B3B', '#FFFFFF', '#4D9BE8', '#3DAA55']
+  let s = '<path d="M430 118V58Q430 46 446 44L1000 30V118Z" fill="#2F5FA8"/><path d="M430 60L1000 46" stroke="#244C8A" stroke-width="3"/>'
+  for (let r = 0; r < 4; r++) for (let x = 452 + (r % 2) * 9; x < 1000; x += 18) s += `<circle cx="${x}" cy="${64 + r * 13}" r="4.2" fill="${k[(x + r * 3) % 5]}" opacity=".9"/>`
+  return s
+}
+const voetbalBasis = () => `<rect width="1000" height="190" fill="#CFEAFF"/>${wolk(300, 40, 0.6)}${tribune()}${lamp(470, 118, 0.8)}${lamp(980, 118, 0.8)}
+  <rect y="116" width="1000" height="74" fill="#4FAE55"/>${Array.from({ length: 9 }, (_, i) => `<rect x="${i * 120}" y="116" width="60" height="74" fill="#46A04C"/>`).join('')}
+  <path d="M0 124H1000" stroke="#fff" stroke-width="3" opacity=".9"/>`
+
 const prenten: Record<Thema, Record<Exclude<ThemaScherm, 'huis'>, () => string>> = {
   race: {
     spelen: () => raceBasis() + vulkaan(640, 158, 0.95) + dino(820, 150, 0.85) + vlag(905, 30, 0.8) + stoplicht(470, 120) + `<g class="thema-rij">${auto(0, 160, 0.75)}</g>`,
@@ -139,13 +174,36 @@ const prenten: Record<Thema, Record<Exclude<ThemaScherm, 'huis'>, () => string>>
       vlinder(600, 80, 1, '#F59AC8') + bloem(960, 150, 1, '#B98CE6'),
     spel: () => tuinBasis() + paddenstoel(880, 176, 0.75, '#8A3FC0') + bloem(760, 150, 1, '#F59AC8') + bloem(980, 150, 0.9, '#FFC27A') + vlinder(680, 90, 1, '#F59AC8', '#B98CE6'),
   },
+  voetbal: {
+    spelen: () => voetbalBasis() + doel(890, 168, 1) + hoekvlag(560, 172, 1) + kegel(630, 176) + kegel(700, 172) + kegel(770, 176) +
+      `<path d="M640 150q60 -60 150 -10" stroke="#fff" stroke-width="3" stroke-dasharray="6 8" fill="none" opacity=".8"/>` + `<g class="thema-stuiter">${bal(820, 160, 0.9)}</g>`,
+    verhalen: () => voetbalBasis() + g(800, 176, 1, `<path d="M-120 0V-70Q-120 -96 -90 -96H90Q120 -96 120 -70V0" fill="#BFE3FF" fill-opacity=".55" stroke="#8A97AE" stroke-width="5"/>
+      <rect x="-100" y="-34" width="200" height="12" rx="4" fill="#2F5FA8"/><rect x="-92" y="-22" width="8" height="22" fill="#244C8A"/><rect x="84" y="-22" width="8" height="22" fill="#244C8A"/>
+      <path d="M-40 -36Q-20 -48 0 -40Q20 -48 40 -36V-70Q20 -82 0 -74Q-20 -82 -40 -70Z" fill="#fff" stroke="#1E8A3C" stroke-width="3"/><path d="M0 -74V-40" stroke="#1E8A3C" stroke-width="3"/>`) +
+      bal(620, 166, 0.8) + glinster(700, 50, 1, '#F2B33D') + glinster(900, 64, 0.7, '#fff'),
+    kleurplaten: () => voetbalBasis() + g(790, 190, 0.8, `<path d="M-60 0L-44 -40M60 0L44 -40" stroke="#5B6B8C" stroke-width="7"/>
+      <rect x="-110" y="-160" width="220" height="124" rx="8" fill="#2E8A45" stroke="#fff" stroke-width="6"/>
+      <path d="M0 -154V-42M-104 -98H104" stroke="#fff" stroke-width="2.5" opacity=".7"/><circle cx="0" cy="-98" r="20" stroke="#fff" stroke-width="2.5" fill="none" opacity=".7"/>
+      <rect x="-104" y="-122" width="22" height="48" stroke="#fff" stroke-width="2.5" fill="none" opacity=".7"/><rect x="82" y="-122" width="22" height="48" stroke="#fff" stroke-width="2.5" fill="none" opacity=".7"/>
+      ${[[-60, -130, '#E23B3B'], [-40, -76, '#E23B3B'], [-24, -110, '#E23B3B'], [40, -128, '#4D9BE8'], [60, -84, '#4D9BE8'], [26, -98, '#4D9BE8']].map(([cx, cy, k]) => `<circle cx="${cx}" cy="${cy}" r="9" fill="${k}" stroke="#fff" stroke-width="2.5"/>`).join('')}
+      <path d="M-24 -110Q10 -140 40 -128" stroke="#F2B33D" stroke-width="3.5" fill="none" stroke-dasharray="7 6"/>`) +
+      truitje(600, 120, 0.8, '#E23B3B', 7) + truitje(960, 120, 0.7, '#4D9BE8', 10),
+    figuurtje: () => voetbalBasis() + '<path d="M640 0L560 130H720Z" fill="#fff" opacity=".2"/><path d="M880 0L820 130H960Z" fill="#fff" opacity=".2"/>' +
+      g(0, 18, 1, `<rect x="700" y="110" width="70" height="56" fill="#E0E6EE"/><rect x="770" y="84" width="70" height="82" fill="#F2B33D"/><rect x="840" y="124" width="70" height="42" fill="#E09A6A"/>
+       <text x="805" y="138" text-anchor="middle" font-family="Baloo 2, Nunito, sans-serif" font-weight="800" font-size="40" fill="#10331B">1</text>` + beker(805, 76, 0.7)) +
+      bal(640, 166, 0.8) + glinster(700, 40, 1, '#F2B33D') + glinster(930, 60, 0.9, '#F2B33D'),
+    spel: () => voetbalBasis() + doel(900, 168, 0.75) + `<g class="thema-stuiter">${bal(760, 158, 0.8)}</g>`,
+  },
 }
+
+/** Banner van het startscherm met het voetbalthema (viewBox 0 0 1000 190): stadion, doel, bal en hoekvlag. */
+export const voetbalBanner = () => voetbalBasis() + doel(900, 170, 1) + hoekvlag(530, 172, 1) + truitje(650, 150, 0.75, '#1E8A3C', 9) + bal(770, 164, 1)
 
 const cache = new Map<string, string>()
 /** SVG-inhoud van de kopprent; berekend bij het eerste gebruik. */
 export function kopPrent(thema: Thema, scherm: ThemaScherm): string {
   const sleutel = `${thema}/${scherm}`
-  // Mijn huis leent de prent van Spelletjes: de pitstop, het kasteel, het paddenstoelendorp.
+  // Mijn huis leent de prent van Spelletjes: de pitstop, het kasteel, het paddenstoelendorp, het oefenveld.
   if (!cache.has(sleutel)) cache.set(sleutel, prenten[thema][scherm === 'huis' ? 'spelen' : scherm]())
   return cache.get(sleutel)!
 }

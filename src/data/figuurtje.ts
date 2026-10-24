@@ -146,7 +146,7 @@ export function zichtbareStukken(c: CategorieInfo, kanLezen: boolean): Stuk[] {
   return c.stukken.filter((s) => kanLezen || s.prenten)
 }
 
-const themaShirt: Record<Kleur, KledingKleur> = { blauw: 'blauw', oranje: 'oranje', groen: 'groen', paars: 'paars', roze: 'roze', lila: 'paars' }
+const themaShirt: Record<Kleur, KledingKleur> = { blauw: 'blauw', oranje: 'oranje', groen: 'groen', paars: 'paars', roze: 'roze', lila: 'paars', gras: 'groen' }
 
 /** Basisfiguurtje voor wie er nog geen maakte: shirt in de kleur van het thema. */
 export function basisFiguurtje(thema: Kleur | null): Figuurtje {

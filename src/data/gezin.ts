@@ -3,7 +3,7 @@ import type { Figuurtje } from './figuurtje.ts'
 import type { Huis } from './huis.ts'
 import type { StemKeuze } from '../lib/stem.ts'
 
-export type Kleur = 'blauw' | 'oranje' | 'groen' | 'paars' | 'roze' | 'lila'
+export type Kleur = 'blauw' | 'oranje' | 'groen' | 'paars' | 'roze' | 'lila' | 'gras'
 
 export interface Gebruiker {
   id: string

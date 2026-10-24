@@ -1,17 +1,17 @@
 import { useEffect, useMemo, useState, type CSSProperties, type ReactNode } from 'react'
 import { Navigate, useNavigate, useParams } from 'react-router-dom'
-import { Banner } from '../data/banners.tsx'
 import {
   categorie, figuurtjeVan, haarKleuren, huidKleuren, isVrij, kledingKleuren, verrassing, zichtbareStukken,
   type Bezit, type Figuurtje as FiguurtjeData,
 } from '../data/figuurtje.ts'
 import type { Gebruiker, Kleur } from '../data/gezin.ts'
-import { bannerVoorKleur, themaKeuzes } from '../data/thema.ts'
+import { themaKeuzes } from '../data/thema.ts'
 import { zin } from '../data/zinnen.ts'
 import { dagenInMaand, leeftijd, nachtjesTotVerjaardag } from '../lib/datum.ts'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import { gebruikStem, kanVoorlezen, leesVoor } from '../lib/voorlezen.ts'
 import Figuurtje from './Figuurtje.tsx'
+import ThemaKiezen from './ThemaKiezen.tsx'
 import { Ster } from './onderdelen.tsx'
 import './figuurtje.css'
 import './schermen.css'
@@ -318,33 +318,6 @@ function Taart({ kaarsjes }: { kaarsjes: number }) {
         )
       })}
     </svg>
-  )
-}
-
-function ThemaKiezen({ lezer, thema, kies }: { lezer: boolean; thema: Kleur; kies: (t: Kleur) => void }) {
-  return (
-    <div className="welkom-themas">
-      {lezer && <h1 className="display welkom-titel">Kies jouw kleur</h1>}
-      <div className="thema-keuzes">
-        {themaKeuzes.map((t) => {
-          const banner = bannerVoorKleur[t.kleur]
-          return (
-            <button key={t.kleur} type="button" className={`thema-keuze kleur-${t.kleur}`} aria-pressed={thema === t.kleur}
-                    aria-label={t.naam} onClick={() => kies(t.kleur)}>
-              {banner
-                ? <span className={`banner banner-${banner} thema-prent`}><Banner soort={banner} /></span>
-                : <span className="thema-prent thema-effen"><Ster grootte={56} /></span>}
-              {lezer && <span className="thema-naam display">{t.naam}</span>}
-              {thema === t.kleur && (
-                <span className="thema-vink" aria-hidden="true">
-                  <svg className="ic" viewBox="0 0 24 24" width="28" height="28"><path d="M5 12l5 5l9-10" /></svg>
-                </span>
-              )}
-            </button>
-          )
-        })}
-      </div>
-    </div>
   )
 }
 

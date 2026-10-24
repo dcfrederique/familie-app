@@ -273,6 +273,8 @@ export interface Bron {
   huisBewaren(kindId: string, huis: Huis | null): Promise<void>
   /** Bewaart het welkomstpad; geeft de welkomstbonus terug (0 als die al gegeven was). */
   welkomAfronden(kindId: string, welkom: Welkom): Promise<number>
+  /** Het kind kiest zelf een ander thema (Mijn thema), alleen op de eigen tablet of als ouder. */
+  themaKiezen(kindId: string, thema: Kleur): Promise<void>
 
   inzendingBeoordelen(id: string, goed: boolean, pin: string | null): Promise<OuderUitkomst>
   verzoekBehandelen(id: string, toekennen: boolean, reden: string | null, pin: string | null): Promise<OuderUitkomst>

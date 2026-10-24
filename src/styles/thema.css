@@ -10,6 +10,7 @@
   --feline: #1F7A4A; --feline-tint: #DDF2E6;
   --verhalen: #7A3DB0; --verhalen-tint: #F1E6FA;
   --roze: #C2337A; --roze-tint: #FCE4F0; --lila: #8A3FC0; --lila-tint: #EFE4FA;
+  --gras: #1E8A3C; --gras-tint: #DDF3DF;
   --kid: #2D6BD6; --kid-tint: #E3EDFC;
   --achter: #2D6BD6; --achter-ster: #5C8EE6;
 }
@@ -21,8 +22,7 @@
     --warn: #F08A50; --warn-bg: #3D2214; --warn-ink: #F5A57A; --on-solid: #10182A; --shade: #0C1220;
     --luca: #7FA6F0; --luca-tint: #22345A; --yuna: #F29A63; --yuna-tint: #43281A; --feline: #66CC93; --feline-tint: #183A28;
     --verhalen: #C49AEB; --verhalen-tint: #34224A;
-  --roze: #F28AC0; --roze-tint: #4A1F35; --lila: #CDA2F0; --lila-tint: #36254A;
-    --roze: #F28AC0; --roze-tint: #4A1F35; --lila: #CDA2F0; --lila-tint: #36254A;
+    --roze: #F28AC0; --roze-tint: #4A1F35; --lila: #CDA2F0; --lila-tint: #36254A; --gras: #6BD47F; --gras-tint: #17391F;
     --achter: #3E6FD1; --achter-ster: #7FA6EC;
   }
 }
@@ -33,6 +33,7 @@
   --warn: #F08A50; --warn-bg: #3D2214; --warn-ink: #F5A57A; --on-solid: #10182A; --shade: #0C1220;
   --luca: #7FA6F0; --luca-tint: #22345A; --yuna: #F29A63; --yuna-tint: #43281A; --feline: #66CC93; --feline-tint: #183A28;
   --verhalen: #C49AEB; --verhalen-tint: #34224A;
+  --roze: #F28AC0; --roze-tint: #4A1F35; --lila: #CDA2F0; --lila-tint: #36254A; --gras: #6BD47F; --gras-tint: #17391F;
   --achter: #3E6FD1; --achter-ster: #7FA6EC;
 }
 
@@ -52,6 +53,7 @@ body {
 .kleur-paars { --kid: var(--verhalen); --kid-tint: var(--verhalen-tint); }
 .kleur-roze { --kid: var(--roze); --kid-tint: var(--roze-tint); }
 .kleur-lila { --kid: var(--lila); --kid-tint: var(--lila-tint); }
+.kleur-gras { --kid: var(--gras); --kid-tint: var(--gras-tint); }
 button { font: inherit; color: inherit; cursor: pointer; }
 button:focus-visible, a:focus-visible { outline: 4px solid var(--kid); outline-offset: 3px; }
 .display { font-family: 'Baloo 2', Nunito, sans-serif; font-weight: 800; }

@@ -17,7 +17,7 @@ import { zin } from '../data/zinnen.ts'
 import Bladzijden from './Bladzijden.tsx'
 
 // Hoogte gedeeld door breedte van een tegel per thema (kasteel: wimpel erboven, tuin: paddenstoel met steel).
-const VERHOUDING = { race: 1, kasteel: 1.3, tuin: 1.2 }
+const VERHOUDING = { race: 1, kasteel: 1.3, tuin: 1.2, voetbal: 1 }
 
 const SLOT = 'M7 11V8a5 5 0 0 1 10 0v3M5 11h14v10H5zM12 15v2'
 

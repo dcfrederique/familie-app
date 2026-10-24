@@ -38,6 +38,7 @@ import Uitgaven from './schermen/Uitgaven.tsx'
 import Gewicht from './schermen/Gewicht.tsx'
 import MijnProfiel from './schermen/MijnProfiel.tsx'
 import Touwspringen from './schermen/Touwspringen.tsx'
+import MijnThema from './schermen/MijnThema.tsx'
 import Chat from './schermen/Chat.tsx'
 import OuderChat from './schermen/OuderChat.tsx'
 import Welkom from './schermen/Welkom.tsx'
@@ -66,6 +67,7 @@ export default function App() {
         <Route path="tijd" element={<ExtraTijd />} />
         <Route path="figuurtje" element={<Kleerkast />} />
         <Route path="huis" element={<MijnHuis />} />
+        <Route path="thema" element={<MijnThema />} />
         <Route path="spelen" element={<Spelen />} />
         <Route path="winkel" element={<Winkel />} />
         <Route path="rekenen" element={<Rekenen />} />

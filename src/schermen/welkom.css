@@ -82,14 +82,14 @@
 
 /* Thema */
 .welkom-themas { display: flex; flex-direction: column; gap: 16px; }
-.thema-keuzes { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.thema-keuzes { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 18px; }
 .thema-keuze { position: relative; border: 0; padding: 10px 10px 14px; border-radius: 32px; background: var(--surface); color: var(--ink); display: grid; gap: 10px; font: inherit; box-shadow: 0 6px 0 var(--shade); transition: transform .2s; }
 .thema-keuze[aria-pressed="true"] { box-shadow: 0 0 0 6px var(--kid), 0 6px 0 var(--shade); transform: scale(1.03) rotate(-1deg); }
 .thema-prent { position: relative; display: block; height: 150px; border-radius: 24px; overflow: hidden; }
 .thema-prent.banner { height: 150px; }
 .thema-effen { background: radial-gradient(circle at 30% 30%, var(--kid-tint), var(--kid)); display: grid; place-items: center; }
 .thema-naam { font-size: 24px; line-height: 1.1; color: var(--kid); }
-.thema-vink { position: absolute; top: -10px; right: -10px; width: 52px; height: 52px; border-radius: 50%; background: var(--kid); color: var(--on-solid); display: grid; place-items: center; animation: welkom-pop .3s cubic-bezier(.2, .9, .3, 1.5); }
+.thema-keuze-vink { position: absolute; top: -10px; right: -10px; width: 52px; height: 52px; border-radius: 50%; background: var(--kid); color: var(--on-solid); display: grid; place-items: center; animation: welkom-pop .3s cubic-bezier(.2, .9, .3, 1.5); }
 .prenten .thema-prent { height: 180px; }
 
 /* Feest */
@@ -127,6 +127,12 @@
 
 @media (prefers-reduced-motion: reduce) {
   .welkom-inhoud, .welkom-figuur, .fonkel > span, .welkom-knop.verder, .kaarsje, .vlammetje, .welkom-leeftijd,
-  .thema-vink, .welkom-hoera, .feest-pil b, .draaier-waarde { animation: none !important; }
+  .thema-keuze-vink, .welkom-hoera, .feest-pil b, .draaier-waarde { animation: none !important; }
   .confetti, .vliegers { display: none; }
 }
+
+/* Mijn thema: dezelfde kaarten als in het welkomstpad, onder de lage kop van het thema */
+.mijn-thema { position: relative; width: 100%; max-width: 1130px; margin: 0 auto; padding: 8px clamp(16px, 3vw, 32px) 24px; }
+.mijn-thema .welkom-titel { color: var(--ink); }
+.mijn-thema-voorlees { position: absolute; top: 4px; right: clamp(16px, 3vw, 32px); z-index: 1; }
+.mijn-thema .prenten .thema-prent, .mijn-thema .thema-prent { height: 150px; }

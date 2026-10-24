@@ -1,4 +1,5 @@
 // Eigen prenten voor de banner bovenaan het startscherm. Vlakke vormen, geen merken of personages.
+import { voetbalBanner } from './themaPrenten.ts'
 
 /** Nachtelijke racebaan met raceauto nr. 8, een vulkaan en een dino. */
 export function RaceBanner() {
@@ -124,7 +125,15 @@ export function TuinBanner() {
   )
 }
 
+/** Voetbalstadion overdag: tribune met supporters, lichtmasten, doel, bal en hoekvlag. */
+export function VoetbalBanner() {
+  return (
+    <svg className="banner-prent" viewBox="0 0 1000 190" preserveAspectRatio="xMaxYMax slice" aria-hidden="true"
+         dangerouslySetInnerHTML={{ __html: voetbalBanner() }} />
+  )
+}
+
 /** De banner bij een thema. */
-export function Banner({ soort }: { soort: 'race' | 'kasteel' | 'tuin' }) {
-  return soort === 'race' ? <RaceBanner /> : soort === 'kasteel' ? <KasteelBanner /> : <TuinBanner />
+export function Banner({ soort }: { soort: 'race' | 'kasteel' | 'tuin' | 'voetbal' }) {
+  return soort === 'race' ? <RaceBanner /> : soort === 'kasteel' ? <KasteelBanner /> : soort === 'voetbal' ? <VoetbalBanner /> : <TuinBanner />
 }

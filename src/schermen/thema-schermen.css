@@ -1,5 +1,5 @@
 /* Het thema van een kind doorgetrokken in de subschermen (prototypes/thema-subschermen.html).
-   .thema-race, .thema-kasteel en .thema-tuin zetten eigen kleurtokens, zodat ook de spelletjes zelf meekleuren;
+   .thema-race, .thema-kasteel, .thema-tuin en .thema-voetbal zetten eigen kleurtokens, zodat ook de spelletjes zelf meekleuren;
    daarna krijgen kop, tegels, sloten, kaarten en knoppen hun vorm per thema. */
 
 /* ── Tokens ── */
@@ -27,7 +27,22 @@
   --thema-gras: #B9E0AE;
   --thema-achtergrond: linear-gradient(#F4EEFC 0 55%, #E6F4E0 100%) fixed;
 }
+.thema-voetbal {
+  --bg: #EEF8EC; --surface: #FFFFFF; --soft: #DDF1D9; --ink: #10331B; --muted: #3F6B4A; --line: #BFE0BC; --shade: #BFE0BC;
+  --kid: #1E8A3C; --kid-tint: #DDF3DF; --on-solid: #FFFFFF; --achter: #1E8A3C; --achter-ster: #7BD08A;
+  --thema-veld: #3FA34D; --thema-veld-streep: #379646;
+  --thema-streep: #E4F3E0;
+  --thema-achtergrond: repeating-linear-gradient(90deg, var(--bg) 0 90px, var(--thema-streep) 90px 180px);
+}
 @media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .thema-voetbal {
+    color-scheme: dark;
+    --bg: #0F2416; --surface: #183520; --soft: #1F4229; --ink: #E6F6E8; --muted: #A6CFAE; --line: #2C5638; --shade: #08150C;
+    --kid: #6BD47F; --kid-tint: #17391F; --on-solid: #0F2416; --achter: #2E9A45; --achter-ster: #7BD08A;
+    --thema-veld: #2A7A37; --thema-veld-streep: #24702F;
+    --thema-streep: #12291A;
+    --thema-achtergrond: repeating-linear-gradient(90deg, var(--bg) 0 90px, var(--thema-streep) 90px 180px);
+  }
   :root:not([data-theme="light"]) .thema-kasteel {
     color-scheme: dark;
     --bg: #2A1020; --surface: #3A1A2E; --soft: #4A2238; --ink: #FBE3EF; --muted: #D9A6C0; --line: #5E2E48; --shade: #1A0812;
@@ -42,6 +57,14 @@
     --kid: #CDA2F0; --kid-tint: #36254A; --on-solid: #1C1430; --thema-gras: #23402A;
     --thema-achtergrond: linear-gradient(#1C1430 0 55%, #1A2A24 100%) fixed;
   }
+}
+:root[data-theme="dark"] .thema-voetbal {
+  color-scheme: dark;
+  --bg: #0F2416; --surface: #183520; --soft: #1F4229; --ink: #E6F6E8; --muted: #A6CFAE; --line: #2C5638; --shade: #08150C;
+  --kid: #6BD47F; --kid-tint: #17391F; --on-solid: #0F2416; --achter: #2E9A45; --achter-ster: #7BD08A;
+  --thema-veld: #2A7A37; --thema-veld-streep: #24702F;
+  --thema-streep: #12291A;
+  --thema-achtergrond: repeating-linear-gradient(90deg, var(--bg) 0 90px, var(--thema-streep) 90px 180px);
 }
 :root[data-theme="dark"] .thema-kasteel {
   color-scheme: dark;
@@ -91,8 +114,10 @@
 .thema-kasteel .thema-kop-sub { color: #A0275F; }
 .thema-tuin .thema-kop-titel { color: #3B1A5C; text-shadow: 0 2px 0 #FFFFFF; }
 .thema-tuin .thema-kop-sub { color: #6E3FA0; }
+.thema-voetbal .thema-kop-titel { color: #10331B; text-shadow: 0 2px 0 #FFFFFF; }
+.thema-voetbal .thema-kop-sub { color: #1A5E2D; }
 
-/* Ronde knoppen in de kop: een wiel, een schildje met gouden rand, een bloem. */
+/* Ronde knoppen in de kop: een wiel, een schildje met gouden rand, een bal, een bloem. */
 .thema-kop .rond { position: relative; z-index: 1; }
 .thema-race .thema-kop .rond { background: #F3F6FC; color: #16264A; border: 7px solid #1C2433; box-shadow: 0 0 0 3px #5B6B8C; }
 .thema-kasteel .thema-kop .rond { background: #FFFFFF; color: #C2337A; border: 4px solid #F2B33D; border-radius: 22px; transform: rotate(45deg); }
@@ -100,6 +125,11 @@
 .thema-tuin .thema-kop .rond {
   width: 58px; height: 58px; margin: 6px; background: #FFFFFF; color: #8A3FC0;
   box-shadow: 0 -15px 0 -4px #F59AC8, 13px -7px 0 -4px #F59AC8, 13px 7px 0 -4px #F59AC8, 0 15px 0 -4px #F59AC8, -13px 7px 0 -4px #F59AC8, -13px -7px 0 -4px #F59AC8;
+}
+
+.thema-voetbal .thema-kop .rond {
+  background: radial-gradient(circle at 50% 50%, transparent 58%, #1C2433 59% 62%, transparent 63%), #FFFFFF; color: #10331B;
+  border: 4px solid #1C2433; box-shadow: 0 0 0 3px #FFFFFF;
 }
 
 /* ── Spelletjes ── */
@@ -188,7 +218,34 @@
 .thema-bloemetjes { display: flex; gap: 4px; }
 .thema-bloemetjes span, .thema-bloemetjes svg { display: block; width: 24px; height: 24px; }
 
-/* ── Niveaukeuze: versnellingspook, edelstenen, bloemen ── */
+/* Voetbal: een stukje gemaaid veld met witte lijnen; de middencirkel draagt het icoon, op slot hangt er een doelnet voor */
+.thema-voetbal .spel-knop {
+  background: repeating-linear-gradient(90deg, var(--thema-veld) 0 24px, var(--thema-veld-streep) 24px 48px); color: #FFFFFF;
+  border: 4px solid #FFFFFF; border-radius: 16px; box-shadow: 0 6px 0 #1F6B2E, 0 0 0 2px var(--line); overflow: visible;
+}
+.thema-voetbal .spel-knop::before {
+  content: ""; position: absolute; inset: 8px; border: 3px solid rgba(255, 255, 255, .45); border-radius: 6px; pointer-events: none;
+  background: linear-gradient(90deg, transparent calc(50% - 1.5px), rgba(255, 255, 255, .45) calc(50% - 1.5px) calc(50% + 1.5px), transparent calc(50% + 1.5px));
+}
+.thema-voetbal .spel-knop:active { box-shadow: 0 2px 0 #1F6B2E; }
+.thema-voetbal .spel-tegel { border-radius: 50%; background: #FFFFFF; color: #1E8A3C; box-shadow: 0 0 0 5px rgba(255, 255, 255, .5); overflow: hidden; }
+.thema-voetbal .spel-knop .spel-naam, .thema-voetbal .spel-knop.op-slot .spel-naam, .thema-voetbal .spel-uitleg { position: relative; color: #FFFFFF; text-shadow: 0 2px 0 rgba(0, 0, 0, .25); }
+.thema-voetbal .spel-knop.op-slot { filter: saturate(.55); }
+.thema-voetbal .spel-knop.op-slot .spel-tegel { background: #E6ECE6; color: #7C8F80; }
+.thema-voetbal .spel-knop.te-koop { filter: none; }
+.thema-voetbal .spel-knop.te-koop .spel-tegel { background: var(--gold-bg); box-shadow: 0 0 0 5px var(--gold); }
+.thema-net {
+  position: absolute; inset: 0; border-radius: inherit; border: 5px solid #FFFFFF;
+  background: repeating-linear-gradient(45deg, transparent 0 7px, rgba(120, 135, 150, .7) 7px 9px), repeating-linear-gradient(-45deg, transparent 0 7px, rgba(120, 135, 150, .7) 7px 9px);
+}
+.thema-veld { position: relative; width: 70%; height: 20px; border-radius: 10px; background: #1F6B2E; border: 2px solid rgba(255, 255, 255, .7); flex-shrink: 0; }
+.thema-veld::before { content: ""; position: absolute; left: 50%; top: 0; bottom: 0; border-left: 2px solid rgba(255, 255, 255, .6); }
+.thema-veld-bal { position: absolute; top: -6px; width: 26px; height: 26px; transform: translateX(-50%); }
+.thema-veld-doel { position: absolute; right: -4px; top: -10px; width: 30px; height: 26px; }
+.thema-veld svg { display: block; width: 100%; height: 100%; }
+.thema-nieuw.voetbal { position: absolute; top: -16px; right: -10px; width: 46px; height: 46px; animation: thema-stuiter 1.2s ease-in-out infinite; }
+
+/* ── Niveaukeuze: versnellingspook, edelstenen, ballen, bloemen ── */
 .thema-race .chips { background: #0E1830; border: 2px solid #2B3A5C; counter-reset: gang; }
 .thema-race .chip { display: inline-flex; align-items: center; gap: 8px; color: #9FB3D9; }
 .thema-race .chip::before {
@@ -210,6 +267,14 @@
   box-shadow: 0 -8px 0 -3px #F59AC8, 8px 0 0 -3px #F59AC8, 0 8px 0 -3px #F59AC8, -8px 0 0 -3px #F59AC8;
 }
 .thema-tuin .chip[aria-pressed="true"] { background: var(--kid); color: var(--on-solid); }
+.thema-voetbal .chips { border: 3px solid #FFFFFF; box-shadow: 0 0 0 2px var(--line); }
+.thema-voetbal .chip { display: inline-flex; align-items: center; gap: 8px; }
+.thema-voetbal .chip::before {
+  content: ""; width: 24px; height: 24px; border-radius: 50%; border: 2px solid #1C2433;
+  background: radial-gradient(circle, #1C2433 0 4px, transparent 4.5px), #FFFFFF;
+}
+.thema-voetbal .chip[aria-pressed="true"] { background: var(--kid); color: var(--on-solid); }
+.thema-voetbal .chip[aria-pressed="true"]::before { animation: thema-stuiter 1.2s ease-in-out infinite; }
 
 /* ── Verhalen en kleurplaten (beide .verhaal-kaart) ── */
 .verhaal-gelezen.met-thema { background: none; width: 58px; height: 46px; top: -10px; right: -8px; }
@@ -268,13 +333,34 @@
 .thema-tuin .kleur-raster .verhaal-kaart::before { left: 22%; }
 .thema-tuin .kleur-raster .verhaal-kaart::after { right: 22%; background: radial-gradient(circle at 50% 40%, #FFFFFF 0 3px, transparent 3.5px), #B98CE6; }
 
-/* Kleuren kiezen: spuitbussen, edelstenen, bloemen */
+/* Voetbal: verhalen als spelerskaartjes met een groene rand en een sterretje; kleurplaten met magneten op het tactiekbord */
+.thema-voetbal .verhaal-raster .verhaal-kaart { border: 5px solid #1E8A3C; border-radius: 16px; box-shadow: 0 0 0 3px #FFFFFF, 0 6px 0 var(--shade); }
+.thema-voetbal .verhaal-raster .verhaal-kaart::before {
+  content: ""; position: absolute; top: -14px; left: -14px; width: 36px; height: 36px; border-radius: 50%; z-index: 1;
+  background: radial-gradient(circle, #1C2433 0 5px, transparent 5.5px), #FFFFFF; border: 3px solid #1C2433;
+}
+.thema-voetbal.thema-scherm-kleurplaten {
+  --thema-achtergrond: linear-gradient(90deg, transparent calc(50% - 2px), rgba(255, 255, 255, .5) calc(50% - 2px) calc(50% + 2px), transparent calc(50% + 2px)),
+    radial-gradient(circle at 50% 50%, transparent 120px, rgba(255, 255, 255, .5) 121px 125px, transparent 126px),
+    repeating-linear-gradient(90deg, var(--bg) 0 90px, var(--thema-streep) 90px 180px);
+}
+.thema-voetbal .kleur-raster .verhaal-kaart { border: 0; border-radius: 6px; background: #FFFFFF; color: #10331B; box-shadow: 0 0 0 6px #1E8A3C, 0 10px 14px rgba(16, 51, 27, .25); margin-top: 14px; }
+.thema-voetbal .kleur-raster .verhaal-kaart::before, .thema-voetbal .kleur-raster .verhaal-kaart::after {
+  content: ""; position: absolute; top: -14px; width: 26px; height: 26px; border-radius: 50%; z-index: 1;
+  background: radial-gradient(circle at 35% 30%, #FF8A8A, #C42020); box-shadow: 0 3px 0 rgba(0, 0, 0, .25);
+}
+.thema-voetbal .kleur-raster .verhaal-kaart::before { left: 16%; }
+.thema-voetbal .kleur-raster .verhaal-kaart::after { right: 16%; background: radial-gradient(circle at 35% 30%, #8FC2FF, #2D6BD6); }
+
+/* Kleuren kiezen: spuitbussen, edelstenen, ballen, bloemen */
 .thema-race .kleur-knop { border-radius: 12px 12px 8px 8px; border-width: 3px; height: 72px; position: relative; overflow: visible; }
 .thema-race .kleur-knop::before { content: ""; position: absolute; top: -12px; left: 50%; width: 20px; height: 10px; border-radius: 3px; transform: translateX(-50%); background: #C9D3DE; }
 .thema-kasteel .kleur-knop { border: 0; border-radius: 0; box-shadow: none; clip-path: polygon(50% 0, 100% 38%, 50% 100%, 0 38%); }
 .thema-kasteel .kleur-knop[aria-pressed='true'] { transform: scale(1.18) rotate(-8deg); box-shadow: none; filter: drop-shadow(0 0 6px #F2B33D); }
 .thema-tuin .kleur-knop { border: 0; box-shadow: 0 0 0 5px #FFFFFF, 0 0 0 7px var(--line); }
 .thema-tuin .kleur-knop[aria-pressed='true'] { box-shadow: 0 0 0 5px #FFE07A, 0 0 0 9px var(--kid); }
+.thema-voetbal .kleur-knop { border: 3px dashed #FFFFFF; box-shadow: 0 0 0 3px #1C2433; }
+.thema-voetbal .kleur-knop[aria-pressed='true'] { box-shadow: 0 0 0 3px #1C2433, 0 0 0 8px var(--kid); transform: scale(1.08) rotate(20deg); }
 
 /* ── Figuurtje ── */
 .thema-race .podium { background: radial-gradient(60% 80% at 50% 0, rgba(255, 255, 255, .12), transparent 70%), #16264A; }
@@ -320,6 +406,23 @@
 .thema-tuin .kast-keuze { border-radius: 50%; }
 .thema-tuin .prenten .kast-tabs { gap: 22px; padding: 6px; }
 
+.thema-voetbal .podium {
+  background: radial-gradient(circle at 50% 46%, transparent 26%, rgba(255, 255, 255, .6) 26.5% 27.5%, transparent 28%),
+    linear-gradient(90deg, transparent calc(50% - 2px), rgba(255, 255, 255, .45) calc(50% - 2px) calc(50% + 2px), transparent calc(50% + 2px)),
+    repeating-linear-gradient(90deg, var(--thema-veld) 0 40px, var(--thema-veld-streep) 40px 80px);
+}
+.thema-voetbal .podium::before { left: 8%; right: 8%; bottom: 0; height: 38px; border-radius: 0; background: #FFFFFF; clip-path: polygon(0 100%, 6% 0, 94% 0, 100% 100%); opacity: .3; }
+.thema-voetbal .podium::after {
+  content: "1"; position: absolute; left: 50%; bottom: 20px; width: 200px; height: 56px; transform: translateX(-50%); border-radius: 6px 6px 0 0;
+  background: #F2B33D; color: #10331B; font: 800 40px/56px 'Baloo 2', Nunito, sans-serif; text-align: center;
+}
+.thema-voetbal .podium-figuur { z-index: 1; margin-bottom: 70px; }
+.thema-voetbal .kast-tab { border: 3px solid transparent; }
+.thema-voetbal .kast-tab[aria-selected="true"] { background: var(--kid); color: var(--on-solid); border-color: #FFFFFF; box-shadow: 0 0 0 3px var(--kid); }
+.thema-voetbal .kast-keuze { border-radius: 18px; border: 3px solid var(--line); }
+.thema-voetbal .kast-keuze[aria-pressed="true"] { border-color: var(--kid); box-shadow: 0 0 0 4px var(--kid-tint); }
+.thema-voetbal .slotje { background: #10331B; color: #FFFFFF; }
+
 /* ── Knoppen en klaar-schermen ── */
 .thema-race .groot-knop { background: #E23B3B; color: #FFFFFF; border-radius: 12px; transform: skewX(-8deg); box-shadow: 0 5px 0 #8E1616; font-style: italic; }
 .thema-race .groot-knop.licht { background: #F3F6FC; color: #16264A; box-shadow: 0 5px 0 #8A97AE; }
@@ -332,6 +435,10 @@
 .thema-tuin .groot-knop { background: #8A3FC0; color: #FFFFFF; box-shadow: 0 5px 0 #5E2A86; }
 .thema-tuin .groot-knop.licht { background: var(--surface); color: var(--kid); box-shadow: 0 5px 0 var(--line); }
 .thema-tuin .klaar-titel { color: var(--kid); }
+.thema-voetbal .groot-knop { background: #1E8A3C; color: #FFFFFF; border: 3px solid #FFFFFF; box-shadow: 0 0 0 2px #1E8A3C, 0 6px 0 #145C28; }
+.thema-voetbal .groot-knop.licht { background: var(--surface); color: var(--kid); box-shadow: 0 0 0 2px var(--line), 0 6px 0 var(--line); }
+.thema-voetbal .klaar-titel { color: var(--kid); text-shadow: 0 3px 0 #F2B33D; }
+.thema-voetbal .reken-kaart { border: 4px solid #1E8A3C; box-shadow: 0 0 0 3px #FFFFFF; }
 .kind.thema .reken-kaart, .kind.thema .hoera { position: relative; }
 
 /* Feest: confetti van het thema over het scherm */
@@ -347,12 +454,14 @@
 .thema-fladder { animation: thema-fladder .5s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: center; }
 .thema-zweef { animation: thema-zweef 5s ease-in-out infinite; }
 .thema-knipper { animation: thema-knipper 2.6s infinite; }
+.thema-stuiter { animation: thema-stuiter 1.2s ease-in-out infinite; }
 @keyframes thema-rij { from { transform: translateX(-260px); } to { transform: translateX(1260px); } }
 @keyframes thema-wuif { 50% { transform: rotate(-14deg); } }
 @keyframes thema-fladder { to { transform: scaleX(.4); } }
 @keyframes thema-zweef { 50% { transform: translate(20px, -10px); } }
 @keyframes thema-zweef-op { 50% { transform: translateY(-8px); } }
 @keyframes thema-knipper { 50% { opacity: .45; } }
+@keyframes thema-stuiter { 0%, 100% { transform: translateY(0); } 45% { transform: translateY(-14px); } }
 @keyframes thema-wapper { 50% { transform: skewY(-8deg); } }
 @keyframes thema-schommel { 0%, 100% { transform: rotate(-1.5deg); } 50% { transform: rotate(1.5deg); } }
 @keyframes thema-val { from { transform: translateY(0) rotate(0); } to { transform: translateY(110vh) rotate(720deg); } }

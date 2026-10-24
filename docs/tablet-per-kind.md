@@ -41,3 +41,14 @@ Het is de enige keer dat er sterren bijkomen zonder goedkeuring van een ouder.
 ## Demo zonder Supabase
 
 In de demo onthoudt de browser welk kind de tablet koos (localStorage). Elk kind doorloopt het welkomstpad; na herladen begint de demo opnieuw.
+
+## Zelf een ander thema kiezen (25 oktober 2026)
+
+Na het welkomstpad kan een kind zijn thema ook zelf veranderen: het penseel naast het huisje op het startscherm opent
+**Mijn thema** (`/kind/:id/thema`, `src/schermen/MijnThema.tsx`) met dezelfde kaarten als in het welkomstpad
+(`src/schermen/ThemaKiezen.tsx`). Een tik bewaart meteen via `thema_kiezen` (migratie `20261025000200_voetbalthema.sql`):
+alleen op de eigen tablet of als ouder. De ouders kunnen het nog altijd aanpassen bij Kinderen.
+
+Er is een vierde thema bij: **Voetbal** (kleur `gras`, banner `voetbal`): stadion met tribune en lichtmasten,
+tegels als stukje gemaaid veld, doelnet = op slot, bal op weg naar het doel als voortgang, beker = klaar,
+ballen en groen-witte confetti als feest.
