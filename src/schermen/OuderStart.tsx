@@ -7,7 +7,7 @@ import { takenVoorKind } from '../lib/takenstatus.ts'
 import { SterrenPil } from './onderdelen.tsx'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import { supabase } from '../lib/supabase.ts'
-import OuderKader from './OuderKader.tsx'
+import OuderKader, { KindAvatar } from './OuderKader.tsx'
 
 // Vandaag: wat op jou wacht en per kind sterren, taken en extra tijd.
 export default function OuderStart() {
@@ -51,7 +51,7 @@ export default function OuderStart() {
         return (
           <section key={kind.id} className={`kaart kind-kaart ${kleurKlasse(kind)}`}>
             <div className="kind-kaart-kop">
-              <span className="mini-gezicht display" aria-hidden="true">{kind.naam.charAt(0)}</span>
+              <KindAvatar kind={kind} grootte={40} />
               <h2 className="display">{kind.naam}</h2>
               <SterrenPil aantal={saldo?.vrij ?? 0} />
             </div>

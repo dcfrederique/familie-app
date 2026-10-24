@@ -13,8 +13,9 @@ De kinderkant verandert niet.
 - **Balk bovenaan** (vast): links de hamburgerknop (48 × 48), in het midden de titel van het scherm, rechts een belletje met het aantal dingen dat op goedkeuring wacht. Tikken op het belletje opent Goedkeuren; zo blijft de belangrijkste actie met één tik bereikbaar.
 - **Menu** schuift van links in, 300 px breed, met een donkere laag over de rest. Sluiten met een tik naast het menu, een veeg naar links of de terugknop van Android.
 - **Geen tabs meer onderaan.** Het vrijgekomen plekje gebruiken schermen voor hun eigen hoofdknop (zoals **Nieuwe taak**), als zwevende knop rechtsonder.
-- **Lettertype**: de ouderkant gebruikt **Manrope** (500 tot 700) voor titels en tekst, soberder dan Baloo 2 en Nunito van de kinderkant, maar modern. Cijfers met `tabular-nums`. De kinderschermen blijven speels met Baloo 2 en Nunito.
-- Kleuren blijven zoals in `docs/ontwerp.md`, maar de ouderkant krijgt een rustiger, zakelijker toon: kaarten met een dunne rand en hoeken van 14 px, knoppen met hoeken van 12 px in plaats van volledig rond, minder kleurvlakken, meer lijsten met rijen.
+- **Lettertype**: de ouderkant gebruikt **IBM Plex Sans** (400 tot 600), tekst 15 px, titels 16 tot 20 px, cijfers met `tabular-nums`. De kinderschermen blijven speels met Baloo 2 en Nunito.
+- Kleuren blijven zoals in `docs/ontwerp.md`, maar de ouderkant is strak en zakelijk (24 oktober 2026, gevraagd door Frederique): **geen afgeronde hoeken** (alleen de avatars van de kinderen zijn rond), dunne randen, een accentstreep links voor wat aandacht vraagt.
+- Menu: groepen gescheiden door een dunne lijn, het actieve item met een blauwe streep links, onder Kinderen elk kind met het hoofd van zijn figuurtje en zijn sterren (tik = naar zijn kaart in Kinderen en tijd).
 
 ## Op een groot scherm (pc)
 

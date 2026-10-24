@@ -21,6 +21,8 @@ export interface MenuGroep {
   later?: string
   /** Alleen op de gsm van een ouder, niet op de tablet van een kind. */
   alleenOuderGsm?: boolean
+  /** Toont onder de items elk kind met zijn figuurtje. */
+  metKinderen?: boolean
   items: MenuItem[]
 }
 
@@ -29,7 +31,7 @@ export const ouderMenu: MenuGroep[] = [
     { naam: 'Vandaag', icoon: 'vandaag', pad: '/ouder' },
     { naam: 'Goedkeuren', icoon: 'goedkeuren', pad: '/ouder/goedkeuren', teller: true },
   ] },
-  { naam: 'Kinderen', items: [
+  { naam: 'Kinderen', metKinderen: true, items: [
     { naam: 'Taken van de kinderen', icoon: 'taken', pad: '/ouder/taken' },
     { naam: 'Kinderen en tijd', icoon: 'kinderen', pad: '/ouder/kinderen' },
     { naam: 'Spelregels', icoon: 'spelregels', pad: '/ouder/spelregels' },

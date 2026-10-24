@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { figuurtjeVan } from '../data/figuurtje.ts'
 import { kleurKlasse, type Gebruiker, type Kleur } from '../data/gezin.ts'
 import { themaKeuzes } from '../data/thema.ts'
@@ -19,6 +20,11 @@ export default function KinderenBeheer() {
   const { data, ververs } = useGegevens(bron ? async () => {
     return { saldi: await bron.saldi() }
   } : null, [bron])
+  // Vanuit het menu (Kinderen → naam) meteen naar de kaart van dat kind.
+  const { hash } = useLocation()
+  useEffect(() => {
+    if (hash) document.getElementById(hash.slice(1))?.scrollIntoView({ block: 'start' })
+  }, [hash, kinderen.length])
 
   return (
     <OuderKader titel="Kinderen en tijd">
@@ -57,7 +63,7 @@ function KindBeheer({ kind, vrij, magBeheren, ververs }: {
   }
 
   return (
-    <section className={`kaart kind-kaart ${kleurKlasse(kind)}`}>
+    <section id={`kind-${kind.id}`} className={`kaart kind-kaart ${kleurKlasse(kind)}`}>
       <div className="kind-kaart-kop">
         <span className="mini-gezicht met-figuurtje" aria-hidden="true"><Figuurtje figuurtje={figuurtjeVan(kind)} uitsnede={hoofdUitsnede} /></span>
         <h2 className="display">{kind.naam}{kind.geboortedatum && <span className="leeftijd"> {leeftijd(kind.geboortedatum)} jaar</span>}</h2>

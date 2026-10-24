@@ -1,10 +1,13 @@
 import { useEffect, useState, type FormEvent, type ReactNode } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
+import { figuurtjeVan } from '../data/figuurtje.ts'
+import { kleurKlasse, type Gebruiker } from '../data/gezin.ts'
 import { ouderMenu, type MenuIcoon } from '../data/ouderMenu.ts'
 import { useGegevens } from '../lib/gegevens.ts'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import { actievePin, ontgrendel, vergrendel } from '../lib/ouderslot.ts'
 import { supabase } from '../lib/supabase.ts'
+import Figuurtje, { hoofdUitsnede } from './Figuurtje.tsx'
 import './schermen.css'
 import './ouder.css'
 
@@ -43,14 +46,23 @@ function Icoon({ naam }: { naam: keyof typeof iconen }) {
   return <svg className="ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">{iconen[naam]}</svg>
 }
 
-/** Aantal dingen dat op goedkeuring wacht, voor het belletje en het menu. */
-function useWachtend(): number | null {
+/** Wat het menu toont: aantal dingen dat op goedkeuring wacht en het vrije saldo per kind. */
+function useMenuGegevens() {
   const { bron } = useSessie()
   const { data } = useGegevens(bron ? async () => {
-    const [v, i, a] = await Promise.all([bron.openVerzoeken(), bron.teBeoordelen(), bron.activiteitenTeBeoordelen()])
-    return v.length + i.length + a.length
+    const [v, i, a, saldi] = await Promise.all([bron.openVerzoeken(), bron.teBeoordelen(), bron.activiteitenTeBeoordelen(), bron.saldi()])
+    return { wachtend: v.length + i.length + a.length, saldi }
   } : null, [bron])
   return data ?? null
+}
+
+/** Hoofd van het figuurtje van een kind, in een rondje. */
+export function KindAvatar({ kind, grootte = 28 }: { kind: Gebruiker; grootte?: number }) {
+  return (
+    <span className={`avatar-mini ${kleurKlasse(kind)}`} style={{ width: grootte, height: grootte }} aria-hidden="true">
+      <Figuurtje figuurtje={figuurtjeVan(kind)} uitsnede={hoofdUitsnede} />
+    </span>
+  )
 }
 
 // Gemeenschappelijk kader voor de ouderschermen: balk met menu op de gsm, vaste zijbalk op een groot scherm.
@@ -64,11 +76,11 @@ export default function OuderKader({ titel, wachtend, children }: { titel: strin
 }
 
 function Kader({ titel, wachtend, children }: { titel: string; wachtend?: number; children: ReactNode }) {
-  const { account, gebruikers } = useSessie()
+  const { account, gebruikers, kinderen } = useSessie()
   const [menuOpen, setMenuOpen] = useState(false)
   const { pathname } = useLocation()
-  const geteld = useWachtend()
-  const teller = wachtend ?? geteld ?? 0
+  const menuGegevens = useMenuGegevens()
+  const teller = wachtend ?? menuGegevens?.wachtend ?? 0
   const opTablet = account?.soort === 'tablet'
   const ik = gebruikers.find((g) => g.id === account?.ouder_id)
 
@@ -115,6 +127,12 @@ function Kader({ titel, wachtend, children }: { titel: string; wachtend?: number
                 <span key={item.naam} className="menu-item is-later" aria-disabled="true">
                   <Icoon naam={item.icoon} /><span>{item.naam}</span>
                 </span>
+              ))}
+              {groep.metKinderen && kinderen.map((kind) => (
+                <Link key={kind.id} to={`/ouder/kinderen#kind-${kind.id}`} className="menu-item menu-kind">
+                  <KindAvatar kind={kind} /><span>{kind.naam}</span>
+                  {menuGegevens && <span className="item-sterren">{menuGegevens.saldi[kind.id]?.vrij ?? 0} sterren</span>}
+                </Link>
               ))}
             </div>
           ))}
