@@ -1,0 +1,34 @@
+# Houdt het gratis Supabase-project wakker: zonder activiteit pauzeert het na 7 dagen (bv. in een vakantieweek).
+# Doet twee keer per week één kleine leesvraag. Zonder de secrets SUPABASE_URL en SUPABASE_PUBLISHABLE_KEY slaat hij zich over.
+name: Supabase wakker houden
+
+on:
+  schedule:
+    - cron: '17 6 * * 1,4'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Database bevragen
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+        run: |
+          if [ -z "$SUPABASE_URL" ] || [ -z "$SUPABASE_PUBLISHABLE_KEY" ]; then
+            echo "Secrets ontbreken, niets te doen."
+            exit 0
+          fi
+          # De anonieme sleutel mag niets lezen (RLS + grants), maar de vraag gaat wel tot in Postgres:
+          # "permission denied" (42501) telt dus ook als antwoord van de database.
+          code=$(curl -sS --retry 3 --retry-delay 10 -o antwoord.json -w '%{http_code}' \
+            -H "apikey: $SUPABASE_PUBLISHABLE_KEY" \
+            "$SUPABASE_URL/rest/v1/gezinnen?select=id&limit=1")
+          echo "HTTP $code: $(cat antwoord.json)"
+          if [ "$code" = 200 ] || grep -q '42501' antwoord.json; then
+            echo "Supabase heeft geantwoord."
+          else
+            exit 1
+          fi
