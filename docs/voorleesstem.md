@@ -1,6 +1,16 @@
 # Vlaamse voorleesstem met Azure Speech (stappenplan)
 
-Stand: 24 oktober 2026. Nog niets gebouwd; dit is het plan.
+Stand: 24 oktober 2026. **Gebouwd** (stappen 3 tot 6). Frederique koos na de proefopnames: **beide stemmen**, om beurten per verhaal, en de ouder kan het per kind instellen.
+
+## Zo werkt het nu
+
+- `scripts/maak-stem.ts` spreekt elke bladzijde van elk verhaal en elke vaste zin (`src/data/zinnen.ts`) in met **Dena én Arnaud** (±42.000 tekens, ±500 opnames). Elke opname heet naar een hash van stem + tempo + tekst (`src/lib/stem.ts`): `public/stem/<sleutel>.mp3`, bij verhalen ook `<sleutel>.json` met de woordtijden. `src/data/opnames.json` is de lijst van wat er is.
+- De workflow **Voorleesstem inspreken** (`.github/workflows/stem.yml`) draait het script vanzelf als een verhaal of zin wijzigt (of handmatig), zet de opnames op main en start CI, die de app opnieuw uitrolt. Alleen nieuwe of gewijzigde teksten gaan naar Azure. De eerste keer duurt ±40 minuten (F0: 20 verzoeken per minuut).
+- **Ouder kiest per kind** bij Kinderen → Voorleesstem: *Dena en Arnaud om beurten* (standaard: oneven verhalen Dena, even verhalen Arnaud), *Altijd Dena*, *Altijd Arnaud* of *Stem van de tablet*. Korte zinnen in spelletjes gebruiken bij "om beurten" Dena.
+- In de app (`src/lib/voorlezen.ts`) speelt een verhaal de opname af en licht het woord op volgens de tijden van Azure. Is er (nog) geen opname, of lukt afspelen niet, dan leest de tabletstem zoals vroeger. Een gespeelde opname bewaart de service worker, dus die werkt daarna ook zonder wifi.
+- Migratie **`20261024000100_voorleesstem.sql`** (kolom `voorleesstem` per kind) moet Frederique nog draaien in de Supabase SQL Editor. Zonder die migratie werkt alles, maar met "om beurten" voor iedereen en zonder keuze bij Kinderen.
+
+Teksten met een naam, getal of taaktitel ("Hoi Luca!", taken die ouders typen) blijven op de tabletstem (stap 7 is voor later).
 
 ## Kort
 
@@ -57,7 +67,9 @@ Wil je zelf lokaal opnames kunnen maken, zet dezelfde twee waarden dan in een be
 
 ### 2. Proefopname en stemkeuze
 
-Gebouwd: de workflow `azure-check.yml` (zie `docs/hosting.md` stap 6) maakt van bladzijde 1 van "Dirk de draak telt sterren" een mp3 met Dena en een met Arnaud. Frederique luistert en kiest de stem (en eventueel het tempo). De keuze komt in dit document.
+Gebouwd: de workflow `azure-check.yml` (zie `docs/hosting.md` stap 6) maakt van bladzijde 1 van "Dirk de draak telt sterren" een mp3 met Dena en een met Arnaud. Frederique luistert en kiest de stem (en eventueel het tempo).
+
+**Keuze (24 oktober):** beide stemmen, om beurten per verhaal, instelbaar door de ouders. Tempo blijft -10%.
 
 ### 3. Script dat de verhalen inspreekt (`scripts/maak-stem.ts`)
 

@@ -6,6 +6,7 @@ import { leesVoor } from '../lib/voorlezen.ts'
 import Figuurtje from './Figuurtje.tsx'
 import { Ster } from './onderdelen.tsx'
 import './figuurtje.css'
+import { zin } from '../data/zinnen.ts'
 
 // Feestscherm op het startscherm als er sinds de vorige keer een stuk vrijgespeeld is.
 // Wat al gezien is, onthoudt de tablet zelf (per kind): een ander toestel toont het feest nog eens.
@@ -42,7 +43,7 @@ export default function NieuwStuk({ kind, verdiend }: { kind: Gebruiker; verdien
   }, [kind.id, kind.figuurtje_alles_vrij, kind.kan_lezen, verdiend])
 
   useEffect(() => {
-    if (nieuw && !kind.kan_lezen) leesVoor('Nieuw! Kijk eens wat je hebt gekregen.')
+    if (nieuw && !kind.kan_lezen) leesVoor(zin.nieuwStuk)
   }, [nieuw, kind.kan_lezen])
 
   if (!nieuw || verdiend === undefined) return null

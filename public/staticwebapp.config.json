@@ -9,6 +9,10 @@
       "headers": { "cache-control": "public, max-age=31536000, immutable" }
     },
     {
+      "route": "/stem/*",
+      "headers": { "cache-control": "public, max-age=31536000, immutable" }
+    },
+    {
       "route": "/sw.js",
       "headers": { "cache-control": "no-cache", "service-worker-allowed": "/" }
     }

@@ -8,6 +8,7 @@ import { RaceVeld } from '../lib/spelletjes/racenVeld.ts'
 import { leesVoor } from '../lib/voorlezen.ts'
 import { Ster } from './onderdelen.tsx'
 import SpelKader, { Chips, EindKnoppen } from './SpelKader.tsx'
+import { zin } from '../data/zinnen.ts'
 
 export default function Racen() {
   return (
@@ -18,7 +19,7 @@ export default function Racen() {
 }
 
 const HART = 'M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z'
-const uitleg = 'Tik naast je auto om opzij te gaan. Pak de sterretjes!'
+const uitleg = zin.racenUitleg
 
 function Racebaan({ kind }: { kind: Gebruiker }) {
   const { bron } = useSessie()

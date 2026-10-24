@@ -6,6 +6,7 @@ import { BasketVeld } from '../lib/spelletjes/basketVeld.ts'
 import { gekozenNiveau, niveauBewaren, record, recordBewaren } from '../lib/spelletjes/opslag.ts'
 import { leesVoor } from '../lib/voorlezen.ts'
 import SpelKader, { Chips, EindKnoppen } from './SpelKader.tsx'
+import { zin } from '../data/zinnen.ts'
 
 export default function Basket() {
   return (
@@ -15,7 +16,7 @@ export default function Basket() {
   )
 }
 
-const hint = 'Veeg van de bal naar de ring en laat los. Hoe langer de veeg, hoe harder!'
+const hint = zin.basketHint
 const meldingen: Record<number, string> = { 0: 'Mis!', 2: 'Raak!', 3: 'Swish!' }
 
 function BasketSpel({ kind }: { kind: Gebruiker }) {

@@ -7,6 +7,7 @@ import { doeErin, hoekVerschil, kookNiveaus, nieuweBestelling, ROER_RONDES, type
 import { gekozenNiveau, niveauBewaren } from '../lib/spelletjes/opslag.ts'
 import { leesVoor } from '../lib/voorlezen.ts'
 import SpelKader, { Chips, EindKnoppen } from './SpelKader.tsx'
+import { zin } from '../data/zinnen.ts'
 
 export default function Koken() {
   return (
@@ -58,9 +59,9 @@ function Keuken({ kind }: { kind: Gebruiker }) {
 
   useEffect(() => {
     if (lezer) return
-    if (fase === 'kiezen') leesVoor('Wat ga je koken?')
-    if (fase === 'verzamelen') leesVoor('Zoek wat er op het kaartje staat.')
-    if (fase === 'roeren') leesVoor('Roer maar goed rond!')
+    if (fase === 'kiezen') leesVoor(zin.kokenKiezen)
+    if (fase === 'verzamelen') leesVoor(zin.kokenZoeken)
+    if (fase === 'roeren') leesVoor(zin.kokenRoeren)
   }, [fase, lezer])
 
   // Chef: het kaartje verdwijnt na een paar tellen.

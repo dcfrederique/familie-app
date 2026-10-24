@@ -57,12 +57,18 @@ export function SessieProvider({ children }: { children: ReactNode }) {
       return
     }
     const velden = 'id, naam, rol, thema, kan_lezen, vraagt_zelf_tijd, volgorde'
-    let { data: leden, error } = await supabase.from('gebruikers')
-      .select(`${velden}, figuurtje, figuurtje_alles_vrij`).order('volgorde') as { data: Partial<Gebruiker>[] | null; error: unknown }
-    // Zolang migratie 20261022001000_figuurtje nog niet gedraaid is, bestaan die kolommen niet.
-    if (error) ({ data: leden } = await supabase.from('gebruikers').select(velden).order('volgorde'))
+    // Zolang een migratie nog niet gedraaid is (figuurtje 20261022001000, voorleesstem 20261024000100),
+    // bestaan die kolommen niet: dan vragen we telkens minder op.
+    let leden: Partial<Gebruiker>[] | null = null
+    for (const extra of [', figuurtje, figuurtje_alles_vrij, voorleesstem', ', figuurtje, figuurtje_alles_vrij', '']) {
+      const { data, error } = await supabase.from('gebruikers').select(velden + extra).order('volgorde')
+      leden = data as Partial<Gebruiker>[] | null
+      if (!error) break
+    }
     setAccount(acc as Account)
-    setGebruikers((leden ?? []).map((g) => ({ ...g, figuurtje: g.figuurtje ?? null, figuurtje_alles_vrij: g.figuurtje_alles_vrij ?? false })) as Gebruiker[])
+    setGebruikers((leden ?? []).map((g) => ({
+      ...g, figuurtje: g.figuurtje ?? null, figuurtje_alles_vrij: g.figuurtje_alles_vrij ?? false, voorleesstem: g.voorleesstem ?? 'afwisselend',
+    })) as Gebruiker[])
     setStatus('klaar')
   }, [])
 

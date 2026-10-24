@@ -1,8 +1,9 @@
-import { useState, type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { kleurKlasse, type Gebruiker } from '../data/gezin.ts'
 import { geluidAan, geluidBewaren } from '../lib/spelletjes/opslag.ts'
 import { useSessie } from '../lib/sessie.tsx'
+import { gebruikStem } from '../lib/voorlezen.ts'
 import './schermen.css'
 import './spelletjes.css'
 
@@ -14,6 +15,7 @@ export default function SpelKader({ titel, terug, children }: {
   const { kinderen } = useSessie()
   const kind = kinderen.find((k) => k.id === id)
   const [geluid, setGeluid] = useState(geluidAan)
+  useEffect(() => { if (kind) gebruikStem(kind.voorleesstem) }, [kind])
   if (!kind) return <Navigate to="/kinderen" replace />
 
   return (

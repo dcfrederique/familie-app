@@ -2,6 +2,7 @@
 import type { Figuurtje } from '../../data/figuurtje.ts'
 import type { Kleur } from '../../data/gezin.ts'
 import type { Activiteit } from '../regels.ts'
+import type { StemKeuze } from '../stem.ts'
 
 export type Herhaling = 'eenmalig' | 'elke_dag' | 'schooldagen'
 export type InzendingStatus = 'ingediend' | 'goedgekeurd' | 'afgekeurd'
@@ -72,6 +73,7 @@ export interface KindWijziging {
   vraagt_zelf_tijd?: boolean
   thema?: Kleur
   figuurtje_alles_vrij?: boolean
+  voorleesstem?: StemKeuze
 }
 
 export interface Spelregels {

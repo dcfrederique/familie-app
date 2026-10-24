@@ -9,6 +9,7 @@ import { spelGeopend, spelOpenen } from '../lib/spelletjes/opslag.ts'
 import { leesVoor } from '../lib/voorlezen.ts'
 import { Ster } from './onderdelen.tsx'
 import SpelKader from './SpelKader.tsx'
+import { zin } from '../data/zinnen.ts'
 
 const SLOT = 'M7 11V8a5 5 0 0 1 10 0v3M5 11h14v10H5zM12 15v2'
 
@@ -36,7 +37,7 @@ function SpelMenu({ kind }: { kind: Gebruiker }) {
     geluid.oei()
     const tekst = kind.kan_lezen
       ? `Nog ${nog} ${nog === 1 ? 'ster' : 'sterren'} verdienen, dan is ${s.naam} van jou.`
-      : 'Nog even sterren sparen!'
+      : zin.sparen
     if (!kind.kan_lezen) leesVoor(tekst)
     setTip({ sleutel: s.sleutel, tekst })
     window.clearTimeout(tipKlok.current)

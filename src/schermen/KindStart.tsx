@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { Banner } from '../data/banners.tsx'
 import { kleurKlasse, type Gebruiker } from '../data/gezin.ts'
@@ -10,7 +10,7 @@ import { dagVan, vandaag } from '../lib/datum.ts'
 import { useGegevens } from '../lib/gegevens.ts'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import { takenVoorKind, type TaakStatus } from '../lib/takenstatus.ts'
-import { kanVoorlezen, leesVoor } from '../lib/voorlezen.ts'
+import { gebruikStem, kanVoorlezen, leesVoor } from '../lib/voorlezen.ts'
 import Figuurtje, { hoofdUitsnede } from './Figuurtje.tsx'
 import NieuwStuk from './NieuwStuk.tsx'
 import { Ster, SterrenPil } from './onderdelen.tsx'
@@ -25,6 +25,7 @@ export default function KindStart() {
   const { kinderen, bron } = useSessie()
   const kind = kinderen.find((k) => k.id === id)
   const [gekozen, setGekozen] = useState<Taak | null>(null)
+  useEffect(() => { if (kind) gebruikStem(kind.voorleesstem) }, [kind])
 
   const { data, ververs } = useGegevens(bron && kind ? async () => {
     const zestigDagenTerug = dagVan(new Date(Date.now() - 60 * 86400_000))

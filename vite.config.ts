@@ -13,6 +13,13 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
         // Meldingen voor ouders: push en klikken op een melding (public/push-sw.js).
         importScripts: ['push-sw.js'],
+        // Opnames van de voorleesstem: niet vooraf (±20 MB), wel bewaren zodra een verhaal één keer gespeeld is.
+        // De bestandsnaam is een hash van de tekst, dus een bewaarde opname is nooit verouderd.
+        runtimeCaching: [{
+          urlPattern: ({ url }) => url.pathname.startsWith('/stem/'),
+          handler: 'CacheFirst',
+          options: { cacheName: 'stem', expiration: { maxEntries: 1200 }, cacheableResponse: { statuses: [200] } },
+        }],
       },
       manifest: {
         name: 'Sterren',

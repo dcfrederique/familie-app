@@ -6,6 +6,7 @@ import { geluid } from '../lib/spelletjes/geluid.ts'
 import { nieuweVlekken, proper, volgendeStap, wrijf, type Vlek, type WasStap } from '../lib/spelletjes/huisdier.ts'
 import { leesVoor } from '../lib/voorlezen.ts'
 import SpelKader, { EindKnoppen } from './SpelKader.tsx'
+import { dierProper, wasZeg, zin } from '../data/zinnen.ts'
 
 export default function Huisdier() {
   return (
@@ -17,10 +18,10 @@ export default function Huisdier() {
 
 // Gereedschap per stap: icoon (voor de knoppen) en tekening die met de vinger meegaat.
 const gereedschap: Record<Exclude<WasStap, 'klaar'>, { naam: string; zeg: string; icoon: string }> = {
-  schrobben: { naam: 'Schrobben', zeg: 'Schrob de modder weg met de spons!', icoon: 'M4 8h16v10H4zM8 12h.01M12 14h.01M16 11h.01M10 16h.01' },
-  spoelen: { naam: 'Spoelen', zeg: 'Spoel het schuim eraf met de douche!', icoon: 'M4 4h6l2 3H7zM9 7v3M6 13v2M10 13v3M14 13v2M8 18v2M12 18v2' },
-  drogen: { naam: 'Drogen', zeg: 'Droog je diertje af met de handdoek!', icoon: 'M5 4h14v4H5zM6 8v12h12V8M9 12h6' },
-  versieren: { naam: 'Versieren', zeg: 'Kies iets moois voor je diertje!', icoon: 'M12 12L6 8v8zM12 12l6-4v8zM12 12h.01' },
+  schrobben: { naam: 'Schrobben', zeg: wasZeg.schrobben, icoon: 'M4 8h16v10H4zM8 12h.01M12 14h.01M16 11h.01M10 16h.01' },
+  spoelen: { naam: 'Spoelen', zeg: wasZeg.spoelen, icoon: 'M4 4h6l2 3H7zM9 7v3M6 13v2M10 13v3M14 13v2M8 18v2M12 18v2' },
+  drogen: { naam: 'Drogen', zeg: wasZeg.drogen, icoon: 'M5 4h14v4H5zM6 8v12h12V8M9 12h6' },
+  versieren: { naam: 'Versieren', zeg: wasZeg.versieren, icoon: 'M12 12L6 8v8zM12 12l6-4v8zM12 12h.01' },
 }
 const stapLijst = Object.keys(gereedschap) as (keyof typeof gereedschap)[]
 
@@ -95,7 +96,7 @@ function Wasplaats({ kind }: { kind: Gebruiker }) {
   const geluidKlok = useRef(0)
 
   useEffect(() => {
-    if (!lezer) leesVoor(dier ? gereedschap[stap === 'klaar' ? 'versieren' : stap].zeg : 'Welk diertje ga je wassen?')
+    if (!lezer) leesVoor(dier ? gereedschap[stap === 'klaar' ? 'versieren' : stap].zeg : zin.welkDier)
   }, [dier, stap, lezer])
 
   function kiesDier(d: DierSleutel) {
@@ -156,7 +157,7 @@ function Wasplaats({ kind }: { kind: Gebruiker }) {
   function klaar() {
     setStap('klaar')
     geluid.hoera()
-    if (!lezer && dier) leesVoor(`Hoera! ${huisdieren[dier].naam} is helemaal proper!`)
+    if (!lezer && dier) leesVoor(dierProper(huisdieren[dier].naam))
     // Een spelletje: geen sterren, wel in het activiteitlog voor de ouders.
     void bron?.activiteitOpslaan(kind.id, 'huisdier', { titel: dier ? huisdieren[dier].naam : undefined },
       (Date.now() - begin.current) / 1000).catch(() => {})

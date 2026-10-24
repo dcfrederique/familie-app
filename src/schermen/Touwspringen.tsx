@@ -9,6 +9,7 @@ import { hoogte, LEVENS, nieuwTouw, spring, stap, touwNiveaus, type Touw, type T
 import { leesVoor } from '../lib/voorlezen.ts'
 import Figuurtje from './Figuurtje.tsx'
 import SpelKader, { Chips, EindKnoppen } from './SpelKader.tsx'
+import { zin } from '../data/zinnen.ts'
 
 export default function Touwspringen() {
   return (
@@ -19,7 +20,7 @@ export default function Touwspringen() {
 }
 
 const HART = 'M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z'
-const uitleg = 'Tik op het scherm om te springen als het touw onderaan is!'
+const uitleg = zin.touwUitleg
 
 // Maten in de tekening (viewBox 0 0 600 420). Het figuurtje zelf heeft viewBox -4 -12 208 302.
 const GROND = 384

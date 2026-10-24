@@ -12,6 +12,7 @@ import Figuurtje from './Figuurtje.tsx'
 import { Ster } from './onderdelen.tsx'
 import './figuurtje.css'
 import './schermen.css'
+import { zin } from '../data/zinnen.ts'
 
 // Kleerkast: links het figuurtje, rechts categorieën, keuzes en kleuren (docs/avatar.md).
 // Bewaren gebeurt met Klaar; terug zonder Klaar laat het oude figuurtje staan.
@@ -69,7 +70,7 @@ export default function Kleerkast() {
     // Op slot: even tonen hoe het zou staan, zonder het te bewaren.
     const nog = drempelVoor(stuk, v) - v.verdiend
     setProef({ figuurtje: nieuw, tip: lezer ? `Nog ${nog} ${nog === 1 ? 'ster' : 'sterren'} verdienen, dan is ${stuk.naam.toLowerCase()} van jou.` : 'Nog even sterren sparen!' })
-    if (!lezer) leesVoor('Nog even sterren sparen!')
+    if (!lezer) leesVoor(zin.sparen)
     setHuppel((n) => n + 1)
     window.clearTimeout(proefKlok.current)
     proefKlok.current = window.setTimeout(() => setProef(null), 2600)
@@ -104,7 +105,7 @@ export default function Kleerkast() {
             ? <h1 className="kop-titel display">Mijn figuurtje</h1>
             : <>
                 {kanVoorlezen() && (
-                  <button type="button" className="rond" aria-label="Lees voor" onClick={() => leesVoor('Kies je kleren. Tik op het vinkje als je klaar bent.')}>
+                  <button type="button" className="rond" aria-label="Lees voor" onClick={() => leesVoor(zin.kleerkast)}>
                     <svg className="ic" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M4 10h4l5-4v12l-5-4H4z" /><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11" /></svg>
                   </button>
                 )}

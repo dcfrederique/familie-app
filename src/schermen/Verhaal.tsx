@@ -6,7 +6,8 @@ import { minSecondenPerBladzijde, reeksen, verhaalMetNr, type Verhaal } from '..
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import { geluid } from '../lib/spelletjes/geluid.ts'
 import { verhaalGelezen, voorlezenAan, voorlezenBewaren } from '../lib/spelletjes/opslag.ts'
-import { kanVoorlezen, leesVoorMetWoorden } from '../lib/voorlezen.ts'
+import { stemVoorVerhaal } from '../lib/stem.ts'
+import { kanVoorlezen, leesVoorMetWoorden, stopVoorlezen } from '../lib/voorlezen.ts'
 import { Ster } from './onderdelen.tsx'
 import SpelKader from './SpelKader.tsx'
 import './verhalen.css'
@@ -36,6 +37,7 @@ function Lezer({ kind, verhaal }: { kind: Gebruiker; verhaal: Verhaal }) {
   const pagina = verhaal.bladzijden[blad]
   const laatste = blad === verhaal.bladzijden.length - 1
   const woorden = pagina.tekst.split(/\s+/)
+  const stem = stemVoorVerhaal(kind.voorleesstem, verhaal.nr)
 
   // Verder mag pas na even lezen, of als het voorlezen gedaan is.
   useEffect(() => {
@@ -47,13 +49,13 @@ function Lezer({ kind, verhaal }: { kind: Gebruiker; verhaal: Verhaal }) {
   useEffect(() => {
     setWoord(null)
     if (!voorlezen || klaar) return
-    return leesVoorMetWoorden(pagina.tekst, setWoord, () => { setWoord(null); setMag(true) })
-  }, [pagina.tekst, voorlezen, klaar])
+    return leesVoorMetWoorden(pagina.tekst, setWoord, () => { setWoord(null); setMag(true) }, stem)
+  }, [pagina.tekst, voorlezen, klaar, stem])
 
   function zetVoorlezen(aan: boolean) {
     setVoorlezen(aan)
     voorlezenBewaren(kind.id, aan)
-    if (!aan) window.speechSynthesis?.cancel()
+    if (!aan) stopVoorlezen()
   }
 
   function uit() {

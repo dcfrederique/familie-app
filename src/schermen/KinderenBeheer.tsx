@@ -5,6 +5,7 @@ import { themaKeuzes } from '../data/thema.ts'
 import type { KindWijziging, Spelregels } from '../lib/bron/types.ts'
 import { useGegevens } from '../lib/gegevens.ts'
 import { regels as standaard } from '../lib/regels.ts'
+import { stemKeuzes, type StemKeuze } from '../lib/stem.ts'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import OuderKader, { ouderPin, pinOpnieuw } from './OuderKader.tsx'
 import Figuurtje, { hoofdUitsnede } from './Figuurtje.tsx'
@@ -79,6 +80,12 @@ function KindBeheer({ kind, vrij, magBeheren, ververs }: {
             <span>Thema</span>
             <select value={kind.thema ?? 'blauw'} onChange={(e) => wijzig({ thema: e.target.value as Kleur })}>
               {themaKeuzes.map((t) => <option key={t.kleur} value={t.kleur}>{t.naam}</option>)}
+            </select>
+          </label>
+          <label className="veld">
+            <span>Voorleesstem</span>
+            <select value={kind.voorleesstem} onChange={(e) => wijzig({ voorleesstem: e.target.value as StemKeuze })}>
+              {stemKeuzes.map((s) => <option key={s.keuze} value={s.keuze}>{s.label}</option>)}
             </select>
           </label>
         </div>
