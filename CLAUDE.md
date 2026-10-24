@@ -90,6 +90,25 @@ Dit gebeurt in twee fases: eerst uitdenken (ontwerp), daarna coderen (bouw).
   Kinderen → Winkelaanbod (`docs/winkelaanbod.md`). Laat `standaard_vrij` dus op `false` (de standaard) en
   meld in het nieuwtje en het bericht aan de ouders dat het spelletje klaarstaat om vrij te geven
 
+## Seizoenen en feesten
+Laat verhalen (en waar het past ook spelletjes, bv. andere prenten, kleuren of voorwerpen) aansluiten
+bij wat er in het echte leven in België komt. Kijk naar de datum van vandaag en kies het feest of
+seizoen van de komende weken:
+- Herfst (oktober, november): bladeren, paddenstoelen, eekhoorns
+- Halloween (laatste week van oktober tot 31 oktober): lief en grappig, verkleden, pompoenen; niets engs
+- Sint-Maarten (rond 11 november, waar het past)
+- Sinterklaas (half november tot 6 december): schoen zetten, pepernoten, de Sint en zijn paard
+- Kerstmis en Nieuwjaar (7 december tot 6 januari): kerstboom, sneeuw, lichtjes, vuurwerk kijken
+- Winter (januari, februari): sneeuwman, schaatsen, warme chocomelk
+- Valentijn (rond 14 februari): lief zijn voor elkaar, vriendschap
+- Carnaval (februari, maart): verkleden, stoet, confetti
+- Pasen (de weken voor Pasen): paaseieren zoeken, kuikens, lente
+- Lente (maart tot mei): bloemen, vlinders, lammetjes; Moederdag (2e zondag van mei)
+- Vaderdag (2e zondag van juni), zomer en vakantie (juli, augustus): zee, zandkastelen, kamperen
+- Terug naar school (eind augustus, september)
+Niet elk verhaal hoeft een feest te zijn: buiten de feestperiodes past het seizoen. Wissel af,
+zodat niet alle verhalen van één periode op elkaar lijken. Gebruik geen beschermde personages.
+
 ## Mappenstructuur
 - Plannen: `ideeen/YYYY-MM-DD.md`
 - Samenvattingen van de bouw: `ideeen/YYYY-MM-DD-resultaat.md`
@@ -97,6 +116,7 @@ Dit gebeurt in twee fases: eerst uitdenken (ontwerp), daarna coderen (bouw).
 
 ## Regels voor de ontwerpfase
 - Lees eerst de bestaande verhalen en spellen, zodat er geen herhaling is
+- Kies het thema volgens "Seizoenen en feesten" en zet het bovenaan het plan
 - Wijzig GEEN code, schrijf alleen het plan
 - Stel in het plan een sterrenprijs voor het spelletje voor (in lijn met de bestaande prijzen)
 - Het plan bevat: titel, volledige verhaaltekst, spelregels,
