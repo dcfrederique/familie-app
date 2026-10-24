@@ -18,6 +18,7 @@ Voorstel: de 30 verhalen (en de vaste zinnen in de spelletjes) **één keer** la
 | Wat als het op is? | F0 rekent niets aan: verzoeken worden geweigerd tot de volgende maand. Er is geen factuur mogelijk. |
 | Snelheidslimiet F0 | 20 verzoeken per minuut ([limieten](https://learn.microsoft.com/en-us/azure/ai-services/speech-service/speech-services-quotas-and-limits)); alle verhalen maken duurt dus ±10 minuten |
 | Batch-synthese | niet beschikbaar op F0, en ook niet nodig |
+| Later 100 verhalen (`docs/azure-extra.md`) | ±70.000 tekens, nog steeds ruim gratis |
 
 Omdat de audio vooraf gemaakt wordt en in de repo staat, gebruikt de app Azure **nooit tijdens het spelen**. De sleutel komt nooit in de app. Valt het Azure-abonnement ooit weg (bv. als de Visual Studio-licentie stopt), dan blijven alle bestaande opnames gewoon werken; alleen nieuwe verhalen inspreken kan dan niet meer.
 
