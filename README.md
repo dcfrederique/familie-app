@@ -2,6 +2,8 @@
 
 Gezinsapp waarin de kinderen sterren verdienen met taken en die inwisselen voor extra schermtijd. Zie `CLAUDE.md` en `docs/spec.md`.
 
+**Online:** https://thankful-meadow-0d992b403.5.azurestaticapps.net (ouderschermen: [`/ouder`](https://thankful-meadow-0d992b403.5.azurestaticapps.net/ouder)). Een QR-code om te scannen staat in `docs/hosting.md`.
+
 ## Stack
 
 - PWA met React, Vite en TypeScript

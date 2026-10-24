@@ -2,6 +2,19 @@
 
 Stand: 24 oktober 2026. De app draait op **Azure Static Web Apps (Free)**. Elke commit op `main` gaat automatisch online zodra CI groen is; elke PR krijgt een eigen voorbeeld-adres. De backend blijft Supabase (zie `docs/azure.md`).
 
+## Adres van de app
+
+| Wat | Adres |
+| --- | --- |
+| App (tablets en gsm's van de kinderen) | https://thankful-meadow-0d992b403.5.azurestaticapps.net |
+| Ouderschermen | https://thankful-meadow-0d992b403.5.azurestaticapps.net/ouder |
+
+Het hoofdadres stuurt zelf door: een ouder-gsm komt op `/ouder`, een gekoppelde tablet op het eigen kind, een nieuwe tablet op het koppelscherm. Scan de QR-codes hieronder met de camera van het toestel.
+
+| App | Ouderschermen |
+| --- | --- |
+| ![QR-code app](qr/app.svg) | ![QR-code ouderschermen](qr/ouder.svg) |
+
 ## Hoe het werkt
 
 ```
