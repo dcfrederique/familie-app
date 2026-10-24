@@ -21,6 +21,7 @@ import Racen from './schermen/Racen.tsx'
 import Rekenen from './schermen/Rekenen.tsx'
 import Spelen from './schermen/Spelen.tsx'
 import TakenBeheer from './schermen/TakenBeheer.tsx'
+import Testmelding from './schermen/Testmelding.tsx'
 import Toestellen from './schermen/Toestellen.tsx'
 import Spelregels from './schermen/Spelregels.tsx'
 import Winkelaanbod from './schermen/Winkelaanbod.tsx'
@@ -82,6 +83,7 @@ export default function App() {
       <Route path="/ouder/taken" element={<TakenBeheer />} />
       <Route path="/ouder/kinderen" element={<KinderenBeheer />} />
       <Route path="/ouder/toestellen" element={<Toestellen />} />
+      <Route path="/ouder/testmelding" element={<Testmelding />} />
       <Route path="/ouder/spelregels" element={<Spelregels />} />
       <Route path="/ouder/aanbod" element={<Winkelaanbod />} />
       <Route path="/ouder/nieuw" element={<Nieuwtjes />} />

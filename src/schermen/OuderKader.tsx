@@ -43,6 +43,7 @@ const iconen: Record<MenuIcoon | 'menu' | 'bel' | 'terug', ReactNode> = {
   fitness: <path d="M6.5 8v8M17.5 8v8M3.5 10v4M20.5 10v4M6.5 12h11" />,
   lopen: <><circle cx="14" cy="4.5" r="2" /><path d="M10 21l2.5-5.5-3-3 2-4.5 3 3 3.5 1M8.5 12l-2 3H3M12.5 15.5L16 18l1 3" /></>,
   weekmenu: <path d="M5 3v6a2 2 0 0 0 4 0V3M7 11v10M18 21V3c-2.5 1-4 4-4 9h4" />,
+  melding: <path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15L6 16zM10 20.5a2.2 2.2 0 0 0 4 0" />,
   toestellen: <><rect x="7" y="3" width="10" height="18" rx="2.5" /><path d="M11 18h2" /></>,
   pincode: <><rect x="5" y="10.5" width="14" height="10" rx="2.5" /><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" /></>,
   // Etalage met een prijskaartje.

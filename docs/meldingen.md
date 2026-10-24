@@ -13,6 +13,8 @@ Zo werkt het: de gsm van een ouder bewaart een abonnement in `push_abonnementen`
 3. Klaar. Bij de volgende push naar `main` draait CI de migratie (trigger + `pg_net`), zet het adres en het geheim, en rolt de functie `melding` uit (job `meldingen` in `ci.yml`).
 4. **Op de gsm**: open de gehoste app, zet hem op het startscherm, ga naar Ouder → Toestellen → **Meldingen aanzetten** en sta meldingen toe. Doe dit op beide ouder-gsm's.
 
+**Testpagina:** Ouder → Instellingen → **Testmelding** (alleen op de gsm van een ouder). Kies een ouder, schrijf een titel en tekst en tik op Melding sturen. Het gaat langs dezelfde weg als echte meldingen (`melding_testen` → pg_net → Edge Function), dus als dit aankomt, werkt alles. De pagina zegt ook welke ouder op hoeveel gsm's meldingen aan heeft.
+
 Werkt het niet? Start in GitHub → Actions → **Meldingen nakijken**: die toont of de functie bestaat, of er gsm's zijn aangemeld en wat de laatste aanroepen antwoordden.
 
 ## Goed om te weten

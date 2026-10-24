@@ -12,16 +12,24 @@ const db = createClient(Deno.env.get('SUPABASE_URL')!, Deno.env.get('SUPABASE_SE
 Deno.serve(async (req) => {
   // Alleen de webhooks kennen het geheim.
   if (req.headers.get('x-melding-geheim') !== Deno.env.get('MELDING_GEHEIM')) return new Response('nee', { status: 401 })
-  const { type, table, record } = await req.json()
-  if (type !== 'INSERT' || !tabellen.has(table) || !record?.id) return new Response('niets te doen')
+  const { type, table, record, ouder_id, titel: testTitel, tekst: testTekst } = await req.json()
 
-  const { data: melding } = await db.rpc('melding_tekst', { p_tabel: table, p_id: record.id }).maybeSingle()
-  if (!melding) return new Response('geen melding')
-  const { data: abonnementen } = await db.rpc('push_abonnementen_voor', { p_gezin: melding.gezin_id })
-
-  const bericht = JSON.stringify({ titel: melding.titel, tekst: melding.tekst, url: '/ouder/goedkeuren' })
+  let abonnementen: { endpoint: string; p256dh: string; auth: string }[] | null
+  let bericht: string
+  if (type === 'TEST') {
+    // Testmelding van de testpagina (melding_testen): naar de gsm's van één ouder.
+    if (!ouder_id) return new Response('niets te doen')
+    abonnementen = (await db.rpc('push_abonnementen_ouder', { p_ouder: ouder_id })).data
+    bericht = JSON.stringify({ titel: testTitel || 'Testmelding', tekst: testTekst ?? '', url: '/ouder/testmelding' })
+  } else {
+    if (type !== 'INSERT' || !tabellen.has(table) || !record?.id) return new Response('niets te doen')
+    const { data: melding } = await db.rpc('melding_tekst', { p_tabel: table, p_id: record.id }).maybeSingle()
+    if (!melding) return new Response('geen melding')
+    abonnementen = (await db.rpc('push_abonnementen_voor', { p_gezin: melding.gezin_id })).data
+    bericht = JSON.stringify({ titel: melding.titel, tekst: melding.tekst, url: '/ouder/goedkeuren' })
+  }
   let verstuurd = 0
-  await Promise.all((abonnementen ?? []).map(async (a: { endpoint: string; p256dh: string; auth: string }) => {
+  await Promise.all((abonnementen ?? []).map(async (a) => {
     try {
       await webpush.sendNotification({ endpoint: a.endpoint, keys: { p256dh: a.p256dh, auth: a.auth } }, bericht, { TTL: 3600 })
       verstuurd++
