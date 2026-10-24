@@ -5,7 +5,7 @@ self.addEventListener('push', (event) => {
   event.waitUntil(self.registration.showNotification(data.titel || 'Familie', {
     body: data.tekst || '',
     icon: '/icon-192.png',
-    badge: '/icon-192.png',
+    badge: '/badge-96.png', // wit huisje op transparant: Android gebruikt enkel de vorm in de statusbalk,
     tag: 'goedkeuren',
     renotify: true,
     data: { url: data.url || '/ouder/goedkeuren' },
