@@ -247,6 +247,8 @@ export interface Bron {
   kopen(kindId: string, soort: string, sleutel: string, naam: string): Promise<void>
   /** Bewaart het figuurtje; null zet het terug naar het basisfiguurtje. De server controleert of alles gekocht is. */
   figuurtjeBewaren(kindId: string, figuurtje: Figuurtje | null): Promise<void>
+  /** Bewaart het eigen figuurtje van de ingelogde ouder (alles vrij). */
+  ouderFiguurtjeBewaren(figuurtje: Figuurtje | null): Promise<void>
   /** Bewaart Mijn huis (docs/huis.md); null zet het terug naar het hutje. De server controleert of alles gekocht is. */
   huisBewaren(kindId: string, huis: Huis | null): Promise<void>
   /** Bewaart het welkomstpad; geeft de welkomstbonus terug (0 als die al gegeven was). */
@@ -278,6 +280,8 @@ export interface Bron {
   ouderTaakVerwijderen(id: string): Promise<void>
   /** Een bericht of sticker sturen: een kind naar de ouders, een ouder naar het kind. Bij een sticker staat de zin in `tekst`. */
   chatSturen(kindId: string, tekst: string, sticker?: string | null): Promise<void>
+  /** Dit gesprek staat nu open op dit toestel: geen melding (elke 20 seconden herhalen). */
+  chatAanwezig(kindId: string): Promise<void>
   /** Het gesprek is geopend: wat de ander schreef, is gelezen. */
   chatGelezen(kindId: string): Promise<void>
   notitieOpslaan(notitie: NieuweNotitie): Promise<void>

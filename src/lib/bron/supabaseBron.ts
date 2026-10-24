@@ -301,6 +301,12 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
     async chatSturen(kindId, tekst, sticker = null) {
       fout((await sb.rpc('chat_sturen', { p_kind: kindId, p_tekst: tekst, p_sticker: sticker })).error)
     },
+    async chatAanwezig(kindId) {
+      fout((await sb.rpc('chat_aanwezig', { p_kind: kindId })).error)
+    },
+    async ouderFiguurtjeBewaren(figuurtje) {
+      fout((await sb.rpc('ouder_figuurtje_bewaren', { p_figuurtje: figuurtje })).error)
+    },
     async chatGelezen(kindId) {
       fout((await sb.rpc('chat_gelezen', { p_kind: kindId })).error)
     },

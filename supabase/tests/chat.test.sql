@@ -90,4 +90,39 @@ begin
   end loop;
   raise exception 'spam werd niet geblokkeerd';
 end $$;
+
+\echo '6. Meldingen: ouders krijgen er een bij een bericht van het kind, het kind bij een antwoord, niemand die het gesprek open heeft'
+select pg_temp.als('00000000-0000-0000-0000-000000000d01', false);
+select public.push_abonneren('https://push.test/ouder', 'p', 'a');
+select pg_temp.als('00000000-0000-0000-0000-000000000d02', true);
+select public.push_abonneren('https://push.test/tablet', 'p', 'a');
+reset role;
+select pg_temp.gelijk((select count(*) from public.push_abonnementen_voor(:'gezin')), 1::bigint, 'goedkeur-meldingen gaan enkel naar ouders');
+insert into public.berichten (gezin_id, kind_id, van, tekst) values (:'gezin', :'lies', 'kind', 'Hallo mama') returning id as van_kind \gset
+insert into public.berichten (gezin_id, kind_id, van, ouder_id, tekst)
+  values (:'gezin', :'lies', 'ouder', (select id from public.gebruikers where naam = 'An' and gezin_id = :'gezin'), 'Dag Lies') returning id as van_ouder \gset
+select pg_temp.gelijk((select endpoint from public.chat_push(:'van_kind')), 'https://push.test/ouder', 'kind -> gsm van de ouder');
+select pg_temp.gelijk((select endpoint from public.chat_push(:'van_ouder')), 'https://push.test/tablet', 'ouder -> tablet van het kind');
+select pg_temp.gelijk((select titel from public.chat_push(:'van_ouder')), 'An schreef je', 'titel met naam van de ouder');
+-- Een tablet van een ander kind krijgt niets.
+select pg_temp.gelijk((select count(*) from public.chat_push(:'van_ouder') where url <> '/kind/' || :'lies' || '/chat'), 0::bigint, 'url naar het eigen gesprek');
+set role authenticated;
+select pg_temp.als('00000000-0000-0000-0000-000000000d01', false);
+select public.chat_aanwezig(:'lies');
+select pg_temp.als('00000000-0000-0000-0000-000000000d02', true);
+select pg_temp.fout(format('select public.chat_aanwezig(%L)', :'tom'), 'ander kind');
+select public.chat_aanwezig(:'lies');
+reset role;
+select pg_temp.gelijk((select count(*) from public.chat_push(:'van_kind')), 0::bigint, 'ouder zit in het gesprek: geen melding');
+select pg_temp.gelijk((select count(*) from public.chat_push(:'van_ouder')), 0::bigint, 'kind zit in het gesprek: geen melding');
+update public.chat_aanwezig set laatst = now() - interval '2 minutes';
+select pg_temp.gelijk((select count(*) from public.chat_push(:'van_kind')), 1::bigint, 'na 45 seconden stilte weer een melding');
+set role authenticated;
+
+\echo '7. Een ouder bewaart een eigen figuurtje; een tablet niet'
+select pg_temp.als('00000000-0000-0000-0000-000000000d01', false);
+select public.ouder_figuurtje_bewaren(null);
+select pg_temp.fout('select public.ouder_figuurtje_bewaren(''{"huid": "x"}'')', 'ongeldig figuurtje');
+select pg_temp.als('00000000-0000-0000-0000-000000000d02', true);
+select pg_temp.fout('select public.ouder_figuurtje_bewaren(null)', 'alleen voor ouders');
 \echo 'Alle chattests geslaagd.'

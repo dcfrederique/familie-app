@@ -1,4 +1,4 @@
-// Edge Function "melding": stuurt een web-push naar de gsm's van de ouders.
+// Edge Function "melding": stuurt een web-push naar de gsm's van de ouders (en bij een chatantwoord naar de tablet van het kind).
 // Wordt aangeroepen door triggers op inzendingen, tijdverzoeken, activiteitlog en berichten (chat).
 // Geheimen (Supabase → Edge Functions → Secrets): VAPID_PUBLIC_KEY, VAPID_PRIVATE_KEY, MELDING_GEHEIM.
 import webpush from 'npm:web-push@3.6.7'
@@ -14,27 +14,34 @@ Deno.serve(async (req) => {
   if (req.headers.get('x-melding-geheim') !== Deno.env.get('MELDING_GEHEIM')) return new Response('nee', { status: 401 })
   const { type, table, record, ouder_id, titel: testTitel, tekst: testTekst } = await req.json()
 
-  let abonnementen: { endpoint: string; p256dh: string; auth: string }[] | null
-  let bericht: string
+  // Elk toestel krijgt zijn eigen bericht: een chatmelding verschilt per ontvanger (gsm van een ouder of tablet van het kind).
+  type Doel = { endpoint: string; p256dh: string; auth: string; bericht: string }
+  let doelen: Doel[]
   if (type === 'TEST') {
     // Testmelding van de testpagina (melding_testen): naar de gsm's van één ouder.
     if (!ouder_id) return new Response('niets te doen')
-    abonnementen = (await db.rpc('push_abonnementen_ouder', { p_ouder: ouder_id })).data
-    bericht = JSON.stringify({ titel: testTitel || 'Testmelding', tekst: testTekst ?? '', url: '/ouder/testmelding' })
+    const bericht = JSON.stringify({ titel: testTitel || 'Testmelding', tekst: testTekst ?? '', url: '/ouder/testmelding' })
+    doelen = ((await db.rpc('push_abonnementen_ouder', { p_ouder: ouder_id })).data ?? []).map((a: Omit<Doel, 'bericht'>) => ({ ...a, bericht }))
   } else {
     if (type !== 'INSERT' || !tabellen.has(table) || !record?.id) return new Response('niets te doen')
-    const { data: melding } = await db.rpc('melding_tekst', { p_tabel: table, p_id: record.id }).maybeSingle()
-    if (!melding) return new Response('geen melding')
-    abonnementen = (await db.rpc('push_abonnementen_voor', { p_gezin: melding.gezin_id })).data
-    bericht = table === 'berichten'
-      ? JSON.stringify({ titel: melding.titel, tekst: melding.tekst, url: '/ouder/chat', tag: 'chat' })
-      : JSON.stringify({ titel: melding.titel, tekst: melding.tekst, url: '/ouder/goedkeuren' })
+    if (table === 'berichten') {
+      // Chat: de database kiest de ontvangers en laat wie het gesprek open heeft weg (chat_push).
+      const { data } = await db.rpc('chat_push', { p_bericht: record.id })
+      doelen = (data ?? []).map((r: { endpoint: string; p256dh: string; auth: string; titel: string; tekst: string; url: string; tag: string }) => ({
+        endpoint: r.endpoint, p256dh: r.p256dh, auth: r.auth, bericht: JSON.stringify({ titel: r.titel, tekst: r.tekst, url: r.url, tag: r.tag }),
+      }))
+    } else {
+      const { data: melding } = await db.rpc('melding_tekst', { p_tabel: table, p_id: record.id }).maybeSingle()
+      if (!melding) return new Response('geen melding')
+      const bericht = JSON.stringify({ titel: melding.titel, tekst: melding.tekst, url: '/ouder/goedkeuren' })
+      doelen = ((await db.rpc('push_abonnementen_voor', { p_gezin: melding.gezin_id })).data ?? []).map((a: Omit<Doel, 'bericht'>) => ({ ...a, bericht }))
+    }
   }
   let verstuurd = 0
   const fouten: string[] = []
-  await Promise.all((abonnementen ?? []).map(async (a) => {
+  await Promise.all(doelen.map(async (a) => {
     try {
-      await webpush.sendNotification({ endpoint: a.endpoint, keys: { p256dh: a.p256dh, auth: a.auth } }, bericht, { TTL: 3600 })
+      await webpush.sendNotification({ endpoint: a.endpoint, keys: { p256dh: a.p256dh, auth: a.auth } }, a.bericht, { TTL: 3600 })
       verstuurd++
     } catch (e) {
       // 404/410: de gsm wil of kan niet meer; abonnement opruimen.

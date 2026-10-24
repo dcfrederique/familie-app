@@ -97,6 +97,7 @@ export default function App() {
       <Route path="/ouder/onze-taken" element={<OnzeTaken />} />
       <Route path="/ouder/notities" element={<Notities />} />
       <Route path="/ouder/chat" element={<OuderChat />} />
+      <Route path="/ouder/figuurtje" element={<Kleerkast ouder />} />
       <Route path="/ouder/boodschappen" element={<Boodschappen />} />
       <Route path="/ouder/winkels" element={<Winkels />} />
       <Route path="/ouder/gewicht" element={<Gewicht />} />

@@ -22,13 +22,16 @@ import { zin } from '../data/zinnen.ts'
 // Stukken op slot koopt het kind met sterren (docs/winkel.md); kopen kan meteen vanuit de kast.
 // Bewaren gebeurt met Klaar; terug zonder Klaar laat het oude figuurtje staan.
 // Wie niet leest krijgt minder en grotere keuzes zonder tekst, en elke tik wordt voorgelezen.
-export default function Kleerkast() {
-  const { id } = useParams()
+export default function Kleerkast({ ouder = false }: { ouder?: boolean }) {
+  const params = useParams()
   const [zoek] = useSearchParams()
   const navigate = useNavigate()
-  const { kinderen, bron, herlaad } = useSessie()
-  const kind = kinderen.find((k) => k.id === id)
-  const { data: winkel, ververs } = useGegevens(bron && id ? async () => {
+  const { kinderen, gebruikers, account, bron, herlaad } = useSessie()
+  // Een ouder maakt zijn eigen figuurtje voor de chat (alles vrij, geen sterren, geen winkel).
+  const id = ouder ? account?.ouder_id ?? gebruikers.find((g) => g.rol === 'ouder')?.id : params.id
+  const kind = (ouder ? gebruikers : kinderen).find((k) => k.id === id)
+  const terug = ouder ? '/ouder/chat' : `/kind/${id}`
+  const { data: winkel, ververs } = useGegevens(bron && id && !ouder ? async () => {
     const [aankopen, saldi, aanbod] = await Promise.all([bron.aankopen(), bron.saldi(), bron.aanbod()])
     return { eigen: new Set(aankopen[id] ?? []), vrij: saldi[id]?.vrij ?? 0, aanbod }
   } : null, [bron, id])
@@ -57,11 +60,11 @@ export default function Kleerkast() {
   }, [kind, figuurtje, zoek])
   useEffect(() => () => window.clearTimeout(proefKlok.current), [])
 
-  if (!kind) return <Navigate to="/kinderen" replace />
+  if (!kind) return <Navigate to={ouder ? '/ouder' : '/kinderen'} replace />
   if (!figuurtje) return null
 
   const lezer = kind.kan_lezen
-  const v: Bezit = { eigen: winkel?.eigen ?? new Set<string>(), allesVrij: kind.figuurtje_alles_vrij, kanLezen: lezer }
+  const v: Bezit = { eigen: winkel?.eigen ?? new Set<string>(), allesVrij: kind.figuurtje_alles_vrij || ouder, kanLezen: lezer }
   const vrij = winkel?.vrij ?? 0
   const info = categorie(cat)
   // Wat het kind nu draagt blijft te zien, ook als een ouder het uit de winkel haalde (docs/winkelaanbod.md).
@@ -69,7 +72,7 @@ export default function Kleerkast() {
   const aanbod = winkel?.aanbod ?? leegAanbod
   // Het stuk met de prijs die de ouders instelden.
   const tel = (c: Categorie, s: Stuk) => metPrijs(aanbod, c, s.id, s)
-  const teZien = (c: Categorie, s: Stuk) => tel(c, s).prijs === 0 || inAanbod(winkel?.aanbod ?? leegAanbod, kind.id,
+  const teZien = (c: Categorie, s: Stuk) => ouder || tel(c, s).prijs === 0 || inAanbod(winkel?.aanbod ?? leegAanbod, kind.id,
     bezitSleutel(c, s.id), v.eigen.has(bezitSleutel(c, s.id)) || bewaard[c] === s.id)
   const zeg = (tekst: string) => { if (!lezer) leesVoor(tekst) }
 
@@ -102,10 +105,11 @@ export default function Kleerkast() {
     setBezig(true)
     setFout('')
     try {
-      await bron.figuurtjeBewaren(kind!.id, figuurtje)
+      if (ouder) await bron.ouderFiguurtjeBewaren(figuurtje)
+      else await bron.figuurtjeBewaren(kind!.id, figuurtje)
       await herlaad()
       zeg('Mooi!')
-      navigate(`/kind/${kind!.id}`)
+      navigate(terug)
     } catch (e) {
       setFout(foutmelding(e as Error))
       setBezig(false)
@@ -116,7 +120,7 @@ export default function Kleerkast() {
 
   const thema = themaVan(kind)
   const terugKnop = (
-    <Link to={`/kind/${kind.id}`} className="rond" aria-label="Terug zonder bewaren">
+    <Link to={terug} className="rond" aria-label="Terug zonder bewaren">
       <svg className="ic" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M15 18l-6-6l6-6" /></svg>
     </Link>
   )

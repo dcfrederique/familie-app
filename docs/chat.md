@@ -12,6 +12,12 @@ Gevraagd door Frederique op 24 oktober 2026: een kind kan vanop zijn tablet een 
 - **Ouders**: Wij → *Chat met de kinderen* (alleen op de gsm), met een tab per kind en een teller bij ongelezen berichten, ook in het menu. Een bericht van een kind geeft een melding (zelfde weg als goedkeuren: trigger → pg_net → Edge Function `melding`, zie `docs/meldingen.md`); tikken opent de chat.
 - **Gezien**: berichten krijgen “gezien” zodra de ander het gesprek opent.
 
+## Wie schreef, en meldingen terug
+
+- Bij elk bericht staat het figuurtje van de schrijver. Kinderen zien zo of mama of papa antwoordde (met naam); de ouders zien elkaar en het kind. Elke ouder maakt zijn eigen figuurtje via Chat → *Mijn figuurtje aanpassen* (alles vrij, geen sterren; RPC `ouder_figuurtje_bewaren`).
+- Een antwoord van mama of papa geeft ook een melding op de **tablet van het kind**. Aanzetten kan op de tablet onder Ouderdeel → Toestellen en meldingen → *Meldingen aanzetten* (achter de pincode). Tikken op de melding opent het gesprek.
+- Geen melding voor wie het gesprek op dat moment open heeft: het scherm meldt zich elke 20 seconden (`chat_aanwezig`), 45 seconden stilte telt als weg. De ontvangers (en dit filter) kiest de database in `chat_push`; de Edge Function `melding` verstuurt alleen.
+
 ## Veiligheid
 
 - Tabel `berichten` heeft geen rechtstreekse toegang; alles loopt via `chat_berichten`, `chat_sturen`, `chat_gelezen` en `chat_overzicht`. Een tablet die bij een kind hoort, kan niet meelezen in het gesprek van een ander kind.
@@ -20,6 +26,6 @@ Gevraagd door Frederique op 24 oktober 2026: een kind kan vanop zijn tablet een 
 
 ## Later
 
-Spraakbericht (opnemen en versturen) voor wie niet leest, en foto's sturen; een melding op de tablet van het kind bij een antwoord (nu ziet het kind het bolletje bij het openen van de app).
+Spraakbericht (opnemen en versturen) voor wie niet leest, en foto's sturen.
 
-Migratie: `20261024001400_chat.sql`. Tests: `supabase/tests/chat.test.sql`, `src/lib/chat.test.ts`.
+Migraties: `20261024001400_chat.sql`, `20261024001800_chat_meldingen.sql`. Tests: `supabase/tests/chat.test.sql`, `src/lib/chat.test.ts`.

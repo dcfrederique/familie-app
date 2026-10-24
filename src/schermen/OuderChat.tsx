@@ -8,7 +8,8 @@ import OuderKader, { KindAvatar } from './OuderKader.tsx'
 
 // Chat met de kinderen (docs/chat.md): kies een kind, lees wat het stuurde en antwoord. Alleen op de gsm van een ouder.
 export default function OuderChat() {
-  const { bron, kinderen, account, status } = useSessie()
+  const { bron, kinderen, gebruikers, account, status } = useSessie()
+  const ik = gebruikers.find((g) => g.id === (account?.ouder_id ?? gebruikers.find((x) => x.rol === 'ouder')?.id))
   const opGsm = status === 'demo' || account?.soort === 'ouder'
   const [params, setParams] = useSearchParams()
   const { data: overzicht } = useGegevens(bron && opGsm ? () => bron.chatOverzicht().catch(() => []) : null, [bron, opGsm])
@@ -47,6 +48,11 @@ export default function OuderChat() {
 
   return (
     <OuderKader titel="Chat">
+      <p className="tip kaart-breed chat-figuurtje">
+        {ik && <KindAvatar kind={ik} grootte={40} />}
+        <span>In de chat zien de kinderen jullie figuurtje.</span>
+        <Link to="/ouder/figuurtje" className="knop-klein">Mijn figuurtje aanpassen</Link>
+      </p>
       <div className="chat-kinderen kaart-breed" role="tablist" aria-label="Kind">
         {metChat.map((k) => {
           const o = overzicht?.find((x) => x.kind_id === k.id)

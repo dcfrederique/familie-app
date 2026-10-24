@@ -54,6 +54,7 @@ export default function Toestellen() {
         </section>
       )}
       {!isOuder && <DezeTablet />}
+      {!isOuder && status !== 'demo' && <Meldingen tablet />}
       {isOuder && <Tablets />}
       {isOuder && <Meldingen />}
       {status !== 'demo' && (
@@ -64,7 +65,7 @@ export default function Toestellen() {
 }
 
 // Meldingen op deze gsm: als een kind een taak afvinkt, tijd vraagt of sterren verdient met een activiteit.
-function Meldingen() {
+function Meldingen({ tablet = false }: { tablet?: boolean }) {
   const [status, setStatus] = useState<MeldingStatus | null>(null)
   const [bezig, setBezig] = useState(false)
   const [fout, setFout] = useState('')
@@ -82,13 +83,15 @@ function Meldingen() {
   return (
     <section className="kaart">
       <h2 className="display">Meldingen</h2>
-      {status === 'kan-niet' && <p>Meldingen werken als de app op het startscherm van je gsm staat en Supabase gekoppeld is.</p>}
+      {status === 'kan-niet' && <p>Meldingen werken als de app op het startscherm staat en Supabase gekoppeld is.</p>}
       {status === 'geweigerd' && <p>Meldingen staan uit in de instellingen van je gsm. Zet ze daar aan voor deze app.</p>}
       {(status === 'aan' || status === 'uit') && (
         <>
-          <p>{status === 'aan'
-            ? 'Je krijgt een melding als een kind een taak klaar heeft, extra tijd vraagt of sterren verdient.'
-            : 'Krijg een melding op deze gsm als er iets goed te keuren is.'}</p>
+          <p>{tablet
+            ? (status === 'aan' ? 'Deze tablet krijgt een melding als mama of papa antwoordt in de chat.' : 'Krijg een melding op deze tablet als mama of papa antwoordt in de chat.')
+            : status === 'aan'
+              ? 'Je krijgt een melding als een kind een taak klaar heeft, extra tijd vraagt, sterren verdient of een bericht stuurt.'
+              : 'Krijg een melding op deze gsm als er iets goed te keuren is of een kind een bericht stuurt.'}</p>
           <button type="button" className={status === 'aan' ? 'knop knop-licht' : 'knop'} disabled={bezig} onClick={wissel}>
             {status === 'aan' ? 'Meldingen uitzetten' : 'Meldingen aanzetten'}
           </button>

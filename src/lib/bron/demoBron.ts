@@ -4,7 +4,7 @@ import { inAanbod, metPrijs, type Aanbod } from '../../data/aanbod.ts'
 import { bezitSleutel, categorieen, controleer, prijsVoor, type Figuurtje } from '../../data/figuurtje.ts'
 import { controleerHuis, huisCategorieen, type Huis } from '../../data/huis.ts'
 import { spelMenu } from '../../data/spelletjes.ts'
-import type { Gebruiker } from '../../data/gezin.ts'
+import { demoGebruikers, type Gebruiker } from '../../data/gezin.ts'
 import { dagVan } from '../datum.ts'
 import { activiteitOmschrijving, activiteitSterren, blokKeuzes, regels as standaardRegels } from '../regels.ts'
 import type { Weging } from '../gewicht.ts'
@@ -357,6 +357,11 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       if (kant === 'kind' && !kind?.chat_aan) throw new Error('chat staat uit')
       t.berichten.push({ id: id(), kind_id: kindId, van: kant, ouder_id: kant === 'ouder' ? 'mama' : null, tekst: tekst.trim(), sticker,
                          gelezen_op: null, aangemaakt_op: new Date().toISOString() })
+    },
+    async chatAanwezig() { /* in de demo is er niemand om te melden */ },
+    async ouderFiguurtjeBewaren(figuurtje) {
+      const ouder = demoGebruikers.find((g) => g.rol === 'ouder')
+      if (ouder) ouder.figuurtje = figuurtje
     },
     async chatGelezen(kindId) {
       const kant = demoKant()
