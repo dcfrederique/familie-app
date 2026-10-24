@@ -7,7 +7,7 @@ import { maaltijdPrentje } from '../data/maaltijden.ts'
 import { MaaltijdPrent } from '../data/maaltijdPrenten.tsx'
 import { Prentje } from '../data/prentjes.tsx'
 import { bannerVoorKleur, tegelsVoor, type ActiviteitTegel } from '../data/thema.ts'
-import type { Maaltijd, Taak, Tijdverzoek } from '../lib/bron/types.ts'
+import type { LogRegel, Maaltijd, Taak, Tijdverzoek } from '../lib/bron/types.ts'
 import { dagVan, vandaag } from '../lib/datum.ts'
 import { useGegevens } from '../lib/gegevens.ts'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
@@ -34,12 +34,12 @@ export default function KindStart() {
 
   const { data, ververs } = useGegevens(bron && kind ? async () => {
     const zestigDagenTerug = dagVan(new Date(Date.now() - 60 * 86400_000))
-    const [taken, inzendingen, saldi, verzoeken, menu, chat] = await Promise.all([
+    const [taken, inzendingen, saldi, verzoeken, menu, chat, log] = await Promise.all([
       bron.taken(), bron.inzendingenVanaf(zestigDagenTerug), bron.saldi(), bron.verzoeken(vandaag()),
-      bron.weekmenu(vandaag(), vandaag()), kind.chat_aan ? bron.chatOverzicht().catch(() => []) : [],
+      bron.weekmenu(vandaag(), vandaag()), kind.chat_aan ? bron.chatOverzicht().catch(() => []) : [], bron.log(kind.id),
     ])
     return { taken, inzendingen, saldo: saldi[kind.id], verzoeken: verzoeken.filter((v) => v.kind_id === kind.id), eten: menu[0],
-             ongelezen: chat.find((o) => o.kind_id === kind.id)?.ongelezen ?? 0 }
+             ongelezen: chat.find((o) => o.kind_id === kind.id)?.ongelezen ?? 0, ouderLog: log.filter((l) => l.bron === 'ouder') }
   } : null, [bron, kind?.id, kind?.chat_aan])
 
   if (!kind) return <Navigate to="/kinderen" replace />
@@ -52,6 +52,8 @@ export default function KindStart() {
       {kind.kan_lezen
         ? <StartLezer kind={kind} lijst={lijst} geladen={!!data} vrij={vrij} verzoeken={data?.verzoeken ?? []} eten={data?.eten} ongelezen={data?.ongelezen ?? 0} kies={kies} />
         : <StartPrenten kind={kind} lijst={lijst} geladen={!!data} eten={data?.eten} ongelezen={data?.ongelezen ?? 0} kies={kies} />}
+
+      {data && <OuderSterrenMelding kindId={kind.id} regels={data.ouderLog} />}
 
       {gekozen && bron && (
         <Afvinken kind={kind} taak={gekozen} sluit={() => setGekozen(null)}
@@ -372,5 +374,39 @@ function Terug({ grootte }: { grootte: number }) {
     <Link to="/kinderen" className="rond" aria-label="Terug naar wie speelt er">
       <svg className="ic" viewBox="0 0 24 24" width={grootte} height={grootte} aria-hidden="true"><path d="M15 18l-6-6l6-6" /></svg>
     </Link>
+  )
+}
+
+const GEZIEN_SLEUTEL = (kindId: string) => `ouder-sterren-gezien-${kindId}`
+
+function laatstGezien(kindId: string): number {
+  try { return Number(localStorage.getItem(GEZIEN_SLEUTEL(kindId))) || 0 } catch { return 0 }
+}
+
+/** Kleine melding wanneer mama of papa sterren heeft bijgegeven of afgenomen; verdwijnt na tikken (per toestel). */
+function OuderSterrenMelding({ kindId, regels }: { kindId: string; regels: LogRegel[] }) {
+  const [gezien, setGezien] = useState(() => laatstGezien(kindId))
+  const nieuw = regels.filter((r) => r.id > gezien)
+  if (nieuw.length === 0) return null
+  const totaal = nieuw.reduce((s, r) => s + r.delta, 0)
+  const sluit = () => {
+    const hoogste = Math.max(...nieuw.map((r) => r.id))
+    try { localStorage.setItem(GEZIEN_SLEUTEL(kindId), String(hoogste)) } catch { /* zonder opslag blijft de melding terugkomen */ }
+    setGezien(hoogste)
+  }
+  const aantal = Math.abs(totaal)
+  const tekst = totaal > 0 ? `Mama of papa gaf je ${aantal} ${aantal === 1 ? 'ster' : 'sterren'}!`
+    : totaal < 0 ? `Mama of papa nam ${aantal} ${aantal === 1 ? 'ster' : 'sterren'} af.`
+    : 'Mama of papa paste je sterren aan.'
+  const reden = nieuw.length === 1 ? nieuw[0].reden.split(': ').slice(1).join(': ') : ''
+  return (
+    <div className="ouder-sterren-melding" role="status">
+      <Ster grootte={44} />
+      <div>
+        <strong className="display">{tekst}</strong>
+        {reden && <p>{reden}</p>}
+      </div>
+      <button type="button" className="knop" onClick={sluit}>OK</button>
+    </div>
   )
 }

@@ -56,6 +56,21 @@ function KindBeheer({ kind, vrij, magBeheren, ververs }: {
     }
   }
 
+  async function pasAan(delta: number, reden: string) {
+    if (!bron) return false
+    setMelding('')
+    try {
+      const uit = await bron.sterrenAanpassen(kind.id, delta, reden || null, ouderPin(account?.soort))
+      if (uit === 'pincode_fout') { pinOpnieuw(); return false }
+      setMelding(`${Math.abs(delta)} ${Math.abs(delta) === 1 ? 'ster' : 'sterren'} ${delta > 0 ? 'bijgegeven' : 'afgenomen'}.`)
+      await Promise.all([ververs(), logVerversen()])
+      return true
+    } catch (e) {
+      setMelding(foutmelding(e as Error))
+      return false
+    }
+  }
+
   async function wijzig(w: KindWijziging) {
     if (!bron) return
     await bron.kindAanpassen(kind.id, w)
@@ -76,6 +91,7 @@ function KindBeheer({ kind, vrij, magBeheren, ververs }: {
         ))}
       </div>
       {melding && <p className="tip" role="status">{melding}</p>}
+      <SterrenAanpassen vrij={vrij} pasAan={pasAan} />
       {magBeheren && (
         <div className="vinkjes">
           <label><input type="checkbox" checked={kind.kan_lezen} onChange={(e) => wijzig({ kan_lezen: e.target.checked })} /> Kan lezen</label>
@@ -158,6 +174,39 @@ function FiguurtjeBeheer({ kind }: { kind: Gebruiker }) {
         </button>
         {melding && <p className="tip" role="status">{melding}</p>}
       </div>
+    </div>
+  )
+}
+
+/** Sterren zelf bijgeven of afnemen (buiten de app verdiend of kwijtgeraakt); komt met reden in de geschiedenis. */
+function SterrenAanpassen({ vrij, pasAan }: { vrij: number; pasAan: (delta: number, reden: string) => Promise<boolean> }) {
+  const [aantal, setAantal] = useState(5)
+  const [reden, setReden] = useState('')
+  const geldig = Number.isInteger(aantal) && aantal > 0 && aantal <= 1000
+
+  async function doe(teken: 1 | -1) {
+    if (await pasAan(teken * aantal, reden.trim())) setReden('')
+  }
+
+  return (
+    <div className="sterren-aanpassen">
+      <p className="tip">Sterren zelf aanpassen (bv. buiten de app verdiend of kwijtgeraakt):</p>
+      <div className="knoppen">
+        <label className="veld">
+          <span>Aantal</span>
+          <input type="number" inputMode="numeric" min={1} max={1000} value={Number.isNaN(aantal) ? '' : aantal}
+                 onChange={(e) => setAantal(e.target.valueAsNumber)} />
+        </label>
+        <label className="veld">
+          <span>Reden (mag leeg)</span>
+          <input type="text" maxLength={100} value={reden} onChange={(e) => setReden(e.target.value)} />
+        </label>
+      </div>
+      <div className="knoppen">
+        <button type="button" className="knop" disabled={!geldig} onClick={() => doe(1)}>+ Bijgeven</button>
+        <button type="button" className="knop knop-licht" disabled={!geldig || aantal > vrij} onClick={() => doe(-1)}>− Afnemen</button>
+      </div>
+      {geldig && aantal > vrij && <p className="tip">Afnemen kan tot het vrije saldo ({vrij}); de rest is gereserveerd voor extra tijd.</p>}
     </div>
   )
 }

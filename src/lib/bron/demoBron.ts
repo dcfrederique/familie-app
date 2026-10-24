@@ -110,8 +110,8 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
   const extraVandaag = (kind: string) => t.verzoeken
     .filter((v) => v.kind_id === kind && v.dag === dagVan(new Date()) && (v.status === 'aangevraagd' || v.status === 'toegekend'))
     .reduce((s, v) => s + v.minuten, 0)
-  const boek = (kind: string, delta: number, reden: string) =>
-    t.log.push({ id: ++volgnr, kind_id: kind, delta, reden, tijdstip: new Date().toISOString() })
+  const boek = (kind: string, delta: number, reden: string, bron?: string) =>
+    t.log.push({ id: ++volgnr, kind_id: kind, delta, reden, tijdstip: new Date().toISOString(), bron })
   const pinOk = (pin: string | null) => pin === null || pin === DEMO_PIN
 
   return {
@@ -247,6 +247,16 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
                          aangevraagd_op: nu, dag: dagVan(new Date()), vervalt_op: nu })
       boek(kind, -minuten, `Extra tijd: ${minuten} min`)
       return 'toegekend'
+    },
+    async sterrenAanpassen(kind, delta, reden, pin): Promise<OuderUitkomst> {
+      if (!pinOk(pin)) return 'pincode_fout'
+      if (delta === 0 || Math.abs(delta) > 1000) throw new Error('aantal sterren ongeldig')
+      if (delta < 0 && saldo(kind) - gereserveerd(kind) < -delta) {
+        throw new Error('te weinig vrije sterren (de rest is gereserveerd voor extra tijd)')
+      }
+      const r = reden?.trim()
+      boek(kind, delta, (delta > 0 ? 'Van mama of papa erbij' : 'Van mama of papa af') + (r ? `: ${r}` : ''), 'ouder')
+      return 'aangepast'
     },
     async activiteitBeoordelen(aId, goed, pin): Promise<OuderUitkomst> {
       if (!pinOk(pin)) return 'pincode_fout'

@@ -62,7 +62,7 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
       return uit
     },
     async log(kindId) {
-      const { data, error } = await sb.from('puntenlog').select('id, kind_id, delta, reden, tijdstip')
+      const { data, error } = await sb.from('puntenlog').select('id, kind_id, delta, reden, tijdstip, bron')
         .eq('kind_id', kindId).order('tijdstip', { ascending: false }).limit(50)
       fout(error)
       return (data ?? []) as LogRegel[]
@@ -216,6 +216,11 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
     },
     async tijdGeven(kindId, minuten, pin) {
       const { data, error } = await sb.rpc('tijd_geven', { p_kind: kindId, p_minuten: minuten, p_pin: pin })
+      fout(error)
+      return data as OuderUitkomst
+    },
+    async sterrenAanpassen(kindId, delta, reden, pin) {
+      const { data, error } = await sb.rpc('sterren_aanpassen', { p_kind: kindId, p_delta: delta, p_reden: reden, p_pin: pin })
       fout(error)
       return data as OuderUitkomst
     },

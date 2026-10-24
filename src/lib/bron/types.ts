@@ -68,6 +68,8 @@ export interface LogRegel {
   delta: number
   reden: string
   tijdstip: string
+  /** Waar de bij- of afschrijving vandaan komt; 'ouder' = zelf aangepast door een ouder. */
+  bron?: string
 }
 
 export interface KindWijziging {
@@ -194,7 +196,7 @@ export interface Spelregels {
 }
 
 /** Uitkomst van een ouder-actie; 'pincode_fout' betekent opnieuw ontgrendelen. */
-export type OuderUitkomst = 'goedgekeurd' | 'afgekeurd' | 'toegekend' | 'afgewezen' | 'vervallen' | 'pincode_fout'
+export type OuderUitkomst = 'goedgekeurd' | 'afgekeurd' | 'toegekend' | 'afgewezen' | 'vervallen' | 'pincode_fout' | 'aangepast'
 
 export type NieuweTaak = Omit<Taak, 'id' | 'actief'> & { id?: string }
 
@@ -250,6 +252,8 @@ export interface Bron {
   inzendingBeoordelen(id: string, goed: boolean, pin: string | null): Promise<OuderUitkomst>
   verzoekBehandelen(id: string, toekennen: boolean, reden: string | null, pin: string | null): Promise<OuderUitkomst>
   tijdGeven(kindId: string, minuten: number, pin: string | null): Promise<OuderUitkomst>
+  /** Ouder geeft sterren bij (delta > 0) of neemt ze af (delta < 0); afnemen kan niet meer dan het vrije saldo. */
+  sterrenAanpassen(kindId: string, delta: number, reden: string | null, pin: string | null): Promise<OuderUitkomst>
   activiteitBeoordelen(id: string, goed: boolean, pin: string | null): Promise<OuderUitkomst>
   fotoUrl(pad: string): Promise<string | null>
 
