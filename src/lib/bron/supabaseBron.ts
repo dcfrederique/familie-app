@@ -1,6 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Aanbod } from '../../data/aanbod.ts'
-import type { ActiviteitRegel, Bericht, Boodschap, Bron, ChatOverzicht, GezondheidProfiel, SpraakToken, Inzending, LogRegel, Maaltijd, NieuweNotitie, NieuweOuderTaak, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Saldo, Spelregels, Taak, Tijdverzoek, Winkel } from './types.ts'
+import type { ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, ChatOverzicht, GezondheidProfiel, SpraakToken, Inzending, LogRegel, Maaltijd, NieuweNotitie, NieuweOuderTaak, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Saldo, Spelregels, Taak, Tijdverzoek, Winkel } from './types.ts'
 
 // Postgres numeric komt als tekst of getal binnen.
 const getal = (w: unknown) => (w === null || w === undefined ? null : Number(w))
@@ -20,6 +20,8 @@ async function verklein(foto: Blob): Promise<Blob> {
   return new Promise((klaar, mislukt) =>
     canvas.toBlob((b) => (b ? klaar(b) : mislukt(new Error('foto kon niet verkleind worden'))), 'image/jpeg', 0.8))
 }
+
+const BOODSCHAP_KOLOMMEN = 'id, naam, hoeveel, winkel_id, dag, gerecht, gekocht_op, aangemaakt_op, categorie_id, prijs'
 
 export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
   return {
@@ -142,8 +144,19 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
     },
     async boodschappen() {
       const sinds = new Date(Date.now() - 60 * 86400_000).toISOString()
-      const { data, error } = await sb.from('boodschappen').select('id, naam, hoeveel, winkel_id, dag, gerecht, gekocht_op, aangemaakt_op')
+      const { data, error } = await sb.from('boodschappen').select(BOODSCHAP_KOLOMMEN)
         .or(`gekocht_op.is.null,gekocht_op.gte.${sinds}`).order('aangemaakt_op').limit(1000)
+      fout(error)
+      return (data ?? []) as Boodschap[]
+    },
+    async categorieen() {
+      const { data, error } = await sb.from('categorieen').select('id, naam, volgorde').order('volgorde').order('naam')
+      fout(error)
+      return (data ?? []) as Categorie[]
+    },
+    async gekochteBoodschappen(van, tot) {
+      const { data, error } = await sb.from('boodschappen').select(BOODSCHAP_KOLOMMEN)
+        .gte('gekocht_op', van).lt('gekocht_op', tot).order('gekocht_op').limit(5000)
       fout(error)
       return (data ?? []) as Boodschap[]
     },
@@ -333,11 +346,18 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
       fout((await sb.from('winkels').delete().eq('id', id)).error)
     },
     async boodschappenOpslaan(lijst) {
-      const nieuw = lijst.filter((b) => !b.id).map(({ naam, hoeveel, winkel_id, dag, gerecht }) =>
-        ({ gezin_id: gezinId, naam: naam.trim(), hoeveel: hoeveel.trim(), winkel_id, dag: dag ?? null, gerecht: gerecht ?? null }))
+      const nu = new Date().toISOString()
+      const ik = lijst.some((b) => !b.id && b.gekocht) ? (await sb.rpc('mijn_ouder')).data : null
+      const nieuw = lijst.filter((b) => !b.id).map((b) => ({
+        gezin_id: gezinId, naam: b.naam.trim(), hoeveel: b.hoeveel.trim(), winkel_id: b.winkel_id, dag: b.dag ?? null, gerecht: b.gerecht ?? null,
+        categorie_id: b.categorie_id ?? null, prijs: b.prijs ?? null, ...(b.gekocht ? { gekocht_op: nu, gekocht_door: ik } : {}),
+      }))
       if (nieuw.length) fout((await sb.from('boodschappen').insert(nieuw)).error)
-      for (const { id, naam, hoeveel, winkel_id } of lijst.filter((b) => b.id)) {
-        fout((await sb.from('boodschappen').update({ naam: naam.trim(), hoeveel: hoeveel.trim(), winkel_id }).eq('id', id!)).error)
+      for (const b of lijst.filter((x) => x.id)) {
+        // Wat ontbreekt blijft zoals het was.
+        const rij = { naam: b.naam.trim(), hoeveel: b.hoeveel.trim(), winkel_id: b.winkel_id,
+                      ...(b.categorie_id !== undefined ? { categorie_id: b.categorie_id } : {}), ...(b.prijs !== undefined ? { prijs: b.prijs } : {}) }
+        fout((await sb.from('boodschappen').update(rij).eq('id', b.id!)).error)
       }
     },
     async boodschapAfvinken(id, gekocht) {
@@ -346,6 +366,13 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
     },
     async boodschapVerwijderen(id) {
       fout((await sb.from('boodschappen').delete().eq('id', id)).error)
+    },
+    async categorieOpslaan({ id, naam, volgorde }) {
+      const rij = { naam: naam.trim(), volgorde }
+      fout((id ? await sb.from('categorieen').update(rij).eq('id', id) : await sb.from('categorieen').insert({ ...rij, gezin_id: gezinId })).error)
+    },
+    async categorieVerwijderen(id) {
+      fout((await sb.from('categorieen').delete().eq('id', id)).error)
     },
     async gezondheidProfielOpslaan({ geboortedatum, lengte_cm, doelgewicht_kg }) {
       const rij = { geboortedatum, lengte_cm, doelgewicht_kg, bijgewerkt_op: new Date().toISOString() }

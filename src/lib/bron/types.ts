@@ -165,6 +165,13 @@ export interface Winkel {
   volgorde: number
 }
 
+/** Een categorie voor de boodschappen en de uitgaven (Instellingen → Winkels en categorieën). */
+export interface Categorie {
+  id: string
+  naam: string
+  volgorde: number
+}
+
 /** Eén artikel op de boodschappenlijst (docs/boodschappen.md). */
 export interface Boodschap {
   id: string
@@ -177,9 +184,18 @@ export interface Boodschap {
   gerecht: string | null
   gekocht_op: string | null
   aangemaakt_op: string
+  /** null = geen categorie. */
+  categorie_id: string | null
+  /** Wat het kostte in euro; null = niet ingevuld. */
+  prijs: number | null
 }
 
-export type NieuweBoodschap = Pick<Boodschap, 'naam' | 'hoeveel' | 'winkel_id'> & Partial<Pick<Boodschap, 'dag' | 'gerecht'>> & { id?: string }
+/**
+ * Een artikel toevoegen (zonder id) of aanpassen (met id). Bij aanpassen blijft een veld ongewijzigd als het ontbreekt;
+ * `gekocht` zet een nieuw artikel meteen op gekocht (aankopen die niet op de lijst stonden).
+ */
+export type NieuweBoodschap = Pick<Boodschap, 'naam' | 'hoeveel' | 'winkel_id'>
+  & Partial<Pick<Boodschap, 'dag' | 'gerecht' | 'categorie_id' | 'prijs'>> & { id?: string; gekocht?: boolean }
 
 /** Profiel van een ouder voor Gezondheid → Gewicht (docs/gewicht.md); privé. */
 export interface GezondheidProfiel {
@@ -228,6 +244,10 @@ export interface Bron {
   winkels(): Promise<Winkel[]>
   /** Alles wat nog gekocht moet worden, en wat de laatste 60 dagen gekocht is (om winkels en ingrediënten te onthouden). */
   boodschappen(): Promise<Boodschap[]>
+  /** De categorieën van het gezin, in de volgorde van de ouders. Alleen voor een ouder-account. */
+  categorieen(): Promise<Categorie[]>
+  /** Alles wat gekocht is van `van` tot `tot` (ISO-tijdstippen, tot niet inbegrepen), met of zonder prijs. */
+  gekochteBoodschappen(van: string, tot: string): Promise<Boodschap[]>
   /** Je eigen gezondheidsprofiel; null als je het nog niet invulde. Privé, ook niet voor je partner. */
   gezondheidProfiel(): Promise<GezondheidProfiel | null>
   /** Al je eigen wegingen, van oud naar nieuw. */
@@ -293,6 +313,9 @@ export interface Bron {
   boodschappenOpslaan(lijst: NieuweBoodschap[]): Promise<void>
   boodschapAfvinken(id: string, gekocht: boolean): Promise<void>
   boodschapVerwijderen(id: string): Promise<void>
+  categorieOpslaan(categorie: Pick<Categorie, 'naam' | 'volgorde'> & { id?: string }): Promise<void>
+  /** Gooit een categorie weg; haar boodschappen blijven staan, zonder categorie. */
+  categorieVerwijderen(id: string): Promise<void>
   gezondheidProfielOpslaan(profiel: GezondheidProfiel): Promise<void>
   /** Bewaart de weging van een dag; een tweede weging op dezelfde dag vervangt de eerste. */
   wegingOpslaan(dag: string, kg: number): Promise<void>

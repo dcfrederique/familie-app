@@ -10,6 +10,14 @@ Gevraagd door Frederique op 24 oktober 2026: een boodschappenlijst in het ouderd
 - **Instellingen → Winkels** (`/ouder/winkels`, `src/schermen/Winkels.tsx`): winkels toevoegen, hernoemen, herschikken (die volgorde geldt op de lijst) en weggooien. Artikels van een weggegooide winkel komen bij "Nog geen winkel". Elk gezin begint met Colruyt, Aldi, Lidl en Albert Heijn.
 - **Weekmenu**: naast elk gerecht staat een karretje. Dat opent de ingrediënten: voorstellen uit `src/data/ingredienten.ts` (per deel van het gerecht, "stoofvlees met frietjes" geeft beide), of wat de ouders de vorige keer voor hetzelfde gerecht op de lijst zetten. Aanvinken, per ingrediënt een winkel kiezen (of "Alles in …") en **Op de lijst**. Wat al open op de lijst staat, is niet aangevinkt. Het getal op het karretje = open artikels voor die dag.
 
+## Prijzen, categorieën en uitgaven (gevraagd op 24 oktober 2026)
+
+- **Categorie per artikel**: bij toevoegen kies je een categorie. De app onthoudt de categorie van de vorige keer, en stelt anders iets voor uit de naam (`src/data/categorieSleutels.ts`: "verse melk" is Zuivel en eieren). Ingrediënten uit het weekmenu krijgen hetzelfde voorstel. Standaardcategorieën: Groenten en fruit, Vlees en vis, Zuivel en eieren, Brood en ontbijt, Droge voeding, Diepvries, Dranken, Snoep en koeken, Huishouden, Verzorging, Andere.
+- **Prijs per artikel, ingevuld na de boodschappen**: heb je in een winkel artikels afgevinkt, dan staat bij die winkel een knop **Afrekenen**. Daar vul je de prijs per artikel in (zoals op de kassabon), met een totaal eronder. Wat niet op de lijst stond, vul je in bij "Niet op de lijst" (komt als gekocht artikel "Andere aankopen" in de uitgaven). Een prijs of categorie later aanpassen kan door op het artikel te tikken, of bij Uitgaven → Nog zonder prijs.
+- **Wij → Uitgaven** (`/ouder/uitgaven`, `src/schermen/Uitgaven.tsx`): per maand het totaal, verdeeld **per winkel** of **per categorie**; tik op een regel voor de verdeling over het andere (bij Colruyt: welke categorieën, bij Zuivel: welke winkels). Alleen gekochte artikels met een prijs tellen mee; artikels zonder prijs staan onderaan om snel aan te vullen.
+- **Instellingen → Winkels en categorieën**: beide lijsten toevoegen, hernoemen, herschikken, weggooien. Weggegooid = bestaande uitgaven komen bij "Geen winkel" of "Geen categorie".
+- Bedragen: Vlaamse schrijfwijze (1,29), tot 99 999,99 euro.
+
 ## Gegevens
 
 Migratie `supabase/migrations/20261024000900_boodschappen.sql`:
@@ -19,9 +27,13 @@ Migratie `supabase/migrations/20261024000900_boodschappen.sql`:
 - RLS: enkel een ouder-account van het eigen gezin (`is_ouder_account()`); tablets zien niets, ook niet met de pincode. Een winkel van een ander gezin kan niet gebruikt worden.
 - Gekochte artikels blijven bewaard: de app laadt de laatste 60 dagen om winkels en ingrediënten per gerecht te onthouden.
 
-Tests: `supabase/tests/boodschappen.test.sql` en `src/lib/boodschappen.test.ts`.
+Migratie `supabase/migrations/20261025000100_uitgaven.sql`: tabel `categorieen` (naam uniek per gezin, `volgorde`, trigger met de standaardcategorieën bij een nieuw gezin) en op `boodschappen` de kolommen `categorie_id` en `prijs` (numeric 8,2, niet negatief). RLS blijft enkel voor ouder-accounts; een categorie van een ander gezin kan niet gebruikt worden.
+
+Tests: `supabase/tests/boodschappen.test.sql`, `supabase/tests/uitgaven.test.sql` en `src/lib/boodschappen.test.ts`.
 
 ## Nog niet
 
 - Meldingen of een teller in het menu voor de boodschappen.
+- Een prijs per eenheid of een kassabon als geheel (de prijs hoort bij het artikel; een totaal zonder artikels kan als "Andere aankopen").
+- Budget of vergelijking met vorige maand.
 - Hoeveelheden uit het weekmenu (alles komt zonder hoeveelheid op de lijst).

@@ -2,8 +2,8 @@ import { useEffect, useState, type FormEvent, type KeyboardEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { MaaltijdPrent } from '../data/maaltijdPrenten.tsx'
 import { maaltijdNamen, maaltijdPrentje, maaltijdSoorten, maandagVan, raadMaaltijd } from '../data/maaltijden.ts'
-import { staatOpLijst, stelIngredientenVoor, winkelVoor } from '../lib/boodschappen.ts'
-import type { Boodschap, Maaltijd, Winkel } from '../lib/bron/types.ts'
+import { categorieVoor, staatOpLijst, stelIngredientenVoor, winkelVoor } from '../lib/boodschappen.ts'
+import type { Boodschap, Categorie, Maaltijd, Winkel } from '../lib/bron/types.ts'
 import { dagVan, vandaag } from '../lib/datum.ts'
 import { useGegevens } from '../lib/gegevens.ts'
 import { useSessie } from '../lib/sessie.tsx'
@@ -11,7 +11,7 @@ import { useBoodschappen } from './Boodschappen.tsx'
 import OuderKader from './OuderKader.tsx'
 
 type Rij = { dag: string; gerecht: string; prentje: string | null }
-type Lijst = { winkels: Winkel[]; lijst: Boodschap[]; ververs: () => Promise<void> }
+type Lijst = { winkels: Winkel[]; categorieen: Categorie[]; lijst: Boodschap[]; ververs: () => Promise<void> }
 
 function dagenVanWeek(maandag: Date): string[] {
   return Array.from({ length: 7 }, (_, i) => dagVan(new Date(maandag.getFullYear(), maandag.getMonth(), maandag.getDate() + i, 12)))
@@ -169,7 +169,7 @@ function Ingredienten({ dag, gerecht, dagNaam, lijst, sluit }: { dag: string; ge
     if (!bron || gekozen.length === 0) return
     setBezig(true)
     try {
-      await bron.boodschappenOpslaan(gekozen.map((r) => ({ naam: r.naam, hoeveel: '', winkel_id: r.winkel_id, dag, gerecht })))
+      await bron.boodschappenOpslaan(gekozen.map((r) => ({ naam: r.naam, hoeveel: '', winkel_id: r.winkel_id, dag, gerecht, categorie_id: categorieVoor(r.naam, lijst.lijst, lijst.categorieen) })))
       await lijst.ververs()
       setRijen(rijen.map((r) => (r.aan ? { ...r, aan: false, al: true } : r)))
       setMelding(`${gekozen.length === 1 ? '1 ingrediënt staat' : `${gekozen.length} ingrediënten staan`} op de boodschappenlijst.`)

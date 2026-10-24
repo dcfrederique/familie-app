@@ -48,7 +48,7 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - `docs/ouderdeel.md` en `prototypes/ouderdeel.html`: plan en mockup van het ouderdeel als beheertoepassing met hamburgermenu, en latere onderdelen (onze taken, boodschappen, notities, gezondheid). Fase 1 (menu, zijbalk op pc, IBM Plex Sans, rechte hoeken), Onze taken, Notities, Boodschappen en Gewicht zitten in de app (alleen voor ouder-accounts, RLS); Fitness en Loopschema nog niet.
 - `docs/gewicht.md`: Gezondheid → Gewicht en Mijn profiel (wegingen, BMI, grafiek met doel), privé per ouder.
 - `docs/chat.md`: chat van de kinderen naar de ouders (per kind aan te zetten, melding op de gsm, stickers voor wie niet leest).
-- `docs/boodschappen.md`: boodschappenlijst per winkel (Wij → Boodschappen), winkels beheren (Instellingen → Winkels) en ingrediënten vanuit het weekmenu.
+- `docs/boodschappen.md`: boodschappenlijst per winkel (Wij → Boodschappen), winkels en categorieën beheren (Instellingen), ingrediënten vanuit het weekmenu, prijzen na de boodschappen (Afrekenen) en het overzicht Wij → Uitgaven per maand, winkel en categorie.
 
 - Een kind kan alleen berichten sturen als een ouder de chat voor dat kind aanzette (standaard uit); een tablet ziet enkel het eigen gesprek (`docs/chat.md`).
 

@@ -50,6 +50,7 @@ const iconen: Record<MenuIcoon | 'menu' | 'bel' | 'terug', ReactNode> = {
   // Etalage met een prijskaartje.
   aanbod: <><path d="M3 10l1.5-5h15L21 10M4 10v10h16V10M3 10h18" /><path d="M9 14h6v6H9z" /></>,
   nieuw: <path d="M12 3l2.3 5.4 5.7.5-4.3 3.8 1.3 5.6L12 15.4l-5 2.9 1.3-5.6L4 8.9l5.7-.5z" />,
+  uitgaven: <><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" /></>,
   winkels: <path d="M4 9.5L5.5 4h13L20 9.5M4 9.5a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0 2.7 2.7 0 0 0 5.3 0M5.5 12v8h13v-8M10 20v-5h4v5" />,
 }
 

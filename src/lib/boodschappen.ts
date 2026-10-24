@@ -1,5 +1,6 @@
+import { categorieSleutels } from '../data/categorieSleutels.ts'
 import { ingredientenVoor } from '../data/ingredienten.ts'
-import type { Boodschap, Winkel } from './bron/types.ts'
+import type { Boodschap, Categorie, Winkel } from './bron/types.ts'
 
 const sleutel = (tekst: string) => tekst.trim().toLocaleLowerCase('nl-BE')
 
@@ -75,4 +76,93 @@ export function perWinkel(lijst: Boodschap[], winkels: Winkel[], nu = new Date()
 /** Namen die ooit op de lijst stonden, voor het automatisch aanvullen bij het toevoegen. */
 export function eerdereNamen(geschiedenis: Boodschap[]): string[] {
   return uniek(geschiedenis.slice().sort((a, b) => b.aangemaakt_op.localeCompare(a.aangemaakt_op)).map((b) => b.naam.trim())).slice(0, 200)
+}
+
+/**
+ * De categorie van een artikel: die van de vorige keer, anders een voorstel uit de naam (src/data/categorieSleutels.ts);
+ * null als er niets past. Een woord telt als het het artikel is of erin voorkomt ("verse melk" is Zuivel).
+ */
+export function categorieVoor(naam: string, geschiedenis: Boodschap[], categorieen: Categorie[]): string | null {
+  const s = sleutel(naam)
+  if (!s) return null
+  const bestaande = new Set(categorieen.map((c) => c.id))
+  const vorige = geschiedenis.filter((b) => sleutel(b.naam) === s && b.categorie_id && bestaande.has(b.categorie_id))
+    .sort((a, b) => b.aangemaakt_op.localeCompare(a.aangemaakt_op))[0]
+  if (vorige) return vorige.categorie_id
+
+  const losse = [...s.matchAll(/[\p{L}-]+/gu)].map((m) => m[0])
+  for (const [categorie, woorden] of categorieSleutels) {
+    if (!woorden.some((w) => w === s || losse.some((l) => (w.length >= 4 ? l.includes(w) : l === w || l.startsWith(w) && w.length >= 3)))) continue
+    const gevonden = categorieen.find((c) => sleutel(c.naam) === sleutel(categorie))
+    if (gevonden) return gevonden.id
+  }
+  return null
+}
+
+/** Euro's zoals ze in Vlaanderen staan: € 1.234,50. */
+export const euro = (bedrag: number) => bedrag.toLocaleString('nl-BE', { style: 'currency', currency: 'EUR' })
+
+/** Een bedrag uit een tekstveld ("1,29" of "1.29"); null als het leeg is, NaN als het geen geldig bedrag is. */
+export function leesBedrag(tekst: string): number | null {
+  const t = tekst.trim().replace(/^€\s*/, '').replace(',', '.')
+  if (t === '') return null
+  if (!/^\d{1,5}(\.\d{1,2})?$/.test(t)) return NaN
+  return Math.round(Number(t) * 100) / 100
+}
+
+export interface UitgavenBedrag { naam: string; id: string | null; totaal: number; aantal: number }
+export interface UitgavenGroep extends UitgavenBedrag { details: UitgavenBedrag[] }
+export interface UitgavenOverzicht {
+  totaal: number
+  /** Gekochte artikels waar geen prijs bij staat: die tellen niet mee. */
+  zonderPrijs: number
+  perWinkel: UitgavenGroep[]
+  perCategorie: UitgavenGroep[]
+}
+
+/** Telt de gekochte artikels met een prijs op per winkel en per categorie, grootste uitgave eerst; elk met de verdeling over het andere. */
+export function uitgavenOverzicht(gekocht: Boodschap[], winkels: Winkel[], categorieen: Categorie[]): UitgavenOverzicht {
+  const winkelNaam = new Map(winkels.map((w) => [w.id, w.naam]))
+  const categorieNaam = new Map(categorieen.map((c) => [c.id, c.naam]))
+  const metPrijs = gekocht.filter((b) => b.prijs !== null)
+
+  const groepeer = (sleutelVan: (b: Boodschap) => string | null, naamVan: (id: string | null) => string,
+                    detailVan: (b: Boodschap) => string | null, detailNaam: (id: string | null) => string): UitgavenGroep[] => {
+    const groepen = new Map<string | null, { totaal: number; aantal: number; details: Map<string | null, UitgavenBedrag> }>()
+    for (const b of metPrijs) {
+      const k = sleutelVan(b)
+      const g = groepen.get(k) ?? { totaal: 0, aantal: 0, details: new Map() }
+      g.totaal += b.prijs!
+      g.aantal += 1
+      const dk = detailVan(b)
+      const d = g.details.get(dk) ?? { id: dk, naam: detailNaam(dk), totaal: 0, aantal: 0 }
+      d.totaal += b.prijs!
+      d.aantal += 1
+      g.details.set(dk, d)
+      groepen.set(k, g)
+    }
+    const rond = (x: number) => Math.round(x * 100) / 100
+    return [...groepen].map(([id, g]) => ({
+      id, naam: naamVan(id), totaal: rond(g.totaal), aantal: g.aantal,
+      details: [...g.details.values()].map((d) => ({ ...d, totaal: rond(d.totaal) })).sort((a, b) => b.totaal - a.totaal),
+    })).sort((a, b) => b.totaal - a.totaal)
+  }
+
+  const winkelBij = (id: string | null) => (id && winkelNaam.get(id)) || 'Geen winkel'
+  const categorieBij = (id: string | null) => (id && categorieNaam.get(id)) || 'Geen categorie'
+  const bestaandeWinkel = (b: Boodschap) => (b.winkel_id && winkelNaam.has(b.winkel_id) ? b.winkel_id : null)
+  const bestaandeCategorie = (b: Boodschap) => (b.categorie_id && categorieNaam.has(b.categorie_id) ? b.categorie_id : null)
+  return {
+    totaal: Math.round(metPrijs.reduce((som, b) => som + b.prijs!, 0) * 100) / 100,
+    zonderPrijs: gekocht.length - metPrijs.length,
+    perWinkel: groepeer(bestaandeWinkel, winkelBij, bestaandeCategorie, categorieBij),
+    perCategorie: groepeer(bestaandeCategorie, categorieBij, bestaandeWinkel, winkelBij),
+  }
+}
+
+/** Begin en einde (lokale tijd, als ISO) van de maand `verschil` maanden na of voor de maand van `nu`, met een label zoals "oktober 2026". */
+export function maandGrenzen(verschil: number, nu = new Date()): { van: string; tot: string; label: string } {
+  const van = new Date(nu.getFullYear(), nu.getMonth() + verschil, 1)
+  const tot = new Date(nu.getFullYear(), nu.getMonth() + verschil + 1, 1)
+  return { van: van.toISOString(), tot: tot.toISOString(), label: van.toLocaleDateString('nl-BE', { month: 'long', year: 'numeric' }) }
 }

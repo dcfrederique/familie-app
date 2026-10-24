@@ -8,7 +8,7 @@ import { demoGebruikers, type Gebruiker } from '../../data/gezin.ts'
 import { dagVan } from '../datum.ts'
 import { activiteitOmschrijving, activiteitSterren, blokKeuzes, regels as standaardRegels } from '../regels.ts'
 import type { Weging } from '../gewicht.ts'
-import type { ActiviteitRegel, Bericht, Boodschap, Bron, GezondheidProfiel, Inzending, LogRegel, Maaltijd, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Spelregels, Taak, Tijdverzoek, Winkel } from './types.ts'
+import type { ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, GezondheidProfiel, Inzending, LogRegel, Maaltijd, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Spelregels, Taak, Tijdverzoek, Winkel } from './types.ts'
 
 const DEMO_PIN = '1234'
 const WELKOM = 'Welkom! Je eerste sterren'
@@ -27,6 +27,7 @@ interface Toestand {
   berichten: Bericht[]
   winkels: Winkel[]
   boodschappen: Boodschap[]
+  categorieen: Categorie[]
   profiel: GezondheidProfiel | null
   wegingen: Weging[]
   regels: Spelregels
@@ -74,11 +75,23 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
         lijst: [{ t: 'Paspoorten', af: false }, { t: 'Zonnecrème', af: true }, { t: 'Knuffels', af: false }], vastgezet: false, bijgewerkt_op: nu },
     ],
     winkels: ['Colruyt', 'Aldi', 'Lidl', 'Albert Heijn'].map((naam, i) => ({ id: `wi-${i + 1}`, naam, volgorde: i + 1 })),
+    categorieen: ['Groenten en fruit', 'Vlees en vis', 'Zuivel en eieren', 'Brood en ontbijt', 'Droge voeding', 'Diepvries',
+      'Dranken', 'Snoep en koeken', 'Huishouden', 'Verzorging', 'Andere'].map((naam, i) => ({ id: `ca-${i + 1}`, naam, volgorde: i + 1 })),
     boodschappen: [
-      { id: 'bo-1', naam: 'Melk', hoeveel: '2 l', winkel_id: 'wi-1', dag: null, gerecht: null, gekocht_op: null, aangemaakt_op: nu },
-      { id: 'bo-2', naam: 'Brood', hoeveel: '', winkel_id: 'wi-1', dag: null, gerecht: null, gekocht_op: null, aangemaakt_op: nu },
-      { id: 'bo-3', naam: 'Bananen', hoeveel: '', winkel_id: 'wi-3', dag: null, gerecht: null, gekocht_op: null, aangemaakt_op: nu },
-      { id: 'bo-4', naam: 'Pindakaas', hoeveel: '', winkel_id: 'wi-4', dag: null, gerecht: null, gekocht_op: null, aangemaakt_op: nu },
+      { id: 'bo-1', naam: 'Melk', hoeveel: '2 l', winkel_id: 'wi-1', dag: null, gerecht: null, gekocht_op: null, aangemaakt_op: nu, categorie_id: 'ca-3', prijs: null },
+      { id: 'bo-2', naam: 'Brood', hoeveel: '', winkel_id: 'wi-1', dag: null, gerecht: null, gekocht_op: null, aangemaakt_op: nu, categorie_id: 'ca-4', prijs: null },
+      { id: 'bo-3', naam: 'Bananen', hoeveel: '', winkel_id: 'wi-3', dag: null, gerecht: null, gekocht_op: null, aangemaakt_op: nu, categorie_id: 'ca-1', prijs: null },
+      { id: 'bo-4', naam: 'Pindakaas', hoeveel: '', winkel_id: 'wi-4', dag: null, gerecht: null, gekocht_op: null, aangemaakt_op: nu, categorie_id: null, prijs: null },
+      // Wat de laatste weken gekocht is, zodat Uitgaven meteen een overzicht toont.
+      ...([
+        ['Gehakt', 'wi-1', 'ca-2', 7.4, 2], ['Appelen', 'wi-1', 'ca-1', 3.2, 2], ['Yoghurt', 'wi-2', 'ca-3', 4.1, 5],
+        ['Waspoeder', 'wi-2', 'ca-9', 9.9, 5], ['Chips', 'wi-3', 'ca-8', 2.5, 9], ['Cola', 'wi-3', 'ca-7', 6.3, 9],
+        ['Kipfilet', 'wi-1', 'ca-2', 8.9, 12], ['Pasta', 'wi-1', 'ca-5', 2.8, 12], ['Frieten', 'wi-4', 'ca-6', 3.6, 20],
+        ['Shampoo', 'wi-4', 'ca-10', 5.4, 20], ['Boter', 'wi-2', 'ca-3', 2.7, 34], ['Tomaten', 'wi-1', 'ca-1', 4.5, 36],
+      ] as [string, string, string, number, number][]).map(([naam, winkel_id, categorie_id, prijs, dagenGeleden], i): Boodschap => ({
+        id: `bo-h${i}`, naam, hoeveel: '', winkel_id, dag: null, gerecht: null, categorie_id, prijs,
+        gekocht_op: new Date(Date.now() - dagenGeleden * 86400_000).toISOString(), aangemaakt_op: nu,
+      })),
     ],
     // Een paar maanden wegingen, zodat Gewicht meteen een grafiek toont.
     profiel: { geboortedatum: '1988-05-12', lengte_cm: 168, doelgewicht_kg: 64 },
@@ -139,7 +152,12 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
         .map((n) => ({ ...n, lijst: n.lijst && n.lijst.map((i) => ({ ...i })) }))
     },
     async winkels() { return t.winkels.slice().sort((a, b) => a.volgorde - b.volgorde || a.naam.localeCompare(b.naam)).map((w) => ({ ...w })) },
-    async boodschappen() { return t.boodschappen.map((b) => ({ ...b })) },
+    async boodschappen() {
+      const sinds = new Date(Date.now() - 60 * 86400_000).toISOString()
+      return t.boodschappen.filter((b) => !b.gekocht_op || b.gekocht_op >= sinds).map((b) => ({ ...b }))
+    },
+    async categorieen() { return t.categorieen.slice().sort((a, b) => a.volgorde - b.volgorde || a.naam.localeCompare(b.naam)).map((c) => ({ ...c })) },
+    async gekochteBoodschappen(van, tot) { return t.boodschappen.filter((b) => b.gekocht_op && b.gekocht_op >= van && b.gekocht_op < tot).map((b) => ({ ...b })) },
     async gezondheidProfiel() { return t.profiel && { ...t.profiel } },
     async wegingen() { return t.wegingen.slice().sort((a, b) => a.dag.localeCompare(b.dag)).map((w) => ({ ...w })) },
     async aankopen() { return Object.fromEntries(Object.entries(t.aankopen).map(([k, v]) => [k, [...v]])) },
@@ -388,10 +406,15 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
     },
     async boodschappenOpslaan(lijst) {
       for (const b of lijst) {
-        const rij = { naam: b.naam.trim(), hoeveel: b.hoeveel.trim(), winkel_id: b.winkel_id }
+        const rij = { naam: b.naam.trim(), hoeveel: b.hoeveel.trim(), winkel_id: b.winkel_id,
+                      ...(b.categorie_id !== undefined ? { categorie_id: b.categorie_id } : {}), ...(b.prijs !== undefined ? { prijs: b.prijs } : {}) }
         const oud = b.id && t.boodschappen.find((x) => x.id === b.id)
         if (oud) Object.assign(oud, rij)
-        else t.boodschappen.push({ ...rij, id: id(), dag: b.dag ?? null, gerecht: b.gerecht ?? null, gekocht_op: null, aangemaakt_op: new Date().toISOString() })
+        else {
+          const nu = new Date().toISOString()
+          t.boodschappen.push({ id: id(), dag: b.dag ?? null, gerecht: b.gerecht ?? null, categorie_id: b.categorie_id ?? null, prijs: b.prijs ?? null,
+                                gekocht_op: b.gekocht ? nu : null, aangemaakt_op: nu, ...rij })
+        }
       }
     },
     async boodschapAfvinken(boodschapId, gekocht) {
@@ -399,6 +422,17 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       if (b) b.gekocht_op = gekocht ? new Date().toISOString() : null
     },
     async boodschapVerwijderen(boodschapId) { t.boodschappen = t.boodschappen.filter((x) => x.id !== boodschapId) },
+    async categorieOpslaan({ id: categorieId, naam, volgorde }) {
+      const dubbel = t.categorieen.find((c) => c.id !== categorieId && c.naam.trim().toLowerCase() === naam.trim().toLowerCase())
+      if (dubbel) throw new Error(`${dubbel.naam} staat al in de lijst`)
+      const oud = t.categorieen.find((c) => c.id === categorieId)
+      if (oud) Object.assign(oud, { naam: naam.trim(), volgorde })
+      else t.categorieen.push({ id: id(), naam: naam.trim(), volgorde })
+    },
+    async categorieVerwijderen(categorieId) {
+      t.categorieen = t.categorieen.filter((c) => c.id !== categorieId)
+      for (const b of t.boodschappen) if (b.categorie_id === categorieId) b.categorie_id = null
+    },
     async gezondheidProfielOpslaan(profiel) { t.profiel = { ...profiel } },
     async wegingOpslaan(dag, kg) {
       const oud = t.wegingen.find((w) => w.dag === dag)

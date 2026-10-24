@@ -3,7 +3,7 @@
 export type MenuIcoon =
   | 'vandaag' | 'goedkeuren' | 'taken' | 'kinderen' | 'spelregels'
   | 'onzetaken' | 'boodschappen' | 'notities' | 'gewicht' | 'profiel' | 'fitness' | 'lopen'
-  | 'chat' | 'weekmenu' | 'toestellen' | 'pincode' | 'winkels' | 'nieuw' | 'aanbod' | 'melding'
+  | 'chat' | 'weekmenu' | 'toestellen' | 'pincode' | 'winkels' | 'uitgaven' | 'nieuw' | 'aanbod' | 'melding'
 
 export interface MenuItem {
   naam: string
@@ -42,6 +42,7 @@ export const ouderMenu: MenuGroep[] = [
     { naam: 'Weekmenu', icoon: 'weekmenu', pad: '/ouder/weekmenu' },
     { naam: 'Onze taken', icoon: 'onzetaken', pad: '/ouder/onze-taken', teller: 'onzetaken' },
     { naam: 'Boodschappen', icoon: 'boodschappen', pad: '/ouder/boodschappen' },
+    { naam: 'Uitgaven', icoon: 'uitgaven', pad: '/ouder/uitgaven' },
     { naam: 'Notities', icoon: 'notities', pad: '/ouder/notities' },
     { naam: 'Chat met de kinderen', icoon: 'chat', pad: '/ouder/chat', teller: 'chat' },
   ] },
@@ -55,6 +56,6 @@ export const ouderMenu: MenuGroep[] = [
     { naam: 'Toestellen en meldingen', icoon: 'toestellen', pad: '/ouder/toestellen' },
     { naam: 'Testmelding', icoon: 'melding', pad: '/ouder/testmelding', alleenOuderGsm: true },
     { naam: 'Pincode', icoon: 'pincode', pad: '/ouder/pincode', alleenOuderGsm: true },
-    { naam: 'Winkels', icoon: 'winkels', pad: '/ouder/winkels', alleenOuderGsm: true },
+    { naam: 'Winkels en categorieën', icoon: 'winkels', pad: '/ouder/winkels', alleenOuderGsm: true },
   ] },
 ]

@@ -205,7 +205,6 @@ a.vink-tekst { text-decoration: none; }
 .ouder .boodschap-toevoegen { grid-template-columns: 1fr minmax(110px, 38%); }
 .boodschap-toevoegen select { min-height: 44px; border: 1px solid var(--line); padding: 0 8px; font: inherit; font-size: 15px; background: var(--surface); color: var(--ink); min-width: 0; }
 .boodschap-toevoegen .knop { grid-column: 1 / -1; }
-@media (min-width: 600px) { .ouder .boodschap-toevoegen { grid-template-columns: 1fr 200px auto; } .boodschap-toevoegen .knop { grid-column: auto; } }
 .winkel-rij { display: grid; grid-template-columns: 1fr 44px 44px auto; align-items: center; gap: 6px; padding: 8px 12px; border-bottom: 1px solid var(--line); }
 .winkel-rij:last-child { border-bottom: 0; }
 .winkel-rij input { min-height: 44px; border: 1px solid transparent; padding: 0 10px; font: inherit; font-weight: 500; background: transparent; color: var(--ink); min-width: 0; }
@@ -310,3 +309,43 @@ a.vink-tekst { text-decoration: none; }
 .ouder .lijst-kop .knop-klein { text-transform: none; letter-spacing: 0; }
 .aanbod-prijs { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 14px; color: var(--muted); }
 .aanbod-prijs input { width: 76px; min-height: 40px; padding: 0 8px; font-size: 16px; text-align: right; }
+
+/* Prijzen, categorieën en uitgaven */
+.kop-actie { margin-right: 12px; min-height: 32px; padding: 0 10px; border: 1px solid var(--accent); background: transparent; color: var(--accent); font: inherit; font-size: 13px; font-weight: 500; text-transform: none; letter-spacing: 0; cursor: pointer; }
+.lijst-kop span { display: inline-flex; align-items: center; }
+.vink-rij .prijs { font-size: 14px; font-weight: 500; font-variant-numeric: tabular-nums; color: var(--ink); white-space: nowrap; }
+.vink-rij.is-gedaan .prijs { color: var(--muted); }
+.afrekenen .tip { margin: 0; }
+.afreken-lijst { list-style: none; margin: 0; padding: 0; display: grid; }
+.afreken-lijst li { display: grid; grid-template-columns: 1fr 120px; gap: 6px 8px; align-items: center; padding: 10px 0; border-bottom: 1px solid var(--line); }
+.afreken-lijst li > b { grid-column: 1 / -1; font-weight: 500; overflow-wrap: anywhere; }
+.afreken-lijst small { font-weight: 400; color: var(--muted); font-size: 13px; }
+.afreken-lijst select { grid-column: 1; grid-row: 2; min-width: 0; }
+.afreken-lijst input { grid-column: 2; grid-row: 2; text-align: right; font-variant-numeric: tabular-nums; min-width: 0; }
+.afreken-lijst input, .afreken-lijst select { min-height: 44px; border: 1px solid var(--line); padding: 0 8px; font: inherit; font-size: 15px; background: var(--surface); color: var(--ink); }
+.afreken-totaal { display: flex; justify-content: space-between; margin: 0; padding-top: 4px; font-size: 16px; }
+.afreken-totaal b { font-variant-numeric: tabular-nums; }
+.uitgaven { padding: 0; }
+.uitgaven-totaal { display: flex; justify-content: space-between; align-items: baseline; margin: 0; padding: 14px 16px 8px; }
+.uitgaven-totaal span { font-size: 13px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+.uitgaven-totaal b { font-size: 28px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.uitgaven-keuze { padding: 0 16px 12px; }
+.uitgaven-keuze button { flex: 1; justify-content: center; }
+.uitgaven-leeg { padding: 0 16px 16px; margin: 0; }
+.uitgaven-lijst, .uitgaven-details { list-style: none; margin: 0; padding: 0; }
+.uitgaven-groep { border-top: 1px solid var(--line); }
+.uitgaven-rij { width: 100%; display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; padding: 12px 16px; min-height: 56px; border: 0; background: none; color: var(--ink); font: inherit; text-align: left; cursor: pointer; align-items: center; }
+.uitgaven-rij:hover { background: var(--menu-hover, var(--soft)); }
+.uitgaven-rij[aria-expanded="true"] { background: var(--accent-tint); }
+.uitgaven-naam { display: grid; font-weight: 500; }
+.uitgaven-naam small { font-size: 13px; font-weight: 400; color: var(--muted); }
+.uitgaven-rij b { font-weight: 600; font-variant-numeric: tabular-nums; }
+.uitgaven-balk { grid-column: 1 / -1; height: 4px; background: var(--line); }
+.uitgaven-balk i { display: block; height: 100%; background: var(--accent); }
+.uitgaven-details li { display: flex; justify-content: space-between; gap: 12px; padding: 8px 16px 8px 28px; font-size: 14px; border-top: 1px solid var(--line); }
+.uitgaven-details li b { font-weight: 500; font-variant-numeric: tabular-nums; }
+.zonder-prijs { display: grid; grid-template-columns: 1fr 110px; gap: 4px 8px; align-items: center; padding: 4px 12px; border-bottom: 1px solid var(--line); }
+.zonder-prijs:last-child { border-bottom: 0; }
+.zonder-prijs input { min-height: 44px; border: 1px solid var(--line); padding: 0 8px; font: inherit; text-align: right; background: var(--surface); color: var(--ink); min-width: 0; }
+.zonder-prijs .fout { grid-column: 1 / -1; }
+@media (min-width: 600px) { .ouder .boodschap-toevoegen { grid-template-columns: 1fr 180px 200px auto; } .boodschap-toevoegen .knop { grid-column: auto; } }
