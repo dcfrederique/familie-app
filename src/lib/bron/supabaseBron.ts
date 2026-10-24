@@ -1,5 +1,8 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
-import type { ActiviteitRegel, Boodschap, Bron, SpraakToken, Inzending, LogRegel, Maaltijd, NieuweNotitie, NieuweOuderTaak, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Saldo, Spelregels, Taak, Tijdverzoek, Winkel } from './types.ts'
+import type { ActiviteitRegel, Boodschap, Bron, GezondheidProfiel, SpraakToken, Inzending, LogRegel, Maaltijd, NieuweNotitie, NieuweOuderTaak, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Saldo, Spelregels, Taak, Tijdverzoek, Winkel } from './types.ts'
+
+// Postgres numeric komt als tekst of getal binnen.
+const getal = (w: unknown) => (w === null || w === undefined ? null : Number(w))
 
 function fout(error: { message: string } | null) {
   if (error) throw new Error(error.message)
@@ -108,6 +111,16 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
         .or(`gekocht_op.is.null,gekocht_op.gte.${sinds}`).order('aangemaakt_op').limit(1000)
       fout(error)
       return (data ?? []) as Boodschap[]
+    },
+    async gezondheidProfiel() {
+      const { data, error } = await sb.from('gezondheid_profielen').select('geboortedatum, lengte_cm, doelgewicht_kg').maybeSingle()
+      fout(error)
+      return data && { ...data, lengte_cm: getal(data.lengte_cm), doelgewicht_kg: getal(data.doelgewicht_kg) } as GezondheidProfiel
+    },
+    async wegingen() {
+      const { data, error } = await sb.from('wegingen').select('id, dag, gewicht_kg').order('dag').limit(5000)
+      fout(error)
+      return (data ?? []).map((w) => ({ ...w, gewicht_kg: Number(w.gewicht_kg) }))
     },
 
     async taakIndienen(kindId, taakId, foto) {
@@ -264,6 +277,27 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
     },
     async boodschapVerwijderen(id) {
       fout((await sb.from('boodschappen').delete().eq('id', id)).error)
+    },
+    async gezondheidProfielOpslaan({ geboortedatum, lengte_cm, doelgewicht_kg }) {
+      const rij = { geboortedatum, lengte_cm, doelgewicht_kg, bijgewerkt_op: new Date().toISOString() }
+      const { data, error } = await sb.from('gezondheid_profielen').update(rij).not('ouder_id', 'is', null).select('ouder_id')
+      fout(error)
+      if (data?.length) return
+      // Nog geen profiel: het hoort bij de ouder van dit account; de server controleert dat.
+      const { data: ik, error: e } = await sb.rpc('mijn_ouder')
+      fout(e)
+      fout((await sb.from('gezondheid_profielen').insert({ ...rij, ouder_id: ik, gezin_id: gezinId })).error)
+    },
+    async wegingOpslaan(dag, kg) {
+      const { data, error } = await sb.from('wegingen').update({ gewicht_kg: kg }).eq('dag', dag).select('id')
+      fout(error)
+      if (data?.length) return
+      const { data: ik, error: e } = await sb.rpc('mijn_ouder')
+      fout(e)
+      fout((await sb.from('wegingen').insert({ gezin_id: gezinId, eigenaar: ik, dag, gewicht_kg: kg })).error)
+    },
+    async wegingVerwijderen(id) {
+      fout((await sb.from('wegingen').delete().eq('id', id)).error)
     },
   }
 }

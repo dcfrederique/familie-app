@@ -29,6 +29,8 @@ import OnzeTaken from './schermen/OnzeTaken.tsx'
 import Notities from './schermen/Notities.tsx'
 import Boodschappen from './schermen/Boodschappen.tsx'
 import Winkels from './schermen/Winkels.tsx'
+import Gewicht from './schermen/Gewicht.tsx'
+import MijnProfiel from './schermen/MijnProfiel.tsx'
 import Touwspringen from './schermen/Touwspringen.tsx'
 import Welkom from './schermen/Welkom.tsx'
 import Welkomstpad from './schermen/Welkomstpad.tsx'
@@ -83,6 +85,8 @@ export default function App() {
       <Route path="/ouder/notities" element={<Notities />} />
       <Route path="/ouder/boodschappen" element={<Boodschappen />} />
       <Route path="/ouder/winkels" element={<Winkels />} />
+      <Route path="/ouder/gewicht" element={<Gewicht />} />
+      <Route path="/ouder/profiel" element={<MijnProfiel />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )

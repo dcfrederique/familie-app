@@ -37,7 +37,9 @@ const iconen: Record<MenuIcoon | 'menu' | 'bel' | 'terug', ReactNode> = {
   onzetaken: <path d="M9 6h11M9 12h11M9 18h11M3.5 6l1.5 1.5L7.5 5M3.5 12l1.5 1.5L7.5 11M3.5 18l1.5 1.5 2.5-2.5" />,
   boodschappen: <><path d="M3 4h2l2.4 11h10.2L20 7H6.2" /><circle cx="9.5" cy="19" r="1.5" /><circle cx="16.5" cy="19" r="1.5" /></>,
   notities: <path d="M6 3h9l4 4v14H6zM14 3v5h5M9 13h7M9 17h5" />,
-  gewicht: <><rect x="3.5" y="4" width="17" height="16" rx="4" /><path d="M8.5 10a4.5 4.5 0 0 1 7 0l-2.5 2" /></>,
+  // Weegschaal: plateau met een wijzerplaat en een naald.
+  gewicht: <><rect x="3.5" y="3.5" width="17" height="17" rx="3" /><path d="M7 11.5a5 5 0 0 1 10 0z" /><path d="M12 11.5l2-3" /><path d="M8.5 16.5h7" /></>,
+  profiel: <><circle cx="12" cy="8.5" r="3.5" /><path d="M5 20c.8-3.8 3.6-6 7-6s6.2 2.2 7 6" /></>,
   fitness: <path d="M6.5 8v8M17.5 8v8M3.5 10v4M20.5 10v4M6.5 12h11" />,
   lopen: <><circle cx="14" cy="4.5" r="2" /><path d="M10 21l2.5-5.5-3-3 2-4.5 3 3 3.5 1M8.5 12l-2 3H3M12.5 15.5L16 18l1 3" /></>,
   weekmenu: <path d="M5 3v6a2 2 0 0 0 4 0V3M7 11v10M18 21V3c-2.5 1-4 4-4 9h4" />,

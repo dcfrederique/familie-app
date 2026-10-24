@@ -5,7 +5,8 @@ import { spelMenu } from '../../data/spelletjes.ts'
 import type { Gebruiker } from '../../data/gezin.ts'
 import { dagVan } from '../datum.ts'
 import { activiteitOmschrijving, activiteitSterren, blokKeuzes, regels as standaardRegels } from '../regels.ts'
-import type { ActiviteitRegel, Boodschap, Bron, Inzending, LogRegel, Maaltijd, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Spelregels, Taak, Tijdverzoek, Winkel } from './types.ts'
+import type { Weging } from '../gewicht.ts'
+import type { ActiviteitRegel, Boodschap, Bron, GezondheidProfiel, Inzending, LogRegel, Maaltijd, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Spelregels, Taak, Tijdverzoek, Winkel } from './types.ts'
 
 const DEMO_PIN = '1234'
 const WELKOM = 'Welkom! Je eerste sterren'
@@ -22,6 +23,8 @@ interface Toestand {
   notities: Notitie[]
   winkels: Winkel[]
   boodschappen: Boodschap[]
+  profiel: GezondheidProfiel | null
+  wegingen: Weging[]
   regels: Spelregels
 }
 
@@ -71,6 +74,13 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
       { id: 'bo-3', naam: 'Bananen', hoeveel: '', winkel_id: 'wi-3', dag: null, gerecht: null, gekocht_op: null, aangemaakt_op: nu },
       { id: 'bo-4', naam: 'Pindakaas', hoeveel: '', winkel_id: 'wi-4', dag: null, gerecht: null, gekocht_op: null, aangemaakt_op: nu },
     ],
+    // Een paar maanden wegingen, zodat Gewicht meteen een grafiek toont.
+    profiel: { geboortedatum: '1988-05-12', lengte_cm: 168, doelgewicht_kg: 64 },
+    wegingen: Array.from({ length: 16 }, (_, i) => ({
+      id: `we-${i + 1}`,
+      dag: dagVan(new Date(Date.now() - (105 - i * 7) * 86400_000)),
+      gewicht_kg: Math.round((71.8 - i * 0.22 + (i % 3 === 1 ? 0.4 : 0)) * 10) / 10,
+    })),
     regels: {
       dagplafond_minuten: standaardRegels.dagplafondMinuten,
       venster_van: standaardRegels.tijdvenster.van,
@@ -121,6 +131,8 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
     },
     async winkels() { return t.winkels.slice().sort((a, b) => a.volgorde - b.volgorde || a.naam.localeCompare(b.naam)).map((w) => ({ ...w })) },
     async boodschappen() { return t.boodschappen.map((b) => ({ ...b })) },
+    async gezondheidProfiel() { return t.profiel && { ...t.profiel } },
+    async wegingen() { return t.wegingen.slice().sort((a, b) => a.dag.localeCompare(b.dag)).map((w) => ({ ...w })) },
     async aankopen() { return Object.fromEntries(Object.entries(t.aankopen).map(([k, v]) => [k, [...v]])) },
 
     async taakIndienen(kind, taakId, foto) {
@@ -312,5 +324,12 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       if (b) b.gekocht_op = gekocht ? new Date().toISOString() : null
     },
     async boodschapVerwijderen(boodschapId) { t.boodschappen = t.boodschappen.filter((x) => x.id !== boodschapId) },
+    async gezondheidProfielOpslaan(profiel) { t.profiel = { ...profiel } },
+    async wegingOpslaan(dag, kg) {
+      const oud = t.wegingen.find((w) => w.dag === dag)
+      if (oud) oud.gewicht_kg = kg
+      else t.wegingen.push({ id: id(), dag, gewicht_kg: kg })
+    },
+    async wegingVerwijderen(wegingId) { t.wegingen = t.wegingen.filter((w) => w.id !== wegingId) },
   }
 }

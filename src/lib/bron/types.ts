@@ -2,6 +2,7 @@
 import type { Figuurtje } from '../../data/figuurtje.ts'
 import type { Kleur } from '../../data/gezin.ts'
 import type { Activiteit } from '../regels.ts'
+import type { Weging } from '../gewicht.ts'
 import type { StemKeuze } from '../stem.ts'
 
 export type Herhaling = 'eenmalig' | 'elke_dag' | 'schooldagen'
@@ -151,6 +152,14 @@ export interface Boodschap {
 
 export type NieuweBoodschap = Pick<Boodschap, 'naam' | 'hoeveel' | 'winkel_id'> & Partial<Pick<Boodschap, 'dag' | 'gerecht'>> & { id?: string }
 
+/** Profiel van een ouder voor Gezondheid → Gewicht (docs/gewicht.md); privé. */
+export interface GezondheidProfiel {
+  /** 'JJJJ-MM-DD' */
+  geboortedatum: string | null
+  lengte_cm: number | null
+  doelgewicht_kg: number | null
+}
+
 export interface Spelregels {
   dagplafond_minuten: number
   venster_van: string
@@ -184,6 +193,10 @@ export interface Bron {
   winkels(): Promise<Winkel[]>
   /** Alles wat nog gekocht moet worden, en wat de laatste 60 dagen gekocht is (om winkels en ingrediënten te onthouden). */
   boodschappen(): Promise<Boodschap[]>
+  /** Je eigen gezondheidsprofiel; null als je het nog niet invulde. Privé, ook niet voor je partner. */
+  gezondheidProfiel(): Promise<GezondheidProfiel | null>
+  /** Al je eigen wegingen, van oud naar nieuw. */
+  wegingen(): Promise<Weging[]>
 
   taakIndienen(kindId: string, taakId: string, foto: Blob | null): Promise<void>
   tijdAanvragen(kindId: string, minuten: number): Promise<void>
@@ -227,4 +240,8 @@ export interface Bron {
   boodschappenOpslaan(lijst: NieuweBoodschap[]): Promise<void>
   boodschapAfvinken(id: string, gekocht: boolean): Promise<void>
   boodschapVerwijderen(id: string): Promise<void>
+  gezondheidProfielOpslaan(profiel: GezondheidProfiel): Promise<void>
+  /** Bewaart de weging van een dag; een tweede weging op dezelfde dag vervangt de eerste. */
+  wegingOpslaan(dag: string, kg: number): Promise<void>
+  wegingVerwijderen(id: string): Promise<void>
 }

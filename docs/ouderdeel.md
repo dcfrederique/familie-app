@@ -33,7 +33,7 @@ Vanaf 1024 px breed staat het menu vast links als zijbalk (288 px), de balk toon
 | Wij | **Onze taken** | komt later | Taken voor de ouders, zonder sterren. |
 | | **Boodschappen** | komt later | Gedeelde lijst. |
 | | **Notities** | komt later | Losse notities en lijstjes. |
-| Gezondheid | **Gewicht** | komt nog later | Per ouder, privé. |
+| Gezondheid | **Gewicht** | bestaat (`docs/gewicht.md`) | Per ouder, privé; met Mijn profiel. |
 | | **Fitness** | komt nog later | Trainingen bijhouden. |
 | | **Loopschema** | komt nog later | Opbouwschema, bijvoorbeeld 0 naar 5 km. |
 | Instellingen | **Toestellen en meldingen** | bestaat | Koppelcode, tablets, meldingen aanzetten. |
@@ -79,7 +79,7 @@ Alles hieronder is alleen voor de ouders. De tabletaccounts van de kinderen moge
 - Gewicht: een meting per dag, grafiek van 30 en 90 dagen, optioneel een doel.
 - Fitness: training met soort, duur en een korte notitie; weekoverzicht.
 - Loopschema: een opbouwschema in weken (bijvoorbeeld 3 keer per week, afwisselend lopen en wandelen). Vandaag-scherm toont de volgende training. Afvinken na het lopen.
-- Tabellen `metingen`, `trainingen`, `loopschema` (alle met eigenaar en `gedeeld`).
+- Tabellen `wegingen` en `gezondheid_profielen` (gebouwd, privé zonder delen), later `trainingen`, `loopschema`.
 
 ### Vandaag als familie-assistent
 
@@ -90,7 +90,7 @@ Op termijn wordt Vandaag het overzicht van de hele dag: eerst wat op goedkeuring
 1. **Nieuwe lay-out** (alleen frontend, **gebouwd op 24 oktober 2026**): `OuderKader` krijgt de balk en het menu (`src/data/ouderMenu.ts`, stijl in `src/schermen/ouder.css`), tabs onderaan verdwijnen, Spelregels (`/ouder/spelregels`) en Pincode (`/ouder/pincode`) worden eigen schermen. Op een tablet van een kind tonen we Wij, Gezondheid en Pincode niet. Geen databasewijziging.
 2. **Boodschappen en Onze taken**: de twee onderdelen die het meest dagelijks gebruikt worden. Elk een migratie en een scherm. **Onze taken is gebouwd op 24 oktober 2026** (`/ouder/onze-taken`, `src/schermen/OnzeTaken.tsx`); Boodschappen nog niet.
 3. **Notities**: **gebouwd op 24 oktober 2026** (`/ouder/notities`, `src/schermen/Notities.tsx`), samen met Onze taken in migratie `20261024000700_onze_taken_notities`.
-4. **Gezondheid**: gewicht eerst, dan loopschema, dan fitness.
+4. **Gezondheid**: gewicht eerst, dan loopschema, dan fitness. **Gewicht en Mijn profiel zijn gebouwd op 24 oktober 2026** (`docs/gewicht.md`, migratie `20261024001000_gewicht`).
 
 Elke fase kan apart naar main.
 

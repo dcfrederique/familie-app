@@ -235,3 +235,60 @@ a.vink-tekst { text-decoration: none; }
 .ouder .tip a { color: var(--accent); }
 .winkel-rij .knop-weg, .winkel-rij button:last-of-type { min-width: 76px; }
 @media (max-width: 420px) { .week-dag { grid-template-columns: 78px 40px 1fr 40px; gap: 8px; } .week-dag .week-prent { width: 40px; height: 40px; } }
+
+/* Gewicht (docs/gewicht.md): groot getal, BMI-balk met zones, lijngrafiek met doel en gezond bereik */
+.weging-toevoegen { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; align-items: end; }
+.weging-toevoegen .knop { grid-column: 1 / -1; }
+@media (min-width: 600px) { .weging-toevoegen { grid-template-columns: 1fr 1fr auto; } .weging-toevoegen .knop { grid-column: auto; } }
+.weging-toevoegen input[type="date"] { min-width: 0; }
+.ouder .gewicht-groot { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; margin: 2px 0; font-size: 17px; color: var(--muted); }
+.gewicht-groot b { font-size: 40px; line-height: 1.1; font-weight: 600; color: var(--ink); font-variant-numeric: tabular-nums; }
+.gewicht-laatste, .gewicht-bmi { display: grid; gap: 8px; align-content: start; }
+.gewicht-laatste .cijfers, .gewicht-bmi .cijfers { margin-top: 4px; }
+.bmi-label { font-size: 14px; font-weight: 500; padding: 2px 8px; border: 1px solid currentColor; align-self: center; }
+.bmi-label.bmi-gezond { color: var(--ok-ink); background: var(--ok-bg); }
+.bmi-label.bmi-ondergewicht, .bmi-label.bmi-overgewicht { color: var(--gold-ink); background: var(--gold-bg); }
+.bmi-label.bmi-obesitas { color: var(--warn-ink); background: var(--warn-bg); }
+.bmi-balk { position: relative; height: 12px; margin-top: 6px; background: var(--soft); }
+.bmi-zone { position: absolute; top: 0; bottom: 0; border-right: 2px solid var(--surface); }
+.bmi-zone.bmi-ondergewicht, .bmi-zone.bmi-overgewicht { background: var(--gold); opacity: .55; }
+.bmi-zone.bmi-gezond { background: var(--ok); opacity: .75; }
+.bmi-zone.bmi-obesitas { background: var(--warn); opacity: .6; border-right: 0; }
+.bmi-wijzer { position: absolute; top: -5px; bottom: -5px; width: 4px; margin-left: -2px; background: var(--ink); box-shadow: 0 0 0 2px var(--surface); }
+.bmi-schaal { position: relative; height: 16px; font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.bmi-schaal span { position: absolute; transform: translateX(-50%); }
+.ouder .gewicht-voetnoot { font-size: 12px; }
+.gewicht-grafiek { display: grid; gap: 10px; }
+.ouder .gewicht-grafiek .schakelaar { padding: 0; gap: 0; border: 1px solid var(--line); }
+.ouder .gewicht-grafiek .schakelaar button { min-height: 40px; padding: 0 14px; font-size: 14px; }
+.ouder .gewicht-grafiek .schakelaar button[aria-pressed="true"] { background: var(--accent); color: var(--on-solid); }
+.grafiek-vlak { position: relative; }
+.grafiek-vlak svg { display: block; width: 100%; height: auto; touch-action: pan-y; overflow: visible; }
+.grafiek-gezond { fill: var(--ok); opacity: .1; }
+.grafiek-raster { stroke: var(--line); stroke-width: 1; }
+.grafiek-as { fill: var(--muted); font-size: 12px; font-family: var(--f-ouder); font-variant-numeric: tabular-nums; }
+.grafiek-lijn { fill: none; stroke: var(--accent); stroke-width: 2; stroke-linejoin: round; stroke-linecap: round; }
+.grafiek-punt { fill: var(--accent); stroke: var(--surface); stroke-width: 2; }
+.grafiek-punt.is-actief { stroke-width: 2.5; }
+.grafiek-doel { stroke: var(--ink); stroke-width: 1.5; stroke-dasharray: 6 5; opacity: .7; }
+.grafiek-doel-tekst { fill: var(--ink); font-size: 12px; font-weight: 500; font-family: var(--f-ouder); }
+.grafiek-kruis { stroke: var(--muted); stroke-width: 1; }
+.grafiek-tip { position: absolute; transform: translate(-50%, calc(-100% - 12px)); padding: 4px 8px; background: var(--ink); color: var(--surface);
+  font-size: 13px; display: grid; text-align: center; pointer-events: none; white-space: nowrap; font-variant-numeric: tabular-nums; }
+.grafiek-tip span { font-size: 12px; opacity: .8; }
+.grafiek-legende { margin: 0; display: flex; flex-wrap: wrap; gap: 4px 16px; font-size: 13px; color: var(--muted); }
+.grafiek-legende span { display: inline-flex; align-items: center; gap: 6px; }
+.legende-gezond { width: 14px; height: 10px; background: var(--ok); opacity: .25; }
+.legende-doel { width: 18px; border-top: 2px dashed var(--ink); opacity: .7; }
+.weging-lijst { list-style: none; margin: 0; padding: 0; }
+.weging-rij { display: grid; grid-template-columns: 1fr auto 56px 44px; align-items: center; gap: 8px; padding: 2px 4px 2px 12px; border-bottom: 1px solid var(--line); min-height: 48px; }
+.weging-rij:last-child { border-bottom: 0; }
+.weging-rij b { font-weight: 500; font-variant-numeric: tabular-nums; }
+.weging-rij small { font-size: 13px; color: var(--muted); text-align: right; font-variant-numeric: tabular-nums; }
+.weging-rij .knop-klein { padding: 0; min-width: 44px; font-size: 20px; }
+.ouder .is-later-kaart { border-style: dashed; color: var(--later); }
+.ouder .is-later-kaart h2 { display: flex; align-items: center; gap: 10px; color: var(--later); }
+.ouder .is-later-kaart p { color: var(--later); }
+.profiel-formulier { display: grid; gap: 12px; max-width: 520px; }
+.profiel-formulier .veld small { font-weight: 400; color: var(--muted); font-size: 13px; }
+.ouder .is-later-kaart { align-self: start; }
