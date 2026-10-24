@@ -80,6 +80,10 @@ Dit gebeurt in twee fases: eerst uitdenken (ontwerp), daarna coderen (bouw).
 - Positief en warm; geen enge, gewelddadige of verdrietige inhoud
 - Verhalen: 300 tot 600 woorden, met een duidelijk begin, midden en einde
 - Spelletjes: eenvoudig, speelbaar op een tablet, zonder lezen speelbaar voor de jongste
+- Verhalen zijn meteen beschikbaar. Elk nieuw spelletje en elke nieuwe unlockable
+  (stukken voor het figuurtje, later ook Mijn huis) is te koop met sterren in de winkel:
+  geef het een `prijs` in de data (zie `src/data/spelletjes.ts`, `docs/winkel.md`) en een rij in
+  de servercatalogus (`spel_prijzen` via een nieuwe migratie)
 
 ## Mappenstructuur
 - Plannen: `ideeen/YYYY-MM-DD.md`
@@ -89,15 +93,17 @@ Dit gebeurt in twee fases: eerst uitdenken (ontwerp), daarna coderen (bouw).
 ## Regels voor de ontwerpfase
 - Lees eerst de bestaande verhalen en spellen, zodat er geen herhaling is
 - Wijzig GEEN code, schrijf alleen het plan
+- Stel in het plan een sterrenprijs voor het spelletje voor (in lijn met de bestaande prijzen)
 - Het plan bevat: titel, volledige verhaaltekst, spelregels,
   benodigde schermen/componenten en acceptatiecriteria
 
 ## Regels voor de bouwfase
-- Werk nooit op `main`; maak een branch `nacht/YYYY-MM-DD`
-  (dit is een uitzondering op de gewone werkwijze waarbij rechtstreeks naar `main` gepusht mag worden)
+- Werk op `main` en push naar `main` zodra lint, tests en build groen zijn
+  (een push op `main` gaat na groene CI automatisch online; migraties lopen via CI)
 - Bouw alleen wat in het plan van vandaag staat
 - Draai de tests; los fouten op voor je stopt
-- Als iets niet lukt: noteer het in het resultaatbestand in plaats van te gokken
+- Als iets niet lukt: noteer het in het resultaatbestand in plaats van te gokken;
+  blijft iets rood, push dan geen code maar alleen het resultaatbestand
 - Schrijf een korte samenvatting in `ideeen/YYYY-MM-DD-resultaat.md`
 
 ---
@@ -111,6 +117,6 @@ Wijzig geen code.
 ## Taakprompt 2 – Bouw (bv. 03:00)
 Lees CLAUDE.md en volg de regels voor de bouwfase. Open
 ideeen/<datum van vandaag>.md. Als dat bestand niet bestaat, stop dan en
-schrijf dat in het resultaatbestand. Maak branch nacht/<datum van vandaag>,
-implementeer het verhaal en het spelletje, draai de tests en schrijf de
-samenvatting naar ideeen/<datum van vandaag>-resultaat.md.
+schrijf dat in het resultaatbestand. Implementeer het verhaal (direct beschikbaar)
+en het spelletje (te koop met sterren in de winkel), draai lint, tests en build,
+schrijf de samenvatting naar ideeen/<datum van vandaag>-resultaat.md en push naar main.
