@@ -58,7 +58,7 @@ jobs:
 
       - name: Proefopnames bewaren
         if: env.SPEECH_KEY != '' && env.SPEECH_REGION != ''
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: proefopnames-stem
           path: proef/
