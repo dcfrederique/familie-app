@@ -38,7 +38,7 @@ export default function SpelKader({ titel, terug, scherm = 'spel', children }: {
 
   return (
     <ThemaBron value={thema}>
-      <div className={`kind ${kleurKlasse(kind)}${thema ? ` thema thema-${thema} thema-scherm-${scherm}` : ''}`}>
+      <div className={`kind ${kleurKlasse(kind)}${scherm === 'spel' ? '' : ' kind-vol'}${thema ? ` thema thema-${thema} thema-scherm-${scherm}` : ''}`}>
         {thema ? (
           <ThemaKop thema={thema} scherm={scherm} titel={titel} lezer={kind.kan_lezen} links={terugKnop} rechts={geluidKnop} />
         ) : (

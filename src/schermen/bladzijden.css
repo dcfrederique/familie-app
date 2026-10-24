@@ -1,0 +1,28 @@
+/* Bladzijden in plaats van scrollen (Bladzijden.tsx). */
+.bladzijden { display: flex; flex-direction: column; gap: 14px; }
+.bladzijden.vast { flex: 1; min-height: 0; }
+.bladzijden.vast > .blad { flex: 1; min-height: 0; display: grid; }
+.blader { flex: none; display: flex; align-items: center; justify-content: center; gap: 22px; position: relative; z-index: 2; }
+.blader-knop { width: 68px; height: 68px; border: 0; background: var(--surface); color: var(--kid); box-shadow: 0 5px 0 var(--shade); }
+.blader-knop:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--shade); }
+.blader-knop:disabled { opacity: .3; box-shadow: none; }
+.blader-stippen { display: flex; gap: 8px; align-items: center; }
+.blader-stippen i { width: 14px; height: 14px; border-radius: 7px; background: var(--line); transition: width .2s; }
+.blader-stippen i.nu { width: 34px; background: var(--kid); }
+
+/* Subschermen vullen op tablet en pc precies het scherm; het raster deelt de vrije hoogte op. */
+@media (min-width: 961px) and (min-height: 560px) {
+  .kind.kind-vol { height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
+  .kind-vol > header { flex: none; }
+  .kind-vol > .kind-inhoud { flex: 1; min-height: 0; width: 100%; display: flex; flex-direction: column; padding-bottom: 20px; }
+  .kind-vol .verhalen { flex: 1; min-height: 0; }
+  .kind-vol.thema-tuin > .kind-inhoud { padding-bottom: 44px; }
+
+  .bladzijden.vast > .spel-menu { min-height: 0; place-items: center; padding-top: 0; }
+  .bladzijden.vast > .spel-menu > .spel-knop { width: min(var(--cel-b, 220px), calc(var(--cel-h, 220px) / var(--verhouding, 1)), 280px); }
+  .thema-kasteel .bladzijden.vast > .spel-menu > .spel-knop { margin-top: 40px; }
+  .bladzijden.vast > .verhaal-raster, .bladzijden.vast > .kleur-raster { align-items: start; padding-top: 12px; }
+  .bladzijden.vast > .taken-raster { overflow: visible; align-content: start; }
+  .kind-scherm > .bladzijden.vast { flex: 0 1 560px; }
+  .kind-start > section > .bladzijden.vast { flex: 1; }
+}

@@ -10,6 +10,7 @@ import SpelKader from './SpelKader.tsx'
 import './kleurplaten.css'
 import './verhalen.css'
 import { ThemaFeest } from './ThemaDelen.tsx'
+import Bladzijden, { kaartMaat } from './Bladzijden.tsx'
 
 const INKT = '#26303A'
 const palet = ['#E53935', '#F2994A', '#F7D046', '#7CC36E', '#2E8A3C', '#5DB7E8', '#2D6BD6', '#8E6CC9',
@@ -34,8 +35,7 @@ export function KleurplaatLijst() {
   return (
     <SpelKader titel="Kleurplaten" scherm="kleurplaten" terug={(id) => `/kind/${id}`}>
       {(kind) => (
-        <div className="kleur-raster">
-          {kleurplaten.map((p) => {
+        <Bladzijden items={kleurplaten} maat={kaartMaat} className="kleur-raster" label="Meer kleurplaten" toon={(p) => {
             const bezig = kleurplaatLezen(kind.id, p.sleutel)
             return (
               <Link key={p.sleutel} to={`/kind/${kind.id}/kleurplaat/${p.sleutel}`} className="verhaal-kaart" aria-label={p.titel}>
@@ -44,8 +44,7 @@ export function KleurplaatLijst() {
                 <span className="verhaal-kaart-titel">{p.titel}</span>
               </Link>
             )
-          })}
-        </div>
+          }} />
       )}
     </SpelKader>
   )

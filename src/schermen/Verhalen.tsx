@@ -8,6 +8,7 @@ import { gekozenNiveau, gelezenVerhalen, niveauBewaren } from '../lib/spelletjes
 import SpelKader, { Chips } from './SpelKader.tsx'
 import './verhalen.css'
 import { ThemaVink, useThema } from './ThemaDelen.tsx'
+import Bladzijden, { kaartMaat } from './Bladzijden.tsx'
 
 // Kiezen welk verhaal je leest. Elk uitgelezen verhaal levert sterren op, na goedkeuring.
 export default function Verhalen() {
@@ -28,8 +29,7 @@ function VerhaalLijst({ kind }: { kind: Gebruiker }) {
   return (
     <div className="verhalen">
       <Chips label="Reeks" opties={keuzes} gekozen={reeks} kies={(r) => { setReeks(r); niveauBewaren(kind.id, 'verhalen', r) }} />
-      <div className="verhaal-raster">
-        {verhalen.filter((v) => v.reeks === reeks).map((v) => (
+      <Bladzijden key={reeks} items={verhalen.filter((v) => v.reeks === reeks)} maat={kaartMaat} className="verhaal-raster" label="Meer verhalen" toon={(v) => (
           <Link key={v.nr} to={`/kind/${kind.id}/verhaal/${v.nr}`} className="verhaal-kaart" aria-label={v.titel}>
             <VerhaalPrent prent={v.bladzijden[0].prent} />
             <span className="verhaal-kaart-titel">{v.titel}</span>
@@ -41,8 +41,7 @@ function VerhaalLijst({ kind }: { kind: Gebruiker }) {
               )
             )}
           </Link>
-        ))}
-      </div>
+        )} />
     </div>
   )
 }

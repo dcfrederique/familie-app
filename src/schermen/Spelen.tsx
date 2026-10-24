@@ -11,7 +11,10 @@ import { Ster } from './onderdelen.tsx'
 import SpelKader from './SpelKader.tsx'
 import { ThemaNieuw, ThemaSlot, ThemaVoortgang, useThema } from './ThemaDelen.tsx'
 import { zin } from '../data/zinnen.ts'
+import Bladzijden from './Bladzijden.tsx'
 
+// Hoogte gedeeld door breedte van een tegel per thema (kasteel: wimpel erboven, tuin: paddenstoel met steel).
+const VERHOUDING = { race: 1, kasteel: 1.3, tuin: 1.2 }
 const SLOT = 'M7 11V8a5 5 0 0 1 10 0v3M5 11h14v10H5zM12 15v2'
 
 // Kiezen wat je speelt. Rekenen levert sterren op, de andere spelletjes zijn gewoon voor de fun.
@@ -47,8 +50,8 @@ function SpelMenu({ kind }: { kind: Gebruiker }) {
   }
 
   return (
-    <div className="spel-menu">
-      {spelMenu.map((s, i) => {
+    <Bladzijden items={spelMenu} maat={{ breed: 170, hoog: 190, gap: 24, verhouding: thema ? VERHOUDING[thema] : 1 }} className="spel-menu" label="Meer spelletjes" toon={(s) => {
+        const i = spelMenu.indexOf(s)
         const drempel = spelDrempel(s, v)
         // Zolang de sterren niet geladen zijn, staat wat een drempel heeft nog op slot.
         const nog = geladen ? nogTeVerdienen(s, v) : drempel
@@ -90,7 +93,6 @@ function SpelMenu({ kind }: { kind: Gebruiker }) {
             {nieuw && (thema ? <ThemaNieuw thema={thema} /> : <span className="spel-nieuw display">Nieuw!</span>)}
           </Link>
         )
-      })}
-    </div>
+      }} />
   )
 }

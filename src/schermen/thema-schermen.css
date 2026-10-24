@@ -103,7 +103,6 @@
 }
 
 /* ── Spelletjes ── */
-.kind.thema .spel-menu { min-height: calc(100dvh - 240px); }
 .spel-nr { display: none; }
 
 /* Race: schuine pitbox met racenummer en geblokte rand */
@@ -153,6 +152,7 @@
 .thema-regenboog { position: relative; width: 62%; height: 16px; border-radius: 8px; background: var(--soft); overflow: hidden; flex-shrink: 0; }
 .thema-regenboog i { position: absolute; inset: 0 auto 0 0; background: linear-gradient(90deg, #F9A8C9, #FCD29F, #FBEA9E, #BDE5B5, #B9D3F5, #D7C2F2) 0 0 / 120px 100%; border-radius: 8px; }
 .thema-kasteel .thema-nieuw, .thema-tuin .thema-nieuw { position: absolute; top: -22px; right: -6px; width: 64px; height: 46px; }
+.thema-tuin .thema-nieuw { top: -12px; right: 2%; }
 .thema-nieuw svg { width: 100%; height: 100%; }
 
 /* Tuin: paddenstoelhuisjes; op slot slapen ze nog */
@@ -160,7 +160,7 @@
 .thema-tuin .spel-knop:active { transform: translateY(4px); box-shadow: none; }
 .thema-tuin .spel-tegel {
   width: 88%; aspect-ratio: 14 / 9; border-radius: 50% 50% 22% 22% / 80% 80% 20% 20%; background: var(--hoed, #C2337A); color: #8A3FC0;
-  box-shadow: inset 0 -8px 0 rgba(0, 0, 0, .12); margin-bottom: 52px;
+  box-shadow: inset 0 -8px 0 rgba(0, 0, 0, .12); margin-bottom: 30%; flex-shrink: 0;
 }
 .thema-tuin .spel-tegel::before {
   content: ""; position: absolute; inset: 0; border-radius: inherit; opacity: .85; pointer-events: none;
@@ -168,11 +168,11 @@
     radial-gradient(circle at 52% 14%, #fff 0 6px, transparent 7px), radial-gradient(circle at 88% 72%, #fff 0 5px, transparent 6px);
 }
 .thema-tuin .spel-tegel::after {
-  content: ""; position: absolute; left: 50%; top: 92%; width: 46%; height: 62px; transform: translateX(-50%); z-index: -1;
+  content: ""; position: absolute; left: 50%; top: 92%; width: 44%; height: 56%; transform: translateX(-50%); z-index: -1;
   border-radius: 0 0 18px 18px; background: radial-gradient(28% 46% at 50% 100%, #A86A3D 98%, transparent 100%), #FFF6E6;
   box-shadow: inset -7px 0 0 #F2E2C4;
 }
-.thema-tuin .spel-tegel > svg.ic { position: relative; width: 40%; height: auto; aspect-ratio: 1; padding: 8%; margin-top: 8%; border-radius: 50%; background: #FFFFFF; color: #8A3FC0; box-sizing: content-box; }
+.thema-tuin .spel-tegel > svg.ic { position: relative; width: 30%; height: auto; aspect-ratio: 1; padding: 7%; margin-top: 4%; border-radius: 50%; background: #FFFFFF; color: #8A3FC0; box-sizing: content-box; }
 .thema-tuin .spel-knop:nth-child(8n+2) { --hoed: #8A3FC0; }
 .thema-tuin .spel-knop:nth-child(8n+3) { --hoed: #E0672E; }
 .thema-tuin .spel-knop:nth-child(8n+4) { --hoed: #4D9BE8; }
@@ -182,7 +182,7 @@
 .thema-tuin .spel-knop:nth-child(8n+8) { --hoed: #1D9AA8; }
 .thema-tuin .spel-knop.op-slot .spel-tegel { filter: saturate(.25) brightness(1.05); background: var(--hoed, #C2337A); color: #B9A6CC; }
 .thema-tuin .spel-knop .spel-naam, .thema-tuin .spel-uitleg { color: var(--ink); }
-.thema-slaap { position: absolute; left: 50%; top: 112%; transform: translateX(-50%); width: 40px; z-index: 1; }
+.thema-slaap { position: absolute; left: 50%; top: 104%; transform: translateX(-50%); width: 40px; z-index: 1; }
 .thema-slaap svg { display: block; width: 100%; }
 .thema-slaap b { position: absolute; top: -26px; right: -22px; font-size: 24px; color: #8A3FC0; animation: thema-zweef-op 2.4s ease-in-out infinite; }
 .thema-bloemetjes { display: flex; gap: 4px; }

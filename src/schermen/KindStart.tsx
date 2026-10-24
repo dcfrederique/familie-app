@@ -15,6 +15,9 @@ import Figuurtje, { hoofdUitsnede } from './Figuurtje.tsx'
 import NieuwStuk from './NieuwStuk.tsx'
 import { Ster, SterrenPil } from './onderdelen.tsx'
 import './schermen.css'
+import Bladzijden from './Bladzijden.tsx'
+
+const TAAK_MAAT = { breed: 230, hoog: 240, gap: 14, maxHoog: 290 }
 
 type Lijst = { taak: Taak; status: TaakStatus }[]
 
@@ -101,9 +104,8 @@ function StartLezer({ kind, lijst, geladen, vrij, verzoeken, kies }: {
       <main className="kind-start">
         <section aria-labelledby="taken-titel">
           <h2 id="taken-titel" className="sectie-titel display">Mijn taken vandaag</h2>
-          <div className="taken-raster">
-            {lijst.map(({ taak, status }) => <TaakKaart key={taak.id} taak={taak} status={status} kies={() => kies(taak)} />)}
-          </div>
+          <Bladzijden items={lijst} maat={TAAK_MAAT} className="taken-raster" label="Meer taken"
+                      toon={({ taak, status }) => <TaakKaart key={taak.id} taak={taak} status={status} kies={() => kies(taak)} />} />
           {geladen && lijst.length === 0 && <p className="leeg">Vandaag geen taken. Lekker spelen!</p>}
         </section>
 
@@ -210,8 +212,8 @@ function StartPrenten({ kind, lijst, geladen, kies }: { kind: Gebruiker; lijst: 
         </header>
       )}
 
-      <main className={`prent-raster${lijst.length === 5 ? ' veel' : ''}`}>
-        {lijst.map(({ taak, status }) => (
+      <Bladzijden items={lijst} perBlad={lijst.length > 4 ? 5 : 4} className={`prent-raster${lijst.length > 4 ? ' veel' : ''}`} label="Meer taken"
+                  toon={({ taak, status }) => (
           <div key={taak.id} className={`prent-kaart taak-${status}`}>
             {kanVoorlezen() && (
               <button type="button" className="voorlees-knop" aria-label={`Luister: ${taak.titel}`}
@@ -229,8 +231,7 @@ function StartPrenten({ kind, lijst, geladen, kies }: { kind: Gebruiker; lijst: 
             {status === 'wacht' && <span className="rond-groot wacht" role="img" aria-label="Wacht op mama of papa"><Zandloper /></span>}
             {status === 'gedaan' && <span className="rond-groot gedaan" role="img" aria-label="Gedaan"><Ster grootte={56} /></span>}
           </div>
-        ))}
-      </main>
+        )} />
 
       <nav className="ronde-tegels" aria-label="Spelen">
         {tegelsVoor(kind).map((t) => {
