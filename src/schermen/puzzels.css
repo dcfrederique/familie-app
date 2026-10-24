@@ -1,0 +1,20 @@
+/* Puzzels: bovenaan een balk met voorbeeld en teller, daaronder het bord met links en rechts de losse stukjes. */
+.puzzel-kaart { border: 0; padding: 0; font: inherit; text-align: left; }
+.puzzel { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.puzzel-balk { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 14px; width: 100%; }
+.puzzel-balk .stat { padding: 10px 20px; }
+.puzzel-balk .stat .getal { font-size: 34px; }
+.puzzel-balk .hoera { padding: 14px 22px; }
+.puzzel-voorbeeld { width: 150px; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 0 var(--shade); }
+.puzzel-voorbeeld .verhaal-prent { display: block; width: 100%; aspect-ratio: 8 / 5; }
+.puzzel-veld {
+  display: block; width: 100%; max-height: calc(100dvh - 230px); touch-action: none; user-select: none;
+  -webkit-user-select: none; -webkit-touch-callout: none;
+}
+.puzzel-bord { fill: var(--surface); stroke: var(--line); stroke-width: 2; }
+.puzzel-naad { fill: none; stroke: var(--line); stroke-width: 1; stroke-dasharray: 4 4; }
+.puzzel-stuk { cursor: grab; }
+.puzzel-stuk.vast { cursor: default; pointer-events: none; }
+.puzzel-rand { fill: none; stroke: #fff; stroke-width: 1.6; stroke-linejoin: round; }
+.puzzel-stuk.vast .puzzel-rand { stroke-width: 0.5; stroke-opacity: 0.5; }
+.puzzel-schaduw { fill: rgba(0, 0, 0, 0.22); }

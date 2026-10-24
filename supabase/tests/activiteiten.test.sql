@@ -49,6 +49,8 @@ select pg_temp.gelijk(public.activiteit_opslaan(:'kim', 'racen', '{"punten": 120
 select pg_temp.gelijk(public.activiteit_opslaan(:'kim', 'koken', '{"titel": "Pizza"}', 60), 0, 'koken');
 select pg_temp.gelijk(public.activiteit_omschrijving('koken', '{"titel": "Pizza"}'), 'Koken: Pizza', 'omschrijving koken');
 select pg_temp.gelijk(public.activiteit_omschrijving('basket', '{}'), 'Basket', 'omschrijving basket');
+select pg_temp.gelijk(public.activiteit_opslaan(:'kim', 'puzzel', '{"titel": "Pip wil ook zwemmen", "stukjes": 12}', 75), 0, 'puzzel');
+select pg_temp.gelijk(public.activiteit_omschrijving('puzzel', '{"titel": "Pip wil ook zwemmen"}'), 'Puzzel: Pip wil ook zwemmen', 'omschrijving puzzel');
 select pg_temp.fout(format('select public.activiteit_opslaan(%L, ''verstoppertje'')', :'kim'), 'activiteitlog_activiteit_check');
 select pg_temp.fout(format('select public.activiteit_opslaan(%L, ''schaken'')', :'kim'), 'activiteitlog_activiteit_check');
 

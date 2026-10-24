@@ -44,7 +44,7 @@ export function startNiveaus(kind: Gebruiker, kinderen: Gebruiker[]): { memory: 
   return oudsteLezer?.id === kind.id ? { memory: 'groot', rekenen: 'tot100' } : { memory: 'middel', rekenen: 'tot20' }
 }
 
-export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket'
+export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel'
 
 export interface SpelInfo {
   sleutel: SpelSleutel
@@ -62,6 +62,8 @@ export const spelMenu: SpelInfo[] = [
   { sleutel: 'penalty', naam: "Penalty's", uitleg: 'Schieten of keepen', drempel: 0, icoon: 'M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18zM12 7l4 3-1.5 4.5h-5L8 10zM12 3v4M16 10l4.5-1.5M14.5 14.5l2.5 4M9.5 14.5l-2.5 4M8 10l-4.5-1.5' },
   { sleutel: 'huisdier', naam: 'Huisdier wassen', uitleg: 'Schrobben, spoelen, drogen', drempel: 20,
     icoon: 'M8 11a2 2 0 1 1 0-4a2 2 0 0 1 0 4zM16 11a2 2 0 1 1 0-4a2 2 0 0 1 0 4zM4.5 15a1.8 1.8 0 1 1 0-3.6a1.8 1.8 0 0 1 0 3.6zM19.5 15a1.8 1.8 0 1 1 0-3.6a1.8 1.8 0 0 1 0 3.6zM12 13c-3 0-5 3-5 5s2 2 5 2s5 0 5-2s-2-5-5-5z' },
+  { sleutel: 'puzzel', naam: 'Puzzels', uitleg: 'Leg de stukjes op hun plek', drempel: 40,
+    icoon: 'M4 4h6a2 2 0 1 1 4 0h6v6a2 2 0 1 0 0 4v6h-6a2 2 0 1 0-4 0H4v-6a2 2 0 1 1 0-4z' },
   { sleutel: 'racen', naam: 'Racen', uitleg: 'Ontwijk en pak sterretjes', drempel: 30,
     icoon: 'M3 15l2-5h10l3 4h3v3H3zM7 18a1.5 1.5 0 1 0 0-.01M17 18a1.5 1.5 0 1 0 0-.01M7 10l1.5-3h5L15 10' },
   { sleutel: 'koken', naam: 'Koken', uitleg: 'Volg het recept', drempel: 50,

@@ -21,6 +21,7 @@ open is, blijft open.
 | --- | --- | --- |
 | Rekenen, Memory, Penalty's | meteen | meteen |
 | Huisdier wassen | 20 | 4 |
+| Puzzels | 40 | 8 |
 | Racen | 30 | 6 |
 | Koken | 50 | 10 |
 | Touwspringen | 75 | 15 |
@@ -68,6 +69,16 @@ Kies een huisdier (hondje, poes, konijn of pony). Het diertje zit vol modder. Vi
 groot icoon: **schrobben** met de spons tot de modder weg is, **afspoelen** met de douche tot het schuim
 weg is, **afdrogen** met de handdoek en tot slot een **strikje** of halsband kiezen. Geen tijd, geen fouten:
 rustig en voor iedereen te doen. Wie niet leest hoort bij elke stap wat er moet gebeuren.
+
+### Puzzels (iedereen)
+
+Gebouwd op 24 oktober 2026. Kies een prent en het aantal stukjes, en sleep de stukjes (met echte nopjes) naar
+hun plek op het bord; dicht genoeg bij de juiste plek klikt een stukje vast. Bij 4 en 6 stukjes staat de prent
+vaag op het bord als hulp, bij 12 en 20 alleen het voorbeeld bovenaan. Record = snelste tijd per niveau.
+Startniveau: wie niet leest 4 stukjes, de oudste lezer 20, andere lezers 12 (het kind kan zelf wisselen).
+De prenten zijn voorlopig de drukste bladzijde van elk verhaal (`src/data/puzzels.ts`); de gegenereerde prenten
+uit `docs/azure-extra.md` (stap 3) komen er later bij. Logica en tests in `src/lib/spelletjes/puzzel.ts`,
+migratie `20261024000300_puzzels.sql` laat `puzzel` toe in het activiteitlog.
 
 ## Eigen ideeën voor later
 

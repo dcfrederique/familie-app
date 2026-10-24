@@ -74,7 +74,7 @@ Bewijsfoto's in Supabase Storage nemen we niet mee: die zijn alleen nodig tot ee
 2. **70 nieuwe verhalen schrijven.** Claude schrijft ze als JSON in `src/data/verhalen/`, zoals de bestaande 30, verdeeld over de drie reeksen. Dit kost niets aan Azure. Frederique leest ze na (of een selectie).
 3. **Prenten genereren.** Een script maakt per bladzijde een prent: 100 verhalen × ±6 bladzijden = ±600 prenten. Elke prent wordt nagekeken; mislukte opnieuw. De bestaande 30 verhalen krijgen ook nieuwe prenten, zodat de stijl overal gelijk is.
 4. **Kleurplaten.** Dezelfde personages als lijntekening. Om ze met één tik in te kleuren (zoals nu in `src/data/kleurplaten.ts`) zetten we de tekening om naar vlakken met een vectorizer (bv. potrace). Dat lukt niet altijd netjes, dus per plaat nakijken; reken op ±30 bruikbare platen.
-5. **Puzzels (nieuw spel).** Een prent uit een verhaal in 4, 9 of 16 stukjes, naar de juiste plek slepen. Vrijspelen met sterren zoals de andere spelletjes (`docs/spelletjes.md`).
+5. **Puzzels.** Het spel bestaat al sinds 24 oktober 2026 (`docs/spelletjes.md`) met de getekende verhaalprenten; hier krijgt het de nieuwe prenten: een regel per prent in `src/data/puzzels.ts`.
 6. **Voorleesstem bijwerken.** De 70 nieuwe verhalen zijn ±50.000 tekens extra; alles samen ±70.000, nog steeds ver onder de 500.000 gratis tekens per maand.
 
 **Opslag:** 600 prenten als WebP van ±100 KB is ±60 MB. Dat is te veel voor de repo en de precache van de app. Ze komen in een publieke container `prenten` in hetzelfde Azure Storage-account als de back-ups (minder dan €0,05 per maand opslag; het verkeer blijft klein omdat de service worker elke prent maar één keer downloadt). De app laadt een prent pas als het kind het verhaal opent.

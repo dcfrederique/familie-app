@@ -144,15 +144,24 @@ export function plaatsFiguren(lijst: string[], horizon: number): Geplaatst[] {
 }
 
 export function VerhaalPrent({ prent, label }: { prent: PrentData; label?: string }) {
+  return (
+    <svg viewBox={`0 0 ${B} ${H}`} className="verhaal-prent" role="img" aria-label={label ?? 'Prent'} preserveAspectRatio="xMidYMid slice">
+      <PrentTekening prent={prent} />
+    </svg>
+  )
+}
+
+/** Alleen de tekening (400 × 250), om in een andere SVG te gebruiken, zoals bij de puzzels. */
+export function PrentTekening({ prent, idVoorvoegsel = 'l' }: { prent: PrentData; idVoorvoegsel?: string }) {
   const d = decors[prent.decor] ?? decors.weide
   const horizon = d.horizon ?? 175
   const geplaatst = plaatsFiguren(prent.figuren, horizon)
   // Grote figuren eerst, zodat kleine ervoor staan.
   const volgorde = [...geplaatst].sort((a, b) => (figuren[b.naam].vol ? 1 : 0) - (figuren[a.naam].vol ? 1 : 0) || figuren[b.naam].h * b.schaal - figuren[a.naam].h * a.schaal)
   const [boven, onder] = d.lucht ? lucht[d.lucht] : [d.muur!, d.muur!]
-  const id = `l-${prent.decor}`
+  const id = `${idVoorvoegsel}-${prent.decor}`
   return (
-    <svg viewBox={`0 0 ${B} ${H}`} className="verhaal-prent" role="img" aria-label={label ?? 'Prent'} preserveAspectRatio="xMidYMid slice">
+    <>
       <defs><linearGradient id={id} x1="0" y1="0" x2="0" y2="1"><stop offset="0" stopColor={boven} /><stop offset="1" stopColor={onder} /></linearGradient></defs>
       <rect width={B} height={H} fill={`url(#${id})`} />
       {d.achter}
@@ -169,6 +178,6 @@ export function VerhaalPrent({ prent, label }: { prent: PrentData; label?: strin
           </g>
         )
       })}
-    </svg>
+    </>
   )
 }

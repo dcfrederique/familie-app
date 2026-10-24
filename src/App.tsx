@@ -8,6 +8,7 @@ import KinderenBeheer from './schermen/KinderenBeheer.tsx'
 import KindStart from './schermen/KindStart.tsx'
 import Kleerkast from './schermen/Kleerkast.tsx'
 import Huisdier from './schermen/Huisdier.tsx'
+import Puzzels from './schermen/Puzzels.tsx'
 import Memory from './schermen/Memory.tsx'
 import Penalty from './schermen/Penalty.tsx'
 import Koken from './schermen/Koken.tsx'
@@ -57,6 +58,7 @@ export default function App() {
         <Route path="koken" element={<Koken />} />
         <Route path="touwspringen" element={<Touwspringen />} />
         <Route path="basket" element={<Basket />} />
+        <Route path="puzzel" element={<Puzzels />} />
         <Route path="verhalen" element={<Verhalen />} />
         <Route path="verhaal/:nr" element={<Verhaal />} />
         <Route path="kleurplaten" element={<KleurplaatLijst />} />

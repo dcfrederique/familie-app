@@ -51,3 +51,10 @@ export const kleurplaatBewaren = (kind: string, plaat: string, kleuren: (string 
 /** Spelletjes die het kind op dit toestel al eens opende (voor het label Nieuw! in het menu). */
 export const spelGeopend = (kind: string, spel: string) => lees(`spel-geopend-${spel}-${kind}`) === 'ja'
 export const spelOpenen = (kind: string, spel: string) => schrijf(`spel-geopend-${spel}-${kind}`, 'ja')
+
+/** Puzzels die het kind op dit toestel al eens afmaakte (voor een vinkje in de lijst). */
+export const puzzelsAf = (kind: string): string[] => (lees(`puzzels-af-${kind}`) ?? '').split(',').filter(Boolean)
+export function puzzelAf(kind: string, sleutel: string) {
+  const al = puzzelsAf(kind)
+  if (!al.includes(sleutel)) schrijf(`puzzels-af-${kind}`, [...al, sleutel].join(','))
+}
