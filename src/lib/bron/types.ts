@@ -1,4 +1,5 @@
 // Gemeenschappelijke vorm van de gegevens, voor Supabase en voor de demo zonder Supabase.
+import type { Aanbod } from '../../data/aanbod.ts'
 import type { Figuurtje } from '../../data/figuurtje.ts'
 import type { Kleur } from '../../data/gezin.ts'
 import type { Activiteit } from '../regels.ts'
@@ -183,6 +184,8 @@ export interface Bron {
   spelregels(): Promise<Spelregels>
   /** Wat elk kind gekocht heeft in de winkel, als sleutels 'hoofd:kroon' of 'spel:racen' (docs/winkel.md). */
   aankopen(): Promise<Record<string, string[]>>
+  /** Wat in de winkel ligt en wat elk kind ziet (docs/winkelaanbod.md); leeg aanbod (alles zichtbaar) zonder migratie. */
+  aanbod(): Promise<Aanbod>
   /** Het weekmenu van `van` tot en met `tot` ('JJJJ-MM-DD'); leeg zonder migratie 20261024000600_weekmenu. */
   weekmenu(van: string, tot: string): Promise<Maaltijd[]>
   /** Onze taken: alles wat nog open staat, en wat de laatste 7 dagen gedaan is. Alleen voor een ouder-account. */
@@ -225,6 +228,10 @@ export interface Bron {
   taakVerwijderen(id: string): Promise<void>
   spelregelsOpslaan(regels: Spelregels): Promise<void>
   kindAanpassen(id: string, wijziging: KindWijziging): Promise<void>
+  /** Legt een spelletje (soort 'spel') of een stuk van het figuurtje in de winkel, of haalt het eruit. */
+  aanbodVrijgeven(soort: string, sleutel: string, vrijgegeven: boolean): Promise<void>
+  /** Toont het een kind of verbergt het voor dat kind. */
+  aanbodVoorKind(kindId: string, soort: string, sleutel: string, zichtbaar: boolean): Promise<void>
   /** Bewaart de maaltijd van een dag; een leeg gerecht haalt de dag uit het weekmenu. */
   maaltijdOpslaan(maaltijd: Maaltijd): Promise<void>
   ouderTaakOpslaan(taak: NieuweOuderTaak): Promise<void>

@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom'
+import { inAanbod, leegAanbod } from '../data/aanbod.ts'
 import {
-  categorie, figuurtjeVan, isVrij, prijsVoor, verrassing, zichtbareCategorieen, zichtbareStukken,
+  bezitSleutel, categorie, figuurtjeVan, isVrij, prijsVoor, verrassing, zichtbareCategorieen, zichtbareStukken,
   type Bezit, type Categorie, type Figuurtje as FiguurtjeData, type Stuk,
 } from '../data/figuurtje.ts'
 import { kleurKlasse } from '../data/gezin.ts'
@@ -28,8 +29,8 @@ export default function Kleerkast() {
   const { kinderen, bron, herlaad } = useSessie()
   const kind = kinderen.find((k) => k.id === id)
   const { data: winkel, ververs } = useGegevens(bron && id ? async () => {
-    const [aankopen, saldi] = await Promise.all([bron.aankopen(), bron.saldi()])
-    return { eigen: new Set(aankopen[id] ?? []), vrij: saldi[id]?.vrij ?? 0 }
+    const [aankopen, saldi, aanbod] = await Promise.all([bron.aankopen(), bron.saldi(), bron.aanbod()])
+    return { eigen: new Set(aankopen[id] ?? []), vrij: saldi[id]?.vrij ?? 0, aanbod }
   } : null, [bron, id])
 
   const [figuurtje, setFiguurtje] = useState<FiguurtjeData | null>(null)
@@ -63,6 +64,10 @@ export default function Kleerkast() {
   const v: Bezit = { eigen: winkel?.eigen ?? new Set<string>(), allesVrij: kind.figuurtje_alles_vrij, kanLezen: lezer }
   const vrij = winkel?.vrij ?? 0
   const info = categorie(cat)
+  // Wat het kind nu draagt blijft te zien, ook als een ouder het uit de winkel haalde (docs/winkelaanbod.md).
+  const bewaard = figuurtjeVan(kind)
+  const teZien = (c: Categorie, s: Stuk) => s.prijs === 0 || inAanbod(winkel?.aanbod ?? leegAanbod, kind.id,
+    bezitSleutel(c, s.id), v.eigen.has(bezitSleutel(c, s.id)) || bewaard[c] === s.id)
   const zeg = (tekst: string) => { if (!lezer) leesVoor(tekst) }
 
   function wijzig(nieuw: FiguurtjeData) {
@@ -158,7 +163,7 @@ export default function Kleerkast() {
             </div>
 
             <div className="kast-keuzes" role="tabpanel">
-              {zichtbareStukken(info, lezer).map((s) => {
+              {zichtbareStukken(info, lezer).filter((s) => teZien(cat, s)).map((s) => {
                 const eigen = isVrij(cat, s, v)
                 const prijs = prijsVoor(s, v)
                 return (
@@ -194,7 +199,7 @@ export default function Kleerkast() {
                 {lezer && <span>Terug</span>}
               </button>
               <button type="button" className="kast-actie" aria-label="Verrassing"
-                      onClick={() => { zeg('Verrassing!'); wijzig(verrassing(v, figuurtje)) }}>
+                      onClick={() => { zeg('Verrassing!'); wijzig(verrassing(v, figuurtje, Math.random, teZien)) }}>
                 <svg className="ic" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M5 4h14a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1zM8.5 8.5h.01M15.5 15.5h.01M12 12h.01M15.5 8.5h.01M8.5 15.5h.01" /></svg>
                 {lezer && <span>Verrassing</span>}
               </button>

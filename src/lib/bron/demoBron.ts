@@ -1,5 +1,6 @@
 // Demo zonder Supabase: alles in het geheugen van de browser, met dezelfde spelregels.
 // Handig om de schermen te bekijken voor de database gekoppeld is. Pincode in de demo: 1234.
+import { inAanbod, type Aanbod } from '../../data/aanbod.ts'
 import { bezitSleutel, categorieen, controleer, prijsVoor, type Figuurtje } from '../../data/figuurtje.ts'
 import { spelMenu } from '../../data/spelletjes.ts'
 import type { Gebruiker } from '../../data/gezin.ts'
@@ -18,6 +19,7 @@ interface Toestand {
   activiteiten: ActiviteitRegel[]
   log: LogRegel[]
   aankopen: Record<string, string[]>
+  aanbod: Aanbod
   weekmenu: Maaltijd[]
   ouderTaken: OuderTaak[]
   notities: Notitie[]
@@ -54,6 +56,7 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
     // Wat startsaldo, zodat Extra tijd vragen meteen te proberen is.
     log: kinderen.map((k, i) => ({ id: i + 1, kind_id: k.id, delta: 40, reden: 'Startsaldo (demo)', tijdstip: nu })),
     aankopen: {},
+    aanbod: { dicht: [], nieuw: [], verborgen: {} },
     // Vandaag al iets op het menu, zodat het startscherm van de kinderen het meteen toont.
     weekmenu: [{ dag: dagVan(new Date()), gerecht: 'Spaghetti bolognese', prentje: null }],
     // Een paar voorbeelden zodat Onze taken en Notities niet leeg openen.
@@ -134,6 +137,10 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
     async gezondheidProfiel() { return t.profiel && { ...t.profiel } },
     async wegingen() { return t.wegingen.slice().sort((a, b) => a.dag.localeCompare(b.dag)).map((w) => ({ ...w })) },
     async aankopen() { return Object.fromEntries(Object.entries(t.aankopen).map(([k, v]) => [k, [...v]])) },
+    async aanbod() {
+      const a = t.aanbod
+      return { dicht: [...a.dicht], nieuw: [...a.nieuw], verborgen: Object.fromEntries(Object.entries(a.verborgen).map(([k, v]) => [k, [...v]])) }
+    },
 
     async taakIndienen(kind, taakId, foto) {
       const taak = t.taken.find((x) => x.id === taakId)
@@ -176,6 +183,7 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       const prijs = prijsVoor(stuk, { allesVrij: k.figuurtje_alles_vrij, kanLezen: k.kan_lezen })
       const eigen = (t.aankopen[kindId] ??= [])
       if (prijs === 0 || eigen.includes(bezitSleutel(soort, sleutel))) return
+      if (!inAanbod(t.aanbod, kindId, bezitSleutel(soort, sleutel), false)) throw new Error(`nog niet in de winkel: ${sleutel}`)
       if (saldo(kindId) - gereserveerd(kindId) < prijs) throw new Error('niet genoeg sterren')
       eigen.push(bezitSleutel(soort, sleutel))
       boek(kindId, -prijs, `Gekocht: ${naam}`)
@@ -259,6 +267,15 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
     async kindAanpassen(kindId, wijziging) {
       const k = kinderen.find((x) => x.id === kindId)
       if (k) Object.assign(k, wijziging)
+    },
+    async aanbodVrijgeven(soort, sleutel, vrijgegeven) {
+      const s = bezitSleutel(soort, sleutel)
+      t.aanbod.nieuw = t.aanbod.nieuw.filter((x) => x !== s)
+      t.aanbod.dicht = t.aanbod.dicht.filter((x) => x !== s).concat(vrijgegeven ? [] : [s])
+    },
+    async aanbodVoorKind(kindId, soort, sleutel, zichtbaar) {
+      const s = bezitSleutel(soort, sleutel)
+      t.aanbod.verborgen[kindId] = (t.aanbod.verborgen[kindId] ?? []).filter((x) => x !== s).concat(zichtbaar ? [] : [s])
     },
     async maaltijdOpslaan({ dag, gerecht, prentje }) {
       t.weekmenu = t.weekmenu.filter((m) => m.dag !== dag)

@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { inAanbod, leegAanbod } from '../data/aanbod.ts'
+import { bezitSleutel } from '../data/figuurtje.ts'
 import type { Gebruiker } from '../data/gezin.ts'
 import { spelIsVrij, spelMenu, spelPrijs, type SpelInfo } from '../data/spelletjes.ts'
 import { useGegevens } from '../lib/gegevens.ts'
@@ -33,8 +35,8 @@ function SpelMenu({ kind }: { kind: Gebruiker }) {
   const { bron } = useSessie()
   const thema = useThema()
   const { data, ververs } = useGegevens(bron ? async () => {
-    const [aankopen, saldi] = await Promise.all([bron.aankopen(), bron.saldi()])
-    return { eigen: new Set(aankopen[kind.id] ?? []), vrij: saldi[kind.id]?.vrij ?? 0 }
+    const [aankopen, saldi, aanbod] = await Promise.all([bron.aankopen(), bron.saldi(), bron.aanbod()])
+    return { eigen: new Set(aankopen[kind.id] ?? []), vrij: saldi[kind.id]?.vrij ?? 0, aanbod }
   } : null, [bron, kind.id])
   const [tip, setTip] = useState<{ sleutel: string; tekst: string } | null>(null)
   const [koop, setKoop] = useState<SpelInfo | null>(null)
@@ -43,6 +45,11 @@ function SpelMenu({ kind }: { kind: Gebruiker }) {
 
   const v = { eigen: data?.eigen ?? new Set<string>(), allesVrij: kind.figuurtje_alles_vrij, kanLezen: kind.kan_lezen }
   const vrij = data?.vrij ?? 0
+  // Wat de ouders niet in de winkel legden of voor dit kind verbergen, staat er niet (docs/winkelaanbod.md).
+  const spellen = spelMenu.filter((s) => {
+    const sleutel = bezitSleutel('spel', s.sleutel)
+    return inAanbod(data?.aanbod ?? leegAanbod, kind.id, sleutel, v.eigen.has(sleutel))
+  })
 
   function opSlot(s: SpelInfo, prijs: number) {
     if (!data) return
@@ -64,11 +71,11 @@ function SpelMenu({ kind }: { kind: Gebruiker }) {
 
   return (
     <>
-      {data && spelMenu.some((s) => !spelIsVrij(s, v)) && (
+      {data && spellen.some((s) => !spelIsVrij(s, v)) && (
         <p className="spel-saldo" aria-live="polite"><SterrenPil aantal={vrij} metWoord={kind.kan_lezen} /></p>
       )}
-      <Bladzijden items={spelMenu} maat={{ breed: 170, hoog: 190, gap: 24, verhouding: thema ? VERHOUDING[thema] : 1 }} className="spel-menu" label="Meer spelletjes" toon={(s) => {
-          const i = spelMenu.indexOf(s)
+      <Bladzijden items={spellen} maat={{ breed: 170, hoog: 190, gap: 24, verhouding: thema ? VERHOUDING[thema] : 1 }} className="spel-menu" label="Meer spelletjes" toon={(s) => {
+          const i = spellen.indexOf(s)
           const prijs = spelPrijs(s, v)
           // Zolang de aankopen niet geladen zijn, staat wat iets kost nog op slot.
           const dicht = !spelIsVrij(s, v)

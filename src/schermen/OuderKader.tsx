@@ -45,6 +45,8 @@ const iconen: Record<MenuIcoon | 'menu' | 'bel' | 'terug', ReactNode> = {
   weekmenu: <path d="M5 3v6a2 2 0 0 0 4 0V3M7 11v10M18 21V3c-2.5 1-4 4-4 9h4" />,
   toestellen: <><rect x="7" y="3" width="10" height="18" rx="2.5" /><path d="M11 18h2" /></>,
   pincode: <><rect x="5" y="10.5" width="14" height="10" rx="2.5" /><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" /></>,
+  // Etalage met een prijskaartje.
+  aanbod: <><path d="M3 10l1.5-5h15L21 10M4 10v10h16V10M3 10h18" /><path d="M9 14h6v6H9z" /></>,
   nieuw: <path d="M12 3l2.3 5.4 5.7.5-4.3 3.8 1.3 5.6L12 15.4l-5 2.9 1.3-5.6L4 8.9l5.7-.5z" />,
   winkels: <path d="M4 9.5L5.5 4h13L20 9.5M4 9.5a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0 2.7 2.7 0 0 0 5.3 0M5.5 12v8h13v-8M10 20v-5h4v5" />,
 }
@@ -60,9 +62,11 @@ function useMenuGegevens() {
   const opGsm = status === 'demo' || account?.soort === 'ouder'
   const ik = account?.ouder_id ?? gebruikers.find((g) => g.rol === 'ouder')?.id ?? null
   const { data } = useGegevens(bron ? async () => {
-    const [v, i, a, saldi, onze] = await Promise.all([bron.openVerzoeken(), bron.teBeoordelen(), bron.activiteitenTeBeoordelen(), bron.saldi(),
-                                                      opGsm ? bron.ouderTaken().catch(() => []) : []])
-    return { wachtend: v.length + i.length + a.length, saldi, onzeTaken: teDoenVandaag(onze, ik, vandaag()) }
+    const [v, i, a, saldi, onze, aanbod] = await Promise.all([bron.openVerzoeken(), bron.teBeoordelen(), bron.activiteitenTeBeoordelen(), bron.saldi(),
+                                                              opGsm ? bron.ouderTaken().catch(() => []) : [],
+                                                              opGsm ? bron.aanbod().catch(() => null) : null])
+    return { wachtend: v.length + i.length + a.length, saldi, onzeTaken: teDoenVandaag(onze, ik, vandaag()),
+             nieuwAanbod: aanbod?.nieuw.length ?? 0 }
   } : null, [bron, opGsm, ik])
   return data ?? null
 }
@@ -133,6 +137,9 @@ function Kader({ titel, wachtend, children }: { titel: string; wachtend?: number
                 <NavLink key={item.naam} to={item.pad} end className="menu-item">
                   <Icoon naam={item.icoon} /><span>{item.naam}</span>
                   {item.teller === 'goedkeuren' && teller > 0 && <span className="item-teller">{teller}</span>}
+                  {item.teller === 'aanbod' && (menuGegevens?.nieuwAanbod ?? 0) > 0 && (
+                    <span className="item-teller item-teller-taken" aria-label={`${menuGegevens!.nieuwAanbod} nieuw`}>{menuGegevens!.nieuwAanbod}</span>
+                  )}
                   {item.teller === 'onzetaken' && (menuGegevens?.onzeTaken ?? 0) > 0 && (
                     <span className="item-teller item-teller-taken" aria-label={`${menuGegevens!.onzeTaken} te doen`}>{menuGegevens!.onzeTaken}</span>
                   )}

@@ -23,6 +23,7 @@ import Spelen from './schermen/Spelen.tsx'
 import TakenBeheer from './schermen/TakenBeheer.tsx'
 import Toestellen from './schermen/Toestellen.tsx'
 import Spelregels from './schermen/Spelregels.tsx'
+import Winkelaanbod from './schermen/Winkelaanbod.tsx'
 import Nieuwtjes from './schermen/Nieuwtjes.tsx'
 import PincodeBeheer from './schermen/PincodeBeheer.tsx'
 import Weekmenu from './schermen/Weekmenu.tsx'
@@ -80,6 +81,7 @@ export default function App() {
       <Route path="/ouder/kinderen" element={<KinderenBeheer />} />
       <Route path="/ouder/toestellen" element={<Toestellen />} />
       <Route path="/ouder/spelregels" element={<Spelregels />} />
+      <Route path="/ouder/aanbod" element={<Winkelaanbod />} />
       <Route path="/ouder/nieuw" element={<Nieuwtjes />} />
       <Route path="/ouder/pincode" element={<PincodeBeheer />} />
       <Route path="/ouder/weekmenu" element={<Weekmenu />} />

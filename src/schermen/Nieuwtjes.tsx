@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { nieuwtjes } from '../data/nieuwtjes.ts'
 import OuderKader from './OuderKader.tsx'
 
@@ -15,7 +16,7 @@ export default function Nieuwtjes() {
           {(n.verhaal || n.spel) && (
             <ul>
               {n.verhaal && <li>Verhaal: {n.verhaal}</li>}
-              {n.spel && <li>Spelletje: {n.spel.naam} ({n.spel.prijs} sterren in de winkel)</li>}
+              {n.spel && <li>Spelletje: {n.spel.naam} ({n.spel.prijs} sterren), <Link to="/ouder/aanbod">vrijgeven bij Winkelaanbod</Link></li>}
             </ul>
           )}
           {n.open && <p className="tip">Nog open: {n.open}</p>}

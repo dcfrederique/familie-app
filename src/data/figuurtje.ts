@@ -160,12 +160,13 @@ export function basisFiguurtje(thema: Kleur | null): Figuurtje {
 export const figuurtjeVan = (kind: Pick<Gebruiker, 'figuurtje' | 'thema'>): Figuurtje =>
   kind.figuurtje ? { ...basisFiguurtje(kind.thema), ...kind.figuurtje } : basisFiguurtje(kind.thema)
 
-/** Willekeurig figuurtje uit de eigen stukken (knop Verrassing). */
-export function verrassing(v: Bezit, huidig: Figuurtje, kans: () => number = Math.random): Figuurtje {
+/** Willekeurig figuurtje uit de eigen stukken (knop Verrassing); `mag` laat weg wat niet in de winkel ligt. */
+export function verrassing(v: Bezit, huidig: Figuurtje, kans: () => number = Math.random,
+                           mag: (c: Categorie, s: Stuk) => boolean = () => true): Figuurtje {
   const kies = <T,>(xs: T[]) => xs[Math.floor(kans() * xs.length)]
   const uit: Figuurtje = { ...huidig }
   for (const c of zichtbareCategorieen(v.kanLezen)) {
-    uit[c.id] = kies(zichtbareStukken(c, v.kanLezen).filter((s) => isVrij(c.id, s, v))).id
+    uit[c.id] = kies(zichtbareStukken(c, v.kanLezen).filter((s) => isVrij(c.id, s, v) && mag(c.id, s))).id
     if (c.kleur) uit[c.kleur.veld] = kies(Object.keys(c.kleur.palet))
   }
   return uit

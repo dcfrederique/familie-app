@@ -15,6 +15,7 @@ staat, en die sterren gaan echt van hun saldo af. Dit vervangt optie C uit `docs
 - Wie niet leest (Feline) betaalt de helft, naar boven afgerond. Zij ziet de prijs als sterretjes en hoort de vraag
   voorgelezen; de knoppen zijn een kruisje en een vinkje.
 - Te weinig sterren: een korte tip "Nog 6 sterren sparen" (of voorgelezen "Nog even sterren sparen!").
+- Wat in de winkel ligt en welk kind wat ziet, kiezen de ouders bij Kinderen → Winkelaanbod (`docs/winkelaanbod.md`).
 - De ouder kan de winkel per kind uitzetten bij Kinderen (de schakelaar "Figuurtje en spelletjes kopen met
   sterren"); dan is alles gratis.
 - Alles wat een kind met het oude systeem al had vrijgespeeld, blijft van hem of haar zonder iets af te schrijven

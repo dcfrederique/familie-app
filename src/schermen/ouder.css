@@ -293,3 +293,18 @@ a.vink-tekst { text-decoration: none; }
 .profiel-formulier .veld small { font-weight: 400; color: var(--muted); font-size: 13px; }
 .ouder .is-later-kaart { align-self: start; }
 .ouder .nieuwtje ul { margin: 8px 0 0 18px; font-size: 14px; }
+
+/* Winkelaanbod: per spelletje of stuk "in de winkel" en per kind wie het ziet. */
+.aanbod-lijst { list-style: none; margin: 0; padding: 0; }
+.aanbod-rij { display: grid; grid-template-columns: 1fr auto; gap: 8px 12px; align-items: center; padding: 10px 12px; border-top: 1px solid var(--line); }
+.aanbod-rij.is-dicht .aanbod-naam strong { color: var(--muted); }
+.aanbod-naam { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.ouder .aanbod-naam .tip { margin: 0; font-size: 13px; }
+.aanbod-vrij { display: flex; align-items: center; gap: 6px; min-height: 48px; font-size: 14px; white-space: nowrap; }
+.aanbod-vrij input { width: 22px; height: 22px; accent-color: var(--accent); }
+.aanbod-kinderen { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 6px; }
+.aanbod-kind { display: inline-flex; align-items: center; gap: 6px; min-height: 40px; padding: 0 10px 0 6px; border: 1px solid var(--line);
+  background: transparent; color: var(--muted); font-size: 14px; text-decoration: line-through; opacity: .7; }
+.aanbod-kind[aria-pressed="true"] { color: var(--ink); text-decoration: none; opacity: 1; border-color: var(--accent); }
+.aanbod-knoppen { display: flex; gap: 6px; }
+.ouder .lijst-kop .knop-klein { text-transform: none; letter-spacing: 0; }

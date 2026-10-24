@@ -3,15 +3,15 @@
 export type MenuIcoon =
   | 'vandaag' | 'goedkeuren' | 'taken' | 'kinderen' | 'spelregels'
   | 'onzetaken' | 'boodschappen' | 'notities' | 'gewicht' | 'profiel' | 'fitness' | 'lopen'
-  | 'weekmenu' | 'toestellen' | 'pincode' | 'winkels' | 'nieuw'
+  | 'weekmenu' | 'toestellen' | 'pincode' | 'winkels' | 'nieuw' | 'aanbod'
 
 export interface MenuItem {
   naam: string
   icoon: MenuIcoon
   /** Leeg: komt later. */
   pad?: string
-  /** Toont een getal: wat op goedkeuring wacht, of je taken in Onze taken voor vandaag en eerder. */
-  teller?: 'goedkeuren' | 'onzetaken'
+  /** Toont een getal: wat op goedkeuring wacht, je taken in Onze taken voor vandaag en eerder, of nieuw winkelaanbod. */
+  teller?: 'goedkeuren' | 'onzetaken' | 'aanbod'
   alleenOuderGsm?: boolean
 }
 
@@ -36,6 +36,7 @@ export const ouderMenu: MenuGroep[] = [
     { naam: 'Taken van de kinderen', icoon: 'taken', pad: '/ouder/taken' },
     { naam: 'Kinderen en tijd', icoon: 'kinderen', pad: '/ouder/kinderen' },
     { naam: 'Spelregels', icoon: 'spelregels', pad: '/ouder/spelregels' },
+    { naam: 'Winkelaanbod', icoon: 'aanbod', pad: '/ouder/aanbod', teller: 'aanbod', alleenOuderGsm: true },
   ] },
   { naam: 'Wij', alleenOuderGsm: true, items: [
     { naam: 'Weekmenu', icoon: 'weekmenu', pad: '/ouder/weekmenu' },

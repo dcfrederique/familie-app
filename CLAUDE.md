@@ -22,6 +22,7 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - Afkeuren kost niets, geen strafpunten.
 - Zonder goedkeuring: de eenmalige welkomstbonus van 10 sterren op het einde van het welkomstpad, en de sterren uit lerende spelletjes (rekenen, verhalen, kleurplaten), die er meteen bij komen binnen het dagplafond voor activiteiten (beide gevraagd door de ouders, 24 oktober 2026).
 - Nieuwe spelletjes en stukken voor het figuurtje koopt het kind zelf met sterren; die gaan van het vrije saldo af (`docs/winkel.md`).
+- De ouders kiezen wat in de winkel ligt en per kind wat het ziet (Kinderen → Winkelaanbod, `docs/winkelaanbod.md`); de server controleert. Nieuw aanbod ligt er pas na vrijgave door een ouder.
 - Elke tablet hoort bij één kind (`docs/tablet-per-kind.md`); een ander kind kiezen kan alleen met de pincode of vanaf de gsm van een ouder.
 - Elke bij- en afschrijving komt in een puntenlog met reden.
 - Rustige en lerende activiteiten (verhalen, rekenen, kleurplaten) leveren sterren op en tellen **niet** mee voor de app-tijd; spelletjes (memory, penalty's) leveren niets op en tellen **wel** mee.
@@ -39,6 +40,7 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - `docs/huis.md` en `prototypes/huis.html`: use case en klikbaar prototype van Mijn huis (huis groeit met verdiende sterren, zelf aankleden); nog niet in de app.
 - `docs/azure-extra.md` en `docs/prenten.md`: Azure-extra's (back-up, leesoefening Ik lees zelf, prenten met Azure OpenAI) en het stappenplan voor de prenten.
 - `docs/winkel.md`: sterren inwisselen voor spelletjes en stukken van het figuurtje, en sterren uit spelletjes zonder goedkeuring.
+- `docs/winkelaanbod.md`: de ouders geven spelletjes en stukken vrij voor de winkel (in fases) en kiezen per kind wat het ziet.
 - `docs/tablet-per-kind.md`: tablet vastzetten op één kind en het welkomstpad (figuurtje, verjaardag, thema, welkomstbonus).
 - `prototypes/thema-subschermen.html`: mockup van het kinderthema (race, kasteel, tuin) in de subschermen; zit in de app via `src/data/themaPrenten.ts`, `src/schermen/ThemaDelen.tsx` en `src/schermen/thema-schermen.css`.
 - `docs/weekmenu.md`: weekmenu met de warme maaltijd per dag (ouderdeel Wij → Weekmenu), de kinderen zien die van vandaag op hun startscherm.
@@ -84,6 +86,9 @@ Dit gebeurt in twee fases: eerst uitdenken (ontwerp), daarna coderen (bouw).
   (stukken voor het figuurtje, later ook Mijn huis) is te koop met sterren in de winkel:
   geef het een `prijs` in de data (zie `src/data/spelletjes.ts`, `docs/winkel.md`) en een rij in
   de servercatalogus (`spel_prijzen` via een nieuwe migratie)
+- Nieuwe spelletjes en unlockables liggen **niet** meteen in de winkel: de ouders geven ze vrij in
+  Kinderen → Winkelaanbod (`docs/winkelaanbod.md`). Laat `standaard_vrij` dus op `false` (de standaard) en
+  meld in het nieuwtje en het bericht aan de ouders dat het spelletje klaarstaat om vrij te geven
 
 ## Mappenstructuur
 - Plannen: `ideeen/YYYY-MM-DD.md`
