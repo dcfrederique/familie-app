@@ -1,11 +1,10 @@
-import { useState, type FormEvent } from 'react'
+import { useState } from 'react'
 import { figuurtjeVan } from '../data/figuurtje.ts'
 import { kleurKlasse, type Gebruiker, type Kleur } from '../data/gezin.ts'
 import { themaKeuzes } from '../data/thema.ts'
-import type { KindWijziging, Spelregels } from '../lib/bron/types.ts'
+import type { KindWijziging } from '../lib/bron/types.ts'
 import { useGegevens } from '../lib/gegevens.ts'
 import { leeftijd } from '../lib/datum.ts'
-import { regels as standaard } from '../lib/regels.ts'
 import { stemKeuzes, type StemKeuze } from '../lib/stem.ts'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import OuderKader, { ouderPin, pinOpnieuw } from './OuderKader.tsx'
@@ -13,21 +12,19 @@ import Figuurtje, { hoofdUitsnede } from './Figuurtje.tsx'
 import { SterrenPil } from './onderdelen.tsx'
 import './figuurtje.css'
 
-// Per kind: saldo, tijd geven, instellingen en geschiedenis. Onderaan de spelregels van het gezin.
+// Per kind: saldo, tijd geven, instellingen en geschiedenis. De spelregels staan in Spelregels.tsx.
 export default function KinderenBeheer() {
   const { bron, kinderen, account, status } = useSessie()
   const magBeheren = status === 'demo' || account?.soort === 'ouder'
   const { data, ververs } = useGegevens(bron ? async () => {
-    const [saldi, regels] = await Promise.all([bron.saldi(), bron.spelregels()])
-    return { saldi, regels }
+    return { saldi: await bron.saldi() }
   } : null, [bron])
 
   return (
-    <OuderKader titel="Kinderen">
+    <OuderKader titel="Kinderen en tijd">
       {kinderen.map((k) => (
         <KindBeheer key={k.id} kind={k} vrij={data?.saldi[k.id]?.vrij ?? 0} magBeheren={magBeheren} ververs={ververs} />
       ))}
-      {data && magBeheren && <SpelregelsFormulier regels={data.regels} />}
     </OuderKader>
   )
 }
@@ -155,46 +152,5 @@ function FiguurtjeBeheer({ kind }: { kind: Gebruiker }) {
         {melding && <p className="tip" role="status">{melding}</p>}
       </div>
     </div>
-  )
-}
-
-function SpelregelsFormulier({ regels }: { regels: Spelregels }) {
-  const { bron } = useSessie()
-  const [r, setR] = useState(regels)
-  const [melding, setMelding] = useState('')
-
-  async function bewaar(e: FormEvent) {
-    e.preventDefault()
-    if (!bron) return
-    try {
-      await bron.spelregelsOpslaan(r)
-      setMelding('Bewaard.')
-    } catch (err) {
-      setMelding((err as Error).message)
-    }
-  }
-
-  return (
-    <form className="kaart formulier" onSubmit={bewaar}>
-      <h2 className="display">Spelregels</h2>
-      <label className="veld">
-        <span>Extra tijd per dag per kind (minuten)</span>
-        <input type="number" min={0} max={240} step={15} value={r.dagplafond_minuten}
-               onChange={(e) => setR({ ...r, dagplafond_minuten: Number(e.target.value) })} />
-      </label>
-      <div className="twee-velden">
-        <label className="veld"><span>Aanvragen vanaf</span>
-          <input type="time" value={r.venster_van} onChange={(e) => setR({ ...r, venster_van: e.target.value })} /></label>
-        <label className="veld"><span>tot</span>
-          <input type="time" value={r.venster_tot} onChange={(e) => setR({ ...r, venster_tot: e.target.value })} /></label>
-      </div>
-      <label className="veld">
-        <span>Maximum sterren sparen</span>
-        <input type="number" min={15} max={1000} value={r.max_saldo} onChange={(e) => setR({ ...r, max_saldo: Number(e.target.value) })} />
-      </label>
-      <p className="tip">Voorstel: {standaard.dagplafondMinuten} min, {standaard.tijdvenster.van} tot {standaard.tijdvenster.tot}, {standaard.maxSpaarsaldo} sterren.</p>
-      {melding && <p className="tip" role="status">{melding}</p>}
-      <button type="submit" className="knop knop-primair">Bewaren</button>
-    </form>
   )
 }

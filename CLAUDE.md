@@ -37,7 +37,7 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - `docs/hosting.md`: hosting op Azure Static Web Apps, automatisch deployen, en de klikstappen voor de hele Azure-setup (Speech, back-ups).
 - `docs/huis.md` en `prototypes/huis.html`: use case en klikbaar prototype van Mijn huis (huis groeit met verdiende sterren, zelf aankleden); nog niet in de app.
 - `docs/tablet-per-kind.md`: tablet vastzetten op één kind en het welkomstpad (figuurtje, verjaardag, thema, welkomstbonus).
-- `docs/ouderdeel.md` en `prototypes/ouderdeel.html`: plan en mockup van het ouderdeel als beheertoepassing met hamburgermenu, en latere onderdelen (onze taken, boodschappen, notities, gezondheid); nog niet in de app.
+- `docs/ouderdeel.md` en `prototypes/ouderdeel.html`: plan en mockup van het ouderdeel als beheertoepassing met hamburgermenu, en latere onderdelen (onze taken, boodschappen, notities, gezondheid). Fase 1 (menu, zijbalk op pc, Manrope) zit in de app; de latere onderdelen nog niet.
 
 ## Beslist (21 oktober 2026)
 

@@ -16,6 +16,10 @@ De kinderkant verandert niet.
 - **Lettertype**: de ouderkant gebruikt **Manrope** (500 tot 700) voor titels en tekst, soberder dan Baloo 2 en Nunito van de kinderkant, maar modern. Cijfers met `tabular-nums`. De kinderschermen blijven speels met Baloo 2 en Nunito.
 - Kleuren blijven zoals in `docs/ontwerp.md`, maar de ouderkant krijgt een rustiger, zakelijker toon: kaarten met een dunne rand en hoeken van 14 px, knoppen met hoeken van 12 px in plaats van volledig rond, minder kleurvlakken, meer lijsten met rijen.
 
+## Op een groot scherm (pc)
+
+Vanaf 1024 px breed staat het menu vast links als zijbalk (288 px), de balk toont enkel de titel en het belletje, en de kaarten (kinderen, taken, goedkeuringen, instellingen) staan in een raster van kolommen van minstens 380 px. Meldingen en de knoppen bovenaan een scherm blijven over de hele breedte.
+
 ## Menu
 
 | Groep | Onderdeel | Nu | Toelichting |
@@ -78,7 +82,7 @@ Op termijn wordt Vandaag het overzicht van de hele dag: eerst wat op goedkeuring
 
 ## Fases
 
-1. **Nieuwe lay-out** (alleen frontend): `OuderKader` krijgt de balk en het menu, tabs onderaan verdwijnen, Spelregels en Pincode worden eigen schermen. Geen databasewijziging. Klein werk.
+1. **Nieuwe lay-out** (alleen frontend, **gebouwd op 24 oktober 2026**): `OuderKader` krijgt de balk en het menu (`src/data/ouderMenu.ts`, stijl in `src/schermen/ouder.css`), tabs onderaan verdwijnen, Spelregels (`/ouder/spelregels`) en Pincode (`/ouder/pincode`) worden eigen schermen. Op een tablet van een kind tonen we Wij, Gezondheid en Pincode niet. Geen databasewijziging.
 2. **Boodschappen en Onze taken**: de twee onderdelen die het meest dagelijks gebruikt worden. Elk een migratie en een scherm.
 3. **Notities**.
 4. **Gezondheid**: gewicht eerst, dan loopschema, dan fitness.
@@ -87,6 +91,6 @@ Elke fase kan apart naar main.
 
 ## Open vragen (beslissen bij het bouwen)
 
-- Grijze "komt later"-items in het echte menu tonen of weglaten?
+- Grijze "komt later"-items in het echte menu tonen of weglaten? Voorlopig tonen we ze grijs, zonder link.
 - Gezondheid standaard privé (voorstel) of standaard gedeeld?
 - Mag het ouderdeel op de tablet van een kind (met pincode) ook de nieuwe onderdelen tonen, of enkel de kinderonderdelen? Voorstel: op een tablet enkel Kinderen en Instellingen.

@@ -20,20 +20,10 @@
 .kind-inhoud { max-width: 1180px; margin: 0 auto; padding: 8px clamp(16px, 3vw, 32px) 32px; }
 .leeg { color: var(--muted); font-size: 22px; }
 
-/* Ouderscherm (gsm) */
-.ouder { min-height: 100dvh; display: flex; flex-direction: column; }
-.ouder-kop { padding: 16px 16px 0; }
-.ouder-kop-rij { display: flex; justify-content: space-between; }
-.ouder-kop h1 { margin: 8px 0 0; font-size: 32px; }
-.ouder-terug.active { color: var(--ink); }
-.ouder-terug { display: inline-flex; align-items: center; min-height: 48px; color: var(--muted); text-decoration: none; font-weight: 700; }
-.ouder-inhoud { flex-grow: 1; padding: 16px; display: grid; gap: 12px; align-content: start; }
+/* Ouderschermen: kader, menu en sobere stijl staan in ouder.css */
 .kaart { background: var(--surface); border-radius: 20px; padding: 16px 20px; }
 .kaart h2 { margin: 0 0 4px; font-size: 22px; }
 .kaart p { margin: 0; color: var(--muted); }
-.ouder-nav { position: sticky; bottom: 0; display: grid; grid-template-columns: repeat(4, 1fr); background: var(--surface); border-top: 1px solid var(--line); }
-.ouder-nav a { min-height: 64px; display: grid; place-items: center; color: var(--muted); font-weight: 700; font-size: 14px; text-decoration: none; }
-.ouder-nav a.active { color: var(--ink); box-shadow: inset 0 3px 0 var(--luca); }
 
 .kaart-opvallend { border: 2px solid var(--gold); }
 .knoppen { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }

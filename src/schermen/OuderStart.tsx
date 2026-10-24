@@ -37,7 +37,7 @@ export default function OuderStart() {
           <p>Taken en tijdverzoeken goedkeuren</p>
         </Link>
       ) : (
-        <section className="kaart">
+        <section className="kaart kaart-breed">
           <h2 className="display">Er wacht niets op jou</h2>
           <p>Goedkeuringen en tijdverzoeken verschijnen hier.</p>
         </section>

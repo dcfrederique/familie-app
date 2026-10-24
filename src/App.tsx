@@ -20,6 +20,8 @@ import Rekenen from './schermen/Rekenen.tsx'
 import Spelen from './schermen/Spelen.tsx'
 import TakenBeheer from './schermen/TakenBeheer.tsx'
 import Toestellen from './schermen/Toestellen.tsx'
+import Spelregels from './schermen/Spelregels.tsx'
+import PincodeBeheer from './schermen/PincodeBeheer.tsx'
 import Touwspringen from './schermen/Touwspringen.tsx'
 import Welkom from './schermen/Welkom.tsx'
 import Welkomstpad from './schermen/Welkomstpad.tsx'
@@ -65,6 +67,8 @@ export default function App() {
       <Route path="/ouder/taken" element={<TakenBeheer />} />
       <Route path="/ouder/kinderen" element={<KinderenBeheer />} />
       <Route path="/ouder/toestellen" element={<Toestellen />} />
+      <Route path="/ouder/spelregels" element={<Spelregels />} />
+      <Route path="/ouder/pincode" element={<PincodeBeheer />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )

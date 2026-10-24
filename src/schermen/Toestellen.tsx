@@ -4,14 +4,12 @@ import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import { meldingenAanzetten, meldingenUitzetten, meldingStatus, type MeldingStatus } from '../lib/meldingen.ts'
 import { supabase } from '../lib/supabase.ts'
 import OuderKader, { ouderPin, pinOpnieuw } from './OuderKader.tsx'
-import { PinInstellen } from './OuderStart.tsx'
 
-// Toestellen koppelen, pincode wijzigen en afmelden.
+// Toestellen koppelen, meldingen en afmelden. De pincode staat in PincodeBeheer.tsx.
 export default function Toestellen() {
   const { status, account, gebruikers, afmelden } = useSessie()
   const [code, setCode] = useState<{ voor: string; code: string } | null>(null)
   const [fout, setFout] = useState('')
-  const [pinWijzigen, setPinWijzigen] = useState(false)
   const isOuder = account?.soort === 'ouder'
   const andereOuders = gebruikers.filter((g) => g.rol === 'ouder' && g.id !== account?.ouder_id)
 
@@ -24,7 +22,7 @@ export default function Toestellen() {
   }
 
   return (
-    <OuderKader titel="Toestellen">
+    <OuderKader titel="Toestellen en meldingen">
       {isOuder ? (
         <section className="kaart">
           <h2 className="display">Toestel koppelen</h2>
@@ -58,9 +56,6 @@ export default function Toestellen() {
       {!isOuder && <DezeTablet />}
       {isOuder && <Tablets />}
       {isOuder && <Meldingen />}
-      {isOuder && (pinWijzigen
-        ? <PinInstellen klaar={() => setPinWijzigen(false)} />
-        : <button type="button" className="knop knop-licht" onClick={() => setPinWijzigen(true)}>Pincode wijzigen</button>)}
       {status !== 'demo' && (
         <button type="button" className="knop knop-licht" onClick={afmelden}>Afmelden op dit toestel</button>
       )}

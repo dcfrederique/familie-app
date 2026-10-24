@@ -49,7 +49,7 @@ export default function Goedkeuren() {
   const leeg = data && data.verzoeken.length === 0 && data.inzendingen.length === 0 && data.activiteiten.length === 0
   const aantal = data ? data.inzendingen.length + data.activiteiten.length : 0
   return (
-    <OuderKader titel="Goedkeuren">
+    <OuderKader titel="Goedkeuren" wachtend={data ? data.verzoeken.length + aantal : undefined}>
       {fout && <p className="fout" role="alert">{fout}</p>}
       {leeg && <section className="kaart"><h2 className="display">Alles is behandeld</h2><p>Goed bezig.</p></section>}
 

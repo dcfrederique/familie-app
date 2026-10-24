@@ -47,7 +47,7 @@ export default function TakenBeheer() {
   }
 
   return (
-    <OuderKader titel="Taken">
+    <OuderKader titel="Taken van de kinderen">
       {!magBeheren && <p className="tip">Taken aanpassen doe je op de gsm van mama of papa.</p>}
       {magBeheren && (
         <button type="button" className="knop knop-primair"
