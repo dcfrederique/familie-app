@@ -68,6 +68,8 @@ De catalogus is data (bv. `src/data/figuurtje.ts`), niet hardcoded in componente
 
 ## Ontgrendelen met sterren
 
+> Vervangen op 24 oktober 2026: stukken worden nu **gekocht** met sterren van het saldo (lijkt op optie B). Zie `docs/winkel.md`.
+
 **Beslist (22 oktober 2026): optie C, vrijspelen met mijlpalen.** De drie mogelijkheden die bekeken zijn:
 
 | | A. Alles vrij | B. Kopen met sterren | C. Vrijspelen met mijlpalen (aanbevolen) |

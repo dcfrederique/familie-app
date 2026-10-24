@@ -59,8 +59,8 @@ set role service_role;
 select pg_temp.gelijk((select tekst from public.melding_tekst('inzendingen', :'inz')), 'Tafel dekken: 5 sterren goedkeuren?', 'taak');
 select pg_temp.gelijk((select titel from public.melding_tekst('inzendingen', :'inz')), 'Kim is klaar met een taak', 'titel');
 
-\echo '3. Activiteiten alleen als ze sterren opleveren'
-select pg_temp.gelijk((select tekst from public.melding_tekst('activiteitlog', :'verhaal')), 'Verhaal: Pip gaat naar school: 5 sterren goedkeuren?', 'verhaal');
+\echo '3. Activiteiten geven geen melding meer: hun sterren komen er meteen bij'
+select pg_temp.gelijk((select count(*) from public.melding_tekst('activiteitlog', :'verhaal')), 0::bigint, 'verhaal');
 select pg_temp.gelijk((select count(*) from public.melding_tekst('activiteitlog', :'memory')), 0::bigint, 'memory');
 
 \echo '4. Abonnementen per gezin, en opruimen'

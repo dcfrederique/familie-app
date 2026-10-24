@@ -16,11 +16,12 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 ## Kernregels (niet zonder overleg wijzigen)
 
 - Punten heten voor de kinderen **sterren**. 1 ster = 1 minuut extra tijd.
-- Geen sterren zonder goedkeuring van een ouder; geen tijd zonder dat een ouder die geeft.
+- Sterren voor taken pas na goedkeuring van een ouder; geen tijd zonder dat een ouder die geeft.
 - Tijd aanvragen in blokken van 15, 30 of 60 min; sterren worden gereserveerd, pas afgeschreven als de ouder op **Toegekend** tikt. **Nu niet** of vervallen = sterren terug.
 - Dagplafond (voorstel 60 min extra per kind) en tijdvenster (7:00 tot 20:00) worden **op de server** gecontroleerd.
 - Afkeuren kost niets, geen strafpunten.
-- Enige uitzondering op goedkeuring: de eenmalige welkomstbonus van 10 sterren op het einde van het welkomstpad (gevraagd door de ouders, 24 oktober 2026).
+- Zonder goedkeuring: de eenmalige welkomstbonus van 10 sterren op het einde van het welkomstpad, en de sterren uit lerende spelletjes (rekenen, verhalen, kleurplaten), die er meteen bij komen binnen het dagplafond voor activiteiten (beide gevraagd door de ouders, 24 oktober 2026).
+- Nieuwe spelletjes en stukken voor het figuurtje koopt het kind zelf met sterren; die gaan van het vrije saldo af (`docs/winkel.md`).
 - Elke tablet hoort bij één kind (`docs/tablet-per-kind.md`); een ander kind kiezen kan alleen met de pincode of vanaf de gsm van een ouder.
 - Elke bij- en afschrijving komt in een puntenlog met reden.
 - Rustige en lerende activiteiten (verhalen, rekenen, kleurplaten) leveren sterren op en tellen **niet** mee voor de app-tijd; spelletjes (memory, penalty's) leveren niets op en tellen **wel** mee.
@@ -37,6 +38,7 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - `docs/hosting.md`: hosting op Azure Static Web Apps, automatisch deployen, en de klikstappen voor de hele Azure-setup (Speech, back-ups).
 - `docs/huis.md` en `prototypes/huis.html`: use case en klikbaar prototype van Mijn huis (huis groeit met verdiende sterren, zelf aankleden); nog niet in de app.
 - `docs/azure-extra.md` en `docs/prenten.md`: Azure-extra's (back-up, leesoefening Ik lees zelf, prenten met Azure OpenAI) en het stappenplan voor de prenten.
+- `docs/winkel.md`: sterren inwisselen voor spelletjes en stukken van het figuurtje, en sterren uit spelletjes zonder goedkeuring.
 - `docs/tablet-per-kind.md`: tablet vastzetten op één kind en het welkomstpad (figuurtje, verjaardag, thema, welkomstbonus).
 - `prototypes/thema-subschermen.html`: mockup van het kinderthema (race, kasteel, tuin) in de subschermen; zit in de app via `src/data/themaPrenten.ts`, `src/schermen/ThemaDelen.tsx` en `src/schermen/thema-schermen.css`.
 - `docs/ouderdeel.md` en `prototypes/ouderdeel.html`: plan en mockup van het ouderdeel als beheertoepassing met hamburgermenu, en latere onderdelen (onze taken, boodschappen, notities, gezondheid). Fase 1 (menu, zijbalk op pc, IBM Plex Sans, rechte hoeken) zit in de app; de latere onderdelen nog niet.

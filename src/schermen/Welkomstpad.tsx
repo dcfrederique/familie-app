@@ -3,7 +3,7 @@ import { Navigate, useNavigate, useParams } from 'react-router-dom'
 import { Banner } from '../data/banners.tsx'
 import {
   categorie, figuurtjeVan, haarKleuren, huidKleuren, isVrij, kledingKleuren, verrassing, zichtbareStukken,
-  type Figuurtje as FiguurtjeData, type Vrijspelen,
+  type Bezit, type Figuurtje as FiguurtjeData,
 } from '../data/figuurtje.ts'
 import type { Gebruiker, Kleur } from '../data/gezin.ts'
 import { bannerVoorKleur, themaKeuzes } from '../data/thema.ts'
@@ -185,10 +185,10 @@ function FiguurtjeMaken({ kind, figuurtje, wijzig }: {
 }) {
   const lezer = kind.kan_lezen
   const [huppel, setHuppel] = useState(0)
-  // Bij de start is er nog niets verdiend: alleen de basisstukken.
-  const v: Vrijspelen = { verdiend: 0, allesVrij: kind.figuurtje_alles_vrij, kanLezen: lezer }
+  // Bij de start is er nog niets gekocht: alleen de gratis stukken.
+  const v: Bezit = { eigen: new Set(), allesVrij: kind.figuurtje_alles_vrij, kanLezen: lezer }
   const haar = categorie('haar')
-  const kapsels = zichtbareStukken(haar, lezer).filter((s) => isVrij(s, v))
+  const kapsels = zichtbareStukken(haar, lezer).filter((s) => isVrij('haar', s, v))
   const zet = (veld: keyof FiguurtjeData, waarde: string, naam?: string) => {
     if (!lezer && naam) leesVoor(naam)
     wijzig({ ...figuurtje, [veld]: waarde })

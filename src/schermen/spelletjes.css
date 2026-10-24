@@ -13,6 +13,11 @@
 .spel-uitleg { display: inline-flex; align-items: center; gap: 4px; padding: 0 10px; font-size: 16px; font-weight: 700; color: var(--muted); }
 .spel-knop.op-slot .spel-tegel { background: var(--soft); color: var(--muted); }
 .spel-knop.op-slot .spel-naam { color: var(--muted); }
+/* Winkel: genoeg sterren om te kopen, dan licht de tegel goud op */
+.spel-knop.te-koop .spel-tegel { background: var(--gold-bg); box-shadow: 0 0 0 4px var(--gold); }
+.spel-knop.te-koop .spel-naam { color: var(--ink); }
+.spel-prijs { font-variant-numeric: tabular-nums; }
+.spel-saldo { margin: 0 0 4px; display: flex; justify-content: center; }
 .spel-slot { position: absolute; right: -10px; bottom: -10px; width: 44px; height: 44px; border-radius: 50%; background: var(--ink); color: var(--bg); display: grid; place-items: center; }
 .spel-balk { width: 60%; height: 12px; border-radius: 6px; background: var(--line); overflow: hidden; }
 .spel-balk span { display: block; height: 100%; border-radius: 6px; background: var(--gold); }

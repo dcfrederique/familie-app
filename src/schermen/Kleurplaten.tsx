@@ -126,7 +126,7 @@ function Inkleuren({ kind, plaat }: { kind: Gebruiker; plaat: Kleurplaat }) {
         <h2 className="display klaar-titel">Wat een mooie plaat!</h2>
         {opgeslagen && 'fout' in opgeslagen && <p className="fout" role="alert">{opgeslagen.fout}</p>}
         {opgeslagen && 'sterren' in opgeslagen && (opgeslagen.sterren > 0 ? (
-          <div className="verdiend"><Ster grootte={34} /><span>{opgeslagen.sterren} sterren: wacht op mama of papa</span></div>
+          <div className="verdiend"><Ster grootte={34} /><span>{opgeslagen.sterren} sterren erbij!</span></div>
         ) : <p className="klaar-uitleg">Genoeg sterren voor vandaag. Kleur gerust nog verder!</p>)}
         <div className="knoppen-rij">
           <Link to={`/kind/${kind.id}/kleurplaten`} className="groot-knop">Andere plaat</Link>

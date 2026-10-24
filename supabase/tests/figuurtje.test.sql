@@ -49,7 +49,7 @@ select public.figuurtje_bewaren(:'lex', pg_temp.fig('haar', 'stekels'));
 select pg_temp.gelijk((select figuurtje ->> 'haar' from public.gebruikers where id = :'lex'), 'stekels', 'bewaard');
 
 \echo '2. Stukken op slot en onbekende stukken worden geweigerd'
-select pg_temp.fout(format('select public.figuurtje_bewaren(%L, %L)', :'lex', pg_temp.fig('hoofd', 'kroon')), 'nog niet vrijgespeeld');
+select pg_temp.fout(format('select public.figuurtje_bewaren(%L, %L)', :'lex', pg_temp.fig('hoofd', 'kroon')), 'nog niet gekocht');
 select pg_temp.fout(format('select public.figuurtje_bewaren(%L, %L)', :'lex', pg_temp.fig('hoofd', 'tovenaarshoed')), 'onbekend stuk');
 select pg_temp.fout(format('select public.figuurtje_bewaren(%L, %L)', :'lex', pg_temp.fig('shirtKleur', 'goud')), 'onbekend stuk');
 select pg_temp.fout(format('select public.figuurtje_bewaren(%L, %L)', :'lex', pg_temp.fig('haarKleur', 'jeans')), 'onbekend stuk');
@@ -58,25 +58,42 @@ select pg_temp.fout(format('select public.figuurtje_bewaren(%L, %L)', :'lex', pg
 select pg_temp.fout(format('select public.figuurtje_bewaren(%L, %L)', :'lex', pg_temp.fig() || '{"extra": 5}'), 'ongeldig figuurtje');
 select pg_temp.fout(format('select public.figuurtje_bewaren(%L, %L)', :'ouder', pg_temp.fig()), 'kind niet gevonden');
 
-\echo '3. Ooit verdiende sterren spelen stukken vrij; uitgeven telt niet af'
+\echo '3. Stukken koop je met sterren van het vrije saldo'
 reset role;
 insert into public.puntenlog (gezin_id, kind_id, delta, reden, bron, tijdstip)
 values (:'gezin', :'lex', 160, 'test', 'correctie', now()), (:'gezin', :'lex', -60, 'Extra tijd', 'tijdverzoek', now());
 set role authenticated;
-select pg_temp.gelijk(public.verdiend_totaal(:'lex'), 160, 'verdiend');
-select pg_temp.gelijk(public.saldo(:'lex'), 100, 'saldo blijft');
-select pg_temp.gelijk((select verdiend from public.kind_verdiend where kind_id = :'lex'), 160, 'view');
+select pg_temp.fout(format('select public.figuurtje_bewaren(%L, %L)', :'lex', pg_temp.fig('hoofd', 'helm')), 'nog niet gekocht');
+select pg_temp.gelijk(public.kopen(:'lex', 'hoofd', 'helm', 'Racehelm'), 75, 'helm kost 25');
 select public.figuurtje_bewaren(:'lex', pg_temp.fig('hoofd', 'helm'));
-select pg_temp.fout(format('select public.figuurtje_bewaren(%L, %L)', :'lex', pg_temp.fig('hoofd', 'kroon')), 'nog niet vrijgespeeld');
-select pg_temp.gelijk(public.saldo(:'lex'), 100, 'vrijspelen kost geen sterren');
+select pg_temp.gelijk(public.kopen(:'lex', 'hoofd', 'helm', 'Racehelm'), 75, 'twee keer kopen kost niets');
+select pg_temp.gelijk(public.kopen(:'lex', 'haar', 'stekels'), 75, 'gratis stuk kost niets');
+select pg_temp.gelijk((select count(*) from public.aankopen where kind_id = :'lex'), 1::bigint, 'een aankoop');
+select pg_temp.gelijk((select reden || ' ' || delta || ' ' || bron from public.puntenlog where kind_id = :'lex' order by id desc limit 1),
+                      'Gekocht: Racehelm -25 aankoop', 'log');
+select pg_temp.gelijk(public.kopen(:'lex', 'hoofd', 'kroon', 'Kroontje'), 40, 'kroon kost 35');
+select pg_temp.fout(format('select public.kopen(%L, ''extra'', ''cape'')', :'lex'), 'niet genoeg sterren');
+select pg_temp.fout(format('select public.kopen(%L, ''hoofd'', ''tovenaarshoed'')', :'lex'), 'onbekend stuk');
+select pg_temp.fout(format('select public.kopen(%L, ''kleur'', ''rood'')', :'lex'), 'aankopen_soort_check');
+-- Sterren die voor extra tijd gereserveerd zijn, kun je niet uitgeven.
+select public.tijd_aanvragen(:'lex', 30);
+select pg_temp.fout(format('select public.kopen(%L, ''extra'', ''voetbal'')', :'lex'), 'niet genoeg sterren');
+select pg_temp.gelijk(public.kopen(:'lex', 'extra', 'bril', 'Bril'), 0, 'bril kost 10, 30 gereserveerd');
 
-\echo '4. Wie niet leest heeft een vijfde van de drempel nodig'
+\echo '4. Wie niet leest betaalt de helft'
 reset role;
 insert into public.puntenlog (gezin_id, kind_id, delta, reden, bron, tijdstip)
 values (:'gezin', :'pim', 30, 'test', 'correctie', now());
 set role authenticated;
+select pg_temp.gelijk(public.kopen(:'pim', 'extra', 'toverstaf'), 17, 'toverstaf 25 wordt 13');
 select public.figuurtje_bewaren(:'pim', pg_temp.fig('extra', 'toverstaf'));
-select pg_temp.fout(format('select public.figuurtje_bewaren(%L, %L)', :'pim', pg_temp.fig('extra', 'cape')), 'nog niet vrijgespeeld');
+select pg_temp.fout(format('select public.figuurtje_bewaren(%L, %L)', :'pim', pg_temp.fig('extra', 'cape')), 'nog niet gekocht');
+
+\echo '4b. Spelletjes koop je ook'
+select pg_temp.gelijk(public.kopen(:'pim', 'spel', 'racen', 'Racen'), 7, 'racen 20 wordt 10');
+select pg_temp.gelijk(public.kopen(:'pim', 'spel', 'memory'), 7, 'memory is gratis');
+select pg_temp.fout(format('select public.kopen(%L, ''spel'', ''schaken'')', :'pim'), 'onbekend stuk');
+select pg_temp.gelijk((select string_agg(sleutel, ',') from public.aankopen where kind_id = :'pim' and soort = 'spel'), 'racen', 'gekocht spel');
 
 \echo '5. Alles vrij: alleen een ouder zet het aan'
 update public.gebruikers set figuurtje_alles_vrij = true where id = :'pim';
@@ -98,6 +115,9 @@ select pg_temp.als('00000000-0000-0000-0000-000000000303', false);
 select public.gezin_aanmaken('Buren', 'Buur', '[{"naam": "Bo"}]');
 select pg_temp.fout(format('select public.figuurtje_bewaren(%L, %L)', :'pim', pg_temp.fig()), 'kind niet gevonden');
 select pg_temp.gelijk((select count(*) from public.kind_verdiend where kind_id = :'lex'), 0::bigint, 'view afgeschermd');
+select pg_temp.gelijk((select count(*) from public.aankopen), 0::bigint, 'aankopen afgeschermd');
+select pg_temp.fout(format('select public.kopen(%L, ''spel'', ''racen'')', :'pim'), 'kind niet gevonden');
+select pg_temp.gelijk((select count(*) from public.spel_prijzen), 9::bigint, 'prijzen leesbaar');
 select pg_temp.gelijk((select count(*) > 60 from public.figuurtje_stukken), true, 'catalogus leesbaar');
 
 reset role;

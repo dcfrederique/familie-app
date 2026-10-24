@@ -110,12 +110,12 @@ export interface Bron {
   saldi(): Promise<Record<string, Saldo>>
   log(kindId: string): Promise<LogRegel[]>
   spelregels(): Promise<Spelregels>
-  /** Ooit verdiende sterren per kind (alle bijschrijvingen samen), voor het vrijspelen van het figuurtje. */
-  verdiend(): Promise<Record<string, number>>
+  /** Wat elk kind gekocht heeft in de winkel, als sleutels 'hoofd:kroon' of 'spel:racen' (docs/winkel.md). */
+  aankopen(): Promise<Record<string, string[]>>
 
   taakIndienen(kindId: string, taakId: string, foto: Blob | null): Promise<void>
   tijdAanvragen(kindId: string, minuten: number): Promise<void>
-  /** Bewaart een afgewerkte activiteit; geeft de sterren terug die op goedkeuring wachten. */
+  /** Bewaart een afgewerkte activiteit; geeft de sterren terug die er meteen bij kwamen. */
   activiteitOpslaan(kindId: string, activiteit: Activiteit, inhoud: ActiviteitRegel['inhoud'], duurSeconden: number): Promise<number>
   activiteitenTeBeoordelen(): Promise<ActiviteitRegel[]>
   /**
@@ -123,7 +123,9 @@ export interface Bron {
    * Gooit een fout als spraakherkenning niet beschikbaar is (demo, geen secrets, oude migratie).
    */
   spraakToken(kindId: string, gebruikt: number): Promise<SpraakToken>
-  /** Bewaart het figuurtje; null zet het terug naar het basisfiguurtje. De server controleert de drempels. */
+  /** Koopt een spelletje (soort 'spel') of een stuk van het figuurtje; de sterren gaan van het vrije saldo. */
+  kopen(kindId: string, soort: string, sleutel: string, naam: string): Promise<void>
+  /** Bewaart het figuurtje; null zet het terug naar het basisfiguurtje. De server controleert of alles gekocht is. */
   figuurtjeBewaren(kindId: string, figuurtje: Figuurtje | null): Promise<void>
   /** Bewaart het welkomstpad; geeft de welkomstbonus terug (0 als die al gegeven was). */
   welkomAfronden(kindId: string, welkom: Welkom): Promise<number>

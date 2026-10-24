@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useNavigate, useParams, useSearchParams } from 'react-router-dom'
 import {
-  categorie, drempelVoor, figuurtjeVan, isVrij, verrassing, volgendeMijlpaal, zichtbareCategorieen, zichtbareStukken,
-  type Categorie, type Figuurtje as FiguurtjeData, type Stuk, type Vrijspelen,
+  categorie, figuurtjeVan, isVrij, prijsVoor, verrassing, zichtbareCategorieen, zichtbareStukken,
+  type Bezit, type Categorie, type Figuurtje as FiguurtjeData, type Stuk,
 } from '../data/figuurtje.ts'
 import { kleurKlasse } from '../data/gezin.ts'
 import { themaVan } from '../data/thema.ts'
@@ -11,12 +11,14 @@ import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import { kanVoorlezen, leesVoor } from '../lib/voorlezen.ts'
 import Figuurtje from './Figuurtje.tsx'
 import { ThemaKop } from './ThemaDelen.tsx'
-import { Ster } from './onderdelen.tsx'
+import KoopVraag from './KoopVraag.tsx'
+import { Ster, SterrenPil } from './onderdelen.tsx'
 import './figuurtje.css'
 import './schermen.css'
 import { zin } from '../data/zinnen.ts'
 
 // Kleerkast: links het figuurtje, rechts categorieën, keuzes en kleuren (docs/avatar.md).
+// Stukken op slot koopt het kind met sterren (docs/winkel.md); kopen kan meteen vanuit de kast.
 // Bewaren gebeurt met Klaar; terug zonder Klaar laat het oude figuurtje staan.
 // Wie niet leest krijgt minder en grotere keuzes zonder tekst, en elke tik wordt voorgelezen.
 export default function Kleerkast() {
@@ -25,12 +27,16 @@ export default function Kleerkast() {
   const navigate = useNavigate()
   const { kinderen, bron, herlaad } = useSessie()
   const kind = kinderen.find((k) => k.id === id)
-  const { data: verdiendPerKind } = useGegevens(bron ? () => bron.verdiend() : null, [bron])
+  const { data: winkel, ververs } = useGegevens(bron && id ? async () => {
+    const [aankopen, saldi] = await Promise.all([bron.aankopen(), bron.saldi()])
+    return { eigen: new Set(aankopen[id] ?? []), vrij: saldi[id]?.vrij ?? 0 }
+  } : null, [bron, id])
 
   const [figuurtje, setFiguurtje] = useState<FiguurtjeData | null>(null)
   const [vorige, setVorige] = useState<FiguurtjeData[]>([])
   const [cat, setCat] = useState<Categorie>('haar')
   const [proef, setProef] = useState<{ figuurtje: FiguurtjeData; tip: string } | null>(null)
+  const [koop, setKoop] = useState<{ cat: Categorie; stuk: Stuk; figuurtje: FiguurtjeData } | null>(null)
   const [bezig, setBezig] = useState(false)
   const [fout, setFout] = useState('')
   const [huppel, setHuppel] = useState(0)
@@ -54,7 +60,8 @@ export default function Kleerkast() {
   if (!figuurtje) return null
 
   const lezer = kind.kan_lezen
-  const v: Vrijspelen = { verdiend: verdiendPerKind?.[kind.id] ?? 0, allesVrij: kind.figuurtje_alles_vrij, kanLezen: lezer }
+  const v: Bezit = { eigen: winkel?.eigen ?? new Set<string>(), allesVrij: kind.figuurtje_alles_vrij, kanLezen: lezer }
+  const vrij = winkel?.vrij ?? 0
   const info = categorie(cat)
   const zeg = (tekst: string) => { if (!lezer) leesVoor(tekst) }
 
@@ -68,10 +75,13 @@ export default function Kleerkast() {
   function kies(stuk: Stuk) {
     zeg(stuk.naam)
     const nieuw = { ...figuurtje!, [cat]: stuk.id }
-    if (isVrij(stuk, v)) return wijzig(nieuw)
-    // Op slot: even tonen hoe het zou staan, zonder het te bewaren.
-    const nog = drempelVoor(stuk, v) - v.verdiend
-    setProef({ figuurtje: nieuw, tip: lezer ? `Nog ${nog} ${nog === 1 ? 'ster' : 'sterren'} verdienen, dan is ${stuk.naam.toLowerCase()} van jou.` : 'Nog even sterren sparen!' })
+    if (isVrij(cat, stuk, v)) return wijzig(nieuw)
+    // Genoeg sterren: meteen vragen of het kind het wil kopen.
+    const prijs = prijsVoor(stuk, v)
+    if (winkel && vrij >= prijs) return setKoop({ cat, stuk, figuurtje: nieuw })
+    // Te weinig: even tonen hoe het zou staan, zonder het te bewaren.
+    const nog = prijs - vrij
+    setProef({ figuurtje: nieuw, tip: lezer ? `Nog ${nog} ${nog === 1 ? 'ster' : 'sterren'} sparen, dan kun je ${stuk.naam.toLowerCase()} kopen.` : zin.sparen })
     if (!lezer) leesVoor(zin.sparen)
     setHuppel((n) => n + 1)
     window.clearTimeout(proefKlok.current)
@@ -93,7 +103,6 @@ export default function Kleerkast() {
     }
   }
 
-  const mijlpaal = volgendeMijlpaal(v)
   const getoond = proef?.figuurtje ?? figuurtje
 
   const thema = themaVan(kind)
@@ -107,7 +116,7 @@ export default function Kleerkast() {
       <svg className="ic" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M4 10h4l5-4v12l-5-4H4z" /><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11" /></svg>
     </button>
   )
-  const mijlpaalPil = mijlpaal && <Mijlpaal lezer={lezer} verdiend={v.verdiend} drempel={mijlpaal.drempel} vorige={mijlpaal.vorige} />
+  const mijlpaalPil = winkel && !v.allesVrij && <SterrenPil aantal={vrij} />
 
   return (
     <div className={`kind ${kleurKlasse(kind)}${thema ? ` thema thema-${thema} thema-scherm-figuurtje` : ''}`}>
@@ -150,18 +159,15 @@ export default function Kleerkast() {
 
             <div className="kast-keuzes" role="tabpanel">
               {zichtbareStukken(info, lezer).map((s) => {
-                const vrij = isVrij(s, v)
-                const nog = drempelVoor(s, v)
+                const eigen = isVrij(cat, s, v)
+                const prijs = prijsVoor(s, v)
                 return (
-                  <button key={s.id} type="button" className={`kast-keuze${vrij ? '' : ' op-slot'}`}
-                          aria-pressed={figuurtje[cat] === s.id} aria-label={vrij ? s.naam : `${s.naam}, op slot`} onClick={() => kies(s)}>
+                  <button key={s.id} type="button" className={`kast-keuze${eigen ? '' : ' op-slot'}${!eigen && vrij >= prijs ? ' te-koop' : ''}`}
+                          aria-pressed={figuurtje[cat] === s.id} aria-label={eigen ? s.naam : `${s.naam}, kost ${prijs} sterren`} onClick={() => kies(s)}>
                     <Figuurtje figuurtje={{ ...figuurtje, [cat]: s.id }} uitsnede={info.uitsnede} className="kast-prent" />
-                    {!vrij && <span className="slotje" aria-hidden="true"><svg className="ic" viewBox="0 0 24 24" width="20" height="20"><path d="M6 11h12v9H6zM8 11V8a4 4 0 0 1 8 0v3" /></svg></span>}
-                    {!vrij && lezer && (
-                      <span className="nog" aria-hidden="true">
-                        nog {nog - v.verdiend} <Ster grootte={14} />
-                        <span className="meter"><i style={{ width: `${Math.round((v.verdiend / nog) * 100)}%` }} /></span>
-                      </span>
+                    {!eigen && <span className="slotje" aria-hidden="true"><svg className="ic" viewBox="0 0 24 24" width="20" height="20"><path d="M6 11h12v9H6zM8 11V8a4 4 0 0 1 8 0v3" /></svg></span>}
+                    {!eigen && (
+                      <span className="prijs-label display" aria-hidden="true"><Ster grootte={18} />{prijs}</span>
                     )}
                     {lezer && <span className="kast-naam">{s.naam}</span>}
                   </button>
@@ -200,29 +206,16 @@ export default function Kleerkast() {
           </section>
         </div>
       </div>
+      {koop && bron && (
+        <KoopVraag kind={kind} naam={koop.stuk.naam} prijs={prijsVoor(koop.stuk, v)} vrij={vrij}
+                   prent={<Figuurtje figuurtje={koop.figuurtje} uitsnede={categorie(koop.cat).uitsnede} />}
+                   koop={async () => {
+                     await bron.kopen(kind.id, koop.cat, koop.stuk.id, koop.stuk.naam)
+                     await ververs()
+                     wijzig(koop.figuurtje)
+                   }}
+                   sluit={() => setKoop(null)} />
+      )}
     </div>
-  )
-}
-
-/** Hoe ver tot de volgende verrassing: een balkje, of voor wie niet leest vijf sterren die vollopen. */
-function Mijlpaal({ lezer, verdiend, drempel, vorige }: { lezer: boolean; verdiend: number; drempel: number; vorige: number }) {
-  const deel = Math.max(0, Math.min(1, (verdiend - vorige) / (drempel - vorige)))
-  if (!lezer) {
-    const vol = Math.floor(deel * 5)
-    return (
-      <span className="mijlpaal" role="img" aria-label="Nog even sterren verdienen voor een verrassing">
-        {[0, 1, 2, 3, 4].map((i) => <span key={i} className={i < vol ? '' : 'leeg'}><Ster grootte={36} /></span>)}
-      </span>
-    )
-  }
-  return (
-    <span className="mijlpaal">
-      <Ster />
-      <b className="display">{verdiend}</b>
-      <span className="mijlpaal-tekst">
-        <span>Nog {drempel - verdiend} sterren tot een verrassing</span>
-        <span className="meter"><i style={{ width: `${Math.round(deel * 100)}%` }} /></span>
-      </span>
-    </span>
   )
 }

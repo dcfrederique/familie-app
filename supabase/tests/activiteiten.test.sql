@@ -58,7 +58,10 @@ select pg_temp.fout(format('select public.activiteit_opslaan(%L, ''schaken'')', 
 select pg_temp.gelijk(public.activiteit_opslaan(:'kim', 'rekenen', '{"goed": 7, "sommen": 10}', 200), 3, '7 goed');
 select pg_temp.gelijk(public.activiteit_opslaan(:'kim', 'rekenen', '{"goed": 99}', 200), 5, 'hoogstens 10 goed');
 select pg_temp.gelijk(public.activiteit_opslaan(:'kim', 'rekenen', '{"goed": 1}', 200), 0, '1 goed');
-select pg_temp.gelijk(public.saldo(:'kim'), 0, 'nog geen sterren zonder ouder');
+-- Sinds 24 oktober 2026 komen de sterren er meteen bij, zonder goedkeuring.
+select pg_temp.gelijk(public.saldo(:'kim'), 8, 'sterren meteen bij');
+select pg_temp.gelijk((select reden from public.puntenlog where kind_id = :'kim' order by id limit 1),
+                      'Rekenen: 7 van 10 in één keer goed', 'reden in log');
 
 \echo '3. Dagplafond voor activiteiten'
 select public.activiteit_opslaan(:'kim', 'rekenen', '{"goed": 10}', 200);
@@ -71,22 +74,23 @@ select set_config('app.nu', '2026-10-22 09:00+02', false);
 select pg_temp.gelijk(public.activiteit_opslaan(:'kim', 'kleurplaat', '{}', 200), 3, 'nieuwe dag');
 select set_config('app.nu', '2026-10-21 16:30+02', false);
 
-\echo '4. Goedkeuren alleen door een ouder'
+\echo '4. Niets meer goed te keuren'
+select pg_temp.gelijk(public.saldo(:'kim'), 23, 'saldo na plafond en nieuwe dag');
 select id as eerste from public.activiteitlog where kind_id = :'kim' and sterren = 3 and dag = '2026-10-21' \gset
-select pg_temp.gelijk(public.activiteit_beoordelen(:'eerste', true), 'pincode_fout', 'tablet zonder pin');
-select pg_temp.gelijk(public.activiteit_beoordelen(:'eerste', true, '0000'), 'pincode_fout', 'foute pin');
-select pg_temp.gelijk(public.activiteit_beoordelen(:'eerste', true, '1357'), 'goedgekeurd', 'goedgekeurd');
-select pg_temp.gelijk(public.saldo(:'kim'), 3, 'saldo na goedkeuring');
-select pg_temp.gelijk((select reden from public.puntenlog where bron_id = :'eerste'),
-                      'Rekenen: 7 van 10 in één keer goed', 'reden in log');
+select pg_temp.gelijk((select status::text from public.activiteitlog where id = :'eerste'), 'goedgekeurd', 'meteen goedgekeurd');
 select pg_temp.fout(format('select public.activiteit_beoordelen(%L, true, ''1357'')', :'eerste'), 'al beoordeeld');
-
-\echo '5. Afkeuren kost niets'
 select id as tweede from public.activiteitlog where kind_id = :'noor' \gset
-select pg_temp.gelijk(public.activiteit_beoordelen(:'tweede', false, '1357'), 'afgekeurd', 'afgekeurd');
-select pg_temp.gelijk(public.saldo(:'noor'), 0, 'niets bij of af');
 select id as memory from public.activiteitlog where activiteit = 'memory' \gset
 select pg_temp.fout(format('select public.activiteit_beoordelen(%L, true, ''1357'')', :'memory'), 'al beoordeeld');
+
+\echo '5. Spaarmaximum blijft gelden'
+reset role;
+update public.gezinnen set max_saldo = 7 where id = :'gezin';
+set role authenticated;
+select pg_temp.gelijk(public.activiteit_opslaan(:'noor', 'kleurplaat', '{}', 60), 2, 'tot het spaarmaximum');
+select pg_temp.gelijk(public.saldo(:'noor'), 7, 'saldo op maximum');
+select pg_temp.gelijk((select reden from public.puntenlog where kind_id = :'noor' order by id desc limit 1),
+                      'Kleurplaat: afgewerkt (spaarmaximum bereikt)', 'reden spaarmaximum');
 
 \echo '6. Andere gezinnen zien niets'
 reset role;

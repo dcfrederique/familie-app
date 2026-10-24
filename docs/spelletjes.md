@@ -13,6 +13,9 @@ niet leest prentjes en voorlezen in plaats van tekst.
 
 ## Vrijspelen met sterren
 
+> Vervangen op 24 oktober 2026: de kinderen **kopen** de spelletjes nu met sterren die van hun saldo afgaan.
+> Zie `docs/winkel.md` voor de regels en prijzen. Wat hieronder staat, is de oude regeling.
+
 Zelfde idee als bij het figuurtje (optie C uit `docs/avatar.md`): een spelletje gaat open als het kind
 **ooit** genoeg sterren verdiend heeft. Het saldo blijft hetzelfde, er wordt niets afgeschreven. Wat eenmaal
 open is, blijft open.

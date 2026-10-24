@@ -95,7 +95,7 @@ function RekenSpel({ kind }: { kind: Gebruiker }) {
           {opgeslagen && 'sterren' in opgeslagen && (opgeslagen.sterren > 0 ? (
             <div className="verdiend">
               <Ster grootte={34} />
-              <span>{opgeslagen.sterren} {opgeslagen.sterren === 1 ? 'ster' : 'sterren'}: wacht op mama of papa</span>
+              <span>{opgeslagen.sterren} {opgeslagen.sterren === 1 ? 'ster' : 'sterren'} erbij!</span>
             </div>
           ) : sterrenVoor(goed) > 0 ? (
             <p className="klaar-uitleg">Genoeg sterren met rekenen voor vandaag. Super gedaan!</p>

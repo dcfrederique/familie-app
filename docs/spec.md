@@ -36,7 +36,7 @@ Feline vraagt zelf geen tijd aan; dat beslissen de ouders.
 | Dagplafond extra tijd | 60 min per kind |
 | Tijdvenster aanvragen | 7:00 tot 20:00 |
 | Maximum spaarsaldo | 300 sterren |
-| Sterren uit activiteiten per dag | 20 per kind; ook die pas na goedkeuring van een ouder |
+| Sterren uit activiteiten per dag | 20 per kind; die komen er meteen bij, zonder goedkeuring (sinds 24 oktober 2026, `docs/winkel.md`) |
 
 ## Activiteiten
 
@@ -55,7 +55,7 @@ Feline vraagt zelf geen tijd aan; dat beslissen de ouders.
 | Touwspringen | Het eigen figuurtje springt touw: tik als het touw onderaan is; Traag, Normaal, Snel; record per niveau | Geen | Ja |
 | Basket | Veeg de bal naar de ring; raak 2, swish 3; 10 ballen; ring beweegt vanaf Normaal | Geen | Ja |
 
-De vijf laatste spelletjes gaan open met ooit verdiende sterren; zie `docs/spelletjes.md`.
+De laatste spelletjes koopt het kind met sterren; zie `docs/winkel.md`.
 
 ## Schermen
 

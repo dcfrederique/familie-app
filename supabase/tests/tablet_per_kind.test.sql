@@ -80,7 +80,7 @@ select pg_temp.fout(format('select public.welkom_afronden(%L)', :'lowie'), 'hoor
 select pg_temp.fout(format('select public.welkom_afronden(%L, null, null, %L)', :'mila', 'regenboog'), 'onbekend thema');
 select pg_temp.fout(format('select public.welkom_afronden(%L, null, %L)', :'mila', '2027-01-01'), 'geboortedatum klopt niet');
 select pg_temp.fout(format('select public.welkom_afronden(%L, %L)', :'mila', '{"huid":"bruin","gezicht":"lach","haar":"krullen","haarKleur":"zwart","hoofd":"geen","shirt":"tshirt","shirtKleur":"roze","broek":"rok","broekKleur":"jeans","schoenen":"sport","schoenKleur":"wit","extra":"geen"}'),
-                    'nog niet vrijgespeeld');
+                    'nog niet gekocht');
 select pg_temp.gelijk(public.saldo(:'mila'), 0, 'niets bewaard, geen bonus');
 select pg_temp.gelijk(public.welkom_afronden(:'mila',
   '{"huid":"bruin","gezicht":"lach","haar":"lang","haarKleur":"zwart","hoofd":"geen","shirt":"tshirt","shirtKleur":"roze","broek":"rok","broekKleur":"jeans","schoenen":"sport","schoenKleur":"wit","extra":"geen"}',

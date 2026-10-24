@@ -146,11 +146,11 @@ function FiguurtjeBeheer({ kind }: { kind: Gebruiker }) {
         <label>
           <input type="checkbox" checked={!kind.figuurtje_alles_vrij}
                  onChange={(e) => doe(() => bron!.kindAanpassen(kind.id, { figuurtje_alles_vrij: !e.target.checked }), 'Bewaard.')} />
-          {' '}Figuurtje en spelletjes vrijspelen met sterren
+          {' '}Figuurtje en spelletjes kopen met sterren
         </label>
         <p>{kind.figuurtje_alles_vrij
           ? 'Alle stukken en spelletjes zijn vrij.'
-          : 'Nieuwe stukken gaan open bij 25, 50, 100, 150, 250 en 400 ooit verdiende sterren (een vijfde voor wie niet leest), nieuwe spelletjes bij 20, 30, 50, 75 en 100. Het saldo blijft hetzelfde.'}</p>
+          : 'Het kind koopt zelf nieuwe stukken (10 tot 50 sterren) en spelletjes (15 tot 40 sterren); die sterren gaan van het saldo af. Wie niet leest betaalt de helft. Uit = alles is gratis.'}</p>
         <button type="button" className="knop-klein" disabled={!kind.figuurtje}
                 onClick={() => doe(() => bron!.figuurtjeBewaren(kind.id, null), 'Teruggezet naar het basisfiguurtje.')}>
           Figuurtje terugzetten

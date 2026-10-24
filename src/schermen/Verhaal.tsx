@@ -115,7 +115,7 @@ function Lezer({ kind, verhaal }: { kind: Gebruiker; verhaal: Verhaal }) {
         {opgeslagen && 'sterren' in opgeslagen && (opgeslagen.sterren > 0 ? (
           <div className="verdiend">
             <Ster grootte={34} />
-            <span>{opgeslagen.sterren} {opgeslagen.sterren === 1 ? 'ster' : 'sterren'}: wacht op mama of papa</span>
+            <span>{opgeslagen.sterren} {opgeslagen.sterren === 1 ? 'ster' : 'sterren'} erbij!</span>
           </div>
         ) : <p className="klaar-uitleg">Genoeg sterren met verhalen voor vandaag. Lees gerust nog verder!</p>)}
         <div className="knoppen-rij">

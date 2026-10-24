@@ -1,23 +1,30 @@
 import { describe, expect, it } from 'vitest'
-import { nogTeVerdienen, spelDrempel, spelMenu } from './spelletjes.ts'
+import sql from '../../supabase/migrations/20261024000500_sterren_kopen.sql?raw'
+import { spelIsVrij, spelMenu, spelPrijs } from './spelletjes.ts'
 
 const spel = (s: string) => spelMenu.find((x) => x.sleutel === s)!
+const lezer = { eigen: new Set(['spel:racen']), allesVrij: false, kanLezen: true }
 
-describe('spelletjes vrijspelen', () => {
-  it('de oude spelletjes zijn meteen vrij, de nieuwe hebben een drempel', () => {
-    for (const s of ['rekenen', 'memory', 'penalty']) expect(spel(s).drempel).toBe(0)
-    for (const s of ['huisdier', 'puzzel', 'racen', 'koken', 'touwspringen', 'basket']) expect(spel(s).drempel).toBeGreaterThan(0)
+describe('spelletjes kopen', () => {
+  it('de oude spelletjes zijn gratis, de nieuwe kosten sterren', () => {
+    for (const s of ['rekenen', 'memory', 'penalty']) expect(spel(s).prijs).toBe(0)
+    for (const s of ['huisdier', 'puzzel', 'racen', 'koken', 'touwspringen', 'basket']) expect(spel(s).prijs).toBeGreaterThan(0)
   })
 
-  it('wie niet leest heeft een vijfde nodig, alles vrij zet de drempel op 0', () => {
-    expect(spelDrempel(spel('basket'), { allesVrij: false, kanLezen: true })).toBe(100)
-    expect(spelDrempel(spel('basket'), { allesVrij: false, kanLezen: false })).toBe(20)
-    expect(spelDrempel(spel('touwspringen'), { allesVrij: false, kanLezen: false })).toBe(15)
-    expect(spelDrempel(spel('basket'), { allesVrij: true, kanLezen: true })).toBe(0)
+  it('wie niet leest betaalt de helft, alles vrij maakt het gratis', () => {
+    expect(spelPrijs(spel('basket'), { allesVrij: false, kanLezen: true })).toBe(40)
+    expect(spelPrijs(spel('huisdier'), { allesVrij: false, kanLezen: false })).toBe(8)
+    expect(spelPrijs(spel('basket'), { allesVrij: true, kanLezen: true })).toBe(0)
   })
 
-  it('ooit verdiende sterren tellen, nooit minder dan 0 te gaan', () => {
-    expect(nogTeVerdienen(spel('racen'), { verdiend: 12, allesVrij: false, kanLezen: true })).toBe(18)
-    expect(nogTeVerdienen(spel('racen'), { verdiend: 400, allesVrij: false, kanLezen: true })).toBe(0)
+  it('wat gekocht is, is vrij', () => {
+    expect(spelIsVrij(spel('racen'), lezer)).toBe(true)
+    expect(spelIsVrij(spel('basket'), lezer)).toBe(false)
+    expect(spelIsVrij(spel('memory'), lezer)).toBe(true)
+  })
+
+  it('heeft dezelfde prijzen als de server', () => {
+    const rijen = [...sql.matchAll(/\('(\w+)', (\d+), \d+\)/g)].map(([, s, p]) => `${s}:${p}`)
+    expect(rijen.sort()).toEqual(spelMenu.map((s) => `${s.sleutel}:${s.prijs}`).sort())
   })
 })

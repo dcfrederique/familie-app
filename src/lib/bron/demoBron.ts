@@ -1,6 +1,7 @@
 // Demo zonder Supabase: alles in het geheugen van de browser, met dezelfde spelregels.
 // Handig om de schermen te bekijken voor de database gekoppeld is. Pincode in de demo: 1234.
-import { controleer, type Figuurtje } from '../../data/figuurtje.ts'
+import { bezitSleutel, categorieen, controleer, prijsVoor, type Figuurtje } from '../../data/figuurtje.ts'
+import { spelMenu } from '../../data/spelletjes.ts'
 import type { Gebruiker } from '../../data/gezin.ts'
 import { dagVan } from '../datum.ts'
 import { activiteitOmschrijving, activiteitSterren, blokKeuzes, regels as standaardRegels } from '../regels.ts'
@@ -15,6 +16,7 @@ interface Toestand {
   verzoeken: Tijdverzoek[]
   activiteiten: ActiviteitRegel[]
   log: LogRegel[]
+  aankopen: Record<string, string[]>
   regels: Spelregels
 }
 
@@ -43,6 +45,7 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
     activiteiten: [],
     // Wat startsaldo, zodat Extra tijd vragen meteen te proberen is.
     log: kinderen.map((k, i) => ({ id: i + 1, kind_id: k.id, delta: 40, reden: 'Startsaldo (demo)', tijdstip: nu })),
+    aankopen: {},
     regels: {
       dagplafond_minuten: standaardRegels.dagplafondMinuten,
       venster_van: standaardRegels.tijdvenster.van,
@@ -81,10 +84,7 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
     },
     async log(kind) { return t.log.filter((l) => l.kind_id === kind).slice().reverse() },
     async spelregels() { return { ...t.regels } },
-    async verdiend() {
-      return Object.fromEntries(kinderen.map((k) => [k.id,
-        t.log.filter((l) => l.kind_id === k.id && l.delta > 0).reduce((s, l) => s + l.delta, 0)]))
-    },
+    async aankopen() { return Object.fromEntries(Object.entries(t.aankopen).map(([k, v]) => [k, [...v]])) },
 
     async taakIndienen(kind, taakId, foto) {
       const taak = t.taken.find((x) => x.id === taakId)
@@ -109,9 +109,27 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       const al = t.activiteiten.filter((a) => a.kind_id === kind && a.dag === dagVan(nu) && a.status !== 'afgekeurd')
         .reduce((s, a) => s + a.sterren, 0)
       const sterren = Math.max(0, Math.min(activiteitSterren(activiteit, inhoud), standaardRegels.activiteitSterrenPerDag - al))
-      t.activiteiten.push({ id: id(), kind_id: kind, activiteit, inhoud, duur_seconden: Math.round(duurSeconden), sterren,
-                            status: sterren > 0 ? 'ingediend' : null, tijdstip: nu.toISOString(), dag: dagVan(nu) })
-      return sterren
+      // Zonder goedkeuring: de sterren komen er meteen bij, tot het spaarmaximum.
+      const a: ActiviteitRegel = { id: id(), kind_id: kind, activiteit, inhoud, duur_seconden: Math.round(duurSeconden), sterren,
+                                   status: sterren > 0 ? 'goedgekeurd' : null, tijdstip: nu.toISOString(), dag: dagVan(nu) }
+      t.activiteiten.push(a)
+      const bij = Math.max(0, Math.min(sterren, t.regels.max_saldo - saldo(kind)))
+      if (bij > 0) boek(kind, bij, activiteitOmschrijving(a))
+      return bij
+    },
+    async kopen(kindId, soort, sleutel, naam) {
+      const k = kinderen.find((x) => x.id === kindId)
+      if (!k) throw new Error('kind niet gevonden')
+      const stuk = soort === 'spel'
+        ? spelMenu.find((s) => s.sleutel === sleutel)
+        : categorieen.find((c) => c.id === soort)?.stukken.find((s) => s.id === sleutel)
+      if (!stuk) throw new Error(`onbekend stuk: ${sleutel}`)
+      const prijs = prijsVoor(stuk, { allesVrij: k.figuurtje_alles_vrij, kanLezen: k.kan_lezen })
+      const eigen = (t.aankopen[kindId] ??= [])
+      if (prijs === 0 || eigen.includes(bezitSleutel(soort, sleutel))) return
+      if (saldo(kindId) - gereserveerd(kindId) < prijs) throw new Error('niet genoeg sterren')
+      eigen.push(bezitSleutel(soort, sleutel))
+      boek(kindId, -prijs, `Gekocht: ${naam}`)
     },
     async spraakToken() { throw new Error('spraakherkenning werkt niet in de demo') },
     async activiteitenTeBeoordelen() { return t.activiteiten.filter((a) => a.status === 'ingediend') },
@@ -119,8 +137,8 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       const k = kinderen.find((x) => x.id === kindId)
       if (!k) throw new Error('kind niet gevonden')
       if (figuurtje) {
-        const verdiend = t.log.filter((l) => l.kind_id === kindId && l.delta > 0).reduce((s, l) => s + l.delta, 0)
-        const reden = controleer(figuurtje, { verdiend, allesVrij: k.figuurtje_alles_vrij, kanLezen: k.kan_lezen })
+        const eigen = new Set(t.aankopen[kindId] ?? [])
+        const reden = controleer(figuurtje, { eigen, allesVrij: k.figuurtje_alles_vrij, kanLezen: k.kan_lezen })
         if (reden) throw new Error(reden)
       }
       k.figuurtje = figuurtje && { ...figuurtje }

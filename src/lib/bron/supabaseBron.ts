@@ -70,11 +70,13 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
       return { ...data, venster_van: data!.venster_van.slice(0, 5), venster_tot: data!.venster_tot.slice(0, 5) } as Spelregels
     },
 
-    async verdiend() {
-      const { data, error } = await sb.from('kind_verdiend').select('kind_id, verdiend')
-      // Zonder migratie 20261022001000_figuurtje is alleen het basispakket vrij.
+    async aankopen() {
+      const { data, error } = await sb.from('aankopen').select('kind_id, soort, sleutel')
+      // Zonder migratie 20261024000500_sterren_kopen is alleen wat gratis is vrij.
       if (error) return {}
-      return Object.fromEntries((data ?? []).map((r) => [r.kind_id as string, r.verdiend as number]))
+      const uit: Record<string, string[]> = {}
+      for (const r of data ?? []) (uit[r.kind_id] ??= []).push(`${r.soort}:${r.sleutel}`)
+      return uit
     },
 
     async taakIndienen(kindId, taakId, foto) {
@@ -102,6 +104,10 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
       fout(error)
       if (!data) throw new Error('geen antwoord van spraak-token')
       return data
+    },
+    async kopen(kindId, soort, sleutel, naam) {
+      const { error } = await sb.rpc('kopen', { p_kind: kindId, p_soort: soort, p_sleutel: sleutel, p_naam: naam })
+      fout(error)
     },
     async figuurtjeBewaren(kindId, figuurtje) {
       const { error } = await sb.rpc('figuurtje_bewaren', { p_kind: kindId, p_figuurtje: figuurtje })

@@ -10,7 +10,7 @@ import './verhalen.css'
 import { ThemaVink, useThema } from './ThemaDelen.tsx'
 import Bladzijden, { kaartMaat } from './Bladzijden.tsx'
 
-// Kiezen welk verhaal je leest. Elk uitgelezen verhaal levert sterren op, na goedkeuring.
+// Kiezen welk verhaal je leest. Elk uitgelezen verhaal levert meteen sterren op.
 export default function Verhalen() {
   return (
     <SpelKader titel="Verhalen" scherm="verhalen" terug={(id) => `/kind/${id}`}>

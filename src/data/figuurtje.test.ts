@@ -1,58 +1,43 @@
 import { describe, expect, it } from 'vitest'
 import sql from '../../supabase/migrations/20261022001000_figuurtje.sql?raw'
 import { tekenFiguurtje } from '../lib/figuurtje/tekenen.ts'
+import nieuw from '../../supabase/migrations/20261024000500_sterren_kopen.sql?raw'
 import {
-  basisFiguurtje, categorieen, controleer, drempelVoor, haarKleuren, isVrij, kledingKleuren, nieuwVrij,
-  verrassing, volgendeMijlpaal, zichtbareCategorieen, type Stuk,
+  basisFiguurtje, categorieen, controleer, haarKleuren, isVrij, kledingKleuren, prijsVoor, verrassing, zichtbareCategorieen,
 } from './figuurtje.ts'
 
-const luca = { verdiend: 140, allesVrij: false, kanLezen: true }
-const feline = { verdiend: 22, allesVrij: false, kanLezen: false }
+const geen = new Set<string>()
+const luca = { eigen: new Set(['hoofd:dino', 'extra:bril']), allesVrij: false, kanLezen: true }
+const feline = { eigen: geen, allesVrij: false, kanLezen: false }
 const stuk = (cat: string, id: string) => categorieen.find((c) => c.id === cat)!.stukken.find((s) => s.id === id)!
 
-describe('vrijspelen', () => {
-  it('opent stukken bij het totaal aantal verdiende sterren', () => {
-    expect(isVrij(stuk('hoofd', 'dino'), luca)).toBe(true)
-    expect(isVrij(stuk('hoofd', 'helm'), luca)).toBe(false)
-    expect(isVrij(stuk('hoofd', 'helm'), { ...luca, verdiend: 150 })).toBe(true)
+describe('kopen', () => {
+  it('gratis stukken zijn meteen van jou, de rest pas als je het kocht', () => {
+    expect(isVrij('haar', stuk('haar', 'stekels'), feline)).toBe(true)
+    expect(isVrij('hoofd', stuk('hoofd', 'dino'), luca)).toBe(true)
+    expect(isVrij('hoofd', stuk('hoofd', 'helm'), luca)).toBe(false)
+    // Dezelfde naam in een andere categorie telt niet mee.
+    expect(isVrij('shirt', stuk('shirt', 'dino'), luca)).toBe(false)
   })
 
-  it('geeft wie niet leest een vijfde van de drempel, naar boven afgerond', () => {
-    expect(drempelVoor(stuk('extra', 'toverstaf'), feline)).toBe(30)
-    expect(drempelVoor(stuk('gezicht', 'verbaasd'), feline)).toBe(5)
-    expect(drempelVoor({ id: 'x', naam: 'x', drempel: 12 } as Stuk, feline)).toBe(3)
-    expect(isVrij(stuk('hoofd', 'dino'), feline)).toBe(true)
-    expect(isVrij(stuk('extra', 'toverstaf'), feline)).toBe(false)
+  it('wie niet leest betaalt de helft, naar boven afgerond', () => {
+    expect(prijsVoor(stuk('extra', 'toverstaf'), { allesVrij: false, kanLezen: true })).toBe(25)
+    expect(prijsVoor(stuk('extra', 'toverstaf'), feline)).toBe(13)
+    expect(prijsVoor({ prijs: 0 }, feline)).toBe(0)
   })
 
-  it('zet alles open als een ouder vrijspelen uitzet', () => {
-    expect(isVrij(stuk('extra', 'cape'), { ...feline, allesVrij: true })).toBe(true)
-    expect(volgendeMijlpaal({ ...luca, allesVrij: true })).toBeNull()
-  })
-
-  it('kent de volgende mijlpaal', () => {
-    expect(volgendeMijlpaal(luca)).toMatchObject({ drempel: 150, vorige: 100 })
-    expect(volgendeMijlpaal({ ...luca, verdiend: 0 })).toMatchObject({ drempel: 25, vorige: 0 })
-    expect(volgendeMijlpaal({ ...luca, verdiend: 1000 })).toBeNull()
-    // Voor wie niet leest tellen alleen de stukken die ze te zien krijgt.
-    expect(volgendeMijlpaal(feline)).toMatchObject({ drempel: 30, vorige: 20 })
-  })
-
-  it('vindt de stukken die net vrijgespeeld zijn', () => {
-    const nieuw = nieuwVrij(140, 150, luca)
-    expect(nieuw.map((n) => n.stuk.id).sort()).toEqual(['dino', 'helm', 'toverstaf'])
-    expect(nieuwVrij(150, 150, luca)).toEqual([])
-    expect(nieuwVrij(0, 999, { ...luca, allesVrij: true })).toEqual([])
-    expect(nieuwVrij(20, 30, feline).map((n) => n.stuk.id).sort()).toEqual(['dino', 'toverstaf'])
+  it('zet alles open als een ouder de winkel uitzet', () => {
+    expect(isVrij('extra', stuk('extra', 'cape'), { ...feline, allesVrij: true })).toBe(true)
+    expect(prijsVoor(stuk('extra', 'cape'), { allesVrij: true, kanLezen: true })).toBe(0)
   })
 })
 
 describe('controleer', () => {
   it('aanvaardt het basisfiguurtje zonder sterren', () => {
-    expect(controleer(basisFiguurtje('roze'), { ...luca, verdiend: 0 })).toBeNull()
+    expect(controleer(basisFiguurtje('roze'), feline)).toBeNull()
   })
   it('weigert stukken op slot en onbekende stukken of kleuren', () => {
-    expect(controleer({ ...basisFiguurtje(null), hoofd: 'kroon' }, luca)).toMatch(/nog niet vrijgespeeld/)
+    expect(controleer({ ...basisFiguurtje(null), hoofd: 'kroon' }, luca)).toMatch(/nog niet gekocht/)
     expect(controleer({ ...basisFiguurtje(null), hoofd: 'hoed' }, luca)).toMatch(/onbekend stuk/)
     expect(controleer({ ...basisFiguurtje(null), haarKleur: 'jeans' }, luca)).toMatch(/onbekende kleur/)
     expect(controleer({ ...basisFiguurtje(null), shirtKleur: 'toString' }, luca)).toMatch(/onbekende kleur/)
@@ -64,7 +49,7 @@ describe('verrassing', () => {
     let n = 0
     const kans = () => ((n = (n * 9301 + 49297) % 233280) / 233280)
     for (let i = 0; i < 200; i++) {
-      for (const v of [luca, feline, { ...luca, verdiend: 0 }]) {
+      for (const v of [luca, feline, { ...luca, eigen: geen }]) {
         expect(controleer(verrassing(v, basisFiguurtje(null), kans), v)).toBeNull()
       }
     }
@@ -92,11 +77,15 @@ describe('tekenen', () => {
 })
 
 describe('catalogus op de server', () => {
-  const rijen = [...sql.matchAll(/\('(\w+)', '(\w+)', (\d+)\)/g)].map(([, soort, sleutel, d]) => `${soort}:${sleutel}:${d}`)
+  // De stukken komen uit de eerste migratie (standaard gratis), de prijzen uit de winkelmigratie.
+  const prijzen = new Map([...nieuw.matchAll(/\('(\w+)', '(\w+)', (\d+)\)/g)].map(([, soort, sleutel, p]) => [`${soort}:${sleutel}`, p]))
+  const rijen = [...sql.matchAll(/\('(\w+)', '(\w+)', (\d+)\)/g)]
+    .map(([, soort, sleutel]) => `${soort}:${sleutel}:${prijzen.get(`${soort}:${sleutel}`) ?? 0}`)
 
-  it('heeft dezelfde stukken, kleuren en drempels als de app', () => {
+  it('heeft dezelfde stukken, kleuren en prijzen als de app', () => {
+    expect([...prijzen.keys()].every((k) => rijen.some((r) => r.startsWith(`${k}:`)))).toBe(true)
     const app = [
-      ...categorieen.flatMap((c) => c.stukken.map((s) => `${c.id}:${s.id}:${s.drempel}`)),
+      ...categorieen.flatMap((c) => c.stukken.map((s) => `${c.id}:${s.id}:${s.prijs}`)),
       ...Object.keys(haarKleuren).map((k) => `haarkleur:${k}:0`),
       ...Object.keys(kledingKleuren).map((k) => `kleur:${k}:0`),
     ]

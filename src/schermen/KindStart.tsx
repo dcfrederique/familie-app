@@ -12,7 +12,6 @@ import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import { takenVoorKind, type TaakStatus } from '../lib/takenstatus.ts'
 import { gebruikStem, kanVoorlezen, leesVoor } from '../lib/voorlezen.ts'
 import Figuurtje, { hoofdUitsnede } from './Figuurtje.tsx'
-import NieuwStuk from './NieuwStuk.tsx'
 import { Ster, SterrenPil } from './onderdelen.tsx'
 import './schermen.css'
 import Bladzijden from './Bladzijden.tsx'
@@ -32,11 +31,10 @@ export default function KindStart() {
 
   const { data, ververs } = useGegevens(bron && kind ? async () => {
     const zestigDagenTerug = dagVan(new Date(Date.now() - 60 * 86400_000))
-    const [taken, inzendingen, saldi, verzoeken, verdiend] = await Promise.all([
-      bron.taken(), bron.inzendingenVanaf(zestigDagenTerug), bron.saldi(), bron.verzoeken(vandaag()), bron.verdiend(),
+    const [taken, inzendingen, saldi, verzoeken] = await Promise.all([
+      bron.taken(), bron.inzendingenVanaf(zestigDagenTerug), bron.saldi(), bron.verzoeken(vandaag()),
     ])
-    return { taken, inzendingen, saldo: saldi[kind.id], verzoeken: verzoeken.filter((v) => v.kind_id === kind.id),
-             verdiend: verdiend[kind.id] ?? 0 }
+    return { taken, inzendingen, saldo: saldi[kind.id], verzoeken: verzoeken.filter((v) => v.kind_id === kind.id) }
   } : null, [bron, kind?.id])
 
   if (!kind) return <Navigate to="/kinderen" replace />
@@ -54,7 +52,6 @@ export default function KindStart() {
         <Afvinken kind={kind} taak={gekozen} sluit={() => setGekozen(null)}
                   klaar={async (foto) => { await bron.taakIndienen(kind.id, gekozen.id, foto); setGekozen(null); await ververs() }} />
       )}
-      {!gekozen && <NieuwStuk kind={kind} verdiend={data?.verdiend} />}
     </div>
   )
 }
