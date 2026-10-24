@@ -67,3 +67,50 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - Licht en donker thema ondersteunen.
 - Schrijf tests voor de sterrenlogica (reserveren, toekennen, terugboeken, dagplafond).
 - Content (verhalen, taken, spelletjes-niveaus) als data, niet hardcoded in componenten.
+
+# Nachtelijke uitbreidingen: verhalen en spelletjes
+
+## Doel
+Elke nacht wordt de familie-app uitgebreid met 1 nieuw verhaal en 1 nieuw spelletje.
+Dit gebeurt in twee fases: eerst uitdenken (ontwerp), daarna coderen (bouw).
+
+## Doelgroep en toon
+- Kinderen van 4 tot 8 jaar
+- Taal: Nederlands, eenvoudige zinnen, korte alinea's
+- Positief en warm; geen enge, gewelddadige of verdrietige inhoud
+- Verhalen: 300 tot 600 woorden, met een duidelijk begin, midden en einde
+- Spelletjes: eenvoudig, speelbaar op een tablet, zonder lezen speelbaar voor de jongste
+
+## Mappenstructuur
+- Plannen: `ideeen/YYYY-MM-DD.md`
+- Samenvattingen van de bouw: `ideeen/YYYY-MM-DD-resultaat.md`
+- Volg voor code de bestaande structuur van verhalen en spellen in het project
+
+## Regels voor de ontwerpfase
+- Lees eerst de bestaande verhalen en spellen, zodat er geen herhaling is
+- Wijzig GEEN code, schrijf alleen het plan
+- Het plan bevat: titel, volledige verhaaltekst, spelregels,
+  benodigde schermen/componenten en acceptatiecriteria
+
+## Regels voor de bouwfase
+- Werk nooit op `main`; maak een branch `nacht/YYYY-MM-DD`
+  (dit is een uitzondering op de gewone werkwijze waarbij rechtstreeks naar `main` gepusht mag worden)
+- Bouw alleen wat in het plan van vandaag staat
+- Draai de tests; los fouten op voor je stopt
+- Als iets niet lukt: noteer het in het resultaatbestand in plaats van te gokken
+- Schrijf een korte samenvatting in `ideeen/YYYY-MM-DD-resultaat.md`
+
+---
+
+## Taakprompt 1 – Ontwerp (bv. 01:00)
+Lees CLAUDE.md en volg de regels voor de ontwerpfase. Bekijk de bestaande
+verhalen en spellen. Bedenk 1 nieuw verhaal en 1 nieuw spelletje dat bij de
+app past. Schrijf het volledige plan naar ideeen/<datum van vandaag>.md.
+Wijzig geen code.
+
+## Taakprompt 2 – Bouw (bv. 03:00)
+Lees CLAUDE.md en volg de regels voor de bouwfase. Open
+ideeen/<datum van vandaag>.md. Als dat bestand niet bestaat, stop dan en
+schrijf dat in het resultaatbestand. Maak branch nacht/<datum van vandaag>,
+implementeer het verhaal en het spelletje, draai de tests en schrijf de
+samenvatting naar ideeen/<datum van vandaag>-resultaat.md.
