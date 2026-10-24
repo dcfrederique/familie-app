@@ -292,3 +292,4 @@ a.vink-tekst { text-decoration: none; }
 .profiel-formulier { display: grid; gap: 12px; max-width: 520px; }
 .profiel-formulier .veld small { font-weight: 400; color: var(--muted); font-size: 13px; }
 .ouder .is-later-kaart { align-self: start; }
+.ouder .nieuwtje ul { margin: 8px 0 0 18px; font-size: 14px; }

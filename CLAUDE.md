@@ -105,6 +105,8 @@ Dit gebeurt in twee fases: eerst uitdenken (ontwerp), daarna coderen (bouw).
 - Als iets niet lukt: noteer het in het resultaatbestand in plaats van te gokken;
   blijft iets rood, push dan geen code maar alleen het resultaatbestand
 - Schrijf een korte samenvatting in `ideeen/YYYY-MM-DD-resultaat.md`
+- Zet bovenaan `src/data/nieuwtjes.ts` een item voor vandaag (verhaal, spel met prijs, wat open staat);
+  ouders lezen het in het ouderdeel onder "Nieuw in de app"
 
 ---
 
