@@ -195,3 +195,43 @@ a.vink-tekst { text-decoration: none; }
 }
 .ouder.ouder-slot { padding-left: 0; }
 .ouder .kind-kaart[id] { scroll-margin-top: 76px; }
+
+/* Boodschappen: winkel kiezen bovenaan, toevoegen met een winkel, en het beheer van de winkels */
+.winkel-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 2px; scrollbar-width: none; }
+.winkel-tabs button { flex-shrink: 0; min-height: 44px; padding: 0 14px; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; font-size: 14px; font-weight: 500; display: inline-flex; align-items: center; gap: 8px; }
+.winkel-tabs button span { font-size: 12px; color: var(--muted); font-variant-numeric: tabular-nums; }
+.winkel-tabs button[aria-pressed="true"] { border-color: var(--accent); background: var(--accent-tint); color: var(--accent); box-shadow: inset 0 -2px 0 var(--accent); }
+.winkel-tabs button[aria-pressed="true"] span { color: var(--accent); }
+.ouder .boodschap-toevoegen { grid-template-columns: 1fr minmax(110px, 38%); }
+.boodschap-toevoegen select { min-height: 44px; border: 1px solid var(--line); padding: 0 8px; font: inherit; font-size: 15px; background: var(--surface); color: var(--ink); min-width: 0; }
+.boodschap-toevoegen .knop { grid-column: 1 / -1; }
+@media (min-width: 600px) { .ouder .boodschap-toevoegen { grid-template-columns: 1fr 200px auto; } .boodschap-toevoegen .knop { grid-column: auto; } }
+.winkel-rij { display: grid; grid-template-columns: 1fr 44px 44px auto; align-items: center; gap: 6px; padding: 8px 12px; border-bottom: 1px solid var(--line); }
+.winkel-rij:last-child { border-bottom: 0; }
+.winkel-rij input { min-height: 44px; border: 1px solid transparent; padding: 0 10px; font: inherit; font-weight: 500; background: transparent; color: var(--ink); min-width: 0; }
+.winkel-rij input:hover, .winkel-rij input:focus { border-color: var(--line); background: var(--surface); }
+.winkel-rij .knop-klein { padding: 0 10px; }
+.winkel-uitleg { grid-column: 1 / -1; font-size: 13px; color: var(--muted); }
+
+/* Weekmenu → boodschappen: de ingrediënten van een dag op de lijst zetten */
+.week-dag { grid-template-columns: 92px 44px 1fr 44px; }
+.week-kar { position: relative; }
+.week-kar[aria-expanded="true"] { border-color: var(--accent); color: var(--accent); }
+.week-kar b { position: absolute; top: -6px; right: -6px; min-width: 18px; height: 18px; padding: 0 4px; background: var(--accent); color: #fff; font-size: 11px; font-weight: 600; display: grid; place-items: center; }
+.ingredienten { grid-column: 1 / -1; display: grid; gap: 8px; padding: 10px 0 4px; }
+.ingredienten-kop { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: space-between; font-size: 14px; font-weight: 500; }
+.ingredienten-kop label { display: inline-flex; gap: 6px; align-items: center; font-size: 13px; color: var(--muted); font-weight: 400; }
+.ingredienten select { min-height: 40px; border: 1px solid var(--line); padding: 0 6px; font: inherit; font-size: 14px; background: var(--surface); color: var(--ink); min-width: 0; }
+.ingredienten ul { list-style: none; margin: 0; padding: 0; display: grid; border-top: 1px solid var(--line); }
+.ingredient { display: grid; grid-template-columns: 1fr minmax(110px, 40%); gap: 8px; align-items: center; padding: 4px 0; border-bottom: 1px solid var(--line); }
+.ingredient label { display: flex; gap: 10px; align-items: center; min-height: 44px; min-width: 0; }
+.ingredient input[type="checkbox"] { width: 22px; height: 22px; flex-shrink: 0; accent-color: var(--accent); }
+.ingredient small { color: var(--muted); font-size: 12px; }
+.ingredient.is-al .naam { color: var(--muted); }
+.ingredient-nieuw { display: grid; grid-template-columns: 1fr auto; gap: 8px; }
+.ingredient-nieuw input { min-height: 44px; }
+.ingredienten .knoppen { margin: 0; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: flex-end; }
+.ingredienten .knoppen .tip { margin: 0; flex: 1 1 200px; }
+.ouder .tip a { color: var(--accent); }
+.winkel-rij .knop-weg, .winkel-rij button:last-of-type { min-width: 76px; }
+@media (max-width: 420px) { .week-dag { grid-template-columns: 78px 40px 1fr 40px; gap: 8px; } .week-dag .week-prent { width: 40px; height: 40px; } }

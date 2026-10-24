@@ -5,7 +5,7 @@ import { spelMenu } from '../../data/spelletjes.ts'
 import type { Gebruiker } from '../../data/gezin.ts'
 import { dagVan } from '../datum.ts'
 import { activiteitOmschrijving, activiteitSterren, blokKeuzes, regels as standaardRegels } from '../regels.ts'
-import type { ActiviteitRegel, Bron, Inzending, LogRegel, Maaltijd, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Spelregels, Taak, Tijdverzoek } from './types.ts'
+import type { ActiviteitRegel, Boodschap, Bron, Inzending, LogRegel, Maaltijd, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Spelregels, Taak, Tijdverzoek, Winkel } from './types.ts'
 
 const DEMO_PIN = '1234'
 const WELKOM = 'Welkom! Je eerste sterren'
@@ -20,6 +20,8 @@ interface Toestand {
   weekmenu: Maaltijd[]
   ouderTaken: OuderTaak[]
   notities: Notitie[]
+  winkels: Winkel[]
+  boodschappen: Boodschap[]
   regels: Spelregels
 }
 
@@ -61,6 +63,13 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
         lijst: null, vastgezet: true, bijgewerkt_op: nu },
       { id: 'no-2', eigenaar: 'mama', gedeeld: true, titel: 'Mee op vakantie', tekst: '',
         lijst: [{ t: 'Paspoorten', af: false }, { t: 'Zonnecrème', af: true }, { t: 'Knuffels', af: false }], vastgezet: false, bijgewerkt_op: nu },
+    ],
+    winkels: ['Colruyt', 'Aldi', 'Lidl', 'Albert Heijn'].map((naam, i) => ({ id: `wi-${i + 1}`, naam, volgorde: i + 1 })),
+    boodschappen: [
+      { id: 'bo-1', naam: 'Melk', hoeveel: '2 l', winkel_id: 'wi-1', dag: null, gerecht: null, gekocht_op: null, aangemaakt_op: nu },
+      { id: 'bo-2', naam: 'Brood', hoeveel: '', winkel_id: 'wi-1', dag: null, gerecht: null, gekocht_op: null, aangemaakt_op: nu },
+      { id: 'bo-3', naam: 'Bananen', hoeveel: '', winkel_id: 'wi-3', dag: null, gerecht: null, gekocht_op: null, aangemaakt_op: nu },
+      { id: 'bo-4', naam: 'Pindakaas', hoeveel: '', winkel_id: 'wi-4', dag: null, gerecht: null, gekocht_op: null, aangemaakt_op: nu },
     ],
     regels: {
       dagplafond_minuten: standaardRegels.dagplafondMinuten,
@@ -110,6 +119,8 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       return t.notities.slice().sort((a, b) => Number(b.vastgezet) - Number(a.vastgezet) || b.bijgewerkt_op.localeCompare(a.bijgewerkt_op))
         .map((n) => ({ ...n, lijst: n.lijst && n.lijst.map((i) => ({ ...i })) }))
     },
+    async winkels() { return t.winkels.slice().sort((a, b) => a.volgorde - b.volgorde || a.naam.localeCompare(b.naam)).map((w) => ({ ...w })) },
+    async boodschappen() { return t.boodschappen.map((b) => ({ ...b })) },
     async aankopen() { return Object.fromEntries(Object.entries(t.aankopen).map(([k, v]) => [k, [...v]])) },
 
     async taakIndienen(kind, taakId, foto) {
@@ -277,5 +288,29 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       else t.notities.push({ ...notitie, id: id(), eigenaar: 'mama', bijgewerkt_op: nu })
     },
     async notitieVerwijderen(notitieId) { t.notities = t.notities.filter((x) => x.id !== notitieId) },
+    async winkelOpslaan({ id: winkelId, naam, volgorde }) {
+      const dubbel = t.winkels.find((w) => w.id !== winkelId && w.naam.trim().toLowerCase() === naam.trim().toLowerCase())
+      if (dubbel) throw new Error(`${dubbel.naam} staat al in de lijst`)
+      const oud = t.winkels.find((w) => w.id === winkelId)
+      if (oud) Object.assign(oud, { naam: naam.trim(), volgorde })
+      else t.winkels.push({ id: id(), naam: naam.trim(), volgorde })
+    },
+    async winkelVerwijderen(winkelId) {
+      t.winkels = t.winkels.filter((w) => w.id !== winkelId)
+      for (const b of t.boodschappen) if (b.winkel_id === winkelId) b.winkel_id = null
+    },
+    async boodschappenOpslaan(lijst) {
+      for (const b of lijst) {
+        const rij = { naam: b.naam.trim(), hoeveel: b.hoeveel.trim(), winkel_id: b.winkel_id }
+        const oud = b.id && t.boodschappen.find((x) => x.id === b.id)
+        if (oud) Object.assign(oud, rij)
+        else t.boodschappen.push({ ...rij, id: id(), dag: b.dag ?? null, gerecht: b.gerecht ?? null, gekocht_op: null, aangemaakt_op: new Date().toISOString() })
+      }
+    },
+    async boodschapAfvinken(boodschapId, gekocht) {
+      const b = t.boodschappen.find((x) => x.id === boodschapId)
+      if (b) b.gekocht_op = gekocht ? new Date().toISOString() : null
+    },
+    async boodschapVerwijderen(boodschapId) { t.boodschappen = t.boodschappen.filter((x) => x.id !== boodschapId) },
   }
 }

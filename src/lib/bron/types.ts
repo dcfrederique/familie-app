@@ -128,6 +128,29 @@ export interface Notitie {
 
 export type NieuweNotitie = Omit<Notitie, 'id' | 'eigenaar' | 'bijgewerkt_op'> & { id?: string }
 
+/** Een winkel waar de ouders boodschappen doen (Instellingen → Winkels). */
+export interface Winkel {
+  id: string
+  naam: string
+  volgorde: number
+}
+
+/** Eén artikel op de boodschappenlijst (docs/boodschappen.md). */
+export interface Boodschap {
+  id: string
+  naam: string
+  hoeveel: string
+  /** null = nog geen winkel gekozen. */
+  winkel_id: string | null
+  /** Toegevoegd vanuit het weekmenu: de dag en het gerecht. */
+  dag: string | null
+  gerecht: string | null
+  gekocht_op: string | null
+  aangemaakt_op: string
+}
+
+export type NieuweBoodschap = Pick<Boodschap, 'naam' | 'hoeveel' | 'winkel_id'> & Partial<Pick<Boodschap, 'dag' | 'gerecht'>> & { id?: string }
+
 export interface Spelregels {
   dagplafond_minuten: number
   venster_van: string
@@ -157,6 +180,10 @@ export interface Bron {
   ouderTaken(): Promise<OuderTaak[]>
   /** Je eigen notities en de gedeelde van je partner. Alleen voor een ouder-account. */
   notities(): Promise<Notitie[]>
+  /** De winkels van het gezin, in de volgorde van de ouders. Alleen voor een ouder-account. */
+  winkels(): Promise<Winkel[]>
+  /** Alles wat nog gekocht moet worden, en wat de laatste 60 dagen gekocht is (om winkels en ingrediënten te onthouden). */
+  boodschappen(): Promise<Boodschap[]>
 
   taakIndienen(kindId: string, taakId: string, foto: Blob | null): Promise<void>
   tijdAanvragen(kindId: string, minuten: number): Promise<void>
@@ -193,4 +220,11 @@ export interface Bron {
   ouderTaakVerwijderen(id: string): Promise<void>
   notitieOpslaan(notitie: NieuweNotitie): Promise<void>
   notitieVerwijderen(id: string): Promise<void>
+  winkelOpslaan(winkel: Pick<Winkel, 'naam' | 'volgorde'> & { id?: string }): Promise<void>
+  /** Gooit een winkel weg; zijn boodschappen blijven staan, zonder winkel. */
+  winkelVerwijderen(id: string): Promise<void>
+  /** Nieuwe artikels toevoegen, of één bestaand aanpassen (met id). */
+  boodschappenOpslaan(lijst: NieuweBoodschap[]): Promise<void>
+  boodschapAfvinken(id: string, gekocht: boolean): Promise<void>
+  boodschapVerwijderen(id: string): Promise<void>
 }

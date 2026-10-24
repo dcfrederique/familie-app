@@ -1,5 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
-import type { ActiviteitRegel, Bron, SpraakToken, Inzending, LogRegel, Maaltijd, NieuweNotitie, NieuweOuderTaak, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Saldo, Spelregels, Taak, Tijdverzoek } from './types.ts'
+import type { ActiviteitRegel, Boodschap, Bron, SpraakToken, Inzending, LogRegel, Maaltijd, NieuweNotitie, NieuweOuderTaak, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Saldo, Spelregels, Taak, Tijdverzoek, Winkel } from './types.ts'
 
 function fout(error: { message: string } | null) {
   if (error) throw new Error(error.message)
@@ -96,6 +96,18 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
         .order('vastgezet', { ascending: false }).order('bijgewerkt_op', { ascending: false })
       fout(error)
       return (data ?? []) as Notitie[]
+    },
+    async winkels() {
+      const { data, error } = await sb.from('winkels').select('id, naam, volgorde').order('volgorde').order('naam')
+      fout(error)
+      return (data ?? []) as Winkel[]
+    },
+    async boodschappen() {
+      const sinds = new Date(Date.now() - 60 * 86400_000).toISOString()
+      const { data, error } = await sb.from('boodschappen').select('id, naam, hoeveel, winkel_id, dag, gerecht, gekocht_op, aangemaakt_op')
+        .or(`gekocht_op.is.null,gekocht_op.gte.${sinds}`).order('aangemaakt_op').limit(1000)
+      fout(error)
+      return (data ?? []) as Boodschap[]
     },
 
     async taakIndienen(kindId, taakId, foto) {
@@ -230,6 +242,28 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
     },
     async notitieVerwijderen(id) {
       fout((await sb.from('notities').delete().eq('id', id)).error)
+    },
+    async winkelOpslaan({ id, naam, volgorde }) {
+      const rij = { naam: naam.trim(), volgorde }
+      fout((id ? await sb.from('winkels').update(rij).eq('id', id) : await sb.from('winkels').insert({ ...rij, gezin_id: gezinId })).error)
+    },
+    async winkelVerwijderen(id) {
+      fout((await sb.from('winkels').delete().eq('id', id)).error)
+    },
+    async boodschappenOpslaan(lijst) {
+      const nieuw = lijst.filter((b) => !b.id).map(({ naam, hoeveel, winkel_id, dag, gerecht }) =>
+        ({ gezin_id: gezinId, naam: naam.trim(), hoeveel: hoeveel.trim(), winkel_id, dag: dag ?? null, gerecht: gerecht ?? null }))
+      if (nieuw.length) fout((await sb.from('boodschappen').insert(nieuw)).error)
+      for (const { id, naam, hoeveel, winkel_id } of lijst.filter((b) => b.id)) {
+        fout((await sb.from('boodschappen').update({ naam: naam.trim(), hoeveel: hoeveel.trim(), winkel_id }).eq('id', id!)).error)
+      }
+    },
+    async boodschapAfvinken(id, gekocht) {
+      const ik = gekocht ? (await sb.rpc('mijn_ouder')).data : null
+      fout((await sb.from('boodschappen').update({ gekocht_op: gekocht ? new Date().toISOString() : null, gekocht_door: ik }).eq('id', id)).error)
+    },
+    async boodschapVerwijderen(id) {
+      fout((await sb.from('boodschappen').delete().eq('id', id)).error)
     },
   }
 }

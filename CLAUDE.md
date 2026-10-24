@@ -42,7 +42,8 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - `docs/tablet-per-kind.md`: tablet vastzetten op één kind en het welkomstpad (figuurtje, verjaardag, thema, welkomstbonus).
 - `prototypes/thema-subschermen.html`: mockup van het kinderthema (race, kasteel, tuin) in de subschermen; zit in de app via `src/data/themaPrenten.ts`, `src/schermen/ThemaDelen.tsx` en `src/schermen/thema-schermen.css`.
 - `docs/weekmenu.md`: weekmenu met de warme maaltijd per dag (ouderdeel Wij → Weekmenu), de kinderen zien die van vandaag op hun startscherm.
-- `docs/ouderdeel.md` en `prototypes/ouderdeel.html`: plan en mockup van het ouderdeel als beheertoepassing met hamburgermenu, en latere onderdelen (onze taken, boodschappen, notities, gezondheid). Fase 1 (menu, zijbalk op pc, IBM Plex Sans, rechte hoeken), Onze taken en Notities zitten in de app (alleen voor ouder-accounts, RLS); Boodschappen en Gezondheid nog niet.
+- `docs/ouderdeel.md` en `prototypes/ouderdeel.html`: plan en mockup van het ouderdeel als beheertoepassing met hamburgermenu, en latere onderdelen (onze taken, boodschappen, notities, gezondheid). Fase 1 (menu, zijbalk op pc, IBM Plex Sans, rechte hoeken), Onze taken, Notities en Boodschappen zitten in de app (alleen voor ouder-accounts, RLS); Gezondheid nog niet.
+- `docs/boodschappen.md`: boodschappenlijst per winkel (Wij → Boodschappen), winkels beheren (Instellingen → Winkels) en ingrediënten vanuit het weekmenu.
 
 ## Beslist (21 oktober 2026)
 

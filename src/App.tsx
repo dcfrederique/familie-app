@@ -27,6 +27,8 @@ import PincodeBeheer from './schermen/PincodeBeheer.tsx'
 import Weekmenu from './schermen/Weekmenu.tsx'
 import OnzeTaken from './schermen/OnzeTaken.tsx'
 import Notities from './schermen/Notities.tsx'
+import Boodschappen from './schermen/Boodschappen.tsx'
+import Winkels from './schermen/Winkels.tsx'
 import Touwspringen from './schermen/Touwspringen.tsx'
 import Welkom from './schermen/Welkom.tsx'
 import Welkomstpad from './schermen/Welkomstpad.tsx'
@@ -79,6 +81,8 @@ export default function App() {
       <Route path="/ouder/weekmenu" element={<Weekmenu />} />
       <Route path="/ouder/onze-taken" element={<OnzeTaken />} />
       <Route path="/ouder/notities" element={<Notities />} />
+      <Route path="/ouder/boodschappen" element={<Boodschappen />} />
+      <Route path="/ouder/winkels" element={<Winkels />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )
