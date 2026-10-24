@@ -12,6 +12,8 @@ export interface Kleurplaat {
   titel: string
   vlakken: Vlak[]
   lijnen?: string[]
+  /** Ingekleurd voorbeeld voor de lijst om te kiezen: één kleur per vlak. */
+  voorbeeld: string[]
 }
 
 const ster = (x: number, y: number, r: number): Vlak => ({
@@ -39,6 +41,7 @@ export const kleurplaten: Kleurplaat[] = [
       { r: [218, 160, 26, 10, 5] },
     ],
     lijnen: ['M262 140Q275 148 288 140', 'M262 115m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0'],
+    voorbeeld: ['#BFE6FA', '#F7D046', '#7CC36E', '#43A047', '#4CAF50', '#C5E1A5', '#3E8E41', '#3E8E41', '#F2994A', '#4CAF50', '#FFFFFF', '#3E8E41'],
   },
   {
     sleutel: 'auto', titel: 'Raceauto',
@@ -56,6 +59,7 @@ export const kleurplaten: Kleurplaat[] = [
       { r: [345, 166, 22, 12, 6] },
     ],
     lijnen: ['M0 270H60M100 270H160M200 270H260M300 270H360', 'M209 176h6v14'],
+    voorbeeld: ['#BFE6FA', '#9AA3AB', '#E53935', '#DDF1FB', '#DDF1FB', '#FFFFFF', '#26303A', '#C9CED3', '#26303A', '#C9CED3', '#F7D046'],
   },
   {
     sleutel: 'kasteel', titel: 'Prinsessenkasteel',
@@ -76,6 +80,7 @@ export const kleurplaten: Kleurplaat[] = [
       { d: 'M305 20V0L330 8L305 14Z' },
     ],
     lijnen: ['M110 120h20v-10h20v10h20v-10h20v10h20v-10h20v10h20v-10h20v10', 'M200 250V188'],
+    voorbeeld: ['#BFE6FA', '#7CC36E', '#F5CBA7', '#F28DB2', '#F28DB2', '#8E6CC9', '#8E6CC9', '#8E6CC9', '#8B5E3C', '#5DB7E8', '#5DB7E8', '#F7D046', '#E53935', '#E53935'],
   },
   {
     sleutel: 'vlinder', titel: 'Vlinder en bloem',
@@ -93,6 +98,7 @@ export const kleurplaten: Kleurplaat[] = [
       { c: [335, 215, 10] },
     ],
     lijnen: ['M196 112Q185 80 172 72', 'M204 112Q215 80 228 72'],
+    voorbeeld: ['#DFF3E4', '#8E6CC9', '#8E6CC9', '#F28DB2', '#F28DB2', '#5B4A3A', '#F7D046', '#F7D046', '#2E8A3C', '#E53935', '#F7D046'],
   },
   {
     sleutel: 'vis', titel: 'Vis in de zee',
@@ -112,6 +118,7 @@ export const kleurplaten: Kleurplaat[] = [
       { c: [100, 30, 7] },
     ],
     lijnen: ['M220 110Q240 150 220 190', 'M245 115Q262 150 245 185', 'M102 165Q115 172 125 165'],
+    voorbeeld: ['#5DB7E8', '#F5CBA7', '#2E8A3C', '#2E8A3C', '#F2994A', '#F7A23B', '#E53935', '#E53935', '#FFFFFF', '#26303A', '#DDF1FB', '#DDF1FB', '#DDF1FB'],
   },
   {
     sleutel: 'huis', titel: 'Ons huis',
@@ -130,6 +137,7 @@ export const kleurplaten: Kleurplaat[] = [
       { d: 'M170 300L180 250H220L230 300Z' },
     ],
     lijnen: ['M148 150v32M130 166h36M252 150v32M234 166h36'],
+    voorbeeld: ['#BFE6FA', '#7CC36E', '#F7D046', '#8B5E3C', '#F5CBA7', '#E53935', '#2D6BD6', '#DDF1FB', '#DDF1FB', '#8B5E3C', '#2E8A3C', '#C9CED3'],
   },
   {
     sleutel: 'raket', titel: 'Raket naar de maan',
@@ -144,6 +152,7 @@ export const kleurplaten: Kleurplaat[] = [
       { c: [200, 140, 16] },
       { d: 'M180 232Q200 290 220 232Z' },
     ],
+    voorbeeld: ['#2D3A6B', '#F7D046', '#F7D046', '#F7D046', '#F7D046', '#F7D046', '#E8ECEF', '#E53935', '#E53935', '#E53935', '#5DB7E8', '#F2994A'],
   },
   {
     sleutel: 'fee', titel: 'Bloemenfee',
@@ -161,6 +170,7 @@ export const kleurplaten: Kleurplaat[] = [
       ster(250, 70, 10),
     ],
     lijnen: ['M60 242V300M340 239V300', 'M215 165L250 80', 'M190 128a3 3 0 1 0 0.1 0M210 128a3 3 0 1 0 0.1 0', 'M193 136Q200 142 207 136'],
+    voorbeeld: ['#FDE2EC', '#7CC36E', '#BFE6FA', '#BFE6FA', '#F28DB2', '#F5CBA7', '#8B5E3C', '#F7D046', '#E53935', '#F7D046', '#8E6CC9', '#F7D046', '#F7D046'],
   },
 ]
 

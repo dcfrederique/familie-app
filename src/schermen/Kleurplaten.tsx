@@ -14,6 +14,20 @@ const INKT = '#26303A'
 const palet = ['#E53935', '#F2994A', '#F7D046', '#7CC36E', '#2E8A3C', '#5DB7E8', '#2D6BD6', '#8E6CC9',
   '#F28DB2', '#8B5E3C', '#F5CBA7', '#26303A']
 
+// Vrij kiezen: twaalf tinten in vijf helderheden, plus grijzen en huidskleuren.
+const hsl = (h: number, s: number, l: number) => {
+  const f = (n: number) => {
+    const k = (n + h / 30) % 12, a = (s / 100) * Math.min(l / 100, 1 - l / 100)
+    return Math.round(255 * (l / 100 - a * Math.max(-1, Math.min(k - 3, 9 - k, 1)))).toString(16).padStart(2, '0')
+  }
+  return `#${f(0)}${f(8)}${f(4)}`.toUpperCase()
+}
+const vrijeKleuren = [
+  ...[88, 74, 58, 44, 30].flatMap((l) => Array.from({ length: 12 }, (_, i) => hsl(i * 30, 80, l))),
+  '#FFFFFF', '#E0E0E0', '#B0B0B0', '#808080', '#505050', '#000000',
+  '#FDE3CF', '#F3C9A1', '#E0A878', '#C68642', '#8D5524', '#5C3A21',
+]
+
 // Kiezen welke plaat je inkleurt.
 export function KleurplaatLijst() {
   return (
@@ -24,7 +38,8 @@ export function KleurplaatLijst() {
             const bezig = kleurplaatLezen(kind.id, p.sleutel)
             return (
               <Link key={p.sleutel} to={`/kind/${kind.id}/kleurplaat/${p.sleutel}`} className="verhaal-kaart" aria-label={p.titel}>
-                <PlaatSvg plaat={p} kleuren={bezig ?? []} />
+                <PlaatSvg plaat={p} kleuren={p.voorbeeld} />
+                {bezig?.some(Boolean) && <span className="kleur-bezig">Verder kleuren</span>}
                 <span className="verhaal-kaart-titel">{p.titel}</span>
               </Link>
             )
@@ -71,6 +86,9 @@ function Inkleuren({ kind, plaat }: { kind: Gebruiker; plaat: Kleurplaat }) {
   const { bron } = useSessie()
   const [kleuren, setKleuren] = useState<(string | null)[]>(() => kleurplaatLezen(kind.id, plaat.sleutel) ?? plaat.vlakken.map(() => null))
   const [kleur, setKleur] = useState<string | null>(palet[0])
+  // Zelf gekozen kleuren blijven naast het palet staan; ook die van een plaat die je verder inkleurt.
+  const [eigen, setEigen] = useState<string[]>(() => [...new Set(kleuren.filter((k): k is string => !!k && !palet.includes(k)))].slice(-2))
+  const [kiezer, setKiezer] = useState(false)
   const [vorige, setVorige] = useState<(string | null)[][]>([])
   const [klaar, setKlaar] = useState(false)
   const [opgeslagen, setOpgeslagen] = useState<Opgeslagen>(null)
@@ -83,6 +101,12 @@ function Inkleuren({ kind, plaat }: { kind: Gebruiker; plaat: Kleurplaat }) {
     if (kleuren[i] === kleur) return
     setVorige([...vorige.slice(-30), kleuren])
     setKleuren(kleuren.map((k, j) => (j === i ? kleur : k)))
+  }
+
+  function vrijGekozen(k: string) {
+    setKleur(k)
+    setKiezer(false)
+    if (!palet.includes(k)) setEigen([...eigen.filter((e) => e !== k), k].slice(-2))
   }
 
   function af() {
@@ -120,6 +144,14 @@ function Inkleuren({ kind, plaat }: { kind: Gebruiker; plaat: Kleurplaat }) {
                     aria-label={`Kleur ${palet.indexOf(k) + 1}`} onClick={() => setKleur(k)} />
           ))}
         </div>
+        <div className="kleur-eigen" role="group" aria-label="Eigen kleuren">
+          <button type="button" className="kleur-knop regenboog" aria-label="Zelf een kleur kiezen" aria-haspopup="dialog"
+                  onClick={() => setKiezer(true)} />
+          {eigen.map((k, i) => (
+            <button key={k} type="button" className="kleur-knop" style={{ background: k }} aria-pressed={kleur === k}
+                    aria-label={`Eigen kleur ${i + 1}`} onClick={() => setKleur(k)} />
+          ))}
+        </div>
         <div className="kleur-acties">
           <button type="button" className="rond groot" aria-pressed={kleur === null} aria-label="Gum" onClick={() => setKleur(null)}>
             <svg className="ic" viewBox="0 0 24 24" width="32" height="32" aria-hidden="true"><path d="M4 16l9-9 6 6-7 7H8zM9 11l6 6M8 20h12" /></svg>
@@ -131,6 +163,24 @@ function Inkleuren({ kind, plaat }: { kind: Gebruiker; plaat: Kleurplaat }) {
         </div>
         <button type="button" className="groot-knop" disabled={gekleurd < afDrempel} onClick={af}>Klaar!</button>
       </div>
+      {kiezer && (
+        <div className="dialoog-achtergrond" role="dialog" aria-modal="true" aria-label="Kies een kleur" onClick={() => setKiezer(false)}>
+          <div className="kleur-kiezer" onClick={(e) => e.stopPropagation()}>
+            <div className="kleur-kiezer-kop">
+              <h2 className="display">Kies een kleur</h2>
+              <button type="button" className="rond groot" aria-label="Sluiten" onClick={() => setKiezer(false)}>
+                <svg className="ic" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" /></svg>
+              </button>
+            </div>
+            <div className="kleur-kiezer-raster">
+              {vrijeKleuren.map((k) => (
+                <button key={k} type="button" className="kleur-vak" style={{ background: k }} aria-pressed={kleur === k}
+                        aria-label={`Kleur ${k}`} onClick={() => vrijGekozen(k)} />
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

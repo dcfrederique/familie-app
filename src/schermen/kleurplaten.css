@@ -8,9 +8,22 @@
 .kleur-palet { display: grid; grid-template-columns: repeat(3, 64px); gap: 10px; justify-content: center; }
 .kleur-knop { width: 64px; height: 64px; border-radius: 50%; border: 4px solid var(--surface); box-shadow: 0 0 0 2px var(--line); }
 .kleur-knop[aria-pressed='true'] { box-shadow: 0 0 0 5px var(--ink); transform: scale(1.06); }
+.kleur-eigen { display: grid; grid-template-columns: repeat(3, 64px); gap: 10px; justify-content: center; }
+.kleur-knop.regenboog { background: conic-gradient(#E53935, #F7D046, #7CC36E, #5DB7E8, #2D6BD6, #8E6CC9, #F28DB2, #E53935); }
+.verhaal-kaart .kleur-bezig {
+  position: absolute; top: 10px; left: 10px; padding: 6px 12px; border-radius: 999px; background: var(--kid); color: var(--on-solid);
+  font-weight: 800; font-size: 15px;
+}
+.kleur-kiezer { width: min(860px, 100%); max-height: calc(100dvh - 32px); overflow: auto; background: var(--surface); border-radius: 32px; padding: 22px; }
+.kleur-kiezer-kop { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+.kleur-kiezer-kop h2 { margin: 0; font-size: clamp(26px, 3.4vw, 36px); }
+.kleur-kiezer-kop .rond.groot { width: 64px; height: 64px; background: var(--kid-tint); }
+.kleur-kiezer-raster { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 8px; }
+.kleur-vak { aspect-ratio: 1; min-width: 0; border-radius: 14px; border: 3px solid var(--surface); box-shadow: 0 0 0 2px var(--line); }
+.kleur-vak[aria-pressed='true'] { box-shadow: 0 0 0 5px var(--ink); }
 .kleur-acties { display: flex; gap: 12px; justify-content: center; }
 .kleur-acties .rond.groot { width: 72px; height: 72px; background: var(--kid-tint); }
 .kleur-acties .rond[aria-pressed='true'] { background: var(--kid); color: var(--on-solid); }
 .kleur-acties .rond:disabled { opacity: .35; }
 .lezer-klaar .kleurplaat { width: 100%; max-width: 480px; border-radius: 24px; background: #fff; }
-@media (max-width: 860px), (orientation: portrait) { .kleuren { grid-template-columns: 1fr; } .kleur-palet { grid-template-columns: repeat(6, 56px); } .kleur-knop { width: 56px; height: 56px; } }
+@media (max-width: 860px), (orientation: portrait) { .kleuren { grid-template-columns: 1fr; } .kleur-palet, .kleur-eigen { grid-template-columns: repeat(6, 56px); } .kleur-knop { width: 56px; height: 56px; } .kleur-kiezer-raster { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
