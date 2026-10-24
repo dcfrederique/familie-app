@@ -37,7 +37,7 @@ afgerond. Een nieuwe prijs geldt voor wat nog niet gekocht is; wat al gekocht is
   - functie `in_aanbod(kind, soort, sleutel)`; `kopen` weigert wat niet in de winkel ligt ("nog niet in de winkel")
     en `figuurtje_bewaren` met "alles vrij" ook;
   - schrijven alleen vanaf een ouder-account (RLS met `is_ouder_account()`), lezen voor het hele gezin.
-- Migratie `20261024001500_aanbod_prijs.sql`: kolom `aanbod.prijs` (vrijgegeven mag nu leeg zijn: dan geldt `standaard_vrij`),
+- Migratie `20261024001600_aanbod_prijs.sql`: kolom `aanbod.prijs` (vrijgegeven mag nu leeg zijn: dan geldt `standaard_vrij`),
   functie `winkel_prijs`; `kopen` en `figuurtje_bewaren` gebruiken de ingestelde prijs.
 - Tests: `supabase/tests/winkelaanbod.test.sql` en `src/data/aanbod.test.ts`.
 - App: `src/data/aanbod.ts` (regel `inAanbod` en de lijst `aanbodItems`), `bron.aanbod()`, `aanbodVrijgeven`,
