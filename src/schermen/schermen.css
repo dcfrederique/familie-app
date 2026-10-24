@@ -118,10 +118,8 @@
 /* Taakkaarten voor wie leest */
 .taken-raster { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
 @media (max-width: 700px) { .taken-raster { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-.taak-kaart {
-  position: relative; min-height: 260px; border-radius: 30px; background: var(--surface); padding: 18px 16px 16px;
-  display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center;
-}
+.taak-kaart { position: relative; min-height: 260px; border-radius: 30px; background: var(--surface); }
+.taak-inhoud { height: 100%; padding: 18px 16px 16px; display: flex; flex-direction: column; align-items: center; gap: 10px; text-align: center; }
 .taak-gedaan { background: var(--soft); }
 .taak-badge { position: absolute; top: 14px; right: 14px; height: 34px; padding: 0 10px; border-radius: 17px; background: var(--gold-bg); color: var(--gold-ink); display: inline-flex; align-items: center; gap: 4px; font-weight: 800; font-size: 17px; }
 .taak-prent { width: 80px; height: 80px; flex-shrink: 0; margin-top: 10px; border-radius: 50%; display: grid; place-items: center; background: var(--kid-tint); color: var(--kid); }
@@ -185,6 +183,63 @@ button.rond { border: 0; }
 .ronde-tegels { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 48px; padding: 8px 0 16px; }
 .ronde-tegel { width: 150px; height: 150px; border-radius: 50%; display: grid; place-items: center; box-shadow: 0 6px 0 var(--shade); }
 .ronde-tegel.tegel-later { box-shadow: none; }
+
+/* Tablet liggend en pc: het hele startscherm past op één pagina, zonder scrollen.
+   De taken vullen de vrije hoogte; worden de kaarten te laag, dan schakelen ze naar een compacte vorm. */
+@media (min-width: 961px) and (min-height: 560px) {
+  .kind-scherm {
+    height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+    padding: 16px 32px; gap: 16px;
+  }
+  .kind-scherm .banner { height: clamp(150px, 21dvh, 210px); }
+  .kind-scherm .banner-inhoud { top: clamp(12px, 2dvh, 22px); gap: clamp(8px, 1.4dvh, 16px); }
+
+  /* Wie leest: taken in 3 kolommen links, smallere zijkant rechts */
+  .kind-start { flex: 1; min-height: 0; grid-template-columns: minmax(0, 1fr) 320px; gap: 24px; align-items: stretch; }
+  .kind-start > section { display: flex; flex-direction: column; min-height: 0; }
+  .kind-start .sectie-titel { margin-bottom: 10px; }
+  .taken-raster { flex: 1; min-height: 0; grid-auto-rows: minmax(0, 300px); align-content: start; gap: 14px; overflow-y: auto; }
+  .taak-kaart { min-height: 0; container-type: size; }
+  .kind-zijkant { position: static; min-height: 0; gap: 12px; }
+  .tegels { flex: 1; min-height: 0; grid-auto-rows: minmax(0, 170px); align-content: start; gap: 12px; }
+  .tegel { min-height: 0; }
+  .extra-tijd-knop { margin-top: 0; min-height: 80px; }
+
+  /* Wie niet leest: kaarten vullen de hoogte tussen de kop en de ronde tegels */
+  .kind-scherm .kop-groot .avatar { width: 64px; height: 64px; }
+  .kind-scherm .banner .voortgang { min-height: 64px; }
+  .prent-raster { flex: 1; min-height: 0; grid-template-rows: minmax(0, 1fr); }
+  .prent-kaart, .met-banner .prent-kaart { min-height: 0; padding: 16px; gap: 10px; container-type: size; }
+  .prent-kaart .taak-prent, .met-banner .prent-kaart .taak-prent, .prent-raster.veel .taak-prent {
+    width: clamp(72px, calc(100cqh - 200px), 150px); height: auto; aspect-ratio: 1; margin-top: clamp(0px, calc(100cqh - 330px), 30px);
+  }
+  .prent-kaart .taak-prent svg { width: 56%; height: 56%; }
+  .ronde-tegels { gap: 40px; padding: 0; }
+  .ronde-tegel { width: clamp(96px, 16dvh, 150px); height: clamp(96px, 16dvh, 150px); }
+  .ronde-tegel svg { width: 53%; height: 53%; }
+}
+
+/* Compacte taakkaart: prent en titel naast elkaar, voorlezen en Klaar! op één rij */
+@container (max-height: 239px) {
+  .taak-inhoud {
+    padding: 12px; gap: 8px 10px; text-align: left; align-items: center;
+    display: grid; grid-template-columns: 64px minmax(0, 1fr); grid-template-rows: minmax(0, 1fr) 64px;
+    grid-template-areas: "prent titel" "lees actie";
+  }
+  .taak-inhoud .voorlees-knop { position: static; grid-area: lees; }
+  .taak-inhoud .taak-prent { grid-area: prent; justify-self: center; width: 60px; height: 60px; margin: 0; }
+  .taak-inhoud .taak-prent svg { width: 34px; height: 34px; }
+  .taak-inhoud .taak-badge { top: auto; bottom: 82px; left: 8px; right: auto; height: 28px; font-size: 15px; padding: 0 8px; }
+  .taak-inhoud .taak-titel { grid-area: titel; font-size: 20px; }
+  .taak-inhoud .taak-klaar, .taak-inhoud .taak-status { grid-area: actie; margin: 0; }
+  .taak-inhoud .taak-status { font-size: 16px; line-height: 1.1; }
+  .taak-inhoud:not(:has(.voorlees-knop)) .taak-klaar, .taak-inhoud:not(:has(.voorlees-knop)) .taak-status { grid-column: 1 / -1; }
+}
+/* Heel laag (kleine laptop): geen prent, de sterren staan in de plaats ervan */
+@container (max-height: 169px) {
+  .taak-inhoud .taak-prent { display: none; }
+  .taak-inhoud .taak-badge { position: static; grid-area: prent; justify-self: center; }
+}
 
 /* Afvinken */
 .dialoog-achtergrond { position: fixed; inset: 0; background: rgb(12 18 32 / 0.55); display: grid; place-items: center; padding: 16px; z-index: 10; }

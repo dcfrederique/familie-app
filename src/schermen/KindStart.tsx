@@ -135,22 +135,24 @@ function TaakKaart({ taak, status, kies }: { taak: Taak; status: TaakStatus; kie
   const tekst = status === 'wacht' ? 'Wacht op mama of papa' : status === 'gedaan' ? 'Gedaan!' : `${taak.sterren} sterren`
   return (
     <div className={`taak-kaart taak-${status}`}>
-      {kanVoorlezen() && (
-        <button type="button" className="voorlees-knop" aria-label={`Voorlezen: ${taak.titel}`}
-                onClick={() => leesVoor(`${taak.titel}. ${tekst}.`)}>
-          <Luidspreker />
-        </button>
-      )}
-      <span className="taak-badge" aria-label={`${taak.sterren} sterren`}>+{taak.sterren} <Ster grootte={16} /></span>
-      <span className="taak-prent"><Prentje naam={taak.prentje} grootte={44} /></span>
-      <span className="taak-titel display">{taak.titel}</span>
-      {status === 'te_doen' && (
-        <button type="button" className="taak-klaar" onClick={kies} aria-label={`${taak.titel}: klaar!`}>
-          {taak.foto_nodig && <Camera grootte={24} />} Klaar!
-        </button>
-      )}
-      {status === 'wacht' && <span className="taak-status"><Klok grootte={22} /> Wacht op mama of papa</span>}
-      {status === 'gedaan' && <span className="taak-status"><Vinkje grootte={26} /> Gedaan!</span>}
+      <div className="taak-inhoud">
+        {kanVoorlezen() && (
+          <button type="button" className="voorlees-knop" aria-label={`Voorlezen: ${taak.titel}`}
+                  onClick={() => leesVoor(`${taak.titel}. ${tekst}.`)}>
+            <Luidspreker />
+          </button>
+        )}
+        <span className="taak-badge" aria-label={`${taak.sterren} sterren`}>+{taak.sterren} <Ster grootte={16} /></span>
+        <span className="taak-prent"><Prentje naam={taak.prentje} grootte={44} /></span>
+        <span className="taak-titel display">{taak.titel}</span>
+        {status === 'te_doen' && (
+          <button type="button" className="taak-klaar" onClick={kies} aria-label={`${taak.titel}: klaar!`}>
+            {taak.foto_nodig && <Camera grootte={24} />} Klaar!
+          </button>
+        )}
+        {status === 'wacht' && <span className="taak-status"><Klok grootte={22} /> Wacht op mama of papa</span>}
+        {status === 'gedaan' && <span className="taak-status"><Vinkje grootte={26} /> Gedaan!</span>}
+      </div>
     </div>
   )
 }
