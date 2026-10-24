@@ -59,7 +59,7 @@ Bewijsfoto's in Supabase Storage nemen we niet mee: die zijn alleen nodig tot ee
 - Het telt als **zelf gelezen** als minstens de helft van de woorden van het verhaal goed gehoord is; anders gewoon als verhaal. Allebei 5 sterren (na goedkeuring); de ouder ziet bij het goedkeuren hoeveel woorden goed waren.
 - Een bladzijde die helemaal gelezen is, mag meteen verder; anders geldt de gewone minimumtijd per bladzijde.
 - Plafond: 300 seconden spraakherkenning per kind per dag (`gezinnen.spraak_seconden_per_dag`, server). De app meldt elke minuut hoeveel er gebruikt is en haalt dan ook een verse token.
-- Stap 2.1 (kan Azure Nederlands beoordelen?) zit in **Actions → Azure controleren**: die laat Dena een zin inspreken, stuurt die naar de spraakherkenning (nl-BE en nl-NL) met uitspraakbeoordeling en toont wat er herkend werd. Met een kinderstem testen kan alleen op de tablet.
+- Stap 2.1, eerste uitkomst (24 oktober 2026, met de stem van Dena): Azure herkent de zin foutloos in nl-BE en nl-NL, en de uitspraakbeoordeling werkt in allebei (score 89 in nl-BE, 98 in nl-NL). Een score per woord is dus mogelijk; voor nu blijft het bij goed of nog niet, eerst met een kinderstem testen. De test zit in **Actions → Azure controleren**: die laat Dena een zin inspreken, stuurt die naar de spraakherkenning (nl-BE en nl-NL) met uitspraakbeoordeling en toont wat er herkend werd. Met een kinderstem testen kan alleen op de tablet.
 
 **Wat Frederique doet:** migratie draaien en de Edge Function `spraak-token` zetten, met de Speech-sleutel als secret (klikstappen in `docs/supabase.md`, stap 4). De sleutel komt ook als secret in Supabase (**Edge Functions → Secrets**: `AZURE_SPEECH_KEY`, `AZURE_SPEECH_REGION`).
 
