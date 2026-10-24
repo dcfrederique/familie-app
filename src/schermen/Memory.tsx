@@ -6,6 +6,7 @@ import { geluid } from '../lib/spelletjes/geluid.ts'
 import { dichtdoen, draai, nieuwSpel, parenGevonden, type MemorySpel } from '../lib/spelletjes/memory.ts'
 import { gekozenNiveau, niveauBewaren, record, recordBewaren } from '../lib/spelletjes/opslag.ts'
 import SpelKader, { Chips } from './SpelKader.tsx'
+import { ThemaFeest } from './ThemaDelen.tsx'
 
 const STER = 'M12 3l2.7 5.6l6.1.9l-4.4 4.3l1 6.1L12 17l-5.4 2.9l1-6.1L3.2 9.5l6.1-.9z'
 
@@ -88,7 +89,7 @@ function MemorySpelBord({ kind }: { kind: Gebruiker }) {
         <div className="stat"><div>Paren gevonden</div><div className="getal display">{parenGevonden(spel)} <small>van {n.paren}</small></div></div>
         <div className="stat"><div>Beurten</div><div className="getal display">{spel.beurten}</div></div>
         {klaar ? (
-          <div className="hoera display">Super, alles gevonden in {spel.beurten} beurten!{nieuwRecord && best !== null && ' Nieuw record!'}</div>
+          <div className="hoera display"><ThemaFeest />Super, alles gevonden in {spel.beurten} beurten!{nieuwRecord && best !== null && ' Nieuw record!'}</div>
         ) : best !== null && (
           <div className="stat"><div>Jouw record</div><div className="getal display">{best} <small>beurten</small></div></div>
         )}

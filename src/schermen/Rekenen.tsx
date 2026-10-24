@@ -9,6 +9,7 @@ import { beantwoord, inEenKeerGoed, isKlaar, nieuwRondje, startRondje, sterrenVo
 import { kanVoorlezen, leesVoor } from '../lib/voorlezen.ts'
 import { Ster } from './onderdelen.tsx'
 import SpelKader, { Chips } from './SpelKader.tsx'
+import { ThemaFeest } from './ThemaDelen.tsx'
 
 export default function Rekenen() {
   return (
@@ -88,6 +89,7 @@ function RekenSpel({ kind }: { kind: Gebruiker }) {
         <Chips label="Niveau" opties={rekenNiveaus} gekozen={niveau} kies={kiesNiveau} />
         <div className="reken-kaart">
           {bolletjes}
+          <ThemaFeest />
           <h2 className="display klaar-titel">Klaar! {goed} van {sommenPerRondje} in één keer goed</h2>
           {opgeslagen && 'fout' in opgeslagen && <p className="fout" role="alert">{opgeslagen.fout}</p>}
           {opgeslagen && 'sterren' in opgeslagen && (opgeslagen.sterren > 0 ? (

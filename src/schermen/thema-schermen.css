@@ -1,0 +1,362 @@
+/* Het thema van een kind doorgetrokken in de subschermen (prototypes/thema-subschermen.html).
+   .thema-race, .thema-kasteel en .thema-tuin zetten eigen kleurtokens, zodat ook de spelletjes zelf meekleuren;
+   daarna krijgen kop, tegels, sloten, kaarten en knoppen hun vorm per thema. */
+
+/* ── Tokens ── */
+.thema-race {
+  color-scheme: dark;
+  --bg: #13213F; --surface: #22345E; --soft: #2B3F6E; --ink: #F3F6FC; --muted: #B3C2DE; --line: #34497A; --shade: #0A1430;
+  --kid: #4A86F0; --kid-tint: #22345A; --on-solid: #FFFFFF;
+  --gold-bg: #3A2F12; --gold-ink: #F7D58A; --ok: #3FB874; --ok-bg: #163826; --ok-ink: #9BE3B9;
+  --warn: #F08A50; --warn-bg: #3D2214; --warn-ink: #F5A57A; --achter: #E23B3B; --achter-ster: #FF8A8A;
+  --thema-achtergrond:
+    repeating-linear-gradient(90deg, transparent 0 46px, rgba(255, 255, 255, .03) 46px 48px),
+    linear-gradient(#1A2C55, #111D38);
+}
+.thema-kasteel {
+  --bg: #FFF2F8; --surface: #FFFFFF; --soft: #FCE4F0; --ink: #4A1631; --muted: #8A4A6A; --line: #F4C6DC; --shade: #F4C6DC;
+  --kid: #C2337A; --kid-tint: #FCE4F0; --on-solid: #FFFFFF; --achter: #C2337A; --achter-ster: #F49AC1;
+  --thema-goud: #F2B33D;
+  --thema-achtergrond:
+    radial-gradient(circle, rgba(194, 51, 122, .10) 3px, transparent 3.5px) 0 0 / 40px 40px,
+    repeating-linear-gradient(90deg, #FFF2F8 0 30px, #FDE7F1 30px 60px);
+}
+.thema-tuin {
+  --bg: #F4EEFC; --surface: #FFFFFF; --soft: #EFE4FA; --ink: #3B1A5C; --muted: #6E5390; --line: #DCCBEF; --shade: #DCCBEF;
+  --kid: #8A3FC0; --kid-tint: #EFE4FA; --on-solid: #FFFFFF; --achter: #8A3FC0; --achter-ster: #CDA2F0;
+  --thema-gras: #B9E0AE;
+  --thema-achtergrond: linear-gradient(#F4EEFC 0 55%, #E6F4E0 100%) fixed;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .thema-kasteel {
+    color-scheme: dark;
+    --bg: #2A1020; --surface: #3A1A2E; --soft: #4A2238; --ink: #FBE3EF; --muted: #D9A6C0; --line: #5E2E48; --shade: #1A0812;
+    --kid: #F28AC0; --kid-tint: #4A1F35; --on-solid: #2A1020;
+    --thema-achtergrond:
+      radial-gradient(circle, rgba(242, 138, 192, .10) 3px, transparent 3.5px) 0 0 / 40px 40px,
+      repeating-linear-gradient(90deg, #2A1020 0 30px, #301326 30px 60px);
+  }
+  :root:not([data-theme="light"]) .thema-tuin {
+    color-scheme: dark;
+    --bg: #1C1430; --surface: #2A2044; --soft: #362A56; --ink: #F1E9FC; --muted: #BFA8DE; --line: #45386A; --shade: #100A20;
+    --kid: #CDA2F0; --kid-tint: #36254A; --on-solid: #1C1430; --thema-gras: #23402A;
+    --thema-achtergrond: linear-gradient(#1C1430 0 55%, #1A2A24 100%) fixed;
+  }
+}
+:root[data-theme="dark"] .thema-kasteel {
+  color-scheme: dark;
+  --bg: #2A1020; --surface: #3A1A2E; --soft: #4A2238; --ink: #FBE3EF; --muted: #D9A6C0; --line: #5E2E48; --shade: #1A0812;
+  --kid: #F28AC0; --kid-tint: #4A1F35; --on-solid: #2A1020;
+  --thema-achtergrond:
+    radial-gradient(circle, rgba(242, 138, 192, .10) 3px, transparent 3.5px) 0 0 / 40px 40px,
+    repeating-linear-gradient(90deg, #2A1020 0 30px, #301326 30px 60px);
+}
+:root[data-theme="dark"] .thema-tuin {
+  color-scheme: dark;
+  --bg: #1C1430; --surface: #2A2044; --soft: #362A56; --ink: #F1E9FC; --muted: #BFA8DE; --line: #45386A; --shade: #100A20;
+  --kid: #CDA2F0; --kid-tint: #36254A; --on-solid: #1C1430; --thema-gras: #23402A;
+  --thema-achtergrond: linear-gradient(#1C1430 0 55%, #1A2A24 100%) fixed;
+}
+
+.kind.thema { background: var(--thema-achtergrond); color: var(--ink); }
+/* Gras met bloemetjes onderaan de feeëntuin */
+.kind.thema-tuin::after {
+  content: ""; position: fixed; left: 0; right: 0; bottom: 0; height: 56px; pointer-events: none; z-index: 0;
+  background:
+    radial-gradient(circle at 8% 30%, #F59AC8 0 7px, transparent 8px), radial-gradient(circle at 27% 40%, #B98CE6 0 7px, transparent 8px),
+    radial-gradient(circle at 51% 28%, #FFC27A 0 7px, transparent 8px), radial-gradient(circle at 73% 38%, #B9D3F5 0 7px, transparent 8px),
+    radial-gradient(circle at 93% 30%, #F59AC8 0 7px, transparent 8px),
+    radial-gradient(120% 90px at 50% 100%, var(--thema-gras) 60%, transparent 61%);
+}
+.kind.thema .kind-inhoud, .kind.thema .kleerkast-inhoud { position: relative; z-index: 1; }
+.thema-verborgen { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+
+/* ── Kop met prent ── */
+.thema-kop {
+  position: relative; max-width: 1130px; height: 160px; margin: 20px auto 8px; border-radius: 30px; overflow: hidden;
+  width: calc(100% - 2 * clamp(16px, 3vw, 32px));
+}
+.thema-kop.laag { height: 104px; }
+.kleerkast .thema-kop { width: 100%; margin: 0; }
+.thema-kop-prent { position: absolute; inset: 0; width: 100%; height: 100%; }
+.thema-kop-inhoud { position: absolute; inset: 0; display: flex; align-items: center; gap: 16px; padding: 0 22px; }
+.thema-kop-tekst { flex-grow: 1; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.thema-kop-titel { margin: 0; font-size: clamp(28px, 3.6vw, 40px); line-height: 1; }
+.thema-kop.laag .thema-kop-titel { font-size: clamp(24px, 3vw, 32px); }
+.thema-kop-sub { font-size: 17px; font-weight: 800; }
+.thema-kop .mijlpaal { position: relative; }
+.thema-race .thema-kop-titel { color: #FFFFFF; font-style: italic; letter-spacing: -.01em; text-shadow: 0 2px 0 #0B1428; }
+.thema-race .thema-kop-sub { color: #F2B33D; }
+.thema-kasteel .thema-kop-titel { color: #4A1631; text-shadow: 0 2px 0 #FFFFFF; }
+.thema-kasteel .thema-kop-sub { color: #A0275F; }
+.thema-tuin .thema-kop-titel { color: #3B1A5C; text-shadow: 0 2px 0 #FFFFFF; }
+.thema-tuin .thema-kop-sub { color: #6E3FA0; }
+
+/* Ronde knoppen in de kop: een wiel, een schildje met gouden rand, een bloem. */
+.thema-kop .rond { position: relative; z-index: 1; }
+.thema-race .thema-kop .rond { background: #F3F6FC; color: #16264A; border: 7px solid #1C2433; box-shadow: 0 0 0 3px #5B6B8C; }
+.thema-kasteel .thema-kop .rond { background: #FFFFFF; color: #C2337A; border: 4px solid #F2B33D; border-radius: 22px; transform: rotate(45deg); }
+.thema-kasteel .thema-kop .rond > svg { transform: rotate(-45deg); }
+.thema-tuin .thema-kop .rond {
+  width: 58px; height: 58px; margin: 6px; background: #FFFFFF; color: #8A3FC0;
+  box-shadow: 0 -15px 0 -4px #F59AC8, 13px -7px 0 -4px #F59AC8, 13px 7px 0 -4px #F59AC8, 0 15px 0 -4px #F59AC8, -13px 7px 0 -4px #F59AC8, -13px -7px 0 -4px #F59AC8;
+}
+
+/* ── Spelletjes ── */
+.kind.thema .spel-menu { min-height: calc(100dvh - 240px); }
+.spel-nr { display: none; }
+
+/* Race: schuine pitbox met racenummer en geblokte rand */
+.thema-race .spel-knop { background: #F3F6FC; color: #16264A; transform: skewX(-6deg); border-radius: 18px; overflow: visible; box-shadow: 0 6px 0 #0A1430; padding-top: 14px; }
+.thema-race .spel-knop > * { transform: skewX(6deg); }
+.thema-race .spel-knop::before {
+  content: ""; position: absolute; left: 0; right: 0; top: 0; height: 14px; border-radius: 18px 18px 0 0;
+  background: repeating-conic-gradient(#16264A 0 25%, #FFFFFF 0 50%) 0 0 / 14px 14px;
+}
+.thema-race .spel-knop:active { transform: skewX(-6deg) translateY(4px); box-shadow: 0 2px 0 #0A1430; }
+.thema-race .spel-tegel { border-radius: 50%; background: #E3EDFC; color: #2D6BD6; overflow: visible; }
+.thema-race .spel-uitleg, .thema-race .spel-knop.op-slot .spel-naam { color: #4E5A6B; }
+.thema-race .spel-knop .spel-naam { color: #16264A; }
+.thema-race .spel-knop.op-slot .spel-tegel { background: #DDE3EC; color: #8A97AE; }
+.thema-race .spel-nr {
+  display: grid; place-items: center; position: absolute; top: -6px; left: -46%; width: 36px; height: 36px; border-radius: 50%;
+  background: #E23B3B; color: #FFFFFF; font-size: 20px; line-height: 1; overflow: visible;
+}
+.thema-rolluik { position: absolute; inset: 0 0 35% 0; border-radius: 999px 999px 0 0; background: repeating-linear-gradient(#AEB9CB 0 8px, #94A1B7 8px 10px); border-bottom: 4px solid #6B788F; }
+.thema-stoplicht { position: absolute; top: -4px; right: -44%; width: 22px; padding: 4px; border-radius: 8px; background: #16264A; display: grid; gap: 3px; }
+.thema-stoplicht i { display: block; width: 14px; height: 14px; border-radius: 50%; background: #34425A; }
+.thema-stoplicht i:first-child { background: #FF4D4D; box-shadow: 0 0 10px #FF4D4D; animation: thema-knipper 1.4s infinite; }
+.thema-weg { position: relative; width: 70%; height: 20px; border-radius: 10px; background: #2B3A5C; flex-shrink: 0; }
+.thema-weg::before { content: ""; position: absolute; left: 10px; right: 24px; top: 50%; border-top: 2px dashed #F2B33D; }
+.thema-weg-auto { position: absolute; top: -8px; width: 36px; height: 26px; transform: translateX(-50%); }
+.thema-weg-vlag { position: absolute; right: 2px; top: -10px; width: 20px; height: 30px; }
+.thema-weg svg { display: block; width: 100%; height: 100%; }
+.thema-nieuw.race { position: absolute; top: 4px; right: 4px; padding: 5px 12px; border-radius: 6px; background: #F2B33D; color: #16264A; font-size: 18px; transform: rotate(6deg) skewX(6deg); }
+
+/* Kasteel: torenraam met wapperende wimpel, gouden rand en kasteeldeur */
+.thema-kasteel .spel-menu { padding-top: 34px; row-gap: 56px; }
+.thema-kasteel .spel-knop {
+  border: 5px solid var(--thema-goud); border-radius: 50% 50% 26px 26px / 34% 34% 26px 26px; overflow: visible;
+}
+.thema-kasteel .spel-knop::before {
+  content: ""; position: absolute; top: -40px; left: 50%; width: 40px; height: 36px; transform-origin: 0 100%;
+  background: linear-gradient(90deg, #8E1F55 0 3px, transparent 3px), var(--wimpel, #C2337A);
+  clip-path: polygon(0 0, 100% 6%, 72% 28%, 100% 50%, 8% 50%, 8% 100%, 0 100%);
+  animation: thema-wapper 2.4s ease-in-out infinite;
+}
+.thema-kasteel .spel-knop:nth-child(4n+2) { --wimpel: #4D9BE8; }
+.thema-kasteel .spel-knop:nth-child(4n+3) { --wimpel: #F2B33D; }
+.thema-kasteel .spel-knop:nth-child(4n+4) { --wimpel: #3DAA55; }
+.thema-kasteel .spel-tegel { border-radius: 50% 50% 14px 14px / 40% 40% 14px 14px; overflow: hidden; }
+.thema-deur { position: absolute; inset: 0; display: grid; place-items: center; background: repeating-linear-gradient(90deg, #8E1F55 0 18px, #7A1849 18px 20px); }
+.thema-deur svg { width: 34%; height: 34%; }
+.thema-regenboog { position: relative; width: 62%; height: 16px; border-radius: 8px; background: var(--soft); overflow: hidden; flex-shrink: 0; }
+.thema-regenboog i { position: absolute; inset: 0 auto 0 0; background: linear-gradient(90deg, #F9A8C9, #FCD29F, #FBEA9E, #BDE5B5, #B9D3F5, #D7C2F2) 0 0 / 120px 100%; border-radius: 8px; }
+.thema-kasteel .thema-nieuw, .thema-tuin .thema-nieuw { position: absolute; top: -22px; right: -6px; width: 64px; height: 46px; }
+.thema-nieuw svg { width: 100%; height: 100%; }
+
+/* Tuin: paddenstoelhuisjes; op slot slapen ze nog */
+.thema-tuin .spel-knop { background: none; box-shadow: none; aspect-ratio: auto; justify-content: flex-start; gap: 6px; padding-bottom: 6px; }
+.thema-tuin .spel-knop:active { transform: translateY(4px); box-shadow: none; }
+.thema-tuin .spel-tegel {
+  width: 88%; aspect-ratio: 14 / 9; border-radius: 50% 50% 22% 22% / 80% 80% 20% 20%; background: var(--hoed, #C2337A); color: #8A3FC0;
+  box-shadow: inset 0 -8px 0 rgba(0, 0, 0, .12); margin-bottom: 52px;
+}
+.thema-tuin .spel-tegel::before {
+  content: ""; position: absolute; inset: 0; border-radius: inherit; opacity: .85; pointer-events: none;
+  background: radial-gradient(circle at 20% 45%, #fff 0 8px, transparent 9px), radial-gradient(circle at 80% 38%, #fff 0 10px, transparent 11px),
+    radial-gradient(circle at 52% 14%, #fff 0 6px, transparent 7px), radial-gradient(circle at 88% 72%, #fff 0 5px, transparent 6px);
+}
+.thema-tuin .spel-tegel::after {
+  content: ""; position: absolute; left: 50%; top: 92%; width: 46%; height: 62px; transform: translateX(-50%); z-index: -1;
+  border-radius: 0 0 18px 18px; background: radial-gradient(28% 46% at 50% 100%, #A86A3D 98%, transparent 100%), #FFF6E6;
+  box-shadow: inset -7px 0 0 #F2E2C4;
+}
+.thema-tuin .spel-tegel > svg.ic { position: relative; width: 40%; height: auto; aspect-ratio: 1; padding: 8%; margin-top: 8%; border-radius: 50%; background: #FFFFFF; color: #8A3FC0; box-sizing: content-box; }
+.thema-tuin .spel-knop:nth-child(8n+2) { --hoed: #8A3FC0; }
+.thema-tuin .spel-knop:nth-child(8n+3) { --hoed: #E0672E; }
+.thema-tuin .spel-knop:nth-child(8n+4) { --hoed: #4D9BE8; }
+.thema-tuin .spel-knop:nth-child(8n+5) { --hoed: #3DAA55; }
+.thema-tuin .spel-knop:nth-child(8n+6) { --hoed: #F59AC8; }
+.thema-tuin .spel-knop:nth-child(8n+7) { --hoed: #D99A00; }
+.thema-tuin .spel-knop:nth-child(8n+8) { --hoed: #1D9AA8; }
+.thema-tuin .spel-knop.op-slot .spel-tegel { filter: saturate(.25) brightness(1.05); background: var(--hoed, #C2337A); color: #B9A6CC; }
+.thema-tuin .spel-knop .spel-naam, .thema-tuin .spel-uitleg { color: var(--ink); }
+.thema-slaap { position: absolute; left: 50%; top: 112%; transform: translateX(-50%); width: 40px; z-index: 1; }
+.thema-slaap svg { display: block; width: 100%; }
+.thema-slaap b { position: absolute; top: -26px; right: -22px; font-size: 24px; color: #8A3FC0; animation: thema-zweef-op 2.4s ease-in-out infinite; }
+.thema-bloemetjes { display: flex; gap: 4px; }
+.thema-bloemetjes span, .thema-bloemetjes svg { display: block; width: 24px; height: 24px; }
+
+/* ── Niveaukeuze: versnellingspook, edelstenen, bloemen ── */
+.thema-race .chips { background: #0E1830; border: 2px solid #2B3A5C; counter-reset: gang; }
+.thema-race .chip { display: inline-flex; align-items: center; gap: 8px; color: #9FB3D9; }
+.thema-race .chip::before {
+  counter-increment: gang; content: counter(gang); width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center;
+  background: radial-gradient(circle at 35% 30%, #5B6B8C, #222E48); color: #FFFFFF; font-family: 'Baloo 2', Nunito, sans-serif;
+}
+.thema-race .chip[aria-pressed="true"] { background: transparent; color: #FFFFFF; }
+.thema-race .chip[aria-pressed="true"]::before { background: radial-gradient(circle at 35% 30%, #FF7A7A, #C42020); box-shadow: 0 0 14px rgba(255, 80, 80, .7); }
+.thema-kasteel .chips { border: 3px solid var(--thema-goud); }
+.thema-kasteel .chip { display: inline-flex; align-items: center; gap: 8px; }
+.thema-kasteel .chip::before { content: ""; width: 24px; height: 24px; background: var(--steen, #E23B3B); clip-path: polygon(50% 0, 100% 38%, 50% 100%, 0 38%); }
+.thema-kasteel .chip:nth-child(3n+2) { --steen: #4D9BE8; }
+.thema-kasteel .chip:nth-child(3n+3) { --steen: #3DAA55; }
+.thema-kasteel .chip[aria-pressed="true"] { background: var(--kid); color: var(--on-solid); }
+.thema-kasteel .chip[aria-pressed="true"]::before { transform: scale(1.2) rotate(-8deg); }
+.thema-tuin .chip { display: inline-flex; align-items: center; gap: 8px; }
+.thema-tuin .chip::before {
+  content: ""; width: 22px; height: 22px; border-radius: 50%; background: #FFE07A;
+  box-shadow: 0 -8px 0 -3px #F59AC8, 8px 0 0 -3px #F59AC8, 0 8px 0 -3px #F59AC8, -8px 0 0 -3px #F59AC8;
+}
+.thema-tuin .chip[aria-pressed="true"] { background: var(--kid); color: var(--on-solid); }
+
+/* ── Verhalen en kleurplaten (beide .verhaal-kaart) ── */
+.verhaal-gelezen.met-thema { background: none; width: 58px; height: 46px; top: -10px; right: -8px; }
+.thema-vink, .thema-vink svg { display: block; width: 100%; height: 100%; }
+.verhaal-raster, .kleur-raster { padding-top: 12px; }
+.kind.thema .verhaal-kaart { overflow: visible; }
+.kind.thema .verhaal-kaart > svg:first-child, .kind.thema .verhaal-kaart .verhaal-prent { border-radius: inherit; border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
+
+/* Race: racekaart met gouden rand; kleurplaten met klemmen op een gaatjesbord */
+.thema-race .verhaal-kaart { border: 4px solid #F2B33D; border-radius: 14px; }
+.thema-race .verhaal-raster .verhaal-kaart::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 8px; border-radius: 0 0 10px 10px;
+  background: repeating-conic-gradient(#16264A 0 25%, #FFFFFF 0 50%) 0 0 / 8px 8px;
+}
+.thema-race.thema-scherm-kleurplaten { --thema-achtergrond: radial-gradient(circle, #2A3C66 2.5px, transparent 3px) 0 0 / 20px 20px, linear-gradient(#1A2C55, #111D38); }
+.thema-race .kleur-raster .verhaal-kaart { border: 0; border-radius: 4px; background: #FFFFFF; color: #16264A; box-shadow: 0 8px 14px rgba(0, 0, 0, .35); }
+.thema-race .kleur-raster .verhaal-kaart::before, .thema-race .kleur-raster .verhaal-kaart::after {
+  content: ""; position: absolute; top: -12px; width: 26px; height: 22px; border-radius: 4px; z-index: 1;
+  background: linear-gradient(#C9D3DE 0 60%, #5B6B8C 60%);
+}
+.thema-race .kleur-raster .verhaal-kaart::before { left: 18%; }
+.thema-race .kleur-raster .verhaal-kaart::after { right: 18%; }
+
+/* Kasteel: sprookjesboek met gouden hoekjes en leeslint; kleurplaten in gouden lijsten */
+.thema-kasteel .verhaal-raster .verhaal-kaart { border-radius: 8px 22px 22px 8px; border-left: 12px solid rgba(0, 0, 0, .14); }
+.thema-kasteel .verhaal-raster .verhaal-kaart::before {
+  content: ""; position: absolute; top: 0; right: 0; width: 28px; height: 28px; background: var(--thema-goud); clip-path: polygon(0 0, 100% 0, 100% 100%); border-top-right-radius: 22px; z-index: 1;
+}
+.thema-kasteel .verhaal-raster .verhaal-kaart::after {
+  content: ""; position: absolute; bottom: -18px; left: 22%; width: 16px; height: 34px; background: #C2337A;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 75%, 0 100%);
+}
+.thema-kasteel .kleur-raster .verhaal-kaart {
+  border: 12px solid var(--thema-goud); border-radius: 6px; outline: 3px solid #B8800F; outline-offset: -3px;
+  box-shadow: inset 0 0 0 3px #FBE3A5, 0 8px 12px rgba(160, 39, 95, .2); margin-top: 22px;
+}
+.thema-kasteel .kleur-raster .verhaal-kaart::before {
+  content: ""; position: absolute; top: -40px; left: 50%; width: 90px; height: 28px; transform: translateX(-50%);
+  background: linear-gradient(to top right, transparent 48%, #C2337A 48% 52%, transparent 52%) left / 50% 100% no-repeat,
+    linear-gradient(to top left, transparent 48%, #C2337A 48% 52%, transparent 52%) right / 50% 100% no-repeat;
+}
+
+/* Tuin: ronde prentjes die aan een draadje schommelen; kleurplaten met knijpers aan de waslijn */
+.thema-tuin .verhaal-raster .verhaal-kaart { border-radius: 36px; border: 6px solid #FFFFFF; margin-top: 26px; transform-origin: 50% -26px; animation: thema-schommel 3.6s ease-in-out infinite; }
+.thema-tuin .verhaal-raster .verhaal-kaart:nth-child(2n) { animation-delay: -1.8s; }
+.thema-tuin .verhaal-kaart::before {
+  content: ""; position: absolute; top: -32px; left: 50%; height: 28px; border-left: 3px solid #7FB069;
+}
+.thema-tuin .kleur-raster { position: relative; }
+.thema-tuin .kleur-raster .verhaal-kaart { margin-top: 26px; border-radius: 6px; transform-origin: 50% 0; animation: thema-schommel 4s ease-in-out infinite; }
+.thema-tuin .kleur-raster .verhaal-kaart:nth-child(2n) { animation-delay: -2s; }
+.thema-tuin .kleur-raster .verhaal-kaart::before, .thema-tuin .kleur-raster .verhaal-kaart::after {
+  content: ""; position: absolute; top: -16px; width: 14px; height: 32px; border: 0; border-radius: 4px; z-index: 1;
+  background: radial-gradient(circle at 50% 40%, #FFFFFF 0 3px, transparent 3.5px), #F59AC8;
+}
+.thema-tuin .kleur-raster .verhaal-kaart::before { left: 22%; }
+.thema-tuin .kleur-raster .verhaal-kaart::after { right: 22%; background: radial-gradient(circle at 50% 40%, #FFFFFF 0 3px, transparent 3.5px), #B98CE6; }
+
+/* Kleuren kiezen: spuitbussen, edelstenen, bloemen */
+.thema-race .kleur-knop { border-radius: 12px 12px 8px 8px; border-width: 3px; height: 72px; position: relative; overflow: visible; }
+.thema-race .kleur-knop::before { content: ""; position: absolute; top: -12px; left: 50%; width: 20px; height: 10px; border-radius: 3px; transform: translateX(-50%); background: #C9D3DE; }
+.thema-kasteel .kleur-knop { border: 0; border-radius: 0; box-shadow: none; clip-path: polygon(50% 0, 100% 38%, 50% 100%, 0 38%); }
+.thema-kasteel .kleur-knop[aria-pressed='true'] { transform: scale(1.18) rotate(-8deg); box-shadow: none; filter: drop-shadow(0 0 6px #F2B33D); }
+.thema-tuin .kleur-knop { border: 0; box-shadow: 0 0 0 5px #FFFFFF, 0 0 0 7px var(--line); }
+.thema-tuin .kleur-knop[aria-pressed='true'] { box-shadow: 0 0 0 5px #FFE07A, 0 0 0 9px var(--kid); }
+
+/* ── Figuurtje ── */
+.thema-race .podium { background: radial-gradient(60% 80% at 50% 0, rgba(255, 255, 255, .12), transparent 70%), #16264A; }
+.thema-race .podium::before {
+  left: 0; right: 0; bottom: 0; height: 40px; border-radius: 0;
+  background: repeating-conic-gradient(#16264A 0 25%, #FFFFFF 0 50%) 0 0 / 20px 20px;
+}
+.thema-race .podium::after {
+  content: "1"; position: absolute; left: 50%; bottom: 40px; width: 220px; height: 64px; transform: translateX(-50%); border-radius: 6px 6px 0 0;
+  background: #F2B33D; color: #16264A; font: 800 44px/64px 'Baloo 2', Nunito, sans-serif; text-align: center;
+}
+.thema-race .podium-figuur { z-index: 1; margin-bottom: 84px; }
+.thema-race .kast-tab { background: #F3F6FC; color: #16264A; border: 3px solid #16264A; outline: 3px solid #F3F6FC; letter-spacing: .06em; text-transform: uppercase; border-radius: 10px; }
+.thema-race .kast-tab[aria-selected="true"] { background: #F2B33D; color: #16264A; }
+.thema-race .kast-keuze { border-radius: 50%; background: #F3F6FC; border: 10px solid #1C2433; box-shadow: inset 0 0 0 3px #9AA6B8; padding-bottom: 0; }
+.thema-race .kast-keuze[aria-pressed="true"] { background: #E3EDFC; box-shadow: inset 0 0 0 3px #9AA6B8, 0 0 0 5px #F2B33D; }
+.thema-race .kast-naam { color: #4E5A6B; }
+.thema-race .slotje { background: #16264A; color: #FF4D4D; }
+
+.thema-kasteel .podium { background: radial-gradient(42% 46% at 50% 48%, #DDF0FC 96%, transparent 97%), radial-gradient(48% 52% at 50% 48%, var(--thema-goud) 96%, transparent 97%), var(--surface); }
+.thema-kasteel .podium::before { display: none; }
+.thema-kasteel .podium::after {
+  content: ""; position: absolute; top: 8px; left: 50%; width: 92px; height: 56px; transform: translateX(-50%);
+  background: #F2B33D; clip-path: polygon(6% 100%, 0 20%, 26% 55%, 50% 0, 74% 55%, 100% 20%, 94% 100%);
+}
+.thema-kasteel .podium-figuur { margin-bottom: 70px; width: min(80%, 280px); }
+.thema-kasteel .kast-tab { border: 3px solid transparent; }
+.thema-kasteel .kast-tab[aria-selected="true"] { border-color: var(--thema-goud); }
+.thema-kasteel .kast-keuze { border: 3px solid var(--thema-goud); border-radius: 50% 50% 16px 16px / 30% 30% 16px 16px; }
+.thema-kasteel .slotje { background: #8E1F55; color: #F2B33D; }
+
+.thema-tuin .podium { background: radial-gradient(50% 55% at 50% 60%, rgba(255, 240, 168, .7), transparent 70%), var(--surface); }
+.thema-tuin .podium::before { left: 6%; right: 6%; bottom: 20px; height: 70px; background: var(--thema-gras); }
+.thema-tuin .podium::after {
+  content: ""; position: absolute; left: 8%; right: 8%; bottom: 40px; height: 46px; pointer-events: none;
+  background:
+    radial-gradient(60% 50% at 6% 30%, #C2337A 60%, transparent 62%), radial-gradient(60% 50% at 94% 30%, #8A3FC0 60%, transparent 62%),
+    radial-gradient(10% 50% at 6% 85%, #FFF6E6 60%, transparent 62%), radial-gradient(10% 50% at 94% 85%, #FFF6E6 60%, transparent 62%);
+  background-size: 24% 100%; background-repeat: no-repeat; background-position: left, right, left, right;
+}
+.thema-tuin .kast-tab { border-radius: 50%; aspect-ratio: 1; min-height: 0; box-shadow: 0 0 0 5px #F59AC8; }
+.thema-tuin .kast-tab[aria-selected="true"] { box-shadow: 0 0 0 6px #FFE07A; }
+.thema-tuin .kast-keuze { border-radius: 50%; }
+.thema-tuin .prenten .kast-tabs { gap: 22px; padding: 6px; }
+
+/* ── Knoppen en klaar-schermen ── */
+.thema-race .groot-knop { background: #E23B3B; color: #FFFFFF; border-radius: 12px; transform: skewX(-8deg); box-shadow: 0 5px 0 #8E1616; font-style: italic; }
+.thema-race .groot-knop.licht { background: #F3F6FC; color: #16264A; box-shadow: 0 5px 0 #8A97AE; }
+.thema-race .klaar-titel { color: #F2B33D; font-style: italic; text-shadow: 3px 3px 0 #E23B3B; }
+.thema-race .reken-kaart { border: 4px solid #F2B33D; }
+.thema-kasteel .groot-knop { border: 4px solid var(--thema-goud); background: #C2337A; color: #FFFFFF; box-shadow: 0 5px 0 #8E1F55; }
+.thema-kasteel .groot-knop.licht { background: var(--surface); color: var(--kid); box-shadow: 0 5px 0 var(--line); }
+.thema-kasteel .klaar-titel { color: var(--kid); text-shadow: 0 3px 0 #FBEA9E; }
+.thema-kasteel .reken-kaart { border: 4px solid var(--thema-goud); }
+.thema-tuin .groot-knop { background: #8A3FC0; color: #FFFFFF; box-shadow: 0 5px 0 #5E2A86; }
+.thema-tuin .groot-knop.licht { background: var(--surface); color: var(--kid); box-shadow: 0 5px 0 var(--line); }
+.thema-tuin .klaar-titel { color: var(--kid); }
+.kind.thema .reken-kaart, .kind.thema .hoera { position: relative; }
+
+/* Feest: confetti van het thema over het scherm */
+.thema-feest { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 30; }
+.thema-feest i { position: absolute; top: -60px; display: block; animation: thema-val linear infinite; }
+.thema-feest i > span { display: block; }
+.thema-feest i > span > svg { display: block; width: 100%; height: 100%; }
+.thema-feest .blad { border-radius: 50% 50% 50% 0; }
+
+/* ── Beweging ── */
+.thema-rij { animation: thema-rij 7s linear infinite; }
+.thema-wuif { animation: thema-wuif 1.4s ease-in-out infinite; transform-box: fill-box; transform-origin: 0 100%; }
+.thema-fladder { animation: thema-fladder .5s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: center; }
+.thema-zweef { animation: thema-zweef 5s ease-in-out infinite; }
+.thema-knipper { animation: thema-knipper 2.6s infinite; }
+@keyframes thema-rij { from { transform: translateX(-260px); } to { transform: translateX(1260px); } }
+@keyframes thema-wuif { 50% { transform: rotate(-14deg); } }
+@keyframes thema-fladder { to { transform: scaleX(.4); } }
+@keyframes thema-zweef { 50% { transform: translate(20px, -10px); } }
+@keyframes thema-zweef-op { 50% { transform: translateY(-8px); } }
+@keyframes thema-knipper { 50% { opacity: .45; } }
+@keyframes thema-wapper { 50% { transform: skewY(-8deg); } }
+@keyframes thema-schommel { 0%, 100% { transform: rotate(-1.5deg); } 50% { transform: rotate(1.5deg); } }
+@keyframes thema-val { from { transform: translateY(0) rotate(0); } to { transform: translateY(110vh) rotate(720deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .kind.thema *, .kind.thema *::before, .kind.thema *::after { animation: none !important; }
+  .thema-feest { display: none; }
+}

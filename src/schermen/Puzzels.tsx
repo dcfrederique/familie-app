@@ -11,6 +11,7 @@ import { leesVoor } from '../lib/voorlezen.ts'
 import SpelKader, { Chips } from './SpelKader.tsx'
 import './puzzels.css'
 import './verhalen.css'
+import { ThemaFeest } from './ThemaDelen.tsx'
 
 export default function Puzzels() {
   return (
@@ -128,6 +129,7 @@ function PuzzelBord({ kind, puzzel, niveau, terug }: { kind: Gebruiker; puzzel: 
         <div className="stat"><div>Op hun plek</div><div className="getal display">{aantalVast(spel)} <small>van {spel.stukjes.length}</small></div></div>
         {klaar ? (
           <div className="hoera display">
+            <ThemaFeest />
             {lezer ? `Af in ${tijd(klaar.seconden)}!${klaar.nieuwRecord && best !== null ? ' Nieuw record!' : ''}` : 'Hoera!'}
           </div>
         ) : lezer && best !== null && (

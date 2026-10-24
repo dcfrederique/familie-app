@@ -11,6 +11,7 @@ import { kanVoorlezen, leesVoorMetWoorden, stopVoorlezen } from '../lib/voorleze
 import { Ster } from './onderdelen.tsx'
 import SpelKader from './SpelKader.tsx'
 import './verhalen.css'
+import { ThemaFeest } from './ThemaDelen.tsx'
 
 export default function VerhaalScherm() {
   const { nr } = useParams()
@@ -71,6 +72,7 @@ function Lezer({ kind, verhaal }: { kind: Gebruiker; verhaal: Verhaal }) {
     return (
       <div className="lezer-klaar reken-kaart">
         <VerhaalPrent prent={verhaal.bladzijden[verhaal.bladzijden.length - 1].prent} />
+        <ThemaFeest />
         <h2 className="display klaar-titel">Uit! Goed gelezen.</h2>
         {opgeslagen && 'fout' in opgeslagen && <p className="fout" role="alert">{opgeslagen.fout}</p>}
         {opgeslagen && 'sterren' in opgeslagen && (opgeslagen.sterren > 0 ? (

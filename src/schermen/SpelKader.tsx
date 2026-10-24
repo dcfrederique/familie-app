@@ -1,15 +1,18 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { kleurKlasse, type Gebruiker } from '../data/gezin.ts'
+import { themaVan, type ThemaScherm } from '../data/thema.ts'
 import { geluidAan, geluidBewaren } from '../lib/spelletjes/opslag.ts'
 import { useSessie } from '../lib/sessie.tsx'
 import { gebruikStem } from '../lib/voorlezen.ts'
+import { ThemaBron, ThemaFeest, ThemaKop } from './ThemaDelen.tsx'
 import './schermen.css'
 import './spelletjes.css'
 
 // Kader rond een spelletje: terugknop, titel en geluid aan of uit.
-export default function SpelKader({ titel, terug, children }: {
-  titel: string; terug: (kindId: string) => string; children: (kind: Gebruiker) => ReactNode
+// Met een thema (race, kasteel, tuin) krijgt de kop de prent van dat thema en kleurt het hele scherm mee.
+export default function SpelKader({ titel, terug, scherm = 'spel', children }: {
+  titel: string; terug: (kindId: string) => string; scherm?: ThemaScherm; children: (kind: Gebruiker) => ReactNode
 }) {
   const { id } = useParams()
   const { kinderen } = useSessie()
@@ -17,23 +20,37 @@ export default function SpelKader({ titel, terug, children }: {
   const [geluid, setGeluid] = useState(geluidAan)
   useEffect(() => { if (kind) gebruikStem(kind.voorleesstem) }, [kind])
   if (!kind) return <Navigate to="/kinderen" replace />
+  const thema = themaVan(kind)
+
+  const terugKnop = (
+    <Link to={terug(kind.id)} className="rond" aria-label="Terug">
+      <svg className="ic" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
+    </Link>
+  )
+  const geluidKnop = (
+    <button type="button" className="rond" aria-pressed={geluid} aria-label={geluid ? 'Geluid uit' : 'Geluid aan'}
+            onClick={() => { geluidBewaren(!geluid); setGeluid(!geluid) }}>
+      <svg className="ic" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
+        <path d={geluid ? 'M4 10h4l5-4v12l-5-4H4zM16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11' : 'M4 10h4l5-4v12l-5-4H4zM16 9l5 6M21 9l-5 6'} />
+      </svg>
+    </button>
+  )
 
   return (
-    <div className={`kind ${kleurKlasse(kind)}`}>
-      <header className="balk">
-        <Link to={terug(kind.id)} className="rond" aria-label="Terug">
-          <svg className="ic" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
-        </Link>
-        <h1 className="display balk-titel">{titel}</h1>
-        <button type="button" className="rond" aria-pressed={geluid} aria-label={geluid ? 'Geluid uit' : 'Geluid aan'}
-                onClick={() => { geluidBewaren(!geluid); setGeluid(!geluid) }}>
-          <svg className="ic" viewBox="0 0 24 24" width="26" height="26" aria-hidden="true">
-            <path d={geluid ? 'M4 10h4l5-4v12l-5-4H4zM16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11' : 'M4 10h4l5-4v12l-5-4H4zM16 9l5 6M21 9l-5 6'} />
-          </svg>
-        </button>
-      </header>
-      <main className="kind-inhoud">{children(kind)}</main>
-    </div>
+    <ThemaBron value={thema}>
+      <div className={`kind ${kleurKlasse(kind)}${thema ? ` thema thema-${thema} thema-scherm-${scherm}` : ''}`}>
+        {thema ? (
+          <ThemaKop thema={thema} scherm={scherm} titel={titel} lezer={kind.kan_lezen} links={terugKnop} rechts={geluidKnop} />
+        ) : (
+          <header className="balk">
+            {terugKnop}
+            <h1 className="display balk-titel">{titel}</h1>
+            {geluidKnop}
+          </header>
+        )}
+        <main className="kind-inhoud">{children(kind)}</main>
+      </div>
+    </ThemaBron>
   )
 }
 
@@ -57,6 +74,7 @@ export function EindKnoppen({ kind, opnieuw }: { kind: Gebruiker; opnieuw: () =>
   const lezer = kind.kan_lezen
   return (
     <div className="knoppen-rij">
+      <ThemaFeest />
       <Link to={`/kind/${kind.id}/spelen`} className="groot-knop licht" aria-label="Stoppen">
         <svg className="ic" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
         {lezer && 'Stoppen'}

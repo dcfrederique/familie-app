@@ -9,6 +9,7 @@ import { Ster } from './onderdelen.tsx'
 import SpelKader from './SpelKader.tsx'
 import './kleurplaten.css'
 import './verhalen.css'
+import { ThemaFeest } from './ThemaDelen.tsx'
 
 const INKT = '#26303A'
 const palet = ['#E53935', '#F2994A', '#F7D046', '#7CC36E', '#2E8A3C', '#5DB7E8', '#2D6BD6', '#8E6CC9',
@@ -31,7 +32,7 @@ const vrijeKleuren = [
 // Kiezen welke plaat je inkleurt.
 export function KleurplaatLijst() {
   return (
-    <SpelKader titel="Kleurplaten" terug={(id) => `/kind/${id}`}>
+    <SpelKader titel="Kleurplaten" scherm="kleurplaten" terug={(id) => `/kind/${id}`}>
       {(kind) => (
         <div className="kleur-raster">
           {kleurplaten.map((p) => {
@@ -122,6 +123,7 @@ function Inkleuren({ kind, plaat }: { kind: Gebruiker; plaat: Kleurplaat }) {
     return (
       <div className="lezer-klaar reken-kaart">
         <PlaatSvg plaat={plaat} kleuren={kleuren} />
+        <ThemaFeest />
         <h2 className="display klaar-titel">Wat een mooie plaat!</h2>
         {opgeslagen && 'fout' in opgeslagen && <p className="fout" role="alert">{opgeslagen.fout}</p>}
         {opgeslagen && 'sterren' in opgeslagen && (opgeslagen.sterren > 0 ? (

@@ -57,3 +57,16 @@ export const activiteitTegels: ActiviteitTegel[] = [
 
 export const tegelsVoor = (kind: Gebruiker) =>
   activiteitTegels.filter((t) => t.voor === 'alle' || (t.voor === 'lezers') === kind.kan_lezen)
+
+/** Thema van een kind, of null als het een gewone kleur heeft. */
+export const themaVan = (kind: Pick<Gebruiker, 'thema'>): Banner => (kind.thema ? bannerVoorKleur[kind.thema] : null)
+
+/** Welke kopprent een subscherm krijgt; 'spel' is de lage kop boven een spelletje, verhaal of kleurplaat. */
+export type ThemaScherm = 'spelen' | 'verhalen' | 'kleurplaten' | 'figuurtje' | 'spel'
+
+/** Ondertitel onder de schermtitel, per thema (alleen voor wie leest). */
+export const themaOndertitels: Record<NonNullable<Banner>, Record<ThemaScherm, string>> = {
+  race: { spelen: 'De pitstop', verhalen: 'Lezen bij de vulkaan', kleurplaten: 'De spuitgarage', figuurtje: 'Op het podium', spel: '' },
+  kasteel: { spelen: 'De speelzaal', verhalen: 'De koninklijke bieb', kleurplaten: 'De schilderszaal', figuurtje: 'Spiegeltje aan de wand', spel: '' },
+  tuin: { spelen: 'Het paddenstoelendorp', verhalen: 'De verhalenboom', kleurplaten: 'De waslijn', figuurtje: 'De feeënkring', spel: '' },
+}

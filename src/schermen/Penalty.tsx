@@ -6,6 +6,7 @@ import { gekozenNiveau, niveauBewaren, record, recordBewaren } from '../lib/spel
 import { penaltyNiveaus, reeksLengte, type PenaltyModus, type PenaltyNiveau } from '../lib/spelletjes/penalty.ts'
 import { PenaltyVeld, type SchotUitslag } from '../lib/spelletjes/penaltyVeld.ts'
 import SpelKader, { Chips } from './SpelKader.tsx'
+import { ThemaFeest } from './ThemaDelen.tsx'
 
 export default function Penalty() {
   return (
@@ -105,6 +106,7 @@ function PenaltySpel({ kind }: { kind: Gebruiker }) {
         {hint && !klaar && <div className="penalty-hint">{hints[modus]}</div>}
         {klaar && (
           <div className="penalty-einde reken-kaart" role="dialog" aria-label="Uitslag">
+            <ThemaFeest />
             <h2 className="display klaar-titel">
               {modus === 'schieten' ? `${raak} van ${reeksLengte} gescoord!` : `${raak} van ${reeksLengte} niet binnen!`}
             </h2>

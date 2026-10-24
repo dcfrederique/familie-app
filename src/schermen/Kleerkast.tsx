@@ -5,10 +5,12 @@ import {
   type Categorie, type Figuurtje as FiguurtjeData, type Stuk, type Vrijspelen,
 } from '../data/figuurtje.ts'
 import { kleurKlasse } from '../data/gezin.ts'
+import { themaVan } from '../data/thema.ts'
 import { useGegevens } from '../lib/gegevens.ts'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import { kanVoorlezen, leesVoor } from '../lib/voorlezen.ts'
 import Figuurtje from './Figuurtje.tsx'
+import { ThemaKop } from './ThemaDelen.tsx'
 import { Ster } from './onderdelen.tsx'
 import './figuurtje.css'
 import './schermen.css'
@@ -94,25 +96,34 @@ export default function Kleerkast() {
   const mijlpaal = volgendeMijlpaal(v)
   const getoond = proef?.figuurtje ?? figuurtje
 
+  const thema = themaVan(kind)
+  const terugKnop = (
+    <Link to={`/kind/${kind.id}`} className="rond" aria-label="Terug zonder bewaren">
+      <svg className="ic" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M15 18l-6-6l6-6" /></svg>
+    </Link>
+  )
+  const voorleesKnop = !lezer && kanVoorlezen() && (
+    <button type="button" className="rond" aria-label="Lees voor" onClick={() => leesVoor(zin.kleerkast)}>
+      <svg className="ic" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M4 10h4l5-4v12l-5-4H4z" /><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11" /></svg>
+    </button>
+  )
+  const mijlpaalPil = mijlpaal && <Mijlpaal lezer={lezer} verdiend={v.verdiend} drempel={mijlpaal.drempel} vorige={mijlpaal.vorige} />
+
   return (
-    <div className={`kind ${kleurKlasse(kind)}`}>
+    <div className={`kind ${kleurKlasse(kind)}${thema ? ` thema thema-${thema} thema-scherm-figuurtje` : ''}`}>
       <div className={`kleerkast${lezer ? '' : ' prenten'}`}>
-        <header className="kop">
-          <Link to={`/kind/${kind.id}`} className="rond" aria-label="Terug zonder bewaren">
-            <svg className="ic" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M15 18l-6-6l6-6" /></svg>
-          </Link>
-          {lezer
-            ? <h1 className="kop-titel display">Mijn figuurtje</h1>
-            : <>
-                {kanVoorlezen() && (
-                  <button type="button" className="rond" aria-label="Lees voor" onClick={() => leesVoor(zin.kleerkast)}>
-                    <svg className="ic" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M4 10h4l5-4v12l-5-4H4z" /><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11" /></svg>
-                  </button>
-                )}
-                <span style={{ flexGrow: 1 }} />
-              </>}
-          {mijlpaal && <Mijlpaal lezer={lezer} verdiend={v.verdiend} drempel={mijlpaal.drempel} vorige={mijlpaal.vorige} />}
-        </header>
+        {thema ? (
+          <ThemaKop thema={thema} scherm="figuurtje" titel="Mijn figuurtje" lezer={lezer} links={terugKnop}
+                    rechts={<>{voorleesKnop}{mijlpaalPil}</>} />
+        ) : (
+          <header className="kop">
+            {terugKnop}
+            {lezer
+              ? <h1 className="kop-titel display">Mijn figuurtje</h1>
+              : <>{voorleesKnop}<span style={{ flexGrow: 1 }} /></>}
+            {mijlpaalPil}
+          </header>
+        )}
 
         <div className="kleerkast-inhoud">
           <section className="podium" aria-label="Je figuurtje">
