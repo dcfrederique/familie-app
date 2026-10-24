@@ -2,24 +2,18 @@
 
 Als een kind een taak afvinkt, extra tijd vraagt of sterren verdient met een verhaal of rekenen, krijgen de ouders een melding op hun gsm. Tikken op de melding opent **Goedkeuren**.
 
-Zo werkt het: de gsm van een ouder bewaart een abonnement in `push_abonnementen`. Drie Database Webhooks roepen bij elke nieuwe rij de Edge Function `melding` aan; die vraagt de tekst op met `melding_tekst()` en stuurt de melding naar alle ouder-gsm's van het gezin.
+Zo werkt het: de gsm van een ouder bewaart een abonnement in `push_abonnementen`. Bij elke nieuwe rij in `inzendingen`, `tijdverzoeken` of `activiteitlog` roept een trigger (`melding_versturen`, via pg_net) de Edge Function `melding` aan; die vraagt de tekst op met `melding_tekst()` en stuurt de melding naar alle ouder-gsm's van het gezin.
 
-## Eenmalig instellen
+**Waarom een geheim?** De Edge Function staat open op internet. Zonder controle kon iedereen die het adres kent valse meldingen naar jullie gsm's laten sturen. De trigger zet daarom een wachtwoord (`x-melding-geheim`) in de aanvraag en de functie controleert het. Dat wachtwoord maakt de database zelf aan (tabel `melding_instellingen`) en CI geeft hetzelfde door aan de functie: niemand moet het ooit typen.
 
-1. **Migratie**: voer `supabase/migrations/20261022000500_meldingen.sql` uit in de SQL Editor.
-2. **Sleutels maken** (lokaal, in de projectmap): `npx web-push generate-vapid-keys`. Je krijgt een public en een private key.
-   - De **public key** zet je in `.env.local` als `VITE_VAPID_PUBLIC_KEY=...` (en als variabele in GitHub, zie `docs/hosting.md` stap 2).
-   - De **private key** komt nergens in de code of in git, alleen bij de secrets van stap 3.
-3. **Edge Function**: Supabase → Edge Functions → Deploy a new function → Via Editor. Naam `melding`, plak de inhoud van `supabase/functions/melding/index.ts`, en zet **Verify JWT** uit (de functie controleert zelf een geheim).
-   Bij Edge Functions → Secrets voeg je toe:
-   - `VAPID_PUBLIC_KEY`: de public key
-   - `VAPID_PRIVATE_KEY`: de private key
-   - `MELDING_GEHEIM`: een lange willekeurige tekst die je zelf kiest
-4. **Webhooks**: Database → Webhooks → Create a new hook, drie keer, voor de tabellen `inzendingen`, `tijdverzoeken` en `activiteitlog`:
-   - Events: alleen **Insert**
-   - Type: **Supabase Edge Functions**, functie `melding`, methode POST
-   - HTTP header: `x-melding-geheim` met dezelfde waarde als `MELDING_GEHEIM`
-5. **Op de gsm**: open de app (via https, dus de gehoste versie), zet hem op het startscherm, ga naar Ouder → Toestellen → **Meldingen aanzetten** en sta meldingen toe. Doe dit op beide ouder-gsm's.
+## Eenmalig instellen (alles verder gaat vanzelf via CI)
+
+1. **Sleutels maken** (lokaal): `npx web-push generate-vapid-keys`. De **public key** staat als variabele `VITE_VAPID_PUBLIC_KEY` in GitHub (en in `.env.local`); de **private key** komt alleen als GitHub-secret `VAPID_PRIVATE_KEY`.
+2. **Toegangstoken**: Supabase → klik rechtsboven op je profiel → **Access Tokens** → **Generate new token**. Als GitHub-secret `SUPABASE_ACCESS_TOKEN`. Hiermee mag CI de Edge Function uitrollen.
+3. Klaar. Bij de volgende push naar `main` draait CI de migratie (trigger + `pg_net`), zet het adres en het geheim, en rolt de functie `melding` uit (job `meldingen` in `ci.yml`).
+4. **Op de gsm**: open de gehoste app, zet hem op het startscherm, ga naar Ouder → Toestellen → **Meldingen aanzetten** en sta meldingen toe. Doe dit op beide ouder-gsm's.
+
+Werkt het niet? Start in GitHub → Actions → **Meldingen nakijken**: die toont of de functie bestaat, of er gsm's zijn aangemeld en wat de laatste aanroepen antwoordden.
 
 ## Goed om te weten
 

@@ -66,6 +66,39 @@ jobs:
       - if: env.OP_MAIN == 'true' && env.SUPABASE_DB_URL != ''
         run: scripts/migraties.sh
 
+  # De Edge Function "melding" uitrollen en het adres + geheim voor de trigger zetten (docs/meldingen.md).
+  # Alleen op main, na de migraties. Zonder SUPABASE_ACCESS_TOKEN of VAPID_PRIVATE_KEY slaat de job zich over.
+  meldingen:
+    needs: [migraties]
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      SUPABASE_DB_URL: ${{ secrets.SUPABASE_DB_URL }}
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+      VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
+      VAPID_PUBLIC_KEY: ${{ vars.VITE_VAPID_PUBLIC_KEY }}
+      SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
+      KLAAR: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && secrets.SUPABASE_DB_URL != '' && secrets.SUPABASE_ACCESS_TOKEN != '' && secrets.VAPID_PRIVATE_KEY != '' && vars.VITE_VAPID_PUBLIC_KEY != '' }}
+    steps:
+      - if: env.KLAAR != 'true'
+        run: echo "::notice::Meldingen niet uitgerold (op main nodig; secrets SUPABASE_ACCESS_TOKEN, VAPID_PRIVATE_KEY en variabele VITE_VAPID_PUBLIC_KEY, zie docs/meldingen.md)."
+      - if: env.KLAAR == 'true'
+        uses: actions/checkout@v5
+      - if: env.KLAAR == 'true'
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - if: env.KLAAR == 'true'
+        run: |
+          ref=$(echo "$SUPABASE_URL" | sed -E 's#https://([^.]+)\..*#\1#')
+          # Adres van de functie in de database; het geheim maakt de database zelf aan en we geven het door aan de functie.
+          echo "update public.melding_instellingen set functie_url = :'url'" \
+            | psql "$SUPABASE_DB_URL" -X -q -v ON_ERROR_STOP=1 -v url="$SUPABASE_URL/functions/v1/melding"
+          geheim=$(psql "$SUPABASE_DB_URL" -X -tA -c "select geheim from public.melding_instellingen")
+          echo "::add-mask::$geheim"
+          supabase secrets set --project-ref "$ref" VAPID_PUBLIC_KEY="$VAPID_PUBLIC_KEY" VAPID_PRIVATE_KEY="$VAPID_PRIVATE_KEY" MELDING_GEHEIM="$geheim"
+          supabase functions deploy melding --project-ref "$ref" --no-verify-jwt
+
   # Naar Azure Static Web Apps, pas als alle tests groen zijn (docs/hosting.md).
   # Push op main = de echte app; een PR krijgt een eigen voorbeeld-adres.
   # Zonder het secret AZURE_STATIC_WEB_APPS_API_TOKEN slaat deze job zich over.
