@@ -66,7 +66,7 @@ In GitHub, tabblad **Variables** → **New repository variable**, drie keer:
 | --- | --- |
 | `VITE_SUPABASE_URL` | `https://oyqwhrttwaatqymjomtc.supabase.co` |
 | `VITE_SUPABASE_PUBLISHABLE_KEY` | Supabase → **Project Settings → API Keys**, de **publishable** key (begint met `sb_publishable_`). Niet de secret key. |
-| `VITE_VAPID_PUBLIC_KEY` | de public key uit `docs/meldingen.md` stap 2. Heb je die nog niet, laat deze dan voorlopig weg; meldingen staan dan uit. |
+| `VITE_VAPID_PUBLIC_KEY` | de public key uit `docs/meldingen.md` stap 1. Heb je die nog niet, laat deze dan voorlopig weg; meldingen staan dan uit. |
 
 Dit zijn publieke waarden (ze zitten sowieso in de app), daarom variabelen en geen secrets.
 
@@ -110,12 +110,11 @@ In GitHub: **Actions → Azure controleren → Run workflow**. Na een halve minu
 | `AZURE_STATIC_WEB_APPS_API_TOKEN` | secret | deployen | `ci.yml` |
 | `VITE_SUPABASE_URL` | variabele | build | `ci.yml` |
 | `VITE_SUPABASE_PUBLISHABLE_KEY` | variabele | build | `ci.yml` |
-| `VITE_VAPID_PUBLIC_KEY` | variabele | build, meldingen | `ci.yml` |
+| `VITE_VAPID_PUBLIC_KEY` | variabele | build + meldingen | `ci.yml` |
 | `AZURE_SPEECH_KEY`, `AZURE_SPEECH_REGION` | secret | voorleesstem | `azure-check.yml`, later `stem.yml` |
 | `AZURE_BACKUP_CONNECTION_STRING` | secret | back-up | `backup.yml` |
 | `SUPABASE_DB_URL` | secret | back-up | `backup.yml` |
 | `SUPABASE_ACCESS_TOKEN`, `VAPID_PRIVATE_KEY` | secret | meldingen uitrollen | `ci.yml` |
-| `VITE_VAPID_PUBLIC_KEY` | variabele | build + meldingen | `ci.yml` |
 | `SUPABASE_URL`, `SUPABASE_PUBLISHABLE_KEY` | secret | wakker houden | `keep-alive.yml` |
 
 In Azure staat alles in één resource group `familie-app`: de Static Web App, de Speech-resource en het Storage-account. Later komt daar de container `prenten` bij (`docs/azure-extra.md` deel 3).
