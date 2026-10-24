@@ -1,5 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
-import type { ActiviteitRegel, Bron, SpraakToken, Inzending, LogRegel, Maaltijd, NieuweTaak, OuderUitkomst, Saldo, Spelregels, Taak, Tijdverzoek } from './types.ts'
+import type { ActiviteitRegel, Bron, SpraakToken, Inzending, LogRegel, Maaltijd, NieuweNotitie, NieuweOuderTaak, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Saldo, Spelregels, Taak, Tijdverzoek } from './types.ts'
 
 function fout(error: { message: string } | null) {
   if (error) throw new Error(error.message)
@@ -83,6 +83,19 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
       // Zonder migratie 20261024000600_weekmenu is er gewoon nog geen menu.
       if (error) return []
       return (data ?? []) as Maaltijd[]
+    },
+    async ouderTaken() {
+      const week = new Date(Date.now() - 7 * 86400_000).toISOString()
+      const { data, error } = await sb.from('ouder_taken').select('id, titel, datum, wie, herhaling, gedaan_op, gedaan_door')
+        .or(`gedaan_op.is.null,gedaan_op.gte.${week}`).order('datum', { nullsFirst: false }).order('aangemaakt_op')
+      fout(error)
+      return (data ?? []) as OuderTaak[]
+    },
+    async notities() {
+      const { data, error } = await sb.from('notities').select('id, eigenaar, gedeeld, titel, tekst, lijst, vastgezet, bijgewerkt_op')
+        .order('vastgezet', { ascending: false }).order('bijgewerkt_op', { ascending: false })
+      fout(error)
+      return (data ?? []) as Notitie[]
     },
 
     async taakIndienen(kindId, taakId, foto) {
@@ -192,6 +205,31 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
       }
       fout((await sb.from('weekmenu').upsert({ gezin_id: gezinId, dag, gerecht: tekst, prentje, gewijzigd_op: new Date().toISOString() },
                                                { onConflict: 'gezin_id,dag' })).error)
+    },
+    async ouderTaakOpslaan({ id, titel, datum, wie, herhaling }: NieuweOuderTaak) {
+      const rij = { titel: titel.trim(), datum, wie, herhaling }
+      fout((id ? await sb.from('ouder_taken').update(rij).eq('id', id) : await sb.from('ouder_taken').insert({ ...rij, gezin_id: gezinId })).error)
+    },
+    async ouderTaakAfvinken(id, gedaan) {
+      fout((await sb.rpc('ouder_taak_afvinken', { p_taak: id, p_gedaan: gedaan })).error)
+    },
+    async ouderTaakVerwijderen(id) {
+      fout((await sb.from('ouder_taken').delete().eq('id', id)).error)
+    },
+    async notitieOpslaan({ id, titel, tekst, lijst, gedeeld, vastgezet }: NieuweNotitie) {
+      // Enkel deze kolommen: de eigenaar verandert nooit.
+      const rij = { titel, tekst, lijst, gedeeld, vastgezet, bijgewerkt_op: new Date().toISOString() }
+      if (id) {
+        fout((await sb.from('notities').update(rij).eq('id', id)).error)
+        return
+      }
+      // De eigenaar is de ouder van dit account; de server controleert dat.
+      const { data: ik, error } = await sb.rpc('mijn_ouder')
+      fout(error)
+      fout((await sb.from('notities').insert({ ...rij, gezin_id: gezinId, eigenaar: ik })).error)
+    },
+    async notitieVerwijderen(id) {
+      fout((await sb.from('notities').delete().eq('id', id)).error)
     },
   }
 }

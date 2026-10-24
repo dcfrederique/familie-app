@@ -38,9 +38,9 @@ export const ouderMenu: MenuGroep[] = [
   ] },
   { naam: 'Wij', alleenOuderGsm: true, items: [
     { naam: 'Weekmenu', icoon: 'weekmenu', pad: '/ouder/weekmenu' },
-    { naam: 'Onze taken', icoon: 'onzetaken' },
+    { naam: 'Onze taken', icoon: 'onzetaken', pad: '/ouder/onze-taken' },
     { naam: 'Boodschappen', icoon: 'boodschappen' },
-    { naam: 'Notities', icoon: 'notities' },
+    { naam: 'Notities', icoon: 'notities', pad: '/ouder/notities' },
   ] },
   { naam: 'Gezondheid', later: 'nog later', alleenOuderGsm: true, items: [
     { naam: 'Gewicht', icoon: 'gewicht' },

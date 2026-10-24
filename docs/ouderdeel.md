@@ -54,6 +54,8 @@ Alles hieronder is alleen voor de ouders. De tabletaccounts van de kinderen moge
 - Voorbeelden: vuilnis buiten zetten (dinsdag), schoolreis betalen, auto naar keuring.
 - Tabel `ouder_taken` (gezin_id, titel, datum, wie, herhaling, gedaan_op, gedaan_door).
 
+**Zo gebouwd (24 oktober 2026):** snel toevoegen bovenaan (zonder datum, voor samen) of met **Met datum…** het volledige formulier. Groepen Te laat, Vandaag, Deze week, Later, Zonder datum en Gedaan deze week. Een wekelijkse of maandelijkse taak heeft een datum; afvinken maakt meteen de volgende keer aan (Postgres-functie `ouder_taak_afvinken`), terugzetten haalt die weer weg. `wie` is de id van een ouder, of leeg voor samen.
+
 ### Boodschappen
 
 - Eén gedeelde lijst per gezin, live gelijk op beide gsm's (Supabase Realtime).
@@ -68,6 +70,8 @@ Alles hieronder is alleen voor de ouders. De tabletaccounts van de kinderen moge
 - Gedeeld met de partner, of privé.
 - Voorbeelden: maten van de kinderen, cadeau-ideeën, wifi-code oma.
 - Tabel `notities` (gezin_id, eigenaar, gedeeld, titel, tekst, vastgezet, bijgewerkt_op).
+
+**Zo gebouwd (24 oktober 2026):** **Nieuwe notitie** (tekst) of **Nieuw lijstje** (regels met vinkjes, kolom `lijst` als JSON). Vinkjes zet je meteen in het overzicht. Vastzetten bovenaan, standaard gedeeld; alleen de eigenaar kan een notitie privé maken, de partner kan een gedeelde notitie aanpassen of weggooien. Zoeken verschijnt vanaf 5 notities.
 
 ### Gezondheid: gewicht, fitness en loopschema
 
@@ -84,8 +88,8 @@ Op termijn wordt Vandaag het overzicht van de hele dag: eerst wat op goedkeuring
 ## Fases
 
 1. **Nieuwe lay-out** (alleen frontend, **gebouwd op 24 oktober 2026**): `OuderKader` krijgt de balk en het menu (`src/data/ouderMenu.ts`, stijl in `src/schermen/ouder.css`), tabs onderaan verdwijnen, Spelregels (`/ouder/spelregels`) en Pincode (`/ouder/pincode`) worden eigen schermen. Op een tablet van een kind tonen we Wij, Gezondheid en Pincode niet. Geen databasewijziging.
-2. **Boodschappen en Onze taken**: de twee onderdelen die het meest dagelijks gebruikt worden. Elk een migratie en een scherm.
-3. **Notities**.
+2. **Boodschappen en Onze taken**: de twee onderdelen die het meest dagelijks gebruikt worden. Elk een migratie en een scherm. **Onze taken is gebouwd op 24 oktober 2026** (`/ouder/onze-taken`, `src/schermen/OnzeTaken.tsx`); Boodschappen nog niet.
+3. **Notities**: **gebouwd op 24 oktober 2026** (`/ouder/notities`, `src/schermen/Notities.tsx`), samen met Onze taken in migratie `20261024000700_onze_taken_notities`.
 4. **Gezondheid**: gewicht eerst, dan loopschema, dan fitness.
 
 Elke fase kan apart naar main.

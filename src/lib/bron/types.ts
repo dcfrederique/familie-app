@@ -97,6 +97,37 @@ export interface Maaltijd {
   prentje: string | null
 }
 
+export type OuderHerhaling = 'eenmalig' | 'wekelijks' | 'maandelijks'
+
+/** Een taak voor de ouders zelf (Onze taken, docs/ouderdeel.md): zonder sterren of goedkeuring. */
+export interface OuderTaak {
+  id: string
+  titel: string
+  /** 'JJJJ-MM-DD' of null (geen datum). */
+  datum: string | null
+  /** Een van de ouders; null = samen. */
+  wie: string | null
+  herhaling: OuderHerhaling
+  gedaan_op: string | null
+  gedaan_door: string | null
+}
+
+export type NieuweOuderTaak = Pick<OuderTaak, 'titel' | 'datum' | 'wie' | 'herhaling'> & { id?: string }
+
+/** Een notitie van een ouder: tekst, of een lijstje met vinkjes (lijst niet null). */
+export interface Notitie {
+  id: string
+  eigenaar: string
+  gedeeld: boolean
+  titel: string
+  tekst: string
+  lijst: { t: string; af: boolean }[] | null
+  vastgezet: boolean
+  bijgewerkt_op: string
+}
+
+export type NieuweNotitie = Omit<Notitie, 'id' | 'eigenaar' | 'bijgewerkt_op'> & { id?: string }
+
 export interface Spelregels {
   dagplafond_minuten: number
   venster_van: string
@@ -122,6 +153,10 @@ export interface Bron {
   aankopen(): Promise<Record<string, string[]>>
   /** Het weekmenu van `van` tot en met `tot` ('JJJJ-MM-DD'); leeg zonder migratie 20261024000600_weekmenu. */
   weekmenu(van: string, tot: string): Promise<Maaltijd[]>
+  /** Onze taken: alles wat nog open staat, en wat de laatste 7 dagen gedaan is. Alleen voor een ouder-account. */
+  ouderTaken(): Promise<OuderTaak[]>
+  /** Je eigen notities en de gedeelde van je partner. Alleen voor een ouder-account. */
+  notities(): Promise<Notitie[]>
 
   taakIndienen(kindId: string, taakId: string, foto: Blob | null): Promise<void>
   tijdAanvragen(kindId: string, minuten: number): Promise<void>
@@ -152,4 +187,10 @@ export interface Bron {
   kindAanpassen(id: string, wijziging: KindWijziging): Promise<void>
   /** Bewaart de maaltijd van een dag; een leeg gerecht haalt de dag uit het weekmenu. */
   maaltijdOpslaan(maaltijd: Maaltijd): Promise<void>
+  ouderTaakOpslaan(taak: NieuweOuderTaak): Promise<void>
+  /** Afvinken of terugzetten; een herhalende taak krijgt bij afvinken meteen de volgende keer erbij. */
+  ouderTaakAfvinken(id: string, gedaan: boolean): Promise<void>
+  ouderTaakVerwijderen(id: string): Promise<void>
+  notitieOpslaan(notitie: NieuweNotitie): Promise<void>
+  notitieVerwijderen(id: string): Promise<void>
 }

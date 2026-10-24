@@ -5,7 +5,7 @@ import { spelMenu } from '../../data/spelletjes.ts'
 import type { Gebruiker } from '../../data/gezin.ts'
 import { dagVan } from '../datum.ts'
 import { activiteitOmschrijving, activiteitSterren, blokKeuzes, regels as standaardRegels } from '../regels.ts'
-import type { ActiviteitRegel, Bron, Inzending, LogRegel, Maaltijd, NieuweTaak, OuderUitkomst, Spelregels, Taak, Tijdverzoek } from './types.ts'
+import type { ActiviteitRegel, Bron, Inzending, LogRegel, Maaltijd, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Spelregels, Taak, Tijdverzoek } from './types.ts'
 
 const DEMO_PIN = '1234'
 const WELKOM = 'Welkom! Je eerste sterren'
@@ -18,6 +18,8 @@ interface Toestand {
   log: LogRegel[]
   aankopen: Record<string, string[]>
   weekmenu: Maaltijd[]
+  ouderTaken: OuderTaak[]
+  notities: Notitie[]
   regels: Spelregels
 }
 
@@ -49,6 +51,17 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
     aankopen: {},
     // Vandaag al iets op het menu, zodat het startscherm van de kinderen het meteen toont.
     weekmenu: [{ dag: dagVan(new Date()), gerecht: 'Spaghetti bolognese', prentje: null }],
+    // Een paar voorbeelden zodat Onze taken en Notities niet leeg openen.
+    ouderTaken: [
+      { id: 'ot-1', titel: 'Vuilnis buiten zetten', datum: dagVan(new Date()), wie: null, herhaling: 'wekelijks', gedaan_op: null, gedaan_door: null },
+      { id: 'ot-2', titel: 'Auto naar de keuring', datum: dagVan(new Date(Date.now() + 4 * 86400_000)), wie: 'mama', herhaling: 'eenmalig', gedaan_op: null, gedaan_door: null },
+    ],
+    notities: [
+      { id: 'no-1', eigenaar: 'mama', gedeeld: true, titel: 'Maten kinderen', tekst: 'Luca 134, schoen 33\nYuna 122, schoen 29\nFeline 110, schoen 26',
+        lijst: null, vastgezet: true, bijgewerkt_op: nu },
+      { id: 'no-2', eigenaar: 'mama', gedeeld: true, titel: 'Mee op vakantie', tekst: '',
+        lijst: [{ t: 'Paspoorten', af: false }, { t: 'Zonnecrème', af: true }, { t: 'Knuffels', af: false }], vastgezet: false, bijgewerkt_op: nu },
+    ],
     regels: {
       dagplafond_minuten: standaardRegels.dagplafondMinuten,
       venster_van: standaardRegels.tijdvenster.van,
@@ -62,6 +75,7 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
   const t = nieuweToestand(kinderen)
   let volgnr = 1000
   const id = () => `demo-${++volgnr}`
+  const volgendeVan = new Map<string, string>()
 
   const saldo = (kind: string) => t.log.filter((l) => l.kind_id === kind).reduce((s, l) => s + l.delta, 0)
   const gereserveerd = (kind: string) =>
@@ -88,6 +102,14 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
     async log(kind) { return t.log.filter((l) => l.kind_id === kind).slice().reverse() },
     async spelregels() { return { ...t.regels } },
     async weekmenu(van, tot) { return t.weekmenu.filter((m) => m.dag >= van && m.dag <= tot).map((m) => ({ ...m })) },
+    async ouderTaken() {
+      const week = new Date(Date.now() - 7 * 86400_000).toISOString()
+      return t.ouderTaken.filter((x) => !x.gedaan_op || x.gedaan_op >= week).map((x) => ({ ...x }))
+    },
+    async notities() {
+      return t.notities.slice().sort((a, b) => Number(b.vastgezet) - Number(a.vastgezet) || b.bijgewerkt_op.localeCompare(a.bijgewerkt_op))
+        .map((n) => ({ ...n, lijst: n.lijst && n.lijst.map((i) => ({ ...i })) }))
+    },
     async aankopen() { return Object.fromEntries(Object.entries(t.aankopen).map(([k, v]) => [k, [...v]])) },
 
     async taakIndienen(kind, taakId, foto) {
@@ -219,5 +241,40 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       t.weekmenu = t.weekmenu.filter((m) => m.dag !== dag)
       if (gerecht.trim()) t.weekmenu.push({ dag, gerecht: gerecht.trim(), prentje })
     },
+    async ouderTaakOpslaan({ id: taakId, titel, datum, wie, herhaling }) {
+      const taak = { titel, datum, wie, herhaling }
+      const oud = t.ouderTaken.find((x) => x.id === taakId)
+      if (oud) Object.assign(oud, taak, { titel: taak.titel.trim() })
+      else t.ouderTaken.push({ ...taak, titel: taak.titel.trim(), id: id(), gedaan_op: null, gedaan_door: null })
+    },
+    async ouderTaakAfvinken(taakId, gedaan) {
+      const taak = t.ouderTaken.find((x) => x.id === taakId)
+      if (!taak || Boolean(taak.gedaan_op) === gedaan) return
+      taak.gedaan_op = gedaan ? new Date().toISOString() : null
+      taak.gedaan_door = gedaan ? 'mama' : null
+      if (!gedaan) {
+        // Terugzetten haalt de volgende keer weer weg, zolang die nog niet gedaan is.
+        const volgende = volgendeVan.get(taakId)
+        t.ouderTaken = t.ouderTaken.filter((x) => !(x.id === volgende && !x.gedaan_op))
+        return
+      }
+      if (taak.herhaling !== 'eenmalig' && taak.datum) {
+        const d = new Date(`${taak.datum}T12:00`)
+        if (taak.herhaling === 'wekelijks') d.setDate(d.getDate() + 7)
+        else d.setMonth(d.getMonth() + 1)
+        const volgende = id()
+        volgendeVan.set(taakId, volgende)
+        t.ouderTaken.push({ ...taak, id: volgende, datum: dagVan(d), gedaan_op: null, gedaan_door: null })
+      }
+    },
+    async ouderTaakVerwijderen(taakId) { t.ouderTaken = t.ouderTaken.filter((x) => x.id !== taakId) },
+    async notitieOpslaan({ id: notitieId, titel, tekst, lijst, gedeeld, vastgezet }) {
+      const nu = new Date().toISOString()
+      const notitie = { titel, tekst, lijst, gedeeld, vastgezet }
+      const oud = t.notities.find((x) => x.id === notitieId)
+      if (oud) Object.assign(oud, notitie, { bijgewerkt_op: nu })
+      else t.notities.push({ ...notitie, id: id(), eigenaar: 'mama', bijgewerkt_op: nu })
+    },
+    async notitieVerwijderen(notitieId) { t.notities = t.notities.filter((x) => x.id !== notitieId) },
   }
 }
