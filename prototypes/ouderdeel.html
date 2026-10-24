@@ -1,0 +1,553 @@
+<!doctype html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Ouderdeel familie-app</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700;800&family=Nunito:wght@600;700;800&display=swap">
+<style>
+/* Layout: gsm-kader (390 × 844) met vaste balk bovenaan, menu dat van links inschuift, inhoud als lijsten en kaarten.
+   Kleuren uit src/styles/thema.css; de ouderkant krijgt een donkere balk (--bar) voor een zakelijker toon. */
+:root {
+  --bg: #EEF3F8; --surface: #FFFFFF; --ink: #1C2433; --muted: #4E5A6B; --line: #D5DCE4; --soft: #EEF3F8;
+  --bar: #1C2A44; --bar-ink: #F3F6FB; --bar-muted: #A9B6CC; --scrim: rgba(12, 18, 32, .45);
+  --accent: #2D6BD6; --accent-tint: #E3EDFC;
+  --gold: #F2B33D; --gold-edge: #B8800F; --gold-bg: #FFF4D6; --gold-ink: #6B4A00;
+  --ok: #1F7A4A; --ok-bg: #DDF2E6; --warn: #C2541A; --warn-bg: #FCE9DD;
+  --luca: #2D6BD6; --luca-tint: #E3EDFC; --yuna: #C2541A; --yuna-tint: #FCE9DD; --feline: #1F7A4A; --feline-tint: #DDF2E6;
+  --later: #8B95A5; --later-bg: #E6EBF1; --hatch: rgba(28, 36, 51, .05);
+  --page: #DCE3EC;
+  --f-display: 'Baloo 2', Nunito, system-ui, sans-serif;
+  --f-body: Nunito, system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --bg: #121A2A; --surface: #1C2638; --ink: #EEF2F8; --muted: #A9B4C4; --line: #34425A; --soft: #243149;
+    --bar: #0D1424; --bar-ink: #EEF2F8; --bar-muted: #8E9BB2; --scrim: rgba(0, 0, 0, .55);
+    --accent: #7FA6F0; --accent-tint: #22345A;
+    --gold-bg: #3A2F12; --gold-ink: #F7D58A; --ok: #5CC48A; --ok-bg: #163826; --warn: #F08A50; --warn-bg: #3D2214;
+    --luca: #7FA6F0; --luca-tint: #22345A; --yuna: #F29A63; --yuna-tint: #43281A; --feline: #66CC93; --feline-tint: #183A28;
+    --later: #6F7C92; --later-bg: #222D41; --hatch: rgba(255, 255, 255, .04);
+    --page: #0A101C;
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: #121A2A; --surface: #1C2638; --ink: #EEF2F8; --muted: #A9B4C4; --line: #34425A; --soft: #243149;
+  --bar: #0D1424; --bar-ink: #EEF2F8; --bar-muted: #8E9BB2; --scrim: rgba(0, 0, 0, .55);
+  --accent: #7FA6F0; --accent-tint: #22345A;
+  --gold-bg: #3A2F12; --gold-ink: #F7D58A; --ok: #5CC48A; --ok-bg: #163826; --warn: #F08A50; --warn-bg: #3D2214;
+  --luca: #7FA6F0; --luca-tint: #22345A; --yuna: #F29A63; --yuna-tint: #43281A; --feline: #66CC93; --feline-tint: #183A28;
+  --later: #6F7C92; --later-bg: #222D41; --hatch: rgba(255, 255, 255, .04);
+  --page: #0A101C;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0; background: var(--page); color: var(--ink);
+  font-family: var(--f-body); font-weight: 600; font-size: 15px;
+  display: flex; flex-direction: column; align-items: center; gap: 16px;
+  padding-block: 24px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  -webkit-tap-highlight-color: transparent;
+}
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, a:focus-visible, [tabindex]:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.display { font-family: var(--f-display); font-weight: 800; }
+.ic { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+
+.uitleg { max-width: 390px; width: 100%; color: var(--muted); font-size: 14px; line-height: 1.5; text-align: center; margin: 0; text-wrap: balance; }
+.uitleg strong { color: var(--ink); }
+
+/* Gsm-kader */
+.gsm {
+  position: relative; width: 390px; max-width: 100%; height: 844px; max-height: calc(100dvh - 120px); min-height: 560px;
+  background: var(--bg); border-radius: 36px; overflow: hidden;
+  box-shadow: 0 0 0 10px var(--bar), 0 24px 60px rgba(12, 18, 32, .3);
+  display: flex; flex-direction: column;
+}
+@media (max-width: 440px) {
+  body { padding: 0; gap: 0; }
+  .uitleg { display: none; }
+  .gsm { width: 100%; height: 100%; max-height: none; min-height: 0; border-radius: 0; box-shadow: none; }
+}
+
+/* Balk */
+.balk {
+  flex-shrink: 0; display: grid; grid-template-columns: 48px 1fr 48px; align-items: center; gap: 8px;
+  padding: 12px 8px 12px; background: var(--bar); color: var(--bar-ink);
+}
+@media (max-width: 440px) { .balk { padding-top: calc(12px + env(safe-area-inset-top, 0px)); } }
+.balk-knop { width: 48px; height: 48px; border: 0; border-radius: 14px; background: transparent; color: var(--bar-ink); display: grid; place-items: center; position: relative; }
+.balk-knop:hover { background: rgba(255, 255, 255, .08); }
+.balk h1 { margin: 0; font-size: 21px; line-height: 1.1; text-align: center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.teller { position: absolute; top: 6px; right: 5px; min-width: 20px; height: 20px; padding: 0 5px; border-radius: 10px; background: var(--gold); color: #3A2600; font-size: 12px; font-weight: 800; display: grid; place-items: center; box-shadow: 0 0 0 2px var(--bar); }
+.teller[data-nul="1"] { display: none; }
+
+/* Inhoud */
+.inhoud { flex-grow: 1; overflow-y: auto; padding: 16px 16px 96px; display: grid; gap: 12px; align-content: start; }
+.inhoud h2 { margin: 0; font-size: 19px; line-height: 1.2; }
+.kopje { margin: 8px 0 -4px; font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.kaart { background: var(--surface); border-radius: 20px; padding: 16px; display: grid; gap: 10px; }
+.kaart p { margin: 0; color: var(--muted); line-height: 1.45; }
+.opvallend { background: var(--gold-bg); color: var(--gold-ink); }
+.opvallend p { color: var(--gold-ink); }
+.kaart-link { border: 0; text-align: left; width: 100%; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 4px 12px; }
+.kaart-link p { grid-column: 1; }
+.kaart-link .ic { grid-row: 1 / 3; grid-column: 2; }
+
+.lijst { background: var(--surface); border-radius: 20px; overflow: hidden; }
+.rij { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; padding: 12px 16px; min-height: 60px; border-top: 1px solid var(--line); }
+.rij:first-child { border-top: 0; }
+.rij-tekst { min-width: 0; display: grid; gap: 2px; }
+.rij-tekst b { font-weight: 800; }
+.rij-tekst small { color: var(--muted); font-size: 13px; }
+
+.gezicht { width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-family: var(--f-display); font-weight: 800; font-size: 19px; background: var(--k-tint); color: var(--k); }
+.k-luca { --k: var(--luca); --k-tint: var(--luca-tint); }
+.k-yuna { --k: var(--yuna); --k-tint: var(--yuna-tint); }
+.k-feline { --k: var(--feline); --k-tint: var(--feline-tint); }
+.ster { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px 4px 6px; border-radius: 999px; background: var(--gold-bg); color: var(--gold-ink); font-weight: 800; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ster svg { width: 18px; height: 18px; }
+.ster path { fill: var(--gold); stroke: var(--gold-edge); stroke-width: 1.5; stroke-linejoin: round; }
+.cijfers { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 0; }
+.cijfers div { background: var(--soft); border-radius: 14px; padding: 8px 10px; }
+.cijfers dt { font-size: 12px; color: var(--muted); }
+.cijfers dd { margin: 0; font-family: var(--f-display); font-weight: 800; font-size: 18px; font-variant-numeric: tabular-nums; }
+.balkje { height: 6px; border-radius: 3px; background: var(--soft); overflow: hidden; }
+.balkje span { display: block; height: 100%; background: var(--k, var(--accent)); border-radius: 3px; }
+.kind-kop { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 12px; }
+
+.knoppen { display: flex; flex-wrap: wrap; gap: 8px; }
+.knop { min-height: 48px; padding: 0 18px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); font-weight: 800; }
+.knop-goed { background: var(--ok); border-color: var(--ok); color: var(--surface); }
+.knop-primair { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+.knop-klein { min-height: 40px; padding: 0 14px; font-size: 14px; }
+.knop:disabled { opacity: .45; cursor: default; }
+.chip { display: inline-flex; align-items: center; min-height: 26px; padding: 0 10px; border-radius: 999px; font-size: 12px; font-weight: 800; background: var(--k-tint, var(--soft)); color: var(--k, var(--muted)); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.schakel { appearance: none; width: 48px; height: 28px; border-radius: 14px; background: var(--line); position: relative; cursor: pointer; flex-shrink: 0; margin: 0; }
+.schakel::after { content: ""; position: absolute; top: 3px; left: 3px; width: 22px; height: 22px; border-radius: 50%; background: var(--surface); transition: transform .15s; box-shadow: 0 1px 3px rgba(0,0,0,.25); }
+.schakel:checked { background: var(--accent); }
+.schakel:checked::after { transform: translateX(20px); }
+.veld { display: grid; gap: 6px; }
+.veld span { font-size: 13px; color: var(--muted); }
+.veld input, .veld select { min-height: 48px; border: 1px solid var(--line); border-radius: 12px; padding: 0 12px; background: var(--surface); color: var(--ink); font: inherit; }
+.twee { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.code { font-family: var(--f-display); font-weight: 800; font-size: 30px; letter-spacing: .14em; text-align: center; padding: 8px; border-radius: 14px; background: var(--soft); }
+
+.zweef { position: absolute; right: 20px; bottom: 20px; height: 56px; padding: 0 20px 0 16px; border-radius: 18px; border: 0; background: var(--accent); color: var(--surface); display: inline-flex; align-items: center; gap: 8px; font-weight: 800; box-shadow: 0 8px 20px rgba(12, 18, 32, .25); }
+@media (max-width: 440px) { .zweef { bottom: calc(20px + env(safe-area-inset-bottom, 0px)); right: max(20px, env(safe-area-inset-right, 0px)); } }
+
+/* Komt later */
+.later-band { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: center; padding: 14px 16px; border-radius: 20px; border: 2px dashed var(--later); color: var(--muted); }
+.later-band b { color: var(--ink); display: block; font-weight: 800; }
+.later-label { display: inline-flex; align-items: center; height: 22px; padding: 0 8px; border-radius: 999px; background: var(--later-bg); color: var(--later); font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; white-space: nowrap; }
+.schets { opacity: .55; filter: grayscale(.9); pointer-events: none; user-select: none; display: grid; gap: 12px;
+  background-image: repeating-linear-gradient(-45deg, transparent 0 10px, var(--hatch) 10px 20px); border-radius: 20px; }
+.onze-dag { border: 2px dashed var(--later); background: transparent; }
+.vink { width: 26px; height: 26px; border-radius: 8px; border: 2px solid var(--line); display: grid; place-items: center; }
+.vink.aan { background: var(--ok); border-color: var(--ok); color: var(--surface); }
+.vink .ic { width: 16px; height: 16px; stroke-width: 3; }
+.doorstreept b { text-decoration: line-through; color: var(--muted); }
+.grafiek { width: 100%; height: 120px; display: block; }
+.grafiek .lijn { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.grafiek .vlak { fill: var(--accent-tint); }
+.grafiek .raster { stroke: var(--line); stroke-width: 1; }
+.grafiek text { fill: var(--muted); font-size: 10px; font-family: var(--f-body); }
+.weken { display: grid; grid-template-columns: repeat(8, 1fr); gap: 4px; }
+.weken span { height: 28px; border-radius: 8px; background: var(--soft); display: grid; place-items: center; font-size: 12px; font-weight: 800; color: var(--muted); }
+.weken .klaar { background: var(--ok-bg); color: var(--ok); }
+.weken .nu { background: var(--accent); color: var(--surface); }
+
+/* Menu */
+.laag { position: absolute; inset: 0; background: var(--scrim); opacity: 0; pointer-events: none; transition: opacity .2s; z-index: 5; }
+.menu {
+  position: absolute; top: 0; bottom: 0; left: 0; width: 300px; max-width: 86%; z-index: 6;
+  background: var(--surface); transform: translateX(-102%); transition: transform .22s ease-out;
+  display: flex; flex-direction: column; box-shadow: 8px 0 30px rgba(12, 18, 32, .25);
+}
+.gsm.menu-open .laag { opacity: 1; pointer-events: auto; }
+.gsm.menu-open .menu { transform: none; }
+@media (prefers-reduced-motion: reduce) { .menu, .laag { transition: none; } }
+.menu-kop { padding: 20px 20px 16px; background: var(--bar); color: var(--bar-ink); display: grid; gap: 2px; }
+@media (max-width: 440px) { .menu-kop { padding-top: calc(20px + env(safe-area-inset-top, 0px)); } }
+.menu-kop .display { font-size: 22px; line-height: 1.1; }
+.menu-kop small { color: var(--bar-muted); font-size: 13px; }
+.menu-gezichten { display: flex; gap: 6px; margin-top: 10px; }
+.menu-gezichten .gezicht { width: 30px; height: 30px; font-size: 15px; }
+.menu nav { flex-grow: 1; overflow-y: auto; padding: 8px 10px 12px; }
+.groep { margin: 14px 12px 4px; font-size: 11px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); display: flex; justify-content: space-between; align-items: center; }
+.item { width: 100%; min-height: 48px; display: grid; grid-template-columns: 24px 1fr auto; gap: 14px; align-items: center; padding: 0 12px; border: 0; border-radius: 14px; background: transparent; text-align: left; font-weight: 700; }
+.item:hover { background: var(--soft); }
+.item[aria-current="page"] { background: var(--accent-tint); color: var(--accent); font-weight: 800; }
+.item.is-later { color: var(--later); }
+.item.is-later[aria-current="page"] { background: var(--later-bg); color: var(--muted); }
+.item-teller { min-width: 24px; height: 24px; padding: 0 7px; border-radius: 12px; background: var(--gold); color: #3A2600; font-size: 12px; font-weight: 800; display: grid; place-items: center; }
+.menu-voet { border-top: 1px solid var(--line); padding: 10px; display: grid; gap: 4px; }
+@media (max-width: 440px) { .menu-voet { padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); } }
+
+.melding { position: absolute; left: 16px; right: 16px; bottom: 24px; z-index: 7; background: var(--bar); color: var(--bar-ink); border-radius: 14px; padding: 14px 16px; font-weight: 700; opacity: 0; transform: translateY(8px); transition: opacity .2s, transform .2s; pointer-events: none; }
+.melding.toon { opacity: 1; transform: none; }
+
+.wissel { display: flex; gap: 8px; }
+.wissel button { min-height: 36px; padding: 0 14px; border-radius: 999px; border: 1px solid var(--line); background: var(--surface); font-size: 13px; font-weight: 700; color: var(--muted); }
+.wissel button[aria-pressed="true"] { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+</style>
+</head>
+<body>
+<p class="uitleg"><strong>Mockup van het ouderdeel.</strong> Tik op het menu linksboven. Grijze onderdelen komen later; je kunt ze openen voor een schets.</p>
+
+<div class="gsm" id="gsm">
+  <header class="balk">
+    <button class="balk-knop" id="menuKnop" type="button" aria-label="Menu openen" aria-expanded="false" aria-controls="menu">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <h1 class="display" id="titel">Vandaag</h1>
+    <button class="balk-knop" id="belKnop" type="button" aria-label="Goedkeuren">
+      <svg class="ic" viewBox="0 0 24 24"><path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15L6 16zM10 20.5a2.2 2.2 0 0 0 4 0"/></svg>
+      <span class="teller" id="balkTeller">3</span>
+    </button>
+  </header>
+  <main class="inhoud" id="inhoud" tabindex="-1"></main>
+  <div id="zweefPlek"></div>
+
+  <div class="laag" id="laag"></div>
+  <aside class="menu" id="menu" aria-label="Menu">
+    <div class="menu-kop">
+      <span class="display">Ons gezin</span>
+      <small>Aangemeld als Frederique</small>
+      <div class="menu-gezichten" aria-hidden="true">
+        <span class="gezicht k-luca">L</span><span class="gezicht k-yuna">Y</span><span class="gezicht k-feline">F</span>
+      </div>
+    </div>
+    <nav id="menuLijst"></nav>
+    <div class="menu-voet">
+      <button class="item" type="button" data-actie="kinderen">
+        <svg class="ic" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg><span>Naar de kinderen</span><span></span>
+      </button>
+    </div>
+  </aside>
+  <div class="melding" id="melding" role="status"></div>
+</div>
+
+<div class="wissel" role="group" aria-label="Thema">
+  <button type="button" data-thema="">Systeem</button>
+  <button type="button" data-thema="light">Licht</button>
+  <button type="button" data-thema="dark">Donker</button>
+</div>
+
+<script>
+const ic = {
+  vandaag: '<path d="M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z"/>',
+  goed: '<path d="M4 12.5l5 5L20 6.5"/>',
+  taken: '<rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 12l3 3 5-6"/>',
+  kinderen: '<circle cx="9" cy="8" r="3"/><circle cx="17" cy="10" r="2.5"/><path d="M3.5 20c.6-3.4 2.8-5.5 5.5-5.5s4.9 2.1 5.5 5.5M14.5 15.2c2.6-.5 5 1.2 5.8 4.8"/>',
+  regels: '<circle cx="12" cy="12" r="8"/><path d="M12 7v5l3.5 2"/>',
+  onzetaken: '<path d="M9 6h11M9 12h11M9 18h11"/><path d="M3.5 6l1.5 1.5L7.5 5M3.5 12l1.5 1.5L7.5 11M3.5 18l1.5 1.5 2.5-2.5"/>',
+  boodschappen: '<path d="M3 4h2l2.4 11h10.2L20 7H6.2"/><circle cx="9.5" cy="19" r="1.5"/><circle cx="16.5" cy="19" r="1.5"/>',
+  notities: '<path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h5"/>',
+  gewicht: '<rect x="3.5" y="4" width="17" height="16" rx="4"/><path d="M8.5 10a4.5 4.5 0 0 1 7 0l-2.5 2"/>',
+  fitness: '<path d="M6.5 8v8M17.5 8v8M3.5 10v4M20.5 10v4M6.5 12h11"/>',
+  lopen: '<circle cx="14" cy="4.5" r="2"/><path d="M10 21l2.5-5.5-3-3 2-4.5 3 3 3.5 1M8.5 12l-2 3H3M12.5 15.5L16 18l1 3"/>',
+  toestellen: '<rect x="7" y="3" width="10" height="18" rx="2.5"/><path d="M11 18h2"/>',
+  pin: '<rect x="5" y="10.5" width="14" height="10" rx="2.5"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/>',
+  pijl: '<path d="M9 6l6 6-6 6"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  vink: '<path d="M5 12.5l4.5 4.5L19 7.5"/>',
+};
+const svg = (n) => `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">${ic[n]}</svg>`;
+const ster = (n) => `<span class="ster"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.8l2.8 5.8 6.3.9-4.6 4.4 1.1 6.3L12 17.2l-5.6 3 1.1-6.3-4.6-4.4 6.3-.9z"/></svg>${n}</span>`;
+
+const kinderen = [
+  { id: 'luca', naam: 'Luca', sterren: 34, gedaan: 3, taken: 5, extra: 30, gereserveerd: 0, lezen: true, zelf: true },
+  { id: 'yuna', naam: 'Yuna', sterren: 18, gedaan: 2, taken: 4, extra: 15, gereserveerd: 15, lezen: true, zelf: true },
+  { id: 'feline', naam: 'Feline', sterren: 9, gedaan: 1, taken: 4, extra: 0, gereserveerd: 0, lezen: false, zelf: false },
+];
+let wachtend = [
+  { id: 1, soort: 'taak', kind: 'luca', titel: 'Tafel afruimen', sub: 'Vandaag 18:42 · 3 sterren' },
+  { id: 2, soort: 'activiteit', kind: 'yuna', titel: 'Rekenen tot 20: 12 sommen juist', sub: 'Vandaag 17:10 · 4 sterren' },
+  { id: 3, soort: 'tijd', kind: 'yuna', titel: 'Yuna vraagt 15 minuten', sub: '15 sterren gereserveerd · dagplafond nog 45 min' },
+];
+const kindVan = (id) => kinderen.find((k) => k.id === id);
+
+const menu = [
+  { groep: null, items: [
+    { id: 'vandaag', naam: 'Vandaag', icoon: 'vandaag' },
+    { id: 'goedkeuren', naam: 'Goedkeuren', icoon: 'goed', teller: true },
+  ] },
+  { groep: 'Kinderen', items: [
+    { id: 'taken', naam: 'Taken van de kinderen', icoon: 'taken' },
+    { id: 'kinderen', naam: 'Kinderen en tijd', icoon: 'kinderen' },
+    { id: 'regels', naam: 'Spelregels', icoon: 'regels' },
+  ] },
+  { groep: 'Wij', later: 'komt later', items: [
+    { id: 'onzetaken', naam: 'Onze taken', icoon: 'onzetaken', later: true },
+    { id: 'boodschappen', naam: 'Boodschappen', icoon: 'boodschappen', later: true },
+    { id: 'notities', naam: 'Notities', icoon: 'notities', later: true },
+  ] },
+  { groep: 'Gezondheid', later: 'nog later', items: [
+    { id: 'gewicht', naam: 'Gewicht', icoon: 'gewicht', later: true },
+    { id: 'fitness', naam: 'Fitness', icoon: 'fitness', later: true },
+    { id: 'lopen', naam: 'Loopschema', icoon: 'lopen', later: true },
+  ] },
+  { groep: 'Instellingen', items: [
+    { id: 'toestellen', naam: 'Toestellen en meldingen', icoon: 'toestellen' },
+    { id: 'pin', naam: 'Pincode', icoon: 'pin' },
+  ] },
+];
+const alleItems = menu.flatMap((g) => g.items);
+
+let scherm = 'vandaag';
+const $ = (id) => document.getElementById(id);
+const gsm = $('gsm');
+
+function laterBand(item) {
+  return `<div class="later-band">${svg(item.icoon)}<div><b>${item.naam} komt later</b>Dit is een schets van hoe het eruit kan zien. Nog niet te gebruiken.</div></div>`;
+}
+
+const schermen = {
+  vandaag() {
+    const n = wachtend.length;
+    const wacht = n
+      ? `<button class="kaart opvallend kaart-link" type="button" data-ga="goedkeuren">
+           <h2 class="display">${n} ${n === 1 ? 'ding wacht' : 'dingen wachten'} op jou</h2>
+           <p>Taken en tijdverzoeken goedkeuren</p>${svg('pijl')}</button>`
+      : `<section class="kaart"><h2 class="display">Er wacht niets op jou</h2><p>Goedkeuringen en tijdverzoeken verschijnen hier.</p></section>`;
+    const kaarten = kinderen.map((k) => `
+      <section class="kaart k-${k.id}">
+        <div class="kind-kop"><span class="gezicht" aria-hidden="true">${k.naam[0]}</span><h2 class="display">${k.naam}</h2>${ster(k.sterren)}</div>
+        <div class="balkje" aria-hidden="true"><span style="width:${Math.round(k.gedaan / k.taken * 100)}%"></span></div>
+        <dl class="cijfers">
+          <div><dt>Taken</dt><dd>${k.gedaan} / ${k.taken}</dd></div>
+          <div><dt>Extra tijd</dt><dd>${k.extra} / 60</dd></div>
+          <div><dt>Gereserveerd</dt><dd>${k.gereserveerd}</dd></div>
+        </dl>
+      </section>`).join('');
+    return `${wacht}
+      <p class="kopje">Kinderen</p>${kaarten}
+      <p class="kopje">Onze dag <span class="later-label">komt later</span></p>
+      <div class="schets">
+        <div class="lijst onze-dag">
+          <div class="rij">${svg('onzetaken')}<div class="rij-tekst"><b>2 taken voor vandaag</b><small>Vuilnis buiten · schoolreis betalen</small></div><span></span></div>
+          <div class="rij">${svg('boodschappen')}<div class="rij-tekst"><b>7 op de boodschappenlijst</b><small>Melk, brood, appels en nog 4</small></div><span></span></div>
+          <div class="rij">${svg('lopen')}<div class="rij-tekst"><b>Lopen: week 3, training 2</b><small>5 × 3 min lopen, 2 min wandelen</small></div><span></span></div>
+        </div>
+      </div>`;
+  },
+  goedkeuren() {
+    if (!wachtend.length) return `<section class="kaart"><h2 class="display">Alles is behandeld</h2><p>Goed bezig.</p></section>`;
+    const taken = wachtend.filter((w) => w.soort !== 'tijd');
+    const tijd = wachtend.filter((w) => w.soort === 'tijd');
+    const kaart = (w) => {
+      const k = kindVan(w.kind);
+      const knoppen = w.soort === 'tijd'
+        ? `<button class="knop" type="button" data-beslis="${w.id}" data-ok="0">Nu niet</button><button class="knop knop-goed" type="button" data-beslis="${w.id}" data-ok="1">Toegekend</button>`
+        : `<button class="knop" type="button" data-beslis="${w.id}" data-ok="0">Afkeuren</button><button class="knop knop-goed" type="button" data-beslis="${w.id}" data-ok="1">Goedkeuren</button>`;
+      return `<section class="kaart k-${k.id}">
+        <div class="kind-kop"><span class="gezicht" aria-hidden="true">${k.naam[0]}</span><div class="rij-tekst"><b>${w.titel}</b><small>${w.sub}</small></div><span></span></div>
+        <div class="knoppen">${knoppen}</div></section>`;
+    };
+    return `${taken.length > 1 ? `<button class="knop knop-primair" type="button" data-alles>Alle ${taken.length} goedkeuren</button>` : ''}
+      ${taken.length ? `<p class="kopje">Taken en activiteiten</p>${taken.map(kaart).join('')}` : ''}
+      ${tijd.length ? `<p class="kopje">Tijdverzoeken</p>${tijd.map(kaart).join('')}` : ''}
+      <p class="kopje">Zet daarna de minuten in Family Link</p>`;
+  },
+  taken() {
+    const taken = [
+      { t: 'Tanden poetsen', s: 'Elke dag · 2 sterren', k: ['luca', 'yuna', 'feline'] },
+      { t: 'Bed opmaken', s: 'Elke dag · 2 sterren', k: ['luca', 'yuna'] },
+      { t: 'Tafel afruimen', s: 'Elke dag · 3 sterren', k: ['luca'] },
+      { t: 'Speelgoed opruimen', s: 'Elke dag · 2 sterren', k: ['yuna', 'feline'] },
+      { t: 'Huiswerk maken', s: 'Ma tot vr · 5 sterren', k: ['luca'] },
+      { t: 'Kat eten geven', s: 'Wekelijks za · 4 sterren', k: ['luca', 'yuna'] },
+    ];
+    return `<div class="lijst">${taken.map((x) => `
+      <div class="rij">${svg('taken')}<div class="rij-tekst"><b>${x.t}</b><small>${x.s}</small>
+        <div class="chips" style="margin-top:6px">${x.k.map((id) => `<span class="chip k-${id}">${kindVan(id).naam}</span>`).join('')}</div></div>${svg('pijl')}</div>`).join('')}
+      </div>`;
+  },
+  kinderen() {
+    return kinderen.map((k) => `
+      <section class="kaart k-${k.id}">
+        <div class="kind-kop"><span class="gezicht" aria-hidden="true">${k.naam[0]}</span><h2 class="display">${k.naam}</h2>${ster(k.sterren)}</div>
+        <p>Tijd geven met sterren</p>
+        <div class="knoppen">${[15, 30, 60].map((m) => `<button class="knop knop-klein" type="button" ${m > k.sterren ? 'disabled' : ''} data-geef="${k.id}" data-min="${m}">${m} min</button>`).join('')}</div>
+        <div class="lijst" style="background:var(--soft)">
+          <label class="rij"><span></span><span class="rij-tekst"><b>Kan lezen</b></span><input class="schakel" type="checkbox" id="lezen-${k.id}" ${k.lezen ? 'checked' : ''}></label>
+          <label class="rij"><span></span><span class="rij-tekst"><b>Vraagt zelf tijd</b></span><input class="schakel" type="checkbox" id="zelf-${k.id}" ${k.zelf ? 'checked' : ''}></label>
+        </div>
+      </section>`).join('');
+  },
+  regels() {
+    return `<section class="kaart">
+        <h2 class="display">Extra tijd per dag</h2>
+        <label class="veld"><span>Dagplafond per kind (minuten)</span><input id="plafond" type="number" value="60" inputmode="numeric"></label>
+        <div class="twee">
+          <label class="veld"><span>Aanvragen vanaf</span><input id="van" type="time" value="07:00"></label>
+          <label class="veld"><span>tot</span><input id="tot" type="time" value="20:00"></label>
+        </div>
+        <p>1 ster = 1 minuut. Aanvragen in blokken van 15, 30 of 60 minuten.</p>
+      </section>
+      <section class="kaart">
+        <h2 class="display">Activiteiten</h2>
+        <label class="veld"><span>Maximum sterren uit activiteiten per dag</span><input id="act" type="number" value="20" inputmode="numeric"></label>
+      </section>
+      <button class="knop knop-primair" type="button" data-bewaar>Bewaren</button>`;
+  },
+  toestellen() {
+    return `<section class="kaart">
+        <h2 class="display">Tablet koppelen</h2>
+        <p>Open de app op de tablet en typ deze code.</p>
+        <div class="code">K7QM-24TX</div>
+      </section>
+      <div class="lijst">
+        <div class="rij">${svg('toestellen')}<div class="rij-tekst"><b>Tablet Luca</b><small>Gekoppeld 21 okt</small></div><button class="knop knop-klein" type="button">Loskoppelen</button></div>
+        <div class="rij">${svg('toestellen')}<div class="rij-tekst"><b>Tablet Yuna en Feline</b><small>Gekoppeld 21 okt</small></div><button class="knop knop-klein" type="button">Loskoppelen</button></div>
+      </div>
+      <section class="kaart">
+        <h2 class="display">Meldingen op deze gsm</h2>
+        <label class="rij" style="padding:0;min-height:48px;border:0"><span></span><span class="rij-tekst"><b>Meldingen aan</b><small>Bij een afgevinkte taak of een tijdverzoek</small></span><input class="schakel" type="checkbox" id="meldingen" checked></label>
+      </section>`;
+  },
+  pin() {
+    return `<section class="kaart">
+        <h2 class="display">Pincode</h2>
+        <p>Met deze pincode open je het ouderdeel op de tablet van de kinderen.</p>
+        <label class="veld"><span>Nieuwe pincode (4 tot 6 cijfers)</span><input id="nieuwepin" type="password" inputmode="numeric" placeholder="••••"></label>
+        <button class="knop knop-primair" type="button" data-bewaar>Bewaren</button>
+      </section>`;
+  },
+
+  onzetaken(item) {
+    const r = (b, s, wie, aan) => `<div class="rij ${aan ? 'doorstreept' : ''}"><span class="vink ${aan ? 'aan' : ''}">${aan ? svg('vink') : ''}</span><div class="rij-tekst"><b>${b}</b><small>${s}</small></div><span class="chip">${wie}</span></div>`;
+    return `${laterBand(item)}<div class="schets">
+      <p class="kopje">Vandaag</p>
+      <div class="lijst">${r('Vuilnis buiten zetten', 'Elke dinsdag', 'Ik')}${r('Schoolreis Luca betalen', 'Vandaag', 'Partner')}</div>
+      <p class="kopje">Deze week</p>
+      <div class="lijst">${r('Auto naar keuring', 'Do 29 okt', 'Samen')}${r('Verjaardagscadeau oma', 'Za 31 okt', 'Ik')}${r('Brief school tekenen', 'Gedaan maandag', 'Partner', true)}</div>
+      <p style="margin:0;color:var(--muted);font-size:13px">Geen sterren, geen goedkeuring: afvinken en klaar.</p></div>`;
+  },
+  boodschappen(item) {
+    const r = (b, s, aan) => `<div class="rij ${aan ? 'doorstreept' : ''}"><span class="vink ${aan ? 'aan' : ''}">${aan ? svg('vink') : ''}</span><div class="rij-tekst"><b>${b}</b>${s ? `<small>${s}</small>` : ''}</div><span></span></div>`;
+    return `${laterBand(item)}<div class="schets">
+      <label class="veld"><input placeholder="Iets toevoegen…" disabled></label>
+      <p class="kopje">Groenten en fruit</p><div class="lijst">${r('Appels', '1 kg')}${r('Wortels', '')}${r('Bananen', '')}</div>
+      <p class="kopje">Zuivel</p><div class="lijst">${r('Melk', '2 liter')}${r('Yoghurt', '')}</div>
+      <p class="kopje">In de kar</p><div class="lijst">${r('Brood', '', true)}${r('Wc-papier', '', true)}</div>
+      <p style="margin:0;color:var(--muted);font-size:13px">Live gedeeld met je partner.</p></div>`;
+  },
+  notities(item) {
+    const n = (t, s, vast) => `<section class="kaart"><div class="kind-kop"><b class="display" style="font-size:17px">${t}</b><span></span>${vast ? '<span class="chip">Vast</span>' : ''}</div><p>${s}</p></section>`;
+    return `${laterBand(item)}<div class="schets">
+      ${n('Maten kinderen', 'Luca 134 · schoen 33. Yuna 122 · schoen 29. Feline 110 · schoen 26.', true)}
+      ${n('Cadeau-ideeën Sinterklaas', 'Luca: dinoboek, voetbal. Yuna: knutseldoos. Feline: houten trein.')}
+      ${n('Wifi bij oma', 'Netwerk en wachtwoord staan hier. Alleen voor jou.')}
+      </div>`;
+  },
+  gewicht(item) {
+    const pt = [82.4, 82.1, 82.3, 81.8, 81.6, 81.9, 81.3, 81.1, 80.9, 81.0, 80.6, 80.4];
+    const w = 330, h = 120, min = 80, max = 83;
+    const x = (i) => 24 + i * (w - 34) / (pt.length - 1);
+    const y = (v) => 10 + (max - v) / (max - min) * (h - 30);
+    const d = pt.map((v, i) => `${i ? 'L' : 'M'}${x(i).toFixed(1)} ${y(v).toFixed(1)}`).join(' ');
+    const raster = [80, 81, 82, 83].map((v) => `<line class="raster" x1="24" x2="${w - 10}" y1="${y(v)}" y2="${y(v)}"/><text x="0" y="${y(v) + 3}">${v}</text>`).join('');
+    return `${laterBand(item)}<div class="schets">
+      <section class="kaart"><div class="kind-kop"><b class="display" style="font-size:30px">80,4 kg</b><span></span><span class="chip">−2,0 in 30 dagen</span></div>
+      <svg class="grafiek" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none">${raster}<path class="vlak" d="${d} L${x(pt.length - 1)} ${h - 20} L24 ${h - 20}Z"/><path class="lijn" d="${d}"/></svg>
+      <p>Doel 78 kg · privé, je partner ziet dit niet</p></section></div>`;
+  },
+  fitness(item) {
+    const r = (b, s) => `<div class="rij">${svg('fitness')}<div class="rij-tekst"><b>${b}</b><small>${s}</small></div><span></span></div>`;
+    return `${laterBand(item)}<div class="schets">
+      <section class="kaart"><dl class="cijfers"><div><dt>Deze week</dt><dd>3 ×</dd></div><div><dt>Minuten</dt><dd>125</dd></div><div><dt>Doel</dt><dd>4 ×</dd></div></dl></section>
+      <div class="lijst">${r('Krachttraining', 'Do · 45 min · bovenlichaam')}${r('Fietsen', 'Di · 50 min')}${r('Yoga', 'Ma · 30 min')}</div></div>`;
+  },
+  lopen(item) {
+    const weken = Array.from({ length: 8 }, (_, i) => `<span class="${i < 2 ? 'klaar' : i === 2 ? 'nu' : ''}">${i + 1}</span>`).join('');
+    return `${laterBand(item)}<div class="schets">
+      <section class="kaart"><p class="kopje" style="margin:0">Van 0 naar 5 km · week 3 van 8</p><div class="weken">${weken}</div></section>
+      <section class="kaart"><h2 class="display">Volgende training</h2><p>5 min wandelen, dan 5 × (3 min lopen, 2 min wandelen), 5 min uitwandelen. Samen 35 min.</p>
+      <div class="knoppen"><button class="knop knop-goed" type="button">Gelopen</button></div></section></div>`;
+  },
+};
+
+const zweef = {
+  taken: `<button class="zweef" type="button" data-nieuw>${svg('plus')}Nieuwe taak</button>`,
+};
+
+function teken() {
+  const item = alleItems.find((i) => i.id === scherm);
+  $('titel').textContent = item.naam;
+  document.title = 'Ouderdeel familie-app';
+  $('inhoud').innerHTML = schermen[scherm](item);
+  $('inhoud').scrollTop = 0;
+  $('zweefPlek').innerHTML = zweef[scherm] || '';
+  $('balkTeller').textContent = wachtend.length;
+  $('balkTeller').dataset.nul = wachtend.length ? '0' : '1';
+  $('menuLijst').innerHTML = menu.map((g) => `
+    ${g.groep ? `<div class="groep"><span>${g.groep}</span>${g.later ? `<span class="later-label">${g.later}</span>` : ''}</div>` : ''}
+    ${g.items.map((i) => `<button class="item ${i.later ? 'is-later' : ''}" type="button" data-ga="${i.id}" ${i.id === scherm ? 'aria-current="page"' : ''}>
+      ${svg(i.icoon)}<span>${i.naam}</span>${i.teller && wachtend.length ? `<span class="item-teller">${wachtend.length}</span>` : '<span></span>'}</button>`).join('')}`).join('');
+}
+
+function menuOpen(open) {
+  gsm.classList.toggle('menu-open', open);
+  $('menuKnop').setAttribute('aria-expanded', String(open));
+  if (open) $('menuLijst').querySelector('[aria-current]')?.focus();
+}
+
+let meldingTijd;
+function meld(tekst) {
+  const m = $('melding');
+  m.textContent = tekst;
+  m.classList.add('toon');
+  clearTimeout(meldingTijd);
+  meldingTijd = setTimeout(() => m.classList.remove('toon'), 2200);
+}
+
+$('menuKnop').addEventListener('click', () => menuOpen(!gsm.classList.contains('menu-open')));
+$('laag').addEventListener('click', () => menuOpen(false));
+$('belKnop').addEventListener('click', () => { scherm = 'goedkeuren'; teken(); });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') menuOpen(false); });
+
+let veegStart = null;
+$('menu').addEventListener('pointerdown', (e) => { veegStart = e.clientX; });
+$('menu').addEventListener('pointerup', (e) => { if (veegStart !== null && veegStart - e.clientX > 60) menuOpen(false); veegStart = null; });
+
+gsm.addEventListener('click', (e) => {
+  const ga = e.target.closest('[data-ga]');
+  if (ga) { scherm = ga.dataset.ga; menuOpen(false); teken(); return; }
+  const b = e.target.closest('[data-beslis]');
+  if (b) {
+    const w = wachtend.find((x) => x.id === Number(b.dataset.beslis));
+    const ok = b.dataset.ok === '1';
+    wachtend = wachtend.filter((x) => x !== w);
+    meld(w.soort === 'tijd' ? (ok ? 'Toegekend. Zet 15 min in Family Link.' : 'Sterren gaan terug naar Yuna.') : (ok ? 'Goedgekeurd, sterren erbij.' : 'Afgekeurd, kost niets.'));
+    teken(); return;
+  }
+  if (e.target.closest('[data-alles]')) { wachtend = wachtend.filter((x) => x.soort === 'tijd'); meld('Alles goedgekeurd.'); teken(); return; }
+  const g = e.target.closest('[data-geef]');
+  if (g) { meld(`${g.dataset.min} min voor ${kindVan(g.dataset.geef).naam}. Zet ze in Family Link.`); return; }
+  if (e.target.closest('[data-bewaar]')) { meld('Bewaard.'); return; }
+  if (e.target.closest('[data-nieuw]')) { meld('Hier opent het formulier Nieuwe taak.'); return; }
+  if (e.target.closest('[data-actie="kinderen"]')) { menuOpen(false); meld('Ouderdeel vergrendeld, terug naar Wie speelt er?'); }
+});
+
+document.querySelectorAll('[data-thema]').forEach((k) => k.addEventListener('click', () => {
+  const t = k.dataset.thema;
+  if (t) document.documentElement.dataset.theme = t; else delete document.documentElement.dataset.theme;
+  document.querySelectorAll('[data-thema]').forEach((x) => x.setAttribute('aria-pressed', String(x === k)));
+}));
+document.querySelector('[data-thema=""]').setAttribute('aria-pressed', 'true');
+
+const start = location.hash.slice(1);
+if (alleItems.some((i) => i.id === start)) scherm = start;
+teken();
+</script>
+</body>
+</html>
