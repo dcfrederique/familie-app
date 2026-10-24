@@ -8,7 +8,7 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 
 | Wie | Toestel | Aanpak |
 | --- | --- | --- |
-| Luca (8) | Tablet, liggend | Leest zelf; thema dino's en auto's; rekenen tot 100, tafels, penalty's |
+| Luca (8) | Tablet, liggend | Leest zelf; thema dino's en auto's; rekenen tot 100 en tot 1000, tafels, penalty's |
 | Yuna (6) | Tablet, liggend | Korte woorden met grote prentjes, voorleesknop; rekenen tot 20 |
 | Feline (4) | Tablet, liggend | Werkt zonder lezen: prentjes, voorleesknop per taak, sterren tellen; vraagt zelf geen tijd aan |
 | 2 ouders | Gsm | Taken toewijzen, goedkeuren, tijd toekennen, activiteiten per kind beheren |

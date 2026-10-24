@@ -64,6 +64,7 @@
 .bolletjes .goed { background: var(--ok); }
 .bolletjes .laat { background: var(--warn); }
 .som { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 18px; font-size: clamp(56px, 8vw, 92px); line-height: 1; }
+.som.lang { gap: 12px; font-size: clamp(44px, 6vw, 72px); }
 .antwoord { min-width: 1.9em; height: 1.45em; border-radius: 26px; border: 5px solid var(--kid); display: grid; place-items: center; padding: 0 .2em; }
 .antwoord.goed { border-color: var(--ok); color: var(--ok); }
 .antwoord.fout { border-color: var(--warn); color: var(--warn); }

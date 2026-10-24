@@ -3,7 +3,7 @@ import type { RekenNiveau } from '../../data/spelletjes.ts'
 import { beantwoord, inEenKeerGoed, isKlaar, maakKeuzes, maakSom, nieuwRondje, startRondje, sterrenVoor, volgendeSom } from './rekenen.ts'
 
 describe('sommen', () => {
-  const grenzen: Record<RekenNiveau, number> = { tellen: 10, tot10: 10, tot20: 20, tot100: 100, tafels: 100 }
+  const grenzen: Record<RekenNiveau, number> = { tellen: 10, tot10: 10, tot20: 20, tot100: 100, tot1000: 1000, tafels: 100 }
   for (const [niveau, max] of Object.entries(grenzen) as [RekenNiveau, number][]) {
     it(`${niveau}: antwoord tussen 0 en ${max}`, () => {
       for (let i = 0; i < 500; i++) {
@@ -18,6 +18,14 @@ describe('sommen', () => {
       }
     })
   }
+
+  it('tot1000: echte getallen van drie cijfers met honderdtallen of tientallen', () => {
+    for (let i = 0; i < 500; i++) {
+      const [a, , b] = maakSom('tot1000').vraag.split(' ').map(Number)
+      expect(a).toBeGreaterThanOrEqual(100)
+      expect(b % 10).toBe(0)
+    }
+  })
 
   it('keuzes: drie verschillende, met het juiste antwoord, binnen de grenzen', () => {
     for (let antwoord = 0; antwoord <= 10; antwoord++) {

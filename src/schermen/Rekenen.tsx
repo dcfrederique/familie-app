@@ -134,7 +134,7 @@ function RekenSpel({ kind }: { kind: Gebruiker }) {
               </div>
             </>
           ) : (
-            <div className="som display">
+            <div className={`som display${som.vraag.length > 7 ? ' lang' : ''}`}>
               <span>{som.vraag}</span><span>=</span>
               <span className={`antwoord ${toon ?? ''}`} aria-live="polite">
                 {knoppen ? (toon === 'goed' ? som.antwoord : '?') : (toon === 'goed' ? som.antwoord : invoer || '?')}
@@ -156,13 +156,13 @@ function RekenSpel({ kind }: { kind: Gebruiker }) {
           <div className="klavier">
             {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((c) => (
               <button key={c} type="button" className="toets"
-                      onClick={() => { if (toon !== 'goed' && invoer.length < 3) { setInvoer(invoer + c); setToon(null) } }}>{c}</button>
+                      onClick={() => { if (toon !== 'goed' && invoer.length < 4) { setInvoer(invoer + c); setToon(null) } }}>{c}</button>
             ))}
             <button type="button" className="toets wis" aria-label="Wissen" onClick={() => { setInvoer(invoer.slice(0, -1)); setToon(null) }}>
               <svg className="ic" viewBox="0 0 24 24" width="40" height="40" aria-hidden="true"><path d="M9 6h11v12H9l-6-6zM12 10l4 4M16 10l-4 4" /></svg>
             </button>
             <button type="button" className="toets"
-                    onClick={() => { if (toon !== 'goed' && invoer.length < 3) { setInvoer(invoer + '0'); setToon(null) } }}>0</button>
+                    onClick={() => { if (toon !== 'goed' && invoer.length < 4) { setInvoer(invoer + '0'); setToon(null) } }}>0</button>
             <button type="button" className="toets ok" aria-label="Controleer" disabled={!invoer}
                     onClick={() => antwoord(Number(invoer))}>OK</button>
           </div>

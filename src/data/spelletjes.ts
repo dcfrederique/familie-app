@@ -3,7 +3,7 @@ import { bezitSleutel, prijsVoor, type Bezit } from './figuurtje.ts'
 import type { Gebruiker } from './gezin.ts'
 
 export type MemoryNiveau = 'klein' | 'middel' | 'groot'
-export type RekenNiveau = 'tellen' | 'tot10' | 'tot20' | 'tot100' | 'tafels'
+export type RekenNiveau = 'tellen' | 'tot10' | 'tot20' | 'tot100' | 'tot1000' | 'tafels'
 
 export const memoryNiveaus: Record<MemoryNiveau, { label: string; paren: number; kolommen: number }> = {
   klein: { label: '3 paren', paren: 3, kolommen: 3 },
@@ -17,6 +17,7 @@ export const rekenNiveaus: Record<RekenNiveau, { label: string; knoppen: boolean
   tot10: { label: 'Tot 10', knoppen: true },
   tot20: { label: 'Tot 20', knoppen: false },
   tot100: { label: 'Tot 100', knoppen: false },
+  tot1000: { label: 'Tot 1000', knoppen: false },
   tafels: { label: 'Tafels', knoppen: false },
 }
 

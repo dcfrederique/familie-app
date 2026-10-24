@@ -22,6 +22,7 @@ export function maakSom(niveau: RekenNiveau, rnd: Willekeur = Math.random): Som 
     const a = r(1, 10), b = r(2, 10)
     return { vraag: `${b} × ${a}`, antwoord: a * b }
   }
+  if (niveau === 'tot1000') return somTot1000(r, rnd)
   const max = niveau === 'tot10' ? 10 : niveau === 'tot20' ? 20 : 100
   const groot = max === 100
   if (rnd() < 0.5) {
@@ -32,6 +33,21 @@ export function maakSom(niveau: RekenNiveau, rnd: Willekeur = Math.random): Som 
   const a = r(groot ? 20 : 2, max)
   const b = r(groot ? 5 : 1, a - 1)
   return { vraag: `${a} − ${b}`, antwoord: a - b }
+}
+
+/**
+ * Tot 1000 zoals in het derde leerjaar: een getal van drie cijfers plus of min hele honderdtallen
+ * of hele tientallen, of twee tientallen-getallen (340 + 270). Nooit boven 1000 of onder 0.
+ */
+function somTot1000(r: (a: number, b: number) => number, rnd: Willekeur): Som {
+  const soort = r(0, 2)
+  const a = soort === 2 ? r(10, 99) * 10 : r(100, 999)
+  const stap = soort === 0 ? 100 : 10
+  const maxStappen = soort === 2 ? 99 : 9
+  // Past er geen stap meer bij (bv. 960 + honderdtallen), dan wordt het een minsom.
+  const plus = rnd() < 0.5 && 1000 - a >= stap
+  const b = r(1, Math.min(maxStappen, Math.floor((plus ? 1000 - a : a) / stap))) * stap
+  return plus ? { vraag: `${a} + ${b}`, antwoord: a + b } : { vraag: `${a} − ${b}`, antwoord: a - b }
 }
 
 /** Drie verschillende keuzes rond het juiste antwoord, nooit onder 0 of boven het maximum. */
