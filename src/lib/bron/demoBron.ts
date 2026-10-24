@@ -5,7 +5,7 @@ import { spelMenu } from '../../data/spelletjes.ts'
 import type { Gebruiker } from '../../data/gezin.ts'
 import { dagVan } from '../datum.ts'
 import { activiteitOmschrijving, activiteitSterren, blokKeuzes, regels as standaardRegels } from '../regels.ts'
-import type { ActiviteitRegel, Bron, Inzending, LogRegel, NieuweTaak, OuderUitkomst, Spelregels, Taak, Tijdverzoek } from './types.ts'
+import type { ActiviteitRegel, Bron, Inzending, LogRegel, Maaltijd, NieuweTaak, OuderUitkomst, Spelregels, Taak, Tijdverzoek } from './types.ts'
 
 const DEMO_PIN = '1234'
 const WELKOM = 'Welkom! Je eerste sterren'
@@ -17,6 +17,7 @@ interface Toestand {
   activiteiten: ActiviteitRegel[]
   log: LogRegel[]
   aankopen: Record<string, string[]>
+  weekmenu: Maaltijd[]
   regels: Spelregels
 }
 
@@ -46,6 +47,8 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
     // Wat startsaldo, zodat Extra tijd vragen meteen te proberen is.
     log: kinderen.map((k, i) => ({ id: i + 1, kind_id: k.id, delta: 40, reden: 'Startsaldo (demo)', tijdstip: nu })),
     aankopen: {},
+    // Vandaag al iets op het menu, zodat het startscherm van de kinderen het meteen toont.
+    weekmenu: [{ dag: dagVan(new Date()), gerecht: 'Spaghetti bolognese', prentje: null }],
     regels: {
       dagplafond_minuten: standaardRegels.dagplafondMinuten,
       venster_van: standaardRegels.tijdvenster.van,
@@ -84,6 +87,7 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
     },
     async log(kind) { return t.log.filter((l) => l.kind_id === kind).slice().reverse() },
     async spelregels() { return { ...t.regels } },
+    async weekmenu(van, tot) { return t.weekmenu.filter((m) => m.dag >= van && m.dag <= tot).map((m) => ({ ...m })) },
     async aankopen() { return Object.fromEntries(Object.entries(t.aankopen).map(([k, v]) => [k, [...v]])) },
 
     async taakIndienen(kind, taakId, foto) {
@@ -210,6 +214,10 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
     async kindAanpassen(kindId, wijziging) {
       const k = kinderen.find((x) => x.id === kindId)
       if (k) Object.assign(k, wijziging)
+    },
+    async maaltijdOpslaan({ dag, gerecht, prentje }) {
+      t.weekmenu = t.weekmenu.filter((m) => m.dag !== dag)
+      if (gerecht.trim()) t.weekmenu.push({ dag, gerecht: gerecht.trim(), prentje })
     },
   }
 }

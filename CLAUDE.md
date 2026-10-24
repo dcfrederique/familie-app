@@ -41,6 +41,7 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - `docs/winkel.md`: sterren inwisselen voor spelletjes en stukken van het figuurtje, en sterren uit spelletjes zonder goedkeuring.
 - `docs/tablet-per-kind.md`: tablet vastzetten op één kind en het welkomstpad (figuurtje, verjaardag, thema, welkomstbonus).
 - `prototypes/thema-subschermen.html`: mockup van het kinderthema (race, kasteel, tuin) in de subschermen; zit in de app via `src/data/themaPrenten.ts`, `src/schermen/ThemaDelen.tsx` en `src/schermen/thema-schermen.css`.
+- `docs/weekmenu.md`: weekmenu met de warme maaltijd per dag (ouderdeel Wij → Weekmenu), de kinderen zien die van vandaag op hun startscherm.
 - `docs/ouderdeel.md` en `prototypes/ouderdeel.html`: plan en mockup van het ouderdeel als beheertoepassing met hamburgermenu, en latere onderdelen (onze taken, boodschappen, notities, gezondheid). Fase 1 (menu, zijbalk op pc, IBM Plex Sans, rechte hoeken) zit in de app; de latere onderdelen nog niet.
 
 ## Beslist (21 oktober 2026)

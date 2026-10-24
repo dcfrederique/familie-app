@@ -89,6 +89,14 @@ export interface Welkom {
 /** Antwoord van de Edge Function spraak-token: een token, of resterend 0 als de leestijd van vandaag op is. */
 export type SpraakToken = { token: string; regio: string; resterend: number } | { resterend: 0 }
 
+/** De warme maaltijd van één dag in het weekmenu (docs/weekmenu.md). */
+export interface Maaltijd {
+  dag: string
+  gerecht: string
+  /** Gekozen prentje; null = de app raadt het uit het gerecht. */
+  prentje: string | null
+}
+
 export interface Spelregels {
   dagplafond_minuten: number
   venster_van: string
@@ -112,6 +120,8 @@ export interface Bron {
   spelregels(): Promise<Spelregels>
   /** Wat elk kind gekocht heeft in de winkel, als sleutels 'hoofd:kroon' of 'spel:racen' (docs/winkel.md). */
   aankopen(): Promise<Record<string, string[]>>
+  /** Het weekmenu van `van` tot en met `tot` ('JJJJ-MM-DD'); leeg zonder migratie 20261024000600_weekmenu. */
+  weekmenu(van: string, tot: string): Promise<Maaltijd[]>
 
   taakIndienen(kindId: string, taakId: string, foto: Blob | null): Promise<void>
   tijdAanvragen(kindId: string, minuten: number): Promise<void>
@@ -140,4 +150,6 @@ export interface Bron {
   taakVerwijderen(id: string): Promise<void>
   spelregelsOpslaan(regels: Spelregels): Promise<void>
   kindAanpassen(id: string, wijziging: KindWijziging): Promise<void>
+  /** Bewaart de maaltijd van een dag; een leeg gerecht haalt de dag uit het weekmenu. */
+  maaltijdOpslaan(maaltijd: Maaltijd): Promise<void>
 }

@@ -1,5 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
-import type { ActiviteitRegel, Bron, SpraakToken, Inzending, LogRegel, NieuweTaak, OuderUitkomst, Saldo, Spelregels, Taak, Tijdverzoek } from './types.ts'
+import type { ActiviteitRegel, Bron, SpraakToken, Inzending, LogRegel, Maaltijd, NieuweTaak, OuderUitkomst, Saldo, Spelregels, Taak, Tijdverzoek } from './types.ts'
 
 function fout(error: { message: string } | null) {
   if (error) throw new Error(error.message)
@@ -77,6 +77,12 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
       const uit: Record<string, string[]> = {}
       for (const r of data ?? []) (uit[r.kind_id] ??= []).push(`${r.soort}:${r.sleutel}`)
       return uit
+    },
+    async weekmenu(van, tot) {
+      const { data, error } = await sb.from('weekmenu').select('dag, gerecht, prentje').gte('dag', van).lte('dag', tot).order('dag')
+      // Zonder migratie 20261024000600_weekmenu is er gewoon nog geen menu.
+      if (error) return []
+      return (data ?? []) as Maaltijd[]
     },
 
     async taakIndienen(kindId, taakId, foto) {
@@ -177,6 +183,15 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
     },
     async kindAanpassen(id, wijziging) {
       fout((await sb.from('gebruikers').update(wijziging).eq('id', id)).error)
+    },
+    async maaltijdOpslaan({ dag, gerecht, prentje }) {
+      const tekst = gerecht.trim()
+      if (!tekst) {
+        fout((await sb.from('weekmenu').delete().eq('gezin_id', gezinId).eq('dag', dag)).error)
+        return
+      }
+      fout((await sb.from('weekmenu').upsert({ gezin_id: gezinId, dag, gerecht: tekst, prentje, gewijzigd_op: new Date().toISOString() },
+                                               { onConflict: 'gezin_id,dag' })).error)
     },
   }
 }

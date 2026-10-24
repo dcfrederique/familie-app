@@ -3,9 +3,11 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { Banner } from '../data/banners.tsx'
 import { kleurKlasse, type Gebruiker } from '../data/gezin.ts'
 import { figuurtjeVan } from '../data/figuurtje.ts'
+import { maaltijdPrentje } from '../data/maaltijden.ts'
+import { MaaltijdPrent } from '../data/maaltijdPrenten.tsx'
 import { Prentje } from '../data/prentjes.tsx'
 import { bannerVoorKleur, tegelsVoor, type ActiviteitTegel } from '../data/thema.ts'
-import type { Taak, Tijdverzoek } from '../lib/bron/types.ts'
+import type { Maaltijd, Taak, Tijdverzoek } from '../lib/bron/types.ts'
 import { dagVan, vandaag } from '../lib/datum.ts'
 import { useGegevens } from '../lib/gegevens.ts'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
@@ -31,10 +33,11 @@ export default function KindStart() {
 
   const { data, ververs } = useGegevens(bron && kind ? async () => {
     const zestigDagenTerug = dagVan(new Date(Date.now() - 60 * 86400_000))
-    const [taken, inzendingen, saldi, verzoeken] = await Promise.all([
+    const [taken, inzendingen, saldi, verzoeken, menu] = await Promise.all([
       bron.taken(), bron.inzendingenVanaf(zestigDagenTerug), bron.saldi(), bron.verzoeken(vandaag()),
+      bron.weekmenu(vandaag(), vandaag()),
     ])
-    return { taken, inzendingen, saldo: saldi[kind.id], verzoeken: verzoeken.filter((v) => v.kind_id === kind.id) }
+    return { taken, inzendingen, saldo: saldi[kind.id], verzoeken: verzoeken.filter((v) => v.kind_id === kind.id), eten: menu[0] }
   } : null, [bron, kind?.id])
 
   if (!kind) return <Navigate to="/kinderen" replace />
@@ -45,8 +48,8 @@ export default function KindStart() {
   return (
     <div className={`kind ${kleurKlasse(kind)}`}>
       {kind.kan_lezen
-        ? <StartLezer kind={kind} lijst={lijst} geladen={!!data} vrij={vrij} verzoeken={data?.verzoeken ?? []} kies={kies} />
-        : <StartPrenten kind={kind} lijst={lijst} geladen={!!data} kies={kies} />}
+        ? <StartLezer kind={kind} lijst={lijst} geladen={!!data} vrij={vrij} verzoeken={data?.verzoeken ?? []} eten={data?.eten} kies={kies} />
+        : <StartPrenten kind={kind} lijst={lijst} geladen={!!data} eten={data?.eten} kies={kies} />}
 
       {gekozen && bron && (
         <Afvinken kind={kind} taak={gekozen} sluit={() => setGekozen(null)}
@@ -56,8 +59,8 @@ export default function KindStart() {
   )
 }
 
-function StartLezer({ kind, lijst, geladen, vrij, verzoeken, kies }: {
-  kind: Gebruiker; lijst: Lijst; geladen: boolean; vrij: number; verzoeken: Tijdverzoek[]; kies: (t: Taak) => void
+function StartLezer({ kind, lijst, geladen, vrij, verzoeken, eten, kies }: {
+  kind: Gebruiker; lijst: Lijst; geladen: boolean; vrij: number; verzoeken: Tijdverzoek[]; eten?: Maaltijd; kies: (t: Taak) => void
 }) {
   const banner = kind.thema ? bannerVoorKleur[kind.thema] : null
   const gedaan = lijst.filter((t) => t.status === 'gedaan').length
@@ -84,7 +87,10 @@ function StartLezer({ kind, lijst, geladen, vrij, verzoeken, kies }: {
                 </p>}
               </div>
             </div>
-            <SterrenPil aantal={vrij} metWoord />
+            <div className="banner-rij">
+              <SterrenPil aantal={vrij} metWoord />
+              {eten && <Vanavond eten={eten} />}
+            </div>
           </div>
         </header>
       ) : (
@@ -94,6 +100,7 @@ function StartLezer({ kind, lijst, geladen, vrij, verzoeken, kies }: {
             {titel}
             {geladen && lijst.length > 0 && <p className="kop-sub">Al {gedaan} van de {lijst.length} taken gedaan vandaag</p>}
           </div>
+          {eten && <Vanavond eten={eten} />}
           <SterrenPil aantal={vrij} metWoord />
         </header>
       )}
@@ -169,7 +176,9 @@ function Tegel({ tegel, kindId }: { tegel: ActiviteitTegel; kindId: string }) {
 }
 
 /** Voor wie niet leest: grote prenten, voorleesknoppen en ronde knoppen zonder tekst. */
-function StartPrenten({ kind, lijst, geladen, kies }: { kind: Gebruiker; lijst: Lijst; geladen: boolean; kies: (t: Taak) => void }) {
+function StartPrenten({ kind, lijst, geladen, eten, kies }: {
+  kind: Gebruiker; lijst: Lijst; geladen: boolean; eten?: Maaltijd; kies: (t: Taak) => void
+}) {
   const gedaan = lijst.filter((t) => t.status === 'gedaan').length
   const begroeting = lijst.length === 0
     ? `Hoi ${kind.naam}! Vandaag geen taakjes. Lekker spelen!`
@@ -184,6 +193,7 @@ function StartPrenten({ kind, lijst, geladen, kies }: { kind: Gebruiker; lijst: 
       <Luidspreker grootte={34} />
     </button>
   )
+  const vanavond = eten && <Vanavond eten={eten} rond />
   const voortgang = geladen && lijst.length > 0 && (
     <span className="voortgang" role="img" aria-label={`Vandaag ${gedaan} van ${lijst.length} taken gedaan`}>
       {lijst.map(({ taak, status }) => (
@@ -197,13 +207,13 @@ function StartPrenten({ kind, lijst, geladen, kies }: { kind: Gebruiker; lijst: 
         <header className={`banner banner-${banner} kop-groot`}>
           <Banner soort={banner} />
           <div className="banner-inhoud">
-            <div className="kop">{terug}{avatar}{titel}{voorlees}</div>
+            <div className="kop">{terug}{avatar}{titel}{voorlees}{vanavond}</div>
             {voortgang}
           </div>
         </header>
       ) : (
         <header className="kop kop-groot">
-          {terug}{avatar}{titel}{voorlees}
+          {terug}{avatar}{titel}{voorlees}{vanavond}
           <span style={{ flexGrow: 1 }} />
           {voortgang}
         </header>
@@ -280,6 +290,29 @@ function Afvinken({ kind, taak, sluit, klaar }: {
         </div>
       </div>
     </div>
+  )
+}
+
+/**
+ * Wat er vanavond op tafel komt (weekmenu van de ouders). Tikken leest het voor;
+ * voor wie niet leest (`rond`) alleen het prentje.
+ */
+function Vanavond({ eten, rond = false }: { eten: Maaltijd; rond?: boolean }) {
+  const zin = `Vanavond eten we ${eten.gerecht.toLocaleLowerCase('nl-BE')}.`
+  const prent = <MaaltijdPrent soort={maaltijdPrentje(eten.gerecht, eten.prentje)} grootte={rond ? 40 : 36} />
+  const voorlees = () => { if (kanVoorlezen()) leesVoor(zin) }
+  if (rond) {
+    return (
+      <button type="button" className="vanavond-rond" aria-label={zin} onClick={voorlees}>
+        {prent}<span className="vanavond-luister" aria-hidden="true"><Luidspreker grootte={16} /></span>
+      </button>
+    )
+  }
+  return (
+    <button type="button" className="vanavond" aria-label={zin} onClick={voorlees}>
+      {prent}
+      <span className="vanavond-tekst"><small>Vanavond eten we</small><b>{eten.gerecht}</b></span>
+    </button>
   )
 }
 

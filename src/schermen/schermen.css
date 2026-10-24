@@ -98,6 +98,21 @@
 .met-banner .prent-kaart .taak-prent { margin-top: 20px; }
 
 .sterren-pil span { font-size: 18px; font-weight: 700; }
+
+/* Vanavond eten we (weekmenu van de ouders): naast de sterren, tikken leest voor */
+.banner-rij { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.vanavond { height: 64px; max-width: 320px; padding: 0 20px 0 12px; border: 0; border-radius: 32px; background: var(--surface); color: var(--ink);
+  display: flex; align-items: center; gap: 10px; font: inherit; text-align: left; box-shadow: inset 0 0 0 2px var(--line); }
+.vanavond .ic { flex-shrink: 0; color: var(--kid); }
+.vanavond-tekst { display: grid; min-width: 0; line-height: 1.15; }
+.vanavond-tekst small { font-size: 14px; font-weight: 700; color: var(--muted); }
+.vanavond-tekst b { font-size: 18px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.banner .vanavond { background: #FFFFFF; color: #1C2433; box-shadow: none; }
+.banner .vanavond small { color: #4E5A6B; }
+.vanavond-rond { position: relative; width: 64px; height: 64px; flex-shrink: 0; border: 0; border-radius: 50%; background: var(--surface); color: var(--kid);
+  display: grid; place-items: center; box-shadow: inset 0 0 0 3px var(--kid-tint); }
+.banner .vanavond-rond { background: #FFFFFF; box-shadow: none; }
+.vanavond-luister { position: absolute; right: -2px; bottom: -2px; width: 28px; height: 28px; border-radius: 50%; background: var(--kid); color: #FFFFFF; display: grid; place-items: center; }
 .kop .sterren-pil { background: var(--surface); color: var(--ink); }
 .kop .sterren-pil span { color: var(--muted); }
 

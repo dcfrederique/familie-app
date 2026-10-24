@@ -24,6 +24,7 @@ import TakenBeheer from './schermen/TakenBeheer.tsx'
 import Toestellen from './schermen/Toestellen.tsx'
 import Spelregels from './schermen/Spelregels.tsx'
 import PincodeBeheer from './schermen/PincodeBeheer.tsx'
+import Weekmenu from './schermen/Weekmenu.tsx'
 import Touwspringen from './schermen/Touwspringen.tsx'
 import Welkom from './schermen/Welkom.tsx'
 import Welkomstpad from './schermen/Welkomstpad.tsx'
@@ -73,6 +74,7 @@ export default function App() {
       <Route path="/ouder/toestellen" element={<Toestellen />} />
       <Route path="/ouder/spelregels" element={<Spelregels />} />
       <Route path="/ouder/pincode" element={<PincodeBeheer />} />
+      <Route path="/ouder/weekmenu" element={<Weekmenu />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   )
