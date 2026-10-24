@@ -14,6 +14,9 @@ import '@fontsource/ibm-plex-sans/latin-600.css'
 import './styles/thema.css'
 import App from './App.tsx'
 import { SessieProvider } from './lib/sessie.tsx'
+import { volgNieuweVersie } from './lib/nieuweversie.ts'
+
+volgNieuweVersie()
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
