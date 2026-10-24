@@ -1,0 +1,827 @@
+<title>Thema's in elk scherm</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@600;700;800&display=swap">
+<style>
+/* Mockup: het thema van elk kind (race, kasteel, tuin) doorgetrokken naar spelletjes, verhalen, kleurplaten,
+   figuurtje en het feestscherm. Pagina = keuzebalk + tablet in liggende stand + uitleg; de tablet tekent alles uit data.
+   Paginakleuren volgen src/styles/thema.css; de tabletschermen hebben hun eigen, vaste themakleuren (zoals de banners). */
+:root {
+  --bg: #EEF3F8; --surface: #FFFFFF; --ink: #1C2433; --muted: #4E5A6B; --line: #D5DCE4;
+  --gold: #F2B33D; --accent: #2D6BD6; --frame: #1C2433;
+  --display: 'Baloo 2', Nunito, system-ui, sans-serif;
+  --body: Nunito, system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #121A2A; --surface: #1C2638; --ink: #EEF2F8; --muted: #A9B4C4; --line: #34425A;
+    --accent: #7FA6F0; --frame: #05080F; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #121A2A; --surface: #1C2638; --ink: #EEF2F8; --muted: #A9B4C4; --line: #34425A;
+  --accent: #7FA6F0; --frame: #05080F; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body {
+  background: var(--bg); color: var(--ink); font-family: var(--body); font-weight: 600; font-size: 16px; line-height: 1.5;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 24px 48px;
+}
+.pagina { max-width: 1240px; margin: 0 auto; display: grid; gap: 28px; }
+h1, h2, h3 { font-family: var(--display); font-weight: 800; line-height: 1.1; text-wrap: balance; margin: 0; }
+h1 { font-size: clamp(28px, 4vw, 44px); }
+h2 { font-size: 24px; }
+.intro { display: grid; gap: 10px; }
+.intro p { margin: 0; max-width: 68ch; color: var(--muted); }
+.keuzes { display: flex; flex-wrap: wrap; gap: 12px 28px; align-items: end; }
+.groep { display: grid; gap: 6px; }
+.groep-label { font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.rij { display: flex; flex-wrap: wrap; gap: 8px; }
+.kies {
+  border: 2px solid var(--line); background: var(--surface); color: var(--ink); border-radius: 999px;
+  padding: 8px 16px; font: 800 15px/1.2 var(--body); cursor: pointer; display: inline-flex; align-items: center; gap: 8px;
+}
+.kies[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--bg); }
+.kies:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.stip { width: 14px; height: 14px; border-radius: 50%; flex: none; }
+
+.podium { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 24px; align-items: start; }
+@media (max-width: 900px) { .podium { grid-template-columns: minmax(0, 1fr); } }
+.toestel-wrap { container-type: inline-size; min-width: 0; }
+.toestel { background: var(--frame); border-radius: 3.4cqw; padding: 2cqw; box-shadow: 0 2cqw 5cqw rgba(10, 20, 40, .25); }
+.notities { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 18px 20px; display: grid; gap: 10px; min-width: 0; }
+.notities h3 { font-size: 20px; }
+.notities .wie { font-size: 13px; color: var(--muted); font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
+.notities ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; }
+.tip { font-size: 14px; color: var(--muted); margin: 0; }
+
+.blok { display: grid; gap: 14px; }
+.blok > p { margin: 0; color: var(--muted); max-width: 70ch; }
+.tabel-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 16px; background: var(--surface); }
+table { border-collapse: collapse; width: 100%; min-width: 760px; font-size: 15px; }
+th, td { text-align: left; vertical-align: top; padding: 12px 16px; border-bottom: 1px solid var(--line); }
+tr:last-child td { border-bottom: 0; }
+thead th { font-family: var(--display); font-size: 17px; }
+tbody th { font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.bouw { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; }
+.bouw > div { background: var(--surface); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; display: grid; gap: 6px; align-content: start; }
+.bouw h3 { font-size: 18px; }
+.bouw p { margin: 0; color: var(--muted); font-size: 15px; }
+
+/* ───────────── Het scherm in de tablet. Alle maten in cqw (1cqw = 1% van de tabletbreedte). ───────────── */
+.scherm {
+  aspect-ratio: 16 / 10.2; border-radius: 1.6cqw; overflow: hidden; position: relative;
+  display: flex; flex-direction: column; font-family: var(--body); font-size: 1.45cqw; line-height: 1.25;
+  --kid: #2D6BD6; --ink2: #1C2433;
+}
+.scherm svg { display: block; }
+.ic { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.kop { position: relative; height: 21%; flex: none; }
+.kop > svg.scene { position: absolute; inset: 0; width: 100%; height: 100%; }
+.kop-inhoud { position: absolute; inset: 0; display: flex; align-items: center; gap: 1.4cqw; padding: 0 2.2cqw; }
+.kop-titel { display: grid; gap: .2cqw; }
+.kop-titel b { font-family: var(--display); font-weight: 800; font-size: 3.2cqw; line-height: 1; }
+.kop-titel span { font-size: 1.35cqw; font-weight: 800; }
+.knopje { width: 5.6cqw; height: 5.6cqw; flex: none; position: relative; display: grid; place-items: center; }
+.knopje > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.knopje > .ic { position: relative; width: 2.6cqw; height: 2.6cqw; }
+.spacer { flex: 1; }
+.inhoud { flex: 1; position: relative; overflow: hidden; padding: 2cqw 2.6cqw; min-height: 0; }
+
+/* Spelletjes */
+.spellen { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2.6cqw 2cqw; position: relative; z-index: 1; }
+.tg { position: relative; display: grid; justify-items: center; align-content: start; gap: .7cqw; cursor: pointer; transition: transform .2s; }
+.tg:hover { transform: translateY(-.4cqw) rotate(-1deg); }
+.tg-naam { font-family: var(--display); font-weight: 800; font-size: 1.75cqw; line-height: 1; text-align: center; }
+.tg-icoon { width: 5cqw; height: 5cqw; }
+.slotinfo { display: flex; align-items: center; gap: .6cqw; font-weight: 800; font-size: 1.25cqw; }
+
+/* Verhalen */
+.reeks { display: flex; align-items: center; gap: 1.6cqw; margin-bottom: 1.8cqw; position: relative; z-index: 1; }
+.boeken { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.8cqw 2.2cqw; position: relative; z-index: 1; }
+.boek { position: relative; display: flex; align-items: center; gap: 1.4cqw; cursor: pointer; transition: transform .2s; }
+.boek:hover { transform: translateY(-.4cqw); }
+.kaft { width: 13cqw; aspect-ratio: 1; flex: none; position: relative; display: grid; place-items: center; }
+.kaft .ic { width: 62%; height: 62%; }
+.boek-titel { font-family: var(--display); font-weight: 800; font-size: 1.7cqw; line-height: 1.05; min-width: 0; }
+
+/* Kleurplaten */
+.platen { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3.8cqw 3cqw; padding: 0 3cqw; position: relative; z-index: 1; }
+.plaat { position: relative; aspect-ratio: 4 / 3; display: grid; place-items: center; cursor: pointer; transition: transform .2s; }
+.plaat:hover { transform: scale(1.04) rotate(0deg) !important; }
+.plaat .tekening { width: 58%; height: 72%; }
+.plaat-naam { position: absolute; left: 0; right: 0; bottom: -2.1cqw; text-align: center; font-weight: 800; font-size: 1.2cqw; }
+.verf { position: absolute; left: 2.6cqw; right: 2.6cqw; bottom: 1.4cqw; display: flex; gap: 1.2cqw; align-items: end; justify-content: center; z-index: 2; }
+
+/* Figuurtje */
+.fig-raster { display: grid; grid-template-columns: 38% 1fr; gap: 2.4cqw; height: 100%; position: relative; z-index: 1; }
+.buhne { position: relative; display: grid; place-items: end center; }
+.buhne .figuur { position: relative; width: 62%; z-index: 2; margin-bottom: 2.6cqw; }
+.soorten { display: flex; gap: 1cqw; flex-wrap: wrap; margin-bottom: 1.8cqw; }
+.stukken { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.6cqw; }
+.stuk { aspect-ratio: 1; position: relative; display: grid; place-items: center; cursor: pointer; }
+.stuk svg.shirt { width: 58%; height: 58%; }
+
+/* Feest */
+.feest { position: absolute; inset: 0; display: grid; place-items: center; z-index: 2; }
+.feest-kaart { display: grid; justify-items: center; gap: 1.2cqw; text-align: center; padding: 2.4cqw 4cqw; position: relative; }
+.feest-titel { font-family: var(--display); font-weight: 800; font-size: 6cqw; line-height: .95; }
+.feest-sub { font-size: 1.8cqw; font-weight: 800; }
+.sterren-rij { display: flex; gap: .8cqw; }
+.knoppen { display: flex; gap: 1.6cqw; margin-top: .6cqw; }
+.knop { font-family: var(--display); font-weight: 800; font-size: 2cqw; padding: .9cqw 3cqw; display: inline-flex; gap: .8cqw; align-items: center; cursor: pointer; border: 0; white-space: nowrap; }
+.knop .ic { width: 2.4cqw; height: 2.4cqw; }
+.confetti { position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 3; }
+.confetti i { position: absolute; top: -6%; display: block; animation: val linear infinite; }
+@keyframes val { to { transform: translateY(70cqw) rotate(720deg); } }
+
+/* ── Race: Luca, dino's en auto's ── */
+.t-race { background: #16264A; color: #F3F6FC; --kid: #2D6BD6; }
+.t-race .kop-titel b { font-style: italic; letter-spacing: -.02em; }
+.t-race .kop-titel span { color: #F2B33D; }
+.t-race .inhoud {
+  background:
+    repeating-linear-gradient(90deg, transparent 0 4.4cqw, rgba(255,255,255,.035) 4.4cqw 4.6cqw),
+    linear-gradient(#1A2C55, #121F3D);
+}
+.t-race .inhoud::after { content: ""; position: absolute; left: 0; right: 0; bottom: 3cqw; height: .5cqw;
+  background: repeating-linear-gradient(90deg, #F2B33D 0 3cqw, transparent 3cqw 5.4cqw); opacity: .5; }
+.t-race .tg { background: #F3F6FC; color: #16264A; border-radius: 1.2cqw; padding: 2.4cqw 1cqw 1.3cqw; transform: skewX(-6deg); box-shadow: 0 .6cqw 0 #0B1428; overflow: hidden; }
+.t-race .tg > * { transform: skewX(6deg); }
+.t-race .tg:hover { transform: skewX(-6deg) translateY(-.4cqw); }
+.t-race .tg::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 1.3cqw;
+  background: repeating-conic-gradient(#16264A 0 25%, #fff 0 50%) 0 0 / 1.3cqw 1.3cqw; }
+.t-race .nr { position: absolute; top: 1.8cqw; left: 1.1cqw; width: 2.7cqw; height: 2.7cqw; border-radius: 50%; background: #E23B3B; color: #fff;
+  display: grid; place-items: center; font: 800 1.4cqw/1 var(--display); }
+.t-race .tg-beeld { width: 9.6cqw; height: 9.6cqw; border-radius: 50%; background: #E3EDFC; color: #2D6BD6; display: grid; place-items: center; position: relative; overflow: hidden; }
+.t-race .dicht .tg-beeld { color: #8A97AE; background: #DDE3EC; }
+.t-race .rolluik { position: absolute; inset: 0 0 35% 0; background: repeating-linear-gradient(#AEB9CB 0 .7cqw, #94A1B7 .7cqw .9cqw); border-bottom: .4cqw solid #6B788F; }
+.t-race .stoplicht { position: absolute; top: 1.7cqw; right: 1.1cqw; width: 1.7cqw; padding: .3cqw; border-radius: .6cqw; background: #16264A; display: grid; gap: .25cqw; }
+.t-race .stoplicht i { display: block; width: 1.1cqw; height: 1.1cqw; border-radius: 50%; background: #34425A; }
+.t-race .stoplicht i:first-child { background: #FF4D4D; box-shadow: 0 0 .8cqw #FF4D4D; animation: knipper 1.4s infinite; }
+.t-race .stoplicht.groen i:first-child { background: #34425A; box-shadow: none; animation: none; }
+.t-race .stoplicht.groen i:last-child { background: #3DDC84; box-shadow: 0 0 .8cqw #3DDC84; }
+@keyframes knipper { 50% { opacity: .45; } }
+.t-race .weg { width: 90%; height: 1.8cqw; border-radius: .9cqw; background: #2B3A5C; position: relative; }
+.t-race .weg::before { content: ""; position: absolute; left: .8cqw; right: 2cqw; top: 50%; border-top: .2cqw dashed #F2B33D; }
+.t-race .weg .auto { position: absolute; top: -.6cqw; width: 3cqw; height: 2.2cqw; transform: translateX(-50%); }
+.t-race .weg .vlag { position: absolute; right: .2cqw; top: -.9cqw; width: 1.8cqw; height: 2.6cqw; }
+.t-race .slotinfo { color: #4E5A6B; }
+.t-race .nieuw-label { position: absolute; top: 1.7cqw; right: 1cqw; background: #F2B33D; color: #16264A; font: 800 1.1cqw/1 var(--display); padding: .4cqw .8cqw; border-radius: .4cqw; transform: rotate(6deg); }
+/* versnellingspook */
+.t-race .pook { display: flex; align-items: center; gap: 1.4cqw; background: #0E1830; border-radius: 1.2cqw; padding: .8cqw 1.6cqw; border: .2cqw solid #2B3A5C; }
+.t-race .pook-label { font-weight: 800; color: #9FB3D9; font-size: 1.2cqw; letter-spacing: .08em; text-transform: uppercase; }
+.t-race .gang { display: flex; align-items: center; gap: .7cqw; color: #9FB3D9; font-weight: 800; cursor: pointer; }
+.t-race .gang b { width: 3cqw; height: 3cqw; border-radius: 50%; display: grid; place-items: center; background: radial-gradient(circle at 35% 30%, #5B6B8C, #222E48); color: #fff; font: 800 1.6cqw/1 var(--display); }
+.t-race .gang.aan { color: #fff; }
+.t-race .gang.aan b { background: radial-gradient(circle at 35% 30%, #FF7A7A, #C42020); box-shadow: 0 0 1.2cqw rgba(255, 80, 80, .7); }
+.t-race .boek .kaft { border-radius: 1cqw; border: .45cqw solid #F2B33D; overflow: hidden; color: #fff; }
+.t-race .boek .bord { position: absolute; bottom: .5cqw; left: 50%; transform: translateX(-50%); background: #fff; color: #16264A; border: .2cqw solid #16264A; border-radius: .3cqw; font: 800 1.1cqw/1 var(--display); padding: .2cqw .6cqw; }
+.t-race .boek .gelezen { position: absolute; top: -.8cqw; right: -1cqw; width: 4cqw; height: 4cqw; transform: rotate(12deg); }
+.t-race .platen { padding-top: .6cqw; }
+.t-race .inhoud.bord-gaatjes { background: radial-gradient(circle, #2A3C66 .25cqw, transparent .3cqw) 0 0 / 2cqw 2cqw, linear-gradient(#1A2C55, #121F3D); }
+.t-race .plaat { background: #fff; border-radius: .3cqw; box-shadow: 0 .6cqw 1.2cqw rgba(0,0,0,.35); color: #16264A; }
+.t-race .plaat .klem { position: absolute; top: -1.3cqw; width: 2.6cqw; height: 2.4cqw; }
+.t-race .plaat-naam { color: #DDE6F6; }
+.t-race .stand { display: grid; justify-items: center; }
+.t-race .soort { background: #F3F6FC; color: #16264A; border: .25cqw solid #16264A; outline: .25cqw solid #F3F6FC; border-radius: .5cqw; font: 800 1.3cqw/1 var(--display); padding: .6cqw 1cqw; letter-spacing: .06em; cursor: pointer; }
+.t-race .soort.aan { background: #F2B33D; }
+.t-race .stuk { border-radius: 50%; background: #F3F6FC; border: 1cqw solid #222B3E; box-shadow: inset 0 0 0 .3cqw #9AA6B8; }
+.t-race .stuk.aan { box-shadow: inset 0 0 0 .3cqw #9AA6B8, 0 0 0 .4cqw #F2B33D; }
+.t-race .feest-titel { font-style: italic; color: #F2B33D; text-shadow: .4cqw .4cqw 0 #E23B3B; }
+.t-race .knop { background: #E23B3B; color: #fff; border-radius: .8cqw; transform: skewX(-10deg); box-shadow: 0 .5cqw 0 #8E1616; }
+.t-race .knop.licht { background: #F3F6FC; color: #16264A; box-shadow: 0 .5cqw 0 #8A97AE; }
+
+/* ── Kasteel: Yuna, prinsessenkasteel ── */
+.t-kasteel { background: #FFF2F8; color: #5A1238; --kid: #C2337A; }
+.t-kasteel .kop-titel span { color: #A0275F; }
+.t-kasteel .inhoud {
+  background:
+    radial-gradient(circle, rgba(194, 51, 122, .10) .35cqw, transparent .4cqw) 0 0 / 4cqw 4cqw,
+    repeating-linear-gradient(90deg, #FFF2F8 0 3cqw, #FDE7F1 3cqw 6cqw);
+}
+.t-kasteel .tg { background: #fff; border: .4cqw solid #F2B33D; border-radius: 50% 50% 1.4cqw 1.4cqw / 4.6cqw 4.6cqw 1.4cqw 1.4cqw; padding: 2.2cqw 1cqw 1.2cqw; box-shadow: 0 .6cqw 0 #F4C6DC; margin-top: 1.6cqw; }
+.t-kasteel .wimpel { position: absolute; top: -3.3cqw; left: 50%; width: 3.6cqw; height: 3.2cqw; transform: translateX(-.2cqw); transform-origin: 0 100%; animation: wapper 2.4s ease-in-out infinite; }
+@keyframes wapper { 50% { transform: translateX(-.2cqw) skewY(-8deg); } }
+.t-kasteel .tg-beeld { width: 8cqw; height: 8cqw; border-radius: 50% 50% .8cqw .8cqw / 4cqw 4cqw .8cqw .8cqw; background: #FCE4F0; color: #C2337A; display: grid; place-items: center; position: relative; overflow: hidden; }
+.t-kasteel .dicht .tg-beeld { background: #8E1F55; color: #F4A3C6; }
+.t-kasteel .deur { position: absolute; inset: 0; background: repeating-linear-gradient(90deg, #8E1F55 0 1.8cqw, #7A1849 1.8cqw 2cqw); display: grid; place-items: center; }
+.t-kasteel .deur svg { width: 3cqw; height: 3cqw; }
+.t-kasteel .regenboog { width: 88%; height: 1.6cqw; border-radius: .8cqw; background: #F6DDE9; overflow: hidden; position: relative; }
+.t-kasteel .regenboog i { position: absolute; inset: 0 auto 0 0; display: block; background: linear-gradient(90deg, #F9A8C9, #FCD29F, #FBEA9E, #BDE5B5, #B9D3F5, #D7C2F2); background-size: 10cqw 100%; border-radius: .8cqw; }
+.t-kasteel .slotinfo { color: #A0275F; }
+.t-kasteel .nieuw-label { position: absolute; top: -1cqw; right: -.6cqw; width: 4cqw; height: 3cqw; }
+.t-kasteel .stenen { display: flex; gap: 1.8cqw; align-items: center; }
+.t-kasteel .steen { display: flex; align-items: center; gap: .6cqw; font-weight: 800; color: #A0275F; cursor: pointer; }
+.t-kasteel .steen svg { width: 3cqw; height: 3cqw; transition: transform .2s; }
+.t-kasteel .steen.aan { color: #5A1238; }
+.t-kasteel .steen.aan svg { transform: scale(1.25) rotate(-8deg); filter: drop-shadow(0 0 .6cqw rgba(242, 179, 61, .9)); }
+.t-kasteel .boek .kaft { border-radius: .4cqw 1.2cqw 1.2cqw .4cqw; color: #fff; border-left: 1cqw solid rgba(0,0,0,.18); box-shadow: 0 .5cqw 0 #F4C6DC; }
+.t-kasteel .boek .kaft::before, .t-kasteel .boek .kaft::after { content: ""; position: absolute; width: 2cqw; height: 2cqw; background: #F2B33D; }
+.t-kasteel .boek .kaft::before { top: 0; right: 0; clip-path: polygon(0 0, 100% 0, 100% 100%); }
+.t-kasteel .boek .kaft::after { bottom: 0; right: 0; clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+.t-kasteel .boek .lint { position: absolute; bottom: -1.4cqw; left: 30%; width: 1.2cqw; height: 2.6cqw; background: #C2337A; clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 75%, 0 100%); }
+.t-kasteel .boek .gelezen { position: absolute; top: -1.8cqw; left: 50%; transform: translateX(-50%) rotate(-8deg); width: 4.4cqw; height: 3.2cqw; }
+.t-kasteel .plaat { background: #fff; border: 1cqw solid #F2B33D; outline: .3cqw solid #B8800F; outline-offset: -.3cqw; box-shadow: inset 0 0 0 .3cqw #FBE3A5, 0 .7cqw 1cqw rgba(160, 39, 95, .2); color: #5A1238; border-radius: .4cqw; }
+.t-kasteel .plaat .touwtje { position: absolute; top: -2.4cqw; left: 50%; width: 8cqw; height: 2.4cqw; transform: translateX(-50%); }
+.t-kasteel .platen { margin-top: 1.4cqw; }
+.t-kasteel .soort { display: grid; justify-items: center; gap: .2cqw; font-weight: 800; font-size: 1.15cqw; color: #A0275F; cursor: pointer; }
+.t-kasteel .soort svg { width: 3.6cqw; height: 2.6cqw; }
+.t-kasteel .soort.aan { color: #5A1238; }
+.t-kasteel .soort.aan svg { filter: drop-shadow(0 0 .5cqw rgba(242, 179, 61, .9)); }
+.t-kasteel .stuk { background: #fff; border: .35cqw solid #F2B33D; border-radius: 50% 50% 1cqw 1cqw / 3.4cqw 3.4cqw 1cqw 1cqw; }
+.t-kasteel .stuk.aan { box-shadow: 0 0 0 .4cqw #C2337A; }
+.t-kasteel .feest-titel { color: #C2337A; text-shadow: 0 .4cqw 0 #FBEA9E; }
+.t-kasteel .feest-sub { color: #5A1238; }
+.t-kasteel .knop { background: #C2337A; color: #fff; border-radius: 999px; border: .3cqw solid #F2B33D; box-shadow: 0 .5cqw 0 #8E1F55; }
+.t-kasteel .knop.licht { background: #fff; color: #A0275F; box-shadow: 0 .5cqw 0 #F4C6DC; }
+
+/* ── Tuin: Feline, feeëntuin (leest niet: geen woorden, alles prent en stem) ── */
+.t-tuin { background: #F4EEFC; color: #3B1A5C; --kid: #8A3FC0; }
+.t-tuin .inhoud { background: linear-gradient(#F4EEFC 0 55%, #E6F4E0 100%); }
+.t-tuin .gras { position: absolute; left: 0; right: 0; bottom: 0; height: 8cqw; width: 100%; z-index: 0; }
+.t-tuin .spellen { gap: 2.4cqw 2.4cqw; padding: 1cqw 2cqw 0; }
+.t-tuin .tg { gap: .4cqw; }
+.t-tuin .hoed { width: 14cqw; height: 9cqw; border-radius: 50% 50% 22% 22% / 80% 80% 20% 20%; position: relative; display: grid; place-items: center; box-shadow: inset 0 -.7cqw 0 rgba(0,0,0,.12); }
+.t-tuin .hoed::before { content: ""; position: absolute; inset: 0; border-radius: inherit;
+  background: radial-gradient(circle at 20% 45%, #fff 0 .7cqw, transparent .75cqw), radial-gradient(circle at 78% 38%, #fff 0 .9cqw, transparent .95cqw), radial-gradient(circle at 52% 18%, #fff 0 .55cqw, transparent .6cqw), radial-gradient(circle at 86% 70%, #fff 0 .45cqw, transparent .5cqw); opacity: .85; }
+.t-tuin .hoed .rondje { position: relative; width: 6.2cqw; height: 6.2cqw; border-radius: 50%; background: #fff; display: grid; place-items: center; margin-top: 1.4cqw; color: #8A3FC0; }
+.t-tuin .hoed .rondje .ic { width: 3.6cqw; height: 3.6cqw; }
+.t-tuin .steel { width: 7.2cqw; height: 5.2cqw; background: #FFF6E6; border-radius: 0 0 1.6cqw 1.6cqw; margin-top: -.8cqw; position: relative; display: grid; place-items: end center; box-shadow: inset -.6cqw 0 0 #F2E2C4; }
+.t-tuin .steel::after { content: ""; width: 2.2cqw; height: 2.8cqw; border-radius: 1.1cqw 1.1cqw 0 0; background: #A86A3D; }
+.t-tuin .dicht .hoed, .t-tuin .dicht .steel { filter: saturate(.25) brightness(1.05); opacity: .8; }
+.t-tuin .dicht .rondje { color: #B9A6CC; }
+.t-tuin .slaap { position: absolute; top: 1.6cqw; left: 50%; transform: translateX(-50%); width: 3cqw; height: 1cqw; }
+.t-tuin .zzz { position: absolute; top: -1.2cqw; right: -1cqw; font: 800 1.8cqw/1 var(--display); color: #8A3FC0; animation: zweef 2.4s ease-in-out infinite; }
+@keyframes zweef { 50% { transform: translateY(-.8cqw); } }
+.t-tuin .bloemetjes { display: flex; gap: .4cqw; }
+.t-tuin .bloemetjes svg { width: 1.9cqw; height: 1.9cqw; }
+.t-tuin .nieuw-label { position: absolute; top: -1.4cqw; right: .4cqw; width: 4cqw; height: 3cqw; animation: zweef 2s ease-in-out infinite; }
+.t-tuin .voorlees { display: flex; align-items: center; gap: 1cqw; background: #fff; border-radius: 999px; padding: .6cqw 1.6cqw .6cqw .6cqw; color: #8A3FC0; box-shadow: 0 .4cqw 0 #E1D2F2; }
+.t-tuin .voorlees .knopje { width: 4.4cqw; height: 4.4cqw; }
+.t-tuin .boeken { grid-template-columns: repeat(6, 1fr); gap: 1.4cqw; padding-top: 3.4cqw; }
+.t-tuin .boek:nth-child(even) { margin-top: 11cqw; }
+.t-tuin .boek:nth-child(even) .draad { top: -14.4cqw; height: 14.4cqw; }
+.t-tuin .boek { flex-direction: column; }
+.t-tuin .boek .kaft { width: 12.4cqw; border-radius: 50%; border: .6cqw solid #fff; box-shadow: 0 .6cqw 0 #DCCBEF; color: #fff; animation: schommel 3.6s ease-in-out infinite; transform-origin: 50% -3cqw; }
+.t-tuin .boek:nth-child(2n) .kaft { animation-delay: -1.8s; }
+.t-tuin .boek .draad { position: absolute; top: -3.4cqw; left: 50%; height: 3.4cqw; border-left: .25cqw solid #7FB069; }
+.t-tuin .boek .gelezen { position: absolute; top: -1.4cqw; right: -1cqw; width: 4.6cqw; height: 3.6cqw; }
+.t-tuin .boek .luister { width: 3.4cqw; height: 3.4cqw; border-radius: 50%; background: #fff; color: #8A3FC0; display: grid; place-items: center; box-shadow: 0 .3cqw 0 #E1D2F2; }
+.t-tuin .boek .luister .ic { width: 2cqw; height: 2cqw; }
+.t-tuin .tak { position: absolute; left: 0; right: 0; top: 2.2cqw; height: 3cqw; width: 100%; }
+@keyframes schommel { 50% { transform: rotate(4deg); } }
+.t-tuin .platen { margin-top: 2.6cqw; }
+.t-tuin .lijn { position: absolute; left: 0; right: 0; width: 100%; height: 4cqw; z-index: 1; }
+.t-tuin .plaat { background: #fff; border-radius: .3cqw; box-shadow: 0 .5cqw .8cqw rgba(59, 26, 92, .15); color: #3B1A5C; animation: schommel 4s ease-in-out infinite; transform-origin: 50% 0; }
+.t-tuin .plaat:nth-child(odd) { animation-delay: -2s; }
+.t-tuin .plaat .knijper { position: absolute; top: -1.6cqw; width: 1.4cqw; height: 3cqw; }
+.t-tuin .soort { width: 5.4cqw; height: 5.4cqw; display: grid; place-items: center; position: relative; cursor: pointer; color: #8A3FC0; }
+.t-tuin .soort > svg:first-child { position: absolute; inset: 0; width: 100%; height: 100%; }
+.t-tuin .soort .ic { position: relative; width: 2.4cqw; height: 2.4cqw; }
+.t-tuin .soort.aan { transform: scale(1.12); }
+.t-tuin .stuk { border-radius: 50%; background: #fff; box-shadow: 0 .5cqw 0 #DCCBEF; }
+.t-tuin .stuk.aan { box-shadow: 0 0 0 .45cqw #8A3FC0; }
+.t-tuin .knop { width: 8cqw; height: 8cqw; padding: 0; background: none; justify-content: center; position: relative; }
+.t-tuin .knop > svg:first-child { position: absolute; inset: 0; width: 100%; height: 100%; }
+.t-tuin .knop .ic { position: relative; width: 3.4cqw; height: 3.4cqw; color: #fff; }
+
+.rij-auto { animation: rij 6s linear infinite; }
+@keyframes rij { from { transform: translateX(-260px); } to { transform: translateX(1260px); } }
+.fladder { animation: fladder .5s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: center; }
+@keyframes fladder { to { transform: scaleX(.4); } }
+.zweef { animation: zweefsvg 5s ease-in-out infinite; }
+@keyframes zweefsvg { 50% { transform: translate(20px, -10px); } }
+.knipoog { animation: knipper 2.6s infinite; }
+.wuif { animation: wuif 1.4s ease-in-out infinite; transform-box: fill-box; transform-origin: 0 100%; }
+@keyframes wuif { 50% { transform: rotate(-14deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .scherm *, .scherm *::before, .scherm *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+<div class="pagina">
+  <header class="intro">
+    <h1>Elk scherm in je eigen wereld</h1>
+    <p>Mockup: het thema dat een kind kiest, loopt nu door tot in Spelletjes, Verhalen, Kleurplaten, Figuurtje en het feest na afloop. Kies een kind en een scherm. Alles beweegt een beetje; tik gerust rond.</p>
+  </header>
+
+  <div class="keuzes">
+    <div class="groep">
+      <span class="groep-label">Kind en thema</span>
+      <div class="rij" id="kinderen"></div>
+    </div>
+    <div class="groep">
+      <span class="groep-label">Scherm</span>
+      <div class="rij" id="schermen"></div>
+    </div>
+  </div>
+
+  <section class="podium">
+    <div class="toestel-wrap"><div class="toestel"><div class="scherm" id="scherm"></div></div></div>
+    <aside class="notities" id="notities"></aside>
+  </section>
+
+  <section class="blok">
+    <h2>De bouwstenen per thema</h2>
+    <p>Elk thema vervangt dezelfde onderdelen. Daardoor kan de app het per kind omschakelen zonder dat de schermen zelf anders werken.</p>
+    <div class="tabel-wrap"><table id="bouwstenen"></table></div>
+  </section>
+
+  <section class="blok">
+    <h2>Zo zou ik het bouwen</h2>
+    <div class="bouw">
+      <div><h3>Eén themaset per thema</h3><p>Kopprent per scherm, tegelvorm, slot, voortgang, vinkje en feest staan samen bij het thema. Het kader rond elk subscherm leest het thema van het kind, dus alle subschermen krijgen het in één keer.</p></div>
+      <div><h3>Gewone kleuren blijven rustig</h3><p>Wie oranje, groen of paars kiest, krijgt dezelfde vormen in die kleur, zonder prenten. Zo werkt elk kind, ook zonder thema.</p></div>
+      <div><h3>Spelregels blijven gelijk</h3><p>Memory, penalty's, racen en de andere spelletjes werken zoals nu. Enkel het kader, de knoppen, de sloten en het feest krijgen het thema.</p></div>
+      <div><h3>Minder beweging kan</h3><p>Rijdende auto's, wapperende vlaggen en vlinders stoppen als de tablet om minder beweging vraagt.</p></div>
+    </div>
+  </section>
+</div>
+
+<script>
+const FIG = {"luca":"<defs><clipPath id=\"fluca\"><path d=\"M72 116L128 116Q134 116 135 122L142 200L58 200L65 122Q66 116 72 116Z\"/></clipPath></defs><rect x=\"60\" y=\"196\" width=\"80\" height=\"16\" rx=\"4\" fill=\"#3F5E8C\"/><rect x=\"62\" y=\"206\" width=\"36\" height=\"64\" rx=\"4\" fill=\"#3F5E8C\"/><rect x=\"102\" y=\"206\" width=\"36\" height=\"64\" rx=\"4\" fill=\"#3F5E8C\"/><path d=\"M100 212V270\" stroke=\"#2f4769\" stroke-width=\"3\"/><path d=\"M58 264h42v12q0 8-8 8h-26q-8 0-8-8z\" fill=\"#F4F6F9\" stroke=\"#b7b9bb\" stroke-width=\"2\"/><path d=\"M100 264h42v12q0 8-8 8h-26q-8 0-8-8z\" fill=\"#F4F6F9\" stroke=\"#b7b9bb\" stroke-width=\"2\"/><rect x=\"60\" y=\"279\" width=\"38\" height=\"4\" fill=\"#b7b9bb\"/><rect x=\"102\" y=\"279\" width=\"38\" height=\"4\" fill=\"#b7b9bb\"/><rect x=\"40\" y=\"120\" width=\"22\" height=\"66\" rx=\"11\" fill=\"#2962c5\" transform=\"rotate(10 52 124)\"/><rect x=\"138\" y=\"120\" width=\"22\" height=\"66\" rx=\"11\" fill=\"#2962c5\" transform=\"rotate(-10 148 124)\"/><circle cx=\"40\" cy=\"192\" r=\"12\" fill=\"#F7D9C4\"/><circle cx=\"40\" cy=\"194\" r=\"5\" fill=\"#c6ae9d\"/><circle cx=\"160\" cy=\"192\" r=\"12\" fill=\"#F7D9C4\"/><circle cx=\"160\" cy=\"194\" r=\"5\" fill=\"#c6ae9d\"/><path d=\"M72 116L128 116Q134 116 135 122L142 200L58 200L65 122Q66 116 72 116Z\" fill=\"#2D6BD6\"/><path d=\"M86 116Q100 130 114 116Z\" fill=\"#2456ab\"/><circle cx=\"100\" cy=\"158\" r=\"18\" fill=\"#FFFFFF\"/><text x=\"100\" y=\"168\" text-anchor=\"middle\" font-family=\"'Baloo 2', Nunito, sans-serif\" font-weight=\"800\" font-size=\"28\" fill=\"#2D6BD6\">8</text><rect x=\"88\" y=\"102\" width=\"24\" height=\"18\" fill=\"#c6ae9d\"/><rect x=\"86\" y=\"26\" width=\"28\" height=\"16\" rx=\"4\" fill=\"#F7D9C4\"/><rect x=\"64\" y=\"36\" width=\"72\" height=\"74\" rx=\"22\" fill=\"#F7D9C4\"/><circle cx=\"76\" cy=\"88\" r=\"6\" fill=\"#F28B9A\" opacity=\".45\"/><circle cx=\"124\" cy=\"88\" r=\"6\" fill=\"#F28B9A\" opacity=\".45\"/><circle cx=\"86\" cy=\"72\" r=\"4.5\" fill=\"#1C2433\"/><circle cx=\"114\" cy=\"72\" r=\"4.5\" fill=\"#1C2433\"/><path d=\"M82 85Q100 108 118 85Z\" fill=\"#1C2433\"/><path d=\"M90 96Q100 102 110 96Q100 92 90 96Z\" fill=\"#F28B9A\"/><path d=\"M60 72L62 44L72 46L74 24L88 38L100 12L112 38L126 24L128 46L138 44L140 72L134 64C120 52 80 52 66 64Z\" fill=\"#B98A4E\"/>","yuna":"<defs><clipPath id=\"fyuna\"><path d=\"M72 116L128 116Q134 116 135 122L142 200L58 200L65 122Q66 116 72 116Z\"/></clipPath></defs><circle cx=\"44\" cy=\"76\" r=\"17\" fill=\"#6B4226\"/><circle cx=\"156\" cy=\"76\" r=\"17\" fill=\"#6B4226\"/><rect x=\"60\" y=\"196\" width=\"80\" height=\"16\" rx=\"4\" fill=\"#3F5E8C\"/><rect x=\"62\" y=\"206\" width=\"36\" height=\"64\" rx=\"4\" fill=\"#3F5E8C\"/><rect x=\"102\" y=\"206\" width=\"36\" height=\"64\" rx=\"4\" fill=\"#3F5E8C\"/><path d=\"M100 212V270\" stroke=\"#2f4769\" stroke-width=\"3\"/><path d=\"M58 264h42v12q0 8-8 8h-26q-8 0-8-8z\" fill=\"#F4F6F9\" stroke=\"#b7b9bb\" stroke-width=\"2\"/><path d=\"M100 264h42v12q0 8-8 8h-26q-8 0-8-8z\" fill=\"#F4F6F9\" stroke=\"#b7b9bb\" stroke-width=\"2\"/><rect x=\"60\" y=\"279\" width=\"38\" height=\"4\" fill=\"#b7b9bb\"/><rect x=\"102\" y=\"279\" width=\"38\" height=\"4\" fill=\"#b7b9bb\"/><rect x=\"40\" y=\"120\" width=\"22\" height=\"66\" rx=\"11\" fill=\"#d56d2a\" transform=\"rotate(10 52 124)\"/><rect x=\"138\" y=\"120\" width=\"22\" height=\"66\" rx=\"11\" fill=\"#d56d2a\" transform=\"rotate(-10 148 124)\"/><circle cx=\"40\" cy=\"192\" r=\"12\" fill=\"#F7D9C4\"/><circle cx=\"40\" cy=\"194\" r=\"5\" fill=\"#c6ae9d\"/><circle cx=\"160\" cy=\"192\" r=\"12\" fill=\"#F7D9C4\"/><circle cx=\"160\" cy=\"194\" r=\"5\" fill=\"#c6ae9d\"/><path d=\"M72 116L128 116Q134 116 135 122L142 200L58 200L65 122Q66 116 72 116Z\" fill=\"#E8772E\"/><path d=\"M86 116Q100 130 114 116Z\" fill=\"#ba5f25\"/><rect x=\"88\" y=\"102\" width=\"24\" height=\"18\" fill=\"#c6ae9d\"/><rect x=\"86\" y=\"26\" width=\"28\" height=\"16\" rx=\"4\" fill=\"#F7D9C4\"/><rect x=\"64\" y=\"36\" width=\"72\" height=\"74\" rx=\"22\" fill=\"#F7D9C4\"/><circle cx=\"76\" cy=\"88\" r=\"6\" fill=\"#F28B9A\" opacity=\".45\"/><circle cx=\"124\" cy=\"88\" r=\"6\" fill=\"#F28B9A\" opacity=\".45\"/><circle cx=\"86\" cy=\"72\" r=\"4.5\" fill=\"#1C2433\"/><path d=\"M108 73Q114 66 120 73\" fill=\"none\" stroke=\"#1C2433\" stroke-width=\"4\" stroke-linecap=\"round\"/><path d=\"M84 88Q100 100 116 88\" fill=\"none\" stroke=\"#1C2433\" stroke-width=\"4\" stroke-linecap=\"round\"/><path d=\"M60 72C58 36 76 22 100 22C124 22 142 36 140 72L134 66C126 54 112 50 100 52C88 50 74 54 66 66Z\" fill=\"#6B4226\"/><circle cx=\"60\" cy=\"72\" r=\"6\" fill=\"#E46AA8\"/><circle cx=\"140\" cy=\"72\" r=\"6\" fill=\"#E46AA8\"/>","feline":"<defs><clipPath id=\"ffeline\"><path d=\"M72 116L128 116Q134 116 135 122L142 200L58 200L65 122Q66 116 72 116Z\"/></clipPath></defs><rect x=\"60\" y=\"196\" width=\"80\" height=\"16\" rx=\"4\" fill=\"#3F5E8C\"/><rect x=\"62\" y=\"206\" width=\"36\" height=\"64\" rx=\"4\" fill=\"#3F5E8C\"/><rect x=\"102\" y=\"206\" width=\"36\" height=\"64\" rx=\"4\" fill=\"#3F5E8C\"/><path d=\"M100 212V270\" stroke=\"#2f4769\" stroke-width=\"3\"/><path d=\"M58 264h42v12q0 8-8 8h-26q-8 0-8-8z\" fill=\"#F4F6F9\" stroke=\"#b7b9bb\" stroke-width=\"2\"/><path d=\"M100 264h42v12q0 8-8 8h-26q-8 0-8-8z\" fill=\"#F4F6F9\" stroke=\"#b7b9bb\" stroke-width=\"2\"/><rect x=\"60\" y=\"279\" width=\"38\" height=\"4\" fill=\"#b7b9bb\"/><rect x=\"102\" y=\"279\" width=\"38\" height=\"4\" fill=\"#b7b9bb\"/><rect x=\"40\" y=\"120\" width=\"22\" height=\"66\" rx=\"11\" fill=\"#2a8e3f\" transform=\"rotate(10 52 124)\"/><rect x=\"138\" y=\"120\" width=\"22\" height=\"66\" rx=\"11\" fill=\"#2a8e3f\" transform=\"rotate(-10 148 124)\"/><circle cx=\"40\" cy=\"192\" r=\"12\" fill=\"#F7D9C4\"/><circle cx=\"40\" cy=\"194\" r=\"5\" fill=\"#c6ae9d\"/><circle cx=\"160\" cy=\"192\" r=\"12\" fill=\"#F7D9C4\"/><circle cx=\"160\" cy=\"194\" r=\"5\" fill=\"#c6ae9d\"/><path d=\"M72 116L128 116Q134 116 135 122L142 200L58 200L65 122Q66 116 72 116Z\" fill=\"#2E9A45\"/><path d=\"M86 116Q100 130 114 116Z\" fill=\"#257b37\"/><path d=\"M12 3l2.7 5.6l6.1.9l-4.4 4.3l1 6.1L12 17l-5.4 2.9l1-6.1L3.2 9.5l6.1-.9z\" transform=\"translate(81 139) scale(1.6)\" fill=\"#F2C230\"/><rect x=\"88\" y=\"102\" width=\"24\" height=\"18\" fill=\"#c6ae9d\"/><rect x=\"86\" y=\"26\" width=\"28\" height=\"16\" rx=\"4\" fill=\"#F7D9C4\"/><rect x=\"64\" y=\"36\" width=\"72\" height=\"74\" rx=\"22\" fill=\"#F7D9C4\"/><circle cx=\"76\" cy=\"88\" r=\"6\" fill=\"#F28B9A\" opacity=\".45\"/><circle cx=\"124\" cy=\"88\" r=\"6\" fill=\"#F28B9A\" opacity=\".45\"/><circle cx=\"86\" cy=\"72\" r=\"4.5\" fill=\"#1C2433\"/><circle cx=\"114\" cy=\"72\" r=\"4.5\" fill=\"#1C2433\"/><path d=\"M82 85Q100 108 118 85Z\" fill=\"#1C2433\"/><path d=\"M90 96Q100 102 110 96Q100 92 90 96Z\" fill=\"#F28B9A\"/><path d=\"M60 80C58 36 76 22 100 22C124 22 142 36 140 80L134 70L134 62L124 64L116 58L108 65L100 58L92 65L84 58L76 64L66 62L66 70Z\" fill=\"#6B4226\"/>"};
+
+// Iconen (24 × 24), dezelfde als in de app waar ze bestaan.
+const P = {
+  rekenen: 'M5 7h6M8 4v6M14 7h5M5 17l5-5M10 17l-5-5M14 14h5M14 18h5',
+  memory: 'M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z',
+  penalty: 'M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18zM12 7l4 3-1.5 4.5h-5L8 10zM12 3v4M16 10l4.5-1.5M14.5 14.5l2.5 4M9.5 14.5l-2.5 4M8 10l-4.5-1.5',
+  huisdier: 'M8 11a2 2 0 1 1 0-4a2 2 0 0 1 0 4zM16 11a2 2 0 1 1 0-4a2 2 0 0 1 0 4zM4.5 15a1.8 1.8 0 1 1 0-3.6a1.8 1.8 0 0 1 0 3.6zM19.5 15a1.8 1.8 0 1 1 0-3.6a1.8 1.8 0 0 1 0 3.6zM12 13c-3 0-5 3-5 5s2 2 5 2s5 0 5-2s-2-5-5-5z',
+  racen: 'M3 15l2-5h10l3 4h3v3H3zM7 18a1.5 1.5 0 1 0 0-.01M17 18a1.5 1.5 0 1 0 0-.01M7 10l1.5-3h5L15 10',
+  koken: 'M3 11h14v3a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5zM17 12h4M7 8c0-1.5 1.5-1.5 1.5-3M11.5 8c0-1.5 1.5-1.5 1.5-3',
+  touwspringen: 'M12 4a1.8 1.8 0 1 0 0 .01M12 7.5v6M9.5 19l2.5-5.5l2.5 5.5M8 10.5l4-1.5l4 1.5M5 7v5M19 7v5M5 12c0 9 14 9 14 0',
+  basket: 'M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18zM3 12h18M12 3v18M5.6 5.6c3 3 3 9.8 0 12.8M18.4 5.6c-3 3-3 9.8 0 12.8',
+  dino: 'M4 17c0-4 3-6 7-6h4l2-5h3v3h-2l-1 4v5M7 17v3M13 17v3M4 15l-2 2',
+  auto: 'M3 15l2-5h10l3 4h3v3H3zM7 18a1.5 1.5 0 1 0 0-.01M17 18a1.5 1.5 0 1 0 0-.01M7 10l1.5-3h5L15 10',
+  zon: 'M12 16a4 4 0 1 0 0-8a4 4 0 0 0 0 8zM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4',
+  vis: 'M3 12c3-5 9-6 13-2l4-3v10l-4-3c-4 4-10 3-13-2zM8 11h.01',
+  raket: 'M12 3c3 2 5 6 4 11h-8C7 9 9 5 12 3zM8 14l-3 4h4M16 14l3 4h-4M12 9h.01M10 18l2 3l2-3',
+  loep: 'M10 4a6 6 0 1 0 0 12a6 6 0 0 0 0-12zM14.5 14.5L20 20',
+  taart: 'M4 20h16v-7H4zM4 15c2 1.5 4 1.5 6 0s4-1.5 6 0s4 1.5 4 0M12 13V9M12 6.5v.5',
+  ster: 'M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z',
+  noot: 'M9 18V6l10-2v12M9 18a2.5 2.5 0 1 1-5 0a2.5 2.5 0 0 1 5 0zM19 16a2.5 2.5 0 1 1-5 0a2.5 2.5 0 0 1 5 0z',
+  sok: 'M9 3h6v8l3 4a3 3 0 0 1-1 4l-2 1a3 3 0 0 1-3-1l-4-5V3z',
+  eend: 'M5 13c0 4 3 6 7 6s8-2 8-6c-2 1-4 1-5 0c1-2 1-5-2-6c-3-1-5 1-5 3l-3 1l3 1c-2 0-3 0-3 1z',
+  beer: 'M4.5 6a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0-5 0zM14.5 6a2.5 2.5 0 1 0 5 0a2.5 2.5 0 1 0-5 0zM12 7a6.5 6.5 0 1 0 0 13a6.5 6.5 0 0 0 0-13zM10 12.5h.01M14 12.5h.01M10.5 16c1 .8 2 .8 3 0',
+  tand: 'M7 4c-2 0-3 2-3 4c0 3 1 4 2 8c.5 2 1 4 2 4s1.5-3 2-5c.5-1 1.5-1 2 0c.5 2 1 5 2 5s1.5-2 2-4c1-4 2-5 2-8c0-2-1-4-3-4c-1.5 0-2.5 1-4 1S8.5 4 7 4z',
+  kasteel: 'M4 21V9l2-2 2 2v3h2V9l2-2 2 2v3h2V9l2-2 2 2v12zM10 21v-4a2 2 0 0 1 4 0v4',
+  vlinder: 'M12 7v12M12 9c-2-4-8-5-8-1s4 4 8 3M12 9c2-4 8-5 8-1s-4 4-8 3M12 12c-3 0-6 2-5 5s4 0 5-2M12 12c3 0 6 2 5 5s-4 0-5-2',
+  huis: 'M3 11l9-7 9 7M5 9.5V20h14V9.5M10 20v-5h4v5',
+  terug: 'M15 5l-7 7 7 7',
+  geluid: 'M4 10h4l5-4v12l-5-4H4zM16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11',
+  opnieuw: 'M4 12a8 8 0 1 0 2.5-5.8M4 4v4h4',
+  stop: 'M5 12h11M12 6l6 6-6 6',
+  // soorten van het figuurtje
+  huid: 'M12 4a7 7 0 1 0 0 14a7 7 0 0 0 0-14zM9.5 10h.01M14.5 10h.01M9.5 13.5c1.4 1.2 3.6 1.2 5 0',
+  haar: 'M5 14c0-6 3-9 7-9s7 3 7 9M5 14c2-1 3-3 3.5-5M19 14c-2-1-3-3-3.5-5M8.5 9c2 1 5 1 7 0',
+  hoofd: 'M4 15h16M6 15c0-5 2.5-8 6-8s6 3 6 8M12 7V5',
+  shirt: 'M8 4l-5 3 2 4 3-1v10h8V10l3 1 2-4-5-3c-1 2-3 2-4 2s-3 0-4-2z',
+  broek: 'M6 3h12l1 18h-5l-2-11-2 11H5z',
+  schoenen: 'M3 16h18v3H3zM3 16c0-4 2-6 4-6l3 3h5c3 0 6 1 6 3',
+};
+const ic = (d, cls = 'ic') => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true"><path d="${d}"/></svg>`;
+
+const spellen = [
+  ['rekenen', 'Rekenen', 0], ['memory', 'Memory', 0], ['penalty', "Penalty's", 0], ['huisdier', 'Huisdier wassen', 20],
+  ['racen', 'Racen', 30], ['koken', 'Koken', 50], ['touwspringen', 'Touwspringen', 75], ['basket', 'Basket', 100],
+];
+const reeksen = [['kleine-oortjes', 'Kleine oortjes'], ['grote-ogen', 'Grote ogen'], ['avonturiers', 'Avonturiers']];
+const platen = [['dino', 'Dino in de zon', '#3DAA55'], ['auto', 'Raceauto', '#E23B3B'], ['kasteel', 'Prinsessenkasteel', '#F4A3C6'], ['vlinder', 'Vlinder en bloem', '#B98CE6'],
+  ['vis', 'Vis in de zee', '#4D9BE8'], ['raket', 'Raket naar de maan', '#F2B33D'], ['ster', 'Bloemenfee', '#F59AC8'], ['huis', 'Ons huis', '#E0672E']];
+
+const THEMAS = {
+  race: {
+    kind: 'Luca', fig: 'luca', leest: true, verdiend: 64, naam: "Dino's en auto's", stip: '#16264A', reeks: 'avonturiers',
+    verhalen: [[21, 'Rex en de race door de jungle', 'auto', '#2E9A45'], [22, 'De auto van opa', 'auto', '#E23B3B'], [23, 'Missie Maan', 'raket', '#5B4BC4'],
+      [24, 'Het bot in de achtertuin', 'huisdier', '#C2541A'], [25, 'Detective Daan en de verdwenen fiets', 'loep', '#1D9AA8'], [26, 'De dino die bang was van muizen', 'dino', '#3DAA55']],
+    gelezen: [21, 23, 24], kleurplaat: { bezig: 1, klaar: [0, 5] },
+    titels: { spelletjes: ['Spelletjes', 'De pitstop'], verhalen: ['Verhalen', 'Lezen bij de vulkaan'], kleurplaten: ['Kleurplaten', 'De spuitgarage'], figuurtje: ['Mijn figuurtje', 'Op het podium'], feest: ['', ''] },
+  },
+  kasteel: {
+    kind: 'Yuna', fig: 'yuna', leest: true, verdiend: 40, naam: 'Prinsessenkasteel', stip: '#C2337A', reeks: 'grote-ogen',
+    verhalen: [[11, 'Noor en de verdwenen taart', 'taart', '#E0672E'], [12, 'Pip gaat naar school', 'huis', '#4D9BE8'], [13, 'De tovenares die moest niezen', 'ster', '#8E44C9'],
+      [14, 'Mo en de grote zonnebloem', 'zon', '#D99A00'], [15, 'Het paard dat wilde dansen', 'noot', '#C2337A'], [16, 'Dirk de draak krijgt de hik', 'dino', '#2E9A45']],
+    gelezen: [11, 12], kleurplaat: { bezig: 2, klaar: [3] },
+    titels: { spelletjes: ['Spelletjes', 'De speelzaal'], verhalen: ['Verhalen', 'De koninklijke bieb'], kleurplaten: ['Kleurplaten', 'De schilderszaal'], figuurtje: ['Mijn figuurtje', 'Spiegeltje aan de wand'], feest: ['', ''] },
+  },
+  tuin: {
+    kind: 'Feline', fig: 'feline', leest: false, verdiend: 12, naam: 'Feeëntuin', stip: '#8A3FC0', reeks: 'kleine-oortjes',
+    verhalen: [[1, 'Dirk de draak telt sterren', 'dino', '#3DAA55'], [2, 'Waar is de sok van Mo?', 'sok', '#E0672E'], [3, 'Pip wil ook zwemmen', 'vis', '#4D9BE8'],
+      [4, 'Eén, twee, drie eendjes', 'eend', '#D99A00'], [5, 'Beer ruimt op', 'beer', '#A86A3D'], [6, 'Tanden poetsen met Tijs', 'tand', '#C2337A']],
+    gelezen: [1, 4, 5], kleurplaat: { bezig: 3, klaar: [6] },
+    titels: { spelletjes: ['', ''], verhalen: ['', ''], kleurplaten: ['', ''], figuurtje: ['', ''], feest: ['', ''] },
+  },
+};
+const SCHERMEN = [['spelletjes', 'Spelletjes'], ['verhalen', 'Verhalen'], ['kleurplaten', 'Kleurplaten'], ['figuurtje', 'Figuurtje'], ['feest', 'Gewonnen!']];
+
+/* ───────── Kleine prenten (SVG) ───────── */
+const g = (x, y, s, inh, extra = '') => `<g transform="translate(${x} ${y}) scale(${s})" ${extra}>${inh}</g>`;
+const dino = (x, y, s) => g(x, y, s, `
+  <path d="M-55 0Q-100 -4 -130 22Q-90 24 -50 22Z" fill="#2E9A45"/>
+  <rect x="-40" y="10" width="20" height="34" rx="8" fill="#2E9A45"/><rect x="18" y="10" width="20" height="34" rx="8" fill="#2E9A45"/>
+  <ellipse cx="0" cy="6" rx="62" ry="32" fill="#3DAA55"/>
+  <path d="M36 -6Q62 -26 64 -78Q65 -96 84 -96" stroke="#3DAA55" stroke-width="24" fill="none" stroke-linecap="round"/>
+  <ellipse cx="96" cy="-96" rx="24" ry="14" fill="#3DAA55"/>
+  <circle cx="102" cy="-100" r="4" fill="#16264A" class="knipoog"/>
+  <circle cx="-14" cy="-6" r="7" fill="#6CC77F"/><circle cx="14" cy="-14" r="6" fill="#6CC77F"/><circle cx="20" cy="6" r="5" fill="#6CC77F"/>`);
+const auto = (x, y, s, kl = '#E23B3B', nr = 8, extra = '') => g(x, y, s, `
+  <path d="M-34 -30L-20 -52H22L38 -30Z" fill="${kl}"/><path d="M-24 -32L-14 -47H18L29 -32Z" fill="#BFD8FF"/>
+  <rect x="-70" y="-34" width="140" height="32" rx="14" fill="${kl}"/>
+  <circle cx="0" cy="-18" r="11" fill="#fff"/><text x="0" y="-13" text-anchor="middle" font-family="Baloo 2, sans-serif" font-weight="800" font-size="15" fill="#16264A">${nr}</text>
+  <circle cx="-40" cy="0" r="15" fill="#1C2433" stroke="#9AA6B8" stroke-width="5"/><circle cx="40" cy="0" r="15" fill="#1C2433" stroke="#9AA6B8" stroke-width="5"/>`, extra);
+const vulkaan = (x, y, s) => g(x, y, s, `
+  <path d="M-95 0L-22 -96H22L95 0Z" fill="#2B3E6B"/>
+  <path d="M-22 -96Q0 -106 22 -96L14 -84Q0 -90 -14 -84Z" fill="#F2B33D"/>
+  <path d="M-4 -112q-10-14 2-28q10-12 0-24M10 -110q-6-10 4-20" stroke="#5B6B8C" stroke-width="5" fill="none" stroke-linecap="round"/>`);
+const sterren = (n, w = 1000, h = 140, kl = '#fff') => Array.from({ length: n }, (_, i) =>
+  `<circle cx="${(i * 137) % w}" cy="${12 + ((i * 53) % h)}" r="${i % 3 ? 1.6 : 2.6}" fill="${kl}" opacity="${i % 2 ? .5 : .9}"/>`).join('');
+const geblokt = (x, y, w, h, n = 2, kl = '#fff') => {
+  let s = ''; const k = w / n;
+  for (let r = 0; r < h / k; r++) for (let c = 0; c < n; c++) if ((r + c) % 2 === 0) s += `<rect x="${x + c * k}" y="${y + r * k}" width="${k}" height="${k}" fill="${kl}"/>`;
+  return `<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="#16264A"/>${s}`;
+};
+const vlag = (x, y, s) => g(x, y, s, `<rect x="-3" y="0" width="6" height="110" rx="3" fill="#C9D3DE"/>
+  <g class="wuif">${geblokt(3, 0, 70, 46, 7)}</g>`);
+const beker = (x, y, s) => g(x, y, s, `<path d="M-30 -70H30V-50Q30 -18 0 -14Q-30 -18 -30 -50Z" fill="#F2B33D"/>
+  <path d="M-30 -62Q-50 -62 -46 -44Q-42 -32 -26 -32M30 -62Q50 -62 46 -44Q42 -32 26 -32" stroke="#F2B33D" stroke-width="7" fill="none"/>
+  <rect x="-6" y="-16" width="12" height="16" fill="#B8800F"/><rect x="-22" y="0" width="44" height="10" rx="3" fill="#B8800F"/>
+  <path d="M0 -60l4 8 9 1-7 6 2 9-8-5-8 5 2-9-7-6 9-1z" fill="#fff" opacity=".85"/>`);
+const spuitbus = (x, y, s, kl) => g(x, y, s, `<rect x="-14" y="-50" width="28" height="50" rx="6" fill="${kl}"/><rect x="-14" y="-38" width="28" height="12" fill="#fff" opacity=".5"/>
+  <rect x="-8" y="-60" width="16" height="10" rx="2" fill="#C9D3DE"/><rect x="-3" y="-66" width="8" height="7" rx="1" fill="#1C2433"/>`);
+
+const wolk = (x, y, s) => g(x, y, s, `<ellipse cx="0" cy="0" rx="40" ry="16" fill="#fff"/><circle cx="-14" cy="-8" r="16" fill="#fff"/><circle cx="10" cy="-12" r="20" fill="#fff"/>`);
+const hart = (x, y, s, kl = '#F28AB8') => g(x, y, s, `<path d="M0 8C-14 -2 -14 -14 -6 -14C-2 -14 0 -10 0 -9C0 -10 2 -14 6 -14C14 -14 14 -2 0 8Z" fill="${kl}"/>`);
+const glinster = (x, y, s, kl = '#fff') => g(x, y, s, `<path d="M0 -10L2.5 -2.5L10 0L2.5 2.5L0 10L-2.5 2.5L-10 0L-2.5 -2.5Z" fill="${kl}"/>`);
+const regenboog = (cx, cy, r) => ['#F9A8C9', '#FCD29F', '#FBEA9E', '#BDE5B5', '#B9D3F5', '#D7C2F2'].map((k, i) =>
+  `<path d="M${cx - r + i * 13} ${cy}A${r - i * 13} ${r - i * 13} 0 0 1 ${cx + r - i * 13} ${cy}" stroke="${k}" stroke-width="13" fill="none"/>`).join('');
+const kasteel = (x, y, s) => g(x, y, s, `
+  <rect x="-60" y="-110" width="120" height="110" fill="#F4A3C6"/>
+  ${[-60, -36, -12, 12, 36].map((a) => `<rect x="${a}" y="-122" width="14" height="14" fill="#F4A3C6"/>`).join('')}
+  <rect x="-100" y="-140" width="44" height="140" fill="#EE8FB9"/><rect x="56" y="-140" width="44" height="140" fill="#EE8FB9"/>
+  <rect x="-22" y="-170" width="44" height="80" fill="#F4A3C6"/>
+  <path d="M-106 -140L-78 -194L-50 -140Z" fill="#C2337A"/><path d="M50 -140L78 -194L106 -140Z" fill="#C2337A"/><path d="M-28 -170L0 -222L28 -170Z" fill="#C2337A"/>
+  <path d="M-78 -194V-214l18 6-18 6" fill="#F2B33D" stroke="#C2337A" stroke-width="2" class="wuif"/><path d="M0 -222V-244l18 6-18 6" fill="#F2B33D" stroke="#C2337A" stroke-width="2" class="wuif"/>
+  <path d="M-20 0V-40A20 20 0 0 1 20 -40V0Z" fill="#8E1F55"/>
+  <rect x="-88" y="-110" width="18" height="26" rx="9" fill="#fff"/><rect x="70" y="-110" width="18" height="26" rx="9" fill="#fff"/>
+  <rect x="-9" y="-150" width="18" height="26" rx="9" fill="#fff"/><circle cx="-36" cy="-70" r="8" fill="#fff"/><circle cx="36" cy="-70" r="8" fill="#fff"/>`);
+const kroon = (x, y, s) => g(x, y, s, `<path d="M-40 0L-46 -40L-22 -18L0 -50L22 -18L46 -40L40 0Z" fill="#F2B33D" stroke="#B8800F" stroke-width="3" stroke-linejoin="round"/>
+  <circle cx="0" cy="-14" r="6" fill="#C2337A"/><circle cx="-24" cy="-10" r="4" fill="#4D9BE8"/><circle cx="24" cy="-10" r="4" fill="#3DAA55"/>`);
+const slinger = () => {
+  const k = ['#C2337A', '#F2B33D', '#4D9BE8', '#3DAA55', '#B98CE6'];
+  let s = '<path d="M420 6Q700 70 1000 10" stroke="#8E1F55" stroke-width="2.5" fill="none"/>';
+  for (let i = 0; i < 14; i++) {
+    const t = i / 13, x = 430 + t * 560, y = 6 + Math.sin(t * Math.PI) * 32 + (t * 4);
+    s += `<path d="M${x - 14} ${y}L${x + 14} ${y}L${x} ${y + 30}Z" fill="${k[i % 5]}"/>`;
+  }
+  return s;
+};
+
+const bloem = (x, y, s, kl) => g(x, y, s, `<path d="M0 0V40" stroke="#5BA35B" stroke-width="5"/>
+  ${[0, 72, 144, 216, 288].map((a) => `<circle cx="${Math.cos(a * Math.PI / 180) * 11}" cy="${Math.sin(a * Math.PI / 180) * 11}" r="9" fill="${kl}"/>`).join('')}
+  <circle r="7" fill="#FFE07A"/>`);
+const vlinderS = (x, y, s, kl, kl2 = kl) => g(x, y, s, `<g class="zweef"><g class="fladder">
+  <ellipse cx="-11" cy="-8" rx="12" ry="15" fill="${kl}"/><ellipse cx="11" cy="-8" rx="12" ry="15" fill="${kl}"/>
+  <ellipse cx="-9" cy="10" rx="8" ry="10" fill="${kl2}"/><ellipse cx="9" cy="10" rx="8" ry="10" fill="${kl2}"/></g>
+  <rect x="-2.5" y="-16" width="5" height="34" rx="2.5" fill="#3B1A5C"/>
+  <path d="M-1 -16Q-6 -28 -10 -30M1 -16Q6 -28 10 -30" stroke="#3B1A5C" stroke-width="2" fill="none"/></g>`);
+const paddenstoel = (x, y, s, kl) => g(x, y, s, `<rect x="-26" y="-60" width="52" height="60" rx="10" fill="#FFF6E6"/>
+  <path d="M-10 0V-22A10 10 0 0 1 10 -22V0Z" fill="#A86A3D"/><circle cx="14" cy="-40" r="6" fill="#B9D3F5" stroke="#A86A3D" stroke-width="2"/>
+  <path d="M-62 -54Q-60 -120 0 -122Q60 -120 62 -54Q0 -44 -62 -54Z" fill="${kl}"/>
+  <circle cx="-30" cy="-84" r="9" fill="#fff"/><circle cx="8" cy="-102" r="8" fill="#fff"/><circle cx="34" cy="-74" r="10" fill="#fff"/><circle cx="-6" cy="-70" r="6" fill="#fff"/>`);
+const boom = (x, y, s) => g(x, y, s, `<path d="M-14 0V-80Q-14 -100 -40 -110M14 0V-80Q14 -96 40 -106" stroke="#A86A3D" stroke-width="22" fill="none" stroke-linecap="round"/>
+  <circle cx="-50" cy="-130" r="44" fill="#7FB069"/><circle cx="20" cy="-150" r="54" fill="#8CC07A"/><circle cx="70" cy="-112" r="38" fill="#7FB069"/>
+  <circle cx="-30" cy="-140" r="6" fill="#F59AC8"/><circle cx="40" cy="-160" r="6" fill="#FFE07A"/><circle cx="66" cy="-118" r="6" fill="#F59AC8"/>`);
+const tuinBasis = () => `<rect width="1000" height="190" fill="#ECE3FA"/><circle cx="945" cy="44" r="30" fill="#FFF0A8"/>
+  ${sterren(10, 900, 100, '#fff')}<ellipse cx="280" cy="232" rx="420" ry="74" fill="#C7E8C0"/><ellipse cx="840" cy="236" rx="380" ry="80" fill="#AEDDA2"/>`;
+const kasteelBasis = () => `<rect width="1000" height="190" fill="#FADDEB"/>${wolk(470, 60, .9)}${wolk(940, 40, .8)}
+  <ellipse cx="300" cy="236" rx="440" ry="72" fill="#C8EBC0"/><ellipse cx="860" cy="240" rx="380" ry="78" fill="#AEDDA2"/>
+  ${glinster(560, 30, .9)}${glinster(620, 120, .6)}${glinster(990, 110, .7)}`;
+const raceBasis = () => `<rect width="1000" height="190" fill="#16264A"/>${sterren(22, 1000, 120)}
+  <rect y="158" width="1000" height="32" fill="#0E1830"/><path d="M0 174H1000" stroke="#F2B33D" stroke-width="4" stroke-dasharray="26 22"/>`;
+
+const SCENES = {
+  race: {
+    spelletjes: () => raceBasis() + vulkaan(640, 158, .95) + dino(820, 150, .85) + vlag(905, 18, .8) +
+      `<g transform="translate(470 120)"><rect x="-10" y="-62" width="22" height="58" rx="6" fill="#0E1830"/><circle cx="1" cy="-48" r="7" fill="#34425A"/><circle cx="1" cy="-32" r="7" fill="#F2B33D"/><circle cx="1" cy="-16" r="7" fill="#34425A"/><rect x="-1" y="-4" width="4" height="42" fill="#5B6B8C"/></g>` +
+      `<g class="rij-auto">${auto(0, 160, .75)}</g>`,
+    verhalen: () => raceBasis() + `<circle cx="590" cy="48" r="26" fill="#F6E7B4"/>` + vulkaan(800, 158, 1.2) + dino(600, 150, .75) +
+      g(676, 72, .9, `<path d="M-30 0L0 6L30 0V-26L0 -20L-30 -26Z" fill="#fff"/><path d="M0 6V-20" stroke="#C9D3DE" stroke-width="2"/>`) + glinster(700, 40, .8, '#F2B33D') + glinster(560, 90, .5, '#F2B33D'),
+    kleurplaten: () => raceBasis() + `<g transform="translate(900 0)">${[0, 1, 2, 3, 4, 5, 6].map((i) => `<rect x="-60" y="${20 + i * 19}" width="160" height="14" fill="#2B3A5C"/>`).join('')}</g>` +
+      auto(720, 154, 1.15, '#2D6BD6') + spuitbus(560, 150, 1, '#F2B33D') +
+      ['#F2B33D', '#E23B3B', '#3DAA55', '#B98CE6', '#4D9BE8'].map((k, i) => `<circle cx="${600 + i * 22}" cy="${70 + (i % 2) * 22}" r="${6 + (i % 3) * 3}" fill="${k}"/>`).join(''),
+    figuurtje: () => raceBasis() + `<path d="M640 0L560 158H720Z" fill="#fff" opacity=".07"/><path d="M820 0L760 158H900Z" fill="#fff" opacity=".07"/>` +
+      `<rect x="700" y="96" width="70" height="62" fill="#C9D3DE"/><rect x="770" y="70" width="70" height="88" fill="#F2B33D"/><rect x="840" y="112" width="70" height="46" fill="#E09A6A"/>
+       <text x="805" y="128" text-anchor="middle" font-family="Baloo 2" font-weight="800" font-size="40" fill="#16264A">1</text>` + beker(805, 62, .7),
+    feest: () => raceBasis() + vlag(560, 30, 1.1) + vlag(860, 30, 1.1) + beker(735, 140, 1.2),
+  },
+  kasteel: {
+    spelletjes: () => kasteelBasis() + regenboog(800, 200, 170) + kasteel(800, 176, .62) + slinger() + hart(620, 140, 1.2) + hart(990, 150, 1),
+    verhalen: () => kasteelBasis() + regenboog(820, 210, 150) + g(780, 150, 1.1, `<path d="M-90 0Q-45 -24 0 -6Q45 -24 90 0V-70Q45 -94 0 -76Q-45 -94 -90 -70Z" fill="#fff" stroke="#C2337A" stroke-width="4"/><path d="M0 -76V-6" stroke="#C2337A" stroke-width="4"/>
+      <path d="M-70 -56H-20M-70 -40H-24M20 -56H70M24 -40H70" stroke="#F4A3C6" stroke-width="5" stroke-linecap="round"/>`) +
+      glinster(720, 40, 1.4, '#F2B33D') + glinster(800, 20, 1, '#fff') + glinster(860, 44, 1.2, '#F2B33D') + kasteel(950, 176, .32),
+    kleurplaten: () => kasteelBasis() + regenboog(860, 210, 130) + g(760, 176, 1, `<path d="M-50 0L-30 -120M50 0L30 -120M0 -20V0" stroke="#A86A3D" stroke-width="7"/>
+      <rect x="-56" y="-150" width="112" height="96" fill="#fff" stroke="#F2B33D" stroke-width="7"/>` + regenboog(0, -78, 46) + hart(0, -104, 1.4, '#C2337A')) +
+      g(620, 140, 1, `<ellipse cx="0" cy="0" rx="44" ry="30" fill="#FFF6E6" stroke="#E0B88A" stroke-width="3"/><circle cx="-20" cy="-8" r="7" fill="#C2337A"/><circle cx="0" cy="-14" r="7" fill="#4D9BE8"/><circle cx="20" cy="-6" r="7" fill="#F2B33D"/><circle cx="8" cy="10" r="7" fill="#3DAA55"/>`),
+    figuurtje: () => kasteelBasis() + regenboog(820, 210, 150) + g(800, 168, 1, `<rect x="-6" y="-40" width="12" height="44" rx="5" fill="#F2B33D"/><ellipse cx="0" cy="-90" rx="42" ry="54" fill="#F2B33D"/><ellipse cx="0" cy="-90" rx="32" ry="44" fill="#DDF0FC"/><path d="M-14 -110Q-4 -124 8 -118" stroke="#fff" stroke-width="6" fill="none" stroke-linecap="round"/>`) +
+      kroon(640, 110, .9) + glinster(690, 40, 1) + glinster(930, 70, 1.2, '#F2B33D'),
+    feest: () => kasteelBasis() + regenboog(760, 210, 170) + kasteel(760, 176, .6) +
+      [[560, 50, '#C2337A'], [930, 46, '#F2B33D'], [660, 30, '#4D9BE8']].map(([x, y, k]) => g(x, y, 1, Array.from({ length: 10 }, (_, i) => { const a = i * 36 * Math.PI / 180; return `<path d="M${Math.cos(a) * 10} ${Math.sin(a) * 10}L${Math.cos(a) * 30} ${Math.sin(a) * 30}" stroke="${k}" stroke-width="4" stroke-linecap="round"/>`; }).join(''))).join('') +
+      hart(600, 130, 1.4) + hart(960, 140, 1.2, '#C2337A'),
+  },
+  tuin: {
+    spelletjes: () => tuinBasis() + paddenstoel(600, 172, .8, '#C2337A') + paddenstoel(760, 176, 1.05, '#8A3FC0') + paddenstoel(900, 174, .7, '#E0672E') +
+      bloem(500, 150, 1, '#F59AC8') + bloem(680, 156, .9, '#B9D3F5') + bloem(980, 150, 1, '#FFC27A') + vlinderS(440, 60, 1.1, '#F59AC8') + vlinderS(840, 40, .9, '#B98CE6', '#FFC27A'),
+    verhalen: () => tuinBasis() + boom(820, 190, .95) + g(842, 120, 1, `<path d="M-30 -60V0M30 -60V0" stroke="#7FB069" stroke-width="3"/><rect x="-36" y="0" width="72" height="8" rx="3" fill="#A86A3D"/>
+      <path d="M-26 0Q-13 -12 0 -4Q13 -12 26 0V-20Q13 -32 0 -24Q-13 -32 -26 -20Z" fill="#fff" stroke="#8A3FC0" stroke-width="3"/>`) +
+      [[620, 70], [680, 110], [960, 90], [560, 120]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="6" fill="#FFE07A"/><circle cx="${x}" cy="${y}" r="14" fill="#FFE07A" opacity=".3" class="knipoog"/>`).join('') +
+      bloem(500, 150, 1, '#F59AC8') + vlinderS(650, 40, .9, '#B98CE6'),
+    kleurplaten: () => tuinBasis() + ['#E23B3B', '#F2B33D', '#FFE07A', '#7FB069', '#4D9BE8', '#B98CE6'].map((k, i) => bloem(560 + i * 76, 140 - (i % 2) * 14, 1.5, k)).join('') +
+      ['#E23B3B', '#4D9BE8', '#F2B33D', '#B98CE6'].map((k, i) => `<path d="M${600 + i * 110} ${30 + (i % 2) * 20}q-9 14 0 20q9-6 0-20z" fill="${k}" class="zweef"/>`).join(''),
+    figuurtje: () => tuinBasis() + `<ellipse cx="800" cy="168" rx="120" ry="18" fill="#BDE7F5"/>` + g(700, 120, 1, `<path d="M0 0L80 -70" stroke="#F2B33D" stroke-width="6" stroke-linecap="round"/>`) +
+      g(780, 50, 1.6, `<path d="M0 -14L4 -4L14 0L4 4L0 14L-4 4L-14 0L-4 -4Z" fill="#FFE07A"/>`) + glinster(840, 90, 1, '#fff') + glinster(890, 50, .7, '#F59AC8') + glinster(720, 30, .8, '#B98CE6') +
+      vlinderS(600, 70, 1, '#F59AC8') + bloem(960, 150, 1, '#B98CE6'),
+    feest: () => tuinBasis() + bloem(780, 120, 3, '#F59AC8') + vlinderS(560, 60, 1.2, '#F59AC8') + vlinderS(640, 110, .9, '#B98CE6', '#FFC27A') +
+      vlinderS(920, 50, 1.1, '#FFC27A') + vlinderS(990, 120, .8, '#B9D3F5'),
+  },
+};
+
+/* ───────── Knoppen in de kop ───────── */
+function knopje(thema, d, label) {
+  const vorm = {
+    race: '<svg viewBox="0 0 60 60"><circle cx="30" cy="30" r="28" fill="#1C2433"/><circle cx="30" cy="30" r="21" fill="#F3F6FC"/>' +
+      [0, 60, 120, 180, 240, 300].map((a) => `<rect x="28" y="1" width="4" height="7" fill="#5B6B8C" transform="rotate(${a} 30 30)"/>`).join('') + '</svg>',
+    kasteel: '<svg viewBox="0 0 60 60"><path d="M30 2L56 16V44L30 58L4 44V16Z" fill="#fff" stroke="#F2B33D" stroke-width="4"/></svg>',
+    tuin: '<svg viewBox="0 0 60 60">' + [0, 60, 120, 180, 240, 300].map((a) => `<circle cx="${30 + Math.cos(a * Math.PI / 180) * 16}" cy="${30 + Math.sin(a * Math.PI / 180) * 16}" r="13" fill="#F59AC8"/>`).join('') + '<circle cx="30" cy="30" r="17" fill="#fff"/></svg>',
+  }[thema];
+  const kleur = { race: '#16264A', kasteel: '#C2337A', tuin: '#8A3FC0' }[thema];
+  return `<span class="knopje" role="button" aria-label="${label}" style="color:${kleur}">${vorm}${ic(d)}</span>`;
+}
+
+/* ───────── Slot en voortgang per thema ───────── */
+function slot(thema, nog, drempel, verdiend) {
+  const pct = Math.max(0, Math.min(1, verdiend / drempel));
+  if (thema === 'race') return `
+    <div class="weg" role="img" aria-label="${verdiend} van ${drempel} sterren">
+      <svg class="auto" viewBox="-80 -60 160 80" style="left:${8 + pct * 74}%">${auto(0, 0, 1)}</svg>
+      <svg class="vlag" viewBox="0 0 30 44"><rect x="0" y="0" width="3" height="44" fill="#C9D3DE"/>${geblokt(3, 0, 24, 16, 3)}</svg>
+    </div>
+    <span class="slotinfo">${ster(1.5)} nog ${nog}</span>`;
+  if (thema === 'kasteel') return `
+    <div class="regenboog" role="img" aria-label="${verdiend} van ${drempel} sterren"><i style="width:${Math.round(pct * 100)}%"></i></div>
+    <span class="slotinfo">${ster(1.5)} nog ${nog}</span>`;
+  // tuin: vijf bloemetjes, nooit cijfers
+  const open = Math.floor(pct * 5);
+  return `<div class="bloemetjes" role="img" aria-label="${open} van 5 bloemetjes open">${Array.from({ length: 5 }, (_, i) => i < open
+    ? `<svg viewBox="-14 -14 28 28">${[0, 72, 144, 216, 288].map((a) => `<circle cx="${Math.cos(a * Math.PI / 180) * 6}" cy="${Math.sin(a * Math.PI / 180) * 6}" r="5.5" fill="#F59AC8"/>`).join('')}<circle r="4" fill="#FFE07A"/></svg>`
+    : '<svg viewBox="-14 -14 28 28"><path d="M0 12V0" stroke="#7FB069" stroke-width="2.5"/><ellipse cx="0" cy="-3" rx="5" ry="8" fill="#C9B7DE"/></svg>').join('')}</div>`;
+}
+const ster = (cqw, kl = '#F2B33D') => `<svg viewBox="0 0 24 24" style="width:${cqw}cqw;height:${cqw}cqw;display:inline-block"><path d="${P.ster}" fill="${kl}" stroke="#B8800F" stroke-width="1.2" stroke-linejoin="round"/></svg>`;
+const kroontje = () => `<svg viewBox="-50 -56 100 60">${kroon(0, 0, 1)}</svg>`;
+const vlindertje = (k = '#F59AC8', k2 = '#B98CE6') => `<svg viewBox="-34 -34 68 60">${vlinderS(0, 0, 1.2, k, k2)}</svg>`;
+
+/* ───────── Schermen ───────── */
+function spelletjes(t, th) {
+  const verdiend = th.leest ? th.verdiend : th.verdiend;
+  const deler = th.leest ? 1 : 5;
+  const wimpels = ['#C2337A', '#4D9BE8', '#F2B33D', '#3DAA55'];
+  const hoeden = ['#C2337A', '#8A3FC0', '#E0672E', '#4D9BE8', '#3DAA55', '#F59AC8', '#D99A00', '#1D9AA8'];
+  return `<div class="spellen">${spellen.map(([s, naam, dr], i) => {
+    const drempel = Math.ceil(dr / deler);
+    const nog = Math.max(0, drempel - verdiend);
+    const dicht = nog > 0, nieuw = !dicht && s === (th.leest ? 'koken' : 'touwspringen') || (!th.leest && !dicht && s === 'racen');
+    if (t === 'race') return `<div class="tg${dicht ? ' dicht' : ''}" aria-label="${naam}${dicht ? ', op slot' : ''}">
+      <span class="nr">${i + 1}</span>
+      ${dicht ? '<span class="stoplicht"><i></i><i></i><i></i></span>' : nieuw ? '<span class="nieuw-label">NIEUW</span>' : ''}
+      <div class="tg-beeld">${ic(P[s], 'ic tg-icoon')}${dicht ? '<span class="rolluik"></span>' : ''}</div>
+      <div class="tg-naam">${naam}</div>${dicht ? slot(t, nog, drempel, verdiend) : ''}</div>`;
+    if (t === 'kasteel') return `<div class="tg${dicht ? ' dicht' : ''}" aria-label="${naam}${dicht ? ', op slot' : ''}">
+      <svg class="wimpel" viewBox="0 0 40 36"><rect x="0" y="0" width="3" height="36" fill="#8E1F55"/><path d="M3 2H38L28 10L38 18H3Z" fill="${wimpels[i % 4]}"/></svg>
+      ${nieuw ? `<span class="nieuw-label">${kroontje()}</span>` : ''}
+      <div class="tg-beeld">${dicht ? `<span class="deur"><svg viewBox="0 0 24 24"><circle cx="12" cy="9" r="4" fill="#F2B33D"/><path d="M10 12h4l1 8H9z" fill="#F2B33D"/></svg></span>` : ic(P[s], 'ic tg-icoon')}</div>
+      <div class="tg-naam">${naam}</div>${dicht ? slot(t, nog, drempel, verdiend) : ''}</div>`;
+    return `<div class="tg${dicht ? ' dicht' : ''}" aria-label="${naam}${dicht ? ', slaapt nog' : ''}">
+      ${nieuw ? `<span class="nieuw-label">${vlindertje()}</span>` : ''}
+      <div class="hoed" style="background:${hoeden[i]}"><span class="rondje">${ic(P[s])}</span></div>
+      <div class="steel">${dicht ? '<svg class="slaap" viewBox="0 0 30 10"><path d="M3 3q4 5 8 0M19 3q4 5 8 0" stroke="#7A5A3C" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg><span class="zzz">z</span>' : ''}</div>
+      ${dicht ? slot(t, nog, drempel, verdiend) : ''}</div>`;
+  }).join('')}</div>${t === 'tuin' ? gras() : ''}`;
+}
+
+function gras() {
+  const kl = ['#F59AC8', '#B98CE6', '#FFC27A', '#B9D3F5', '#F59AC8'];
+  return `<svg class="gras" viewBox="0 0 1000 80" preserveAspectRatio="none"><path d="M0 50Q250 20 500 44T1000 36V80H0Z" fill="#B9E0AE"/>
+    ${kl.map((k, i) => bloem(60 + i * 220, 40 - (i % 2) * 8, .8, k)).join('')}</svg>`;
+}
+
+function verhalen(t, th) {
+  let kop = '';
+  if (t === 'race') kop = `<div class="reeks"><div class="pook" role="group" aria-label="Reeks"><span class="pook-label">Versnelling</span>
+    ${reeksen.map(([k, l], i) => `<span class="gang${k === th.reeks ? ' aan' : ''}"><b>${i + 1}</b>${l}</span>`).join('')}</div></div>`;
+  if (t === 'kasteel') {
+    const steen = [['#E23B3B', 'M12 3L20 9L12 21L4 9Z'], ['#4D9BE8', 'M6 4H18L22 10L12 21L2 10Z'], ['#3DAA55', 'M12 2L21 12L12 22L3 12Z']];
+    kop = `<div class="reeks"><div class="stenen" role="group" aria-label="Reeks">${reeksen.map(([k, l], i) =>
+      `<span class="steen${k === th.reeks ? ' aan' : ''}"><svg viewBox="0 0 24 24"><path d="${steen[i][1]}" fill="${steen[i][0]}" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/><path d="M8 9h8" stroke="#fff" stroke-width="1.2" opacity=".7"/></svg>${l}</span>`).join('')}</div></div>`;
+  }
+  if (t === 'tuin') kop = `<svg class="tak" viewBox="0 0 1000 30" preserveAspectRatio="none"><path d="M0 10Q500 30 1000 8" stroke="#A86A3D" stroke-width="7" fill="none"/>
+    ${[90, 300, 520, 760, 930].map((x) => `<ellipse cx="${x}" cy="16" rx="18" ry="8" fill="#7FB069" transform="rotate(-20 ${x} 16)"/>`).join('')}</svg>`;
+  const kaarten = th.verhalen.map(([nr, titel, motief, kl]) => {
+    const gelezen = th.gelezen.includes(nr);
+    const kaft = `<div class="kaft" style="background:${kl}">${ic(P[motief])}
+      ${t === 'race' ? `<span class="bord">${String(nr).padStart(2, '0')}</span>` : ''}
+      ${t === 'kasteel' ? '<span class="lint"></span>' : ''}
+      ${gelezen ? (t === 'race' ? `<svg class="gelezen" viewBox="0 0 40 40"><rect x="2" y="2" width="3" height="36" fill="#C9D3DE"/>${geblokt(5, 2, 30, 20, 5)}</svg>`
+        : t === 'kasteel' ? `<span class="gelezen">${kroontje()}</span>` : `<span class="gelezen">${vlindertje('#FFC27A', '#F59AC8')}</span>`) : ''}</div>`;
+    if (t === 'tuin') return `<div class="boek" aria-label="${titel}${gelezen ? ', al gelezen' : ''}"><span class="draad"></span>${kaft}<span class="luister">${ic(P.geluid)}</span></div>`;
+    return `<div class="boek" aria-label="${titel}">${kaft}<span class="boek-titel">${titel}</span></div>`;
+  }).join('');
+  return `${kop}<div class="boeken">${kaarten}</div>${t === 'tuin' ? gras() : ''}`;
+}
+
+function kleurplaten(t, th) {
+  const rot = [-2, 1.5, -1, 2, 1, -2, 2, -1.5];
+  let deco = '', verf = '';
+  const kleuren = ['#E23B3B', '#F2B33D', '#3DAA55', '#4D9BE8', '#B98CE6', '#F59AC8'];
+  if (t === 'race') verf = `<div class="verf" aria-label="Kleuren">${kleuren.map((k, i) => `<svg viewBox="-20 -70 40 72" style="width:2.6cqw;height:4.6cqw;${i === 1 ? 'transform:translateY(-.8cqw)' : ''}">${spuitbus(0, 0, 1, k)}</svg>`).join('')}</div>`;
+  if (t === 'kasteel') verf = `<div class="verf" aria-label="Kleuren">${kleuren.map((k, i) => `<svg viewBox="0 0 24 24" style="width:3.2cqw;height:3.2cqw;${i === 1 ? 'transform:scale(1.25);filter:drop-shadow(0 0 .5cqw #F2B33D)' : ''}"><path d="M12 3L20 9L12 21L4 9Z" fill="${k}" stroke="#fff" stroke-width="1.4" stroke-linejoin="round"/></svg>`).join('')}</div>`;
+  if (t === 'tuin') {
+    deco = `<svg class="lijn" viewBox="0 0 1000 40" preserveAspectRatio="none" style="top:1.6cqw"><path d="M0 6Q500 40 1000 6" stroke="#A86A3D" stroke-width="3" fill="none"/></svg>
+            <svg class="lijn" viewBox="0 0 1000 40" preserveAspectRatio="none" style="top:19.4cqw"><path d="M0 6Q500 40 1000 6" stroke="#A86A3D" stroke-width="3" fill="none"/></svg>`;
+    verf = `<div class="verf" aria-label="Kleuren">${kleuren.map((k, i) => `<svg viewBox="-24 -24 48 70" style="width:3.4cqw;height:5cqw;${i === 4 ? 'transform:translateY(-.8cqw) scale(1.1)' : ''}">${bloem(0, 0, 1.4, k)}</svg>`).join('')}</div>`;
+  }
+  const items = platen.map(([m, naam, kl], i) => {
+    const bezig = th.kleurplaat.bezig === i, klaar = th.kleurplaat.klaar.includes(i);
+    const tekening = `<svg class="tekening" viewBox="0 0 24 24"><path d="${P[m]}" fill="${klaar ? kl : bezig ? `url(#half-${t}-${i})` : 'none'}" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round" stroke-linecap="round"/>
+      <defs><linearGradient id="half-${t}-${i}" x1="0" x2="1"><stop offset=".5" stop-color="${kl}"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient></defs></svg>`;
+    const vast = t === 'race' ? `<svg class="klem" viewBox="0 0 26 24" style="left:18%"><rect x="2" y="0" width="22" height="16" rx="3" fill="#C9D3DE"/><rect x="6" y="14" width="14" height="10" rx="2" fill="#5B6B8C"/></svg>
+                                   <svg class="klem" viewBox="0 0 26 24" style="right:18%"><rect x="2" y="0" width="22" height="16" rx="3" fill="#C9D3DE"/><rect x="6" y="14" width="14" height="10" rx="2" fill="#5B6B8C"/></svg>`
+      : t === 'kasteel' ? `<svg class="touwtje" viewBox="0 0 80 24"><path d="M6 24L40 3L74 24" stroke="#C2337A" stroke-width="2" fill="none"/>${hart(40, 6, .6, '#C2337A')}</svg>`
+      : `<svg class="knijper" viewBox="0 0 14 30" style="left:22%"><rect x="1" y="0" width="12" height="30" rx="3" fill="${['#F59AC8', '#FFC27A', '#B9D3F5', '#B98CE6'][i % 4]}"/><circle cx="7" cy="12" r="2" fill="#fff"/></svg>
+         <svg class="knijper" viewBox="0 0 14 30" style="right:22%"><rect x="1" y="0" width="12" height="30" rx="3" fill="${['#B98CE6', '#F59AC8', '#FFC27A', '#B9D3F5'][i % 4]}"/><circle cx="7" cy="12" r="2" fill="#fff"/></svg>`;
+    const badge = klaar ? (t === 'race' ? `<svg viewBox="0 0 40 40" style="position:absolute;right:-1cqw;top:-1cqw;width:3.6cqw;height:3.6cqw;transform:rotate(10deg)"><rect x="2" y="2" width="3" height="36" fill="#C9D3DE"/>${geblokt(5, 2, 30, 20, 5)}</svg>`
+      : t === 'kasteel' ? `<span style="position:absolute;right:-1.4cqw;top:-1.8cqw;width:4cqw;height:3cqw;transform:rotate(14deg)">${kroontje()}</span>`
+      : `<span style="position:absolute;right:-1.2cqw;bottom:-1cqw;width:4cqw;height:3.4cqw">${vlindertje('#FFC27A', '#F59AC8')}</span>`) : '';
+    const titel = th.leest ? `<span class="plaat-naam">${naam}${klaar ? ` · ${ster(1.2)}+3` : ''}</span>` : '';
+    return `<div class="plaat" style="transform:rotate(${rot[i]}deg)" aria-label="${naam}">${vast}${tekening}${badge}${titel}</div>`;
+  }).join('');
+  return `${deco}<div class="platen">${items}</div>${verf}`;
+}
+
+function figuurtje(t, th) {
+  const soorten = [['huid', 'HUID'], ['haar', 'HAAR'], ['hoofd', 'HOED'], ['shirt', 'SHIRT'], ['broek', 'BROEK'], ['schoenen', 'SCHOEN']];
+  const shirtKl = ['#2D6BD6', '#E23B3B', '#3DAA55', '#F2B33D', '#B98CE6', '#F59AC8', '#1C2433', '#1D9AA8'];
+  const dichtVan = th.leest ? 6 : 6;
+  let buhne = '', sTags = '';
+  if (t === 'race') {
+    buhne = `<svg viewBox="0 0 300 330" style="position:absolute;inset:0;width:100%;height:100%" preserveAspectRatio="xMidYMax meet">
+      <path d="M150 0L40 300H260Z" fill="#fff" opacity=".08"/>
+      <rect x="20" y="300" width="260" height="30" fill="#0E1830"/>${geblokt(20, 300, 260, 30, 26)}
+      <rect x="70" y="250" width="160" height="56" rx="4" fill="#F2B33D"/><text x="150" y="292" text-anchor="middle" font-family="Baloo 2" font-weight="800" font-size="44" fill="#16264A">1</text></svg>`;
+    sTags = soorten.map(([k, l], i) => `<span class="soort${i === 3 ? ' aan' : ''}">${l}</span>`).join('');
+  } else if (t === 'kasteel') {
+    buhne = `<svg viewBox="0 0 300 330" style="position:absolute;inset:0;width:100%;height:100%" preserveAspectRatio="xMidYMax meet">
+      <ellipse cx="150" cy="160" rx="132" ry="160" fill="#F2B33D"/><ellipse cx="150" cy="160" rx="116" ry="144" fill="#DDF0FC"/>
+      <path d="M70 70Q90 40 120 34" stroke="#fff" stroke-width="10" fill="none" stroke-linecap="round" opacity=".8"/>
+      ${[0, 45, 90, 135, 180, 225, 270, 315].map((a) => `<circle cx="${150 + Math.cos(a * Math.PI / 180) * 124}" cy="${160 + Math.sin(a * Math.PI / 180) * 152}" r="8" fill="${a % 90 ? '#C2337A' : '#fff'}"/>`).join('')}
+      ${kroon(150, 18, .9)}</svg>`;
+    sTags = soorten.map(([k, l], i) => `<span class="soort${i === 3 ? ' aan' : ''}"><svg viewBox="0 0 36 26"><path d="M18 4a3 3 0 1 1 3 3l-3 3L2 22H34L18 10" stroke="#B8800F" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>${l.charAt(0) + l.slice(1).toLowerCase()}</span>`).join('');
+  } else {
+    buhne = `<svg viewBox="0 0 300 330" style="position:absolute;inset:0;width:100%;height:100%" preserveAspectRatio="xMidYMax meet">
+      <ellipse cx="150" cy="300" rx="140" ry="28" fill="#B9E0AE"/><ellipse cx="150" cy="200" rx="110" ry="130" fill="#FFF6C2" opacity=".55"/>
+      ${[[30, 300, '#C2337A'], [80, 318, '#8A3FC0'], [220, 318, '#E0672E'], [270, 300, '#C2337A'], [150, 324, '#F59AC8']].map(([x, y, k]) => paddenstoel(x, y, .32, k)).join('')}
+      ${glinster(60, 120, 1.2, '#F2B33D')}${glinster(240, 90, 1, '#F59AC8')}${glinster(250, 200, .8, '#B98CE6')}${vlinderS(70, 60, .9, '#F59AC8')}</svg>`;
+    const blad = ['#F59AC8', '#FFC27A', '#B9D3F5', '#B98CE6', '#AEDDA2', '#F59AC8'];
+    sTags = soorten.map(([k], i) => `<span class="soort${i === 3 ? ' aan' : ''}" aria-label="${k}"><svg viewBox="0 0 60 60">${[0, 60, 120, 180, 240, 300].map((a) => `<circle cx="${30 + Math.cos(a * Math.PI / 180) * 16}" cy="${30 + Math.sin(a * Math.PI / 180) * 16}" r="13" fill="${blad[i]}"/>`).join('')}<circle cx="30" cy="30" r="16" fill="#fff"/></svg>${ic(P[k])}</span>`).join('');
+  }
+  const stukken = shirtKl.map((k, i) => {
+    const dicht = i >= dichtVan;
+    const drempel = th.leest ? [70, 90][i - 6] : [15, 20][i - 6];
+    const nog = dicht ? drempel - th.verdiend : 0;
+    const sh = `<svg class="shirt" viewBox="0 0 24 24"><path d="${P.shirt}" fill="${dicht ? '#C9D3DE' : k}" stroke="${dicht ? '#9AA6B8' : 'rgba(0,0,0,.35)'}" stroke-width="1.2" stroke-linejoin="round"/></svg>`;
+    let slotje = '';
+    if (dicht && t === 'race') slotje = `<span style="position:absolute;bottom:-1.6cqw;font-weight:800;font-size:1.15cqw;color:#F2B33D;display:flex;gap:.3cqw;align-items:center">${ster(1.2)} nog ${nog}</span><span class="stoplicht" style="position:absolute;top:-.6cqw;right:-.4cqw;width:1.5cqw;padding:.25cqw;border-radius:.5cqw;background:#16264A;display:grid;gap:.2cqw"><i style="display:block;width:1cqw;height:1cqw;border-radius:50%;background:#FF4D4D;box-shadow:0 0 .6cqw #FF4D4D"></i><i style="display:block;width:1cqw;height:1cqw;border-radius:50%;background:#34425A"></i></span>`;
+    if (dicht && t === 'kasteel') slotje = `<svg viewBox="0 0 24 24" style="position:absolute;width:2.4cqw;height:2.4cqw;right:0;bottom:0"><circle cx="12" cy="9" r="4" fill="#8E1F55"/><path d="M10 12h4l1 8H9z" fill="#8E1F55"/></svg><span style="position:absolute;bottom:-2.2cqw;font-weight:800;font-size:1.15cqw;color:#A0275F;display:flex;gap:.3cqw;align-items:center">${ster(1.2)} nog ${nog}</span>`;
+    if (dicht && t === 'tuin') slotje = `<span style="position:absolute;bottom:-2.4cqw">${slot('tuin', nog, drempel, th.verdiend)}</span>`;
+    return `<span class="stuk${i === 0 ? ' aan' : ''}">${sh}${slotje}</span>`;
+  }).join('');
+  const kl = t === 'race' ? 'color:#F3F6FC' : '';
+  return `<div class="fig-raster">
+    <div class="buhne">${buhne}<svg class="figuur" viewBox="-4 -12 208 302">${FIG[th.fig] || ''}</svg></div>
+    <div style="${kl};display:grid;align-content:start">
+      <div class="soorten" role="group" aria-label="Soort">${sTags}</div>
+      <div class="stukken">${stukken}</div>
+    </div></div>${t === 'tuin' ? gras() : ''}`;
+}
+
+function feest(t, th) {
+  const stukjes = [];
+  for (let i = 0; i < 34; i++) {
+    const left = (i * 29) % 100, dur = 3.2 + (i % 5) * .7, delay = -((i * 0.37) % dur), size = 1 + (i % 3) * .5;
+    let vorm;
+    if (t === 'race') vorm = i % 3 === 0 ? `<svg viewBox="0 0 10 10" style="width:${size}cqw;height:${size}cqw">${geblokt(0, 0, 10, 10, 2)}</svg>`
+      : `<span style="display:block;width:${size}cqw;height:${size * .5}cqw;background:${['#F2B33D', '#E23B3B', '#fff', '#2D6BD6'][i % 4]}"></span>`;
+    else if (t === 'kasteel') vorm = i % 2 ? `<svg viewBox="-16 -16 32 26" style="width:${size * 1.4}cqw;height:${size * 1.2}cqw">${hart(0, 0, 1, ['#F28AB8', '#C2337A', '#F2B33D'][i % 3])}</svg>`
+      : `<svg viewBox="-12 -12 24 24" style="width:${size * 1.3}cqw;height:${size * 1.3}cqw">${glinster(0, 0, 1, ['#F2B33D', '#fff', '#B98CE6'][i % 3])}</svg>`;
+    else vorm = i % 4 === 0 ? `<span style="display:block;width:${size * 2.4}cqw;height:${size * 2}cqw">${vlindertje(['#F59AC8', '#FFC27A', '#B9D3F5'][i % 3], '#B98CE6')}</span>`
+      : `<span style="display:block;width:${size}cqw;height:${size * 1.6}cqw;border-radius:50% 50% 50% 0;background:${['#F59AC8', '#FFC27A', '#B98CE6', '#AEDDA2'][i % 4]}"></span>`;
+    stukjes.push(`<i style="left:${left}%;animation-duration:${dur}s;animation-delay:${delay}s">${vorm}</i>`);
+  }
+  let kaart;
+  if (t === 'race') kaart = `<div class="feest-kaart">
+      <svg viewBox="-70 -80 140 100" style="width:12cqw;height:9cqw">${beker(0, 10, 1.1)}</svg>
+      <div class="feest-titel">Finish!</div>
+      <div class="feest-sub">Verhaal uit, Luca. ${ster(2)} +5 sterren zodra mama of papa het goedkeurt.</div>
+      <div class="knoppen"><button class="knop">${ic(P.opnieuw)}Nog eens</button><button class="knop licht">Naar de pitstop ${ic(P.stop)}</button></div></div>`;
+  else if (t === 'kasteel') kaart = `<div class="feest-kaart">
+      <svg viewBox="-50 -60 100 64" style="width:10cqw;height:6.4cqw;animation:zweef 2s ease-in-out infinite">${kroon(0, 0, 1)}</svg>
+      <div class="feest-titel">Hoera, Yuna!</div>
+      <div class="feest-sub">Je las het hele verhaal. ${ster(2)} +5 sterren na goedkeuring.</div>
+      <div class="knoppen"><button class="knop">${ic(P.opnieuw)}Nog een verhaal</button><button class="knop licht">Terug naar de zaal</button></div></div>`;
+  else kaart = `<div class="feest-kaart" aria-label="Goed gedaan, Feline!">
+      <div class="sterren-rij">${[0, 1, 2, 3, 4].map((i) => `<span style="display:block;animation:zweef ${1.6 + i * .2}s ease-in-out infinite">${ster(6)}</span>`).join('')}</div>
+      <div class="knoppen">
+        <button class="knop" aria-label="Nog eens"><svg viewBox="0 0 60 60">${[0, 60, 120, 180, 240, 300].map((a) => `<circle cx="${30 + Math.cos(a * Math.PI / 180) * 16}" cy="${30 + Math.sin(a * Math.PI / 180) * 16}" r="13" fill="#F59AC8"/>`).join('')}<circle cx="30" cy="30" r="17" fill="#C2337A"/></svg>${ic(P.opnieuw)}</button>
+        <button class="knop" aria-label="Stoppen"><svg viewBox="0 0 60 60">${[0, 60, 120, 180, 240, 300].map((a) => `<circle cx="${30 + Math.cos(a * Math.PI / 180) * 16}" cy="${30 + Math.sin(a * Math.PI / 180) * 16}" r="13" fill="#B98CE6"/>`).join('')}<circle cx="30" cy="30" r="17" fill="#8A3FC0"/></svg>${ic(P.huis)}</button>
+      </div></div>`;
+  const achter = t === 'race' ? 'radial-gradient(circle at 50% 40%, rgba(242,179,61,.25), transparent 60%)'
+    : t === 'kasteel' ? 'radial-gradient(circle at 50% 40%, rgba(255,255,255,.9), transparent 65%)'
+    : 'radial-gradient(circle at 50% 45%, rgba(255,240,168,.8), transparent 60%)';
+  return `<div class="feest" style="background:${achter}">${kaart}</div><div class="confetti" aria-hidden="true">${stukjes.join('')}</div>${t === 'tuin' ? gras() : ''}`;
+}
+
+const SCHERM_FN = { spelletjes, verhalen, kleurplaten, figuurtje, feest };
+
+/* ───────── Uitleg naast de tablet ───────── */
+const NOTITIES = {
+  race: {
+    spelletjes: ['Elk spel is een pitbox met een racenummer en een geblokte rand.', 'Wat nog op slot zit, heeft het rolluik dicht en een knipperend rood stoplicht.', 'De voortgang is een weg: het autootje rijdt naar de finishvlag terwijl Luca sterren verdient.', 'Bovenaan raast de nr. 8 voorbij de vulkaan en zwaait de dino met de vlag.'],
+    verhalen: ['De reeks kies je met een versnellingspook: 1, 2, 3.', 'Elk verhaal is een racekaart met een nummerplaat.', 'Uitgelezen? Dan hangt er een geblokte vlag aan.', 'De dino leest zelf mee bij de vulkaan.'],
+    kleurplaten: ['Een spuitgarage: de platen hangen met klemmen aan het gaatjesbord.', 'Kleuren kies je uit spuitbussen.', 'Een plaat die af is krijgt een finishvlag, een plaat waar je mee bezig bent staat half gespoten.'],
+    figuurtje: ['Luca staat op het podium, plaats 1, onder een spot.', 'De soorten zijn nummerplaten.', 'Stukken op slot krijgen hetzelfde stoplicht als de spelletjes.'],
+    feest: ['Na een verhaal, kleurplaat of spelletje: beker, geblokte vlaggen en geblokte confetti.', 'De knoppen zijn schuine raceknoppen.'],
+  },
+  kasteel: {
+    spelletjes: ['Elk spel is een torenraam met een wapperende wimpel en een gouden rand.', 'Op slot is de kasteeldeur dicht, met een gouden sleutelgat.', 'De voortgang is een regenboog die zich vult.', 'Bovenaan hangt een slinger van vlaggetjes over het kasteel.'],
+    verhalen: ['De reeks kies je met edelstenen: robijn, saffier, smaragd.', 'Elk verhaal is een sprookjesboek met gouden hoekjes en een leeslint.', 'Uitgelezen? Dan krijgt het boek een kroontje.'],
+    kleurplaten: ['Een schilderszaal: platen in gouden lijsten op behang met hartjes.', 'Elke lijst hangt aan een lintje met een hartje.', 'Kleuren zijn edelstenen.'],
+    figuurtje: ['Spiegeltje aan de wand: Yuna staat in een gouden spiegel met een kroon erboven.', 'De soorten zijn kleerhangers uit de kleerkast.', 'Stukken op slot hebben een sleutelgat.'],
+    feest: ['Vuurwerk boven het kasteel, een zwevende kroon en een regen van hartjes en glinsters.'],
+  },
+  tuin: {
+    spelletjes: ['Feline leest nog niet: geen woorden, alleen prenten en de voorleesstem.', 'Elk spel is een paddenstoelhuisje. Op slot slaapt het huisje nog, met oogjes dicht.', 'Voortgang = bloemetjes die opengaan, nooit cijfers.', 'Vlinders fladderen door de kop.'],
+    verhalen: ['Verhalen hangen als ronde prentjes aan een tak en schommelen zacht.', 'Onder elk prentje zit een voorleesknop.', 'Is het verhaal uit, dan komt er een vlinder op zitten.'],
+    kleurplaten: ['De platen hangen met knijpers aan de waslijn en wiegen mee.', 'Kleuren zijn bloemen.', 'Een plaat die af is krijgt een vlinder.'],
+    figuurtje: ['Feline staat in een feeënkring van paddenstoelen, met een toverstaf in de kop.', 'De soorten zijn bloemen met een prentje, zonder tekst.', 'Wat nog op slot zit, toont bloemknopjes die één voor één opengaan.'],
+    feest: ['Een wolk van vlinders en bloemblaadjes en vijf dansende sterren.', 'Geen tekst: de stem zegt "Goed gedaan, Feline!".', 'Twee bloemknoppen: nog eens of naar huis.'],
+  },
+};
+
+const BOUWSTENEN = [
+  ['Kop', 'Nacht, weg, vulkaan, dino en de nr. 8 die voorbij raast', 'Regenboog, kasteel, wolkjes, slinger', 'Lila lucht, zon, paddenstoelhuisjes, vlinders'],
+  ['Achtergrond', 'Donker asfalt met wegmarkering', 'Roze behang met streepjes en stipjes', 'Lila naar groen, met gras en bloemen onderaan'],
+  ['Tegel', 'Schuine pitbox met racenummer', 'Torenraam met gouden rand en wimpel', 'Paddenstoelhuisje, zonder tekst'],
+  ['Op slot', 'Rolluik dicht en rood stoplicht', 'Kasteeldeur met sleutelgat', 'Huisje slaapt, oogjes dicht'],
+  ['Voortgang', 'Auto rijdt naar de finishvlag', 'Regenboog vult zich', 'Vijf bloemetjes gaan open'],
+  ['Klaar of gelezen', 'Geblokte vlag', 'Kroontje', 'Vlinder'],
+  ['Keuzeknoppen', 'Versnellingspook en nummerplaten', 'Edelstenen en kleerhangers', 'Bloemen met een prentje'],
+  ['Kleuren kiezen', 'Spuitbussen', 'Edelstenen', 'Bloemen'],
+  ['Feest', 'Beker, vlaggen, geblokte confetti', 'Kroon, vuurwerk, hartjes', 'Vlinders, blaadjes, vijf sterren'],
+  ['Kop-knoppen', 'Wiel', 'Schildje met gouden rand', 'Bloem'],
+];
+
+/* ───────── Opbouw ───────── */
+let kies = { thema: 'race', scherm: 'spelletjes' };
+try { const b = JSON.parse(localStorage.getItem('thema-mockup') || 'null'); if (b && THEMAS[b.thema]) kies = b; } catch (e) {}
+const hash = location.hash.slice(1);
+if (THEMAS[hash]) kies.thema = hash;
+
+function teken() {
+  const t = kies.thema, th = THEMAS[t], s = kies.scherm;
+  const [titel, sub] = th.titels[s];
+  const kop = `<div class="kop"><svg class="scene" viewBox="0 0 1000 190" preserveAspectRatio="xMidYMax slice" aria-hidden="true">${SCENES[t][s]()}</svg>
+    <div class="kop-inhoud">${knopje(t, P.terug, 'Terug')}
+      ${titel ? `<div class="kop-titel"><b>${titel}</b><span>${sub}</span></div>` : ''}
+      <span class="spacer"></span>${!th.leest ? knopje(t, P.geluid, 'Voorlezen') : ''}${knopje(t, th.leest ? P.geluid : P.huis, th.leest ? 'Geluid' : 'Naar huis')}</div></div>`;
+  const el = document.getElementById('scherm');
+  el.className = `scherm t-${t}`;
+  el.setAttribute('aria-label', `${th.kind}: ${SCHERMEN.find(([k]) => k === s)[1]}`);
+  el.innerHTML = kop + `<div class="inhoud${t === 'race' && s === 'kleurplaten' ? ' bord-gaatjes' : ''}">${SCHERM_FN[s](t, th)}</div>`;
+  document.getElementById('notities').innerHTML = `<span class="wie">${th.kind} · ${th.naam}</span>
+    <h3>${SCHERMEN.find(([k]) => k === s)[1]}</h3><ul>${NOTITIES[t][s].map((n) => `<li>${n}</li>`).join('')}</ul>
+    <p class="tip">${t === 'tuin' ? 'Drempels zijn een vijfde, zoals nu bij wie niet leest: Feline heeft 12 sterren verdiend.' : `Voorbeeld: ${th.kind} verdiende ooit ${th.verdiend} sterren.`}</p>`;
+  document.querySelectorAll('#kinderen .kies').forEach((b) => b.setAttribute('aria-pressed', b.dataset.t === t));
+  document.querySelectorAll('#schermen .kies').forEach((b) => b.setAttribute('aria-pressed', b.dataset.s === s));
+  try { localStorage.setItem('thema-mockup', JSON.stringify(kies)); } catch (e) {}
+}
+
+document.getElementById('kinderen').innerHTML = Object.entries(THEMAS).map(([k, th]) =>
+  `<button type="button" class="kies" id="kind-${k}" data-t="${k}"><span class="stip" style="background:${th.stip}"></span>${th.kind} · ${th.naam}</button>`).join('');
+document.getElementById('schermen').innerHTML = SCHERMEN.map(([k, l]) => `<button type="button" class="kies" id="scherm-${k}" data-s="${k}">${l}</button>`).join('');
+document.getElementById('kinderen').addEventListener('click', (e) => { const b = e.target.closest('.kies'); if (b) { kies.thema = b.dataset.t; teken(); } });
+document.getElementById('schermen').addEventListener('click', (e) => { const b = e.target.closest('.kies'); if (b) { kies.scherm = b.dataset.s; teken(); } });
+
+document.getElementById('bouwstenen').innerHTML = `<thead><tr><th></th><th>Luca · Dino's en auto's</th><th>Yuna · Prinsessenkasteel</th><th>Feline · Feeëntuin</th></tr></thead>
+  <tbody>${BOUWSTENEN.map(([a, ...r]) => `<tr><th scope="row">${a}</th>${r.map((c) => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>`;
+teken();
+</script>
