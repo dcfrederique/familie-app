@@ -78,7 +78,7 @@ Alles hieronder is alleen voor de ouders. De tabletaccounts van de kinderen moge
 - **Privé per ouder** als standaard. Je partner ziet het enkel als je dat aanzet.
 - Gewicht: een meting per dag, grafiek van 30 en 90 dagen, optioneel een doel.
 - Fitness: training met soort, duur en een korte notitie; weekoverzicht.
-- Loopschema: een opbouwschema in weken (bijvoorbeeld 3 keer per week, afwisselend lopen en wandelen). Vandaag-scherm toont de volgende training. Afvinken na het lopen.
+- Loopschema: uitgewerkt plan in `docs/loopschema.md` (looptracking met Capacitor, "light Strava" voor de ouders). Oorspronkelijk idee: een opbouwschema in weken (bijvoorbeeld 3 keer per week, afwisselend lopen en wandelen). Vandaag-scherm toont de volgende training. Afvinken na het lopen.
 - Tabellen `wegingen` en `gezondheid_profielen` (gebouwd, privé zonder delen), later `trainingen`, `loopschema`.
 
 ### Vandaag als familie-assistent
