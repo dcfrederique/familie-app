@@ -9,6 +9,8 @@ export const regels = {
   maxSpaarsaldo: 300,
   /** Hoeveel sterren activiteiten per kind per dag hoogstens opleveren (voorstel). */
   activiteitSterrenPerDag: 20,
+  /** Eenmalig cadeautje aan het einde van het welkomstpad (welkom_afronden op de server). */
+  welkomBonus: 10,
 }
 
 export type Blok = (typeof regels.blokken)[number]

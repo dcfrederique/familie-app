@@ -4,6 +4,7 @@ import { kleurKlasse, type Gebruiker, type Kleur } from '../data/gezin.ts'
 import { themaKeuzes } from '../data/thema.ts'
 import type { KindWijziging, Spelregels } from '../lib/bron/types.ts'
 import { useGegevens } from '../lib/gegevens.ts'
+import { leeftijd } from '../lib/datum.ts'
 import { regels as standaard } from '../lib/regels.ts'
 import { stemKeuzes, type StemKeuze } from '../lib/stem.ts'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
@@ -62,7 +63,7 @@ function KindBeheer({ kind, vrij, magBeheren, ververs }: {
     <section className={`kaart kind-kaart ${kleurKlasse(kind)}`}>
       <div className="kind-kaart-kop">
         <span className="mini-gezicht met-figuurtje" aria-hidden="true"><Figuurtje figuurtje={figuurtjeVan(kind)} uitsnede={hoofdUitsnede} /></span>
-        <h2 className="display">{kind.naam}</h2>
+        <h2 className="display">{kind.naam}{kind.geboortedatum && <span className="leeftijd"> {leeftijd(kind.geboortedatum)} jaar</span>}</h2>
         <SterrenPil aantal={vrij} />
       </div>
       <p className="tip">Tijd geven (sterren worden afgeschreven):</p>
@@ -83,6 +84,10 @@ function KindBeheer({ kind, vrij, magBeheren, ververs }: {
             </select>
           </label>
           <label className="veld">
+            <span>Verjaardag</span>
+            <input type="date" value={kind.geboortedatum ?? ''} onChange={(e) => wijzig({ geboortedatum: e.target.value || null })} />
+          </label>
+          <label className="veld">
             <span>Voorleesstem</span>
             <select value={kind.voorleesstem} onChange={(e) => wijzig({ voorleesstem: e.target.value as StemKeuze })}>
               {stemKeuzes.map((s) => <option key={s.keuze} value={s.keuze}>{s.label}</option>)}
@@ -91,6 +96,11 @@ function KindBeheer({ kind, vrij, magBeheren, ververs }: {
         </div>
       )}
       {magBeheren && <FiguurtjeBeheer kind={kind} />}
+      {magBeheren && kind.welkom_klaar && (
+        <button type="button" className="knop-klein" onClick={() => wijzig({ welkom_klaar: false })}>
+          Welkomstpad opnieuw tonen (zonder nieuwe bonus)
+        </button>
+      )}
       <button type="button" className="knop knop-licht" onClick={() => setOpen(!open)}>
         {open ? 'Geschiedenis verbergen' : 'Geschiedenis'}
       </button>

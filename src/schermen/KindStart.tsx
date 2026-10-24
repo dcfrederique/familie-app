@@ -63,11 +63,7 @@ function StartLezer({ kind, lijst, geladen, vrij, verzoeken, kies }: {
   const gedaan = lijst.filter((t) => t.status === 'gedaan').length
   const nogTeDoen = lijst.filter((t) => t.status === 'te_doen').length
   const wachtend = verzoeken.filter((v) => v.status === 'aangevraagd')
-  const terug = (
-    <Link to="/kinderen" className="rond" aria-label="Terug naar wie speelt er">
-      <svg className="ic" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M15 18l-6-6l6-6" /></svg>
-    </Link>
-  )
+  const terug = <Terug grootte={28} />
   const avatar = <Avatar kind={kind} />
   const titel = <h1 className="kop-titel display">Hoi {kind.naam}!</h1>
 
@@ -181,11 +177,7 @@ function StartPrenten({ kind, lijst, geladen, kies }: { kind: Gebruiker; lijst: 
     : `Hoi ${kind.naam}! Je hebt al ${gedaan} van de ${lijst.length} taakjes gedaan.`
 
   const banner = kind.thema ? bannerVoorKleur[kind.thema] : null
-  const terug = (
-    <Link to="/kinderen" className="rond" aria-label="Terug naar wie speelt er">
-      <svg className="ic" viewBox="0 0 24 24" width="32" height="32" aria-hidden="true"><path d="M15 18l-6-6l6-6" /></svg>
-    </Link>
-  )
+  const terug = <Terug grootte={32} />
   const avatar = <Avatar kind={kind} />
   const titel = <h1 className="kop-titel display">Hoi {kind.naam}!</h1>
   const voorlees = kanVoorlezen() && (
@@ -310,3 +302,22 @@ const Klok = ({ grootte }: { grootte: number }) => <svg className="ic" viewBox="
 const Zandloper = () => <svg className="ic" viewBox="0 0 24 24" width="44" height="44" aria-hidden="true"><path d="M7 3h10M7 21h10M8 3c0 5 8 5 8 9s-8 4-8 9M16 3c0 5-8 5-8 9s8 4 8 9" /></svg>
 const Luidspreker = ({ grootte = 28 }: { grootte?: number }) => <svg className="ic" viewBox="0 0 24 24" width={grootte} height={grootte} aria-hidden="true"><path d="M4 10h4l5-4v12l-5-4H4z" /><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11" /></svg>
 const Camera = ({ grootte }: { grootte: number }) => <svg className="ic" viewBox="0 0 24 24" width={grootte} height={grootte} aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>
+
+/** Terug naar wie speelt er; op een tablet die bij dit kind hoort het slotje voor mama of papa. */
+function Terug({ grootte }: { grootte: number }) {
+  const { perKind } = useSessie()
+  if (perKind) {
+    return (
+      <Link to="/ouder" className="rond" aria-label="Voor mama of papa">
+        <svg className="ic" viewBox="0 0 24 24" width={grootte} height={grootte} aria-hidden="true">
+          <rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" />
+        </svg>
+      </Link>
+    )
+  }
+  return (
+    <Link to="/kinderen" className="rond" aria-label="Terug naar wie speelt er">
+      <svg className="ic" viewBox="0 0 24 24" width={grootte} height={grootte} aria-hidden="true"><path d="M15 18l-6-6l6-6" /></svg>
+    </Link>
+  )
+}

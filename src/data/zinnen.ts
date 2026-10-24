@@ -14,6 +14,11 @@ export const zin = {
   kokenZoeken: 'Zoek wat er op het kaartje staat.',
   kokenRoeren: 'Roer maar goed rond!',
   welkDier: 'Welk diertje ga je wassen?',
+  wieBenJij: 'Wie ben jij? Tik op je naam.',
+  welkomFiguur: 'Maak je eigen figuurtje! Kies je haar en je kleren.',
+  welkomJarig: 'Wanneer ben je jarig?',
+  welkomThema: 'Kies je kleur. Zo ziet jouw app eruit.',
+  welkomFeest: 'Hoera! Je hebt je eerste tien sterren!',
 }
 
 /** Wat Huisdier wassen zegt bij elke stap. */

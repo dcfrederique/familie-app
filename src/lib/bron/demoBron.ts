@@ -7,6 +7,7 @@ import { activiteitOmschrijving, activiteitSterren, blokKeuzes, regels as standa
 import type { ActiviteitRegel, Bron, Inzending, LogRegel, NieuweTaak, OuderUitkomst, Spelregels, Taak, Tijdverzoek } from './types.ts'
 
 const DEMO_PIN = '1234'
+const WELKOM = 'Welkom! Je eerste sterren'
 
 interface Toestand {
   taken: Taak[]
@@ -122,6 +123,16 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
         if (reden) throw new Error(reden)
       }
       k.figuurtje = figuurtje && { ...figuurtje }
+    },
+
+    async welkomAfronden(kindId, w) {
+      await this.figuurtjeBewaren(kindId, w.figuurtje)
+      const k = kinderen.find((x) => x.id === kindId)!
+      Object.assign(k, { thema: w.thema, geboortedatum: w.geboortedatum ?? k.geboortedatum, welkom_klaar: true })
+      if (t.log.some((l) => l.kind_id === kindId && l.reden === WELKOM)) return 0
+      const bonus = Math.max(0, Math.min(standaardRegels.welkomBonus, t.regels.max_saldo - saldo(kindId)))
+      if (bonus > 0) boek(kindId, bonus, WELKOM)
+      return bonus
     },
 
     async inzendingBeoordelen(inzId, goed, pin): Promise<OuderUitkomst> {

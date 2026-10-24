@@ -312,3 +312,23 @@ button.rond { border: 0; }
 .log .plus { color: var(--ok); font-weight: 800; }
 .log .min { color: var(--warn); font-weight: 800; }
 .log time { color: var(--muted); font-size: 13px; }
+
+/* Wie ben jij? (tablet die nog bij niemand hoort) */
+.wie-kop { display: grid; gap: 12px; justify-items: center; text-align: center; }
+.wie-sub { margin: 0; font-size: clamp(20px, 2.4vw, 26px); font-weight: 700; color: var(--muted); }
+.wie-voorlees { position: absolute; left: 24px; bottom: 24px; width: 64px; height: 64px; border: 0; border-radius: 50%; background: var(--surface); color: var(--muted); display: grid; place-items: center; }
+.ben-jij-figuur { width: 180px; aspect-ratio: 4 / 5; border-radius: 32px; overflow: hidden; background: var(--kid-tint); animation: ben-jij-hup .6s ease-out; }
+.ben-jij-figuur svg { width: 100%; height: 100%; display: block; }
+.ben-jij .formulier { width: 100%; text-align: center; }
+.ben-jij .formulier h2 { font-size: clamp(24px, 3vw, 32px); }
+.ben-jij p { margin: 0; color: var(--muted); font-size: 18px; }
+@keyframes ben-jij-hup { 0% { transform: scale(.6) rotate(-6deg); opacity: 0; } 60% { transform: scale(1.08) rotate(3deg); opacity: 1; } 100% { transform: none; } }
+@media (prefers-reduced-motion: reduce) { .ben-jij-figuur { animation: none; } }
+
+/* Tablets van het gezin (Toestellen) */
+.tablet-lijst { list-style: none; margin: 8px 0 0; padding: 0; display: grid; gap: 8px; }
+.tablet-lijst li { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px; padding: 10px 0; border-top: 1px solid var(--line); }
+.tablet-lijst li > div:first-child { display: grid; }
+.tablet-lijst li span { color: var(--muted); font-size: 14px; }
+.tablet-lijst .knoppen { margin-top: 0; }
+.kind-kaart .leeftijd { font-size: 16px; font-weight: 700; color: var(--muted); }

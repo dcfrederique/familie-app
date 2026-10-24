@@ -5,7 +5,7 @@ Project: `https://oyqwhrttwaatqymjomtc.supabase.co`
 ## 1. Database
 
 Voer in de Supabase-console, **SQL Editor**, de bestanden in `supabase/migrations/` uit, in volgorde van naam.
-Een script dat al gedraaid heeft, draai je niet opnieuw. `20261022000300_voorbeeldtaken_fotos.sql` maakt ook de privé-opslag `fotos` aan voor bewijsfoto's; `20261022000400_activiteiten.sql` voegt het activiteitlog toe (sterren uit rekenen, na goedkeuring). `20261022001000_figuurtje.sql` voegt het eigen figuurtje per kind toe; zonder die migratie toont de app het basisfiguurtje maar kan een kind niets bewaren. Of met de Supabase CLI:
+Een script dat al gedraaid heeft, draai je niet opnieuw. `20261022000300_voorbeeldtaken_fotos.sql` maakt ook de privé-opslag `fotos` aan voor bewijsfoto's; `20261022000400_activiteiten.sql` voegt het activiteitlog toe (sterren uit rekenen, na goedkeuring). `20261022001000_figuurtje.sql` voegt het eigen figuurtje per kind toe; zonder die migratie toont de app het basisfiguurtje maar kan een kind niets bewaren. `20261024000200_tablet_per_kind.sql` laat elke tablet bij één kind horen en voegt het welkomstpad toe (`docs/tablet-per-kind.md`); zonder die migratie werkt de tablet zoals vroeger (Wie speelt er?). Of met de Supabase CLI:
 `supabase link --project-ref oyqwhrttwaatqymjomtc` en daarna `supabase db push`.
 
 ## 2. Instellingen bij Authentication
@@ -17,7 +17,7 @@ Een script dat al gedraaid heeft, draai je niet opnieuw. `20261022000300_voorbee
 ## 3. In de app
 
 1. Op de gsm van de eerste ouder: **Ik ben mama of papa**, account maken, gezin aanmaken (kinderen staan al ingevuld), pincode instellen.
-2. **Toestellen > Tablet koppelen** geeft een code van 8 tekens, 30 minuten geldig. Op de tablet: **Tablet van de kinderen** en de code intypen.
+2. **Toestellen > Tablet koppelen** geeft een code van 8 tekens, 30 minuten geldig. Op de tablet: **Tablet van de kinderen** en de code intypen. Daarna kiest het kind **Wie ben jij?** en doorloopt het welkomstpad; vanaf dan opent de tablet altijd bij dat kind.
 3. **Toestellen > Gsm van … koppelen** geeft een code voor de andere ouder. Die maakt eerst een account en kiest dan **Ik heb een code**.
 
 ## Regels

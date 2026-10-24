@@ -74,6 +74,16 @@ export interface KindWijziging {
   thema?: Kleur
   figuurtje_alles_vrij?: boolean
   voorleesstem?: StemKeuze
+  geboortedatum?: string | null
+  /** false toont het welkomstpad opnieuw (zonder nieuwe bonus). */
+  welkom_klaar?: boolean
+}
+
+/** Wat het kind kiest in het welkomstpad. */
+export interface Welkom {
+  figuurtje: Figuurtje
+  geboortedatum: string | null
+  thema: Kleur
 }
 
 export interface Spelregels {
@@ -107,6 +117,8 @@ export interface Bron {
   activiteitenTeBeoordelen(): Promise<ActiviteitRegel[]>
   /** Bewaart het figuurtje; null zet het terug naar het basisfiguurtje. De server controleert de drempels. */
   figuurtjeBewaren(kindId: string, figuurtje: Figuurtje | null): Promise<void>
+  /** Bewaart het welkomstpad; geeft de welkomstbonus terug (0 als die al gegeven was). */
+  welkomAfronden(kindId: string, welkom: Welkom): Promise<number>
 
   inzendingBeoordelen(id: string, goed: boolean, pin: string | null): Promise<OuderUitkomst>
   verzoekBehandelen(id: string, toekennen: boolean, reden: string | null, pin: string | null): Promise<OuderUitkomst>

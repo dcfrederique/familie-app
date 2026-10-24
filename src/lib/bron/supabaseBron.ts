@@ -101,6 +101,12 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
       const { error } = await sb.rpc('figuurtje_bewaren', { p_kind: kindId, p_figuurtje: figuurtje })
       fout(error)
     },
+    async welkomAfronden(kindId, w) {
+      const { data, error } = await sb.rpc('welkom_afronden',
+        { p_kind: kindId, p_figuurtje: w.figuurtje, p_geboortedatum: w.geboortedatum, p_thema: w.thema })
+      fout(error)
+      return data as number
+    },
     async activiteitenTeBeoordelen() {
       const { data, error } = await sb.from('activiteitlog')
         .select('id, kind_id, activiteit, inhoud, duur_seconden, sterren, status, tijdstip, dag')

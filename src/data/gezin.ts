@@ -20,6 +20,10 @@ export interface Gebruiker {
   figuurtje_alles_vrij: boolean
   /** Welke stem voorleest (docs/voorleesstem.md); een ouder kiest bij Kinderen. */
   voorleesstem: StemKeuze
+  /** 'JJJJ-MM-DD', of null als niemand ze invulde. */
+  geboortedatum: string | null
+  /** Het welkomstpad (figuurtje, verjaardag, thema) is doorlopen. */
+  welkom_klaar: boolean
 }
 
 export interface NieuwKind {
@@ -41,10 +45,12 @@ const kleuren: Kleur[] = ['blauw', 'roze', 'lila', 'groen']
 /** Startdata voor de demo zonder Supabase. */
 export const demoGebruikers: Gebruiker[] = [
   { id: 'mama', naam: 'Mama', rol: 'ouder', thema: null, kan_lezen: true, vraagt_zelf_tijd: true, volgorde: 1,
-    figuurtje: null, figuurtje_alles_vrij: false, voorleesstem: 'afwisselend' },
+    figuurtje: null, figuurtje_alles_vrij: false, voorleesstem: 'afwisselend', geboortedatum: null, welkom_klaar: true },
   ...startKinderen.map((k, i) => ({
     id: k.naam.toLowerCase(), rol: 'kind' as const, thema: kleuren[i % 4], volgorde: 10 + i, ...k,
     figuurtje: null, figuurtje_alles_vrij: false, voorleesstem: 'afwisselend' as const,
+    // In de demo doorloopt elk kind het welkomstpad als je het op deze tablet kiest.
+    geboortedatum: null, welkom_klaar: false,
   })),
 ]
 

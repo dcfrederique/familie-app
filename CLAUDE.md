@@ -20,6 +20,8 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - Tijd aanvragen in blokken van 15, 30 of 60 min; sterren worden gereserveerd, pas afgeschreven als de ouder op **Toegekend** tikt. **Nu niet** of vervallen = sterren terug.
 - Dagplafond (voorstel 60 min extra per kind) en tijdvenster (7:00 tot 20:00) worden **op de server** gecontroleerd.
 - Afkeuren kost niets, geen strafpunten.
+- Enige uitzondering op goedkeuring: de eenmalige welkomstbonus van 10 sterren op het einde van het welkomstpad (gevraagd door de ouders, 24 oktober 2026).
+- Elke tablet hoort bij één kind (`docs/tablet-per-kind.md`); een ander kind kiezen kan alleen met de pincode of vanaf de gsm van een ouder.
 - Elke bij- en afschrijving komt in een puntenlog met reden.
 - Rustige en lerende activiteiten (verhalen, rekenen, kleurplaten) leveren sterren op en tellen **niet** mee voor de app-tijd; spelletjes (memory, penalty's) leveren niets op en tellen **wel** mee.
 - Geen beschermde personages of merken in prenten, iconen of thema's (geen Spider-Man, Disney enz.): alles is eigen ontwerp.
@@ -34,6 +36,7 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - `prototypes/penalty.html`: werkend prototype van Penalty's (schieten met een veeg, canvas). De keeper-modus moet nog gebouwd worden.
 - `docs/hosting.md`: hosting op Azure Static Web Apps, automatisch deployen, en de klikstappen voor de hele Azure-setup (Speech, back-ups).
 - `docs/huis.md` en `prototypes/huis.html`: use case en klikbaar prototype van Mijn huis (huis groeit met verdiende sterren, zelf aankleden); nog niet in de app.
+- `docs/tablet-per-kind.md`: tablet vastzetten op één kind en het welkomstpad (figuurtje, verjaardag, thema, welkomstbonus).
 - `docs/ouderdeel.md` en `prototypes/ouderdeel.html`: plan en mockup van het ouderdeel als beheertoepassing met hamburgermenu, en latere onderdelen (onze taken, boodschappen, notities, gezondheid); nog niet in de app.
 
 ## Beslist (21 oktober 2026)
