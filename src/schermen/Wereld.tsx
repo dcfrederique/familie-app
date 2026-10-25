@@ -8,6 +8,8 @@ import {
   GROND_Y, MAX_HUIZEN, deurVan, inRechthoek, maakKaart, opDeurmat, stap, voorHuisdeur, huisRechthoek, type Loper,
 } from '../lib/wereld/kaart.ts'
 import { Tekenaar } from '../lib/wereld/tekenen.ts'
+import { WEG_NA, Zender, metPositie, verbind, volg, type Ander } from '../lib/wereld/live.ts'
+import { supabase } from '../lib/supabase.ts'
 import { useSessie } from '../lib/sessie.tsx'
 import { useGegevens } from '../lib/gegevens.ts'
 import { Ster } from './onderdelen.tsx'
@@ -45,7 +47,7 @@ export function OuderWereld() {
 }
 
 function WereldScherm({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolean }) {
-  const { kinderen, bron } = useSessie()
+  const { kinderen, bron, gebruikers, account } = useSessie()
   // Het aantal sterren staat rechtsboven bij het hubbordje, zoals in de mockup (niet voor een ouder).
   const { data: saldo } = useGegevens(bron && !ouder ? async () => (await bron.saldi())[kind.id]?.vrij ?? 0 : null, [bron, kind.id, ouder])
   const navigate = useNavigate()
@@ -72,6 +74,7 @@ function WereldScherm({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolea
     pl: { x: 0, y: 0, face: 'down', moving: false, fase: 0 } as Loper,
     route: [] as [number, number][], doel: null as null | { gebouw?: Gebouw; huis?: string },
     joy: { x: 0, y: 0 }, held: { up: false, down: false, left: false, right: false },
+    anderen: new Map<string, Ander>(),
     cam: [0, 0, 1] as readonly [number, number, number], bezig: false, maat: [960, 640] as [number, number],
   })
 
@@ -121,6 +124,22 @@ function WereldScherm({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolea
     pas()
     const waarnemer = new ResizeObserver(pas)
     waarnemer.observe(cv)
+    // Live: de anderen uit het gezin (ook de ouders) lopen mee. Alleen wat ze tonen is bekend, niets wordt bewaard.
+    const leden = new Map(gebruikers.map((g) => [g.id, g]))
+    s.anderen.clear()
+    const zender = new Zender()
+    const nuPositie = () => ({ id: kind.id, x: s.pl.x, y: s.pl.y, face: s.pl.face, moving: s.pl.moving })
+    const verbinding = verbind({
+      gezin: account?.gezin_id ?? 'demo', ik: kind.id, client: supabase,
+      ontvang: (b) => {
+        if (!leden.has(b.id)) return
+        if (b.t === 'weg') s.anderen.delete(b.id)
+        else if (b.t === 'hallo') verbinding.stuur(zender.nu(nuPositie(), performance.now()))
+        else s.anderen.set(b.id, metPositie(s.anderen.get(b.id), b, performance.now()))
+      },
+    })
+    const zichtbaarheid = () => { if (document.hidden) verbinding.weg(); else verbinding.hallo() }
+    document.addEventListener('visibilitychange', zichtbaarheid)
     let t = 0, laatst = performance.now(), raf = 0
     const lus = (nu: number) => {
       const dt = Math.min(0.05, (nu - laatst) / 1000); laatst = nu; t += dt
@@ -139,8 +158,20 @@ function WereldScherm({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolea
         for (const b of gebouwen) if (opDeurmat(s.pl, b)) { aanDeur(b); break }
         for (const h of huizen) if (voorHuisdeur(s.pl, h)) { aanHuis(h.id); break }
       }
+      if (!document.hidden) {
+        const te = zender.tick(nuPositie(), nu)
+        if (te) verbinding.stuur(te)
+      }
+      for (const [anderId, a] of s.anderen) {
+        if (nu - a.gezien > WEG_NA) s.anderen.delete(anderId)
+        else volg(a, dt)
+      }
       s.cam = tek.teken({
         t, kaart, huizen, gebouwen, me: s.pl, mijnId: kind.id, kleur: kleurVan(kind.id), figuurtjes, overzicht: false,
+        anderen: [...s.anderen.values()].flatMap((a) => {
+          const lid = leden.get(a.id)
+          return lid ? [{ ...a, naam: lid.naam, figuur: figuurtjeVan(lid), kleur: lid.rol === 'ouder' ? '#6A5BD1' : kidKleur[lid.thema ?? 'blauw'] }] : []
+        }),
         kleurVan: { ...Object.fromEntries(huizen.map((h) => [h.id, h.kleur])), [kind.id]: kleurVan(kind.id) },
       })
       raf = requestAnimationFrame(lus)
@@ -151,8 +182,8 @@ function WereldScherm({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolea
       else if (d?.huis) aanHuis(d.huis)
     }
     raf = requestAnimationFrame(lus)
-    return () => { cancelAnimationFrame(raf); waarnemer.disconnect() }
-  }, [kind, ouder, huizen, kaart, figuurtjes, aanDeur, aanHuis])
+    return () => { cancelAnimationFrame(raf); waarnemer.disconnect(); document.removeEventListener('visibilitychange', zichtbaarheid); verbinding.stop() }
+  }, [kind, ouder, gebruikers, account, huizen, kaart, figuurtjes, aanDeur, aanHuis])
 
   // Tikken op de grond: loop erheen, of naar de deur van het gebouw of huis dat je aantikt.
   function tik(ev: React.PointerEvent<HTMLCanvasElement>) {

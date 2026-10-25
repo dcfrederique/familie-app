@@ -96,3 +96,17 @@ Frederique is gewonnen voor het hele wereldidee en voor de wisseling met een hub
 2. **De landkaart van Springland gaat op in de wereld.** De huidige kaart met levels (`SpringKaart.tsx`, het figuurtje wandelt naar het level) wordt een deel van dezelfde wereld, zodat navigeren door de wereld en door Springland één geheel is. Eén camera, één figuurtje, één joystick.
 
 Wat daarvoor moet gebeuren (voorstel): Springland als bestemming in de bestemmingenlijst met een gebied in plaats van een gebouw; de levelknopen als plekjes op de wereldkaart; het vrijspelen (`levelOpen`) blijft zoals het is; en de hub blijft de snelle weg naar Springland.
+
+## Live samen (fase 2, gebouwd 25 oktober 2026)
+
+Wie in de wereld is, ziet de anderen van het gezin rondlopen, met hun naam boven het hoofd. Ook de ouders doen mee (menu Wij → De wereld in). Alle code staat in `src/lib/wereld/live.ts`.
+
+- **Vervoer:** Supabase Realtime Broadcast op het kanaal `wereld:<gezin-id>`. Geen presence en geen database. Er wordt niets bewaard. Zonder Supabase (demo) loopt het via een `BroadcastChannel` tussen tabbladen.
+- **Hoe vaak:** een positie gaat alleen weg terwijl je loopt, hoogstens twee keer per seconde (`MIN_TUSSENTIJD` = 500 ms), plus één laatste bericht als je stopt. Wie stilstaat stuurt niets, op een levensteken om de 45 seconden na. Een nieuw binnengekomene stuurt "hallo" en krijgt van elke aanwezige één antwoord met zijn plek. Bij een verborgen tabblad of sluiten gaat "weg" en stopt het sturen.
+- **Bij de ontvanger:** het figuurtje schuift vloeiend naar de laatst ontvangen plek, kijkt de kant op waarheen het loopt en stapt. Wie 2 minuten niets liet horen, verdwijnt.
+- **Veiligheid:** elk bericht wordt gecontroleerd (`leesBericht`); alleen leden van het eigen gezin worden getoond. Er is geen chat en geen tekst in de berichten.
+- **Voorwaarde in Supabase:** het kanaal is publiek (de anonieme sessie van de tablets mag meedoen). Staat in Project Settings → Realtime de optie "Allow public access" uit, dan werkt live niet, maar de wereld blijft verder gewoon werken.
+
+### Verbruik bekijken
+
+Het gratis plan geeft 2 miljoen Realtime-berichten per maand. Een bericht telt één keer bij het versturen en één keer per ontvanger. Schatting: twee spelers die samen een kwartier per dag lopen komen op ongeveer 1 miljoen per maand. Kijk in het Supabase-dashboard onder **Reports → Realtime** (aantal berichten en pieken) en onder **Settings → Billing → Usage** (maandtotaal tegenover de 2 miljoen). Frederique evalueert na een week; zit het te hoog, dan verlagen we de frequentie (`MIN_TUSSENTIJD` naar 1000) of sturen we alleen als een ander in beeld is.

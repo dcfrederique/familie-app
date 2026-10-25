@@ -19,6 +19,13 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.37',
+    datum: '2026-10-25',
+    titel: 'In de wereld zie je elkaar rondlopen',
+    tekst: 'Wie in de wereld is, ziet nu de anderen van het gezin rondlopen, met hun naam boven het hoofd: Luca, Yuna, Feline en ook mama en papa als zij zelf in de wereld lopen (menu Wij → De wereld in). Je ziet elkaar vloeiend bewegen, met stappende voetjes. Er kan niets getypt of bewaard worden. Het verkeer is klein: er gaat alleen een bericht weg terwijl iemand loopt, hoogstens twee per seconde. Je kunt het verbruik volgen in het Supabase-dashboard onder Reports → Realtime; het gratis plan geeft 2 miljoen berichten per maand en we evalueren na een week. Meer in docs/wereld.md.',
+    open: 'Live werkt alleen als in Supabase (Project Settings → Realtime) "Allow public access" aanstaat; anders lopen de kinderen gewoon alleen. Nog niet: elkaar aanspreken, bij elkaar binnengaan en zelf bouwen.',
+  },
+  {
     versie: '0.36',
     datum: '2026-10-25',
     titel: 'De wereld vult het scherm',

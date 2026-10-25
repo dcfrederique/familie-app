@@ -214,6 +214,8 @@ export class Tekenaar {
     kleur: string
     figuurtjes: Record<string, Figuurtje>
     kleurVan: Record<string, string>
+    /** De anderen die nu in de wereld rondlopen, met hun naam boven het hoofd. */
+    anderen?: { id: string; naam: string; figuur: Figuurtje; kleur: string; x: number; y: number; face: Richting; moving: boolean; fase: number }[]
     /** Beeldvullend (hele wereld klein) in plaats van de camera. */
     overzicht: boolean
   }) {
@@ -268,6 +270,12 @@ export class Tekenaar {
     }
     const f = opties.figuurtjes[opties.mijnId]
     if (f) lijst.push({ y: me.y, d: () => this.tekenFiguur(me, f, this.figuur(opties.mijnId, f, opties.kleurVan[opties.mijnId] ?? '#2D6BD6'), me.x, me.y, t) })
+    for (const a of opties.anderen ?? []) {
+      lijst.push({ y: a.y, d: () => {
+        this.tekenFiguur(a, a.figuur, this.figuur(a.id, a.figuur, a.kleur), a.x, a.y, t)
+        this.naamLabel(a.x, a.y, a.naam, a.kleur)
+      } })
+    }
     // eendjes op de vijver
     for (const i of [0, 1]) {
       lijst.push({ y: POEL.y - 60 + i, d: () => {
@@ -320,6 +328,17 @@ export class Tekenaar {
     g.fillStyle = '#F2D9A8'; g.fillRect(-18, -2, 36, 26)
     g.fillStyle = kleur; g.beginPath(); g.roundRect(-6, 8, 12, 16, 3); g.fill()
     g.fillStyle = '#8A5A33'; g.fillRect(10, -22, 7, 14)
+    g.restore()
+  }
+
+  /** Naam in een kleurig bordje boven het hoofd. */
+  private naamLabel(x: number, y: number, tekst: string, kleur: string) {
+    const g = this.g
+    g.save()
+    g.font = '800 15px "Baloo 2", Nunito, sans-serif'
+    const w = g.measureText(tekst).width + 18
+    g.fillStyle = kleur; g.beginPath(); g.roundRect(x - w / 2, y - 94, w, 24, 12); g.fill()
+    g.fillStyle = '#fff'; g.textAlign = 'center'; g.fillText(tekst, x, y - 77)
     g.restore()
   }
 
