@@ -195,7 +195,9 @@ en elke nacht worden de schermen een beetje mooier. Loopt na de nachtelijke bouw
   `(min-width: 600px) and (min-height: 560px)` = tablet (ook staand), `(orientation: portrait)` voor staand.
 - Daarna kleine visuele details toevoegen aan een of twee schermen (een prentje, een animatie, een thema-accent), in de stijl
   van de app en met `prefers-reduced-motion`. Geen nieuwe functies, geen spelregels of prijzen wijzigen.
-- Gsm liggend hoeft niet zonder scrollen (kinderen gebruiken een tablet), maar mag er niet slechter op worden.
+- Gsm liggend (844 × 390, 915 × 412) is het tweede doel (Frederique, 25 oktober 2026): eerst moeten de tablets passen,
+  daarna maakt elke nacht ook een paar schermen passend op een liggende gsm, tot alles zonder scrollen kan.
+  Een liggende gsm valt buiten de tabletquery (hoogte < 560 px): gebruik daarvoor een eigen query, bv. `(max-height: 500px) and (orientation: landscape)`.
 - Bewust scrollend (meldingen mogen blijven): de landkaart van Springland (`.spring-kaart`, slepen) en de chatgeschiedenis.
 
 ## Afronden
@@ -207,5 +209,6 @@ en elke nacht worden de schermen een beetje mooier. Loopt na de nachtelijke bouw
 
 ## Taakprompt 3 – Schermcontrole (05:07)
 Lees CLAUDE.md en volg "Nachtelijke schermcontrole". Haal main binnen, draai scripts/schermcontrole.cjs op alle kinderen,
-herstel wat op een tablet scrolt of buiten beeld valt (begin bij de schermen met de meeste meldingen), voeg een paar kleine
+herstel wat op een tablet scrolt of buiten beeld valt (begin bij de schermen met de meeste meldingen), daarna een paar
+schermen voor de gsm liggend, voeg een paar kleine
 visuele details toe, draai lint, tests en build, schrijf ideeen/<datum van vandaag>-schermen.md en push naar main.

@@ -108,12 +108,12 @@ function meet() {
     }
   }
   await browser.close()
-  // Tablets moeten passen; gsm liggend is ter info (kinderen gebruiken een tablet, een gsm mag scrollen).
+  // Tablets moeten passen; gsm liggend is het volgende doel en telt (nog) apart.
   const tablet = uitslag.filter((u) => !GSM.some(([, w, h]) => u.w === w && u.h === h))
   const slecht = tablet.filter((u) => u.fouten.length)
   const gsm = uitslag.filter((u) => !tablet.includes(u))
   console.log(`\nTablets: ${tablet.length - slecht.length}/${tablet.length} schermen passen zonder scrollen.`)
-  if (gsm.length) console.log(`Gsm liggend (ter info): ${gsm.filter((u) => !u.fouten.length).length}/${gsm.length} passen.`)
+  if (gsm.length) console.log(`Gsm liggend: ${gsm.filter((u) => !u.fouten.length).length}/${gsm.length} passen.`)
   if (JSON_UIT) require('fs').writeFileSync(JSON_UIT, JSON.stringify(uitslag, null, 2))
   process.exitCode = slecht.length ? 1 : 0
 })()
