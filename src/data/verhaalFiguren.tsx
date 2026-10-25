@@ -589,6 +589,37 @@ export const figuren: Record<string, Figuur> = {
         : <><rect x={-32} y={-46} width={64} height={8} fill="#B88D62" /><circle cx={-12} cy={-22} r={2.5} fill="#5E4336" /><circle cx={0} cy={-18} r={2.5} fill="#5E4336" /><circle cx={12} cy={-24} r={2.5} fill="#5E4336" /></>}
     </g>
   )),
+  // Halloween (verhaal 31): lief en grappig
+  pompoen: vast(46, (m) => (
+    <g>
+      <rect x={-3} y={-50} width={6} height={10} rx={2} fill="#4F8A3C" />
+      <ellipse cx={-14} cy={-22} rx={14} ry={20} fill="#E8772E" /><ellipse cx={14} cy={-22} rx={14} ry={20} fill="#E8772E" />
+      <ellipse cx={0} cy={-22} rx={14} ry={22} fill="#F2994A" />
+      {m.includes('lantaarn') && <>
+        <path d="M-14 -34l7 8h-14zM14 -34l7 8h-14z" fill="#FFE27A" />
+        <path d="M-14 -16q14 18 28 0q-14 6 -28 0z" fill="#FFE27A" />
+        <path d="M-2 -26l2 -4l2 4z" fill="#FFE27A" />
+        <circle cx={0} cy={-22} r={26} fill="#FFE27A" opacity={0.18} />
+      </>}
+    </g>
+  )),
+  spookje: vast(60, (m) => (
+    <g>
+      <path d="M-24 0q-4 -50 24 -56q28 6 24 56q-6 -8 -12 0q-6 -8 -12 0q-6 -8 -12 0q-6 8 -12 0z" fill="#F7F9FC" stroke="#D5DCE4" strokeWidth={2} />
+      <ellipse cx={-8} cy={-36} rx={4} ry={5.5} fill={INKT} /><ellipse cx={9} cy={-36} rx={4} ry={5.5} fill={INKT} />
+      <circle cx={-14} cy={-28} r={4.5} fill="#F28B9B" opacity={0.55} /><circle cx={15} cy={-28} r={4.5} fill="#F28B9B" opacity={0.55} />
+      <path d="M-5 -26q5 6 10 0" stroke={INKT} strokeWidth={2} fill="none" strokeLinecap="round" />
+      {m.includes('lampion') && <g transform="translate(26 -22)"><path d="M0 0v-8" stroke={INKT} strokeWidth={1.5} /><rect x={-5} y={0} width={10} height={14} rx={3} fill="#F2994A" /><rect x={-3} y={3} width={6} height={8} rx={2} fill="#FFE27A" /></g>}
+    </g>
+  )),
+  lampion: vast(36, () => (
+    <g>
+      <path d="M0 -36v-8" stroke={INKT} strokeWidth={2} strokeLinecap="round" />
+      <path d="M-12 -34h24l4 8v22l-4 6h-24l-4 -6v-22z" fill="#E8772E" />
+      <rect x={-8} y={-26} width={16} height={22} rx={4} fill="#FFE27A" />
+      <circle cx={0} cy={-15} r={22} fill="#FFE27A" opacity={0.2} />
+    </g>
+  )),
   // auto's en fietsen
   auto: vast(44, (m) => {
     const k = kleurAuto[m.find((x) => x in kleurAuto) ?? 'rood']

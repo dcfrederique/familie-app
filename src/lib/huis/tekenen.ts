@@ -209,6 +209,17 @@ function hek(x0: number, x1: number, dx: number) {
   return s
 }
 
+// Papieren vleermuisjes in een rij onder de dakrand, elk met een lachend gezichtje.
+function vleermuisjes(x0: number, x1: number, y: number) {
+  const n = Math.max(3, Math.round((x1 - x0) / 70))
+  let s = ''
+  for (let i = 0; i < n; i++) {
+    const cx = x0 + ((i + 0.5) * (x1 - x0)) / n, cy = y + 24 + (i % 2) * 12
+    s += `<g transform="translate(${cx.toFixed(1)} ${cy})"><path d="M0 -4L-8 -12Q-20 -18 -30 -8Q-24 -6 -22 0Q-14 -2 -10 6Q-6 2 0 6Q6 2 10 6Q14 -2 22 0Q24 -6 30 -8Q20 -18 8 -12Z" fill="#3A2F4A"/><circle cx="-3" cy="-2" r="1.6" fill="#FFE27A"/><circle cx="3" cy="-2" r="1.6" fill="#FFE27A"/><path d="M-3 2Q0 5 3 2" fill="none" stroke="#FFE27A" stroke-width="1.4" stroke-linecap="round"/></g>`
+  }
+  return s
+}
+
 const brievenbus = (bx: number) =>
   `<rect x="${bx - 4}" y="${BASIS + 4}" width="8" height="60" fill="#6E4224"/><rect x="${bx - 22}" y="${BASIS - 20}" width="44" height="28" rx="12" style="fill:var(--kid)"/><rect x="${bx - 14}" y="${BASIS - 10}" width="28" height="4" rx="2" fill="#1C2433" opacity=".5"/><path d="M${bx + 22} ${BASIS - 2}V${BASIS - 28}h12v10h-12" fill="#D93A3A" stroke="#D93A3A" stroke-width="2"/>`
 
@@ -238,6 +249,8 @@ export function tuinStuk(id: string): string {
       : `<path d="M${x - 7} -28L${x} -4L${x + 7} -28Z" fill="#E8772E"/><path d="M${x} -28l-9 -18M${x} -28V-52M${x} -28l9 -18" stroke="#2E9A45" stroke-width="4" stroke-linecap="round"/>`)).join('')
     case 'hondenhok': return '<rect x="-56" y="-78" width="112" height="78" fill="#C08850"/><path d="M-56 -56H56M-56 -34H56M-56 -12H56" stroke="#9A6A3A" stroke-width="2.5"/><path d="M-72 -74L0 -126L72 -74Z" fill="#C8452F"/><path d="M-26 0V-36a26 26 0 0 1 52 0V0Z" fill="#2B2420"/><circle cx="0" cy="-24" r="17" fill="#B07A45"/><ellipse cx="-17" cy="-28" rx="7" ry="13" fill="#7A4A2A"/><ellipse cx="17" cy="-28" rx="7" ry="13" fill="#7A4A2A"/><circle cx="-6" cy="-28" r="2.8" fill="#1C2433"/><circle cx="6" cy="-28" r="2.8" fill="#1C2433"/><ellipse cx="0" cy="-18" rx="5" ry="4" fill="#1C2433"/>'
     case 'zwembad': return '<ellipse cx="0" cy="-22" rx="80" ry="24" fill="#FFFFFF" stroke="#C9D1DB" stroke-width="3"/><ellipse cx="0" cy="-22" rx="68" ry="17" fill="#4FB3E8"/><path d="M-44 -20q8-5 16 0t16 0M4 -14q8-5 16 0t16 0" fill="none" stroke="#BFE3FA" stroke-width="3" stroke-linecap="round"/><ellipse cx="30" cy="-30" rx="13" ry="8" fill="#F2C230"/><circle cx="38" cy="-40" r="7" fill="#F2C230"/><path d="M44 -40l7 2l-7 2z" fill="#E8772E"/><circle cx="39" cy="-42" r="1.6" fill="#1C2433"/>'
+    case 'pompoenen': return '<g><ellipse cx="-30" cy="-22" rx="22" ry="22" fill="#E8772E"/><ellipse cx="-30" cy="-22" rx="14" ry="22" fill="#F2994A"/><path d="M-31 -44Q-30 -52 -22 -54" fill="none" stroke="#4F8A3C" stroke-width="5" stroke-linecap="round"/><ellipse cx="26" cy="-17" rx="18" ry="17" fill="#E8772E"/><ellipse cx="26" cy="-17" rx="11" ry="17" fill="#F2994A"/><path d="M25 -34Q26 -40 32 -42" fill="none" stroke="#4F8A3C" stroke-width="4" stroke-linecap="round"/><ellipse cx="-2" cy="-52" rx="14" ry="13" fill="#E8772E"/><ellipse cx="-2" cy="-52" rx="9" ry="13" fill="#F2994A"/><path d="M-3 -65Q-2 -70 3 -72" fill="none" stroke="#4F8A3C" stroke-width="3.5" stroke-linecap="round"/><circle cx="-38" cy="-26" r="3" fill="#3A2410"/><circle cx="-22" cy="-26" r="3" fill="#3A2410"/><path d="M-39 -15Q-30 -7 -21 -15" fill="none" stroke="#3A2410" stroke-width="3.5" stroke-linecap="round"/></g>'
+    case 'vogelverschrikker': return '<path d="M0 0V-140M-56 -104H56" stroke="#8A5A33" stroke-width="9" stroke-linecap="round"/><path d="M-26 -108L-34 -62H34L26 -108Z" fill="#2D6BD6"/><path d="M-56 -104l-8 14M56 -104l8 14M-48 -104l-6 12M48 -104l6 12" stroke="#E8C86A" stroke-width="5" stroke-linecap="round"/><circle cx="0" cy="-128" r="20" fill="#F7D9C4"/><circle cx="-7" cy="-130" r="3" fill="#1C2433"/><circle cx="7" cy="-130" r="3" fill="#1C2433"/><path d="M-8 -120Q0 -113 8 -120" fill="none" stroke="#1C2433" stroke-width="3" stroke-linecap="round"/><ellipse cx="0" cy="-143" rx="34" ry="7" fill="#C08850"/><path d="M-18 -143Q-14 -168 0 -168Q14 -168 18 -143Z" fill="#D9A06F"/><rect x="-18" y="-150" width="36" height="6" fill="#8A5A33"/><path d="M-14 -62V-30M14 -62V-30" stroke="#E8C86A" stroke-width="6" stroke-linecap="round"/>'
     case 'dino': return `<rect x="-52" y="-22" width="104" height="22" rx="4" fill="#AEB9C6"/><g transform="translate(-52 -152) scale(2.6)">${DINO}</g>`
     default: return ''
   }
@@ -293,6 +306,7 @@ export function tekenHuis(h: Huis, o: TekenOpties): string {
   M.ramen.forEach((rij, f) => rij.forEach((wx) => g.push(raam(m.cx + wx, BASIS - f * VERDIEP - VERDIEP + 62, h, heeft('bloembakken')))))
   g.push(deur(dx, h))
   if (heeft('lichtjes')) g.push(lichtjes(mx - 14, mx + m.w + 14, my + 4))
+  if (heeft('vleermuisjes')) g.push(vleermuisjes(mx + 10, mx + m.w - 10, my))
   if (heeft('vlag')) g.push(vlag(...(vlagOp ?? [m.cx, r.top])))
   p.push(`<g class="huis-gebouw">${g.join('')}</g>`)
 

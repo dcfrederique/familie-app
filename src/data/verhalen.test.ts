@@ -3,11 +3,13 @@ import { plaatsFiguren } from './verhaalPrent.tsx'
 import { figuren } from './verhaalFiguren.tsx'
 import { verhalen } from './verhalen.ts'
 
-const bladzijdenPerReeks = { 'kleine-oortjes': [3, 4], 'grote-ogen': [5, 6], avonturiers: [6, 8] } as const
+// Grote ogen: de eerste verhalen hebben 5 of 6 bladzijden; de nachtelijke verhalen (CLAUDE.md, 300 tot 600 woorden) mogen langer zijn.
+const bladzijdenPerReeks = { 'kleine-oortjes': [3, 4], 'grote-ogen': [5, 11], avonturiers: [6, 8] } as const
 
 describe('verhalen', () => {
-  it('zijn er alle dertig, genummerd van 1 tot 30', () => {
-    expect(verhalen.map((v) => v.nr)).toEqual(Array.from({ length: 30 }, (_, i) => i + 1))
+  it('zijn genummerd zonder gaten, vanaf 1', () => {
+    expect(verhalen.length).toBeGreaterThanOrEqual(30)
+    expect(verhalen.map((v) => v.nr)).toEqual(Array.from({ length: verhalen.length }, (_, i) => i + 1))
   })
 
   it('volgen het aantal bladzijden van hun reeks', () => {

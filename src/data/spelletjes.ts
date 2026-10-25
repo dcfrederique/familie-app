@@ -35,6 +35,32 @@ export const memoryPrenten: [string, string, string][] = [
   ['Ballon', '#D6458E', 'M12 3a5 6 0 1 0 0 12a5 6 0 0 0 0-12zM12 15l-1 2h2zM12 17c0 2 1 3 0 4'],
 ]
 
+export type PompoenNiveau = 'makkelijk' | 'middel' | 'moeilijk'
+export type PompoenDeel = 'ogen' | 'neus' | 'mond'
+
+/** Vormen per deel van het pompoengezicht (Pompoenen maken); de eerste is de beginvorm van een nieuwe pompoen. */
+export const pompoenVormen: Record<PompoenDeel, readonly string[]> = {
+  ogen: ['rond', 'driehoek', 'blij', 'slaperig'],
+  neus: ['rond', 'driehoek', 'geen'],
+  mond: ['lach', 'tanden', 'o', 'tong'],
+}
+
+/** Welke delen het kind kiest en hoeveel vormen per deel meedoen; de rest staat vast op de beginvorm. */
+export const pompoenNiveaus: Record<PompoenNiveau, { label: string; delen: readonly PompoenDeel[]; vormen: number }> = {
+  makkelijk: { label: 'Makkelijk', delen: ['mond'], vormen: 3 },
+  middel: { label: 'Middel', delen: ['ogen', 'mond'], vormen: 3 },
+  moeilijk: { label: 'Moeilijk', delen: ['ogen', 'neus', 'mond'], vormen: 4 },
+}
+
+export const pompoenKaartjesPerRonde = 5
+
+/** Wie niet leest begint makkelijk, de oudste lezer moeilijk, andere lezers middel. */
+export function startPompoenNiveau(kind: Gebruiker, kinderen: Gebruiker[]): PompoenNiveau {
+  if (!kind.kan_lezen) return 'makkelijk'
+  const oudsteLezer = kinderen.filter((k) => k.kan_lezen).sort((a, b) => a.volgorde - b.volgorde)[0]
+  return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
+}
+
 /**
  * Startniveau als het kind nog niets koos: wie niet leest telt en speelt met 3 paren,
  * de oudste lezer krijgt Tot 100 en 8 paren, andere lezers Tot 20 en 6 paren.
@@ -45,7 +71,7 @@ export function startNiveaus(kind: Gebruiker, kinderen: Gebruiker[]): { memory: 
   return oudsteLezer?.id === kind.id ? { memory: 'groot', rekenen: 'tot100' } : { memory: 'middel', rekenen: 'tot20' }
 }
 
-export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel'
+export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen'
 
 export interface SpelInfo {
   sleutel: SpelSleutel
@@ -71,6 +97,8 @@ export const spelMenu: SpelInfo[] = [
     icoon: 'M3 11h14v3a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5zM17 12h4M7 8c0-1.5 1.5-1.5 1.5-3M11.5 8c0-1.5 1.5-1.5 1.5-3' },
   { sleutel: 'touwspringen', naam: 'Touwspringen', uitleg: 'Spring op het juiste moment', prijs: 30,
     icoon: 'M12 4a1.8 1.8 0 1 0 0 .01M12 7.5v6M9.5 19l2.5-5.5l2.5 5.5M8 10.5l4-1.5l4 1.5M5 7v5M19 7v5M5 12c0 9 14 9 14 0' },
+  { sleutel: 'pompoen', naam: 'Pompoenen maken', uitleg: 'Maak de pompoen zoals op het kaartje', prijs: 25,
+    icoon: 'M12 6c-1-2-1-3 0-4M12 6c-6-1-9 3-9 7s3 7 9 7c6 0 9-3 9-7s-3-8-9-7zM9 12v1M15 12v1M9.5 16c1.5 1.2 3.5 1.2 5 0' },
   { sleutel: 'basket', naam: 'Basket', uitleg: 'Veeg de bal in de ring', prijs: 40,
     icoon: 'M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18zM3 12h18M12 3v18M5.6 5.6c3 3 3 9.8 0 12.8M18.4 5.6c-3 3-3 9.8 0 12.8' },
 ]

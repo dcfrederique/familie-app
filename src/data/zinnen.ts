@@ -20,6 +20,8 @@ export const zin = {
   puzzelKiezen: 'Welke prent wil je puzzelen?',
   puzzelUitleg: 'Sleep de stukjes naar hun plekje!',
   puzzelKlaar: 'Goed gedaan! De puzzel is af.',
+  pompoenUitleg: 'Maak de pompoen zoals op het kaartje. Tik dan op het lichtje!',
+  pompoenKlaar: 'Mooi! De pompoen straalt.',
   wieBenJij: 'Wie ben jij? Tik op je naam.',
   welkomFiguur: 'Maak je eigen figuurtje! Kies je haar en je kleren.',
   welkomJarig: 'Wanneer ben je jarig?',

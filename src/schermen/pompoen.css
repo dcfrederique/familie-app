@@ -1,0 +1,29 @@
+/* Pompoenen maken: kaartje en pompoen naast elkaar, daaronder de keuzes en het lichtje. */
+.pompoen { display: flex; flex-direction: column; align-items: center; gap: 18px; }
+.pompoen-bord { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: clamp(16px, 4vw, 48px); width: 100%; }
+.pompoen-kaartje { display: grid; justify-items: center; gap: 8px; padding: 12px 18px; border-radius: 20px; background: var(--surface); box-shadow: 0 4px 0 var(--shade); }
+.pompoen-groot { width: clamp(180px, 34vh, 300px); }
+.pompoen-tekening { display: block; width: 100%; height: auto; }
+.pompoen-tekening.klein { width: clamp(90px, 16vh, 140px); }
+.pompoen-teller { display: flex; gap: 6px; }
+.pompoen-teller span { width: 14px; height: 14px; border-radius: 50%; background: var(--line); }
+.pompoen-teller .af { background: var(--gold); }
+.pompoen-teller .nu { background: var(--kid); }
+.pompoen-keuzes { display: grid; gap: 12px; justify-items: center; }
+.pompoen-rij { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.pompoen-knop {
+  width: 96px; height: 76px; padding: 6px; border: 0; border-radius: 18px; background: var(--surface);
+  box-shadow: 0 4px 0 var(--shade); display: grid; place-items: center;
+}
+.pompoen-knop[aria-pressed="true"] { background: var(--kid-tint); box-shadow: 0 0 0 4px var(--kid), 0 4px 0 var(--shade); }
+.pompoen-knop:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--shade); }
+.pompoen-vorm { width: 100%; height: 100%; display: block; }
+.pompoen-licht { gap: 10px; }
+.pompoen-eind { display: grid; justify-items: center; gap: 16px; }
+.pompoen-eind .pompoen-tekening { width: clamp(180px, 32vh, 280px); }
+.pompoen-bewaard { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.pompoen-mini { width: 92px; padding: 6px; border: 0; border-radius: 16px; background: var(--surface); box-shadow: 0 4px 0 var(--shade); }
+.pompoen-mini .pompoen-tekening.klein { width: 100%; }
+@keyframes pompoen-schud { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-4deg); } 75% { transform: rotate(4deg); } }
+.pompoen-groot.schudt { animation: pompoen-schud 0.4s ease-in-out; }
+@media (prefers-reduced-motion: reduce) { .pompoen-groot.schudt { animation: none; } }

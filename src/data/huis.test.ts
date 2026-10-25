@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import sql from '../../supabase/migrations/20261024001700_mijn_huis.sql?raw'
+import halloween from '../../supabase/migrations/20261025000300_halloween.sql?raw'
 import { tekenHuis, tekenTuinStuk } from '../lib/huis/tekenen.ts'
 import { basisFiguurtje } from './figuurtje.ts'
 import {
@@ -83,7 +84,8 @@ describe('tekenen', () => {
 describe('catalogus op de server', () => {
   it('heeft dezelfde stukken, kleuren en prijzen als de app', () => {
     const catalogus = sql.slice(sql.indexOf('insert into public.huis_stukken'), sql.indexOf(';', sql.indexOf('insert into public.huis_stukken')))
-    const rijen = [...catalogus.matchAll(/\('(\w+)', '(\w+)', (\d+)\)/g)].map(([, soort, sleutel, p]) => `${soort}:${sleutel}:${p}`)
+    const bijgekomen = halloween.slice(halloween.indexOf('insert into public.huis_stukken'), halloween.indexOf(';', halloween.indexOf('insert into public.huis_stukken')))
+    const rijen = [catalogus, bijgekomen].flatMap((tekst) => [...tekst.matchAll(/\('(\w+)', '(\w+)', (\d+)\)/g)].map(([, soort, sleutel, p]) => `${soort}:${sleutel}:${p}`))
     const app = [
       ...huisCategorieen.flatMap((c) => c.stukken.map((s) => `${c.id}:${s.id}:${s.prijs}`)),
       ...Object.keys(dakKleuren).map((k) => `dakkleur:${k}:0`),

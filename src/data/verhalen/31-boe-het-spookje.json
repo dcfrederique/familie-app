@@ -1,0 +1,134 @@
+{
+  "nr": 31,
+  "titel": "Boe het spookje",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Halloween, samen spelen",
+  "bladzijden": [
+    {
+      "tekst": "Het is de laatste week van oktober. Noor en Jules rennen door de tuin. \"Vandaag maken we een pompoenlantaarn!\" roept Noor.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "noor",
+          "jongen",
+          "pompoen"
+        ]
+      }
+    },
+    {
+      "tekst": "Opa geeft hen een grote lepel. \"Voorzichtig, dan blijft de pompoen mooi heel,\" zegt hij. Samen halen ze de pitjes uit de pompoen. Dat is een plakkerig werkje, en ze lachen er hard om.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "opa",
+          "noor",
+          "jongen",
+          "pompoen"
+        ]
+      }
+    },
+    {
+      "tekst": "Jules tekent twee grote ogen en een brede lach. Noor maakt een klein neusje. Opa doet een lichtje in de pompoen. Die straalt als een kleine zon!",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "jongen",
+          "noor",
+          "pompoen:lantaarn"
+        ]
+      }
+    },
+    {
+      "tekst": "Als het donker wordt, trekken de kinderen hun verkleedkleren aan. Noor draagt een puntige hoed. Jules heeft een cape. Met hun lampionnen gaan ze de straat op, samen met hond Max.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "noor",
+          "jongen",
+          "hond",
+          "lampion"
+        ]
+      }
+    },
+    {
+      "tekst": "Bij het hek zit iets wits te trillen. Het is een klein spookje, gemaakt van een laken. \"Ik ben Boe,\" zegt het zachtjes. \"Ik wil zo graag mee, maar ik heb geen lichtje.\"",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "noor",
+          "jongen",
+          "spookje"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor kijkt naar Jules. Jules knikt. \"Jij mag mijn lampion dragen,\" zegt Noor. \"Dan lopen we met z'n drieën!\" Boe glimlacht van oor tot oor. Zijn laken wordt er helemaal warm van.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "noor",
+          "jongen",
+          "spookje:lampion"
+        ]
+      }
+    },
+    {
+      "tekst": "Max snuffelt aan Boe. Dan kwispelt hij met heel zijn lijf. Boe moet kriebelen en giechelt. \"Hij vindt je lief,\" zegt Jules. Nu durft Boe zelfs een beetje te dansen.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "hond",
+          "spookje"
+        ]
+      }
+    },
+    {
+      "tekst": "Ze bellen aan bij de buurvrouw. \"Snoepjes of een grapje!\" roepen ze. De buurvrouw lacht en geeft ieder een zakje. Ook voor Boe, want de buurvrouw telt goed.",
+      "prent": {
+        "decor": "dorp",
+        "figuren": [
+          "buurvrouw",
+          "noor",
+          "jongen",
+          "spookje"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Dank je wel,\" zegt Boe. Zijn stemmetje is klein, maar de buurvrouw hoort het toch. \"Graag gedaan, spookje,\" zegt ze. \"Kom maar gauw terug.\"",
+      "prent": {
+        "decor": "dorp",
+        "figuren": [
+          "spookje",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "Op de terugweg is het stil en donker. Maar de lampion van Boe straalt zo mooi dat ze de hele straat zien. \"Jij bent onze lichtjesgids,\" zegt Noor.",
+      "prent": {
+        "decor": "nacht",
+        "figuren": [
+          "noor",
+          "jongen",
+          "spookje:lampion",
+          "hond"
+        ]
+      }
+    },
+    {
+      "tekst": "Thuis wacht opa met warme chocomelk. De pompoen straalt in het raam. Boe mag blijven slapen. \"Welterusten, Boe,\" fluisteren ze. En het spookje slaapt als een roosje, met een glimlach op zijn gezicht. Hij heeft nu echte vrienden.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "opa",
+          "noor",
+          "jongen",
+          "spookje",
+          "pompoen:lantaarn"
+        ]
+      }
+    }
+  ]
+}

@@ -117,7 +117,7 @@ select pg_temp.fout(format('select public.figuurtje_bewaren(%L, %L)', :'pim', pg
 select pg_temp.gelijk((select count(*) from public.kind_verdiend where kind_id = :'lex'), 0::bigint, 'view afgeschermd');
 select pg_temp.gelijk((select count(*) from public.aankopen), 0::bigint, 'aankopen afgeschermd');
 select pg_temp.fout(format('select public.kopen(%L, ''spel'', ''racen'')', :'pim'), 'kind niet gevonden');
-select pg_temp.gelijk((select count(*) from public.spel_prijzen), 9::bigint, 'prijzen leesbaar');
+select pg_temp.gelijk((select count(*) >= 9 from public.spel_prijzen), true, 'prijzen leesbaar');
 select pg_temp.gelijk((select count(*) > 60 from public.figuurtje_stukken), true, 'catalogus leesbaar');
 
 reset role;

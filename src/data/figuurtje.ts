@@ -84,6 +84,7 @@ export const categorieen: CategorieInfo[] = [
       { id: 'muts', naam: 'Muts', prijs: 10, prenten: true }, { id: 'konijn', naam: 'Konijnenoren', prijs: 15, prenten: true },
       { id: 'dino', naam: 'Dino-kap', prijs: 20, prenten: true }, { id: 'helm', naam: 'Racehelm', prijs: 25 },
       { id: 'kroon', naam: 'Kroontje', prijs: 35, prenten: true },
+      { id: 'heksenhoed', naam: 'Heksenhoed', prijs: 25, prenten: true },
     ] },
   { id: 'shirt', naam: 'Shirt', uitsnede: '24 100 152 128', prenten: true, kleur: { veld: 'shirtKleur', palet: kledingKleuren },
     icoon: 'M8 4l-5 3l2 4l3-1v10h8V10l3 1l2-4l-5-3a4 4 0 0 1-8 0z',
@@ -92,6 +93,7 @@ export const categorieen: CategorieInfo[] = [
       { id: 'streep', naam: 'Gestreept', prijs: 10, prenten: true }, { id: 'bliksem', naam: 'Bliksem', prijs: 15, prenten: true },
       { id: 'nummer8', naam: 'Nummer 8', prijs: 20 }, { id: 'dino', naam: 'Met dino', prijs: 25, prenten: true },
       { id: 'regenjas', naam: 'Regenjas', prijs: 35, prenten: true },
+      { id: 'pompoen', naam: 'Met pompoen', prijs: 20, prenten: true },
     ] },
   { id: 'broek', naam: 'Broek', uitsnede: '30 186 140 104', prenten: true, kleur: { veld: 'broekKleur', palet: kledingKleuren },
     icoon: 'M7 3h10l1 18h-4l-2-11l-2 11H6z',
@@ -111,6 +113,7 @@ export const categorieen: CategorieInfo[] = [
       { id: 'geen', naam: 'Niets', prijs: 0, prenten: true }, { id: 'bril', naam: 'Bril', prijs: 10, prenten: true },
       { id: 'voetbal', naam: 'Voetbal', prijs: 15, prenten: true }, { id: 'knuffel', naam: 'Knuffeldino', prijs: 20, prenten: true },
       { id: 'toverstaf', naam: 'Toverstaf', prijs: 25, prenten: true }, { id: 'cape', naam: 'Cape', prijs: 50, prenten: true },
+      { id: 'lantaarn', naam: 'Pompoenlantaarn', prijs: 15, prenten: true },
     ] },
 ]
 

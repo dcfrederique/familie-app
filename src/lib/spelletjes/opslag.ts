@@ -64,3 +64,17 @@ export function tekeningLezen(kind: string): unknown {
   try { return JSON.parse(lees(`tekening-${kind}`) ?? 'null') } catch { return null }
 }
 export const tekeningBewaren = (kind: string, strepen: unknown[] | null) => schrijf(`tekening-${kind}`, JSON.stringify(strepen))
+
+/** Eigen pompoenen van Pompoenen maken, per kind op dit toestel (ogen/neus/mond), hoogstens zes. */
+export const maxEigenPompoenen = 6
+export function eigenPompoenen(kind: string): string[] {
+  try {
+    const lijst = JSON.parse(lees(`pompoenen-${kind}`) ?? '[]')
+    return Array.isArray(lijst) ? lijst.filter((x): x is string => typeof x === 'string').slice(0, maxEigenPompoenen) : []
+  } catch { return [] }
+}
+/** Bewaart een pompoen vooraan; de oudste valt weg als de lijst vol is. */
+export function pompoenBewaren(kind: string, pompoen: string) {
+  const al = eigenPompoenen(kind).filter((p) => p !== pompoen)
+  schrijf(`pompoenen-${kind}`, JSON.stringify([pompoen, ...al].slice(0, maxEigenPompoenen)))
+}
