@@ -107,5 +107,5 @@ Alles is eigen ontwerp, vlakke vormen en effen kleuren zoals de prenten en het f
 ## Open vragen
 
 1. **Binnenkant**: de kinderen willen misschien ook binnen inrichten (bed, tafel, knuffels). Voorstel: tweede stap, achter een tik op de deur.
-2. **Ons straatje**: de drie huizen naast elkaar op Wie speelt er? of als aparte pagina. In het prototype als idee te zien.
+2. **Ons straatje**: de drie huizen naast elkaar op Wie speelt er? of als aparte pagina. Ontwerp en prototype: `docs/straatje.md`.
 3. **Seizoenen**: sneeuw op het dak in de winter, een pompoen bij Halloween. Leuk, maar later.
