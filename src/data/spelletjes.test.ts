@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import sql from '../../supabase/migrations/20261024000500_sterren_kopen.sql?raw'
 import halloween from '../../supabase/migrations/20261025000300_halloween.sql?raw'
+import springland from '../../supabase/migrations/20261025000700_springland.sql?raw'
 import { spelIsVrij, spelMenu, spelPrijs } from './spelletjes.ts'
 
 const spel = (s: string) => spelMenu.find((x) => x.sleutel === s)!
@@ -9,7 +10,7 @@ const lezer = { eigen: new Set(['spel:racen']), allesVrij: false, kanLezen: true
 describe('spelletjes kopen', () => {
   it('de oude spelletjes zijn gratis, de nieuwe kosten sterren', () => {
     for (const s of ['rekenen', 'memory', 'penalty']) expect(spel(s).prijs).toBe(0)
-    for (const s of ['huisdier', 'puzzel', 'pompoen', 'racen', 'koken', 'touwspringen', 'basket']) expect(spel(s).prijs).toBeGreaterThan(0)
+    for (const s of ['huisdier', 'puzzel', 'pompoen', 'springen', 'racen', 'koken', 'touwspringen', 'basket']) expect(spel(s).prijs).toBeGreaterThan(0)
   })
 
   it('wie niet leest betaalt de helft, alles vrij maakt het gratis', () => {
@@ -26,10 +27,11 @@ describe('spelletjes kopen', () => {
 
   it('heeft dezelfde prijzen als de server', () => {
     // De eerste winkelmigratie (sleutel, prijs, oude drempel) plus de spelletjes die later bijkwamen (sleutel, prijs).
-    const later = halloween.slice(halloween.indexOf('insert into public.spel_prijzen'), halloween.indexOf(';', halloween.indexOf('insert into public.spel_prijzen')))
+    // Later: (sleutel, prijs) of (sleutel, prijs, standaard_vrij).
+    const prijzen = (m: string) => m.slice(m.indexOf('insert into public.spel_prijzen'), m.indexOf(';', m.indexOf('insert into public.spel_prijzen')))
     const rijen = [
       ...[...sql.matchAll(/\('(\w+)', (\d+), \d+\)/g)].map(([, s, p]) => `${s}:${p}`),
-      ...[...later.matchAll(/\('(\w+)', (\d+)\)/g)].map(([, s, p]) => `${s}:${p}`),
+      ...[halloween, springland].flatMap((m) => [...prijzen(m).matchAll(/\('(\w+)', (\d+)(?:, \w+)?\)/g)].map(([, s, p]) => `${s}:${p}`)),
     ]
     expect(rijen.sort()).toEqual(spelMenu.map((s) => `${s.sleutel}:${s.prijs}`).sort())
   })

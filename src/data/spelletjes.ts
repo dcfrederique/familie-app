@@ -71,7 +71,7 @@ export function startNiveaus(kind: Gebruiker, kinderen: Gebruiker[]): { memory: 
   return oudsteLezer?.id === kind.id ? { memory: 'groot', rekenen: 'tot100' } : { memory: 'middel', rekenen: 'tot20' }
 }
 
-export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen'
+export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'springen'
 
 export interface SpelInfo {
   sleutel: SpelSleutel
@@ -95,6 +95,8 @@ export const spelMenu: SpelInfo[] = [
     icoon: 'M3 15l2-5h10l3 4h3v3H3zM7 18a1.5 1.5 0 1 0 0-.01M17 18a1.5 1.5 0 1 0 0-.01M7 10l1.5-3h5L15 10' },
   { sleutel: 'koken', naam: 'Koken', uitleg: 'Volg het recept', prijs: 25,
     icoon: 'M3 11h14v3a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5zM17 12h4M7 8c0-1.5 1.5-1.5 1.5-3M11.5 8c0-1.5 1.5-1.5 1.5-3' },
+  { sleutel: 'springen', naam: 'Springland', uitleg: 'Loop en spring met je figuurtje', prijs: 30,
+    icoon: 'M12 3a2 2 0 1 0 0 .01M12 7v5M9 21l3-6l3 6M8 9l4 1l4-1M3 21h4M17 21h4M18 4l1 2l2 .3l-1.5 1.4l.4 2.1L18 8.8l-1.9 1l.4-2.1L15 6.3l2-.3z' },
   { sleutel: 'touwspringen', naam: 'Touwspringen', uitleg: 'Spring op het juiste moment', prijs: 30,
     icoon: 'M12 4a1.8 1.8 0 1 0 0 .01M12 7.5v6M9.5 19l2.5-5.5l2.5 5.5M8 10.5l4-1.5l4 1.5M5 7v5M19 7v5M5 12c0 9 14 9 14 0' },
   { sleutel: 'pompoen', naam: 'Pompoenen maken', uitleg: 'Maak de pompoen zoals op het kaartje', prijs: 25,

@@ -440,6 +440,7 @@
 .thema-voetbal .klaar-titel { color: var(--kid); text-shadow: 0 3px 0 #F2B33D; }
 .thema-voetbal .reken-kaart { border: 4px solid #1E8A3C; box-shadow: 0 0 0 3px #FFFFFF; }
 .kind.thema .reken-kaart, .kind.thema .hoera { position: relative; }
+.kind.thema .penalty-einde { position: absolute; } /* blijft midden op het speelveld (Racen, Penalty, Springland) */
 
 /* Feest: confetti van het thema over het scherm */
 .thema-feest { position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 30; }

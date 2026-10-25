@@ -51,6 +51,8 @@ select pg_temp.gelijk(public.activiteit_omschrijving('koken', '{"titel": "Pizza"
 select pg_temp.gelijk(public.activiteit_omschrijving('basket', '{}'), 'Basket', 'omschrijving basket');
 select pg_temp.gelijk(public.activiteit_opslaan(:'kim', 'puzzel', '{"titel": "Pip wil ook zwemmen", "stukjes": 12}', 75), 0, 'puzzel');
 select pg_temp.gelijk(public.activiteit_omschrijving('puzzel', '{"titel": "Pip wil ook zwemmen"}'), 'Puzzel: Pip wil ook zwemmen', 'omschrijving puzzel');
+select pg_temp.gelijk(public.activiteit_opslaan(:'kim', 'springen', '{"titel": "De weide", "punten": 21}', 95), 0, 'springland');
+select pg_temp.gelijk(public.activiteit_omschrijving('springen', '{"titel": "De weide"}'), 'Springland: De weide', 'omschrijving springland');
 select pg_temp.fout(format('select public.activiteit_opslaan(%L, ''verstoppertje'')', :'kim'), 'activiteitlog_activiteit_check');
 select pg_temp.fout(format('select public.activiteit_opslaan(%L, ''schaken'')', :'kim'), 'activiteitlog_activiteit_check');
 -- Schrijven levert pas sterren bij een heel rondje van vijf opdrachten (het sterrenbedrag testen we niet hier,

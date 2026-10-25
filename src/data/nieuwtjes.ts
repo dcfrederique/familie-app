@@ -19,6 +19,14 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.25',
+    datum: '2026-10-25',
+    titel: 'Springland: lopen en springen met je eigen figuurtje',
+    tekst: 'Op vraag van de kinderen: een spelletje in de stijl van een platformspel waarin ze met hun eigen figuurtje (met alles wat ze kochten) lopen, springen en sterren en fruit pakken. Drie levels (De weide, Het bos, De wolken); het volgende gaat open als het vorige uitgespeeld is. Wie nog klein is (Feline) laat het figuurtje vanzelf lopen en tikt om te springen, de anderen lopen met pijltjes en een springknop. Er is geen verliezen: wie in het water valt, staat meteen terug, en een slakje of egeltje duwt alleen zacht terug. Het ligt meteen in de winkel (de kinderen vroegen er zelf om); verbergen kan bij Kinderen → Winkelaanbod.',
+    spel: { naam: 'Springland', prijs: 30 },
+    open: 'De voorleesstem leest de nieuwe uitlegzinnen nog met de tabletstem tot de opnames (scripts/maak-stem.ts) bijgemaakt zijn. Welke levels uitgespeeld zijn, wordt per tablet onthouden.',
+  },
+  {
     versie: '0.24',
     datum: '2026-10-25',
     titel: 'Schrijven: vrij over de lijn tekenen',

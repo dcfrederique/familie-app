@@ -78,3 +78,7 @@ export function pompoenBewaren(kind: string, pompoen: string) {
   const al = eigenPompoenen(kind).filter((p) => p !== pompoen)
   schrijf(`pompoenen-${kind}`, JSON.stringify([pompoen, ...al].slice(0, maxEigenPompoenen)))
 }
+
+/** Uitgespeelde levels van Springland per kind op dit toestel; het volgende level gaat dan open. */
+export const levelUitgespeeld = (kind: string, level: string) => lees(`springen-af-${level}-${kind}`) === 'ja'
+export const levelAf = (kind: string, level: string) => schrijf(`springen-af-${level}-${kind}`, 'ja')

@@ -51,6 +51,8 @@ set role authenticated;
 select pg_temp.gelijk(public.in_aanbod(:'lex', 'spel', 'basket'), true, 'basket vrij');
 select pg_temp.gelijk(public.in_aanbod(:'lex', 'hoofd', 'kroon'), true, 'kroon vrij');
 select pg_temp.gelijk(public.in_aanbod(:'lex', 'spel', 'ballonnen'), false, 'nieuw spel dicht');
+-- Springland vroegen de kinderen zelf: dat ligt meteen in de winkel.
+select pg_temp.gelijk(public.in_aanbod(:'lex', 'spel', 'springen'), true, 'springland vrij');
 select pg_temp.fout(format('select public.kopen(%L, ''spel'', ''ballonnen'')', :'lex'), 'nog niet in de winkel');
 
 \echo '2. Een ouder geeft vrij; daarna kan het kind kopen'

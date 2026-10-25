@@ -83,6 +83,26 @@ De prenten zijn voorlopig de drukste bladzijde van elk verhaal (`src/data/puzzel
 uit `docs/azure-extra.md` (stap 3) komen er later bij. Logica en tests in `src/lib/spelletjes/puzzel.ts`,
 migratie `20261024000300_puzzels.sql` laat `puzzel` toe in het activiteitlog.
 
+### Springland (iedereen)
+
+Gevraagd door de kinderen (25 oktober 2026): rondlopen en springen met hun eigen figuurtje, zoals een platformspel
+van opzij. Het figuurtje is getekend met alle stukken die het kind draagt (`figuurtjeVan`) en huppelt en wiebelt
+tijdens het lopen.
+
+- Drie levels als kaartjes van tekens in `src/data/springen.ts`: De weide (slakjes, appels), Het bos (egeltjes,
+  aardbeien, planken) en De wolken (vogeltjes, kersen, wolkjes en een regenboog). Springpaddenstoelen kaatsen je
+  hoog op naar extra sterren. Het volgende level gaat open als het vorige uitgespeeld is (per tablet onthouden).
+- Geen verliezen en geen geweld: in het water vallen zet je meteen terug op de laatste veilige plek, een beestje
+  van opzij duwt je zacht terug (even knipperen, dan kun je erdoor), wie erop springt hupt er vrolijk af.
+- Besturing: **Vanzelf lopen** (standaard voor wie niet leest): het figuurtje loopt zelf, tikken = springen.
+  **Zelf lopen** (standaard voor lezers): pijltjes links onderaan, gele springknop rechts; op pc ook pijltjestoetsen
+  en spatie. Een sprongtik net voor de landing en net na de rand telt nog.
+- Einde: in het huisje stappen; je ziet hoeveel sterren en fruit je pakte (record per level), met Volgend level.
+- Logica in `src/lib/spelletjes/springen.ts`, tekenen in `springenVeld.ts`. `springen.test.ts` laat een robotje
+  elk level uitspelen in beide besturingen zonder te vallen; pas na een wijziging aan een kaart dus de test draaien.
+- Prijs 30 sterren (wie niet leest 15). Omdat de kinderen er zelf om vroegen, ligt het meteen in de winkel
+  (`standaard_vrij = true`, migratie `20261025000700_springland.sql`).
+
 ## Eigen ideeën voor later
 
 - **Ballonnen prikken** (Feline): ballonnen zweven omhoog, prik er zoveel als het getal zegt (tellen).
