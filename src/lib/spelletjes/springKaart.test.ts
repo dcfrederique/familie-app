@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vitest'
 import { levelsPerWereld, springLevelLijst, springVolgorde, springWerelden, type SpringLevelInfo } from '../../data/springen.ts'
-import { KAART_HOOG, kaartIndeling, lengte, levelOpen, opWandeling, wandeling, wereldOpen } from './springKaart.ts'
+import {
+  KAART_HOOG, aankleding, kaartIndeling, lengte, levelOpen, opWandeling, padPunten, wandeling, wereldOpen,
+} from './springKaart.ts'
 
 const level = (id: string, wereld: string) => ({ ...springLevelLijst[0], id, wereld }) as SpringLevelInfo
 const twee = [{ id: 'a', naam: 'A', stijl: 'groen' as const }, { id: 'b', naam: 'B', stijl: 'zand' as const }]
@@ -31,7 +33,9 @@ describe('Springland: landkaart', () => {
     const k = kaartIndeling(twee, [level('a1', 'a'), level('a2', 'a'), level('b1', 'b')])
     expect(k.plekken.map((p) => p.level.id)).toEqual(['a1', 'a2', 'b1'])
     expect(k.plekken.map((p) => p.index)).toEqual([0, 1, 2])
-    for (let i = 1; i < k.plekken.length; i++) expect(k.plekken[i].x).toBeGreaterThan(k.plekken[i - 1].x)
+    // Het pad loopt vrij (soms even terug), maar de plekjes met een level komen eerst, in speelvolgorde.
+    expect(k.plekjes.slice(0, 2)).toEqual(k.plekken.slice(0, 2))
+    expect(k.plekjes).toHaveLength(levelsPerWereld * 2)
     expect(k.leeg.filter((p) => p.wereld === 'a')).toHaveLength(levelsPerWereld - 2)
     expect(k.werelden[1].van).toBe(k.werelden[0].tot)
     expect(k.breed).toBeGreaterThan(k.werelden[1].tot)
@@ -72,5 +76,22 @@ describe('Springland: landkaart', () => {
     expect(wereldOpen(k, volgorde, isAf, 'b')).toBe(false)
     af.add('a2')
     expect(wereldOpen(k, volgorde, isAf, 'b')).toBe(true)
+  })
+})
+
+describe('Springland: aankleding van de kaart', () => {
+  it('zet versiering in elke wereld, nooit op het pad, en elke keer dezelfde', () => {
+    const k = kaartIndeling(twee, [level('a1', 'a'), level('a2', 'a'), level('b1', 'b')])
+    const a = aankleding(k)
+    const pad = padPunten(k)
+    for (const w of k.werelden) {
+      expect(a[w.id].length).toBeGreaterThan(20)
+      expect(a[w.id].filter((v) => v.groot).length).toBeGreaterThan(0)
+      for (const v of a[w.id]) {
+        expect(v.x).toBeGreaterThan(w.van); expect(v.x).toBeLessThan(w.tot)
+        expect(Math.min(...pad.map((p) => Math.hypot(p.x - v.x, p.y - v.y)))).toBeGreaterThanOrEqual(70)
+      }
+    }
+    expect(aankleding(k)).toEqual(a)
   })
 })

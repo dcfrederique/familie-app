@@ -10,7 +10,13 @@ Platformspel van opzij waarin het kind met zijn eigen figuurtje loopt en springt
   platformgame-wereldkaart). Elke wereld is een eigen stuk land (bordje met de naam, eigen kleur en versiering);
   tussen twee werelden loopt een riviertje met een bruggetje. Na de laatste wereld ligt mist met een vraagteken:
   daar komen nieuwe werelden.
-- Elk level is een rond plekje op één slingerend pad. Tik op een plekje en het figuurtje wandelt erheen langs het
+- De kaart is aangekleed en beweegt een beetje (bomen wiegen, de molen draait, schaduwen van wolken drijven over,
+  vlinders, meeuwen of sneeuwvlokjes); met "minder beweging" op het toestel staat alles stil. Tekeningen in
+  `src/schermen/SpringKaartPrent.tsx`, plaatsing (nooit op het pad, elke keer dezelfde) in `aankleding()`.
+- Het pad kronkelt vrij door elke wereld, soms even terug naar links (`VORMEN` in `springKaart.ts`, om de beurt per
+  wereld).
+- Elk level is een klein 3D-eilandje in de stijl van het level (grasheuvel, bosje, wolkeneiland, strandje,
+  ijsberg; `LevelLand` in `SpringKaartPrent.tsx`) op één kronkelend pad. Tik op een plekje en het figuurtje wandelt erheen langs het
   pad (ook langs de plekjes ertussen); daar aangekomen begint het level. Tik op het plekje waar je al staat om
   meteen te spelen. De kaart schuift mee met het figuurtje en is met de vinger te verschuiven.
 - Uitgespeeld = gouden rand en het record (sterren en fruit); op slot = grijs met een slotje (een tik geeft een
@@ -18,6 +24,14 @@ Platformspel van opzij waarin het kind met zijn eigen figuurtje loopt en springt
 - Lege plekjes (stippelrand) tonen hoeveel levels er nog in een wereld passen.
 - Na een level: **Volgend level** (of **Nieuwe wereld!** bij de overgang) gaat terug naar de kaart; het figuurtje
   wandelt zelf naar het volgende plekje en start het.
+
+
+## Op de gsm
+
+- Liggend op een gsm (schermhoogte tot 520 px) vult Springland het hele scherm zoals een gsm-spelletje: de kop wordt
+  twee kleine knoppen in de hoeken (terug, geluid), de keuze lopen, de levelknop en de score zweven bovenaan, de
+  knoppen om te lopen en te springen zijn kleiner. Kaart en speelveld schalen mee met de hoogte, zodat je even veel
+  van de wereld ziet als op de tablet. CSS in `springen.css` (blok "Gsm liggend").
 
 ## Vrijspelen
 
@@ -38,8 +52,9 @@ Alles is data in `src/data/springen.ts`; de kaart, het pad en het vrijspelen vol
 2. Wereld: hoogstens `levelsPerWereld` (5) levels per wereld. Is de laatste wereld vol, voeg dan eerst een nieuwe
    wereld toe achteraan `springWerelden` (`id`, `naam`, `stijl`: groen, zand, sneeuw of snoep) en zet het level daarin.
 3. Stijl van het level: weide, bos, wolken, strand of sneeuw. Een nieuwe stijl kan, maar vraagt code: een rij in
-   `kleuren` en een achtergrond in `springenVeld.ts`, en een icoon in `StijlIcoon` (`SpringKaart.tsx`). Een nieuwe
-   wereldstijl vraagt een rij in `wereldKleur` en versiering in `Versiering`.
+   `kleuren` en een achtergrond in `springenVeld.ts`, en een icoon in `StijlIcoon` (`SpringKaart.tsx`) en een eilandje in `LevelLand`
+   (`SpringKaartPrent.tsx`). Een nieuwe wereldstijl vraagt een rij in `wereldKleur`, grond in `Grond`, stukken in
+   `Versiersel` en de lijsten `groot` en `klein` in `springKaart.ts`.
 4. Moeilijkheid: elk level iets anders dan het vorige, niet altijd moeilijker. Gaten hoogstens 3 vakjes breed,
    een opstapje hoogstens 2 vakjes hoog, na een springpaddenstoel minstens 4 vakjes grond voor een gat, niets
    recht boven een paddenstoel, en een beestje minstens 4 vakjes van een gat (het wandelt 2 vakjes heen en weer).

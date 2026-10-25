@@ -99,7 +99,7 @@ function SpringScherm({ kind }: { kind: Gebruiker }) {
 
   if (!level) {
     return (
-      <div className="spring-kaart-scherm">
+      <div className="spring-kaart-scherm spring-scherm">
         <Chips label="Lopen" opties={springBesturing} gekozen={besturing}
                kies={(b) => { setBesturing(b); niveauBewaren(kind.id, 'springen', b) }} />
         <SpringKaart figuur={figuurUrl} lezer={lezer} af={isAf} best={(l) => record(kind.id, `springen-${l}`)} alles={proef}
@@ -117,7 +117,7 @@ function SpringScherm({ kind }: { kind: Gebruiker }) {
   })
 
   return (
-    <div className="penalty spring">
+    <div className="penalty spring spring-scherm">
       <div className="spel-boven">
         <button type="button" className="chip" onClick={() => naarKaart()} aria-label="Naar de kaart">
           <svg className="ic" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d={KAART} /></svg>

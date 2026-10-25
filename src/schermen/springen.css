@@ -13,12 +13,10 @@
 .spring-leeg { fill: rgba(255, 255, 255, .45); stroke: rgba(255, 255, 255, .8); stroke-width: 4; stroke-dasharray: 8 8; }
 .spring-vraag { font: 800 120px 'Baloo 2', Nunito, sans-serif; fill: #B7C3D3; }
 .spring-plek { cursor: pointer; outline: none; }
-.spring-plek-rand { fill: #FFFFFF; stroke: rgba(0, 0, 0, .12); stroke-width: 4; }
-.spring-plek-bol { fill: #7CC8F5; }
-.spring-plek.af .spring-plek-rand { fill: #F2B33D; stroke: #B8800F; }
-.spring-plek.dicht .spring-plek-bol { fill: #C9D2DD; }
-.spring-plek.dicht > g:not(:last-child) { opacity: .55; }
-.spring-plek:focus-visible .spring-plek-rand { stroke: var(--kid); stroke-width: 8; }
+.spring-land-rand { fill: none; stroke: rgba(255, 255, 255, .55); stroke-width: 3; }
+.spring-plek.af .spring-land-rand { stroke: #F2B33D; stroke-width: 6; }
+.spring-plek.dicht .spring-land { filter: grayscale(.75) brightness(1.06); opacity: .8; }
+.spring-plek:focus-visible .spring-land-rand { stroke: var(--kid); stroke-width: 8; }
 .spring-plek.schudt { animation: spring-schud .4s; }
 .spring-plek-naam { font: 800 24px 'Baloo 2', Nunito, sans-serif; fill: #1C2433; paint-order: stroke; stroke: #FFFFFF; stroke-width: 6px; }
 .spring-best-tekst { font: 800 22px 'Baloo 2', Nunito, sans-serif; fill: #1C2433; }
@@ -50,4 +48,101 @@
   .kind-vol .spring { flex: 1; min-height: 0; }
   .kind-vol .spring-veld { flex: 1; height: auto; min-height: 0; }
   .kind-vol .spring-kaart-scherm { flex: 1; height: auto; min-height: 0; }
+}
+
+/* Landkaart: aankleding en lichte animaties (SpringKaartPrent.tsx) */
+.spring-pad-rand { fill: none; stroke-width: 44; stroke-linecap: round; }
+.spring-pad-later { opacity: .35; }
+.spring-pad-later .spring-pad { stroke-dasharray: 2 34; }
+.spring-plek-gloed { fill: #FFE27A; transform-box: fill-box; transform-origin: center; animation: k-gloed 1.8s ease-out infinite; }
+.spring-kaart [class^="k-"], .spring-kaart [class*=" k-"] { transform-box: fill-box; }
+.k-wieg { transform-origin: 50% 100%; animation: k-wieg 4s ease-in-out infinite alternate; }
+.k-knik { transform-origin: 50% 100%; animation: k-wieg 3s ease-in-out infinite alternate; }
+.k-rook { animation: k-rook 3.6s ease-out infinite; }
+.k-rimpel { transform-origin: center; animation: k-rimpel 3.9s ease-out infinite; }
+.k-eend { animation: k-eend 9s ease-in-out infinite alternate; }
+.k-vlag { transform-origin: 0 50%; animation: k-vlag 1.2s ease-in-out infinite alternate; }
+.k-licht { animation: k-licht 2.4s ease-in-out infinite alternate; }
+.k-stroom { animation: k-stroom 2.2s linear infinite; }
+.k-golfjes { animation: k-golfjes 3s ease-in-out infinite alternate; }
+.k-krab { animation: k-krab 5s ease-in-out infinite alternate; }
+.k-zwaai { transform-origin: 0 100%; animation: k-wieg 1.6s ease-in-out infinite alternate; }
+.k-glans { animation: k-licht 3s ease-in-out infinite alternate; }
+.k-schaats { animation: k-eend 7s ease-in-out infinite alternate; }
+.k-vlam { transform-origin: 50% 100%; animation: k-vlam .6s ease-in-out infinite alternate; }
+.k-dobber { animation: k-dobber 2s ease-in-out infinite alternate; }
+.k-glinster { transform-origin: center; animation: k-glinster 2.2s ease-in-out infinite alternate; }
+.k-wolkschaduw { animation: k-schuif 46s linear infinite; }
+.k-vlinder-baan { animation: k-vlinder-baan 12s ease-in-out infinite alternate; }
+.k-vlinder { transform-origin: center; animation: k-fladder .25s ease-in-out infinite alternate; }
+.k-vogel-baan { animation: k-vogel-baan 16s linear infinite; }
+.k-fladder { transform-origin: center; animation: k-fladder .4s ease-in-out infinite alternate; }
+.k-vlok { animation: k-vlok 8s linear infinite; }
+.k-drijf { animation: k-drijf 10s ease-in-out infinite alternate; }
+
+@keyframes k-gloed { from { transform: scale(1); opacity: .8; } to { transform: scale(1.45); opacity: 0; } }
+@keyframes k-wieg { from { transform: rotate(-3deg); } to { transform: rotate(3deg); } }
+@keyframes k-rook { from { transform: translate(0, 0) scale(.6); opacity: .9; } to { transform: translate(10px, -40px) scale(1.6); opacity: 0; } }
+@keyframes k-rimpel { from { transform: scale(.4); opacity: 1; } to { transform: scale(2.2); opacity: 0; } }
+@keyframes k-eend { from { transform: translate(-30px, -4px); } to { transform: translate(18px, 6px); } }
+@keyframes k-vlag { from { transform: skewY(-6deg) scaleX(.92); } to { transform: skewY(6deg) scaleX(1); } }
+@keyframes k-licht { from { opacity: .55; } to { opacity: 1; } }
+@keyframes k-stroom { to { stroke-dashoffset: -88; } }
+@keyframes k-golfjes { from { transform: translateX(-10px); } to { transform: translateX(10px); } }
+@keyframes k-krab { from { transform: translateX(-14px); } to { transform: translateX(14px); } }
+@keyframes k-vlam { from { transform: scaleY(.8); } to { transform: scaleY(1.15); } }
+@keyframes k-dobber { from { transform: translateY(-3px); } to { transform: translateY(3px); } }
+@keyframes k-glinster { from { transform: scale(.6); opacity: .4; } to { transform: scale(1.1); opacity: 1; } }
+@keyframes k-schuif { from { transform: translateX(0); } to { transform: translateX(calc(var(--k-ver) + 400px)); } }
+@keyframes k-vlinder-baan { 0% { transform: translate(0, 0); } 33% { transform: translate(90px, -30px); } 66% { transform: translate(40px, 40px); } 100% { transform: translate(140px, 10px); } }
+@keyframes k-fladder { from { transform: scaleX(1); } to { transform: scaleX(.35); } }
+@keyframes k-vogel-baan { from { transform: translate(-160px, 10px); } 50% { transform: translate(0, -14px); } to { transform: translate(160px, 10px); } }
+@keyframes k-vlok { from { transform: translateY(0); } to { transform: translateY(620px); } }
+@keyframes k-drijf { from { transform: translateX(-24px); } to { transform: translateX(24px); } }
+@media (prefers-reduced-motion: reduce) {
+  .spring-kaart [class^="k-"], .spring-kaart [class*=" k-"], .spring-plek-gloed { animation: none; }
+}
+
+/* Gsm liggend: Springland vult het hele scherm zoals een echt gsm-spelletje. De kop wordt twee kleine knoppen
+   in de hoeken, de rest zweeft over de kaart of het speelveld; alles kleiner, zodat je meer van de wereld ziet. */
+@media (orientation: landscape) and (max-height: 520px) {
+  .kind:has(.spring-scherm) { height: 100dvh; min-height: 0; display: flex; flex-direction: column; overflow: hidden; position: relative; }
+  .kind:has(.spring-scherm) > header {
+    position: absolute; z-index: 6; top: max(8px, env(safe-area-inset-top)); left: max(10px, env(safe-area-inset-left));
+    right: max(10px, env(safe-area-inset-right)); margin: 0; padding: 0; max-width: none; min-height: 0; height: 46px;
+    background: none; border: 0; box-shadow: none; pointer-events: none; display: flex; justify-content: space-between;
+  }
+  .kind:has(.spring-scherm) > header .thema-kop-prent,
+  .kind:has(.spring-scherm) > header .thema-kop-tekst,
+  .kind:has(.spring-scherm) > header .balk-titel { display: none; }
+  .kind:has(.spring-scherm) > header .thema-kop-inhoud { display: flex; justify-content: space-between; width: 100%; padding: 0; min-height: 0; }
+  .kind:has(.spring-scherm) > header .rond { width: 46px; height: 46px; pointer-events: auto; box-shadow: 0 2px 8px rgba(0, 0, 0, .25); }
+  .kind:has(.spring-scherm) > header .rond svg { width: 22px; height: 22px; }
+  .kind:has(.spring-scherm) > .kind-inhoud {
+    flex: 1; min-height: 0; max-width: none; width: 100%; display: flex; flex-direction: column;
+    padding: 6px max(6px, env(safe-area-inset-right)) max(6px, env(safe-area-inset-bottom)) max(6px, env(safe-area-inset-left));
+  }
+  .spring-scherm { flex: 1; min-height: 0; height: auto; gap: 0; position: relative; }
+  .spring-kaart, .spring-veld { border-radius: 18px; }
+  .spring-veld { flex: 1; height: auto; min-height: 0; }
+  /* Kaart: de keuze vanzelf of zelf lopen zweeft bovenaan in het midden */
+  .spring-kaart-scherm > .chips {
+    position: absolute; z-index: 5; top: 8px; left: 50%; transform: translateX(-50%); align-self: auto;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .2);
+  }
+  .spring-scherm .chip { min-height: 36px; padding: 0 12px; font-size: 14px; }
+  /* Spel: levelknop en score zweven bovenaan tussen de twee hoekknoppen */
+  .spring .spel-boven { position: absolute; z-index: 5; top: 8px; left: 64px; right: 64px; justify-content: space-between; pointer-events: none; }
+  .spring .spel-boven > * { pointer-events: auto; }
+  .spring .spel-score { font-size: 24px; padding: 2px 12px; border-radius: 20px; background: rgba(255, 255, 255, .75); color: #1C2433; }
+  .spring-knoppen { padding: 10px max(12px, env(safe-area-inset-right)) 10px max(12px, env(safe-area-inset-left)); }
+  .spring-pijlen { gap: 12px; }
+  .spring-knop { width: 68px; height: 68px; }
+  .spring-knop svg { width: 34px; height: 34px; }
+  .spring-hop { width: 84px; height: 84px; }
+  .spring .penalty-einde { width: min(520px, 86%); max-height: 94%; overflow: auto; gap: 10px; padding: 14px 20px; }
+  .spring .penalty-einde .klaar-titel { font-size: 30px; }
+  .spring .penalty-einde .groot-knop { min-height: 52px; font-size: 18px; }
+  .spring-uitslag { font-size: 22px; }
+  .spring-volgende { margin-bottom: 4px; }
 }

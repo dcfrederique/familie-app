@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.28',
+    datum: '2026-10-25',
+    titel: 'Springland: mooiere landkaart en spelen op de gsm',
+    tekst: 'De landkaart van Springland is aangekleed en beweegt een beetje: bomen wiegen, een molen draait, een eendje zwemt in de vijver, vlinders en schaduwen van wolken drijven over. Het pad kronkelt vrij door de wereld en elk level is nu een klein 3D-eilandje in zijn eigen stijl (grasheuvel, bosje, wolkeneiland met regenboog, en later een strandje of een ijsberg). Springland werkt ook op een gsm in liggende stand: het spel vult dan het hele scherm met kleine knoppen in de hoeken, zodat je evenveel van de wereld ziet als op de tablet. Met "minder beweging" op het toestel staat de kaart stil.',
+  },
+  {
     versie: '0.27',
     datum: '2026-10-25',
     titel: 'Springland: landkaart met werelden',
