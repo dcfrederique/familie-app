@@ -19,6 +19,13 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.36',
+    datum: '2026-10-25',
+    titel: 'De wereld vult het scherm',
+    tekst: 'Op het startscherm van de kinderen is De wereld nu de grote tegel links, met een plaatje van het straatje. Mijn taken staat als gewone tegel bij de andere (met het aantal taken dat nog moet; voor Feline een ronde knop) en opent een eigen pagina. In de wereld zelf vult het beeld het hele scherm: rechtsboven staan de sterren en een houten huisje-bordje om terug te keren naar het startscherm, links onder de joystick. Je ziet nu ook meer of minder wereld naargelang het toestel, liggend of staand. Ouders kunnen zelf ook in de wereld lopen: menu Wij → De wereld in, met het eigen figuurtje.',
+    open: 'In de wereld van een ouder zijn de gebouwen en huizen alleen om naar te kijken. Het startscherm op een staande tablet scrolt nog (dat was al zo).',
+  },
+  {
     versie: '0.35',
     datum: '2026-10-25',
     titel: 'De wereld: loop door het straatje',

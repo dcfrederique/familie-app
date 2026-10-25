@@ -43,7 +43,7 @@ import Gewicht from './schermen/Gewicht.tsx'
 import MijnProfiel from './schermen/MijnProfiel.tsx'
 import Touwspringen from './schermen/Touwspringen.tsx'
 import MijnThema from './schermen/MijnThema.tsx'
-import Wereld from './schermen/Wereld.tsx'
+import Wereld, { OuderWereld } from './schermen/Wereld.tsx'
 import Chat from './schermen/Chat.tsx'
 import OuderChat from './schermen/OuderChat.tsx'
 import Proberen from './schermen/Proberen.tsx'
@@ -95,6 +95,7 @@ export default function App() {
         <Route path="schrijven" element={<Schrijven />} />
         <Route path="chat" element={<Chat />} />
         <Route path="wereld" element={<Wereld />} />
+        <Route path="taken" element={<KindStart deel="taken" />} />
       </Route>
       <Route path="/ouder" element={<OuderStart />} />
       <Route path="/ouder/goedkeuren" element={<Goedkeuren />} />
@@ -113,6 +114,7 @@ export default function App() {
       <Route path="/ouder/chat" element={<OuderChat />} />
       <Route path="/ouder/figuurtje" element={<Kleerkast ouder />} />
       <Route path="/ouder/springland" element={<OuderSpringland />} />
+      <Route path="/ouder/wereld" element={<OuderWereld />} />
       <Route path="/ouder/boodschappen" element={<Boodschappen />} />
       <Route path="/ouder/winkels" element={<Winkels />} />
       <Route path="/ouder/uitgaven" element={<Uitgaven />} />

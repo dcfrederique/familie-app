@@ -30,7 +30,7 @@ type Lijst = { taak: Taak; status: TaakStatus }[]
 
 // Startscherm van een kind: taken links, spelen en extra tijd rechts.
 // Wie leest krijgt kaarten met tekst (Luca met de racebanner), wie niet leest grote prenten (Feline).
-export default function KindStart() {
+export default function KindStart({ deel = 'start' }: { deel?: 'start' | 'taken' }) {
   const { id } = useParams()
   const { kinderen, bron } = useSessie()
   const kind = kinderen.find((k) => k.id === id)
@@ -65,8 +65,8 @@ export default function KindStart() {
   return (
     <div className={`kind ${kleurKlasse(kind)}`}>
       {kind.kan_lezen
-        ? <StartLezer kind={kind} lijst={lijst} geladen={!!data} vrij={vrij} verzoeken={data?.verzoeken ?? []} eten={data?.eten} ongelezen={data?.ongelezen ?? 0} kies={kies} />
-        : <StartPrenten kind={kind} lijst={lijst} geladen={!!data} eten={data?.eten} ongelezen={data?.ongelezen ?? 0} kies={kies} />}
+        ? <StartLezer deel={deel} kind={kind} lijst={lijst} geladen={!!data} vrij={vrij} verzoeken={data?.verzoeken ?? []} eten={data?.eten} ongelezen={data?.ongelezen ?? 0} kies={kies} />
+        : <StartPrenten deel={deel} kind={kind} lijst={lijst} geladen={!!data} eten={data?.eten} ongelezen={data?.ongelezen ?? 0} kies={kies} />}
 
       {hoera && <DagelijksHoera kind={kind} hoera={hoera} sluit={() => setHoera(null)} />}
 
@@ -80,14 +80,14 @@ export default function KindStart() {
   )
 }
 
-function StartLezer({ kind, lijst, geladen, vrij, verzoeken, eten, ongelezen, kies }: {
-  kind: Gebruiker; lijst: Lijst; geladen: boolean; vrij: number; verzoeken: Tijdverzoek[]; eten?: Maaltijd; ongelezen: number; kies: (t: Taak) => void
+function StartLezer({ deel, kind, lijst, geladen, vrij, verzoeken, eten, ongelezen, kies }: {
+  deel: 'start' | 'taken'; kind: Gebruiker; lijst: Lijst; geladen: boolean; vrij: number; verzoeken: Tijdverzoek[]; eten?: Maaltijd; ongelezen: number; kies: (t: Taak) => void
 }) {
   const banner = kind.thema ? bannerVoorKleur[kind.thema] : null
   const gedaan = lijst.filter((t) => t.status === 'gedaan').length
   const nogTeDoen = lijst.filter((t) => t.status === 'te_doen').length
   const wachtend = verzoeken.filter((v) => v.status === 'aangevraagd')
-  const terug = <Terug grootte={28} />
+  const terug = <Terug grootte={28} naar={deel === 'taken' ? `/kind/${kind.id}` : undefined} />
   const avatar = <><Avatar kind={kind} /><HuisKnop kind={kind} /><ThemaKnop kind={kind} /></>
   const titel = <h1 className="kop-titel display">Hoi {kind.naam}!</h1>
 
@@ -130,18 +130,22 @@ function StartLezer({ kind, lijst, geladen, vrij, verzoeken, eten, ongelezen, ki
         </header>
       )}
 
-      <main className="kind-start">
-        <section aria-labelledby="taken-titel">
-          <h2 id="taken-titel" className="sectie-titel display">Mijn taken vandaag</h2>
-          <Bladzijden items={lijst} maat={TAAK_MAAT} className="taken-raster" label="Meer taken"
-                      toon={({ taak, status }) => <TaakKaart key={taak.id} taak={taak} status={status} kies={() => kies(taak)} />} />
-          {geladen && lijst.length === 0 && <p className="leeg">Vandaag geen taken. Lekker spelen!</p>}
-        </section>
+      <main className={`kind-start${deel === 'taken' ? ' taken-enkel' : ''}`}>
+        {deel === 'start' ? (
+          <section aria-label="De wereld"><WereldKnop kind={kind} /></section>
+        ) : (
+          <section aria-labelledby="taken-titel">
+            <h2 id="taken-titel" className="sectie-titel display">Mijn taken vandaag</h2>
+            <Bladzijden items={lijst} maat={TAAK_MAAT} className="taken-raster" label="Meer taken"
+                        toon={({ taak, status }) => <TaakKaart key={taak.id} taak={taak} status={status} kies={() => kies(taak)} />} />
+            {geladen && lijst.length === 0 && <p className="leeg">Vandaag geen taken. Lekker spelen!</p>}
+          </section>
+        )}
 
-        <aside className="kind-zijkant" aria-labelledby="spelen-titel">
+        {deel === 'start' && <aside className="kind-zijkant" aria-labelledby="spelen-titel">
           <h2 id="spelen-titel" className="sectie-titel display">{banner === 'race' ? 'Spelen en leren' : 'Spelen en maken'}</h2>
           <div className="tegels">
-            <WereldKnop kind={kind} />
+            <TakenTegel kind={kind} nog={nogTeDoen} geladen={geladen} />
             {tegelsVoor(kind).map((t) => <Tegel key={t.sleutel} tegel={t} kindId={kind.id} />)}
           </div>
           {kind.vraagt_zelf_tijd && (
@@ -154,7 +158,7 @@ function StartLezer({ kind, lijst, geladen, vrij, verzoeken, eten, ongelezen, ki
               )}
             </>
           )}
-        </aside>
+        </aside>}
       </main>
     </div>
   )
@@ -186,6 +190,27 @@ function TaakKaart({ taak, status, kies }: { taak: Taak; status: TaakStatus; kie
   )
 }
 
+const TAKEN_ICOON = 'M9 6h11M9 12h11M9 18h11M4 6l1 1l2-2M4 12l1 1l2-2M4 18l1 1l2-2'
+
+/** Mijn taken is een gewone navigatie naast de andere tegels, met het aantal taken dat nog moet. */
+function TakenTegel({ kind, nog, geladen, rond = false }: { kind: Gebruiker; nog: number; geladen: boolean; rond?: boolean }) {
+  const pad = `/kind/${kind.id}/taken`
+  const teller = geladen && <span className={`taken-teller${nog === 0 ? ' klaar' : ''}`} aria-hidden="true">{nog === 0 ? '✓' : nog}</span>
+  const label = geladen ? (nog === 0 ? 'Mijn taken, alles gedaan' : `Mijn taken, nog ${nog}`) : 'Mijn taken'
+  const icoon = <svg className="ic" viewBox="0 0 24 24" width={rond ? 80 : 38} height={rond ? 80 : 38} aria-hidden="true"><path d={TAKEN_ICOON} /></svg>
+  if (rond) {
+    return <Link to={pad} className="ronde-tegel tint-blauw wereld-taken-tegel" aria-label={label} onClick={() => leesVoor('Mijn taken')}>{icoon}{teller}</Link>
+  }
+  return (
+    <Link to={pad} className="tegel wereld-taken-tegel" aria-label={label}>
+      <span className="tegel-icoon tint-blauw">{icoon}</span>
+      <span className="tegel-naam display">Mijn taken</span>
+      <span className="tegel-uitleg">{geladen ? (nog === 0 ? 'Alles gedaan!' : `Nog ${nog} te doen`) : ' '}</span>
+      {teller}
+    </Link>
+  )
+}
+
 function Tegel({ tegel, kindId }: { tegel: ActiviteitTegel; kindId: string }) {
   const inhoud = (
     <>
@@ -202,16 +227,17 @@ function Tegel({ tegel, kindId }: { tegel: ActiviteitTegel; kindId: string }) {
 }
 
 /** Voor wie niet leest: grote prenten, voorleesknoppen en ronde knoppen zonder tekst. */
-function StartPrenten({ kind, lijst, geladen, eten, ongelezen, kies }: {
-  kind: Gebruiker; lijst: Lijst; geladen: boolean; eten?: Maaltijd; ongelezen: number; kies: (t: Taak) => void
+function StartPrenten({ deel, kind, lijst, geladen, eten, ongelezen, kies }: {
+  deel: 'start' | 'taken'; kind: Gebruiker; lijst: Lijst; geladen: boolean; eten?: Maaltijd; ongelezen: number; kies: (t: Taak) => void
 }) {
+  const nogTeDoen = lijst.filter((t) => t.status === 'te_doen').length
   const gedaan = lijst.filter((t) => t.status === 'gedaan').length
   const begroeting = lijst.length === 0
     ? `Hoi ${kind.naam}! Vandaag geen taakjes. Lekker spelen!`
     : `Hoi ${kind.naam}! Je hebt al ${gedaan} van de ${lijst.length} taakjes gedaan.`
 
   const banner = kind.thema ? bannerVoorKleur[kind.thema] : null
-  const terug = <Terug grootte={32} />
+  const terug = <Terug grootte={32} naar={deel === 'taken' ? `/kind/${kind.id}` : undefined} />
   const avatar = <><Avatar kind={kind} /><HuisKnop kind={kind} /><ThemaKnop kind={kind} /></>
   const titel = <h1 className="kop-titel display">Hoi {kind.naam}!</h1>
   const voorlees = kanVoorlezen() && (
@@ -251,6 +277,7 @@ function StartPrenten({ kind, lijst, geladen, eten, ongelezen, kies }: {
         </header>
       )}
 
+      {deel === 'start' ? <section className="wereld-midden" aria-label="De wereld"><WereldKnop kind={kind} /></section> : (
       <Bladzijden items={lijst} perBlad={lijst.length > 4 ? 5 : 4} className={`prent-raster${lijst.length > 4 ? ' veel' : ''}`} label="Meer taken"
                   toon={({ taak, status }) => (
           <div key={taak.id} className={`prent-kaart taak-${status}`}>
@@ -270,17 +297,17 @@ function StartPrenten({ kind, lijst, geladen, eten, ongelezen, kies }: {
             {status === 'wacht' && <span className="rond-groot wacht" role="img" aria-label="Wacht op mama of papa"><Zandloper /></span>}
             {status === 'gedaan' && <span className="rond-groot gedaan" role="img" aria-label="Gedaan"><Ster grootte={56} /></span>}
           </div>
-        )} />
+        )} />)}
 
-      <nav className="ronde-tegels" aria-label="Spelen">
-        <WereldKnop kind={kind} rond />
+      {deel === 'start' && <nav className="ronde-tegels" aria-label="Spelen">
+        <TakenTegel kind={kind} nog={nogTeDoen} geladen={geladen} rond />
         {tegelsVoor(kind).map((t) => {
           const icoon = <svg className="ic" viewBox="0 0 24 24" width="80" height="80" aria-hidden="true"><path d={t.icoon} /></svg>
           return t.pad
             ? <Link key={t.sleutel} to={`/kind/${kind.id}/${t.pad}`} className={`ronde-tegel tint-${t.kleur}`} aria-label={t.naam}>{icoon}</Link>
             : <span key={t.sleutel} className={`ronde-tegel tint-${t.kleur} tegel-later`} role="img" aria-label={`${t.naam}, binnenkort`}>{icoon}</span>
         })}
-      </nav>
+      </nav>}
     </div>
   )
 }
@@ -402,8 +429,15 @@ const Luidspreker = ({ grootte = 28 }: { grootte?: number }) => <svg className="
 const Camera = ({ grootte }: { grootte: number }) => <svg className="ic" viewBox="0 0 24 24" width={grootte} height={grootte} aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>
 
 /** Terug naar wie speelt er; op een tablet die bij dit kind hoort het slotje voor mama of papa. */
-function Terug({ grootte }: { grootte: number }) {
+function Terug({ grootte, naar }: { grootte: number; naar?: string }) {
   const { perKind } = useSessie()
+  if (naar) {
+    return (
+      <Link to={naar} className="rond" aria-label="Terug naar het startscherm">
+        <svg className="ic" viewBox="0 0 24 24" width={grootte} height={grootte} aria-hidden="true"><path d="M15 18l-6-6l6-6" /></svg>
+      </Link>
+    )
+  }
   if (perKind) {
     return (
       <Link to="/ouder" className="rond" aria-label="Voor mama of papa">

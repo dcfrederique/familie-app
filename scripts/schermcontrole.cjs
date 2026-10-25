@@ -22,7 +22,7 @@ const GSM = [['Gsm liggend', 844, 390], ['Gsm groot liggend', 915, 412]]
 
 const KINDEREN = (optie('kind', 'luca,yuna,feline')).split(',')
 const SCHERMEN = (optie('scherm', '') || [
-  '', 'wereld', 'huis', 'figuurtje', 'thema', 'spelen', 'winkel', 'tijd', 'verhalen', 'verhaal/1', 'kleurplaten', 'tekenen',
+  '', 'wereld', 'taken', 'huis', 'figuurtje', 'thema', 'spelen', 'winkel', 'tijd', 'verhalen', 'verhaal/1', 'kleurplaten', 'tekenen',
   'schrijven', 'chat', 'rekenen', 'memory', 'penalty', 'huisdier', 'racen', 'koken', 'touwspringen', 'basket',
   'puzzel', 'pompoen', 'springen',
 ].join(',')).split(',')

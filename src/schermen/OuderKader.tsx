@@ -51,6 +51,8 @@ const iconen: Record<MenuIcoon | 'menu' | 'bel' | 'terug', ReactNode> = {
   aanbod: <><path d="M3 10l1.5-5h15L21 10M4 10v10h16V10M3 10h18" /><path d="M9 14h6v6H9z" /></>,
   // Speelknop in een rondje.
   proberen: <><circle cx="12" cy="12" r="8.5" /><path d="M10 8.5l5.5 3.5-5.5 3.5z" /></>,
+  // De wereld: een huisje aan een weg met een boom.
+  wereld: <><path d="M3 20h18M5 20v-7l4-4l4 4v7M9 20v-4h0M16 20v-5M16 15a2.5 2.5 0 1 0 0-5a2.5 2.5 0 0 0 0 5z" /></>,
   springland: <><path d="M3 20h18M5 20v-5h4v5M14 20v-9h5v9" /><circle cx="9.5" cy="6.5" r="2" /><path d="M7 11l2.5-2.5L12 10" /></>,
   nieuw: <path d="M12 3l2.3 5.4 5.7.5-4.3 3.8 1.3 5.6L12 15.4l-5 2.9 1.3-5.6L4 8.9l5.7-.5z" />,
   uitgaven: <><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" /></>,

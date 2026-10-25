@@ -3,7 +3,7 @@
 export type MenuIcoon =
   | 'vandaag' | 'goedkeuren' | 'taken' | 'kinderen' | 'spelregels'
   | 'onzetaken' | 'boodschappen' | 'notities' | 'gewicht' | 'profiel' | 'fitness' | 'lopen'
-  | 'chat' | 'weekmenu' | 'toestellen' | 'pincode' | 'winkels' | 'uitgaven' | 'nieuw' | 'aanbod' | 'melding' | 'proberen' | 'springland'
+  | 'chat' | 'weekmenu' | 'toestellen' | 'pincode' | 'winkels' | 'uitgaven' | 'nieuw' | 'aanbod' | 'melding' | 'proberen' | 'springland' | 'wereld'
 
 export interface MenuItem {
   naam: string
@@ -47,6 +47,7 @@ export const ouderMenu: MenuGroep[] = [
     { naam: 'Notities', icoon: 'notities', pad: '/ouder/notities' },
     { naam: 'Chat met de kinderen', icoon: 'chat', pad: '/ouder/chat', teller: 'chat' },
     { naam: 'Springland spelen', icoon: 'springland', pad: '/ouder/springland' },
+    { naam: 'De wereld in', icoon: 'wereld', pad: '/ouder/wereld' },
   ] },
   { naam: 'Gezondheid', alleenOuderGsm: true, items: [
     { naam: 'Gewicht', icoon: 'gewicht', pad: '/ouder/gewicht' },

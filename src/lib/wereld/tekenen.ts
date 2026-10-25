@@ -8,9 +8,8 @@ import { donkerder, tekenFiguurtje, volledigeUitsnede } from '../figuurtje/teken
 import { huisUitsnede, tekenHuis, tuinStuk } from '../huis/tekenen.ts'
 import { GROND_Y, HUIS_SCHAAL, POEL, PLEIN, VELD, inPoel, inRechthoek, opWeg, toeval, type Ding, type HuisPlek, type Kaart, type Richting } from './kaart.ts'
 
-/** Het canvas is 960 × 640 weergave-eenheden, tekenen gebeurt met een verfijning Q voor scherpte. */
-export const VW = 960
-export const VH = 640
+/** Het beeld toont ongeveer 960 × 640 eenheden van de wereld, in de verhouding van het scherm; Q is de verfijning voor scherpte. */
+const OPPERVLAK = 960 * 640
 
 const BASIS = 470
 const DAG = '--huis-gras:#7CC46A;--huis-gras2:#6AB55A;--huis-heuvel:#A6D98C;--huis-glas:#BFE3FA;--huis-pad:#E2D9C6;--huis-rook:#E6EAF0;'
@@ -20,6 +19,9 @@ const PAL = {
   d: { gras: '#7CC46A', gras2: '#6AB55A', pad: '#E2D9C6', padRand: '#CDBF9F', zand: '#F2E3B5', zandPunt: '#E2CE96', water: '#4FB3E8', waterL: '#A6DEF8', veld1: '#6FC25C', veld2: '#84CC72' },
   n: { gras: '#2E5A3A', gras2: '#264E30', pad: '#5E5A52', padRand: '#4A463F', zand: '#7C7458', zandPunt: '#6A6349', water: '#25497A', waterL: '#3E6BA3', veld1: '#2A5736', veld2: '#33663F' },
 }
+
+/** Zijde van het hubbordje in schermpunten (ook voor de link erover). */
+export const HUB_MAAT = 76
 
 const GROOT: Record<string, number> = { boom: 1.25, glijbaan: 1.25 }
 const ITEM = 90
@@ -32,15 +34,26 @@ export class Tekenaar {
   private plaatjes = new Map<string, HTMLImageElement>()
   private grond = new Map<string, HTMLCanvasElement>()
   nacht = false
+  /** Hoeveel wereld er in beeld is (in eenheden); volgt de verhouding van het scherm. */
+  vw = 960
+  vh = 640
   /** Verfijning voor scherpte; lager op zwakke toestellen. */
   readonly Q: number
 
   constructor(canvas: HTMLCanvasElement, Q = 1.5) {
     this.canvas = canvas
     this.Q = Q
-    canvas.width = VW * Q
-    canvas.height = VH * Q
     this.g = canvas.getContext('2d')!
+    this.zet(960, 640)
+  }
+
+  /** Past het beeld aan een scherm van breed × hoog pixels aan: altijd even veel wereld, in dezelfde verhouding. */
+  zet(breed: number, hoog: number) {
+    const verhouding = Math.max(0.4, Math.min(2.5, breed / Math.max(1, hoog)))
+    this.vw = Math.min(WERELD_BREED, Math.round(Math.sqrt(OPPERVLAK * verhouding)))
+    this.vh = Math.min(WERELD_HOOG, Math.round(this.vw / verhouding))
+    this.canvas.width = Math.round(this.vw * this.Q)
+    this.canvas.height = Math.round(this.vh * this.Q)
   }
 
   private plaatje(sleutel: string, vb: string, inner: string, w: number, h: number, kleur = '#2D6BD6') {
@@ -197,13 +210,16 @@ export class Tekenaar {
     gebouwen: Gebouw[]
     me: { x: number; y: number; face: Richting; moving: boolean; fase: number }
     mijnId: string
+    /** Kleur van het huisje op het bordje. */
+    kleur: string
     figuurtjes: Record<string, Figuurtje>
     kleurVan: Record<string, string>
     /** Beeldvullend (hele wereld klein) in plaats van de camera. */
     overzicht: boolean
   }) {
-    const { t, kaart, huizen, me, overzicht } = opties
+    const { t, kaart, huizen, me, overzicht, kleur } = opties
     const g = this.g, Q = this.Q
+    const VW = this.vw, VH = this.vh
     const Z = overzicht ? Math.min(VW / WERELD_BREED, VH / WERELD_HOOG) : 1
     const camX = overzicht ? 0 : Math.max(0, Math.min(WERELD_BREED - VW, me.x - VW / 2))
     const camY = overzicht ? 0 : Math.max(0, Math.min(WERELD_HOOG - VH, me.y - VH / 2 - 36))
@@ -279,7 +295,32 @@ export class Tekenaar {
       g.restore()
     }
     g.restore()
+    this.tekenHubBord(t, kleur)
     return [camX, camY, Z] as const
+  }
+
+  /** Rechtsboven staat een houten bordje met een huisje in de wereld zelf: tikken erop (een onzichtbare link ligt erover) brengt je terug naar het startscherm. */
+  private tekenHubBord(t: number, kleur: string) {
+    const g = this.g, Q = this.Q
+    const eenheid = this.vw / Math.max(1, this.canvas.clientWidth || this.vw) // eenheden per schermpunt
+    const maat = HUB_MAAT * eenheid, rand = 14 * eenheid
+    g.save()
+    g.setTransform(Q, 0, 0, Q, 0, 0)
+    g.translate(this.vw - rand - maat / 2, rand + maat / 2)
+    g.rotate(0.05 + Math.sin(t * 1.3) * 0.015)
+    g.scale(eenheid, eenheid)
+    const h = HUB_MAAT / 2
+    // paal, schaduw en bord
+    g.fillStyle = 'rgba(0,0,0,.18)'; g.beginPath(); g.ellipse(2, h + 10, h * 0.9, 9, 0, 0, 7); g.fill()
+    g.fillStyle = '#6E4224'; g.fillRect(-4, h - 6, 8, 16)
+    g.fillStyle = '#8A5A33'; g.beginPath(); g.roundRect(-h, -h, HUB_MAAT, HUB_MAAT, 20); g.fill()
+    g.fillStyle = '#FFF6DC'; g.beginPath(); g.roundRect(-h + 6, -h + 6, HUB_MAAT - 12, HUB_MAAT - 12, 15); g.fill()
+    // huisje
+    g.fillStyle = kleur; g.beginPath(); g.moveTo(-26, -2); g.lineTo(0, -26); g.lineTo(26, -2); g.closePath(); g.fill()
+    g.fillStyle = '#F2D9A8'; g.fillRect(-18, -2, 36, 26)
+    g.fillStyle = kleur; g.beginPath(); g.roundRect(-6, 8, 12, 16, 3); g.fill()
+    g.fillStyle = '#8A5A33'; g.fillRect(10, -22, 7, 14)
+    g.restore()
   }
 
   private tekenDing(d: Ding) {
