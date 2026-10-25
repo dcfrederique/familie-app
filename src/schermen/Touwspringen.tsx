@@ -13,7 +13,7 @@ import { zin } from '../data/zinnen.ts'
 
 export default function Touwspringen() {
   return (
-    <SpelKader titel="Touwspringen" terug={(id) => `/kind/${id}/spelen`}>
+    <SpelKader titel="Touwspringen" vol terug={(id) => `/kind/${id}/spelen`}>
       {(kind) => <Speelplaats kind={kind} />}
     </SpelKader>
   )

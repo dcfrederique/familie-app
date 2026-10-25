@@ -10,7 +10,7 @@ import { zin } from '../data/zinnen.ts'
 
 export default function Basket() {
   return (
-    <SpelKader titel="Basket" terug={(id) => `/kind/${id}/spelen`}>
+    <SpelKader titel="Basket" vol terug={(id) => `/kind/${id}/spelen`}>
       {(kind) => <BasketSpel kind={kind} />}
     </SpelKader>
   )

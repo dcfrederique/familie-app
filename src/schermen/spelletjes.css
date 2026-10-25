@@ -195,3 +195,9 @@
 .touw-veld { background: linear-gradient(#BFE3FA, #E8F5FD 70%); touch-action: manipulation; user-select: none; cursor: pointer; }
 .touw-veld > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .touw-teller { position: absolute; left: 24px; top: 12px; font-size: clamp(64px, 10vw, 120px); line-height: 1; color: #1C2433; opacity: .85; pointer-events: none; }
+
+/* Tablet (ook staand) en pc: het speelveld vult de hoogte onder de kop en de keuzes, zonder scrollen (SpelKader vol). */
+@media (min-width: 600px) and (min-height: 560px) {
+  .kind-vol > .kind-inhoud > .penalty { flex: 1; min-height: 0; }
+  .kind-vol .penalty > .spel-veld, .kind-vol .penalty > .penalty-veld { flex: 1; height: auto; min-height: 0; }
+}

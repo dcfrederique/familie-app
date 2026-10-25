@@ -10,7 +10,7 @@ import { ThemaFeest } from './ThemaDelen.tsx'
 
 export default function Penalty() {
   return (
-    <SpelKader titel="Penalty's" terug={(id) => `/kind/${id}/spelen`}>
+    <SpelKader titel="Penalty's" vol terug={(id) => `/kind/${id}/spelen`}>
       {(kind) => <PenaltySpel kind={kind} />}
     </SpelKader>
   )

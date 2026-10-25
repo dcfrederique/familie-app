@@ -3,9 +3,10 @@ import './bladzijden.css'
 
 // Raster dat op tablet en pc nooit scrollt: wat niet past, komt op een volgende bladzijde met pijlen.
 // Het raster meet zijn eigen plaats en kiest zoveel kolommen en rijen als er vakken van de minimummaat in passen.
-// Op een smal of laag scherm (gsm) blijft het een gewone lijst die scrollt.
+// Op een smal of laag scherm (gsm) blijft het een gewone lijst die scrollt (of `perBlad` per bladzijde).
 
-const GROOT = '(min-width: 961px) and (min-height: 560px)'
+// Ook tablets staand (vanaf 600 px breed): daar mag een kind evenmin moeten scrollen.
+const GROOT = '(min-width: 600px) and (min-height: 560px)'
 
 export interface Vakmaat {
   /** Kleinste breedte en hoogte van een vak, in px. */
@@ -20,6 +21,9 @@ export interface Vakmaat {
 
 /** Maat voor kaarten met een prent en een titel (verhalen, kleurplaten). */
 export const kaartMaat: Vakmaat = { breed: 200, hoog: 240, gap: 18, maxHoog: 270 }
+/** Maat voor de keuzes in de kleerkast en Mijn huis: voor wie leest (met naam), en groter voor wie niet leest. */
+export const keuzeMaat: Vakmaat = { breed: 108, hoog: 124, gap: 12, maxHoog: 210, verhouding: 1 }
+export const keuzeMaatGroot: Vakmaat = { breed: 130, hoog: 130, gap: 16, maxHoog: 220, verhouding: 1 }
 
 interface Raster { kolommen: number; rijen: number; celB: number; celH: number }
 
@@ -60,14 +64,17 @@ function useRaster(maat: Vakmaat | null, aantal: number) {
 
 /**
  * Toont `items` per bladzijde. Met `maat` meet het raster zelf hoeveel er passen; met `perBlad` ligt het aantal vast
- * (de opmaak van het raster komt dan uit `className`).
+ * (de opmaak van het raster komt dan uit `className`). Met beide geldt `perBlad` waar niet gemeten wordt (gsm).
  */
-export default function Bladzijden<T>({ items, maat = null, perBlad, className = '', label, toon }: {
-  items: T[]; maat?: Vakmaat | null; perBlad?: number; className?: string; label: string; toon: (item: T) => ReactNode
+export default function Bladzijden<T>({ items, maat = null, perBlad, className = '', label, naast = false, toon }: {
+  items: T[]; maat?: Vakmaat | null; perBlad?: number; className?: string; label: string
+  /** Pijlen links en rechts van het raster in plaats van eronder: spaart hoogte op een laag scherm. */
+  naast?: boolean
+  toon: (item: T) => ReactNode
 }) {
   const { ref, raster } = useRaster(maat, items.length)
   const [blad, setBlad] = useState(0)
-  const n = perBlad ?? (raster ? raster.kolommen * raster.rijen : items.length)
+  const n = raster ? raster.kolommen * raster.rijen : perBlad ?? items.length
   const bladen = Math.max(1, Math.ceil(items.length / Math.max(1, n)))
   const nu = Math.min(blad, bladen - 1)
   const stijl = raster && maat ? {
@@ -77,7 +84,7 @@ export default function Bladzijden<T>({ items, maat = null, perBlad, className =
   } as CSSProperties : undefined
 
   return (
-    <div className={`bladzijden${raster || perBlad ? ' vast' : ''}`}>
+    <div className={`bladzijden${raster || perBlad ? ' vast' : ''}${naast && raster ? ' naast' : ''}`}>
       <div ref={ref} className={`blad ${className}`} style={stijl}>
         {items.slice(nu * n, nu * n + n).map(toon)}
       </div>

@@ -10,8 +10,19 @@
 .blader-stippen i { width: 14px; height: 14px; border-radius: 7px; background: var(--line); transition: width .2s; }
 .blader-stippen i.nu { width: 34px; background: var(--kid); }
 
+/* Pijlen naast het raster (naast): de stippen staan eronder, het raster krijgt bijna de volle hoogte. */
+.bladzijden.naast { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; grid-template-rows: minmax(0, 1fr) auto; column-gap: 10px; row-gap: 6px; }
+.bladzijden.naast > .blad { grid-column: 2; grid-row: 1; }
+.bladzijden.naast > .blader { display: contents; }
+.bladzijden.naast .blader-knop { grid-row: 1; align-self: center; width: 56px; height: 56px; }
+.bladzijden.naast .blader-knop:first-child { grid-column: 1; }
+.bladzijden.naast .blader-knop:last-child { grid-column: 3; }
+.bladzijden.naast .blader-stippen { grid-column: 2; grid-row: 2; justify-self: center; }
+.bladzijden.naast .blader-stippen i { width: 10px; height: 10px; }
+.bladzijden.naast .blader-stippen i.nu { width: 26px; }
+
 /* Subschermen vullen op tablet en pc precies het scherm; het raster deelt de vrije hoogte op. */
-@media (min-width: 961px) and (min-height: 560px) {
+@media (min-width: 600px) and (min-height: 560px) {
   .kind.kind-vol { height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
   .kind-vol > header { flex: none; }
   .kind-vol > .kind-inhoud { flex: 1; min-height: 0; width: 100%; display: flex; flex-direction: column; padding-bottom: 20px; }

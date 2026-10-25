@@ -88,3 +88,40 @@
 @media (prefers-reduced-motion: reduce) {
   .huppel { animation: none; }
 }
+
+/* Tablet (liggend en staand) en pc: kleerkast en Mijn huis vullen precies het scherm, zonder scrollen.
+   De keuzes bladeren (Bladzijden meet hoeveel er passen), het podium krimpt mee met de hoogte. */
+@media (min-width: 600px) and (min-height: 560px) {
+  .kleerkast {
+    height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+    padding-block: clamp(12px, 2.4dvh, 24px); gap: clamp(12px, 2dvh, 20px); overflow: hidden;
+  }
+  .kleerkast > * { flex: none; }
+  .kleerkast .thema-kop { height: clamp(112px, 19dvh, 160px); }
+  .kleerkast > .kleerkast-inhoud { flex: 1; min-height: 0; grid-template-rows: minmax(0, 1fr); }
+  .kleerkast .podium, .kleerkast .huis-podium { min-height: 0; }
+  .podium-figuur { height: calc(100% - 64px); width: auto; max-width: 90%; }
+  .kast { min-height: 0; gap: clamp(10px, 1.6dvh, 16px); }
+  .kast > * { flex: none; }
+  .kast > .kast-vak, .kast > .huis-keuzes { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+  .kast-vak > .bladzijden, .huis-keuzes > .bladzijden { gap: 10px; }
+  .bladzijden.vast > .kast-keuzes { align-content: center; justify-content: stretch; }
+  .bladzijden.vast > .kast-keuzes > .kast-keuze { width: min(100%, var(--cel-h)); height: auto; aspect-ratio: 1; max-height: 100%; place-self: center; }
+  .bladzijden.vast > .kast-keuzes .kast-prent { flex: 1 1 0; min-height: 0; aspect-ratio: auto; }
+  .kast .blader-knop { width: 60px; height: 60px; }
+  .kast-tab { min-height: clamp(60px, 9dvh, 76px); }
+  .kast-kleuren { flex-wrap: nowrap; gap: 8px; padding: 10px 14px; }
+  .kast-kleur { width: auto; height: auto; flex: 0 1 clamp(44px, 6.4dvh, 64px); aspect-ratio: 1; min-width: 34px; }
+  .prenten .kast-tab { min-height: clamp(64px, 8.6dvh, 88px); }
+  /* Ronde tabs (tuinthema) groeien niet mee met een brede kolom. */
+  .thema-tuin .kast-tab { width: min(100%, clamp(64px, 10dvh, 96px)); justify-self: center; }
+  .kast-acties { margin-top: 0; }
+  .kast-actie { flex: 1 1 auto; min-width: 0; min-height: clamp(60px, 8.6dvh, 72px); padding: 0 16px; }
+  .prenten .kast-actie { min-height: clamp(72px, 10dvh, 96px); min-width: 72px; }
+}
+/* Tablet staand: podium boven, de kast eronder. */
+@media (min-width: 600px) and (min-height: 560px) and (orientation: portrait) {
+  .kleerkast .kleerkast-inhoud, .kleerkast.huisbouw .kleerkast-inhoud { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 2fr) minmax(0, 3fr); }
+  .kleerkast { padding-inline: 20px; }
+  .kleerkast.prenten .kast-tabs { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}

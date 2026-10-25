@@ -19,6 +19,13 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.32',
+    datum: '2026-10-25',
+    titel: 'Schermen passen op elke tablet, ook staand',
+    tekst: 'Alle kinderschermen zijn nagekeken op gangbare tablets (iPad, Samsung Galaxy Tab, Fire, Lenovo), liggend en staand. Mijn huis en Mijn figuurtje passen nu altijd op één scherm: de keuzes bladeren met pijlen links en rechts in plaats van te scrollen, en op een staande tablet staat het huis bovenaan met de keuzes eronder. Ook verdween een klein stukje scrollen op bijna elk scherm met een themakop, en vullen Racen, Penalty\'s, Basket en Touwspringen precies het scherm. De puzzels kies je nu per bladzijde. In de lucht van Mijn huis vliegen vogeltjes, zweeft een luchtballon en valt er \'s nachts soms een ster. Voortaan controleert de app dit elke nacht.',
+    open: 'Op een gsm in liggende stand moet je in sommige schermen nog scrollen; de nachtelijke controle pakt de overige schermen stap voor stap aan.',
+  },
+  {
     versie: '0.31',
     datum: '2026-10-25',
     titel: 'Dagplafond voor activiteiten instelbaar',

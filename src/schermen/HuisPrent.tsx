@@ -11,6 +11,7 @@ export default function HuisPrent({ huis, kaal = false, figuurtje, label, classN
   const id = useId()
   return (
     <svg className={`huis-scene ${className}`} viewBox={kaal ? huisUitsnede(huis.model) : sceneUitsnede(huis.model)}
+         preserveAspectRatio={kaal ? undefined : 'xMidYMax meet'}
          role={label ? 'img' : undefined} aria-label={label} aria-hidden={label ? undefined : true}
          dangerouslySetInnerHTML={{ __html: tekenHuis(huis, { id: `huis${id}`, kaal, figuurtje }) }} />
   )

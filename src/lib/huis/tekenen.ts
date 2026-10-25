@@ -70,12 +70,18 @@ function lucht(id: string) {
   const sterren = [[90, 60], [240, 130], [380, 40], [470, 150], [620, 90], [720, 30], [960, 170], [40, 200], [300, 220]]
     .map(([x, y], i) => `<circle cx="${x}" cy="${y}" r="${i % 3 ? 2.2 : 3.2}"/>`).join('')
   const wolk = (x: number, y: number, s: number) => `<g transform="translate(${x} ${y}) scale(${s})"><ellipse cx="0" cy="0" rx="46" ry="22"/><ellipse cx="-34" cy="8" rx="30" ry="16"/><ellipse cx="36" cy="8" rx="32" ry="17"/><ellipse cx="6" cy="-14" rx="28" ry="20"/></g>`
-  return `<rect y="-260" width="1000" height="${BASIS + 262}" fill="url(#${id}lucht)"/>
+  // Lucht en gras lopen ver buiten de uitsnede door: op een scherm met een andere verhouding dan de prent
+  // (tablet staand) blijft de rand dan gewoon lucht en gras in plaats van een lege strook.
+  return `<rect x="-2000" y="-1260" width="5000" height="${BASIS + 1262}" fill="url(#${id}lucht)"/>
     <g fill="#FFF6C8" style="opacity:var(--huis-sterren)">${sterren}</g>
     <circle cx="860" cy="92" r="42" style="fill:var(--huis-zon)"/><circle cx="880" cy="78" r="38" style="fill:var(--huis-lucht1);opacity:var(--huis-maan)"/>
     <g style="fill:var(--huis-wolk)">${wolk(180, 92, 1)}${wolk(560, 58, 0.8)}</g>
     <ellipse cx="170" cy="${BASIS + 40}" rx="330" ry="120" style="fill:var(--huis-heuvel)"/><ellipse cx="840" cy="${BASIS + 50}" rx="380" ry="130" style="fill:var(--huis-heuvel)"/>
-    <rect y="${BASIS}" width="1000" height="${600 - BASIS}" style="fill:var(--huis-gras)"/><rect y="${BASIS}" width="1000" height="8" style="fill:var(--huis-gras2)"/>`
+    <ellipse cx="-420" cy="${BASIS + 46}" rx="360" ry="110" style="fill:var(--huis-heuvel)"/><ellipse cx="1420" cy="${BASIS + 40}" rx="360" ry="120" style="fill:var(--huis-heuvel)"/>
+    <rect x="-2000" y="${BASIS}" width="5000" height="${1600 - BASIS}" style="fill:var(--huis-gras)"/><rect x="-2000" y="${BASIS}" width="5000" height="8" style="fill:var(--huis-gras2)"/>
+    <g class="huis-vogels" style="opacity:calc(1 - var(--huis-sterren))"><path d="M0 0q9 -9 18 0q9 -9 18 0"/><path d="M44 -22q7 -7 14 0q7 -7 14 0"/></g>
+    <path class="huis-vallende-ster" d="M0 0l-90 34" style="opacity:var(--huis-sterren)"/>
+    <g class="huis-ballon" transform="translate(150 -150)"><path d="M-40 0a40 44 0 1 1 80 0c0 22-24 34-32 48h-16c-8-14-32-26-32-48z" fill="#F2B33D"/><path d="M-14 -42c-8 20-8 50 6 90M14 -42c8 20 8 50-6 90" fill="none" stroke="#E0463A" stroke-width="9"/><path d="M-8 48l-4 18M8 48l4 18" stroke="#6E4224" stroke-width="2"/><rect x="-14" y="64" width="28" height="18" rx="4" fill="#8A5A33"/></g>`
 }
 
 function muur(x: number, y: number, w: number, hoog: number, h: Huis, id: string) {

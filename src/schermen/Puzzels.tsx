@@ -8,25 +8,27 @@ import { geluid } from '../lib/spelletjes/geluid.ts'
 import { gekozenNiveau, niveauBewaren, puzzelAf, puzzelsAf, record, recordBewaren } from '../lib/spelletjes/opslag.ts'
 import { aantalVast, laatLos, nieuwePuzzel, pakOp, PRENT_B, PRENT_H, stukjePad, veld, verschuif, type PuzzelSpel } from '../lib/spelletjes/puzzel.ts'
 import { leesVoor } from '../lib/voorlezen.ts'
+import Bladzijden, { kaartMaat } from './Bladzijden.tsx'
 import SpelKader, { Chips } from './SpelKader.tsx'
 import './puzzels.css'
 import './verhalen.css'
 import { ThemaFeest } from './ThemaDelen.tsx'
 
 export default function Puzzels() {
+  // De keuzelijst vult het scherm en bladert (vol); het puzzelbord zelf houdt zijn eigen maat.
+  const [gekozen, setGekozen] = useState<Puzzel | null>(null)
   return (
-    <SpelKader titel="Puzzels" terug={(id) => `/kind/${id}/spelen`}>
-      {(kind) => <PuzzelKeuze kind={kind} />}
+    <SpelKader titel="Puzzels" vol={!gekozen} terug={(id) => `/kind/${id}/spelen`}>
+      {(kind) => <PuzzelKeuze kind={kind} gekozen={gekozen} setGekozen={setGekozen} />}
     </SpelKader>
   )
 }
 
 // Eerst een prent en het aantal stukjes kiezen, dan puzzelen.
-function PuzzelKeuze({ kind }: { kind: Gebruiker }) {
+function PuzzelKeuze({ kind, gekozen, setGekozen }: { kind: Gebruiker; gekozen: Puzzel | null; setGekozen: (p: Puzzel | null) => void }) {
   const { kinderen } = useSessie()
   const [niveau, setNiveau] = useState<PuzzelNiveau>(() =>
     gekozenNiveau(kind.id, 'puzzel', startPuzzelNiveau(kind, kinderen), Object.keys(puzzelNiveaus)))
-  const [gekozen, setGekozen] = useState<Puzzel | null>(null)
   const lezer = kind.kan_lezen
   useEffect(() => { if (!lezer && !gekozen) leesVoor(zin.puzzelKiezen) }, [lezer, gekozen])
 
@@ -37,8 +39,7 @@ function PuzzelKeuze({ kind }: { kind: Gebruiker }) {
     <div className="verhalen">
       <Chips label="Aantal stukjes" opties={puzzelNiveaus} gekozen={niveau}
              kies={(nv) => { setNiveau(nv); niveauBewaren(kind.id, 'puzzel', nv) }} />
-      <div className="verhaal-raster">
-        {puzzels.map((p) => (
+      <Bladzijden items={puzzels} maat={kaartMaat} className="verhaal-raster" label="Meer puzzels" toon={(p) => (
           <button key={p.sleutel} type="button" className="verhaal-kaart puzzel-kaart" aria-label={p.titel} onClick={() => setGekozen(p)}>
             <VerhaalPrent prent={p.prent} label={p.titel} />
             {lezer && <span className="verhaal-kaart-titel">{p.titel}</span>}
@@ -48,8 +49,7 @@ function PuzzelKeuze({ kind }: { kind: Gebruiker }) {
               </span>
             )}
           </button>
-        ))}
-      </div>
+        )} />
     </div>
   )
 }

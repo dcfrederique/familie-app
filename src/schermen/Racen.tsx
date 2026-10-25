@@ -12,7 +12,7 @@ import { zin } from '../data/zinnen.ts'
 
 export default function Racen() {
   return (
-    <SpelKader titel="Racen" terug={(id) => `/kind/${id}/spelen`}>
+    <SpelKader titel="Racen" vol terug={(id) => `/kind/${id}/spelen`}>
       {(kind) => <Racebaan kind={kind} />}
     </SpelKader>
   )

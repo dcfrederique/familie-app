@@ -10,6 +10,7 @@ import { themaVan } from '../data/thema.ts'
 import { useGegevens } from '../lib/gegevens.ts'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import { kanVoorlezen, leesVoor } from '../lib/voorlezen.ts'
+import Bladzijden, { keuzeMaat, keuzeMaatGroot } from './Bladzijden.tsx'
 import Figuurtje from './Figuurtje.tsx'
 import { ThemaKop } from './ThemaDelen.tsx'
 import KoopVraag from './KoopVraag.tsx'
@@ -170,8 +171,9 @@ export default function Kleerkast({ ouder = false }: { ouder?: boolean }) {
               ))}
             </div>
 
-            <div className="kast-keuzes" role="tabpanel">
-              {zichtbareStukken(info, lezer).filter((s) => teZien(cat, s)).map(tel.bind(null, cat)).map((s) => {
+            <div role="tabpanel" className="kast-vak">
+              <Bladzijden key={cat} items={zichtbareStukken(info, lezer).filter((s) => teZien(cat, s)).map(tel.bind(null, cat))}
+                          maat={lezer ? keuzeMaat : keuzeMaatGroot} className="kast-keuzes" label="Meer keuzes" naast toon={(s) => {
                 const eigen = isVrij(cat, s, v)
                 const prijs = prijsVoor(s, v)
                 return (
@@ -185,7 +187,7 @@ export default function Kleerkast({ ouder = false }: { ouder?: boolean }) {
                     {lezer && <span className="kast-naam">{s.naam}</span>}
                   </button>
                 )
-              })}
+              }} />
             </div>
 
             {info.kleur && (

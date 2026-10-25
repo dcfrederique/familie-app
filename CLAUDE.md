@@ -173,3 +173,39 @@ ideeen/<datum van vandaag>.md. Als dat bestand niet bestaat, stop dan en
 schrijf dat in het resultaatbestand. Implementeer het verhaal (direct beschikbaar),
 het spelletje (te koop met sterren in de winkel) en het nieuwe level van Springland, draai lint, tests en build,
 schrijf de samenvatting naar ideeen/<datum van vandaag>-resultaat.md en push naar main.
+
+---
+
+# Nachtelijke schermcontrole (05:07)
+
+Doel: geen enkel kinderscherm mag op een tablet scrollen, liggend of staand (vraag van Frederique, 25 oktober 2026),
+en elke nacht worden de schermen een beetje mooier. Loopt na de nachtelijke bouw (01:07 ontwerp, 03:07 bouw).
+
+## Werkwijze
+- `npm ci`, dan `npx vite --port 5173 --host 127.0.0.1 &` (demo zonder Supabase) en
+  `node scripts/schermcontrole.cjs --json /tmp/uitslag.json` (Playwright staat globaal in de cloudomgeving).
+  Het script doorloopt per kind (Luca, Yuna, Feline) het welkomstpad, met elke dag een ander thema, en meet elk kindscherm
+  op tien gangbare tablets, liggend en staand (iPad 9.7/10.2/Air/Pro 11/Pro 12.9, Galaxy Tab A/S6 Lite/S7/S9+, Fire 7/HD 10),
+  plus twee gsm's liggend (ter info). Het meldt pagina's of vakken die scrollen en knoppen of tekst buiten beeld.
+  Opties: `--kind luca`, `--scherm huis,figuurtje`, `--fotos map --alle-fotos` (schermafdrukken), `--thema-nr N`.
+- Herstel eerst wat op een tablet scrolt; kies per nacht de schermen met de meeste meldingen. Bekijk de schermafdrukken
+  zelf: passen is niet genoeg, het moet er ook goed uitzien (geen ovale tegels, geen afgeknipte tekst, knoppen ≥ 64 px).
+- Middelen die al bestaan: `Bladzijden` met `maat` (meet zelf hoeveel tegels passen, `naast` zet de pijlen opzij) in plaats
+  van scrollen; `SpelKader vol` + `.kind-vol` om een scherm precies de hoogte te laten vullen; media query
+  `(min-width: 600px) and (min-height: 560px)` = tablet (ook staand), `(orientation: portrait)` voor staand.
+- Daarna kleine visuele details toevoegen aan een of twee schermen (een prentje, een animatie, een thema-accent), in de stijl
+  van de app en met `prefers-reduced-motion`. Geen nieuwe functies, geen spelregels of prijzen wijzigen.
+- Gsm liggend hoeft niet zonder scrollen (kinderen gebruiken een tablet), maar mag er niet slechter op worden.
+- Bewust scrollend (meldingen mogen blijven): de landkaart van Springland (`.spring-kaart`, slepen) en de chatgeschiedenis.
+
+## Afronden
+- Lint, tests en build groen; dan pas push naar `main`. Rood en niet op te lossen: alleen het verslag pushen.
+- Verslag in `ideeen/YYYY-MM-DD-schermen.md`: wat hersteld is (voor en na, aantal passende schermen), welke details erbij
+  kwamen en wat nog open staat (de volgende nacht begint daar).
+- Merken ouders er iets van, dan een item bovenaan `src/data/nieuwtjes.ts` met het volgende `versie` (harde kernregel).
+- Korte melding aan Frederique in de thread "Elke nacht schermen nakijken en verfijnen".
+
+## Taakprompt 3 – Schermcontrole (05:07)
+Lees CLAUDE.md en volg "Nachtelijke schermcontrole". Haal main binnen, draai scripts/schermcontrole.cjs op alle kinderen,
+herstel wat op een tablet scrolt of buiten beeld valt (begin bij de schermen met de meeste meldingen), voeg een paar kleine
+visuele details toe, draai lint, tests en build, schrijf ideeen/<datum van vandaag>-schermen.md en push naar main.

@@ -62,7 +62,8 @@
 .kind-rij input[type="checkbox"] { width: 22px; height: 22px; }
 
 /* Startscherm kind (tablet liggend 1194 × 834), naar het schermontwerp */
-.kind { min-height: 100dvh; background: var(--bg); }
+/* flow-root: de bovenmarge van de themakop mag niet door .kind heen lekken (anders 20px scrollen op elk subscherm). */
+.kind { display: flow-root; min-height: 100dvh; background: var(--bg); }
 .kind-scherm { max-width: 1194px; margin: 0 auto; padding: 24px 32px 32px; display: flex; flex-direction: column; gap: 24px; }
 
 .kop { display: flex; align-items: center; gap: 16px; }

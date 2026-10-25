@@ -44,7 +44,7 @@
 .spring-volgende svg { width: 72px; height: 54px; }
 .spring .spel-boven .chip { display: inline-flex; align-items: center; gap: 6px; background: var(--surface); color: var(--ink); }
 /* Op tablet en pc liggend vult het veld precies het scherm (kind-vol), zonder scrollen. */
-@media (min-width: 961px) and (min-height: 560px) {
+@media (min-width: 600px) and (min-height: 560px) {
   .kind-vol .spring { flex: 1; min-height: 0; }
   .kind-vol .spring-veld { flex: 1; height: auto; min-height: 0; }
   .kind-vol .spring-kaart-scherm { flex: 1; height: auto; min-height: 0; }

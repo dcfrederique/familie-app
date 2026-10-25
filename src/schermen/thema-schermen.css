@@ -378,6 +378,10 @@
 .thema-race .kast-keuze { border-radius: 50%; background: #F3F6FC; border: 10px solid #1C2433; box-shadow: inset 0 0 0 3px #9AA6B8; padding-bottom: 0; }
 .thema-race .kast-keuze[aria-pressed="true"] { background: #E3EDFC; box-shadow: inset 0 0 0 3px #9AA6B8, 0 0 0 5px #F2B33D; }
 .thema-race .kast-naam { color: #4E5A6B; }
+/* In de ronde bandjes: naam als plaatje onderaan en prijs bovenaan, zodat het prentje vrij blijft. */
+.thema-race .kast-keuze .kast-naam { position: absolute; bottom: -12px; left: 50%; transform: translateX(-50%); max-width: 110%; padding: 2px 10px; border-radius: 10px; background: #1C2433; color: #F3F6FC; font-size: 12px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.thema-race .kast-keuze .prijs-label { top: -12px; left: 50%; transform: translateX(-50%); height: 28px; font-size: 15px; }
+.thema-race .kast-keuze .slotje { top: auto; bottom: 14px; right: -6px; width: 28px; height: 28px; }
 .thema-race .slotje { background: #16264A; color: #FF4D4D; }
 
 .thema-kasteel .podium { background: radial-gradient(42% 46% at 50% 48%, #DDF0FC 96%, transparent 97%), radial-gradient(48% 52% at 50% 48%, var(--thema-goud) 96%, transparent 97%), var(--surface); }

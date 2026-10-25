@@ -19,7 +19,14 @@
 .huis-gebouw { transform-box: fill-box; transform-origin: 50% 100%; }
 .huis-rook circle { fill: var(--huis-rook); transform-box: fill-box; transform-origin: center; opacity: .7; }
 .huis-lampje { transform-box: fill-box; transform-origin: center; }
+/* Kleine details in de lucht: vogeltjes overdag, een vallende ster 's nachts, en hoog in de lucht een luchtballon
+   (alleen te zien als het podium hoger is dan de prent, bv. op een groot of staand scherm). */
+.huis-vogels { fill: none; stroke: #3A4A66; stroke-width: 3.5; stroke-linecap: round; transform: translate(330px, 150px); }
+.huis-vallende-ster { stroke: #FFF6C8; stroke-width: 3; stroke-linecap: round; transform: translate(420px, 20px); stroke-dasharray: 0 100; }
 @media (prefers-reduced-motion: no-preference) {
+  .huis-podium .huis-vogels { animation: huis-vogels 26s linear infinite; }
+  .huis-podium .huis-ballon { animation: huis-ballon 7s ease-in-out infinite alternate; }
+  .huis-podium .huis-vallende-ster { animation: huis-vallen 9s ease-in 3s infinite; }
   .huis-rook circle { opacity: 0; animation: huis-rook 3s ease-out infinite; }
   .huis-rook circle:nth-child(2) { animation-delay: 1s; }
   .huis-rook circle:nth-child(3) { animation-delay: 2s; }
@@ -28,6 +35,9 @@
   .groei .huis-gebouw { animation: huis-groei .9s cubic-bezier(.2, 1.4, .4, 1) .2s both; }
 }
 @keyframes huis-rook { 0% { transform: translateY(14px) scale(.5); opacity: 0; } 30% { opacity: .85; } 100% { transform: translateY(-34px) scale(1.25); opacity: 0; } }
+@keyframes huis-vogels { from { transform: translate(-260px, 170px); } to { transform: translate(1260px, 60px); } }
+@keyframes huis-vallen { 0%, 88% { transform: translate(560px, -10px); stroke-dasharray: 0 100; } 94% { stroke-dasharray: 100 0; } 100% { transform: translate(440px, 36px); stroke-dasharray: 0 100; } }
+@keyframes huis-ballon { from { translate: 0 0; } to { translate: 40px -24px; } }
 @keyframes huis-twinkel { from { opacity: .5; } to { opacity: 1; } }
 @keyframes huis-wiebel { 30% { transform: scale(1.03, .96); } 65% { transform: scale(.98, 1.03); } 100% { transform: none; } }
 @keyframes huis-groei { from { transform: scale(.35); opacity: 0; } }
@@ -36,7 +46,7 @@
 /* Het huis staat onderaan; de lucht vult de rest van de hoogte. */
 .huisbouw .kleerkast-inhoud { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
 .huis-podium { position: relative; min-height: 420px; border-radius: 40px; overflow: hidden; background: var(--huis-lucht1); display: flex; flex-direction: column; justify-content: flex-end; }
-.huis-podium > .huis-scene { max-height: 100%; }
+.huis-podium > .huis-scene { flex: 1 1 0; min-height: 0; width: 100%; height: 100%; }
 .huis-podium > .huis-scene.proef { opacity: .85; }
 .huis-naar-kast { position: absolute; right: 14px; top: 14px; width: 56px; height: 56px; border-radius: 50%; background: var(--surface); color: var(--kid); display: grid; place-items: center; box-shadow: 0 4px 0 var(--shade); }
 .huisbouw .kast-tabs { grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 8px; }

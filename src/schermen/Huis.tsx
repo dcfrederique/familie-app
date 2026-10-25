@@ -13,7 +13,7 @@ import { useGegevens } from '../lib/gegevens.ts'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import { geluid } from '../lib/spelletjes/geluid.ts'
 import { kanVoorlezen, leesVoor } from '../lib/voorlezen.ts'
-import Bladzijden from './Bladzijden.tsx'
+import Bladzijden, { keuzeMaat, keuzeMaatGroot } from './Bladzijden.tsx'
 import HuisPrent, { HuisKeuzePrent } from './HuisPrent.tsx'
 import KoopVraag from './KoopVraag.tsx'
 import { Ster, SterrenPil } from './onderdelen.tsx'
@@ -177,7 +177,8 @@ export default function MijnHuis() {
             {lezer && info.veld === 'extra' && <p className="huis-hint">Zet aan wat je wil, alles mag samen.</p>}
 
             <div role="tabpanel" className="huis-keuzes">
-              <Bladzijden key={cat} items={stukken} perBlad={lezer ? 8 : 6} className="kast-keuzes" label="Meer keuzes"
+              <Bladzijden key={cat} items={stukken} maat={lezer ? keuzeMaat : keuzeMaatGroot} perBlad={lezer ? 8 : 6}
+                          className="kast-keuzes" label="Meer keuzes" naast
                           toon={(s) => {
                             const eigen = isHuisStukVrij(cat, s, v)
                             const prijs = prijsVoor(s, v)

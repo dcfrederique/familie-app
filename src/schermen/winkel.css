@@ -21,7 +21,7 @@
 .winkel-vak > .winkel-kaart { flex: 1; }
 
 /* Op tablet en pc vult de winkel het scherm en bladert hij in plaats van te scrollen. */
-@media (min-width: 961px) and (min-height: 560px) {
+@media (min-width: 600px) and (min-height: 560px) {
   .kind-vol .winkel { flex: 1; min-height: 0; }
   .bladzijden.vast > .winkel-raster { align-content: start; padding: 4px 0 8px; }
   .bladzijden.vast > .winkel-raster .winkel-kaart { min-height: 0; padding-block: 10px; }
