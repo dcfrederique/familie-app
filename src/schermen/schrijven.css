@@ -18,3 +18,22 @@
 .schrijf-hulp { min-height: 1.4em; }
 @keyframes schrijf-klop { 50% { transform: scale(1.25); } }
 @media (prefers-reduced-motion: reduce) { .schrijf-stip circle { animation: none; } }
+
+/* Vrij schrijven (lezers): eigen lijn over het grijs, oranje als het ernaast ligt. */
+.schrijf-blad.vrij { cursor: crosshair; }
+.inkt-goed { stroke: var(--kid); fill: var(--kid); }
+.inkt-fout { stroke: var(--warn); fill: var(--warn); }
+path.inkt-goed, path.inkt-fout { fill: none; }
+.schrijf-start circle { fill: var(--kid); opacity: .55; stroke: #FFFFFF; stroke-width: 2; }
+.schrijf-start text { fill: #FFFFFF; font-weight: 800; font-size: 12px; pointer-events: none; }
+.schrijf-uitslag { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.schrijf-procent { font-size: clamp(44px, 6vw, 64px); line-height: 1; color: var(--ok); }
+.schrijf-procent.laag { color: var(--warn); }
+.schrijf-deel { margin: 0; font-size: 18px; font-weight: 700; color: var(--muted); }
+.schrijf-deel b { color: var(--ink); }
+.schrijf-scores { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 0; }
+.schrijf-score { border-radius: 20px; background: var(--soft); padding: 6px 16px; font-size: 20px; font-weight: 800; }
+.schrijf-blad.vrij { height: min(32vh, 270px); }
+.schrijf-uitslag { gap: 4px; }
+.schrijf-uitslag .groot-knop { min-height: 60px; padding: 0 40px; flex: 0 0 auto; }
+.schrijf .reken-kaart { gap: 14px; }

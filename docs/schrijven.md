@@ -9,6 +9,10 @@ Gratis leerdeel naast Rekenen, Verhalen en Kleurplaten (25 oktober 2026 gevraagd
 - Het spoor is een rij punten op gelijke afstand (`src/lib/schrijven/spoor.ts`, getest). De vinger moet binnen een marge van de lijn blijven (groter voor wie niet leest) en kan per keer maar een stukje vooruit springen: afsnijden of kriskras kleuren brengt je niet verder. Loslaten en later verder gaan mag, bij de stip.
 - Een rondje is **vijf opdrachten**; daarna een eindscherm met sterren en "Nog een rondje".
 
+## Vrij schrijven voor wie leest
+
+Kinderen die lezen (`kan_lezen`) tekenen vrij over het grijs (`src/schermen/VrijSchrijven.tsx`, beoordeling in `src/lib/schrijven/score.ts`, getest). Wat binnen 16 eenheden van de lijn ligt kleurt in de kleur van het kind, wat erbuiten ligt kleurt oranje, meteen tijdens het tekenen. Met **Klaar!** komt een percentage: *gevolgd* (hoeveel van het grijs bedekt is) × *op de lijn* (hoeveel van de eigen lijn op het grijs ligt). Onder 40% (`MIN_PROCENT`) moet het kind dezelfde opdracht opnieuw doen, zodat krassen geen sterren geeft. Het eindscherm toont het gemiddelde en de score per opdracht. Wie niet leest volgt zoals hierboven met de stip.
+
 ## Niveaus (chips bovenaan, de keuze wordt per kind op het toestel onthouden)
 
 | Niveau | Inhoud | Start voor |

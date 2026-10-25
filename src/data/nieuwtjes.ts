@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.24',
+    datum: '2026-10-25',
+    titel: 'Schrijven: vrij over de lijn tekenen',
+    tekst: 'Kinderen die lezen tekenen bij Schrijven nu vrij over de grijze lijn. Wat naast de lijn komt, kleurt meteen oranje. Met Klaar! krijgen ze een percentage (hoeveel ze volgden en hoeveel op de lijn lag). Onder de 40% proberen ze dezelfde opdracht opnieuw; een rondje van 5 geeft nog steeds 3 sterren. Wie niet leest (Feline) volgt zoals voorheen met de stip.',
+  },
+  {
     versie: '0.23',
     datum: '2026-10-25',
     titel: 'Schrijven met de vinger',

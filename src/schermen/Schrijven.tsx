@@ -13,6 +13,7 @@ import { kanVoorlezen, leesVoor } from '../lib/voorlezen.ts'
 import { Ster } from './onderdelen.tsx'
 import SpelKader, { Chips } from './SpelKader.tsx'
 import { ThemaFeest } from './ThemaDelen.tsx'
+import VrijSchrijven from './VrijSchrijven.tsx'
 import './schrijven.css'
 
 // Leren schrijven: de letter, het woord of het lijntje staat in lichtgrijs en het kind volgt het met de vinger.
@@ -27,7 +28,7 @@ const LIJNDIKTE = { lezer: 13, kleuter: 18 }
 export default function Schrijven() {
   return (
     <SpelKader titel="Schrijven" terug={(id) => `/kind/${id}`}>
-      {(kind) => <Schrijfspel kind={kind} />}
+      {(kind) => (kind.kan_lezen ? <VrijSchrijven kind={kind} terug={`/kind/${kind.id}`} /> : <Schrijfspel kind={kind} />)}
     </SpelKader>
   )
 }
