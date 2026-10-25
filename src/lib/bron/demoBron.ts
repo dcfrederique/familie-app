@@ -113,6 +113,7 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
       venster_van: standaardRegels.tijdvenster.van,
       venster_tot: standaardRegels.tijdvenster.tot,
       max_saldo: standaardRegels.maxSpaarsaldo,
+      activiteit_sterren_per_dag: standaardRegels.activiteitSterrenPerDag,
     },
     limieten: [],
   }
@@ -210,7 +211,7 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       const nu = new Date()
       const al = t.activiteiten.filter((a) => a.kind_id === kind && a.dag === dagVan(nu) && a.status !== 'afgekeurd')
         .reduce((s, a) => s + a.sterren, 0)
-      let sterren = Math.max(0, Math.min(activiteitSterren(activiteit, inhoud), standaardRegels.activiteitSterrenPerDag - al))
+      let sterren = Math.max(0, Math.min(activiteitSterren(activiteit, inhoud), t.regels.activiteit_sterren_per_dag - al))
       const limiet = limietVoor(t.limieten, kind, activiteit)
       if (limiet !== null) {
         const alDit = t.activiteiten.filter((a) => a.kind_id === kind && a.dag === dagVan(nu) && a.activiteit === activiteit && a.status !== 'afgekeurd')

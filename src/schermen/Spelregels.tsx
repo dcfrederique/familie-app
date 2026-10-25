@@ -54,7 +54,12 @@ function SpelregelsFormulier({ regels }: { regels: Regels }) {
         <span>Maximum sterren sparen</span>
         <input type="number" min={15} max={1000} value={r.max_saldo} onChange={(e) => setR({ ...r, max_saldo: Number(e.target.value) })} />
       </label>
-      <p className="tip">Voorstel: {standaard.dagplafondMinuten} min, {standaard.tijdvenster.van} tot {standaard.tijdvenster.tot}, {standaard.maxSpaarsaldo} sterren.</p>
+      <label className="veld">
+        <span>Sterren per kind per dag uit activiteiten (alle spelletjes samen)</span>
+        <input type="number" min={0} max={120} value={r.activiteit_sterren_per_dag}
+               onChange={(e) => setR({ ...r, activiteit_sterren_per_dag: Number(e.target.value) })} />
+      </label>
+      <p className="tip">Voorstel: {standaard.dagplafondMinuten} min, {standaard.tijdvenster.van} tot {standaard.tijdvenster.tot}, {standaard.maxSpaarsaldo} sterren sparen, {standaard.activiteitSterrenPerDag} sterren per dag uit activiteiten.</p>
       {melding && <p className="tip" role="status">{melding}</p>}
       <button type="submit" className="knop knop-primair">Bewaren</button>
     </form>
@@ -113,7 +118,7 @@ function LimietenFormulier({ limieten, kinderen, ververs }: {
       <h2 className="display">Sterren per spelletje per dag</h2>
       <p className="tip">
         Hoeveel sterren een kind per dag hoogstens verdient met elk spelletje. Leeg laten betekent geen eigen limiet;
-        daarbovenop geldt altijd het dagplafond van {standaard.activiteitSterrenPerDag} sterren voor alle activiteiten samen.
+        daarbovenop geldt altijd het dagplafond voor alle activiteiten samen (hierboven in Spelregels).
         Een invulling bij een kind gaat voor op die van iedereen. Met 0 levert het spelletje niets meer op.
       </p>
       {limietSpelletjes.map((spel) => (

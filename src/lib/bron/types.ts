@@ -216,6 +216,8 @@ export interface Spelregels {
   venster_van: string
   venster_tot: string
   max_saldo: number
+  /** Hoeveel sterren activiteiten samen per kind per dag hoogstens opleveren. */
+  activiteit_sterren_per_dag: number
 }
 
 /** Lerende activiteiten die sterren opleveren en waarvoor de ouders een daglimiet kunnen instellen. */

@@ -71,7 +71,7 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
     },
     async spelregels() {
       const { data, error } = await sb.from('gezinnen')
-        .select('dagplafond_minuten, venster_van, venster_tot, max_saldo').single()
+        .select('dagplafond_minuten, venster_van, venster_tot, max_saldo, activiteit_sterren_per_dag').single()
       fout(error)
       return { ...data, venster_van: data!.venster_van.slice(0, 5), venster_tot: data!.venster_tot.slice(0, 5) } as Spelregels
     },
