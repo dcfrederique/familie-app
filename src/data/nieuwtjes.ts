@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.33',
+    datum: '2026-10-25',
+    titel: 'Weekmenu bewaard bij het karretje',
+    tekst: 'Vulde je het weekmenu van volgende week in en zette je de ingrediënten meteen op de boodschappenlijst, dan bleef het gerecht niet bewaard als je daarna het scherm verliet zonder op Bewaren te drukken. Nu wordt het gerecht van die dag mee bewaard zodra je "Op de lijst" kiest.',
+  },
+  {
     versie: '0.32',
     datum: '2026-10-25',
     titel: 'Schermen passen op elke tablet, ook staand',

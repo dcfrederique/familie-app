@@ -7,10 +7,10 @@ import type { Boodschap, Categorie, Maaltijd, Winkel } from '../lib/bron/types.t
 import { dagVan, vandaag } from '../lib/datum.ts'
 import { useGegevens } from '../lib/gegevens.ts'
 import { useSessie } from '../lib/sessie.tsx'
+import { nogTeBewaren, type Rij } from '../lib/weekmenu.ts'
 import { useBoodschappen } from './Boodschappen.tsx'
 import OuderKader from './OuderKader.tsx'
 
-type Rij = { dag: string; gerecht: string; prentje: string | null }
 type Lijst = { winkels: Winkel[]; categorieen: Categorie[]; lijst: Boodschap[]; ververs: () => Promise<void> }
 
 function dagenVanWeek(maandag: Date): string[] {
@@ -62,10 +62,7 @@ function WeekFormulier({ dagen, menu, magBeheren, bewaard, lijst }: {
   const [bezig, setBezig] = useState(false)
 
   // Pas wat op de server veranderde (de andere ouder) alleen toe zolang hier niets gewijzigd is.
-  const gewijzigd = rijen.filter((r) => {
-    const oud = menu.find((m) => m.dag === r.dag)
-    return r.gerecht.trim() !== (oud?.gerecht ?? '') || (r.gerecht.trim() !== '' && r.prentje !== (oud?.prentje ?? null))
-  })
+  const gewijzigd = nogTeBewaren(rijen, menu)
   useEffect(() => { if (gewijzigd.length === 0) setRijen(begin()) }, [menu])
 
   const zet = (dag: string, w: Partial<Rij>) => setRijen(rijen.map((r) => (r.dag === dag ? { ...r, ...w } : r)))
@@ -82,6 +79,14 @@ function WeekFormulier({ dagen, menu, magBeheren, bewaard, lijst }: {
       setMelding((err as Error).message)
     }
     setBezig(false)
+  }
+
+  // Het gerecht moet in het weekmenu staan voor de ingrediënten ervan op de lijst komen (anders ging het menu verloren).
+  async function bewaarDag(dag: string) {
+    const r = gewijzigd.find((g) => g.dag === dag)
+    if (!r || !bron) return
+    await bron.maaltijdOpslaan(r)
+    await bewaard()
   }
 
   return (
@@ -115,7 +120,7 @@ function WeekFormulier({ dagen, menu, magBeheren, bewaard, lijst }: {
               )
             })()}
             {lijst && kar === r.dag && r.gerecht.trim() && (
-              <Ingredienten key={`${r.dag}-${r.gerecht.trim()}`} dag={r.dag} gerecht={r.gerecht.trim()} dagNaam={dagNaam} lijst={lijst} sluit={() => setKar(null)} />
+              <Ingredienten key={`${r.dag}-${r.gerecht.trim()}`} dag={r.dag} gerecht={r.gerecht.trim()} dagNaam={dagNaam} lijst={lijst} sluit={() => setKar(null)} bewaarDag={() => bewaarDag(r.dag)} />
             )}
             {kiezen === r.dag && soort && (
               <fieldset className="prentjes-kiezer week-kiezer">
@@ -144,7 +149,7 @@ function WeekFormulier({ dagen, menu, magBeheren, bewaard, lijst }: {
 type Ingredient = { naam: string; winkel_id: string | null; aan: boolean; al: boolean }
 
 /** Onder een dag van het weekmenu: de ingrediënten aanvinken en in één keer op de boodschappenlijst zetten. */
-function Ingredienten({ dag, gerecht, dagNaam, lijst, sluit }: { dag: string; gerecht: string; dagNaam: string; lijst: Lijst; sluit: () => void }) {
+function Ingredienten({ dag, gerecht, dagNaam, lijst, sluit, bewaarDag }: { dag: string; gerecht: string; dagNaam: string; lijst: Lijst; sluit: () => void; bewaarDag: () => Promise<void> }) {
   const { bron } = useSessie()
   const maak = (naam: string): Ingredient => {
     const al = staatOpLijst(naam, lijst.lijst)
@@ -169,6 +174,7 @@ function Ingredienten({ dag, gerecht, dagNaam, lijst, sluit }: { dag: string; ge
     if (!bron || gekozen.length === 0) return
     setBezig(true)
     try {
+      await bewaarDag()
       await bron.boodschappenOpslaan(gekozen.map((r) => ({ naam: r.naam, hoeveel: '', winkel_id: r.winkel_id, dag, gerecht, categorie_id: categorieVoor(r.naam, lijst.lijst, lijst.categorieen) })))
       await lijst.ververs()
       setRijen(rijen.map((r) => (r.aan ? { ...r, aan: false, al: true } : r)))
