@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.34',
+    datum: '2026-10-25',
+    titel: 'Weekmenu bewaart vanzelf',
+    tekst: 'Wat je bij Wat eten we invult, wordt na een seconde of twee automatisch bewaard, en ook als je naar een andere week of een ander scherm gaat. Voorheen was alles weg als je niet op Bewaren drukte.',
+  },
+  {
     versie: '0.33',
     datum: '2026-10-25',
     titel: 'Weekmenu bewaard bij het karretje',

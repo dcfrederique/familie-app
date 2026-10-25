@@ -1,4 +1,4 @@
-import { useEffect, useState, type FormEvent, type KeyboardEvent } from 'react'
+import { useEffect, useRef, useState, type FormEvent, type KeyboardEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { MaaltijdPrent } from '../data/maaltijdPrenten.tsx'
 import { maaltijdNamen, maaltijdPrentje, maaltijdSoorten, maandagVan, raadMaaltijd } from '../data/maaltijden.ts'
@@ -67,19 +67,35 @@ function WeekFormulier({ dagen, menu, magBeheren, bewaard, lijst }: {
 
   const zet = (dag: string, w: Partial<Rij>) => setRijen(rijen.map((r) => (r.dag === dag ? { ...r, ...w } : r)))
 
-  async function bewaar(e: FormEvent) {
-    e.preventDefault()
-    if (!bron) return
+  async function bewaarAlles(tekst: string) {
+    if (!bron || bezigRef.current || gewijzigd.length === 0) return
+    bezigRef.current = true
     setBezig(true)
     try {
       for (const r of gewijzigd) await bron.maaltijdOpslaan(r)
       await bewaard()
-      setMelding('Bewaard.')
+      setMelding(tekst)
     } catch (err) {
       setMelding((err as Error).message)
     }
+    bezigRef.current = false
     setBezig(false)
   }
+  const bewaar = (e: FormEvent) => { e.preventDefault(); void bewaarAlles('Bewaard.') }
+
+  // Automatisch bewaren: kort na het laatste intikken, en bij van week of scherm wisselen (anders was alles weg).
+  const bezigRef = useRef(false)
+  const laatste = useRef({ bron, gewijzigd, magBeheren })
+  laatste.current = { bron, gewijzigd, magBeheren }
+  useEffect(() => {
+    if (!magBeheren || gewijzigd.length === 0) return
+    const t = setTimeout(() => void bewaarAlles('Automatisch bewaard.'), 1500)
+    return () => clearTimeout(t)
+  })
+  useEffect(() => () => {
+    const { bron: b, gewijzigd: g, magBeheren: m } = laatste.current
+    if (b && m) for (const r of g) void b.maaltijdOpslaan(r)
+  }, [])
 
   // Het gerecht moet in het weekmenu staan voor de ingrediënten ervan op de lijst komen (anders ging het menu verloren).
   async function bewaarDag(dag: string) {
