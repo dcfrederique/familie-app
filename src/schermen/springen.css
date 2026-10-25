@@ -146,3 +146,17 @@
   .spring-uitslag { font-size: 22px; }
   .spring-volgende { margin-bottom: 4px; }
 }
+
+/* Gsm rechtop: Springland speel je liggend, dus eerst draaien. */
+.spring-draai { display: none; }
+@media (orientation: portrait) and (max-width: 600px) {
+  .spring-scherm { position: relative; }
+  .spring-draai {
+    display: flex; position: fixed; inset: 0; z-index: 20; flex-direction: column; align-items: center; justify-content: center;
+    gap: 12px; background: var(--bg, #F6F7FB); color: var(--ink, #1C2433); text-align: center;
+  }
+  .spring-draai svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; animation: spring-draai 2.4s ease-in-out infinite; }
+  .spring-draai p { font: 800 24px 'Baloo 2', Nunito, sans-serif; margin: 0; }
+}
+@keyframes spring-draai { 0%, 30% { transform: rotate(0); } 60%, 100% { transform: rotate(-90deg); } }
+@media (prefers-reduced-motion: reduce) { .spring-draai svg { animation: none; } }

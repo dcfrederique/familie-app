@@ -33,6 +33,12 @@ Platformspel van opzij waarin het kind met zijn eigen figuurtje loopt en springt
   knoppen om te lopen en te springen zijn kleiner. Kaart en speelveld schalen mee met de hoogte, zodat je even veel
   van de wereld ziet als op de tablet. CSS in `springen.css` (blok "Gsm liggend").
 
+## Als ouder spelen
+
+- Ouderdeel Wij → **Springland spelen** (`/ouder/springland`, `OuderSpringland` in `Springen.tsx`): alleen op de gsm
+  van een ouder, met het eigen figuurtje van de ouder (dat uit de chat). Gewoon vrijspelen zoals een kind, voortgang
+  per ouder op die gsm, niets in het activiteitlog. Rechtop vraagt het scherm om de gsm te draaien.
+
 ## Vrijspelen
 
 - De speelvolgorde is de volgorde van `springLevelLijst`. Een level is open als het vorige uitgespeeld is; een

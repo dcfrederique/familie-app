@@ -11,15 +11,17 @@ import './spelletjes.css'
 
 // Kader rond een spelletje: terugknop, titel en geluid aan of uit.
 // Met een thema (race, kasteel, tuin) krijgt de kop de prent van dat thema en kleurt het hele scherm mee.
-export default function SpelKader({ titel, terug, scherm = 'spel', vol = scherm !== 'spel', children }: {
+export default function SpelKader({ titel, terug, scherm = 'spel', vol = scherm !== 'spel', speler, children }: {
   titel: string; terug: (kindId: string) => string; scherm?: ThemaScherm
+  /** Speelt iemand anders dan het kind uit de link (een ouder in Springland op de gsm). */
+  speler?: Gebruiker
   /** Vult op tablet en pc precies het scherm (voor Bladzijden); standaard voor alles behalve een spelletje. */
   vol?: boolean
   children: (kind: Gebruiker) => ReactNode
 }) {
   const { id } = useParams()
   const { kinderen } = useSessie()
-  const kind = kinderen.find((k) => k.id === id)
+  const kind = speler ?? kinderen.find((k) => k.id === id)
   const [geluid, setGeluid] = useState(geluidAan)
   useEffect(() => { if (kind) gebruikStem(kind.voorleesstem) }, [kind])
   if (!kind) return <Navigate to="/kinderen" replace />

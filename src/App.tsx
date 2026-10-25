@@ -12,7 +12,7 @@ import MijnHuis from './schermen/Huis.tsx'
 import Huisdier from './schermen/Huisdier.tsx'
 import Puzzels from './schermen/Puzzels.tsx'
 import Pompoen from './schermen/Pompoen.tsx'
-import Springen from './schermen/Springen.tsx'
+import Springen, { OuderSpringland } from './schermen/Springen.tsx'
 import Memory from './schermen/Memory.tsx'
 import Penalty from './schermen/Penalty.tsx'
 import Koken from './schermen/Koken.tsx'
@@ -110,6 +110,7 @@ export default function App() {
       <Route path="/ouder/notities" element={<Notities />} />
       <Route path="/ouder/chat" element={<OuderChat />} />
       <Route path="/ouder/figuurtje" element={<Kleerkast ouder />} />
+      <Route path="/ouder/springland" element={<OuderSpringland />} />
       <Route path="/ouder/boodschappen" element={<Boodschappen />} />
       <Route path="/ouder/winkels" element={<Winkels />} />
       <Route path="/ouder/uitgaven" element={<Uitgaven />} />

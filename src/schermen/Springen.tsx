@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
+import { Navigate } from 'react-router-dom'
 import { figuurtjeVan } from '../data/figuurtje.ts'
 import type { Gebruiker } from '../data/gezin.ts'
 import { springBesturing, springLevels, springVolgorde, type SpringBesturing, type SpringLevel } from '../data/springen.ts'
@@ -27,10 +28,25 @@ export default function Springen() {
   )
 }
 
+/** Springland voor een ouder op de gsm (ouderdeel Wij → Springland): met het eigen figuurtje uit de chat, eigen
+ *  voortgang op die gsm, en niets in het activiteitlog van een kind. */
+export function OuderSpringland() {
+  const { account, gebruikers } = useSessie()
+  const id = account?.ouder_id ?? gebruikers.find((g) => g.rol === 'ouder')?.id
+  const ouder = gebruikers.find((g) => g.id === id && g.rol === 'ouder')
+  // Op een kindtablet niet: daar speelt het kind met zijn eigen figuurtje.
+  if (!ouder || account?.soort === 'tablet') return <Navigate to="/ouder" replace />
+  return (
+    <SpelKader titel="Springland" vol speler={ouder} terug={() => '/ouder'}>
+      {(o) => <SpringScherm kind={o} ouder />}
+    </SpelKader>
+  )
+}
+
 /** Icoontje van een opengevouwen landkaart. */
 const KAART = 'M3 6l6-2 6 2 6-2v14l-6 2-6-2-6 2zM9 4v14M15 6v14'
 
-function SpringScherm({ kind }: { kind: Gebruiker }) {
+function SpringScherm({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolean }) {
   const proef = useProef().actief
   const { bron } = useSessie()
   const lezer = kind.kan_lezen
@@ -69,8 +85,8 @@ function SpringScherm({ kind }: { kind: Gebruiker }) {
         setKlaar(s)
         setTimeout(geluid.hoera, 200)
         if (!lezer) setTimeout(() => leesVoor(zin.springenKlaar), 700)
-        // Een spelletje: geen sterren, wel in het activiteitlog voor de ouders.
-        void bron?.activiteitOpslaan(kind.id, 'springen', { titel: springLevels[s.level].naam, punten },
+        // Een spelletje: geen sterren, wel in het activiteitlog voor de ouders (een ouder die zelf speelt niet).
+        if (!ouder) void bron?.activiteitOpslaan(kind.id, 'springen', { titel: springLevels[s.level].naam, punten },
           Math.max(1, Math.round((Date.now() - begin.current) / 1000))).catch(() => {})
       },
     })
@@ -100,6 +116,7 @@ function SpringScherm({ kind }: { kind: Gebruiker }) {
   if (!level) {
     return (
       <div className="spring-kaart-scherm spring-scherm">
+        <Draai />
         <Chips label="Lopen" opties={springBesturing} gekozen={besturing}
                kies={(b) => { setBesturing(b); niveauBewaren(kind.id, 'springen', b) }} />
         <SpringKaart figuur={figuurUrl} lezer={lezer} af={isAf} best={(l) => record(kind.id, `springen-${l}`)} alles={proef}
@@ -118,6 +135,7 @@ function SpringScherm({ kind }: { kind: Gebruiker }) {
 
   return (
     <div className="penalty spring spring-scherm">
+      <Draai />
       <div className="spel-boven">
         <button type="button" className="chip" onClick={() => naarKaart()} aria-label="Naar de kaart">
           <svg className="ic" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d={KAART} /></svg>
@@ -165,6 +183,16 @@ function SpringScherm({ kind }: { kind: Gebruiker }) {
           </div>
         )}
       </div>
+    </div>
+  )
+}
+
+/** Op een gsm rechtop: vraag om de gsm te draaien (alleen zichtbaar via springen.css). */
+function Draai() {
+  return (
+    <div className="spring-draai" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="64" height="64"><rect x="7" y="2" width="10" height="18" rx="2" /><path d="M20 14a8 8 0 0 1-6 7.5M14 21.5l1.6-2.6M14 21.5l2.8.9" /></svg>
+      <p>Draai je gsm</p>
     </div>
   )
 }

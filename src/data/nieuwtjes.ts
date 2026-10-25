@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.29',
+    datum: '2026-10-25',
+    titel: 'Springland spelen als ouder',
+    tekst: 'Ook de ouders kunnen Springland spelen, op hun eigen gsm en met hun eigen figuurtje uit de chat: menu Wij → Springland spelen. Draai de gsm liggend; het spel vult dan het hele scherm. Je speelt de levels zelf vrij, je voortgang blijft op je gsm en er komt niets in het overzicht van de kinderen. Je figuurtje pas je aan via Chat met de kinderen → Mijn figuurtje aanpassen.',
+  },
+  {
     versie: '0.28',
     datum: '2026-10-25',
     titel: 'Springland: mooiere landkaart en spelen op de gsm',
