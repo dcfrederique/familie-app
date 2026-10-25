@@ -106,6 +106,14 @@ Dit gebeurt in twee fases: eerst uitdenken (ontwerp), daarna coderen (bouw).
   houden data en migratie gelijk). Ze beginnen niet vrijgegeven, net als de spelletjes. Het plan noemt ze
   apart (wat, prijs, tekening), en de bouw doet alleen de stukken uit het plan. Geen beschermde personages.
 
+- Springland: elke nacht komt er ook **één nieuw level** bij, passend bij het thema van de nacht (`src/data/springen.ts`,
+  `springLevels` en `springVolgorde`; de uitleg van de tekens staat bovenaan het bestand). Bedenk het kaartje in het plan
+  (naam, beestje, fruit, schets van het verloop). Later worden levels in werelden gegroepeerd op een landkaart (een wereld
+  vrijspelen, een soort 3D-wereld van bovenaf gezien waarop het figuurtje naar het volgende level loopt): zodra die er
+  staat, volgt de nacht de beschrijving over levels en werelden toevoegen in deze CLAUDE.md of in `docs/`. De bouw moet het
+  robotje het nieuwe level laten uitspelen (`npx vitest run src/lib/spelletjes/springen.test.ts`); lukt dat niet, pas het
+  level aan tot het haalbaar is. Een level is geen unlockable in de winkel: het gaat open door het vorige uit te spelen.
+
 ## Seizoenen en feesten
 Laat verhalen (en waar het past ook spelletjes, bv. andere prenten, kleuren of voorwerpen) aansluiten
 bij wat er in het echte leven in België komt. Kijk naar de datum van vandaag en kies het feest of
