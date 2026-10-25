@@ -26,7 +26,7 @@ export default function Weekmenu() {
   const [week, setWeek] = useState(0)
   const maandag = maandagVan(new Date(Date.now() + week * 7 * 86400_000))
   const dagen = dagenVanWeek(maandag)
-  const { data, ververs } = useGegevens(bron ? async () => ({ van: dagen[0], menu: await bron.weekmenu(dagen[0], dagen[6]) }) : null, [bron, dagen[0]])
+  const { data, fout, ververs } = useGegevens(bron ? async () => ({ van: dagen[0], menu: await bron.weekmenu(dagen[0], dagen[6]) }) : null, [bron, dagen[0]])
   // Zonder migratie 20261024000900_boodschappen (of op een tablet) gewoon geen boodschappenknop.
   const boodschappen = useBoodschappen()
   const lijst = boodschappen.data && !boodschappen.fout ? { ...boodschappen.data, ververs: boodschappen.ververs } : null
@@ -42,6 +42,7 @@ export default function Weekmenu() {
           <button type="button" className="knop knop-klein" aria-label="Volgende week" onClick={() => setWeek(week + 1)}>›</button>
         </div>
         {/* Pas tonen als het menu van déze week er is: met dat van een andere week leek alles leeg en werd het weggeschreven. */}
+        {fout && <p className="tip" role="alert">Het weekmenu laden lukte niet: {fout}</p>}
         {data && data.van === dagen[0] && <WeekFormulier key={dagen[0]} dagen={dagen} menu={data.menu} magBeheren={magBeheren} bewaard={ververs} lijst={lijst} />}
       </div>
       {!magBeheren && <p className="tip">Het weekmenu aanpassen doe je op de gsm van mama of papa.</p>}
@@ -68,12 +69,13 @@ function WeekFormulier({ dagen, menu, magBeheren, bewaard, lijst }: {
 
   const zet = (dag: string, w: Partial<Rij>) => setRijen(rijen.map((r) => (r.dag === dag ? { ...r, ...w } : r)))
 
-  async function bewaarAlles(tekst: string) {
-    if (!bron || bezigRef.current || gewijzigd.length === 0) return
+  async function bewaarAlles(tekst: string, alleenToevoegen = false) {
+    const te = alleenToevoegen ? gewijzigd.filter((r) => r.gerecht.trim()) : gewijzigd
+    if (!bron || bezigRef.current || te.length === 0) return
     bezigRef.current = true
     setBezig(true)
     try {
-      for (const r of gewijzigd) await bron.maaltijdOpslaan(r)
+      for (const r of te) await bron.maaltijdOpslaan(r)
       await bewaard()
       setMelding(tekst)
     } catch (err) {
@@ -85,17 +87,18 @@ function WeekFormulier({ dagen, menu, magBeheren, bewaard, lijst }: {
   const bewaar = (e: FormEvent) => { e.preventDefault(); void bewaarAlles('Bewaard.') }
 
   // Automatisch bewaren: kort na het laatste intikken, en bij van week of scherm wisselen (anders was alles weg).
+  // Automatisch wordt nooit iets gewist: een gerecht verwijderen (leeg veld) vraagt een tik op Bewaren.
   const bezigRef = useRef(false)
   const laatste = useRef({ bron, gewijzigd, magBeheren })
   laatste.current = { bron, gewijzigd, magBeheren }
   useEffect(() => {
     if (!magBeheren || gewijzigd.length === 0) return
-    const t = setTimeout(() => void bewaarAlles('Automatisch bewaard.'), 1500)
+    const t = setTimeout(() => void bewaarAlles('Automatisch bewaard.', true), 1500)
     return () => clearTimeout(t)
   })
   useEffect(() => () => {
     const { bron: b, gewijzigd: g, magBeheren: m } = laatste.current
-    if (b && m) for (const r of g) void b.maaltijdOpslaan(r)
+    if (b && m) for (const r of g) if (r.gerecht.trim()) void b.maaltijdOpslaan(r)
   }, [])
 
   // Het gerecht moet in het weekmenu staan voor de ingrediënten ervan op de lijst komen (anders ging het menu verloren).

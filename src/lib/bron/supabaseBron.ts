@@ -123,8 +123,9 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
     },
     async weekmenu(van, tot) {
       const { data, error } = await sb.from('weekmenu').select('dag, gerecht, prentje').gte('dag', van).lte('dag', tot).order('dag')
-      // Zonder migratie 20261024000600_weekmenu is er gewoon nog geen menu.
-      if (error) return []
+      // Zonder migratie 20261024000600_weekmenu is er gewoon nog geen menu; elke andere fout tonen we.
+      if (error?.code === '42P01' || error?.code === 'PGRST205') return []
+      fout(error)
       return (data ?? []) as Maaltijd[]
     },
     async ouderTaken() {

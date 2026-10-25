@@ -44,5 +44,7 @@ export default defineConfig({
   ],
   test: {
     environment: 'node',
+    // Playwright-tests (e2e/) draaien met `npm run test:e2e`, niet met vitest.
+    exclude: ['e2e/**', 'node_modules/**'],
   },
 })
