@@ -1,12 +1,15 @@
 import { useState, type FormEvent } from 'react'
 import { Prentje, prentjeSleutels } from '../data/prentjes.tsx'
 import type { Herhaling, NieuweTaak, Taak } from '../lib/bron/types.ts'
+import { intervalDagen } from '../lib/herhaling.ts'
+import { vandaag } from '../lib/datum.ts'
 import { useGegevens } from '../lib/gegevens.ts'
 import { useSessie } from '../lib/sessie.tsx'
 import OuderKader from './OuderKader.tsx'
 
 const herhalingTekst: Record<Herhaling, string> = {
   elke_dag: 'Elke dag', schooldagen: 'Schooldagen', eenmalig: 'Eenmalig',
+  tweewekelijks: 'Om de 2 weken', om_de_n_dagen: 'Om de … dagen',
 }
 
 // Taken bekijken, toevoegen, aanpassen en weghalen (alleen vanaf een ouder-account of in de demo).
@@ -51,7 +54,7 @@ export default function TakenBeheer() {
       {!magBeheren && <p className="tip">Taken aanpassen doe je op de gsm van mama of papa.</p>}
       {magBeheren && (
         <button type="button" className="knop knop-primair"
-                onClick={() => setBewerk({ titel: '', prentje: 'ster', sterren: 5, herhaling: 'elke_dag', foto_nodig: false,
+                onClick={() => setBewerk({ titel: '', prentje: 'ster', sterren: 5, herhaling: 'elke_dag', herhaal_dagen: null, start_dag: null, foto_nodig: false,
                                            kinderen: kinderen.map((k) => k.id) })}>
           Taak toevoegen
         </button>
@@ -62,7 +65,7 @@ export default function TakenBeheer() {
           <span className="taak-rij-tekst">
             <b>{t.titel}</b>
             <span>
-              {t.sterren} sterren · {herhalingTekst[t.herhaling]}{t.foto_nodig ? ' · foto' : ''} ·{' '}
+              {t.sterren} sterren · {t.herhaling === 'om_de_n_dagen' ? `Om de ${t.herhaal_dagen} dagen` : herhalingTekst[t.herhaling]}{t.foto_nodig ? ' · foto' : ''} ·{' '}
               {t.kinderen.length === kinderen.length ? 'iedereen'
                 : kinderen.filter((k) => t.kinderen.includes(k.id)).map((k) => k.naam).join(', ') || 'niemand'}
             </span>
@@ -83,6 +86,8 @@ function TaakFormulier({ taak, kinderen, bewaar, annuleer, weg }: {
   function verstuur(e: FormEvent) {
     e.preventDefault()
     bewaar({ id: t.id, titel: t.titel.trim(), prentje: t.prentje, sterren: t.sterren, herhaling: t.herhaling,
+             herhaal_dagen: t.herhaling === 'om_de_n_dagen' ? t.herhaal_dagen : null,
+             start_dag: intervalDagen(t.herhaling, t.herhaal_dagen) ? t.start_dag : null,
              foto_nodig: t.foto_nodig, kinderen: t.kinderen })
   }
 
@@ -107,10 +112,28 @@ function TaakFormulier({ taak, kinderen, bewaar, annuleer, weg }: {
       </label>
       <label className="veld">
         <span>Hoe vaak</span>
-        <select value={t.herhaling} onChange={(e) => zet({ herhaling: e.target.value as Herhaling })}>
+        <select value={t.herhaling}
+                onChange={(e) => {
+                  const h = e.target.value as Herhaling
+                  zet({ herhaling: h, herhaal_dagen: h === 'om_de_n_dagen' ? (t.herhaal_dagen ?? 3) : null,
+                        start_dag: h === 'tweewekelijks' || h === 'om_de_n_dagen' ? (t.start_dag ?? vandaag()) : null })
+                }}>
           {Object.entries(herhalingTekst).map(([w, tekst]) => <option key={w} value={w}>{tekst}</option>)}
         </select>
       </label>
+      {t.herhaling === 'om_de_n_dagen' && (
+        <label className="veld">
+          <span>Om de hoeveel dagen? (2 tot 365)</span>
+          <input type="number" inputMode="numeric" min={2} max={365} required value={t.herhaal_dagen ?? ''}
+                 onChange={(e) => zet({ herhaal_dagen: e.target.value ? Number(e.target.value) : null })} />
+        </label>
+      )}
+      {intervalDagen(t.herhaling, t.herhaal_dagen) !== null && (
+        <label className="veld">
+          <span>Eerste keer</span>
+          <input type="date" required value={t.start_dag ?? ''} onChange={(e) => zet({ start_dag: e.target.value || null })} />
+        </label>
+      )}
       <fieldset className="vinkjes">
         <legend>Voor wie</legend>
         {kinderen.map((k) => (

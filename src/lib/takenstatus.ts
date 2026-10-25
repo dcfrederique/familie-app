@@ -1,5 +1,6 @@
 import type { Inzending, Taak } from './bron/types.ts'
 import { dagVan, isSchooldag } from './datum.ts'
+import { intervalDagen, isBeurt } from './herhaling.ts'
 
 export type TaakStatus = 'te_doen' | 'wacht' | 'gedaan'
 
@@ -11,6 +12,8 @@ export function taakStatus(taak: Taak, kindId: string, inzendingen: Inzending[],
   if (!taak.actief || !taak.kinderen.includes(kindId)) return null
   if (taak.herhaling === 'schooldagen' && !isSchooldag(moment)) return null
   const dag = dagVan(moment)
+  const interval = intervalDagen(taak.herhaling, taak.herhaal_dagen)
+  if (interval !== null && !isBeurt(taak.start_dag, interval, dag)) return null
   const relevant = inzendingen.filter(
     (i) => i.kind_id === kindId && i.taak_id === taak.id && i.status !== 'afgekeurd'
       && (taak.herhaling === 'eenmalig' || i.dag === dag),

@@ -7,7 +7,7 @@ import type { Activiteit } from '../regels.ts'
 import type { Weging } from '../gewicht.ts'
 import type { StemKeuze } from '../stem.ts'
 
-export type Herhaling = 'eenmalig' | 'elke_dag' | 'schooldagen'
+export type Herhaling = 'eenmalig' | 'elke_dag' | 'schooldagen' | 'tweewekelijks' | 'om_de_n_dagen'
 export type InzendingStatus = 'ingediend' | 'goedgekeurd' | 'afgekeurd'
 export type VerzoekStatus = 'aangevraagd' | 'toegekend' | 'afgewezen' | 'vervallen'
 
@@ -17,6 +17,10 @@ export interface Taak {
   prentje: string | null
   sterren: number
   herhaling: Herhaling
+  /** Bij 'om_de_n_dagen': om de hoeveel dagen (2 tot 365), geteld vanaf start_dag. */
+  herhaal_dagen: number | null
+  /** Eerste dag van tweewekelijks of om de N dagen, 'JJJJ-MM-DD'. */
+  start_dag: string | null
   foto_nodig: boolean
   actief: boolean
   kinderen: string[]
@@ -127,7 +131,7 @@ export interface Maaltijd {
   prentje: string | null
 }
 
-export type OuderHerhaling = 'eenmalig' | 'dagelijks' | 'wekelijks' | 'maandelijks'
+export type OuderHerhaling = 'eenmalig' | 'dagelijks' | 'wekelijks' | 'tweewekelijks' | 'om_de_n_dagen' | 'maandelijks'
 
 /** Een taak voor de ouders zelf (Onze taken, docs/ouderdeel.md): zonder sterren of goedkeuring. */
 export interface OuderTaak {
@@ -138,11 +142,13 @@ export interface OuderTaak {
   /** Een van de ouders; null = samen. */
   wie: string | null
   herhaling: OuderHerhaling
+  /** Bij 'om_de_n_dagen': om de hoeveel dagen (2 tot 365). */
+  herhaal_dagen: number | null
   gedaan_op: string | null
   gedaan_door: string | null
 }
 
-export type NieuweOuderTaak = Pick<OuderTaak, 'titel' | 'datum' | 'wie' | 'herhaling'> & { id?: string }
+export type NieuweOuderTaak = Pick<OuderTaak, 'titel' | 'datum' | 'wie' | 'herhaling' | 'herhaal_dagen'> & { id?: string }
 
 /** Een notitie van een ouder: tekst, of een lijstje met vinkjes (lijst niet null). */
 export interface Notitie {

@@ -6,7 +6,7 @@ const woensdag = new Date(2026, 9, 21, 16)
 const zaterdag = new Date(2026, 9, 24, 10)
 
 function taak(extra: Partial<Taak> = {}): Taak {
-  return { id: 't', titel: 'Tafel dekken', prentje: 'tafel', sterren: 5, herhaling: 'elke_dag', foto_nodig: false,
+  return { id: 't', titel: 'Tafel dekken', prentje: 'tafel', sterren: 5, herhaling: 'elke_dag', herhaal_dagen: null, start_dag: null, foto_nodig: false,
            actief: true, kinderen: ['luca'], ...extra }
 }
 function inz(extra: Partial<Inzending>): Inzending {
@@ -39,6 +39,20 @@ describe('taakStatus', () => {
     const t = taak({ herhaling: 'eenmalig' })
     expect(taakStatus(t, 'luca', [inz({ dag: '2026-10-19', status: 'goedgekeurd' })], woensdag)).toBeNull()
     expect(taakStatus(t, 'luca', [inz({ dag: '2026-10-19' })], woensdag)).toBe('wacht')
+  })
+})
+
+describe('taakStatus om de N dagen', () => {
+  it('toont een taak om de 3 dagen enkel op de beurt, geteld vanaf de startdag', () => {
+    const t = taak({ herhaling: 'om_de_n_dagen', herhaal_dagen: 3, start_dag: '2026-10-18' })
+    expect(taakStatus(t, 'luca', [], woensdag)).toBe('te_doen') // 21 oktober
+    expect(taakStatus(t, 'luca', [], zaterdag)).toBe('te_doen') // 24 oktober
+    expect(taakStatus(t, 'luca', [], new Date(2026, 9, 22, 10))).toBeNull()
+  })
+  it('toont een tweewekelijkse taak om de 14 dagen', () => {
+    const t = taak({ herhaling: 'tweewekelijks', start_dag: '2026-10-10' })
+    expect(taakStatus(t, 'luca', [], zaterdag)).toBe('te_doen') // 24 oktober
+    expect(taakStatus(t, 'luca', [], woensdag)).toBeNull()
   })
 })
 

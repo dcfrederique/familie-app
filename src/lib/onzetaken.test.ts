@@ -3,7 +3,7 @@ import type { OuderTaak } from './bron/types.ts'
 import { mijnOpenTaken, teDoenVandaag } from './onzetaken.ts'
 
 const taak = (id: string, datum: string | null, wie: string | null, gedaan = false): OuderTaak =>
-  ({ id, titel: id, datum, wie, herhaling: 'eenmalig', gedaan_op: gedaan ? '2026-10-24T10:00:00Z' : null, gedaan_door: null })
+  ({ id, titel: id, datum, wie, herhaling: 'eenmalig', herhaal_dagen: null, gedaan_op: gedaan ? '2026-10-24T10:00:00Z' : null, gedaan_door: null })
 
 const taken = [
   taak('later', '2026-10-30', null), taak('zonder', null, 'an'), taak('partner', '2026-10-20', 'bert'),

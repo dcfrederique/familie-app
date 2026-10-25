@@ -59,6 +59,18 @@ insert into public.ouder_taken (gezin_id, titel, datum, herhaling) values (:'gez
 select public.ouder_taak_afvinken(:'planten', true);
 select pg_temp.gelijk((select datum from public.ouder_taken where vorige_id = :'planten'), '2026-10-28'::date, 'elke dag: morgen erbij');
 delete from public.ouder_taken where titel = 'Planten water';
+insert into public.ouder_taken (gezin_id, titel, datum, herhaling, herhaal_dagen) values (:'gezin', 'Filter schoonmaken', '2026-10-27', 'om_de_n_dagen', 10)
+  returning id as filter \gset
+select public.ouder_taak_afvinken(:'filter', true);
+select pg_temp.gelijk((select datum from public.ouder_taken where vorige_id = :'filter'), '2026-11-06'::date, 'om de 10 dagen: over 10 dagen erbij');
+select pg_temp.gelijk((select herhaal_dagen from public.ouder_taken where vorige_id = :'filter'), 10, 'het aantal dagen blijft bewaard');
+select pg_temp.fout(format('insert into public.ouder_taken (gezin_id, titel, datum, herhaling) values (%L, %L, %L, %L)', :'gezin', 'Zonder dagen', '2026-10-27', 'om_de_n_dagen'), 'check');
+select pg_temp.fout(format('insert into public.ouder_taken (gezin_id, titel, datum, herhaling, herhaal_dagen) values (%L, %L, %L, %L, 1)', :'gezin', 'Elke dag', '2026-10-27', 'om_de_n_dagen'), 'check');
+insert into public.ouder_taken (gezin_id, titel, datum, herhaling) values (:'gezin', 'Matrassen draaien', '2026-10-27', 'tweewekelijks')
+  returning id as matras \gset
+select public.ouder_taak_afvinken(:'matras', true);
+select pg_temp.gelijk((select datum from public.ouder_taken where vorige_id = :'matras'), '2026-11-10'::date, 'tweewekelijks: over 14 dagen erbij');
+delete from public.ouder_taken where titel in ('Filter schoonmaken', 'Matrassen draaien');
 
 \echo '2. De partner ziet de taken; de tablet ziet niets'
 select pg_temp.als('00000000-0000-0000-0000-000000000802', false);

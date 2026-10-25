@@ -54,7 +54,7 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
   const nu = new Date().toISOString()
   return {
     taken: voorbeeld.map(([titel, prentje, sterren, herhaling, foto_nodig, voor], i) => ({
-      id: `taak-${i}`, titel, prentje, sterren, herhaling, foto_nodig, actief: true,
+      id: `taak-${i}`, titel, prentje, sterren, herhaling, herhaal_dagen: null, start_dag: null, foto_nodig, actief: true,
       kinderen: kinderen.filter((k) => voor === 'alle' || (voor === 'lezers') === k.kan_lezen).map((k) => k.id),
     })),
     inzendingen: [],
@@ -71,8 +71,8 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
     weekmenu: [{ dag: dagVan(new Date()), gerecht: 'Spaghetti bolognese', prentje: null }],
     // Een paar voorbeelden zodat Onze taken en Notities niet leeg openen.
     ouderTaken: [
-      { id: 'ot-1', titel: 'Vuilnis buiten zetten', datum: dagVan(new Date()), wie: null, herhaling: 'wekelijks', gedaan_op: null, gedaan_door: null },
-      { id: 'ot-2', titel: 'Auto naar de keuring', datum: dagVan(new Date(Date.now() + 4 * 86400_000)), wie: 'mama', herhaling: 'eenmalig', gedaan_op: null, gedaan_door: null },
+      { id: 'ot-1', titel: 'Vuilnis buiten zetten', datum: dagVan(new Date()), wie: null, herhaling: 'wekelijks', herhaal_dagen: null, gedaan_op: null, gedaan_door: null },
+      { id: 'ot-2', titel: 'Auto naar de keuring', datum: dagVan(new Date(Date.now() + 4 * 86400_000)), wie: 'mama', herhaling: 'eenmalig', herhaal_dagen: null, gedaan_op: null, gedaan_door: null },
     ],
     berichten: [],
     notities: [
@@ -356,8 +356,8 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       t.weekmenu = t.weekmenu.filter((m) => m.dag !== dag)
       if (gerecht.trim()) t.weekmenu.push({ dag, gerecht: gerecht.trim(), prentje })
     },
-    async ouderTaakOpslaan({ id: taakId, titel, datum, wie, herhaling }) {
-      const taak = { titel, datum, wie, herhaling }
+    async ouderTaakOpslaan({ id: taakId, titel, datum, wie, herhaling, herhaal_dagen }) {
+      const taak = { titel, datum, wie, herhaling, herhaal_dagen: herhaling === 'om_de_n_dagen' ? herhaal_dagen : null }
       const oud = t.ouderTaken.find((x) => x.id === taakId)
       if (oud) Object.assign(oud, taak, { titel: taak.titel.trim() })
       else t.ouderTaken.push({ ...taak, titel: taak.titel.trim(), id: id(), gedaan_op: null, gedaan_door: null })
@@ -377,6 +377,8 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
         const d = new Date(`${taak.datum}T12:00`)
         if (taak.herhaling === 'dagelijks') d.setDate(d.getDate() + 1)
         else if (taak.herhaling === 'wekelijks') d.setDate(d.getDate() + 7)
+        else if (taak.herhaling === 'tweewekelijks') d.setDate(d.getDate() + 14)
+        else if (taak.herhaling === 'om_de_n_dagen') d.setDate(d.getDate() + (taak.herhaal_dagen ?? 1))
         else d.setMonth(d.getMonth() + 1)
         const volgende = id()
         volgendeVan.set(taakId, volgende)

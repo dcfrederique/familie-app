@@ -4,10 +4,9 @@ import type { NieuweOuderTaak, OuderHerhaling, OuderTaak } from '../lib/bron/typ
 import { dagVan, vandaag } from '../lib/datum.ts'
 import { useGegevens } from '../lib/gegevens.ts'
 import { mijnOpenTaken } from '../lib/onzetaken.ts'
+import { herhalingLabel, OUDER_HERHALINGEN } from '../lib/herhaling.ts'
 import { useSessie } from '../lib/sessie.tsx'
 import OuderKader from './OuderKader.tsx'
-
-const herhalingTekst: Record<OuderHerhaling, string> = { eenmalig: 'Eenmalig', dagelijks: 'Elke dag', wekelijks: 'Elke week', maandelijks: 'Elke maand' }
 
 const datumTekst = (dag: string) => (dag === vandaag() ? 'vandaag'
   : new Date(`${dag}T12:00`).toLocaleDateString('nl-BE', { weekday: 'short', day: 'numeric', month: 'short' }))
@@ -74,8 +73,8 @@ export default function OnzeTaken() {
 
   return (
     <OuderKader titel="Onze taken">
-      <SnelToevoegen bewaar={(titel) => doe(() => bron!.ouderTaakOpslaan({ titel, datum: null, wie: null, herhaling: 'eenmalig' }))}
-                     meer={(titel) => setBewerk({ titel, datum: dag, wie: ik, herhaling: 'eenmalig' })} />
+      <SnelToevoegen bewaar={(titel) => doe(() => bron!.ouderTaakOpslaan({ titel, datum: null, wie: null, herhaling: 'eenmalig', herhaal_dagen: null }))}
+                     meer={(titel) => setBewerk({ titel, datum: dag, wie: ik, herhaling: 'eenmalig', herhaal_dagen: null })} />
       {(fout || melding) && <p className="fout" role="alert">{zonderMigratie(melding || fout)}</p>}
       {data && open.length === 0 && <p className="tip">Niets meer te doen. Voeg hierboven een taak toe.</p>}
       {groepen.filter(([, taken]) => taken.length > 0).map(([naam, taken]) => (
@@ -87,7 +86,7 @@ export default function OnzeTaken() {
               const uitleg = [
                 gedaan ? `Gedaan ${datumTekst(dagVan(new Date(t.gedaan_op!)))}${t.gedaan_door ? ` door ${wieTekst(t.gedaan_door).toLowerCase() === 'ik' ? 'mij' : wieTekst(t.gedaan_door)}` : ''}`
                        : t.datum && naam !== 'Vandaag' ? datumTekst(t.datum) : '',
-                t.herhaling !== 'eenmalig' ? herhalingTekst[t.herhaling] : '',
+                t.herhaling !== 'eenmalig' ? herhalingLabel(t.herhaling, t.herhaal_dagen) : '',
               ].filter(Boolean).join(' · ')
               return (
                 <li key={t.id} className={`vink-rij${gedaan ? ' is-gedaan' : ''}`}>
@@ -96,7 +95,7 @@ export default function OnzeTaken() {
                     <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5" /></svg>
                   </button>
                   <button type="button" className="vink-tekst" disabled={gedaan}
-                          onClick={() => setBewerk({ id: t.id, titel: t.titel, datum: t.datum, wie: t.wie, herhaling: t.herhaling })}>
+                          onClick={() => setBewerk({ id: t.id, titel: t.titel, datum: t.datum, wie: t.wie, herhaling: t.herhaling, herhaal_dagen: t.herhaal_dagen })}>
                     <b>{t.titel}</b>{uitleg && <small>{uitleg}</small>}
                   </button>
                   <span className="label">{wieTekst(t.wie)}</span>
@@ -160,12 +159,19 @@ function TaakFormulier({ taak, ouders, ik, bewaar, annuleer, weg }: {
         </select>
       </label>
       <label className="veld"><span>Herhalen</span>
-        <select value={t.herhaling} onChange={(e) => zet({ herhaling: e.target.value as OuderHerhaling })}>
-          {(Object.keys(herhalingTekst) as OuderHerhaling[]).map((h) => <option key={h} value={h}>{herhalingTekst[h]}</option>)}
+        <select value={t.herhaling}
+                onChange={(e) => { const h = e.target.value as OuderHerhaling; zet({ herhaling: h, herhaal_dagen: h === 'om_de_n_dagen' ? (t.herhaal_dagen ?? 3) : null }) }}>
+          {OUDER_HERHALINGEN.map((h) => <option key={h} value={h}>{h === 'om_de_n_dagen' ? 'Om de … dagen' : herhalingLabel(h, null)}</option>)}
         </select>
       </label>
+      {t.herhaling === 'om_de_n_dagen' && (
+        <label className="veld"><span>Om de hoeveel dagen? (2 tot 365)</span>
+          <input type="number" inputMode="numeric" min={2} max={365} required value={t.herhaal_dagen ?? ''}
+                 onChange={(e) => zet({ herhaal_dagen: e.target.value ? Number(e.target.value) : null })} />
+        </label>
+      )}
       <div className="knoppen">
-        <button type="submit" className="knop knop-primair" disabled={!t.titel.trim()}>Bewaren</button>
+        <button type="submit" className="knop knop-primair" disabled={!t.titel.trim() || (t.herhaling === 'om_de_n_dagen' && !(t.herhaal_dagen! >= 2 && t.herhaal_dagen! <= 365))}>Bewaren</button>
         <button type="button" className="knop knop-licht" onClick={annuleer}>Annuleren</button>
         {weg && <button type="button" className="knop knop-licht knop-weg" onClick={() => void weg()}>Verwijderen</button>}
       </div>
@@ -203,7 +209,7 @@ export function MijnTaken() {
                 <b>{t.titel}</b>
                 <small className={teLaat ? 'is-te-laat' : undefined}>
                   {[t.datum ? (teLaat ? `te laat, ${datumTekst(t.datum)}` : datumTekst(t.datum)) : 'geen datum',
-                    t.herhaling !== 'eenmalig' ? herhalingTekst[t.herhaling].toLowerCase() : ''].filter(Boolean).join(' · ')}
+                    t.herhaling !== 'eenmalig' ? herhalingLabel(t.herhaling, t.herhaal_dagen).toLowerCase() : ''].filter(Boolean).join(' · ')}
                 </small>
               </Link>
               {t.wie === null && <span className="label">Samen</span>}

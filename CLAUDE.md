@@ -51,6 +51,7 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - `docs/chat.md`: chat van de kinderen naar de ouders (per kind aan te zetten, melding op de gsm, stickers voor wie niet leest).
 - `docs/boodschappen.md`: boodschappenlijst per winkel (Wij → Boodschappen), winkels en categorieën beheren (Instellingen), ingrediënten vanuit het weekmenu, prijzen na de boodschappen (Afrekenen) en het overzicht Wij → Uitgaven per maand, winkel en categorie.
 
+- Herhaling om de zoveel dagen (25 oktober 2026): Onze taken en de taken van de kinderen hebben naast elke dag/week/maand ook Om de 2 weken en Om de N dagen (N van 2 tot 365, eigen keuze). Onze taken telt vanaf de datum van de vorige beurt (`herhaal_dagen`), kindertaken vanaf `start_dag` (`src/lib/herhaling.ts`, migratie 20261025000500).
 - Een kind kan alleen berichten sturen als een ouder de chat voor dat kind aanzette (standaard uit); een tablet ziet enkel het eigen gesprek (`docs/chat.md`).
 
 ## Beslist (21 oktober 2026)

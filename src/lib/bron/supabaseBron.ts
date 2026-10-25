@@ -27,7 +27,7 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
   return {
     async taken() {
       const { data, error } = await sb.from('taken')
-        .select('id, titel, prentje, sterren, herhaling, foto_nodig, actief, taak_kinderen(kind_id)')
+        .select('id, titel, prentje, sterren, herhaling, herhaal_dagen, start_dag, foto_nodig, actief, taak_kinderen(kind_id)')
         .eq('actief', true).order('titel')
       fout(error)
       return (data ?? []).map(({ taak_kinderen, ...t }) => ({
@@ -123,7 +123,7 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
     },
     async ouderTaken() {
       const week = new Date(Date.now() - 7 * 86400_000).toISOString()
-      const { data, error } = await sb.from('ouder_taken').select('id, titel, datum, wie, herhaling, gedaan_op, gedaan_door')
+      const { data, error } = await sb.from('ouder_taken').select('id, titel, datum, wie, herhaling, herhaal_dagen, gedaan_op, gedaan_door')
         .or(`gedaan_op.is.null,gedaan_op.gte.${week}`).order('datum', { nullsFirst: false }).order('aangemaakt_op')
       fout(error)
       return (data ?? []) as OuderTaak[]
@@ -311,8 +311,8 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
       fout((await sb.from('weekmenu').upsert({ gezin_id: gezinId, dag, gerecht: tekst, prentje, gewijzigd_op: new Date().toISOString() },
                                                { onConflict: 'gezin_id,dag' })).error)
     },
-    async ouderTaakOpslaan({ id, titel, datum, wie, herhaling }: NieuweOuderTaak) {
-      const rij = { titel: titel.trim(), datum, wie, herhaling }
+    async ouderTaakOpslaan({ id, titel, datum, wie, herhaling, herhaal_dagen }: NieuweOuderTaak) {
+      const rij = { titel: titel.trim(), datum, wie, herhaling, herhaal_dagen: herhaling === 'om_de_n_dagen' ? herhaal_dagen : null }
       fout((id ? await sb.from('ouder_taken').update(rij).eq('id', id) : await sb.from('ouder_taken').insert({ ...rij, gezin_id: gezinId })).error)
     },
     async ouderTaakAfvinken(id, gedaan) {
