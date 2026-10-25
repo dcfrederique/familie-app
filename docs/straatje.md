@@ -2,6 +2,10 @@
 
 Status: idee van de kinderen (25 oktober 2026), nog niet in de app gebouwd. Alleen een ontwerp en een klikbaar prototype: `prototypes/straatje.html` (ook online: https://claude.ai/artifact/8yr9BdZx2BcZFZoSvmWiD8). Screenshots staan in de projectmap onder `schermen/straatje/`.
 
+## Groter plaatje
+
+Ons straatje is ook een mogelijke tweede manier om door de hele app te gaan, met gebouwen als ingangen (Winkel, Spellenhuis, later meer). Zie `docs/wereld.md`.
+
 ## Doel
 
 De kinderen willen in Mijn huis (`docs/huis.md`) rondlopen en bij elkaar op bezoek gaan. "3D" betekent voor hen niet echt 3D, maar zoals Pokémon vroeger op de Game Boy: een bovenaanzicht waarin hun eigen figuurtje rondloopt. Ons straatje is dat dorpje: de huizen van Luca, Yuna en Feline naast elkaar, met daaromheen een speelplein, een vijver en een voetbalveldje. De kinderen mogen er zelf dingen neerzetten.
@@ -15,6 +19,7 @@ Feedback van Frederique (25 oktober 2026), verwerkt in het prototype:
 - Fase 1 is niet live, fase 2 wel.
 - Besturen met een **joystick** in plaats van toetsen: dat kennen de kinderen van andere spelletjes.
 - Fase 3: de ouders zetten hun eigen huis er ook bij.
+- Het figuurtje draait zich naar waar het loopt (rug, zijkant, voorkant) en stapt met de voeten.
 
 ## Fases
 

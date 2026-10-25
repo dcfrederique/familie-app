@@ -125,6 +125,55 @@ canvas#veld { display: block; width: 100%; aspect-ratio: 3 / 2; cursor: pointer;
 .stuk .nieuw { position: absolute; top: 4px; right: 4px; font-size: 11px; background: var(--proto); color: var(--proto-bg); border-radius: 99px; padding: 0 7px; }
 .hulp { margin: 0; color: var(--muted); font-weight: 700; font-size: 14px; }
 
+.laag { position: absolute; inset: 0; background: var(--bg); color: var(--ink); overflow: auto; padding: 2.4cqw; display: grid; gap: 1.8cqw; align-content: start; }
+.laag[hidden] { display: none; }
+.scherm.laagmodus canvas#veld { visibility: hidden; }
+.scherm.laagmodus { background: var(--bg); }
+@media (max-width: 700px) { .scherm.laagmodus { aspect-ratio: 3 / 4.2; } .scherm.laagmodus canvas#veld { height: 100%; aspect-ratio: auto; } }
+#sluier { position: absolute; inset: 0; z-index: 6; background: var(--kid); clip-path: circle(0% at 50% 62%); transition: clip-path .42s ease-in-out; pointer-events: none; }
+.scherm.wissel #sluier { clip-path: circle(90% at 50% 62%); }
+.knop-hoek { position: absolute; right: 2.4cqw; top: 9.4cqw; border: 0; font-family: var(--font-display); font-weight: 800; font-size: clamp(12px, 2.4cqw, 22px); color: var(--kid); background: var(--surface); border-radius: 99px; padding: .8cqw 2.2cqw; box-shadow: 0 3px 0 var(--shade); display: inline-flex; align-items: center; gap: 1cqw; }
+.knop-hoek svg { width: 3cqw; height: 3cqw; min-width: 16px; min-height: 16px; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.hub-kop { display: flex; align-items: center; gap: 1.8cqw; flex-wrap: wrap; }
+.hub-kop .avatar { width: clamp(46px, 9cqw, 90px); aspect-ratio: 1; border-radius: 50%; background: var(--kid-tint); overflow: hidden; flex: none; }
+.hub-kop .avatar svg { width: 100%; height: 100%; }
+.hub-kop .huisje { width: clamp(46px, 9cqw, 90px); aspect-ratio: 1; border-radius: 50%; background: var(--kid-tint); overflow: hidden; flex: none; }
+.hub-kop .huisje svg { width: 130%; height: 130%; margin: -15%; }
+.groot { font-family: var(--font-display); font-weight: 800; font-size: clamp(18px, 4.4cqw, 40px); line-height: 1.1; }
+.sub { color: var(--muted); font-weight: 700; font-size: clamp(11px, 2.2cqw, 20px); }
+.spacer { flex: 1; }
+.sterpil { display: inline-flex; align-items: center; gap: .8cqw; font-family: var(--font-display); font-weight: 800; font-size: clamp(14px, 3cqw, 26px); background: var(--gold-bg); color: var(--gold-ink); border-radius: 99px; padding: .6cqw 2cqw; }
+.sterpil svg { width: 3cqw; height: 3cqw; min-width: 16px; min-height: 16px; }
+.hub-rij { display: grid; gap: 2cqw; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+@media (max-width: 700px) { .hub-rij { grid-template-columns: minmax(0, 1fr); } }
+.wereld-kaart { position: relative; border: 0; text-align: left; padding: 0; border-radius: 3cqw; overflow: hidden; background: #7CC46A; box-shadow: 0 .7cqw 0 var(--shade), 0 0 0 .5cqw var(--kid); display: grid; align-content: end; min-height: 30cqw; }
+.wereld-kaart .mini { position: absolute; inset: 0 0 8cqw 0; width: 100%; height: calc(100% - 8cqw); --huis-gras: #7CC46A; --huis-gras2: #6AB55A; --huis-glas: #BFE3FA; --huis-pad: #E2D9C6; --huis-heuvel: #A6D98C; --huis-rook: #E6EAF0; --kid: #2D6BD6; }
+.wereld-kaart .etiket { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 1.4cqw; margin: 1.4cqw; padding: 1.2cqw 2.2cqw; border-radius: 2.4cqw; background: var(--kid); color: var(--on-solid); }
+.wereld-kaart .etiket b { font-family: var(--font-display); font-size: clamp(16px, 3.6cqw, 32px); line-height: 1.1; }
+.wereld-kaart .etiket small { display: block; font-weight: 700; font-size: clamp(11px, 2cqw, 18px); opacity: .9; }
+.wereld-kaart .etiket svg { width: 5cqw; height: 5cqw; min-width: 26px; min-height: 26px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.tegels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.4cqw; align-content: start; }
+.tegel { position: relative; border: 0; border-radius: 2.4cqw; background: var(--surface); box-shadow: 0 .5cqw 0 var(--shade); padding: 1.4cqw 1.2cqw; display: grid; justify-items: center; gap: .6cqw; font-family: var(--font-display); font-weight: 800; font-size: clamp(12px, 2.5cqw, 22px); color: var(--ink); }
+.tegel .ic { width: clamp(34px, 6.4cqw, 60px); aspect-ratio: 1; border-radius: 2cqw; display: grid; place-items: center; color: #fff; }
+.tegel .ic svg { width: 62%; height: 62%; fill: none; stroke: currentColor; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.tegel .tel { position: absolute; top: .8cqw; right: .8cqw; min-width: 3.4cqw; height: 3.4cqw; border-radius: 99px; background: var(--warn); color: #fff; font-size: clamp(10px, 2cqw, 18px); display: grid; place-items: center; padding: 0 .6cqw; }
+.tegel:active { transform: translateY(.4cqw); box-shadow: 0 .1cqw 0 var(--shade); }
+.geb-kop { display: flex; align-items: center; gap: 1.6cqw; flex-wrap: wrap; }
+.terug { border: 0; border-radius: 99px; background: var(--surface); color: var(--kid); font-family: var(--font-display); font-weight: 800; font-size: clamp(12px, 2.4cqw, 22px); padding: .8cqw 2.2cqw .8cqw 1.4cqw; box-shadow: 0 .4cqw 0 var(--shade); display: inline-flex; align-items: center; gap: .8cqw; }
+.terug svg { width: 3.2cqw; height: 3.2cqw; min-width: 18px; min-height: 18px; fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; stroke-linejoin: round; }
+.geb-titel { font-family: var(--font-display); font-weight: 800; font-size: clamp(18px, 4.2cqw, 38px); }
+.tabs { display: flex; gap: 1cqw; flex-wrap: wrap; }
+.tab { border: 0; border-radius: 99px; background: var(--surface); box-shadow: 0 .4cqw 0 var(--shade); font-weight: 800; font-size: clamp(12px, 2.3cqw, 20px); padding: .8cqw 2.4cqw; color: var(--ink); }
+.tab[aria-pressed="true"] { background: var(--kid); color: var(--on-solid); }
+.kaarten { display: grid; grid-template-columns: repeat(auto-fill, minmax(clamp(96px, 17cqw, 170px), 1fr)); gap: 1.4cqw; }
+.kaartje { position: relative; border: 0; border-radius: 2.4cqw; background: var(--surface); box-shadow: 0 .5cqw 0 var(--shade); padding: 1cqw 1cqw 1.2cqw; display: grid; justify-items: center; gap: .4cqw; font-weight: 800; font-size: clamp(11px, 2.2cqw, 19px); color: var(--ink); text-align: center; }
+.kaartje .prent { width: 100%; aspect-ratio: 1.15; border-radius: 1.8cqw; background: var(--kid-tint); display: grid; place-items: center; overflow: hidden; }
+.kaartje .prent svg { width: 82%; height: 82%; }
+.kaartje .prent b { font-family: var(--font-display); font-size: clamp(22px, 6cqw, 54px); color: #fff; }
+.kaartje .nieuw { position: absolute; top: .8cqw; right: .8cqw; background: var(--proto); color: #fff; border-radius: 99px; padding: 0 1.2cqw; font-size: clamp(10px, 1.8cqw, 16px); }
+.kaartje .p { display: inline-flex; align-items: center; gap: .5cqw; color: var(--gold-ink); background: var(--gold-bg); border-radius: 99px; padding: 0 1.2cqw; }
+.kaartje .p svg { width: 2cqw; height: 2cqw; min-width: 12px; min-height: 12px; }
+.kaartje.slot .prent { opacity: .45; filter: grayscale(.5); }
 .zij { display: grid; gap: 14px; }
 .kaart { background: var(--surface); border-radius: 24px; padding: 14px 18px 16px; box-shadow: 0 5px 0 var(--shade); }
 .kaart h2 { margin: 0 0 8px; font-family: var(--font-display); font-size: 21px; font-weight: 800; }
@@ -165,7 +214,11 @@ kbd { font-family: var(--font-body); font-weight: 800; font-size: 12px; backgrou
         <canvas id="veld" width="1440" height="960" aria-label="Ons straatje: bovenaanzicht met drie huizen, een speelplein en een vijver"></canvas>
         <div class="pil" id="plaats" aria-live="polite"></div>
         <div class="pil" id="ster"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.7 5.6l6.1.9l-4.4 4.3l1 6.1L12 17l-5.4 2.9l1-6.1L3.2 9.5l6.1-.9z" fill="#F2B33D" stroke="#B8800F" stroke-width="1.4" stroke-linejoin="round"/></svg><span id="sterTel">0</span></div>
+        <button class="knop-hoek" id="naarHub" type="button" hidden><svg viewBox="0 0 24 24"><path d="M3 11l9-7l9 7M5 9.5V20h14V9.5M10 20v-6h4v6"/></svg>Startscherm</button>
         <div class="pil" id="roep"></div>
+        <section class="laag" id="hub" aria-label="Startscherm"></section>
+        <section class="laag" id="gebouw" aria-label="Gebouw" hidden></section>
+        <div id="sluier"></div>
         <div id="dlg" hidden>
           <b id="spreker" class="display"></b><p id="tekst"></p>
           <span id="luid" hidden><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9zM16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12"/></svg></span>
@@ -173,7 +226,7 @@ kbd { font-family: var(--font-body); font-weight: 800; font-size: 12px; backgrou
         </div>
       </div>
 
-      <div class="knoppen">
+      <div class="knoppen" id="bediening">
         <div class="joy" id="joy" role="application" aria-label="Joystick: sleep om te lopen"><div class="joy-knop" id="knob"></div></div>
         <div class="midden">
           <button class="act" id="bouwknop" type="button" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M14 7l3 3M4 20l4-1l11-11a2.1 2.1 0 0 0-3-3L5 16z"/></svg>Zelf bouwen</button>
@@ -200,6 +253,7 @@ kbd { font-family: var(--font-body); font-weight: 800; font-size: 12px; backgrou
       <section class="kaart">
         <h2>Probeer dit</h2>
         <ul>
+          <li>Je begint op het startscherm. Tik op <b>Naar de wereld</b> en loop naar de Winkel of het Spellenhuis. Met <b>Startscherm</b> ben je er meteen terug.</li>
           <li>Loop naar een deur en ga binnen. Bij Luca, Yuna of Feline kun je op bezoek.</li>
           <li>Tik op <b>Zelf bouwen</b> en zet een boom, trampoline of dino neer waar je wil.</li>
           <li>Laat je huis groeien en kijk hoe de straat verandert.</li>
@@ -288,9 +342,9 @@ const kavel = k => [k.deurX - 6 * U, 3.5 * U, k.deurX + 6 * U, 12 * U];
 
 /* ---------- toestand ---------- */
 const S = {
-  me: 'luca', nacht: false, live: false, fase3: false, t: 0, vol: false,
+  view: 'hub', me: 'luca', nacht: false, live: false, fase3: false, t: 0, vol: false,
   scene: { type: 'straat' }, dlg: null, fade: null, act: null, route: [], doel: null, ents: [],
-  pl: { x: 0, y: 0, dir: 1, moving: false, ph: 0, vx: 0, vy: 0 },
+  pl: { x: 0, y: 0, dir: 1, face: 'down', moving: false, ph: 0, vx: 0, vy: 0 },
   items: [], bouw: { aan: false, g: 'plaats', kies: null, hand: null, ghost: null },
 };
 const held = { up: false, down: false, left: false, right: false };
@@ -319,6 +373,38 @@ const EIGEN = {
   wip: '<path d="M-80 -34L80 -62" stroke="#2D6BD6" stroke-width="16" stroke-linecap="round"/><path d="M-12 0L0 -50L12 0Z" fill="#6B7480"/><circle cx="-82" cy="-26" r="10" fill="#D93A3A"/><circle cx="82" cy="-66" r="10" fill="#D93A3A"/>',
   brievenbus: (c) => `<rect x="-4" y="-52" width="8" height="52" fill="#6E4224"/><rect x="-22" y="-84" width="44" height="34" rx="12" fill="${c}"/><rect x="-14" y="-72" width="28" height="4" rx="2" fill="#1C2433" opacity=".5"/><path d="M22 -66V-92h12v10h-12" fill="#D93A3A" stroke="#D93A3A" stroke-width="2"/>`,
 };
+const GEB = [
+  { id: 'winkel', naam: 'Winkel', x: 21.3 * U, y: 21.5 * U, w: 240 },
+  { id: 'spellen', naam: 'Spellenhuis', x: 48 * U, y: 21 * U, w: 262 },
+  { id: 'bouw', naam: 'Bouwplaats', x: 52.7 * U, y: 21 * U, w: 150 },
+];
+const GEBSVG = {
+  winkel: `<ellipse cx="200" cy="288" rx="190" ry="11" fill="#000" opacity=".13"/>
+    <rect x="34" y="40" width="332" height="246" rx="14" fill="#F8E7C8"/><rect x="34" y="40" width="332" height="30" rx="14" fill="#C8452F"/><rect x="34" y="58" width="332" height="12" fill="#A93A27"/>
+    <rect x="112" y="76" width="176" height="46" rx="14" fill="#2F5FB3" stroke="#fff" stroke-width="5"/><text x="200" y="110" text-anchor="middle" font-family="Baloo 2, Nunito, sans-serif" font-weight="800" font-size="34" fill="#fff">WINKEL</text>
+    ${[0, 1, 2, 3, 4, 5, 6, 7].map(i => `<path d="M${30 + i * 42} 134h42v26a21 21 0 0 1-42 0z" fill="${i % 2 ? '#FFFFFF' : '#E8772E'}"/>`).join('')}<rect x="30" y="126" width="336" height="10" rx="4" fill="#B8601F"/>
+    <rect x="54" y="176" width="98" height="78" rx="10" fill="#fff"/><rect x="60" y="182" width="86" height="66" rx="6" fill="#BFE3FA"/>
+    <path d="M85 236l5-12l10 4l6-12l5 14l8 2l-8 6z" fill="#F2B33D"/><rect x="118" y="214" width="22" height="22" rx="4" fill="#D93A3A"/><rect x="66" y="228" width="16" height="16" rx="3" fill="#2E9A45"/>
+    <rect x="248" y="176" width="98" height="78" rx="10" fill="#fff"/><rect x="254" y="182" width="86" height="66" rx="6" fill="#BFE3FA"/>
+    <circle cx="276" cy="226" r="16" fill="#8E44C9"/><rect x="298" y="206" width="30" height="34" rx="5" fill="#E46AA8"/><path d="M262 244h70" stroke="#fff" stroke-width="4"/>
+    <rect x="174" y="188" width="52" height="98" rx="8" fill="#7A4A2A"/><rect x="182" y="198" width="36" height="40" rx="5" fill="#BFE3FA"/><circle cx="216" cy="246" r="4" fill="#F2C230"/><rect x="160" y="282" width="80" height="6" rx="3" fill="#B8C0CA"/>`,
+  spellen: `<ellipse cx="200" cy="288" rx="190" ry="11" fill="#000" opacity=".13"/>
+    <path d="M30 100L200 12L370 100Z" fill="#4B2A7A"/><rect x="48" y="100" width="304" height="186" rx="8" fill="#8E5CC8"/><rect x="48" y="100" width="304" height="14" fill="#6E3FA8"/>
+    ${[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map(i => `<circle cx="${70 + i * 29}" cy="108" r="5" fill="${['#FFC93C', '#FF7A9C', '#7AD0FF', '#7DE08A'][i % 4]}"/>`).join('')}
+    <circle cx="200" cy="64" r="34" fill="#FFC93C" stroke="#fff" stroke-width="5"/><rect x="172" y="48" width="56" height="34" rx="16" fill="#2B2B3A"/><path d="M186 58v14M179 65h14" stroke="#fff" stroke-width="4" stroke-linecap="round"/><circle cx="212" cy="60" r="4" fill="#D93A3A"/><circle cx="220" cy="68" r="4" fill="#2D6BD6"/>
+    <rect x="88" y="124" width="224" height="44" rx="14" fill="#FFC93C" stroke="#fff" stroke-width="5"/><text x="200" y="157" text-anchor="middle" font-family="Baloo 2, Nunito, sans-serif" font-weight="800" font-size="30" fill="#3B2A00">SPELLENHUIS</text>
+    ${[[66, '#7AD0FF'], [128, '#FF7A9C'], [236, '#7DE08A'], [298, '#FFC93C']].map(([x, c]) => `<rect x="${x}" y="186" width="42" height="46" rx="8" fill="#fff"/><rect x="${x + 5}" y="191" width="32" height="36" rx="5" fill="#2B2B3A"/><rect x="${x + 10}" y="198" width="9" height="9" fill="${c}"/><rect x="${x + 22}" y="206" width="9" height="9" fill="#fff"/><rect x="${x + 12}" y="214" width="14" height="6" fill="${c}"/>`).join('')}
+    <rect x="164" y="198" width="72" height="88" rx="10" fill="#4B2A7A"/><path d="M200 198v88" stroke="#fff" stroke-width="3"/><circle cx="192" cy="244" r="4" fill="#FFC93C"/><circle cx="208" cy="244" r="4" fill="#FFC93C"/><path d="M200 214l4 8l9 1l-7 6l2 9l-8-5l-8 5l2-9l-7-6l9-1z" fill="#FFC93C"/><rect x="150" y="282" width="100" height="6" rx="3" fill="#B8C0CA"/>`,
+  bouw: `<ellipse cx="200" cy="288" rx="190" ry="11" fill="#000" opacity=".13"/>
+    <path d="M60 286l40-120h12" stroke="#F2C230" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M106 166H330l-30 14" stroke="#F2C230" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M300 180v56" stroke="#555" stroke-width="4"/><rect x="288" y="234" width="24" height="16" rx="3" fill="#D93A3A"/>
+    <path d="M40 286q60-70 140-30q40 14 70 30z" fill="#D9BC6A"/>
+    <rect x="30" y="236" width="340" height="14" rx="4" fill="#fff"/><rect x="30" y="262" width="340" height="14" rx="4" fill="#fff"/>
+    ${[0, 1, 2, 3, 4, 5, 6, 7].map(i => `<path d="M${34 + i * 42} 236h26l-14 14z M${34 + i * 42} 262h26l-14 14z" fill="#E8772E"/>`).join('')}
+    <rect x="120" y="170" width="160" height="50" rx="12" fill="#F2C230" stroke="#fff" stroke-width="5"/><text x="200" y="204" text-anchor="middle" font-family="Baloo 2, Nunito, sans-serif" font-weight="800" font-size="26" fill="#3B2A00">Binnenkort</text>`,
+};
+const gebH = b => b.w * 0.75;
+function gebImg(b) { return svgImg('g' + b.id, '0 0 400 300', GEBSVG[b.id], b.w, gebH(b)); }
+const gebRect = b => [b.x - b.w * .42, b.y - 96, b.x + b.w * .42, b.y];
 const VOORSTEL = [{ id: 'bank', naam: 'Bank', prijs: 10 }, { id: 'lantaarn', naam: 'Lantaarn', prijs: 15 }, { id: 'vogelhuisje', naam: 'Vogelhuisje', prijs: 10 }];
 const TUIN = AppArt.huisCategorieen.find(c => c.id === 'tuin').stukken;
 const NAAM = Object.fromEntries(TUIN.concat(VOORSTEL).map(s => [s.id, s.naam]));
@@ -345,6 +431,7 @@ function bouwWegen() {
   WEGEN.length = 0; road(1, 12.4, 55, 14.4);
   HUIZEN().forEach(k => WEGEN.push([k.deurX - 0.85 * U, 10.2 * U, k.deurX + 0.85 * U, 12.5 * U]));
   road(9.1, 14.3, 10.9, 16.7); road(29.1, 14.3, 30.9, 16.9); road(39.6, 14.3, 41.4, 16.7);
+  road(20.45, 14.3, 22.15, 22.6); road(47.15, 14.3, 48.85, 22.3); road(51.9, 14.3, 53.5, 22.3);
 }
 const PLEIN = [3 * U, 16.6 * U, 18 * U, 24.6 * U], POEL = { x: 30 * U, y: 20.8 * U, rx: 5.8 * U, ry: 3.7 * U }, VELD = [37 * U, 16.7 * U, 43 * U, 23.4 * U];
 const inR = (x, y, r) => x >= r[0] && x <= r[2] && y >= r[1] && y <= r[3];
@@ -357,11 +444,10 @@ const vast = (id, x, y, extra = {}) => VAST.push(Object.assign({ id, x, y, vast:
 // bomen langs de rand en hier en daar
 for (let x = 0.6 * U; x < WW; x += 1.9 * U) { vast('boom', x + rnd(x, 1) * 20, 1.4 * U + rnd(x, 2) * 14); vast('boom', x + 0.9 * U, 2.7 * U + rnd(x, 3) * 12); vast('boom', x + rnd(x, 4) * 20, WH - 2.3 * U + rnd(x, 5) * 12); vast('boom', x + 0.9 * U, WH - 0.9 * U); }
 for (let y = 3.4 * U; y < WH - 2 * U; y += 1.9 * U) { vast('boom', 0.7 * U + rnd(y, 6) * 10, y); vast('boom', WW - 0.7 * U - rnd(y, 7) * 10, y + 0.5 * U); }
-[[13.6, 9.8], [25.6, 9.8], [37.6, 9.8], [2.3, 15.2], [20, 16.5], [34.8, 15.4], [20.5, 24], [36, 24], [46, 21], [51, 17], [53, 24]].forEach(([x, y]) => vast('boom', x * U, y * U));
+[[13.6, 9.8], [25.6, 9.8], [37.6, 9.8], [2.3, 15.2], [34.8, 15.4], [36, 24], [45.2, 17], [51, 17], [53, 24]].forEach(([x, y]) => vast('boom', x * U, y * U));
 [[13.5, 11.8], [25.5, 11.8], [37.5, 11.8], [1.8, 11.8]].forEach(([x, y]) => vast('lantaarn', x * U, y * U, { lamp: true }));
 vast('lantaarn', 49.5 * U, 11.8 * U, { lamp: true, eigenaar: 'ouders' });
-vast('bank', 22.5 * U, 17.2 * U); vast('bank', 8 * U, 15.6 * U + 0, { weg: true });
-VAST.pop();
+vast('bank', 26.4 * U, 15.8 * U);
 // speelplein
 vast('schommel', 6.5 * U, 19 * U); vast('glijbaan', 12 * U, 19 * U); vast('wip', 6.5 * U, 22.6 * U); vast('zandbak', 14.8 * U, 22.6 * U);
 // voetbalveldje
@@ -381,6 +467,7 @@ let obst = [], rasterBlok = null;
 function bouwObst() {
   obst = [];
   for (const k of HUIZEN()) obst.push(huisRect(k));
+  for (const b of GEB) obst.push(gebRect(b));
   for (const it of alleItems()) if (it.id !== 'bloemen' || true) obst.push(fp(it.id, it.x, it.y));
   // hek om het speelplein (met een poortje)
   const [a, b, c, d] = PLEIN, p = 10 * U;
@@ -454,6 +541,7 @@ function stelFiguur(e, dt, ix, iy, snel) {
   if (!len) return;
   const dx = ix / len * v * dt, dy = iy / len * v * dt;
   if (ix) e.dir = Math.sign(ix);
+  e.face = Math.abs(ix) > Math.abs(iy) * 0.9 ? (ix > 0 ? 'right' : 'left') : (iy > 0 ? 'down' : 'up');
   const ok = (x, y) => inKamer() ? kamerVrij(x, y, e) : vrij(x, y, e);
   if (ok(e.x + dx, e.y)) e.x += dx; if (ok(e.x, e.y + dy)) e.y += dy;
   e.ph += dt * 11;
@@ -543,6 +631,7 @@ function iaStraat() {
   }
   lijst.push({ x: POEL.x, y: POEL.y, r: 4.2 * U, poel: true, t: { t: 'De vijver. Er zwemmen eendjes. Kwak kwak!', p: '🦆 🦆 〰' } });
   for (const k of HUIZEN()) lijst.push({ x: k.deurX, y: GROND_Y + 6, r: 30, deur: k });
+  for (const b of GEB) lijst.push({ x: b.x, y: b.y + 6, r: 34, gebouw: b });
   for (const e of S.ents) lijst.push({ x: e.x, y: e.y, r: 70, ent: e });
   return lijst;
 }
@@ -561,9 +650,15 @@ function interactie() {
   if (inKamer()) { kamerPraat(); return; }
   const o = dichtstbij(iaStraat()); if (!o) return;
   if (o.deur) { aanDeur(o.deur); return; }
+  if (o.gebouw) { aanGebouw(o.gebouw); return; }
   if (o.ent) { S.dlg = null; zegTekst([{ t: `Hoi ${KID().naam}! Zin om samen te spelen?`, p: '👋 🛝' }], o.ent.kid.naam); return; }
   if (o.act) { startActie(o.act, o.it); return; }
   if (o.t) zegTekst([o.t]);
+}
+function aanGebouw(b) {
+  S.route = [];
+  if (b.id === 'bouw') { zegTekst([{ t: 'Hier komt later een nieuw gebouw. Wat zou het worden?', p: '🚧 ❓' }]); return; }
+  zegTekst([{ t: b.id === 'winkel' ? 'Welkom in de winkel!' : 'Welkom in het Spellenhuis!', p: b.id === 'winkel' ? '🛍 ⭐' : '🎮 ⭐' }], '', () => openGebouw(b.id, 'wereld'));
 }
 function aanDeur(k) {
   S.route = [];
@@ -633,6 +728,7 @@ function tikStraat(wx, wy) {
   if (S.fade || S.act) return;
   const lijst = iaStraat();
   // tik op een huis: loop naar de deur
+  for (const b of GEB) if (inR(wx, wy, [b.x - b.w * .45, b.y - b.w * .8, b.x + b.w * .45, b.y + 22])) { S.route = zoekPad(S.pl.x, S.pl.y, b.x, b.y + 24) || []; S.doel = { gebouw: b }; return; }
   for (const k of HUIZEN()) if (inR(wx, wy, [huisRect(k)[0], huisRect(k)[1] - 40, huisRect(k)[2], GROND_Y + 20])) { S.route = zoekPad(S.pl.x, S.pl.y, k.deurX, GROND_Y + 22) || []; S.doel = { deur: k }; return; }
   // tik op iets om aan te spreken: loop er naast
   let tip = null, bd = 60;
@@ -681,6 +777,7 @@ function geldigPlek(id, x, y, negeer) {
   if (opWeg(x, y, 16) || inPoel(x, y, 30)) return false;
   for (const k of HUIZEN()) { if (k.id !== S.me && inR(x, y, kavel(k))) return false; }
   const f = fp(id, x, y);
+  for (const b of GEB) { const h = gebRect(b); if (f[0] < h[2] + 14 && f[2] > h[0] - 14 && f[1] < h[3] + 20 && f[3] > h[1]) return false; }
   for (const k of HUIZEN()) { const h = huisRect(k); if (f[0] < h[2] + 10 && f[2] > h[0] - 10 && f[1] < h[3] + 14 && f[3] > h[1]) return false; }
   const plein = PLEIN; if (f[0] < plein[2] + 8 && f[2] > plein[0] - 8 && (Math.abs(f[1] - plein[1]) < 10 || Math.abs(f[3] - plein[3]) < 12 || Math.abs(f[0] - plein[0]) < 10 || Math.abs(f[2] - plein[2]) < 10) && !(inR(x, y, [plein[0] + 14, plein[1] + 18, plein[2] - 14, plein[3] - 14]))) return false;
   for (const it of alleItems()) { if (it === negeer) continue; const o = fp(it.id, it.x, it.y); if (f[0] < o[2] && f[2] > o[0] && f[1] < o[3] && f[3] > o[1]) return false; }
@@ -722,6 +819,7 @@ const bouwObstNa = () => { bouwObst(); };
 const NPCV = 95;
 function update(dt) {
   S.t += dt;
+  if (S.view !== 'wereld') return;
   const p = S.pl;
   if (S.fade) { S.fade.t += dt; const f = S.fade; if (!f.gedaan && f.t >= f.dur / 2) { f.gedaan = true; f.mid(); } if (f.t >= f.dur) S.fade = null; }
   if (S.dlg && S.dlg.n < S.dlg.tekst.length) { S.dlg.n = Math.min(S.dlg.tekst.length, S.dlg.n + dt * (S.dlg.prent ? 8 : 60)); $('tekst').textContent = S.dlg.tekst.slice(0, Math.floor(S.dlg.n)); }
@@ -736,6 +834,7 @@ function update(dt) {
     stelFiguur(p, dt, ix, iy);
     if (!(ix || iy)) p.ph = 0;
     if (!inKamer()) {
+      for (const b of GEB) if (b.id !== 'bouw' && Math.abs(p.x - b.x) < 30 && p.y <= b.y + 26 && p.y >= b.y - 4 && !S.fade && !S.dlg) { p.y = b.y + 40; aanGebouw(b); }
       for (const k of HUIZEN()) if (Math.abs(p.x - k.deurX) < 30 && p.y <= GROND_Y + 26 && p.y >= GROND_Y - 4 && S.scene.type === 'straat' && !S.fade && !S.dlg) aanDeur(k);
     } else if (p.y > KAMER.deur[1] - 4 && Math.abs(p.x - KAMER.deur[0]) < 54 && !S.fade) verlaat();
   } else p.moving = false;
@@ -750,17 +849,51 @@ function update(dt) {
 function eindeRoute() {
   const d = S.doel; S.doel = null; if (!d) return;
   if (d.deur) { aanDeur(d.deur); return; }
+  if (d.gebouw) { aanGebouw(d.gebouw); return; }
   if (d.ia) { const o = d.ia; S.pl.dir = o.x < S.pl.x ? -1 : 1; if (o.deur) aanDeur(o.deur); else if (o.act) startActie(o.act, o.it); else if (o.t) zegTekst([o.t]); }
 }
 
 /* ---------- tekenen ---------- */
 const bladRand = (c) => c;
+const HUIDK = { licht: '#F7D9C4', perzik: '#EEC09C', goud: '#D9A06F', bruin: '#A86B45', geel: '#F6C944', donker: '#6E4630' };
+const HAARK = { zwart: '#2B2420', bruin: '#6B4226', kastanje: '#9A4A22', blond: '#E2B65A', rood: '#C8501E', blauw: '#3E7BE0', roze: '#E46AA8', paars: '#8E44C9' };
+const KLEDK = { rood: '#D93A3A', oranje: '#E8772E', geel: '#F2C230', groen: '#2E9A45', blauw: '#2D6BD6', jeans: '#3F5E8C', paars: '#8E44C9', roze: '#E46AA8', wit: '#F4F6F9', donker: '#2B3240' };
+const dk = (hex, f) => { const n = parseInt(hex.slice(1), 16); return '#' + [n >> 16, (n >> 8) & 255, n & 255].map(v => Math.max(0, Math.min(255, Math.round(v * f))).toString(16).padStart(2, '0')).join(''); };
+const FW = 49, FH = 70, SPLIT = 250;
+/** Het figuurtje kijkt de kant op die het loopt: gezicht naar je toe, de rug bij omhoog, de zijkant bij links en rechts. De voeten stappen. */
 function tekenFiguur(e, k, x, y, opties = {}) {
-  const im = figImg(k), W = 49, Hh = 70, bob = e.moving ? Math.abs(Math.sin(e.ph)) * 4 : 0, tilt = e.moving ? Math.sin(e.ph) * .07 : 0, sq = e.moving ? 1 + Math.sin(e.ph * 2) * .02 : 1;
-  const hoog = opties.hoog || 0;
+  const im = figImg(k); if (!klaar(im)) return;
+  const face = e.face || 'down', f = k.fig, mv = e.moving, ph = e.ph || 0, sc = opties.schaal || 1, hoog = opties.hoog || 0;
+  const bob = mv ? Math.abs(Math.sin(ph)) * 3.2 : Math.sin(S.t * 2 + x * .01) * .5, lean = mv ? Math.sin(ph) * .045 : 0;
+  const skin = HUIDK[f.huid] || HUIDK.licht, hair = HAARK[f.haarKleur] || HAARK.bruin, shirt = KLEDK[f.shirtKleur] || KLEDK.blauw;
+  const nw = im.naturalWidth, nh = im.naturalHeight, bx = -FW / 2, by = -FH + 5, kn = FH * (SPLIT + 12) / 302;
+  const ux = u => bx + (u + 4) / 208 * FW, uy = u => by + (u + 12) / 302 * FH, uw = u => u / 208 * FW, uh = u => u / 302 * FH;
   g.save(); g.fillStyle = 'rgba(0,0,0,.18)'; g.beginPath(); g.ellipse(x, y, 17 - hoog * .1, 6, 0, 0, 7); g.fill();
-  g.translate(x, y - bob - hoog); g.rotate(tilt); g.scale((e.dir < 0 ? -1 : 1) * (opties.schaal || 1), (opties.schaal || 1) * sq);
-  if (klaar(im)) g.drawImage(im, -W / 2, -Hh + 5, W, Hh);
+  g.translate(x, y - bob - hoog); g.scale(sc * (face === 'left' ? -1 : 1) * (face === 'left' || face === 'right' ? .94 : 1), sc);
+  g.rotate(face === 'up' || face === 'down' ? lean : lean * .6 + (mv ? .05 : 0));
+  // voeten: vooraan of achteraan wisselen, opzij schuiven ze heen en weer
+  const sw = Math.sin(ph), zij = face === 'left' || face === 'right';
+  const lift = (v) => mv ? Math.max(0, v) * 4.2 : 0;
+  const lx = zij ? sw * 4.5 : 0, rx = zij ? -sw * 4.5 : 0, ly = zij ? lift(sw) * .6 : lift(sw), ry = zij ? lift(-sw) * .6 : lift(-sw);
+  // bovenlichaam
+  g.drawImage(im, 0, 0, nw, nh * (SPLIT + 12) / 302, bx, by, FW, kn);
+  // benen en schoenen
+  const half = nw * .5, ys = nh * (SPLIT + 12) / 302, yh = nh - ys, dh = FH - kn;
+  g.drawImage(im, 0, ys, half, yh, bx + lx, by + kn - ly, FW / 2, dh);
+  g.drawImage(im, half, ys, nw - half, yh, bx + FW / 2 + rx, by + kn - ry, FW / 2, dh);
+  // gezicht of achterkant
+  const rr = (a, b, c, d, r, col) => { g.fillStyle = col; g.beginPath(); g.roundRect(ux(a), uy(b), uw(c - a), uh(d - b), Math.max(1, uw(r))); g.fill(); };
+  if (face === 'up') {
+    rr(62, 28, 138, 114, 22, hair); rr(70, 36, 130, 60, 14, dk(hair, 1.12));
+    rr(74, 124, 126, 192, 6, shirt);
+  } else if (zij) {
+    rr(66, 58, 134, 104, 8, skin);
+    g.fillStyle = dk(skin, .84); g.beginPath(); g.ellipse(ux(90), uy(80), uw(8), uh(11), 0, 0, 7); g.fill();       // oor
+    g.fillStyle = skin; g.beginPath(); g.ellipse(ux(136), uy(84), uw(7), uh(6), 0, 0, 7); g.fill();               // neus
+    g.fillStyle = '#1C2433'; g.beginPath(); g.ellipse(ux(118), uy(74), uw(4.2), uh(6.4), 0, 0, 7); g.fill();     // oog
+    g.strokeStyle = '#1C2433'; g.lineWidth = Math.max(.8, uw(3)); g.lineCap = 'round'; g.beginPath(); g.moveTo(ux(116), uy(96)); g.lineTo(ux(128), uy(95)); g.stroke();
+    rr(74, 128, 126, 190, 6, dk(shirt, .96));
+  }
   g.restore();
 }
 function naamLabel(x, y, tekst, kleur) {
@@ -806,6 +939,7 @@ function tekenStraat() {
   const lijst = [];
   const zichtX0 = camX - 200, zichtX1 = camX + VW / Z + 200, zichtY0 = camY - 100, zichtY1 = camY + VH / Z + 400;
   for (const it of alleItems()) if (S.vol || (it.x > zichtX0 && it.x < zichtX1 && it.y > zichtY0 && it.y < zichtY1)) lijst.push({ y: it.y, d: () => tekenItem(it, t) });
+  for (const b of GEB) lijst.push({ y: b.y, d: () => { const im = gebImg(b); if (klaar(im)) g.drawImage(im, b.x - b.w / 2, b.y - gebH(b) * 285 / 300, b.w, gebH(b)); } });
   for (const k of HUIZEN()) lijst.push({ y: GROND_Y, d: () => {
     const h = huisImg(k); if (!klaar(h.im)) return;
     const m = HUIS_MAAT[k.huis.model] || HUIS_MAAT.verdieping, dxr = m[2];
@@ -815,9 +949,9 @@ function tekenStraat() {
   const ik = S.act && S.act.type === 'schommel' ? S.act : null;
   lijst.push({ y: p.y, d: () => {
     const k = KID(), a = S.act;
-    if (a && a.type === 'schommel') { const it = a.it, hoek = Math.sin(a.t * 3.3) * (.25 + .7 * Math.min(1, a.t / 1.6)), sx = it.x - 20 + Math.sin(hoek) * 38, sy = it.y - 60 + Math.cos(hoek) * 20; tekenFiguur({ dir: 1, ph: 0, moving: false }, k, sx, sy + 34, { schaal: .85 }); }
-    else if (a && a.type === 'trampoline') { const hoog = Math.abs(Math.sin(a.t * 4.2)) * 58; tekenFiguur({ dir: 1, ph: 0, moving: false }, k, a.it.x, a.it.y - 20, { hoog }); }
-    else if (a && a.type === 'glijbaan') { const q = clamp(a.t / a.dur, 0, 1), e = q * q; tekenFiguur({ dir: 1, ph: 0, moving: false }, k, a.it.x - 34 + e * 112, a.it.y - 98 + e * 96, { schaal: .85 }); }
+    if (a && a.type === 'schommel') { const it = a.it, hoek = Math.sin(a.t * 3.3) * (.25 + .7 * Math.min(1, a.t / 1.6)), sx = it.x - 20 + Math.sin(hoek) * 38, sy = it.y - 60 + Math.cos(hoek) * 20; tekenFiguur({ dir: 1, ph: 0, moving: false, face: 'down' }, k, sx, sy + 34, { schaal: .85 }); }
+    else if (a && a.type === 'trampoline') { const hoog = Math.abs(Math.sin(a.t * 4.2)) * 58; tekenFiguur({ dir: 1, ph: 0, moving: false, face: 'down' }, k, a.it.x, a.it.y - 20, { hoog }); }
+    else if (a && a.type === 'glijbaan') { const q = clamp(a.t / a.dur, 0, 1), e = q * q; tekenFiguur({ dir: 1, ph: 0, moving: false, face: 'down' }, k, a.it.x - 34 + e * 112, a.it.y - 98 + e * 96, { schaal: .85 }); }
     else tekenFiguur(p, k, p.x, p.y);
   } });
   for (const e of S.ents) lijst.push({ y: e.y, d: () => { tekenFiguur(e, e.kid, e.x, e.y); if (S.live) naamLabel(e.x, e.y, e.kid.naam, e.kid.kleur); } });
@@ -954,7 +1088,7 @@ function kies(id) {
   document.body.className = 'kid-' + id;
   document.querySelectorAll('#wie .chip').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.kind === id)));
   $('grootte').value = KID().huis.model; $('sterTel').textContent = KID().sterren;
-  zetStart(); if (S.bouw.aan) bouwTray();
+  zetStart(); if (S.bouw.aan) bouwTray(); tekenHub();
 }
 function zetStart() {
   const k = KID(), p = S.pl; S.scene = { type: 'straat' }; p.x = k.deurX; p.y = GROND_Y + 70; p.dir = 1; p.moving = false;
@@ -974,14 +1108,88 @@ function zetBouw(aan) {
 $('bouwknop').addEventListener('click', () => { if (inKamer()) { roep('Bouwen kan buiten in de straat', 2000); return; } zetBouw(!S.bouw.aan); });
 document.querySelectorAll('#gereedschap .chip').forEach(c => c.addEventListener('click', () => { S.bouw.g = c.dataset.g; S.bouw.hand = null; zetGereedschap(); if (S.bouw.g !== 'plaats') S.bouw.ghost = null; $('hulp').textContent = S.bouw.g === 'pak' ? 'Tik op iets van jezelf om het op te pakken. Daarna tik je waar het naartoe moet.' : S.bouw.g === 'weg' ? 'Tik op iets van jezelf om het weg te halen.' : 'Kies een stuk en tik op het gras.'; }));
 
+/* ---------- startscherm en gebouwen (de app zoals hij nu is, als losse schermen) ---------- */
+const IC = {
+  taken: 'M5 12l4 4l10-10', spel: 'M6 9h12a3 3 0 0 1 3 3v3a3 3 0 0 1-5 2l-1-1h-6l-1 1a3 3 0 0 1-5-2v-3a3 3 0 0 1 3-3zM8 11v4M6 13h4', winkel: 'M4 8l1-4h14l1 4M4 8h16v3a2.7 2.7 0 0 1-5.3 0a2.7 2.7 0 0 1-5.4 0A2.7 2.7 0 0 1 4 11zM6 13v7h12v-7',
+  boek: 'M4 5a2 2 0 0 1 2-2h13v16H6a2 2 0 0 0-2 2zM8 3v16', kleur: 'M12 3a9 9 0 1 0 0 18a2 2 0 0 0 2-2c0-1-1-1.6-1-2.6A2 2 0 0 1 15 14h2a4 4 0 0 0 4-4c0-4-4-7-9-7zM7.5 11h.01M10 7.5h.01M14.5 7.5h.01', huis: 'M3 11l9-7l9 7M5 9.5V20h14V9.5M10 20v-6h4v6',
+};
+const STARSVG = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3l2.7 5.6l6.1.9l-4.4 4.3l1 6.1L12 17l-5.4 2.9l1-6.1L3.2 9.5l6.1-.9z" fill="#F2B33D" stroke="#B8800F" stroke-width="1.4" stroke-linejoin="round"/></svg>';
+function figSvgInline(k, id) { return `<svg viewBox="${AppArt.volledigeUitsnede}" aria-label="${k.naam}">${AppArt.tekenFiguurtje(k.fig, id)}</svg>`; }
+function huisThumb(k, id) { return `<svg viewBox="${AppArt.huisUitsnede(k.huis.model)}" aria-label="Huis van ${k.naam}">${AppArt.tekenHuis(k.huis, { id, kaal: true })}</svg>`; }
+function miniWereld() {
+  const huizen = KIDLIST.map((k, i) => `<svg x="${6 + i * 118}" y="62" width="122" height="122" viewBox="${AppArt.huisUitsnede(k.huis.model)}">${AppArt.tekenHuis(k.huis, { id: 'mw' + k.id, kaal: true })}</svg>`).join('');
+  return `<svg class="mini" viewBox="0 0 600 300" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><rect x="-200" y="-100" width="1000" height="500" fill="#7CC46A"/><ellipse cx="80" cy="40" rx="80" ry="24" fill="#6AB55A" opacity=".6"/><ellipse cx="470" cy="270" rx="130" ry="26" fill="#6AB55A" opacity=".6"/><rect x="-200" y="170" width="1000" height="40" fill="#E2D9C6"/>${huizen}<svg x="362" y="96" width="112" height="84" viewBox="0 0 400 300">${GEBSVG.winkel}</svg><svg x="476" y="88" width="122" height="92" viewBox="0 0 400 300">${GEBSVG.spellen}</svg><ellipse cx="170" cy="252" rx="86" ry="26" fill="#4FB3E8"/><ellipse cx="300" cy="244" rx="60" ry="20" fill="#E2D9C6" opacity=".0"/></svg>`;
+}
+function tekenHub() {
+  const k = KID(), el = $('hub');
+  const tegel = (kleur, icoon, naam, tel, act) => `<button class="tegel" type="button" data-act="${act}"><span class="ic" style="background:${kleur}"><svg viewBox="0 0 24 24"><path d="${IC[icoon]}"/></svg></span>${naam}${tel ? `<span class="tel">${tel}</span>` : ''}</button>`;
+  el.innerHTML = `<div class="hub-kop"><div class="avatar">${figSvgInline(k, 'hubf')}</div><div><div class="groot">Hoi ${k.naam}!</div><div class="sub">Wat ga je doen?</div></div><div class="spacer"></div>
+    <div class="huisje" title="Mijn huis">${huisThumb(k, 'hubh')}</div><div class="sterpil">${STARSVG}<span>${k.sterren}</span></div></div>
+    <div class="hub-rij">
+      <button class="wereld-kaart" type="button" data-act="wereld" aria-label="Naar de wereld">${miniWereld()}<span class="etiket"><span><b>Naar de wereld</b><small>Loop door Ons straatje</small></span><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6l-6 6"/></svg></span></button>
+      <div class="tegels">${tegel('#E8772E', 'taken', 'Mijn taken', 3, 'taken')}${tegel('#7A3DB0', 'spel', 'Spelletjes', 0, 'spellen')}${tegel('#2D6BD6', 'winkel', 'Winkel', 0, 'winkel')}${tegel('#C2337A', 'boek', 'Verhalen', 0, 'verhalen')}${tegel('#1E8A3C', 'kleur', 'Kleurplaten', 0, 'kleur')}${tegel(k.kleur, 'huis', 'Mijn huis', 0, 'huis')}</div>
+    </div>`;
+  el.querySelectorAll('[data-act]').forEach(b => b.addEventListener('click', () => {
+    const a = b.dataset.act;
+    if (a === 'wereld') wissel('wereld'); else if (a === 'winkel' || a === 'spellen') openGebouw(a, 'hub');
+    else roep('Dit scherm bestaat al in de app', 1800);
+  }));
+}
+function geboutitel(id) { return id === 'winkel' ? 'Winkel' : 'Spellenhuis'; }
+const SPELLEN = [['Memory', '#2D6BD6'], ['Rekenen', '#E8772E'], ["Penalty's", '#2E9A45'], ['Springland', '#7A3DB0', 'nieuw'], ['Schrijven', '#C2337A'], ['Kleurplaten', '#1E8A3C'], ['Verhalen', '#8E44C9'], ['Racen', '#D93A3A']];
+function gebouwTab(tab) {
+  const k = KID(); let h = '';
+  if (tab === 'spelletjes') h = SPELLEN.slice(0, 5).map(([n, c, t]) => `<div class="kaartje"><div class="prent" style="background:${c}"><b>${n[0]}</b></div>${n}<span class="p">${STARSVG}${[30, 25, 20, 30, 25][SPELLEN.findIndex(x => x[0] === n)] || 20}</span></div>`).join('');
+  if (tab === 'figuurtje') h = [['Cape', '#D93A3A', 20], ['Bril', '#2D6BD6', 10], ['Kroon', '#F2B33D', 25], ['Toverstaf', '#8E44C9', 15], ['Voetbal', '#2E9A45', 10]].map(([n, c, p]) => `<div class="kaartje ${p > k.bezitTot ? 'slot' : ''}"><div class="prent" style="background:${c}"><b>${n[0]}</b></div>${n}<span class="p">${STARSVG}${p}</span></div>`).join('');
+  if (tab === 'huis') h = TUIN.map(s => `<div class="kaartje ${s.prijs > k.bezitTot ? 'slot' : ''}"><div class="prent"><svg viewBox="-100 -180 200 200" aria-hidden="true">${AppArt.tuinStuk(s.id)}</svg></div>${s.naam}<span class="p">${STARSVG}${s.prijs || 'gratis'}</span></div>`).join('');
+  return `<div class="kaarten">${h}</div>`;
+}
+function tekenGebouw(id, terug) {
+  const k = KID(), el = $('gebouw'), hoofd = id === 'winkel';
+  const terugTekst = terug === 'wereld' ? 'Terug naar de wereld' : 'Terug naar het startscherm';
+  let inhoud;
+  if (hoofd) inhoud = `<div class="tabs" id="tabs"><button class="tab" type="button" data-t="spelletjes" aria-pressed="false">Spelletjes</button><button class="tab" type="button" data-t="figuurtje" aria-pressed="false">Figuurtje</button><button class="tab" type="button" data-t="huis" aria-pressed="true">Mijn huis</button></div><div id="tabInhoud">${gebouwTab('huis')}</div>`;
+  else inhoud = `<div class="kaarten">${SPELLEN.map(([n, c, t]) => `<button class="kaartje" type="button" data-spel="${n}"><div class="prent" style="background:${c}"><b>${n[0]}</b></div>${n}${t ? '<span class="nieuw">nieuw</span>' : ''}</button>`).join('')}</div>`;
+  el.innerHTML = `<div class="geb-kop"><button class="terug" type="button" id="terugKnop"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7l7 7"/></svg>${terugTekst}</button><div class="geb-titel">${geboutitel(id)}</div><div class="spacer"></div><div class="sterpil">${STARSVG}<span>${k.sterren}</span></div></div>${inhoud}`;
+  $('terugKnop').addEventListener('click', () => sluitGebouw());
+  if (hoofd) el.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => { el.querySelectorAll('.tab').forEach(x => x.setAttribute('aria-pressed', String(x === t))); $('tabInhoud').innerHTML = gebouwTab(t.dataset.t); }));
+  else el.querySelectorAll('[data-spel]').forEach(b => b.addEventListener('click', () => roep('Hier start ' + b.dataset.spel, 1800)));
+}
+function toonView(v) {
+  S.view = v; const sc = $('scherm');
+  $('hub').hidden = v !== 'hub'; $('gebouw').hidden = v !== 'gebouw';
+  sc.classList.toggle('laagmodus', v !== 'wereld');
+  $('naarHub').hidden = v !== 'wereld'; $('bediening').hidden = v !== 'wereld';
+  if (v !== 'wereld') { zetBouw(false); S.route = []; S.doel = null; for (const k in held) held[k] = false; joyLos(); }
+  $('bouwknop').parentElement.hidden = false;
+}
+let wisselT = 0;
+function wissel(naar, na) {
+  const sc = $('scherm'); if (sc.classList.contains('wissel')) return;
+  sc.classList.add('wissel');
+  setTimeout(() => {
+    if (naar === 'hub') { tekenHub(); toonView('hub'); }
+    if (naar === 'wereld') { toonView('wereld'); S.dlg = null; toonDlg(); zetStart(); }
+    if (na) na();
+    setTimeout(() => sc.classList.remove('wissel'), 80);
+  }, 440);
+}
+let gebTerug = 'hub', gebId = 'winkel';
+function openGebouw(id, terug) { gebTerug = terug; gebId = id; wissel('gebouw'); setTimeout(() => { tekenGebouw(id, terug); toonView('gebouw'); }, 440); }
+function sluitGebouw() {
+  if (gebTerug === 'wereld') { const b = GEB.find(x => x.id === gebId); wissel('wereld', () => { S.pl.x = b.x; S.pl.y = b.y + 44; plaatsNaam(geboutitel(gebId) === 'Winkel' ? 'Bij de winkel' : 'Bij het Spellenhuis'); }); }
+  else wissel('hub');
+}
+$('naarHub').addEventListener('click', () => { S.dlg = null; toonDlg(); wissel('hub'); });
+
 /* ---------- lus ---------- */
 let vorige = performance.now();
 function lus(nu) { const dt = Math.min(.05, (nu - vorige) / 1000); vorige = nu; update(dt); teken(); requestAnimationFrame(lus); }
-bouwWegen(); zetStartItems(); document.body.className = 'kid-luca'; $('sterTel').textContent = KID().sterren; zetStart();
+bouwWegen(); zetStartItems(); document.body.className = 'kid-luca'; $('sterTel').textContent = KID().sterren; zetStart(); tekenHub(); toonView('hub');
 (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).catch(() => {}).then(() => requestAnimationFrame(lus));
 
 window.straatje = {
-  kies, setNacht, bouw: zetBouw, fase3: zetFase3, zeg: (r, n) => zegTekst(r, n), roep, live(a) { $('live').checked = a; S.live = a; zetAnderen(); },
+  kies, setNacht, bouw: zetBouw, fase3: zetFase3, view(v) { if (v === 'hub') { tekenHub(); toonView('hub'); } else { toonView('wereld'); zetStart(); } }, gebouw(id, terug = 'hub') { tekenGebouw(id, terug); gebTerug = terug; gebId = id; toonView('gebouw'); }, zeg: (r, n) => zegTekst(r, n), roep, live(a) { $('live').checked = a; S.live = a; zetAnderen(); },
   naar(x, y) { S.scene = { type: 'straat' }; S.pl.x = x * U; S.pl.y = y * U; S.dlg = null; toonDlg(); S.route = []; zetAnderen(); },
   binnen(id) { S.dlg = null; toonDlg(); const k = KIDS[id]; S.scene = { type: 'kamer', eigenaar: id }; S.pl.x = 480; S.pl.y = 420; S.ents = id === S.me ? [] : [{ kid: k, npc: 'gastheer', x: 560, y: 330, dir: -1, ph: 0, moving: false }]; plaatsNaam(id === S.me ? 'Jouw kamer' : 'Kamer van ' + k.van); },
   actie(soort, id) { const it = alleItems().find(i => i.id === soort && (!id || i.eigenaar === id)); if (it) { S.pl.x = it.x; S.pl.y = it.y + 30; startActie(soort, it); } },
