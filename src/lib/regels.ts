@@ -50,27 +50,29 @@ export function blokKeuzes(saldo: number, extraVandaag: number, moment: Date): B
 }
 
 export type Activiteit = 'memory' | 'penalty_schieten' | 'penalty_keepen' | 'rekenen' | 'verhaal' | 'kleurplaat' | 'tekenen'
-  | 'racen' | 'basket' | 'koken' | 'touwspringen' | 'huisdier' | 'puzzel' | 'pompoen' | 'zelf_gelezen'
+  | 'racen' | 'basket' | 'koken' | 'touwspringen' | 'huisdier' | 'puzzel' | 'pompoen' | 'zelf_gelezen' | 'schrijven'
 
 /**
  * Sterren voor een afgewerkte activiteit (docs/spec.md, Activiteiten), nog vóór het dagplafond.
  * Spelletjes leveren niets op. De server rekent zelf hetzelfde uit (activiteit_opslaan).
  */
-export function activiteitSterren(activiteit: Activiteit, inhoud: { goed?: number } = {}): number {
+export function activiteitSterren(activiteit: Activiteit, inhoud: { goed?: number; items?: number } = {}): number {
   if (activiteit === 'rekenen') return Math.floor(Math.min(10, Math.max(0, inhoud.goed ?? 0)) / 2)
   if (activiteit === 'verhaal' || activiteit === 'zelf_gelezen') return 5
   if (activiteit === 'kleurplaat') return 3
+  if (activiteit === 'schrijven') return (inhoud.items ?? 0) >= 5 ? 3 : 0
   return 0
 }
 
 /** Zelfde tekst als activiteit_omschrijving op de server, voor het goedkeurscherm en het log. */
-export function activiteitOmschrijving({ activiteit, inhoud }: { activiteit: Activiteit; inhoud: { goed?: number; woorden?: number; sommen?: number; titel?: string } }): string {
+export function activiteitOmschrijving({ activiteit, inhoud }: { activiteit: Activiteit; inhoud: { goed?: number; woorden?: number; sommen?: number; titel?: string; items?: number; niveau?: string } }): string {
   switch (activiteit) {
     case 'rekenen': return `Rekenen: ${inhoud.goed ?? 0} van ${inhoud.sommen ?? 10} in één keer goed`
     case 'verhaal': return `Verhaal: ${inhoud.titel ?? 'uitgelezen'}`
     case 'zelf_gelezen': return `Zelf gelezen: ${inhoud.titel ?? 'verhaal'}`
       + (inhoud.goed !== undefined && inhoud.woorden !== undefined ? ` (${inhoud.goed} van ${inhoud.woorden} woorden)` : '')
     case 'kleurplaat': return `Kleurplaat: ${inhoud.titel ?? 'afgewerkt'}`
+    case 'schrijven': return 'Schrijven'
     case 'memory': return 'Memory'
     case 'penalty_schieten': return "Penalty's schieten"
     case 'penalty_keepen': return "Penalty's keepen"

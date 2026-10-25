@@ -1,0 +1,20 @@
+/* Schrijven: de letters staan in lichtgrijs, de vinger kleurt ze in met de kleur van het kind. */
+.schrijf-rij { display: flex; align-items: center; justify-content: center; gap: 20px; min-height: 48px; }
+.schrijf-prent { display: grid; place-items: center; width: 108px; height: 108px; border-radius: 28px; background: var(--soft); }
+.schrijf-blad {
+  --grijs: #CBD3DD;
+  display: block; width: auto; max-width: 100%; height: min(42vh, 340px); touch-action: none; user-select: none; -webkit-user-select: none;
+  border-radius: 24px; background: var(--bg);
+}
+@media (prefers-color-scheme: dark) { .schrijf-blad { --grijs: #3F4D66; } }
+:root[data-theme="dark"] .schrijf-blad { --grijs: #3F4D66; }
+:root[data-theme="light"] .schrijf-blad { --grijs: #CBD3DD; }
+.schrijf-regel { stroke: var(--line); stroke-width: 2; stroke-dasharray: 8 8; }
+.schrijf-grijs { stroke: var(--grijs); }
+.schrijf-kleur { stroke: var(--kid); }
+.schrijf-stip circle { fill: var(--kid); stroke: #FFFFFF; stroke-width: 3; animation: schrijf-klop 1.1s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.schrijf-stip text { fill: #FFFFFF; font-weight: 800; font-size: 16px; pointer-events: none; }
+.schrijf-blad.af .schrijf-kleur { stroke: var(--ok); }
+.schrijf-hulp { min-height: 1.4em; }
+@keyframes schrijf-klop { 50% { transform: scale(1.25); } }
+@media (prefers-reduced-motion: reduce) { .schrijf-stip circle { animation: none; } }

@@ -56,6 +56,7 @@ export const activiteitTegels: ActiviteitTegel[] = [
   { sleutel: 'rekenen', naam: 'Rekenen', uitleg: '+1 per 2 goed', icoon: icoon.rekenen, kleur: 'goud', pad: 'rekenen', voor: 'alle' },
   { sleutel: 'verhalen', naam: 'Verhalen', uitleg: '+5 per verhaal', icoon: icoon.boek, kleur: 'paars', pad: 'verhalen', voor: 'alle' },
   { sleutel: 'kleurplaten', naam: 'Kleurplaten', uitleg: '+3 per plaat', icoon: icoon.palet, kleur: 'oranje', pad: 'kleurplaten', voor: 'alle' },
+  { sleutel: 'schrijven', naam: 'Schrijven', uitleg: '+3 per rondje', icoon: icoon.potlood, kleur: 'groen', pad: 'schrijven', voor: 'alle' },
 ]
 
 export const tegelsVoor = (kind: Gebruiker) =>

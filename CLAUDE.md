@@ -20,13 +20,13 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - Tijd aanvragen in blokken van 15, 30 of 60 min; sterren worden gereserveerd, pas afgeschreven als de ouder op **Toegekend** tikt. **Nu niet** of vervallen = sterren terug.
 - Dagplafond (voorstel 60 min extra per kind) en tijdvenster (7:00 tot 20:00) worden **op de server** gecontroleerd.
 - Afkeuren kost niets, geen strafpunten.
-- Zonder goedkeuring: de eenmalige welkomstbonus van 10 sterren op het einde van het welkomstpad, en de sterren uit lerende spelletjes (rekenen, verhalen, kleurplaten), die er meteen bij komen binnen het dagplafond voor activiteiten (beide gevraagd door de ouders, 24 oktober 2026).
+- Zonder goedkeuring: de eenmalige welkomstbonus van 10 sterren op het einde van het welkomstpad, en de sterren uit lerende spelletjes (rekenen, verhalen, kleurplaten, schrijven), die er meteen bij komen binnen het dagplafond voor activiteiten (beide gevraagd door de ouders, 24 oktober 2026).
 - Nieuwe spelletjes en stukken voor het figuurtje en Mijn huis koopt het kind zelf met sterren; die gaan van het vrije saldo af (`docs/winkel.md`).
 - De ouders kiezen wat in de winkel ligt en per kind wat het ziet (Kinderen → Winkelaanbod, `docs/winkelaanbod.md`); de server controleert. Ze kunnen ook de prijs per item aanpassen. Nieuw aanbod ligt er pas na vrijgave door een ouder.
 - Elke tablet hoort bij één kind (`docs/tablet-per-kind.md`); een ander kind kiezen kan alleen met de pincode of vanaf de gsm van een ouder.
 - Elke bij- en afschrijving komt in een puntenlog met reden.
 - Een ouder kan sterren zelf bijgeven of afnemen (Kinderen en tijd, bron `ouder` in het puntenlog, reden optioneel); afnemen kan niet meer dan het vrije saldo (gereserveerde sterren blijven staan). Het kind krijgt een melding op het startscherm.
-- Rustige en lerende activiteiten (verhalen, rekenen, kleurplaten) leveren sterren op en tellen **niet** mee voor de app-tijd; spelletjes (memory, penalty's) leveren niets op en tellen **wel** mee.
+- Rustige en lerende activiteiten (verhalen, rekenen, kleurplaten, schrijven) leveren sterren op en tellen **niet** mee voor de app-tijd; spelletjes (memory, penalty's) leveren niets op en tellen **wel** mee.
 - Geen beschermde personages of merken in prenten, iconen of thema's (geen Spider-Man, Disney enz.): alles is eigen ontwerp.
 - Ouder-acties altijd achter pincode of biometrie, ook op het toestel van een kind.
 
@@ -48,6 +48,7 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - `docs/weekmenu.md`: weekmenu met de warme maaltijd per dag (ouderdeel Wij → Weekmenu), de kinderen zien die van vandaag op hun startscherm.
 - `docs/ouderdeel.md` en `prototypes/ouderdeel.html`: plan en mockup van het ouderdeel als beheertoepassing met hamburgermenu, en latere onderdelen (onze taken, boodschappen, notities, gezondheid). Fase 1 (menu, zijbalk op pc, IBM Plex Sans, rechte hoeken), Onze taken, Notities, Boodschappen en Gewicht zitten in de app (alleen voor ouder-accounts, RLS); Fitness en Loopschema nog niet.
 - `docs/gewicht.md`: Gezondheid → Gewicht en Mijn profiel (wegingen, BMI, grafiek met doel), privé per ouder.
+- `docs/schrijven.md`: Schrijven met de vinger (letters, woorden en lijntjes in grijs volgen); gratis leerdeel, 3 sterren per rondje van vijf.
 - `docs/chat.md`: chat van de kinderen naar de ouders (per kind aan te zetten, melding op de gsm, stickers voor wie niet leest).
 - `docs/boodschappen.md`: boodschappenlijst per winkel (Wij → Boodschappen), winkels en categorieën beheren (Instellingen), ingrediënten vanuit het weekmenu, prijzen na de boodschappen (Afrekenen) en het overzicht Wij → Uitgaven per maand, winkel en categorie.
 

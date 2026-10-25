@@ -53,6 +53,10 @@ select pg_temp.gelijk(public.activiteit_opslaan(:'kim', 'puzzel', '{"titel": "Pi
 select pg_temp.gelijk(public.activiteit_omschrijving('puzzel', '{"titel": "Pip wil ook zwemmen"}'), 'Puzzel: Pip wil ook zwemmen', 'omschrijving puzzel');
 select pg_temp.fout(format('select public.activiteit_opslaan(%L, ''verstoppertje'')', :'kim'), 'activiteitlog_activiteit_check');
 select pg_temp.fout(format('select public.activiteit_opslaan(%L, ''schaken'')', :'kim'), 'activiteitlog_activiteit_check');
+-- Schrijven levert pas sterren bij een heel rondje van vijf opdrachten (het sterrenbedrag testen we niet hier,
+-- dat zou de saldo's hieronder veranderen)
+select pg_temp.gelijk(public.activiteit_opslaan(:'kim', 'schrijven', '{"items": 3}', 60), 0, 'schrijven, rondje niet af');
+select pg_temp.gelijk(public.activiteit_omschrijving('schrijven', '{}'), 'Schrijven', 'omschrijving schrijven');
 
 \echo '2. Rekenen: 1 ster per 2 sommen in één keer goed, berekend op de server'
 select pg_temp.gelijk(public.activiteit_opslaan(:'kim', 'rekenen', '{"goed": 7, "sommen": 10}', 200), 3, '7 goed');
