@@ -89,15 +89,18 @@ Gevraagd door de kinderen (25 oktober 2026): rondlopen en springen met hun eigen
 van opzij. Het figuurtje is getekend met alle stukken die het kind draagt (`figuurtjeVan`) en huppelt en wiebelt
 tijdens het lopen.
 
-- Drie levels als kaartjes van tekens in `src/data/springen.ts`: De weide (slakjes, appels), Het bos (egeltjes,
-  aardbeien, planken) en De wolken (vogeltjes, kersen, wolkjes en een regenboog). Springpaddenstoelen kaatsen je
-  hoog op naar extra sterren. Het volgende level gaat open als het vorige uitgespeeld is (per tablet onthouden).
+- Levels als kaartjes van tekens in `src/data/springen.ts`, gegroepeerd in werelden op een landkaart
+  (`docs/springland.md`). De eerste wereld, Zonnevallei: De weide (slakjes, appels), Het bos (egeltjes, aardbeien,
+  planken) en De wolken (vogeltjes, kersen, wolkjes en een regenboog). Springpaddenstoelen kaatsen je hoog op naar
+  extra sterren. Het volgende level gaat open als het vorige uitgespeeld is (per tablet onthouden); de nacht voegt
+  er elke nacht één level bij.
 - Geen verliezen en geen geweld: in het water vallen zet je meteen terug op de laatste veilige plek, een beestje
   van opzij duwt je zacht terug (even knipperen, dan kun je erdoor), wie erop springt hupt er vrolijk af.
 - Besturing: **Vanzelf lopen** (standaard voor wie niet leest): het figuurtje loopt zelf, tikken = springen.
   **Zelf lopen** (standaard voor lezers): pijltjes links onderaan, gele springknop rechts; op pc ook pijltjestoetsen
   en spatie. Een sprongtik net voor de landing en net na de rand telt nog.
-- Einde: in het huisje stappen; je ziet hoeveel sterren en fruit je pakte (record per level), met Volgend level.
+- Einde: in het huisje stappen; je ziet hoeveel sterren en fruit je pakte (record per level), met Volgend level
+  (terug naar de kaart, het figuurtje wandelt zelf naar het volgende plekje).
 - Logica in `src/lib/spelletjes/springen.ts`, tekenen in `springenVeld.ts`. `springen.test.ts` laat een robotje
   elk level uitspelen in beide besturingen zonder te vallen; pas na een wijziging aan een kaart dus de test draaien.
 - Prijs 30 sterren (wie niet leest 15). Omdat de kinderen er zelf om vroegen, ligt het meteen in de winkel

@@ -1,10 +1,33 @@
-/* Springland */
-.spring-keuze .chips { justify-content: center; }
-.spring-level { position: relative; }
-.spring-level svg:first-child { aspect-ratio: 4 / 3; }
-.spring-level.dicht svg:first-child { filter: grayscale(.8); opacity: .55; }
-.spring-slot { position: absolute; left: 50%; top: 38%; transform: translate(-50%, -50%); color: var(--ink); }
-.spring-best { display: inline-flex; align-items: center; gap: 4px; font-weight: 800; font-size: 22px; }
+/* Springland: landkaart */
+.spring-kaart-scherm { position: relative; display: flex; flex-direction: column; gap: 12px; height: calc(100dvh - 160px); min-height: 420px; }
+.spring-kaart-scherm > .chips { align-self: flex-start; }
+.spring-kaart {
+  flex: 1; min-height: 0; overflow-x: auto; overflow-y: hidden; border-radius: 28px; background: #9ED98A;
+  scrollbar-width: none; -webkit-overflow-scrolling: touch;
+}
+.spring-kaart::-webkit-scrollbar { display: none; }
+.spring-kaart svg { display: block; height: 100%; width: auto; }
+.spring-bord { font: 800 26px 'Baloo 2', Nunito, sans-serif; fill: #FFF8E7; }
+.spring-pad { fill: none; stroke-width: 34; stroke-linecap: round; }
+.spring-pad.dicht { stroke-dasharray: 2 40; opacity: .75; }
+.spring-leeg { fill: rgba(255, 255, 255, .45); stroke: rgba(255, 255, 255, .8); stroke-width: 4; stroke-dasharray: 8 8; }
+.spring-vraag { font: 800 120px 'Baloo 2', Nunito, sans-serif; fill: #B7C3D3; }
+.spring-plek { cursor: pointer; outline: none; }
+.spring-plek-rand { fill: #FFFFFF; stroke: rgba(0, 0, 0, .12); stroke-width: 4; }
+.spring-plek-bol { fill: #7CC8F5; }
+.spring-plek.af .spring-plek-rand { fill: #F2B33D; stroke: #B8800F; }
+.spring-plek.dicht .spring-plek-bol { fill: #C9D2DD; }
+.spring-plek.dicht > g:not(:last-child) { opacity: .55; }
+.spring-plek:focus-visible .spring-plek-rand { stroke: var(--kid); stroke-width: 8; }
+.spring-plek.schudt { animation: spring-schud .4s; }
+.spring-plek-naam { font: 800 24px 'Baloo 2', Nunito, sans-serif; fill: #1C2433; paint-order: stroke; stroke: #FFFFFF; stroke-width: 6px; }
+.spring-best-tekst { font: 800 22px 'Baloo 2', Nunito, sans-serif; fill: #1C2433; }
+.spring-poppetje.loopt image { animation: spring-huppel .32s ease-in-out infinite; }
+@keyframes spring-huppel { 50% { transform: translateY(-10px) rotate(3deg); } }
+@keyframes spring-schud { 25% { translate: -8px 0; } 75% { translate: 8px 0; } }
+@media (prefers-reduced-motion: reduce) { .spring-poppetje.loopt image, .spring-plek.schudt { animation: none; } }
+
+/* Springland: speelveld */
 .spring-veld { user-select: none; -webkit-user-select: none; }
 .spring-knoppen {
   position: absolute; inset: auto 0 0 0; padding: 16px 20px; display: flex; justify-content: space-between; align-items: flex-end;
@@ -26,5 +49,5 @@
 @media (min-width: 961px) and (min-height: 560px) {
   .kind-vol .spring { flex: 1; min-height: 0; }
   .kind-vol .spring-veld { flex: 1; height: auto; min-height: 0; }
-  .kind-vol .spring-keuze { flex: 1; min-height: 0; }
+  .kind-vol .spring-kaart-scherm { flex: 1; height: auto; min-height: 0; }
 }

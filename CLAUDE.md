@@ -49,6 +49,7 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - `docs/weekmenu.md`: weekmenu met de warme maaltijd per dag (ouderdeel Wij → Weekmenu), de kinderen zien die van vandaag op hun startscherm.
 - `docs/ouderdeel.md` en `prototypes/ouderdeel.html`: plan en mockup van het ouderdeel als beheertoepassing met hamburgermenu, en latere onderdelen (onze taken, boodschappen, notities, gezondheid). Fase 1 (menu, zijbalk op pc, IBM Plex Sans, rechte hoeken), Onze taken, Notities, Boodschappen en Gewicht zitten in de app (alleen voor ouder-accounts, RLS); Fitness en Loopschema nog niet.
 - `docs/gewicht.md`: Gezondheid → Gewicht en Mijn profiel (wegingen, BMI, grafiek met doel), privé per ouder.
+- `docs/springland.md`: Springland, het platformspel met het eigen figuurtje: landkaart met werelden, levels vrijspelen, en hoe je een level of wereld toevoegt (ook de nachtelijke bouw).
 - `docs/schrijven.md`: Schrijven met de vinger (letters, woorden en lijntjes in grijs volgen); gratis leerdeel, 3 sterren per rondje van vijf.
 - `docs/chat.md`: chat van de kinderen naar de ouders (per kind aan te zetten, melding op de gsm, stickers voor wie niet leest).
 - `docs/boodschappen.md`: boodschappenlijst per winkel (Wij → Boodschappen), winkels en categorieën beheren (Instellingen), ingrediënten vanuit het weekmenu, prijzen na de boodschappen (Afrekenen) en het overzicht Wij → Uitgaven per maand, winkel en categorie.
@@ -106,13 +107,13 @@ Dit gebeurt in twee fases: eerst uitdenken (ontwerp), daarna coderen (bouw).
   houden data en migratie gelijk). Ze beginnen niet vrijgegeven, net als de spelletjes. Het plan noemt ze
   apart (wat, prijs, tekening), en de bouw doet alleen de stukken uit het plan. Geen beschermde personages.
 
-- Springland: elke nacht komt er ook **één nieuw level** bij, passend bij het thema van de nacht (`src/data/springen.ts`,
-  `springLevels` en `springVolgorde`; de uitleg van de tekens staat bovenaan het bestand). Bedenk het kaartje in het plan
-  (naam, beestje, fruit, schets van het verloop). Later worden levels in werelden gegroepeerd op een landkaart (een wereld
-  vrijspelen, een soort 3D-wereld van bovenaf gezien waarop het figuurtje naar het volgende level loopt): zodra die er
-  staat, volgt de nacht de beschrijving over levels en werelden toevoegen in deze CLAUDE.md of in `docs/`. De bouw moet het
-  robotje het nieuwe level laten uitspelen (`npx vitest run src/lib/spelletjes/springen.test.ts`); lukt dat niet, pas het
-  level aan tot het haalbaar is. Een level is geen unlockable in de winkel: het gaat open door het vorige uit te spelen.
+- Springland: elke nacht komt er ook **één nieuw level** bij, passend bij het thema van de nacht. Volg
+  `docs/springland.md`, "Een level toevoegen": achteraan `springLevelLijst` in `src/data/springen.ts`, in de laatste
+  wereld; is die vol (5 levels), dan eerst een nieuwe wereld achteraan `springWerelden`. De wereldkaart (van bovenaf,
+  het figuurtje wandelt naar het level) en het vrijspelen volgen vanzelf uit de data. Bedenk het level in het plan
+  (naam, wereld, stijl, beestje, fruit, schets van het verloop). De bouw moet het robotje het nieuwe level laten
+  uitspelen (`npx vitest run src/lib/spelletjes/springen.test.ts`); lukt dat niet, pas het level aan tot het haalbaar
+  is. Een level is geen unlockable in de winkel: het gaat open door het vorige uit te spelen. Noem het in het nieuwtje.
 
 ## Seizoenen en feesten
 Laat verhalen (en waar het past ook spelletjes, bv. andere prenten, kleuren of voorwerpen) aansluiten
@@ -144,7 +145,7 @@ zodat niet alle verhalen van één periode op elkaar lijken. Gebruik geen besche
 - Wijzig GEEN code, schrijf alleen het plan
 - Stel in het plan een sterrenprijs voor het spelletje voor (in lijn met de bestaande prijzen)
 - Het plan bevat: titel, volledige verhaaltekst, spelregels,
-  benodigde schermen/componenten en acceptatiecriteria
+  benodigde schermen/componenten en acceptatiecriteria, en het nieuwe level voor Springland
 
 ## Regels voor de bouwfase
 - Werk op `main` en push naar `main` zodra lint, tests en build groen zijn
@@ -161,13 +162,13 @@ zodat niet alle verhalen van één periode op elkaar lijken. Gebruik geen besche
 
 ## Taakprompt 1 – Ontwerp (bv. 01:00)
 Lees CLAUDE.md en volg de regels voor de ontwerpfase. Bekijk de bestaande
-verhalen en spellen. Bedenk 1 nieuw verhaal en 1 nieuw spelletje dat bij de
-app past. Schrijf het volledige plan naar ideeen/<datum van vandaag>.md.
+verhalen en spellen. Bedenk 1 nieuw verhaal, 1 nieuw spelletje en 1 nieuw level
+voor Springland dat bij de app past. Schrijf het volledige plan naar ideeen/<datum van vandaag>.md.
 Wijzig geen code.
 
 ## Taakprompt 2 – Bouw (bv. 03:00)
 Lees CLAUDE.md en volg de regels voor de bouwfase. Open
 ideeen/<datum van vandaag>.md. Als dat bestand niet bestaat, stop dan en
-schrijf dat in het resultaatbestand. Implementeer het verhaal (direct beschikbaar)
-en het spelletje (te koop met sterren in de winkel), draai lint, tests en build,
+schrijf dat in het resultaatbestand. Implementeer het verhaal (direct beschikbaar),
+het spelletje (te koop met sterren in de winkel) en het nieuwe level van Springland, draai lint, tests en build,
 schrijf de samenvatting naar ideeen/<datum van vandaag>-resultaat.md en push naar main.

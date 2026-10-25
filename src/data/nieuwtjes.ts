@@ -19,6 +19,13 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.27',
+    datum: '2026-10-25',
+    titel: 'Springland: landkaart met werelden',
+    tekst: 'Springland opent nu op een landkaart van bovenaf. Elk level is een plekje op een slingerend pad; het kind tikt erop en zijn figuurtje wandelt erheen en begint te spelen. Uitgespeelde levels krijgen een gouden rand met het record, de volgende gaan open en wie een wereld uitspeelt, wandelt over het bruggetje naar de volgende wereld. De eerste wereld heet Zonnevallei (De weide, Het bos, De wolken). Elke nacht komt er een level bij; is een wereld vol (5 levels), dan begint er een nieuwe.',
+    open: 'Uitgespeelde levels en waar het figuurtje staat, worden per tablet onthouden.',
+  },
+  {
     versie: '0.26',
     datum: '2026-10-25',
     titel: 'Spelletjes proberen vanuit het ouderdeel',

@@ -82,3 +82,10 @@ export function pompoenBewaren(kind: string, pompoen: string) {
 /** Uitgespeelde levels van Springland per kind op dit toestel; het volgende level gaat dan open. */
 export const levelUitgespeeld = (kind: string, level: string) => lees(`springen-af-${level}-${kind}`) === 'ja'
 export const levelAf = (kind: string, level: string) => schrijf(`springen-af-${level}-${kind}`, 'ja')
+
+/** Op welk plekje van de landkaart van Springland het figuurtje staat (anders het eerste level). */
+export const springPlek = (kind: string, levels: readonly string[]) => {
+  const p = lees(`springen-plek-${kind}`)
+  return p && levels.includes(p) ? p : levels[0]
+}
+export const springPlekBewaren = (kind: string, level: string) => schrijf(`springen-plek-${kind}`, level)

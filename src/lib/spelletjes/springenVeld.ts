@@ -1,6 +1,6 @@
 // Het speelveld van Springland op een canvas. De spelregels staan in springen.ts; dit bestand tekent, laat de klok
 // lopen, volgt het figuurtje met de camera en luistert naar de pijltjestoetsen, de spatiebalk en tikken.
-import { springLevels, type SpringBesturing, type SpringLevel } from '../../data/springen.ts'
+import { springLevels, type SpringBesturing, type SpringLevel, type SpringStijl } from '../../data/springen.ts'
 import { geluid } from './geluid.ts'
 import {
   BEESTJE_HOOG, HOOG, nieuwSpel, spring, stap, type Beestje, type Ding, type Knoppen, type Springen,
@@ -15,10 +15,13 @@ const STER = new Path2D('M12 3l2.7 5.6l6.1.9l-4.4 4.3l1 6.1L12 17l-5.4 2.9l1-6.1
 /** Verhouding van de tekening van het figuurtje (volledigeUitsnede, 208 × 302). */
 const FIG_VERHOUDING = 208 / 302
 
-const kleuren: Record<SpringLevel, { lucht: [string, string]; grond: string; gras: string; plank: string; water: string }> = {
+// Kleuren per stijl; een nieuwe stijl (docs/springland.md) krijgt hier een rij en een achtergrond in achtergrond().
+const kleuren: Record<SpringStijl, { lucht: [string, string]; grond: string; gras: string; plank: string; water: string }> = {
   weide: { lucht: ['#7CC8F5', '#DDF2FF'], grond: '#B9773F', gras: '#5DBB63', plank: '#C98B4E', water: '#4AA8E8' },
   bos: { lucht: ['#9FD8B4', '#EAF7E4'], grond: '#8A5A33', gras: '#3E9A48', plank: '#7A4B2A', water: '#3B93C9' },
   wolken: { lucht: ['#FFC9E3', '#CFE6FF'], grond: '#FFFFFF', gras: '#FFFFFF', plank: '#FFFFFF', water: '#B8DBFF' },
+  strand: { lucht: ['#6EC6F0', '#FFF4D6'], grond: '#E9C46A', gras: '#F4DFA0', plank: '#B07B4F', water: '#2A9DD8' },
+  sneeuw: { lucht: ['#A9CCEB', '#F2F7FC'], grond: '#8FA3B8', gras: '#FFFFFF', plank: '#9C6B45', water: '#7FB7E0' },
 }
 
 interface Glinster { x: number; y: number; t: number; kleur: string }
@@ -128,6 +131,18 @@ export class SpringVeld {
     this.raf = requestAnimationFrame(this.beeld)
   }
 
+  private get stijl(): SpringStijl { return springLevels[this.spel.level].stijl }
+
+  private sneeuwvlokjes() {
+    const { ctx, W, H } = this
+    ctx.fillStyle = 'rgba(255,255,255,.9)'
+    for (let i = 0; i < 40; i++) {
+      const x = ((i * 97) % W + this.spel.klok * 12 * (1 + (i % 3))) % W
+      const y = ((i * 53) % H + this.spel.klok * 30 * (1 + (i % 2))) % H
+      ctx.beginPath(); ctx.arc(x, y, 2 + (i % 3), 0, Math.PI * 2); ctx.fill()
+    }
+  }
+
   // ---------- tekenen ----------
   // De bovenste rij van de kaart is altijd leeg en valt weg, zodat het figuurtje groter in beeld komt.
   private get vakMaat() { return this.H / (this.spel.hoog - 1) }
@@ -136,7 +151,7 @@ export class SpringVeld {
     const { ctx, W, H, spel } = this
     if (!W) return
     const T = this.vakMaat
-    const k = kleuren[spel.level]
+    const k = kleuren[this.stijl]
     // De camera houdt het figuurtje links van het midden, zodat je ziet wat er komt.
     const cam = Math.max(0, Math.min(spel.breed * T - W, spel.x * T - W * 0.38))
 
@@ -161,17 +176,30 @@ export class SpringVeld {
   }
 
   private achtergrond(cam: number, T: number) {
-    const { ctx, W, H, spel } = this
-    if (spel.level === 'weide') {
+    const { ctx, W, H } = this
+    const stijl = this.stijl
+    if (stijl === 'weide' || stijl === 'sneeuw') {
+      if (stijl === 'sneeuw') this.sneeuwvlokjes()
       ctx.fillStyle = '#FFE27A'
       ctx.beginPath(); ctx.arc(W - T * 2.2, T * 1.8, T * 0.9, 0, Math.PI * 2); ctx.fill()
       // Heuvels in de verte schuiven trager mee.
-      ctx.fillStyle = '#A6DE9B'
+      ctx.fillStyle = stijl === 'sneeuw' ? '#FFFFFF' : '#A6DE9B'
       for (let i = -1; i < W / (T * 8) + 2; i++) {
         const x = i * T * 8 - ((cam * 0.3) % (T * 8))
         ctx.beginPath(); ctx.ellipse(x, H * 0.82, T * 5, T * 3.2, 0, Math.PI, 0); ctx.fill()
       }
-    } else if (spel.level === 'bos') {
+    } else if (stijl === 'strand') {
+      ctx.fillStyle = '#FFE27A'
+      ctx.beginPath(); ctx.arc(W - T * 2.2, T * 1.8, T * 0.9, 0, Math.PI * 2); ctx.fill()
+      // De zee aan de horizon met golfjes.
+      ctx.fillStyle = '#5BBDE8'
+      ctx.fillRect(0, H * 0.62, W, H * 0.38)
+      ctx.fillStyle = 'rgba(255,255,255,.6)'
+      for (let i = -1; i < W / (T * 2) + 2; i++) {
+        const x = i * T * 2 - ((cam * 0.2) % (T * 2))
+        ctx.beginPath(); ctx.ellipse(x, H * 0.66 + (i % 2) * T * 0.4, T * 0.4, T * 0.06, 0, 0, Math.PI * 2); ctx.fill()
+      }
+    } else if (stijl === 'bos') {
       for (let i = -1; i < W / (T * 3.5) + 2; i++) {
         const x = i * T * 3.5 - ((cam * 0.4) % (T * 3.5))
         ctx.fillStyle = '#B5DFAE'
@@ -205,10 +233,10 @@ export class SpringVeld {
     const { ctx, spel } = this
     const v = spel.vakken[r][c]
     const x = c * T, y = r * T
-    const k = kleuren[spel.level]
+    const k = kleuren[this.stijl]
     const bovenOpen = r === 0 || spel.vakken[r - 1][c] !== '#'
     if (v === '#') {
-      if (spel.level === 'wolken') {
+      if (this.stijl === 'wolken') {
         ctx.fillStyle = r === spel.hoog - 1 || !bovenOpen ? '#EEF4FF' : '#FFFFFF'
         ctx.fillRect(x - 0.5, y + (bovenOpen ? T * 0.25 : 0), T + 1, T * (bovenOpen ? 0.75 : 1) + 0.5)
         if (bovenOpen) { ctx.fillStyle = '#FFFFFF'; ctx.beginPath(); ctx.arc(x + T * 0.5, y + T * 0.4, T * 0.42, 0, Math.PI * 2); ctx.fill() }
@@ -226,7 +254,7 @@ export class SpringVeld {
         ctx.fill()
       }
     } else if (v === '=') {
-      if (spel.level === 'wolken') {
+      if (this.stijl === 'wolken') {
         ctx.fillStyle = '#FFFFFF'
         ctx.beginPath(); ctx.ellipse(x + T / 2, y + T * 0.4, T * 0.62, T * 0.4, 0, 0, Math.PI * 2); ctx.fill()
         return
@@ -235,7 +263,7 @@ export class SpringVeld {
       ctx.beginPath(); ctx.roundRect(x, y, T, T * 0.45, T * 0.12); ctx.fill()
       ctx.fillStyle = 'rgba(0,0,0,.15)'
       ctx.fillRect(x + T * 0.15, y + T * 0.2, T * 0.7, T * 0.05)
-      if (spel.level === 'bos') {
+      if (this.stijl === 'bos') {
         ctx.fillStyle = k.gras
         ctx.beginPath(); ctx.ellipse(x + T * 0.5, y, T * 0.3, T * 0.12, 0, 0, Math.PI * 2); ctx.fill()
       }
