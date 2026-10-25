@@ -1,19 +1,21 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { Banner } from '../data/banners.tsx'
 import { kleurKlasse, type Gebruiker } from '../data/gezin.ts'
 import { figuurtjeVan } from '../data/figuurtje.ts'
 import { huisVan } from '../data/huis.ts'
+import { cadeauStukken } from '../data/cadeau.ts'
 import { maaltijdPrentje } from '../data/maaltijden.ts'
 import { MaaltijdPrent } from '../data/maaltijdPrenten.tsx'
 import { Prentje } from '../data/prentjes.tsx'
 import { bannerVoorKleur, tegelsVoor, type ActiviteitTegel } from '../data/thema.ts'
-import type { LogRegel, Maaltijd, Taak, Tijdverzoek } from '../lib/bron/types.ts'
+import type { Hoera, LogRegel, Maaltijd, Taak, Tijdverzoek } from '../lib/bron/types.ts'
 import { dagVan, vandaag } from '../lib/datum.ts'
 import { useGegevens } from '../lib/gegevens.ts'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import { takenVoorKind, type TaakStatus } from '../lib/takenstatus.ts'
 import { gebruikStem, kanVoorlezen, leesVoor } from '../lib/voorlezen.ts'
+import DagelijksHoera from './DagelijksHoera.tsx'
 import Figuurtje, { hoofdUitsnede } from './Figuurtje.tsx'
 import HuisPrent from './HuisPrent.tsx'
 import { Ster, SterrenNaarWinkel, WinkelIcoon } from './onderdelen.tsx'
@@ -33,6 +35,16 @@ export default function KindStart() {
   const kind = kinderen.find((k) => k.id === id)
   const [gekozen, setGekozen] = useState<Taak | null>(null)
   useEffect(() => { if (kind) gebruikStem(kind.voorleesstem) }, [kind])
+
+  // Hoera van de dag (docs/dagelijks-hoera.md): de server geeft het één keer per dag, de eerste keer dat het kind opent.
+  const [hoera, setHoera] = useState<Hoera | null>(null)
+  const hoeraGevraagd = useRef<string | null>(null)
+  useEffect(() => {
+    if (!bron || !kind || !kind.id || hoeraGevraagd.current === kind.id) return
+    hoeraGevraagd.current = kind.id
+    bron.dagelijksHoera(kind.id, cadeauStukken(kind.kan_lezen).map((c) => `${c.soort}:${c.sleutel}`))
+      .then(setHoera).catch(() => {})
+  }, [bron, kind])
 
   const { data, ververs } = useGegevens(bron && kind ? async () => {
     const zestigDagenTerug = dagVan(new Date(Date.now() - 60 * 86400_000))
@@ -54,6 +66,8 @@ export default function KindStart() {
       {kind.kan_lezen
         ? <StartLezer kind={kind} lijst={lijst} geladen={!!data} vrij={vrij} verzoeken={data?.verzoeken ?? []} eten={data?.eten} ongelezen={data?.ongelezen ?? 0} kies={kies} />
         : <StartPrenten kind={kind} lijst={lijst} geladen={!!data} eten={data?.eten} ongelezen={data?.ongelezen ?? 0} kies={kies} />}
+
+      {hoera && <DagelijksHoera kind={kind} hoera={hoera} sluit={() => setHoera(null)} />}
 
       {data && <OuderSterrenMelding kindId={kind.id} regels={data.ouderLog} />}
 

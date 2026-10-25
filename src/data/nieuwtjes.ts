@@ -18,6 +18,11 @@ export interface Nieuwtje {
 export const nieuwtjes: Nieuwtje[] = [
   {
     datum: '2026-10-25',
+    titel: 'Dagelijks hoera met cadeautje',
+    tekst: 'De eerste keer per dag dat een kind de app opent, komt er een feestelijke melding: welke spelletjes jullie sinds de vorige keer vrijgaven en een gratis cadeautje uit de winkel (een stuk voor het figuurtje of het huis dat het nog niet heeft, hoogstens 40 sterren waard en alleen uit wat vrijgegeven is). Het kind kan het meteen aandoen.',
+  },
+  {
+    datum: '2026-10-25',
     titel: 'Halloween: Boe het spookje en Pompoenen maken',
     tekst: 'Een lief Halloweenverhaal, een nieuw spelletje en zes nieuwe stukken voor het figuurtje en het huis. Het verhaal kunnen de kinderen meteen lezen (reeks Grote ogen). Het spelletje en de stukken liggen nog niet in de winkel: de kinderen kopen ze met sterren zodra jullie ze vrijgeven.',
     verhaal: 'Boe het spookje (Grote ogen, 11 bladzijden)',

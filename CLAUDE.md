@@ -42,6 +42,7 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - `docs/azure-extra.md` en `docs/prenten.md`: Azure-extra's (back-up, leesoefening Ik lees zelf, prenten met Azure OpenAI) en het stappenplan voor de prenten.
 - `docs/winkel.md`: sterren inwisselen voor spelletjes en stukken van het figuurtje, en sterren uit spelletjes zonder goedkeuring.
 - `docs/winkelaanbod.md`: de ouders geven spelletjes en stukken vrij voor de winkel (in fases) en kiezen per kind wat het ziet.
+- `docs/dagelijks-hoera.md`: de eerste keer per dag een hoera-melding voor het kind: nieuw vrijgegeven spelletjes en een gratis cadeautje uit de winkel (figuurtje of huis).
 - `docs/tablet-per-kind.md`: tablet vastzetten op één kind en het welkomstpad (figuurtje, verjaardag, thema, welkomstbonus).
 - `prototypes/thema-subschermen.html`: mockup van het kinderthema (race, kasteel, tuin; voetbal kwam er later bij) in de subschermen; zit in de app via `src/data/themaPrenten.ts`, `src/schermen/ThemaDelen.tsx` en `src/schermen/thema-schermen.css`.
 - `docs/weekmenu.md`: weekmenu met de warme maaltijd per dag (ouderdeel Wij → Weekmenu), de kinderen zien die van vandaag op hun startscherm.

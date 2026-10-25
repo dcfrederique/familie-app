@@ -4,6 +4,7 @@ import { inAanbod, metPrijs, type Aanbod } from '../../data/aanbod.ts'
 import { bezitSleutel, categorieen, controleer, prijsVoor, type Figuurtje } from '../../data/figuurtje.ts'
 import { controleerHuis, huisCategorieen, type Huis } from '../../data/huis.ts'
 import { spelMenu } from '../../data/spelletjes.ts'
+import { kiesCadeau } from '../../data/cadeau.ts'
 import { demoGebruikers, type Gebruiker } from '../../data/gezin.ts'
 import { dagVan } from '../datum.ts'
 import { activiteitOmschrijving, activiteitSterren, blokKeuzes, regels as standaardRegels } from '../regels.ts'
@@ -21,6 +22,9 @@ interface Toestand {
   log: LogRegel[]
   aankopen: Record<string, string[]>
   aanbod: Aanbod
+  /** Spelletjes die de ouders net vrijgaven en kinderen nog niet hoorden; per kind de laatste dag van het hoera. */
+  nieuwVrij: string[]
+  hoeraDag: Record<string, string>
   weekmenu: Maaltijd[]
   ouderTaken: OuderTaak[]
   notities: Notitie[]
@@ -60,6 +64,9 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
     log: kinderen.map((k, i) => ({ id: i + 1, kind_id: k.id, delta: 40, reden: 'Startsaldo (demo)', tijdstip: nu })),
     aankopen: {},
     aanbod: { dicht: [], nieuw: [], verborgen: {}, prijzen: {} },
+    // Twee spelletjes net vrijgegeven, zodat het dagelijkse hoera meteen te zien is.
+    nieuwVrij: ['pompoen', 'basket'],
+    hoeraDag: {},
     // Vandaag al iets op het menu, zodat het startscherm van de kinderen het meteen toont.
     weekmenu: [{ dag: dagVan(new Date()), gerecht: 'Spaghetti bolognese', prentje: null }],
     // Een paar voorbeelden zodat Onze taken en Notities niet leeg openen.
@@ -161,6 +168,18 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
     async gezondheidProfiel() { return t.profiel && { ...t.profiel } },
     async wegingen() { return t.wegingen.slice().sort((a, b) => a.dag.localeCompare(b.dag)).map((w) => ({ ...w })) },
     async aankopen() { return Object.fromEntries(Object.entries(t.aankopen).map(([k, v]) => [k, [...v]])) },
+    async dagelijksHoera(kindId) {
+      const k = kinderen.find((x) => x.id === kindId)
+      if (!k) throw new Error('kind niet gevonden')
+      const dag = dagVan(new Date())
+      if (t.hoeraDag[kindId] === dag) return null
+      t.hoeraDag[kindId] = dag
+      const eigen = (t.aankopen[kindId] ??= [])
+      const nieuw = t.nieuwVrij.filter((s) => inAanbod(t.aanbod, kindId, bezitSleutel('spel', s), false) && !eigen.includes(bezitSleutel('spel', s)))
+      const cadeau = kiesCadeau(k.kan_lezen, kindId, new Set(eigen), t.aanbod)
+      if (cadeau) eigen.push(bezitSleutel(cadeau.soort, cadeau.sleutel))
+      return { nieuw, cadeau: cadeau && { soort: cadeau.soort, sleutel: cadeau.sleutel } }
+    },
     async aanbod() {
       const a = t.aanbod
       return { dicht: [...a.dicht], nieuw: [...a.nieuw], prijzen: { ...a.prijzen }, verborgen: Object.fromEntries(Object.entries(a.verborgen).map(([k, v]) => [k, [...v]])) }

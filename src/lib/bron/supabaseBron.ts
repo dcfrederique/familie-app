@@ -84,6 +84,13 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
       for (const r of data ?? []) (uit[r.kind_id] ??= []).push(`${r.soort}:${r.sleutel}`)
       return uit
     },
+    async dagelijksHoera(kindId, kandidaten) {
+      const { data, error } = await sb.rpc('dagelijks_hoera', { p_kind: kindId, p_kandidaten: kandidaten })
+      // Zonder migratie 20261025000400_dagelijks_hoera is er geen hoera.
+      if (error || !data) return null
+      const h = data as { nieuw?: string[]; cadeau?: { soort: string; sleutel: string } | null }
+      return { nieuw: h.nieuw ?? [], cadeau: h.cadeau ?? null }
+    },
     async aanbod() {
       const [spel, stukken, huis, keuzes, verborgen] = await Promise.all([
         sb.from('spel_prijzen').select('sleutel, standaard_vrij'),

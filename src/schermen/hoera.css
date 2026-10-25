@@ -1,0 +1,26 @@
+/* Dagelijks hoera (docs/dagelijks-hoera.md): feestelijke melding bij de eerste keer openen per dag. */
+.hoera { z-index: 30; overflow: hidden; }
+.hoera-confetti { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
+.hoera-confetti span { position: absolute; top: -24px; left: var(--x); width: 12px; height: 20px; border-radius: 3px; background: var(--kleur);
+  animation: hoera-val var(--duur) linear var(--vertraging) infinite; }
+@keyframes hoera-val { to { transform: translateY(110vh) rotate(var(--draai)); } }
+.hoera-dialoog { position: relative; width: min(760px, 100%); gap: 20px; border: 6px solid var(--gold-bg, #F2B705); }
+.hoera-titel { font-size: clamp(44px, 7vw, 72px); line-height: 1; color: var(--accent, inherit); animation: hoera-pop .6s ease-out; }
+@keyframes hoera-pop { 0% { transform: scale(.4); opacity: 0; } 70% { transform: scale(1.12); } 100% { transform: scale(1); opacity: 1; } }
+.hoera-kaarten { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; width: 100%; }
+.hoera-kaart { flex: 1 1 260px; display: grid; justify-items: center; align-content: start; gap: 10px; padding: 16px; border-radius: 28px; background: var(--surface-2, rgb(0 0 0 / .05)); }
+.hoera-kaart h3 { margin: 0; font-size: 26px; line-height: 1.1; }
+.hoera-spellen { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 14px; justify-content: center; }
+.hoera-spellen li { display: grid; justify-items: center; gap: 6px; font-size: 22px; }
+.hoera-spel-prent { display: grid; place-items: center; width: 96px; height: 96px; border-radius: 28px; background: var(--gold-bg, #F2B705); }
+.hoera-spel-prent .ic { stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.hoera-cadeau-prent { width: 150px; height: 150px; display: grid; place-items: center; animation: hoera-wip 1.6s ease-in-out infinite; }
+.hoera-cadeau-prent svg { width: 100%; height: 100%; }
+@keyframes hoera-wip { 50% { transform: rotate(-4deg) scale(1.05); } }
+.hoera-cadeau-naam { margin: 0; font-size: 24px; }
+.hoera-cadeau-naam small { display: block; font-size: 16px; color: var(--muted); font-weight: 700; }
+.hoera-knoppen { justify-content: center; }
+@media (prefers-reduced-motion: reduce) {
+  .hoera-confetti span, .hoera-titel, .hoera-cadeau-prent { animation: none; }
+  .hoera-confetti span { top: 12%; }
+}

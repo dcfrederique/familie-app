@@ -217,6 +217,13 @@ export type OuderUitkomst = 'goedgekeurd' | 'afgekeurd' | 'toegekend' | 'afgewez
 
 export type NieuweTaak = Omit<Taak, 'id' | 'actief'> & { id?: string }
 
+/** Het hoera van de dag voor een kind (docs/dagelijks-hoera.md): nieuw vrijgegeven spelletjes en het cadeautje. */
+export interface Hoera {
+  /** Sleutels van spelletjes die de ouders sinds de vorige keer vrijgaven. */
+  nieuw: string[]
+  cadeau: { soort: string; sleutel: string } | null
+}
+
 export interface Bron {
   taken(): Promise<Taak[]>
   inzendingenVanaf(dag: string): Promise<Inzending[]>
@@ -230,6 +237,11 @@ export interface Bron {
   aankopen(): Promise<Record<string, string[]>>
   /** Wat in de winkel ligt en wat elk kind ziet (docs/winkelaanbod.md); leeg aanbod (alles zichtbaar) zonder migratie. */
   aanbod(): Promise<Aanbod>
+  /**
+   * De eerste keer per dag: wat er nieuw is in de winkel en het cadeautje van de dag (al van het kind, gratis);
+   * daarna en zonder migratie 20261025000400_dagelijks_hoera null. `kandidaten` ('soort:sleutel') = wat het kind te zien krijgt.
+   */
+  dagelijksHoera(kindId: string, kandidaten: string[]): Promise<Hoera | null>
   /** Het weekmenu van `van` tot en met `tot` ('JJJJ-MM-DD'); leeg zonder migratie 20261024000600_weekmenu. */
   weekmenu(van: string, tot: string): Promise<Maaltijd[]>
   /** Onze taken: alles wat nog open staat, en wat de laatste 7 dagen gedaan is. Alleen voor een ouder-account. */

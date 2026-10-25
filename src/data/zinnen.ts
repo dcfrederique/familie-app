@@ -26,6 +26,9 @@ export const zin = {
   welkomFiguur: 'Maak je eigen figuurtje! Kies je haar en je kleren.',
   welkomJarig: 'Wanneer ben je jarig?',
   welkomThema: 'Kies je kleur. Zo ziet jouw app eruit.',
+  hoeraDag: 'Hoera! Een nieuwe dag!',
+  hoeraNieuwSpel: 'Er is een nieuw spelletje in de winkel.',
+  hoeraCadeau: 'En kijk, een cadeautje voor jou!',
   welkomFeest: 'Hoera! Je hebt je eerste tien sterren!',
 }
 
