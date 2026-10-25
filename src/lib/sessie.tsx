@@ -44,7 +44,7 @@ interface Sessie {
   afmelden: () => Promise<void>
 }
 
-const SessieContext = createContext<Sessie | null>(null)
+export const SessieContext = createContext<Sessie | null>(null)
 
 export function SessieProvider({ children }: { children: ReactNode }) {
   const [status, setStatus] = useState<Status>(supabase ? 'laden' : 'demo')

@@ -10,6 +10,7 @@ import { gekozenNiveau, levelAf, levelUitgespeeld, niveauBewaren, record, record
 import { gepakt, springPunten, totaal, type Springen as SpringStand } from '../lib/spelletjes/springen.ts'
 import { SpringVeld } from '../lib/spelletjes/springenVeld.ts'
 import { leesVoor } from '../lib/voorlezen.ts'
+import { useProef } from '../lib/proef.tsx'
 import { Ster } from './onderdelen.tsx'
 import SpelKader, { Chips, EindKnoppen } from './SpelKader.tsx'
 import './springen.css'
@@ -59,6 +60,7 @@ function LevelPrent({ level }: { level: SpringLevel }) {
 }
 
 function SpringScherm({ kind }: { kind: Gebruiker }) {
+  const proef = useProef().actief
   const { bron } = useSessie()
   const lezer = kind.kan_lezen
   const [besturing, setBesturing] = useState<SpringBesturing>(() =>
@@ -76,7 +78,7 @@ function SpringScherm({ kind }: { kind: Gebruiker }) {
   }, [kind])
 
   // Een level is open als het vorige uitgespeeld is (onthouden op dit toestel, zoals de records).
-  const isOpen = (l: SpringLevel) => springVolgorde.indexOf(l) === 0 || levelUitgespeeld(kind.id, springVolgorde[springVolgorde.indexOf(l) - 1])
+  const isOpen = (l: SpringLevel) => proef || springVolgorde.indexOf(l) === 0 || levelUitgespeeld(kind.id, springVolgorde[springVolgorde.indexOf(l) - 1])
 
   useEffect(() => { if (!lezer && !level) leesVoor(zin.springenKiezen) }, [lezer, level])
 

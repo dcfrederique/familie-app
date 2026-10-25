@@ -1,4 +1,5 @@
 import { Navigate, Outlet, Route, Routes, useLocation, useParams } from 'react-router-dom'
+import { ProefPoort, proefAan } from './lib/proef.tsx'
 import { useSessie } from './lib/sessie.tsx'
 import Basket from './schermen/Basket.tsx'
 import ExtraTijd from './schermen/ExtraTijd.tsx'
@@ -44,6 +45,7 @@ import Touwspringen from './schermen/Touwspringen.tsx'
 import MijnThema from './schermen/MijnThema.tsx'
 import Chat from './schermen/Chat.tsx'
 import OuderChat from './schermen/OuderChat.tsx'
+import Proberen from './schermen/Proberen.tsx'
 import Welkom from './schermen/Welkom.tsx'
 import Welkomstpad from './schermen/Welkomstpad.tsx'
 import WieSpeelt from './schermen/WieSpeelt.tsx'
@@ -99,6 +101,7 @@ export default function App() {
       <Route path="/ouder/toestellen" element={<Toestellen />} />
       <Route path="/ouder/testmelding" element={<Testmelding />} />
       <Route path="/ouder/spelregels" element={<Spelregels />} />
+      <Route path="/ouder/proberen" element={<Proberen />} />
       <Route path="/ouder/aanbod" element={<Winkelaanbod />} />
       <Route path="/ouder/nieuw" element={<Nieuwtjes />} />
       <Route path="/ouder/pincode" element={<PincodeBeheer />} />
@@ -122,7 +125,9 @@ export default function App() {
 function KindPoort() {
   const { id } = useParams()
   const { pathname } = useLocation()
-  const { perKind, mijnKind, kinderen } = useSessie()
+  const { perKind, mijnKind, kinderen, account, status } = useSessie()
+  // Een ouder die een spelletje probeert (Spelletjes proberen): beeldvullend en zonder iets voor het kind te bewaren.
+  if ((status === 'demo' || account?.soort === 'ouder') && proefAan()) return <ProefPoort kindId={id} />
   if (perKind) {
     if (!mijnKind) return <Navigate to="/kinderen" replace />
     if (id !== mijnKind) return <Navigate to={`/kind/${mijnKind}`} replace />

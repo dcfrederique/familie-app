@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.26',
+    datum: '2026-10-25',
+    titel: 'Spelletjes proberen vanuit het ouderdeel',
+    tekst: 'Op vraag van de ouders: onder Kinderen → Spelletjes proberen speel je zelf elk spelletje en leerdeel (rekenen, verhalen, kleurplaten, zelf tekenen, schrijven), ook wat nog niet in de winkel ligt of nog niet gekocht is. Je kiest eerst als welk kind je speelt (kleuren, thema en leesniveau zijn dan die van het kind). Het spelletje opent beeldvullend, alleen met een smalle strook en een Stop-knop. Er wordt niets bewaard voor het kind: geen sterren, geen activiteit in het log en dus geen app-tijd. In Springland staan alle levels meteen open.',
+  },
+  {
     versie: '0.25',
     datum: '2026-10-25',
     titel: 'Springland: lopen en springen met je eigen figuurtje',
