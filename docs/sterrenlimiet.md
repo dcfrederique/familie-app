@@ -9,3 +9,4 @@ Gevraagd door de ouders op 25 oktober 2026: de limiet voor het aantal sterren da
 - Server: `activiteit_opslaan` rekent eerst de sterren van de ronde uit, past het gezamenlijke dagplafond voor activiteiten toe (`gezinnen.activiteit_sterren_per_dag`, 20) en daarna de limiet van het spelletje (al verdiend vandaag met dat spelletje). Het spaarmaximum blijft gelden.
 - Sterren per ronde zelf (bv. 5 per verhaal) blijven vast; alleen het dagmaximum is instelbaar.
 - Test: `supabase/tests/sterrenlimiet.test.sql`; demo-bron rekent hetzelfde.
+- Het dagplafond voor activiteiten is ook instelbaar (Spelregels, 0 tot 120, standaard 20).
