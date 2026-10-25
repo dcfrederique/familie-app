@@ -115,6 +115,13 @@ Dit gebeurt in twee fases: eerst uitdenken (ontwerp), daarna coderen (bouw).
   (naam, wereld, stijl, beestje, fruit, schets van het verloop). De bouw moet het robotje het nieuwe level laten
   uitspelen (`npx vitest run src/lib/spelletjes/springen.test.ts`); lukt dat niet, pas het level aan tot het haalbaar
   is. Een level is geen unlockable in de winkel: het gaat open door het vorige uit te spelen. Noem het in het nieuwtje.
+- De wereld (`docs/wereld.md`): elk nieuw spelletje krijgt ook een plekje in De wereld, als huisje of een andere passende
+  vorm (`gebouwen` in `src/data/wereld.ts`, tekening in `src/data/wereldPrenten.ts`; het plan noemt vorm, plek en tekening).
+  Nieuw = een **gouden rand** om het gebouw (zolang het nieuw is, bv. de eerste weken). Nog niet gekocht door dit kind = een
+  **slot** op het gebouw; na de aankoop weg. De vrijgaveregel blijft gelden: een spelletje dat de ouders nog niet vrijgaven
+  voor een kind is daar niet te zien (ook niet als gebouw of bouwplaats), tot ze het vrijgeven in Winkelaanbod. Zet geen
+  gebouw op een plek die al bezet is. Later zet Frederique een aparte routine in die de bestaande spelletjes ook in de wereld
+  plaatst (bv. Springland als springkasteel-gebied waar het in dat werelddeel verdergaat); die doet de nacht nu niet.
 
 ## Seizoenen en feesten
 Laat verhalen (en waar het past ook spelletjes, bv. andere prenten, kleuren of voorwerpen) aansluiten

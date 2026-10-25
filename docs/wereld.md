@@ -110,3 +110,8 @@ Wie in de wereld is, ziet de anderen van het gezin rondlopen, met hun naam boven
 ### Verbruik bekijken
 
 Het gratis plan geeft 2 miljoen Realtime-berichten per maand. Een bericht telt één keer bij het versturen en één keer per ontvanger. Schatting: twee spelers die samen een kwartier per dag lopen komen op ongeveer 1 miljoen per maand. Kijk in het Supabase-dashboard onder **Reports → Realtime** (aantal berichten en pieken) en onder **Settings → Billing → Usage** (maandtotaal tegenover de 2 miljoen). Frederique evalueert na een week; zit het te hoog, dan verlagen we de frequentie (`MIN_TUSSENTIJD` naar 1000) of sturen we alleen als een ander in beeld is.
+
+## Nieuwe spelletjes in de wereld (regel van Frederique, 25 oktober 2026)
+
+- **Nachtelijke routine:** elk nieuw spelletje krijgt ook een gebouw in de wereld (huisje of een andere passende vorm), met een **gouden rand** zolang het nieuw is en een **slot** zolang het kind het niet kocht. De regel dat de ouders het eerst vrijgeven in Winkelaanbod blijft gelden: wat niet vrij is, staat er niet.
+- **Later (plan, nog niet bouwen):** een aparte routine zet de bestaande spelletjes zo visueel mogelijk in de wereld. Springland wordt bijvoorbeeld een springkasteel-gebied waar het in dat werelddeel verdergaat (zie ook de vervolgopdrachten hierboven).
