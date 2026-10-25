@@ -30,8 +30,9 @@ if [ "$(sql -tAc 'select count(*) from supabase_migrations.schema_migrations')" 
     if uit=$(printf 'begin;\n\\i %s\nrollback;\n' "$f" | psql "$db" -X -q -v ON_ERROR_STOP=1 -v VERBOSITY=verbose 2>&1); then
       continue
     fi
-    # 42P07 tabel, 42701 kolom, 42723 functie, 42710 object, 42P06 schema bestaat al.
-    if grep -qE '(42P07|42701|42723|42710|42P06)' <<< "$uit"; then
+    # 42P07 tabel, 42701 kolom, 42723 functie, 42710 object, 42P06 schema bestaat al; 23505 een rij bestaat al
+    # (een migratie die alleen catalogusrijen toevoegt, zoals de nachtelijke uitbreidingen).
+    if grep -qE '(42P07|42701|42723|42710|42P06|23505)' <<< "$uit"; then
       echo "Al gedraaid tot en met $(basename "$f")."
       for ((j = 0; j <= i; j++)); do markeer "${bestanden[$j]}"; done
       break

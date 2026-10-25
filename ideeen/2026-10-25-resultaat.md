@@ -16,6 +16,8 @@ Plan: `ideeen/2026-10-25.md`. Alles is gebouwd; lint, tests (180), build en `scr
 - Geen aparte thema-prentjes per kindthema voor het spel (het menu gebruikt een eigen icoon, zoals de andere spelletjes).
 - Tests aangepast voor latere migraties: `spelletjes.test.ts`, `figuurtje.test.ts`, `huis.test.ts` (catalogus ook uit de nieuwe migratie) en `supabase/tests/figuurtje.test.sql` (aantal prijzen minstens 9 in plaats van precies 9).
 
+- `scripts/migraties.sh` (proefdraaien op de testdatabase in CI) kende alleen fouten als 'tabel bestaat al'; een migratie die enkel catalogusrijen toevoegt faalt met 23505 (rij bestaat al). Die code telt nu ook als 'al gedraaid'. De eerste CI-run na de bouw faalde daar op; de fix staat in de tweede commit.
+
 ## Open punten
 - **Vrijgeven**: spel en stukken staan klaar in Kinderen → Winkelaanbod ("Nieuw, nog niet vrijgegeven").
 - **Voorleesstem**: de opnames voor verhaal 31 en de nieuwe zinnen (`pompoenUitleg`, `pompoenKlaar`) moeten nog met `scripts/maak-stem.ts` gemaakt worden; tot dan leest de tabletstem voor.
