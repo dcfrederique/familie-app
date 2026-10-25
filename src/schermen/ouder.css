@@ -349,3 +349,7 @@ a.vink-tekst { text-decoration: none; }
 .zonder-prijs input { min-height: 44px; border: 1px solid var(--line); padding: 0 8px; font: inherit; text-align: right; background: var(--surface); color: var(--ink); min-width: 0; }
 .zonder-prijs .fout { grid-column: 1 / -1; }
 @media (min-width: 600px) { .ouder .boodschap-toevoegen { grid-template-columns: 1fr 180px 200px auto; } .boodschap-toevoegen .knop { grid-column: auto; } }
+
+.limiet-spel { border: 0; padding: 0; margin: 0 0 12px; }
+.limiet-spel legend { font-weight: 600; padding: 0; margin-bottom: 4px; }
+.limiet-spel legend small { font-weight: 400; color: var(--muted); }

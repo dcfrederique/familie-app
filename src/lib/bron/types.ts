@@ -218,6 +218,16 @@ export interface Spelregels {
   max_saldo: number
 }
 
+/** Lerende activiteiten die sterren opleveren en waarvoor de ouders een daglimiet kunnen instellen. */
+export type LimietActiviteit = 'rekenen' | 'verhaal' | 'zelf_gelezen' | 'kleurplaat' | 'schrijven'
+
+/** Hoeveel sterren een spelletje per dag hoogstens oplevert; kind_id null = voor alle kinderen (docs/sterrenlimiet.md). */
+export interface ActiviteitLimiet {
+  kind_id: string | null
+  activiteit: LimietActiviteit
+  max_sterren: number
+}
+
 /** Uitkomst van een ouder-actie; 'pincode_fout' betekent opnieuw ontgrendelen. */
 export type OuderUitkomst = 'goedgekeurd' | 'afgekeurd' | 'toegekend' | 'afgewezen' | 'vervallen' | 'pincode_fout' | 'aangepast'
 
@@ -239,6 +249,8 @@ export interface Bron {
   saldi(): Promise<Record<string, Saldo>>
   log(kindId: string): Promise<LogRegel[]>
   spelregels(): Promise<Spelregels>
+  /** Daglimieten per spelletje die de ouders instelden (leeg zonder migratie). */
+  activiteitLimieten(): Promise<ActiviteitLimiet[]>
   /** Wat elk kind gekocht heeft in de winkel, als sleutels 'hoofd:kroon' of 'spel:racen' (docs/winkel.md). */
   aankopen(): Promise<Record<string, string[]>>
   /** Wat in de winkel ligt en wat elk kind ziet (docs/winkelaanbod.md); leeg aanbod (alles zichtbaar) zonder migratie. */
@@ -305,6 +317,8 @@ export interface Bron {
   taakOpslaan(taak: NieuweTaak): Promise<void>
   taakVerwijderen(id: string): Promise<void>
   spelregelsOpslaan(regels: Spelregels): Promise<void>
+  /** Zet de daglimiet van een spelletje voor één kind (kindId) of voor allemaal (null); max null wist hem. */
+  activiteitLimietZetten(kindId: string | null, activiteit: LimietActiviteit, max: number | null): Promise<void>
   kindAanpassen(id: string, wijziging: KindWijziging): Promise<void>
   /** Legt een spelletje (soort 'spel') of een stuk van het figuurtje in de winkel, of haalt het eruit. */
   aanbodVrijgeven(soort: string, sleutel: string, vrijgegeven: boolean): Promise<void>

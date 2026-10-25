@@ -1,6 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Aanbod } from '../../data/aanbod.ts'
-import type { ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, ChatOverzicht, GezondheidProfiel, SpraakToken, Inzending, LogRegel, Maaltijd, NieuweNotitie, NieuweOuderTaak, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Saldo, Spelregels, Taak, Tijdverzoek, Winkel } from './types.ts'
+import type { ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, ChatOverzicht, GezondheidProfiel, SpraakToken, Inzending, LogRegel, Maaltijd, NieuweNotitie, NieuweOuderTaak, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Saldo, Spelregels, Taak, Tijdverzoek, Winkel } from './types.ts'
 
 // Postgres numeric komt als tekst of getal binnen.
 const getal = (w: unknown) => (w === null || w === undefined ? null : Number(w))
@@ -74,6 +74,12 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
         .select('dagplafond_minuten, venster_van, venster_tot, max_saldo').single()
       fout(error)
       return { ...data, venster_van: data!.venster_van.slice(0, 5), venster_tot: data!.venster_tot.slice(0, 5) } as Spelregels
+    },
+
+    async activiteitLimieten() {
+      const { data, error } = await sb.from('activiteit_limiet').select('kind_id, activiteit, max_sterren')
+      if (error) return []
+      return (data ?? []) as ActiviteitLimiet[]
     },
 
     async aankopen() {
@@ -284,6 +290,9 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
     },
     async spelregelsOpslaan(regels: Spelregels) {
       fout((await sb.from('gezinnen').update(regels).eq('id', gezinId)).error)
+    },
+    async activiteitLimietZetten(kindId, activiteit, max) {
+      fout((await sb.rpc('activiteit_limiet_zetten', { p_kind: kindId, p_activiteit: activiteit, p_max: max })).error)
     },
     async kindAanpassen(id, wijziging) {
       fout((await sb.from('gebruikers').update(wijziging).eq('id', id)).error)

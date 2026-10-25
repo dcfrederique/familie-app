@@ -7,9 +7,9 @@ import { spelMenu } from '../../data/spelletjes.ts'
 import { kiesCadeau } from '../../data/cadeau.ts'
 import { demoGebruikers, type Gebruiker } from '../../data/gezin.ts'
 import { dagVan } from '../datum.ts'
-import { activiteitOmschrijving, activiteitSterren, blokKeuzes, regels as standaardRegels } from '../regels.ts'
+import { activiteitOmschrijving, activiteitSterren, blokKeuzes, limietVoor, regels as standaardRegels } from '../regels.ts'
 import type { Weging } from '../gewicht.ts'
-import type { ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, GezondheidProfiel, Inzending, LogRegel, Maaltijd, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Spelregels, Taak, Tijdverzoek, Winkel } from './types.ts'
+import type { ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, GezondheidProfiel, Inzending, LogRegel, Maaltijd, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Spelregels, Taak, Tijdverzoek, Winkel } from './types.ts'
 
 const DEMO_PIN = '1234'
 const WELKOM = 'Welkom! Je eerste sterren'
@@ -35,6 +35,7 @@ interface Toestand {
   profiel: GezondheidProfiel | null
   wegingen: Weging[]
   regels: Spelregels
+  limieten: ActiviteitLimiet[]
 }
 
 const voorbeeld: [string, string, number, Taak['herhaling'], boolean, 'alle' | 'lezers' | 'niet_lezers'][] = [
@@ -113,6 +114,7 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
       venster_tot: standaardRegels.tijdvenster.tot,
       max_saldo: standaardRegels.maxSpaarsaldo,
     },
+    limieten: [],
   }
 }
 
@@ -149,6 +151,7 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
     },
     async log(kind) { return t.log.filter((l) => l.kind_id === kind).slice().reverse() },
     async spelregels() { return { ...t.regels } },
+    async activiteitLimieten() { return t.limieten.map((l) => ({ ...l })) },
     async weekmenu(van, tot) { return t.weekmenu.filter((m) => m.dag >= van && m.dag <= tot).map((m) => ({ ...m })) },
     async ouderTaken() {
       const week = new Date(Date.now() - 7 * 86400_000).toISOString()
@@ -207,7 +210,13 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       const nu = new Date()
       const al = t.activiteiten.filter((a) => a.kind_id === kind && a.dag === dagVan(nu) && a.status !== 'afgekeurd')
         .reduce((s, a) => s + a.sterren, 0)
-      const sterren = Math.max(0, Math.min(activiteitSterren(activiteit, inhoud), standaardRegels.activiteitSterrenPerDag - al))
+      let sterren = Math.max(0, Math.min(activiteitSterren(activiteit, inhoud), standaardRegels.activiteitSterrenPerDag - al))
+      const limiet = limietVoor(t.limieten, kind, activiteit)
+      if (limiet !== null) {
+        const alDit = t.activiteiten.filter((a) => a.kind_id === kind && a.dag === dagVan(nu) && a.activiteit === activiteit && a.status !== 'afgekeurd')
+          .reduce((s, a) => s + a.sterren, 0)
+        sterren = Math.max(0, Math.min(sterren, limiet - alDit))
+      }
       // Zonder goedkeuring: de sterren komen er meteen bij, tot het spaarmaximum.
       const a: ActiviteitRegel = { id: id(), kind_id: kind, activiteit, inhoud, duur_seconden: Math.round(duurSeconden), sterren,
                                    status: sterren > 0 ? 'goedgekeurd' : null, tijdstip: nu.toISOString(), dag: dagVan(nu) }
@@ -334,6 +343,10 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       if (taak) taak.actief = false
     },
     async spelregelsOpslaan(regels) { t.regels = { ...regels } },
+    async activiteitLimietZetten(kindId, activiteit, max) {
+      t.limieten = t.limieten.filter((l) => !(l.kind_id === kindId && l.activiteit === activiteit))
+      if (max !== null) t.limieten.push({ kind_id: kindId, activiteit, max_sterren: max })
+    },
     async kindAanpassen(kindId, wijziging) {
       const k = kinderen.find((x) => x.id === kindId)
       if (k) Object.assign(k, wijziging)

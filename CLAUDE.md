@@ -51,6 +51,7 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - `docs/gewicht.md`: Gezondheid → Gewicht en Mijn profiel (wegingen, BMI, grafiek met doel), privé per ouder.
 - `docs/springland.md`: Springland, het platformspel met het eigen figuurtje: landkaart met werelden, levels vrijspelen, en hoe je een level of wereld toevoegt (ook de nachtelijke bouw).
 - `docs/schrijven.md`: Schrijven met de vinger (letters, woorden en lijntjes in grijs volgen); gratis leerdeel, 3 sterren per rondje van vijf.
+- `docs/sterrenlimiet.md`: de ouders stellen per lerend spelletje (rekenen, verhaal, zelf gelezen, kleurplaat, schrijven) een daglimiet in sterren in, voor iedereen of per kind (Spelregels); de server past hem toe in `activiteit_opslaan`.
 - `docs/chat.md`: chat van de kinderen naar de ouders (per kind aan te zetten, melding op de gsm, stickers voor wie niet leest).
 - `docs/boodschappen.md`: boodschappenlijst per winkel (Wij → Boodschappen), winkels en categorieën beheren (Instellingen), ingrediënten vanuit het weekmenu, prijzen na de boodschappen (Afrekenen) en het overzicht Wij → Uitgaven per maand, winkel en categorie.
 

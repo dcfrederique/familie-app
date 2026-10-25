@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { activiteitSterren, binnenTijdvenster, blokKeuzes } from './regels.ts'
+import { activiteitSterren, binnenTijdvenster, blokKeuzes, limietVoor } from './regels.ts'
 
 const om = (uu: number, mm = 0) => new Date(2026, 9, 21, uu, mm)
 
@@ -42,5 +42,19 @@ describe('activiteitSterren', () => {
     expect(activiteitSterren('kleurplaat')).toBe(3)
     expect(activiteitSterren('memory')).toBe(0)
     expect(activiteitSterren('penalty_schieten')).toBe(0)
+  })
+})
+
+describe('limietVoor', () => {
+  const limieten = [
+    { kind_id: null, activiteit: 'rekenen', max_sterren: 10 },
+    { kind_id: 'luca', activiteit: 'rekenen', max_sterren: 0 },
+  ]
+  it('geeft de limiet van het kind voor die van iedereen', () => {
+    expect(limietVoor(limieten, 'luca', 'rekenen')).toBe(0)
+    expect(limietVoor(limieten, 'yuna', 'rekenen')).toBe(10)
+  })
+  it('geeft null zonder limiet', () => {
+    expect(limietVoor(limieten, 'luca', 'verhaal')).toBeNull()
   })
 })

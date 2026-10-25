@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.30',
+    datum: '2026-10-25',
+    titel: 'Sterrenlimiet per spelletje',
+    tekst: 'Je bepaalt nu zelf hoeveel sterren een kind per dag hoogstens verdient met elk lerend spelletje (rekenen, verhaal luisteren, zelf gelezen, kleuren en tekenen, schrijven): menu Spelregels → Sterren per spelletje per dag. Vul een getal in voor iedereen of voor één kind (dat gaat voor); leeg laten betekent geen eigen limiet, met 0 levert het spelletje niets meer op. De server houdt zich eraan, naast het gezamenlijke dagplafond van 20 sterren.',
+  },
+  {
     versie: '0.29',
     datum: '2026-10-25',
     titel: 'Springland spelen als ouder',

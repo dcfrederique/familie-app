@@ -49,6 +49,13 @@ export function blokKeuzes(saldo: number, extraVandaag: number, moment: Date): B
   })
 }
 
+/** De daglimiet van een ouder voor dit spelletje: eerst die voor het kind, anders die voor allemaal; null = geen. */
+export function limietVoor(limieten: { kind_id: string | null; activiteit: string; max_sterren: number }[],
+                           kindId: string, activiteit: string): number | null {
+  const l = limieten.filter((x) => x.activiteit === activiteit)
+  return (l.find((x) => x.kind_id === kindId) ?? l.find((x) => x.kind_id === null))?.max_sterren ?? null
+}
+
 export type Activiteit = 'memory' | 'penalty_schieten' | 'penalty_keepen' | 'rekenen' | 'verhaal' | 'kleurplaat' | 'tekenen'
   | 'racen' | 'basket' | 'koken' | 'touwspringen' | 'huisdier' | 'puzzel' | 'pompoen' | 'springen' | 'zelf_gelezen' | 'schrijven'
 
