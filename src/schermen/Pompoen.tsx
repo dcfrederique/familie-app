@@ -66,7 +66,7 @@ export function PompoenTekening({ gezicht, aan = false, klein = false }: { gezic
   const kleur = aan ? LICHT : DONKER
   return (
     <svg className={`pompoen-tekening${aan ? ' aan' : ''}${klein ? ' klein' : ''}`} viewBox="0 0 200 200" aria-hidden="true">
-      {aan && <circle cx={100} cy={116} r={92} fill={LICHT} opacity={0.22} />}
+      {aan && <circle cx={100} cy={112} r={86} fill={LICHT} opacity={0.22} />}
       <path d="M94 36Q98 22 108 16" fill="none" stroke="#4F8A3C" strokeWidth={9} strokeLinecap="round" />
       <ellipse cx={58} cy={116} rx={46} ry={66} fill="#E8772E" />
       <ellipse cx={142} cy={116} rx={46} ry={66} fill="#E8772E" />
@@ -193,43 +193,62 @@ function PompoenSpelScherm({ kind }: { kind: Gebruiker }) {
   )
 }
 
-// Vrij een eigen pompoen maken en bewaren (hoogstens zes, op dit toestel).
+// Vrij een eigen pompoen maken en bewaren (hoogstens zes, op dit toestel). De bewaarde pompoenen staan bovenaan,
+// zodat het kind meteen ziet dat het gelukt is.
 function EigenPompoen({ kind, niveau, terug }: { kind: Gebruiker; niveau: PompoenNiveau; terug: () => void }) {
   const [gezicht, setGezicht] = useState<Gezicht>(beginGezicht)
   const [bewaard, setBewaard] = useState(() => eigenPompoenen(kind.id))
+  const [net, setNet] = useState(false)
   const sleutel = (g: Gezicht) => `${g.ogen}/${g.neus}/${g.mond}`
   const lees = (s: string): Gezicht | null => {
     const [ogen, neus, mond] = s.split('/')
     return pompoenVormen.ogen.includes(ogen) && pompoenVormen.neus.includes(neus) && pompoenVormen.mond.includes(mond) ? { ogen, neus, mond } : null
   }
   const lezer = kind.kan_lezen
+  useEffect(() => {
+    if (!net) return
+    const t = setTimeout(() => setNet(false), 1800)
+    return () => clearTimeout(t)
+  }, [net])
+  function bewaar() {
+    pompoenBewaren(kind.id, sleutel(gezicht))
+    setBewaard(eigenPompoenen(kind.id))
+    setNet(true)
+    geluid.hoera()
+  }
   return (
     <div className="pompoen">
-      <div className="pompoen-bord"><div className="pompoen-groot"><PompoenTekening gezicht={gezicht} aan /></div></div>
+      <div className="pompoen-bewaard" role="group" aria-label="Mijn pompoenen">
+        {bewaard.map((s, i) => {
+          const g = lees(s)
+          return g && (
+            <button key={s} type="button" className={`pompoen-mini${net && i === 0 ? ' nieuw' : ''}`} aria-label="Mijn pompoen" onClick={() => setGezicht(g)}>
+              <PompoenTekening gezicht={g} aan klein />
+            </button>
+          )
+        })}
+        {bewaard.length === 0 && <span className="pompoen-leeg">{lezer ? 'Hier komen je bewaarde pompoenen' : ''}</span>}
+      </div>
+      <div className="pompoen-bord">
+        <div className="pompoen-groot"><PompoenTekening gezicht={gezicht} aan /></div>
+        {net && (
+          <div className="pompoen-bewaard-melding display" role="status">
+            <svg className="ic" viewBox="0 0 24 24" width="34" height="34" aria-hidden="true"><path d="M5 12l5 5 9-10" /></svg>
+            {lezer && 'Bewaard!'}
+          </div>
+        )}
+      </div>
       <Keuzes niveau={niveau} gemaakt={gezicht} kiesVorm={(d, v) => setGezicht({ ...gezicht, [d]: v })} />
       <div className="knoppen-rij">
         <button type="button" className="groot-knop licht" aria-label="Terug" onClick={terug}>
           <svg className="ic" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
           {lezer && 'Terug'}
         </button>
-        <button type="button" className="groot-knop" aria-label="Bewaren"
-                onClick={() => { pompoenBewaren(kind.id, sleutel(gezicht)); setBewaard(eigenPompoenen(kind.id)); geluid.hoera() }}>
+        <button type="button" className="groot-knop" aria-label="Bewaren" onClick={bewaar}>
           <svg className="ic" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M5 12l5 5 9-10" /></svg>
           {lezer && 'Bewaren'}
         </button>
       </div>
-      {bewaard.length > 0 && (
-        <div className="pompoen-bewaard" role="group" aria-label="Mijn pompoenen">
-          {bewaard.map((s) => {
-            const g = lees(s)
-            return g && (
-              <button key={s} type="button" className="pompoen-mini" aria-label="Mijn pompoen" onClick={() => setGezicht(g)}>
-                <PompoenTekening gezicht={g} aan klein />
-              </button>
-            )
-          })}
-        </div>
-      )}
     </div>
   )
 }

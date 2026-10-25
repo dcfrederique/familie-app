@@ -21,9 +21,13 @@
 .pompoen-licht { gap: 10px; }
 .pompoen-eind { display: grid; justify-items: center; gap: 16px; }
 .pompoen-eind .pompoen-tekening { width: clamp(180px, 32vh, 280px); }
-.pompoen-bewaard { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
-.pompoen-mini { width: 92px; padding: 6px; border: 0; border-radius: 16px; background: var(--surface); box-shadow: 0 4px 0 var(--shade); }
+.pompoen-bewaard { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; align-items: center; min-height: 76px; }
+.pompoen-leeg { color: var(--muted); font-weight: 700; }
+.pompoen-mini { width: 70px; padding: 4px; border: 0; border-radius: 14px; background: var(--surface); box-shadow: 0 4px 0 var(--shade); }
+.pompoen-mini.nieuw { box-shadow: 0 0 0 4px var(--gold), 0 4px 0 var(--shade); animation: pompoen-ploep 0.5s ease-out; }
+.pompoen-bewaard-melding { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border-radius: 28px; background: var(--gold); color: #3A2600; font-size: 26px; }
+@keyframes pompoen-ploep { from { transform: scale(0.4) translateY(40px); } to { transform: none; } }
 .pompoen-mini .pompoen-tekening.klein { width: 100%; }
 @keyframes pompoen-schud { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-4deg); } 75% { transform: rotate(4deg); } }
 .pompoen-groot.schudt { animation: pompoen-schud 0.4s ease-in-out; }
-@media (prefers-reduced-motion: reduce) { .pompoen-groot.schudt { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .pompoen-groot.schudt, .pompoen-mini.nieuw { animation: none; } }
