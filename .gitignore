@@ -30,3 +30,4 @@ dist-ssr
 
 # Gegenereerde prenten (komen in Azure Blob, niet in de repo)
 /prenten/
+test-results/

@@ -26,7 +26,7 @@ export default function Weekmenu() {
   const [week, setWeek] = useState(0)
   const maandag = maandagVan(new Date(Date.now() + week * 7 * 86400_000))
   const dagen = dagenVanWeek(maandag)
-  const { data, ververs } = useGegevens(bron ? () => bron.weekmenu(dagen[0], dagen[6]) : null, [bron, dagen[0]])
+  const { data, ververs } = useGegevens(bron ? async () => ({ van: dagen[0], menu: await bron.weekmenu(dagen[0], dagen[6]) }) : null, [bron, dagen[0]])
   // Zonder migratie 20261024000900_boodschappen (of op een tablet) gewoon geen boodschappenknop.
   const boodschappen = useBoodschappen()
   const lijst = boodschappen.data && !boodschappen.fout ? { ...boodschappen.data, ververs: boodschappen.ververs } : null
@@ -41,7 +41,8 @@ export default function Weekmenu() {
           </h2>
           <button type="button" className="knop knop-klein" aria-label="Volgende week" onClick={() => setWeek(week + 1)}>›</button>
         </div>
-        {data && <WeekFormulier key={dagen[0]} dagen={dagen} menu={data} magBeheren={magBeheren} bewaard={ververs} lijst={lijst} />}
+        {/* Pas tonen als het menu van déze week er is: met dat van een andere week leek alles leeg en werd het weggeschreven. */}
+        {data && data.van === dagen[0] && <WeekFormulier key={dagen[0]} dagen={dagen} menu={data.menu} magBeheren={magBeheren} bewaard={ververs} lijst={lijst} />}
       </div>
       {!magBeheren && <p className="tip">Het weekmenu aanpassen doe je op de gsm van mama of papa.</p>}
       <p className="tip">Alleen de warme maaltijd. De kinderen zien die van vandaag op hun startscherm, met een prentje en een voorleesknop.
