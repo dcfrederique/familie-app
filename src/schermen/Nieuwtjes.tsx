@@ -4,13 +4,13 @@ import OuderKader from './OuderKader.tsx'
 
 const datumNotatie = new Intl.DateTimeFormat('nl-BE', { weekday: 'long', day: 'numeric', month: 'long' })
 
-// Nieuw in de app: wat de nachtelijke bouw toevoegde (src/data/nieuwtjes.ts).
+// Nieuw in de app: elke nieuwe functie, met versienummer (src/data/nieuwtjes.ts).
 export default function Nieuwtjes() {
   return (
     <OuderKader titel="Nieuw in de app">
       {nieuwtjes.map((n) => (
-        <article key={n.datum + n.titel} className="kaart nieuwtje">
-          <p className="tip">{datumNotatie.format(new Date(n.datum + 'T12:00:00'))}</p>
+        <article key={n.versie} className="kaart nieuwtje">
+          <p className="tip">Versie {n.versie} · {datumNotatie.format(new Date(n.datum + 'T12:00:00'))}</p>
           <h2>{n.titel}</h2>
           <p>{n.tekst}</p>
           {(n.verhaal || n.spel || n.stukken) && (

@@ -7,4 +7,13 @@ describe('nieuwtjes', () => {
     const datums = nieuwtjes.map((n) => n.datum)
     expect([...datums].sort().reverse()).toEqual(datums)
   })
+
+  it('heeft oplopende, unieke versienummers (hoogste bovenaan)', () => {
+    const nrs = nieuwtjes.map((n) => {
+      expect(n.versie).toMatch(/^0\.\d+$/)
+      return Number(n.versie.slice(2))
+    })
+    for (let i = 1; i < nrs.length; i++) expect(nrs[i]).toBe(nrs[i - 1] - 1)
+    expect(nrs[nrs.length - 1]).toBe(1)
+  })
 })

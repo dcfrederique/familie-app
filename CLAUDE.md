@@ -28,6 +28,7 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - Een ouder kan sterren zelf bijgeven of afnemen (Kinderen en tijd, bron `ouder` in het puntenlog, reden optioneel); afnemen kan niet meer dan het vrije saldo (gereserveerde sterren blijven staan). Het kind krijgt een melding op het startscherm.
 - Rustige en lerende activiteiten (verhalen, rekenen, kleurplaten, schrijven) leveren sterren op en tellen **niet** mee voor de app-tijd; spelletjes (memory, penalty's) leveren niets op en tellen **wel** mee.
 - Geen beschermde personages of merken in prenten, iconen of thema's (geen Spider-Man, Disney enz.): alles is eigen ontwerp.
+- **Elke nieuwe functie of zichtbare verandering voor kinderen of ouders krijgt in dezelfde push een item bovenaan `src/data/nieuwtjes.ts`** (ouderdeel "Nieuw in de app", `/ouder/nieuw`), met het volgende oplopende versienummer (`versie: '0.N'`, hoogste nummer + 1, de test controleert het). Geen nieuwtje = niet klaar (harde regel van Frederique, 25 oktober 2026). Geldt ook voor de nachtelijke bouw en voor kleine functies; pure herstellingen alleen als ouders er iets van merken.
 - Ouder-acties altijd achter pincode of biometrie, ook op het toestel van een kind.
 
 ## Documentatie in deze map
@@ -144,8 +145,8 @@ zodat niet alle verhalen van één periode op elkaar lijken. Gebruik geen besche
 - Als iets niet lukt: noteer het in het resultaatbestand in plaats van te gokken;
   blijft iets rood, push dan geen code maar alleen het resultaatbestand
 - Schrijf een korte samenvatting in `ideeen/YYYY-MM-DD-resultaat.md`
-- Zet bovenaan `src/data/nieuwtjes.ts` een item voor vandaag (verhaal, spel met prijs, wat open staat);
-  ouders lezen het in het ouderdeel onder "Nieuw in de app"
+- Zet bovenaan `src/data/nieuwtjes.ts` een item voor vandaag (verhaal, spel met prijs, wat open staat) met het
+  volgende oplopende `versie` (harde kernregel); ouders lezen het in het ouderdeel onder "Nieuw in de app"
 
 ---
 
