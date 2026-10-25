@@ -22,6 +22,7 @@ import { Ster, SterrenNaarWinkel, WinkelIcoon } from './onderdelen.tsx'
 import './schermen.css'
 import './chat.css'
 import Bladzijden from './Bladzijden.tsx'
+import WereldKnop from './WereldKnop.tsx'
 
 const TAAK_MAAT = { breed: 230, hoog: 240, gap: 14, maxHoog: 290 }
 
@@ -140,6 +141,7 @@ function StartLezer({ kind, lijst, geladen, vrij, verzoeken, eten, ongelezen, ki
         <aside className="kind-zijkant" aria-labelledby="spelen-titel">
           <h2 id="spelen-titel" className="sectie-titel display">{banner === 'race' ? 'Spelen en leren' : 'Spelen en maken'}</h2>
           <div className="tegels">
+            <WereldKnop kind={kind} />
             {tegelsVoor(kind).map((t) => <Tegel key={t.sleutel} tegel={t} kindId={kind.id} />)}
           </div>
           {kind.vraagt_zelf_tijd && (
@@ -271,6 +273,7 @@ function StartPrenten({ kind, lijst, geladen, eten, ongelezen, kies }: {
         )} />
 
       <nav className="ronde-tegels" aria-label="Spelen">
+        <WereldKnop kind={kind} rond />
         {tegelsVoor(kind).map((t) => {
           const icoon = <svg className="ic" viewBox="0 0 24 24" width="80" height="80" aria-hidden="true"><path d={t.icoon} /></svg>
           return t.pad

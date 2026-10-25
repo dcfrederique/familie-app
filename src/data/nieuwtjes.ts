@@ -19,6 +19,13 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.35',
+    datum: '2026-10-25',
+    titel: 'De wereld: loop door het straatje',
+    tekst: 'Op het startscherm van elk kind staat nu een kaart Naar de wereld (voor Feline een ronde knop). Daar loopt het figuurtje door een straatje van bovenaf: sleep de joystick of tik op de grond. Je ziet de huizen van Luca, Yuna en Feline met hun eigen huis, het speelplein, de vijver, het voetbalveldje, de Winkel en het Spellenhuis. Lopen naar een deur opent het gewone scherm (winkel, spelletjes, of Mijn huis bij je eigen deur); terug brengt je weer in de wereld. De knop Startscherm rechtsboven brengt je altijd terug naar het gewone startscherm, dat de basis blijft. De wereld zelf telt niet mee voor de schermtijd, de spelletjes in het Spellenhuis tellen zoals altijd wel mee. Het ontwerp en het plan staan in docs/wereld.md.',
+    open: 'Eerste versie: je kunt nog niet naar binnen bij een ander, niets zelf bouwen en elkaar niet live zien; dat zijn de volgende fases. Gebouwen volgen het Winkelaanbod nog niet.',
+  },
+  {
     versie: '0.34',
     datum: '2026-10-25',
     titel: 'Weekmenu bewaart vanzelf',

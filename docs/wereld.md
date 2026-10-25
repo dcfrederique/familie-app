@@ -87,3 +87,12 @@ Het ouderscherm Winkelaanbod bepaalt per kind wat in de wereld te zien is, zoals
 3. Welke gebouwen na Winkel en Spellenhuis: bibliotheek, atelier of schrijfhuisje?
 4. Mag de wereld op de gsm van de ouders ook (zoals Springland)?
 5. Willen de ouders dat het nieuwe gebouwen-van-de-nacht 's ochtends als bouwplaats zichtbaar is, of liever pas na vrijgave in Winkelaanbod?
+
+## Vervolgopdrachten voor deze week (idee van Frederique, 25 oktober 2026, nog niet bouwen)
+
+Frederique is gewonnen voor het hele wereldidee en voor de wisseling met een hubweergave. Daarbij komen twee opdrachten die we deze week kunnen aanpakken, na de eerste versie:
+
+1. **Springland wordt een apart deel van de wereld.** Springland is dan geen losse tegel meer, maar een gebied in de wereld (een poort, een berg of een eiland) waar je naartoe wandelt.
+2. **De landkaart van Springland gaat op in de wereld.** De huidige kaart met levels (`SpringKaart.tsx`, het figuurtje wandelt naar het level) wordt een deel van dezelfde wereld, zodat navigeren door de wereld en door Springland één geheel is. Eén camera, één figuurtje, één joystick.
+
+Wat daarvoor moet gebeuren (voorstel): Springland als bestemming in de bestemmingenlijst met een gebied in plaats van een gebouw; de levelknopen als plekjes op de wereldkaart; het vrijspelen (`levelOpen`) blijft zoals het is; en de hub blijft de snelle weg naar Springland.

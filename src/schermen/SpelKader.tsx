@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from 'react'
-import { Link, Navigate, useParams } from 'react-router-dom'
+import { Link, Navigate, useParams, useSearchParams } from 'react-router-dom'
 import { kleurKlasse, type Gebruiker } from '../data/gezin.ts'
 import { themaVan, type ThemaScherm } from '../data/thema.ts'
 import { geluidAan, geluidBewaren } from '../lib/spelletjes/opslag.ts'
@@ -20,15 +20,18 @@ export default function SpelKader({ titel, terug, scherm = 'spel', vol = scherm 
   children: (kind: Gebruiker) => ReactNode
 }) {
   const { id } = useParams()
+  const [zoek] = useSearchParams()
   const { kinderen } = useSessie()
   const kind = speler ?? kinderen.find((k) => k.id === id)
   const [geluid, setGeluid] = useState(geluidAan)
   useEffect(() => { if (kind) gebruikStem(kind.voorleesstem) }, [kind])
   if (!kind) return <Navigate to="/kinderen" replace />
   const thema = themaVan(kind)
+  // Wie vanuit de wereld kwam (docs/wereld.md) gaat daar ook weer naartoe, maar alleen vanaf het scherm dat de deur opent.
+  const naarWereld = zoek.get('van') === 'wereld' && terug(kind.id) === `/kind/${kind.id}`
 
   const terugKnop = (
-    <Link to={terug(kind.id)} className="rond" aria-label="Terug">
+    <Link to={naarWereld ? `/kind/${kind.id}/wereld` : terug(kind.id)} className="rond" aria-label={naarWereld ? 'Terug naar de wereld' : 'Terug'}>
       <svg className="ic" viewBox="0 0 24 24" width="28" height="28" aria-hidden="true"><path d="M15 5l-7 7 7 7" /></svg>
     </Link>
   )

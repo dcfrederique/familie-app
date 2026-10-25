@@ -31,6 +31,8 @@ export default function MijnHuis() {
   const navigate = useNavigate()
   const { kinderen, bron, herlaad } = useSessie()
   const kind = kinderen.find((k) => k.id === id)
+  // Vanuit de wereld terug naar de wereld (docs/wereld.md), anders naar het startscherm.
+  const thuis = `/kind/${id}${zoek.get('van') === 'wereld' ? '/wereld' : ''}`
   const { data: winkel, ververs } = useGegevens(bron && id ? async () => {
     const [aankopen, saldi, aanbod] = await Promise.all([bron.aankopen(), bron.saldi(), bron.aanbod()])
     return { eigen: new Set(aankopen[id] ?? []), vrij: saldi[id]?.vrij ?? 0, aanbod }
@@ -111,7 +113,7 @@ export default function MijnHuis() {
       await bron.huisBewaren(kind!.id, huis)
       await herlaad()
       zeg('Mooi huis!')
-      navigate(`/kind/${kind!.id}`)
+      navigate(thuis)
     } catch (e) {
       setFout(foutmelding(e as Error))
       setBezig(false)
@@ -122,7 +124,7 @@ export default function MijnHuis() {
   const stukken = zichtbareHuisStukken(info, lezer).filter((s) => teZien(cat, s)).map((s) => tel(cat, s))
   const thema = themaVan(kind)
   const terugKnop = (
-    <Link to={`/kind/${kind.id}`} className="rond" aria-label="Terug zonder bewaren">
+    <Link to={thuis} className="rond" aria-label="Terug zonder bewaren">
       <svg className="ic" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M15 18l-6-6l6-6" /></svg>
     </Link>
   )

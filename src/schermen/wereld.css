@@ -1,0 +1,45 @@
+/* De wereld (docs/wereld.md): canvas met de straat, joystick, melding en een kleurcirkel bij het binnengaan. */
+.wereld { height: 100dvh; display: flex; flex-direction: column; overflow: hidden; padding: 12px 20px 16px; gap: 10px; max-width: none; }
+.wereld-kop { flex: none; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.wereld-titel { margin: 0; font-size: clamp(26px, 4dvh, 38px); color: var(--ink); }
+.wereld-hub {
+  min-height: 64px; min-width: 64px; padding: 0 22px; border-radius: 32px; background: var(--kid); color: var(--on-solid, #fff);
+  display: inline-flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; font-size: 22px;
+  box-shadow: 0 5px 0 var(--shade);
+}
+.wereld-hub:active { transform: translateY(2px); }
+.wereld-vlak { position: relative; flex: 1; min-height: 0; display: grid; place-items: center; container-type: size; }
+.wereld-doos { position: relative; width: min(100cqw, 150cqh); aspect-ratio: 3 / 2; }
+.wereld-veld {
+  display: block; width: 100%; height: 100%; border-radius: 28px; touch-action: none;
+  box-shadow: 0 0 0 6px var(--kid-tint), 0 8px 0 var(--shade); background: #7CC46A;
+}
+.wereld .joy {
+  position: absolute; left: 18px; bottom: 18px;
+  width: 128px; height: 128px; border-radius: 50%; touch-action: none; cursor: grab;
+  background: radial-gradient(circle, var(--kid-tint) 0 34%, rgba(255,255,255,.55) 35%); box-shadow: inset 0 0 0 6px var(--kid-tint), 0 6px 0 rgba(0,0,0,.18);
+}
+.wereld .joy-knop {
+  position: absolute; left: 50%; top: 50%; width: 64px; height: 64px; margin: -32px 0 0 -32px; border-radius: 50%; background: var(--kid);
+  box-shadow: 0 6px 0 rgba(0,0,0,.22), inset 0 0 0 5px rgba(255,255,255,.28); transition: transform .12s; pointer-events: none;
+}
+.wereld .joy.aan .joy-knop { transition: none; }
+.wereld-bericht, .wereld-tip {
+  position: absolute; left: 50%; bottom: 14px; transform: translateX(-50%);
+  background: var(--surface); color: var(--ink); border-radius: 24px; padding: 12px 22px; box-shadow: 0 5px 0 var(--shade); font-size: 22px;
+  display: flex; align-items: center; gap: 12px; max-width: 70%; text-align: center; margin: 0;
+}
+.wereld-tip { font-size: 16px; font-weight: 700; padding: 8px 16px; opacity: .92; pointer-events: none; }
+.wereld-prent { font-size: 44px; line-height: 1; }
+.wereld-iris { position: absolute; inset: 0; border-radius: 28px; background: var(--kid); pointer-events: none; opacity: 0; clip-path: circle(0% at 50% 55%); }
+.wereld-iris.dicht { opacity: 1; clip-path: circle(90% at 50% 55%); transition: clip-path .85s ease-in; }
+@media (prefers-reduced-motion: reduce) { .wereld-iris.dicht { transition: opacity .3s; clip-path: circle(90% at 50% 55%); } }
+@media (max-height: 560px) { .wereld { padding: 6px 12px 8px; gap: 6px; } .wereld .joy { width: 112px; height: 112px; } .wereld-hub { min-height: 56px; } }
+
+/* De knop op het startscherm */
+.wereld-tegel { grid-column: 1 / -1; flex-direction: row; gap: 14px; padding: 8px 14px 8px 8px; text-align: left; justify-content: flex-start; overflow: hidden; }
+.wereld-tegel .wereld-mini { flex: none; width: 46%; height: 100%; min-height: 84px; border-radius: 20px; }
+.wereld-tegel-tekst { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.wereld-rond { overflow: hidden; padding: 0; }
+.wereld-rond .wereld-mini { width: 100%; height: 100%; border-radius: 50%; }
+.ronde-tegel.wereld-rond svg.wereld-mini { width: 100%; height: 100%; }

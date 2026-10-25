@@ -43,6 +43,7 @@ import Gewicht from './schermen/Gewicht.tsx'
 import MijnProfiel from './schermen/MijnProfiel.tsx'
 import Touwspringen from './schermen/Touwspringen.tsx'
 import MijnThema from './schermen/MijnThema.tsx'
+import Wereld from './schermen/Wereld.tsx'
 import Chat from './schermen/Chat.tsx'
 import OuderChat from './schermen/OuderChat.tsx'
 import Proberen from './schermen/Proberen.tsx'
@@ -93,6 +94,7 @@ export default function App() {
         <Route path="tekenen" element={<Tekenen />} />
         <Route path="schrijven" element={<Schrijven />} />
         <Route path="chat" element={<Chat />} />
+        <Route path="wereld" element={<Wereld />} />
       </Route>
       <Route path="/ouder" element={<OuderStart />} />
       <Route path="/ouder/goedkeuren" element={<Goedkeuren />} />
