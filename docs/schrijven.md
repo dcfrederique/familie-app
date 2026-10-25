@@ -22,7 +22,7 @@ Wie niet leest hoort bij elke opdracht de letter of het woord (bij lijntjes de u
 
 ## Sterren
 
-Beslist: **3 sterren per afgewerkt rondje van vijf opdrachten**, zoals een kleurplaat, meteen erbij zonder goedkeuring van een ouder, binnen het dagplafond voor activiteiten en het spaarmaximum (`docs/winkel.md`). Schrijven is een rustige, lerende activiteit en telt dus niet mee voor de app-tijd. De server rekent het zelf uit: activiteit `schrijven` met `items >= 5` (migratie `20261025000500_schrijven.sql`, spiegel in `src/lib/regels.ts`).
+Beslist: **3 sterren per afgewerkt rondje van vijf opdrachten**, zoals een kleurplaat, meteen erbij zonder goedkeuring van een ouder, binnen het dagplafond voor activiteiten en het spaarmaximum (`docs/winkel.md`). Schrijven is een rustige, lerende activiteit en telt dus niet mee voor de app-tijd. De server rekent het zelf uit: activiteit `schrijven` met `items >= 5` (migratie `20261025000600_schrijven.sql`, spiegel in `src/lib/regels.ts`).
 
 ## Nog niet gebouwd
 
