@@ -197,7 +197,12 @@ en elke nacht worden de schermen een beetje mooier. Loopt na de nachtelijke bouw
   van de app en met `prefers-reduced-motion`. Geen nieuwe functies, geen spelregels of prijzen wijzigen.
 - Gsm liggend (844 × 390, 915 × 412) is het tweede doel (Frederique, 25 oktober 2026): eerst moeten de tablets passen,
   daarna maakt elke nacht ook een paar schermen passend op een liggende gsm, tot alles zonder scrollen kan.
-  Een liggende gsm valt buiten de tabletquery (hoogte < 560 px): gebruik daarvoor een eigen query, bv. `(max-height: 500px) and (orientation: landscape)`.
+  Een liggende gsm valt buiten de tabletquery (hoogte < 560 px). Eerste aanpak (tip van Frederique): schalen, niet
+  herontwerpen. Laat het kinderscherm de tabletopmaak gebruiken op een virtuele hoogte van ±600 px en verklein het geheel
+  (bv. CSS `zoom` = schermhoogte / 600 op `.kind`, of een schaalfactor in een CSS-variabele via een kleine hook),
+  zodat alles in verhouding blijft. Let op: tikvlakken mogen daarbij niet onder ±44 px vallen, canvas-spelletjes en
+  Bladzijden moeten correct meten met de schaal (getBoundingClientRect), en de controle draait `--kind` op gsm-maten.
+  Pas alleen per scherm aan waar schalen niet volstaat.
 - Bewust scrollend (meldingen mogen blijven): de landkaart van Springland (`.spring-kaart`, slepen) en de chatgeschiedenis.
 
 ## Afronden
