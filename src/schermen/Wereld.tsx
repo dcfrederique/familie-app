@@ -3,7 +3,10 @@ import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import type { Gebruiker } from '../data/gezin.ts'
 import { figuurtjeVan } from '../data/figuurtje.ts'
 import { huisVan } from '../data/huis.ts'
-import { U, gebouwen, kidKleur, type Gebouw } from '../data/wereld.ts'
+import { leegAanbod, type Aanbod } from '../data/aanbod.ts'
+import { spelMenu } from '../data/spelletjes.ts'
+import { zin } from '../data/zinnen.ts'
+import { U, gebouwenVoor, kidKleur, type GebouwBeeld } from '../data/wereld.ts'
 import {
   GROND_Y, MAX_HUIZEN, deurVan, inRechthoek, maakKaart, opDeurmat, stap, voorHuisdeur, huisRechthoek, type Loper,
 } from '../lib/wereld/kaart.ts'
@@ -19,7 +22,7 @@ import './wereld.css'
 // De wereld (docs/wereld.md): de straat van bovenaf. Het figuurtje loopt met de joystick of naar een tik toe;
 // de deur van een gebouw opent het bestaande scherm. Het startscherm blijft de basis en is één knop weg.
 
-const PRENT: Record<string, string> = { winkel: '🛍 ⭐', spellen: '🎮 ⭐', bouw: '🚧 ❓', huis: '🏠 ✨' }
+const PRENT: Record<string, string> = { winkel: '🛍 ⭐', spellen: '🎮 ⭐', bouw: '🚧 ❓', huis: '🏠 ✨', bladeren: '🍂 ⭐', slot: '🔒 ⭐' }
 
 const isNacht = () => {
   const thema = document.documentElement.dataset.theme
@@ -33,7 +36,7 @@ export default function Wereld() {
   const { kinderen } = useSessie()
   const kind = kinderen.find((k) => k.id === id)
   if (!kind) return <Navigate to="/kinderen" replace />
-  return <WereldScherm kind={kind} />
+  return <WereldLader kind={kind} />
 }
 
 /** De wereld voor een ouder op de gsm (ouderdeel Wij → De wereld): met het eigen figuurtje, zonder iets te bewaren
@@ -43,11 +46,32 @@ export function OuderWereld() {
   const id = account?.ouder_id ?? gebruikers.find((g) => g.rol === 'ouder')?.id
   const ouder = gebruikers.find((g) => g.id === id && g.rol === 'ouder')
   if (!ouder || account?.soort === 'tablet') return <Navigate to="/ouder" replace />
-  return <WereldScherm kind={ouder} ouder />
+  return <WereldLader kind={ouder} ouder />
 }
 
-function WereldScherm({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolean }) {
+/**
+ * Haalt eerst op wat het kind in de winkel ziet en kocht, want de gebouwen van de spelletjes volgen dat (docs/wereld.md):
+ * vrijgegeven door de ouders, met een slot zolang het spel niet gekocht is. De lijst wordt één keer vastgezet bij het openen,
+ * zodat de kaart onder het lopende figuurtje niet verandert.
+ */
+function WereldLader({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolean }) {
+  const { bron } = useSessie()
+  const { data, fout } = useGegevens(bron ? async () => {
+    const [aankopen, aanbod] = await Promise.all([ouder ? Promise.resolve({} as Record<string, string[]>) : bron.aankopen(), bron.aanbod()])
+    return { eigen: new Set(aankopen[kind.id] ?? []), aanbod }
+  } : null, [bron, kind.id, ouder])
+  if (bron && !data && !fout) return <div className="wereld" aria-busy="true" />
+  return <WereldScherm kind={kind} ouder={ouder} winkel={data} />
+}
+
+function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?: boolean; winkel: { eigen: Set<string>; aanbod: Aanbod } | null }) {
   const { kinderen, bron, gebruikers, account } = useSessie()
+  // Zonder gegevens (offline of een fout) blijven de gebouwen van de spelletjes weg: wat niet vrij is, mag niet zichtbaar zijn.
+  const [gebouwLijst] = useState<GebouwBeeld[]>(() => gebouwenVoor({
+    kindId: kind.id, ouder, allesVrij: kind.figuurtje_alles_vrij, kanLezen: kind.kan_lezen,
+    eigen: winkel?.eigen ?? new Set<string>(),
+    aanbod: winkel?.aanbod ?? { ...leegAanbod, dicht: spelMenu.map((x) => `spel:${x.sleutel}`) },
+  }))
   // Het aantal sterren staat rechtsboven bij het hubbordje, zoals in de mockup (niet voor een ouder).
   const { data: saldo } = useGegevens(bron && !ouder ? async () => (await bron.saldi())[kind.id]?.vrij ?? 0 : null, [bron, kind.id, ouder])
   const navigate = useNavigate()
@@ -66,13 +90,13 @@ function WereldScherm({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolea
     return { id: k.id, naam: k.naam, model: huis.model, deurX: deurVan(i), huis, kleur: kidKleur[k.thema ?? 'blauw'] }
   }), [bewoners])
   const kleurVan = useCallback((kid: string) => huizen.find((h) => h.id === kid)?.kleur ?? '#6A5BD1', [huizen])
-  const kaart = useMemo(() => maakKaart(huizen, kleurVan), [huizen, kleurVan])
+  const kaart = useMemo(() => maakKaart(huizen, kleurVan, gebouwLijst), [huizen, kleurVan, gebouwLijst])
   const figuurtjes = useMemo(() => Object.fromEntries(spelers.map((k) => [k.id, figuurtjeVan(k)])), [spelers])
 
   // Alles wat de tekenlus nodig heeft, zodat hij niet bij elke render opnieuw begint.
   const toestand = useRef({
     pl: { x: 0, y: 0, face: 'down', moving: false, fase: 0 } as Loper,
-    route: [] as [number, number][], doel: null as null | { gebouw?: Gebouw; huis?: string },
+    route: [] as [number, number][], doel: null as null | { gebouw?: GebouwBeeld; huis?: string },
     joy: { x: 0, y: 0 }, held: { up: false, down: false, left: false, right: false },
     anderen: new Map<string, Ander>(),
     cam: [0, 0, 1] as readonly [number, number, number], bezig: false, maat: [960, 640] as [number, number],
@@ -93,9 +117,11 @@ function WereldScherm({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolea
     setTimeout(() => navigate(`/kind/${kind.id}/${pad}${pad.includes('?') ? '&' : '?'}van=wereld`), minderBeweging() ? 600 : 1000)
   }, [kind, ouder, meld, navigate])
 
-  const aanDeur = useCallback((b: Gebouw) => {
+  const aanDeur = useCallback((b: GebouwBeeld) => {
     const s = toestand.current
     s.route = []
+    // Een spel dat het kind nog niet kocht: een slot op de deur, het kind stapt terug.
+    if (b.slot && !ouder) { s.pl.y = b.y + 40; meld(zin.spelSlot, PRENT.slot); return }
     if (b.pad && !ouder) { ga(b.pad, b.welkom, PRENT[b.id] ?? '✨'); return }
     s.pl.y = b.y + 40
     meld(ouder && b.pad ? `${b.naam}: hier spelen de kinderen.` : b.welkom, PRENT[b.id] ?? '✨')
@@ -119,6 +145,7 @@ function WereldScherm({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolea
     s.route = []; s.doel = null; s.bezig = false
     const tek = new Tekenaar(cv, Math.min(2, Math.max(1, window.devicePixelRatio || 1)) > 1.4 ? 1.5 : 1)
     tek.nacht = isNacht()
+    tek.rustig = minderBeweging()
     // Het beeld vult het hele scherm; bij draaien of vergroten past het zich aan.
     const pas = () => { const r = cv.getBoundingClientRect(); if (r.width > 0) tek.zet(r.width, r.height); s.maat = [tek.vw, tek.vh] }
     pas()
@@ -155,7 +182,7 @@ function WereldScherm({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolea
         }
         stap(s.pl, dt, ix, iy, kaart)
         if (!(ix || iy)) s.pl.fase = 0
-        for (const b of gebouwen) if (opDeurmat(s.pl, b)) { aanDeur(b); break }
+        for (const b of gebouwLijst) if (opDeurmat(s.pl, b)) { aanDeur(b); break }
         for (const h of huizen) if (voorHuisdeur(s.pl, h)) { aanHuis(h.id); break }
       }
       if (!document.hidden) {
@@ -167,7 +194,7 @@ function WereldScherm({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolea
         else volg(a, dt)
       }
       s.cam = tek.teken({
-        t, kaart, huizen, gebouwen, me: s.pl, mijnId: kind.id, kleur: kleurVan(kind.id), figuurtjes, overzicht: false,
+        t, kaart, huizen, gebouwen: gebouwLijst, me: s.pl, mijnId: kind.id, kleur: kleurVan(kind.id), figuurtjes, overzicht: false,
         anderen: [...s.anderen.values()].flatMap((a) => {
           const lid = leden.get(a.id)
           return lid ? [{ ...a, naam: lid.naam, figuur: figuurtjeVan(lid), kleur: lid.rol === 'ouder' ? '#6A5BD1' : kidKleur[lid.thema ?? 'blauw'] }] : []
@@ -183,7 +210,7 @@ function WereldScherm({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolea
     }
     raf = requestAnimationFrame(lus)
     return () => { cancelAnimationFrame(raf); waarnemer.disconnect(); document.removeEventListener('visibilitychange', zichtbaarheid); verbinding.stop() }
-  }, [kind, ouder, gebruikers, account, huizen, kaart, figuurtjes, aanDeur, aanHuis])
+  }, [kind, ouder, gebruikers, account, huizen, kaart, figuurtjes, aanDeur, aanHuis, gebouwLijst])
 
   // Tikken op de grond: loop erheen, of naar de deur van het gebouw of huis dat je aantikt.
   function tik(ev: React.PointerEvent<HTMLCanvasElement>) {
@@ -193,7 +220,7 @@ function WereldScherm({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolea
     setBericht(null)
     const r = ev.currentTarget.getBoundingClientRect()
     const wx = (ev.clientX - r.left) / r.width * s.maat[0] + s.cam[0], wy = (ev.clientY - r.top) / r.height * s.maat[1] + s.cam[1]
-    for (const b of gebouwen) {
+    for (const b of gebouwLijst) {
       if (inRechthoek(wx, wy, [b.x - b.w * 0.45, b.y - b.w * 0.8, b.x + b.w * 0.45, b.y + 22])) {
         s.route = kaart.pad(s.pl.x, s.pl.y, b.x, b.y + 24) ?? []; s.doel = { gebouw: b }; return
       }

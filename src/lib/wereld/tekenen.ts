@@ -3,7 +3,7 @@
 import { haarKleuren, huidKleuren, kledingKleuren, type Figuurtje } from '../../data/figuurtje.ts'
 import type { Huis } from '../../data/huis.ts'
 import { gebouwTekening, straatTekening } from '../../data/wereldPrenten.ts'
-import { U, WERELD_BREED, WERELD_HOOG, HUIS_MAAT, type Gebouw } from '../../data/wereld.ts'
+import { U, WERELD_BREED, WERELD_HOOG, HUIS_MAAT, type GebouwBeeld } from '../../data/wereld.ts'
 import { donkerder, tekenFiguurtje, volledigeUitsnede } from '../figuurtje/tekenen.ts'
 import { huisUitsnede, tekenHuis, tuinStuk } from '../huis/tekenen.ts'
 import { GROND_Y, HUIS_SCHAAL, POEL, PLEIN, VELD, inPoel, inRechthoek, opWeg, toeval, type Ding, type HuisPlek, type Kaart, type Richting } from './kaart.ts'
@@ -34,6 +34,8 @@ export class Tekenaar {
   private plaatjes = new Map<string, HTMLImageElement>()
   private grond = new Map<string, HTMLCanvasElement>()
   nacht = false
+  /** Met `prefers-reduced-motion`: de gouden rand pulseert niet. */
+  rustig = false
   /** Hoeveel wereld er in beeld is (in eenheden); volgt de verhouding van het scherm. */
   vw = 960
   vh = 640
@@ -79,7 +81,7 @@ export class Tekenaar {
     return { im: this.plaatje('h' + sleutel + JSON.stringify(h), vb, tekenHuis(h, { id: 'wh' + sleutel.replace(/\W/g, ''), kaal: true }), px, px, kleur), px, vx, vy }
   }
 
-  private gebouwPlaatje(b: Gebouw) {
+  private gebouwPlaatje(b: GebouwBeeld) {
     return this.plaatje('g' + b.id, '0 0 400 300', gebouwTekening[b.id] ?? '', b.w, b.w * 0.75)
   }
 
@@ -202,12 +204,38 @@ export class Tekenaar {
     g.restore()
   }
 
+  /** Een gebouw. Nieuw = gouden gloed langs de rand; nog niet gekocht = grijzer met een slotje op de deur. */
+  private tekenGebouw(im: HTMLImageElement, b: GebouwBeeld, t: number) {
+    const g = this.g, x = b.x - b.w / 2, h = b.w * 0.75, y = b.y - h * 285 / 300
+    g.save()
+    if (b.nieuw) {
+      const puls = this.rustig ? 1 : 0.75 + 0.25 * Math.sin(t * 3)
+      g.shadowColor = '#F2C230'; g.shadowBlur = 20 * puls
+      g.drawImage(im, x, y, b.w, h)
+      g.shadowBlur = 8 * puls
+    }
+    if (b.slot) g.filter = 'grayscale(0.55) brightness(0.92)'
+    g.drawImage(im, x, y, b.w, h)
+    g.restore()
+    if (b.slot) {
+      // een slotje midden op de deur
+      const sx = b.x, sy = b.y - h * 0.22, r = Math.max(16, b.w * 0.075)
+      g.save()
+      g.fillStyle = '#F2C230'; g.strokeStyle = '#8A5E12'; g.lineWidth = 3
+      g.beginPath(); g.roundRect(sx - r, sy - r * 0.2, r * 2, r * 1.6, r * 0.3); g.fill(); g.stroke()
+      g.lineWidth = r * 0.35; g.strokeStyle = '#8A5E12'
+      g.beginPath(); g.arc(sx, sy - r * 0.2, r * 0.62, Math.PI, 0); g.stroke()
+      g.fillStyle = '#8A5E12'; g.beginPath(); g.arc(sx, sy + r * 0.5, r * 0.22, 0, 7); g.fill()
+      g.restore()
+    }
+  }
+
   /** Eén beeld van de straat. `me` is het figuurtje van het kind; camera volgt het. */
   teken(opties: {
     t: number
     kaart: Kaart
     huizen: (HuisPlek & { huis: Huis; kleur: string; naam: string })[]
-    gebouwen: Gebouw[]
+    gebouwen: GebouwBeeld[]
     me: { x: number; y: number; face: Richting; moving: boolean; fase: number }
     mijnId: string
     /** Kleur van het huisje op het bordje. */
@@ -250,7 +278,7 @@ export class Tekenaar {
     for (const b of opties.gebouwen) {
       lijst.push({ y: b.y, d: () => {
         const im = this.gebouwPlaatje(b)
-        if (this.klaar(im)) g.drawImage(im, b.x - b.w / 2, b.y - b.w * 0.75 * 285 / 300, b.w, b.w * 0.75)
+        if (this.klaar(im)) this.tekenGebouw(im, b, t)
       } })
     }
     for (const h of huizen) {

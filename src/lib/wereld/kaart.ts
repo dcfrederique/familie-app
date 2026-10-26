@@ -20,13 +20,15 @@ export const POEL = { x: 30 * U, y: 20.8 * U, rx: 5.8 * U, ry: 3.7 * U }
 export const deurVan = (index: number) => (7.5 + 12 * index) * U
 
 /** Het wegennet: de hoofdstraat, een stoepje per huis en de paden naar plein, vijver, veld en gebouwen. */
-export function wegen(huizen: HuisPlek[]): Rechthoek[] {
+export function wegen(huizen: HuisPlek[], lijst: readonly Gebouw[] = gebouwen): Rechthoek[] {
   const r = (x0: number, y0: number, x1: number, y1: number): Rechthoek => [x0 * U, y0 * U, x1 * U, y1 * U]
   return [
     r(1, 12.4, 55, 14.4),
     ...huizen.map((h): Rechthoek => [h.deurX - 0.85 * U, 10.2 * U, h.deurX + 0.85 * U, 12.5 * U]),
     r(9.1, 14.3, 10.9, 16.7), r(29.1, 14.3, 30.9, 16.9), r(39.6, 14.3, 41.4, 16.7),
     r(20.45, 14.3, 22.15, 22.6), r(47.15, 14.3, 48.85, 22.3), r(51.9, 14.3, 53.5, 22.3),
+    // een gebouw boven de hoofdstraat (een spelletje) krijgt een stoepje naar de straat
+    ...lijst.filter((b) => b.spel && b.y < 12.4 * U).map((b): Rechthoek => [b.x - 0.85 * U, b.y, b.x + 0.85 * U, 12.5 * U]),
   ]
 }
 
@@ -82,8 +84,8 @@ export function vasteDingen(huizen: HuisPlek[], kleurVan: (id: string) => string
 const dingRechthoek = (d: Ding): Rechthoek => [d.x - d.voet[0] / 2, d.y - d.voet[1], d.x + d.voet[0] / 2, d.y + 4]
 
 /** Alles waar het figuurtje niet doorheen loopt, behalve de vijver (die is een ellips). */
-export function obstakels(huizen: HuisPlek[], dingen: Ding[]): Rechthoek[] {
-  const o: Rechthoek[] = [...huizen.map(huisRechthoek), ...gebouwen.map(gebouwRechthoek), ...dingen.map(dingRechthoek)]
+export function obstakels(huizen: HuisPlek[], dingen: Ding[], lijst: readonly Gebouw[] = gebouwen): Rechthoek[] {
+  const o: Rechthoek[] = [...huizen.map(huisRechthoek), ...lijst.map(gebouwRechthoek), ...dingen.map(dingRechthoek)]
   // hek om het speelplein, met een poortje
   const [a, b, c, d] = PLEIN, p = 10 * U
   o.push([a - 6, b - 4, p - 36, b + 6], [p + 36, b - 4, c + 6, b + 6], [a - 6, d - 4, c + 6, d + 6], [a - 6, b, a + 4, d], [c - 4, b, c + 6, d])
@@ -113,9 +115,9 @@ export interface Kaart {
 
 const CEL = 24
 
-export function maakKaart(huizen: HuisPlek[], kleurVan: (id: string) => string): Kaart {
+export function maakKaart(huizen: HuisPlek[], kleurVan: (id: string) => string, lijst: readonly Gebouw[] = gebouwen): Kaart {
   const dingen = vasteDingen(huizen, kleurVan)
-  const hindernissen = obstakels(huizen, dingen)
+  const hindernissen = obstakels(huizen, dingen, lijst)
   const vrij = (x: number, y: number) => {
     if (x < 1.6 * U || x > WERELD_BREED - 1.6 * U || y < 3.6 * U || y > WERELD_HOOG - 2.6 * U) return false
     if (inPoel(x, y, 2)) return false
@@ -160,7 +162,7 @@ export function maakKaart(huizen: HuisPlek[], kleurVan: (id: string) => string):
     return uit.slice(1)
   }
 
-  return { wegen: wegen(huizen), obstakels: hindernissen, dingen, vrij, pad }
+  return { wegen: wegen(huizen, lijst), obstakels: hindernissen, dingen, vrij, pad }
 }
 
 export type Richting = 'down' | 'up' | 'left' | 'right'

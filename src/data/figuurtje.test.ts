@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import sql from '../../supabase/migrations/20261022001000_figuurtje.sql?raw'
 import { tekenFiguurtje } from '../lib/figuurtje/tekenen.ts'
 import nieuw from '../../supabase/migrations/20261024000500_sterren_kopen.sql?raw'
-import halloween from '../../supabase/migrations/20261025000300_halloween.sql?raw'
+import { insertBlokken } from '../lib/laterMigraties.ts'
 import {
   basisFiguurtje, categorieen, controleer, haarKleuren, isVrij, kledingKleuren, prijsVoor, verrassing, zichtbareCategorieen,
 } from './figuurtje.ts'
@@ -83,8 +83,7 @@ describe('catalogus op de server', () => {
   const rijen = [...sql.matchAll(/\('(\w+)', '(\w+)', (\d+)\)/g)]
     .map(([, soort, sleutel]) => `${soort}:${sleutel}:${prijzen.get(`${soort}:${sleutel}`) ?? 0}`)
   // Nieuwe stukken van latere migraties komen er met hun prijs bij (nachtelijke uitbreidingen).
-  const bijgekomen = halloween.slice(halloween.indexOf('insert into public.figuurtje_stukken'), halloween.indexOf(';', halloween.indexOf('insert into public.figuurtje_stukken')))
-  rijen.push(...[...bijgekomen.matchAll(/\('(\w+)', '(\w+)', (\d+)\)/g)].map(([, soort, sleutel, p]) => `${soort}:${sleutel}:${p}`))
+  rijen.push(...insertBlokken('figuurtje_stukken').flatMap((b) => [...b.matchAll(/\('(\w+)', '(\w+)', (\d+)\)/g)].map(([, soort, sleutel, p]) => `${soort}:${sleutel}:${p}`)))
 
   it('heeft dezelfde stukken, kleuren en prijzen als de app', () => {
     expect([...prijzen.keys()].every((k) => rijen.some((r) => r.startsWith(`${k}:`)))).toBe(true)

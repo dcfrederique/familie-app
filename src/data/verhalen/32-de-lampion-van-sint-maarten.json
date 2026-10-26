@@ -1,0 +1,128 @@
+{
+  "nr": 32,
+  "titel": "De lampion van Sint-Maarten",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Sint-Maarten, delen",
+  "bladzijden": [
+    {
+      "tekst": "Het is bijna elf november. Opa komt aan met een grote doos. \"Vanavond is het Sint-Maarten,\" zegt hij. \"Dan maken we een lampion die straalt!\" Noor en Jules klappen in hun handen.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "opa",
+          "noor",
+          "jongen"
+        ]
+      }
+    },
+    {
+      "tekst": "Ze plakken gekleurd papier op een lege pot. Noor kiest rood en oranje, de kleuren van de herfst. Jules plakt er een grote gele maan op. Opa knipt sterretjes uit. Ondertussen ruikt het in de keuken naar warme appeltaart. Het is een gezellig werkje.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "noor",
+          "jongen",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "Als de lampion klaar is, doet opa er een lichtje in. Hij gloeit warm door al die kleuren. \"Mooi!\" zegt Jules. \"Net een kleine zon.\" Noor hangt hem voorzichtig aan een stokje.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "jongen",
+          "noor",
+          "lampion"
+        ]
+      }
+    },
+    {
+      "tekst": "Als het donker wordt, trekken ze hun jas aan. In de straat lopen veel kinderen met lichtjes. Max de hond trippelt blij mee. Iedereen zingt het lied van Sint-Maarten.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "noor",
+          "jongen",
+          "hond",
+          "lampion"
+        ]
+      }
+    },
+    {
+      "tekst": "Plots waait er een frisse wind. Het lichtje in de lampion van Noor flikkert en gaat uit. \"Oh,\" zegt Noor zachtjes. Haar mooie lampion is nu donker.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "noor",
+          "jongen",
+          "lampion"
+        ]
+      }
+    },
+    {
+      "tekst": "Jules houdt zijn lampion dicht bij die van Noor. \"Kom maar dichterbij,\" zegt hij. \"We delen mijn licht.\" Zo lopen ze samen verder, onder één stralend lichtje.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "jongen",
+          "noor",
+          "lampion"
+        ]
+      }
+    },
+    {
+      "tekst": "Bij de hoek staat een klein meisje. Haar lampion heeft geen lichtje meer. \"Mag ik meelopen?\" vraagt ze. \"Natuurlijk,\" zegt Noor. \"Er is plaats genoeg voor ons drieën.\"",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "meisje",
+          "noor",
+          "jongen",
+          "lampion"
+        ]
+      }
+    },
+    {
+      "tekst": "Bij de buurvrouw zingen ze voor snoepjes. Ze geeft ieder een zakje met een mandarijn en een speculaasje. Max krijgt een koekje. \"Wat een mooie lichtjes,\" zegt de buurvrouw.",
+      "prent": {
+        "decor": "dorp",
+        "figuren": [
+          "buurvrouw",
+          "noor",
+          "jongen",
+          "meisje",
+          "hond"
+        ]
+      }
+    },
+    {
+      "tekst": "Opa wacht aan het einde van de straat. \"Sint-Maarten deelde ook,\" vertelt hij. \"Hij gaf de helft van zijn warme mantel aan iemand die het koud had.\" Noor lacht. \"Delen maakt warm.\"",
+      "prent": {
+        "decor": "nacht",
+        "figuren": [
+          "opa",
+          "noor",
+          "jongen",
+          "meisje",
+          "lampion"
+        ]
+      }
+    },
+    {
+      "tekst": "Thuis zetten ze de drie lampionnen in het raam. Opa maakt warme chocomelk. Het meisje mag blijven tot haar mama komt. De lichtjes stralen door de nacht, en niemand heeft het nog koud. Wat een fijne Sint-Maarten!",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "opa",
+          "noor",
+          "jongen",
+          "meisje",
+          "hond",
+          "lampion"
+        ]
+      }
+    }
+  ]
+}

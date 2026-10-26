@@ -115,3 +115,14 @@ Het gratis plan geeft 2 miljoen Realtime-berichten per maand. Een bericht telt �
 
 - **Nachtelijke routine:** elk nieuw spelletje krijgt ook een gebouw in de wereld (huisje of een andere passende vorm), met een **gouden rand** zolang het nieuw is en een **slot** zolang het kind het niet kocht. De regel dat de ouders het eerst vrijgeven in Winkelaanbod blijft gelden: wat niet vrij is, staat er niet.
 - **Later (plan, nog niet bouwen):** een aparte routine zet de bestaande spelletjes zo visueel mogelijk in de wereld. Springland wordt bijvoorbeeld een springkasteel-gebied waar het in dat werelddeel verdergaat (zie ook de vervolgopdrachten hierboven).
+
+## Gebouwen van spelletjes (gebouwd 26 oktober 2026)
+
+Elk nieuw spelletje van de nachtelijke bouw heeft een eigen gebouw in de wereld. Voorbeeld: het **bladerhuisje** (Bladeren sorteren).
+
+- **Data:** een rij in `gebouwen` (`src/data/wereld.ts`) met `spel` (de spelsleutel), `pad` (gelijk aan de spelsleutel, dus de route `/kind/:id/<sleutel>`) en `nieuwSinds` (datum). Tekening in `gebouwTekening` (`src/data/wereldPrenten.ts`, viewBox 400 × 300, voet op y = 285). Een nieuw spel is dus een rij en een tekening, geen aparte code.
+- **Zichtbaar:** `gebouwenVoor()` geeft de gebouwen die één kind ziet. Een gebouw van een spel staat er alleen als de ouders het spel voor dit kind vrijgaven (`inAanbod`, dezelfde regel als de winkel). Een ouder in de wereld ziet de gebouwen van wat in de winkel ligt. Zonder gegevens (offline of een fout) blijven ze weg. De lijst wordt bij het openen van de wereld vastgezet (`WereldLader`), zodat de kaart niet verspringt terwijl je loopt.
+- **Gouden rand:** de eerste `NIEUW_DAGEN` (14) dagen na `nieuwSinds` straalt het gebouw goud (gloed rond de tekening, pulseert niet bij "minder beweging").
+- **Slot:** zolang het kind het spel niet kocht (`spelIsVrij`, ook met de eigen prijs van de ouders en "alles vrij") is het gebouw grijzer met een gouden slotje op de deur; naar binnen gaan zegt "Dit spel kost sterren. Koop het eerst in de winkel!" (voorgelezen voor wie niet leest). Na de aankoop verdwijnt het slot.
+- **Plek:** een gebouw boven de hoofdstraat krijgt vanzelf een stoepje naar de straat (`wegen()` in `src/lib/wereld/kaart.ts`). `kaart.test.ts` controleert dat elk spelgebouw bereikbaar is vanaf elk huis en een vrije deurmat heeft. Bezet (in tegels): Winkel (21,3; 21,5), Spellenhuis (48; 21), Bouwplaats (52,7; 21), Bladerhuisje (51,5; 11,6). Zoek voor een volgend gebouw een open plek langs de hoofdstraat en test hem.
+- **Terugknop:** een spel met een eigen gebouw geeft `wereldDeur` aan `SpelKader`, zodat "terug" in de wereld voor de deur uitkomt.

@@ -11,8 +11,10 @@ import './spelletjes.css'
 
 // Kader rond een spelletje: terugknop, titel en geluid aan of uit.
 // Met een thema (race, kasteel, tuin) krijgt de kop de prent van dat thema en kleurt het hele scherm mee.
-export default function SpelKader({ titel, terug, scherm = 'spel', vol = scherm !== 'spel', speler, children }: {
+export default function SpelKader({ titel, terug, scherm = 'spel', vol = scherm !== 'spel', speler, wereldDeur = false, children }: {
   titel: string; terug: (kindId: string) => string; scherm?: ThemaScherm
+  /** Het spelletje heeft een eigen gebouw in de wereld: wie daarvandaan kwam (`?van=wereld`), gaat daar ook terug naartoe. */
+  wereldDeur?: boolean
   /** Speelt iemand anders dan het kind uit de link (een ouder in Springland op de gsm). */
   speler?: Gebruiker
   /** Vult op tablet en pc precies het scherm (voor Bladzijden); standaard voor alles behalve een spelletje. */
@@ -28,7 +30,7 @@ export default function SpelKader({ titel, terug, scherm = 'spel', vol = scherm 
   if (!kind) return <Navigate to="/kinderen" replace />
   const thema = themaVan(kind)
   // Wie vanuit de wereld kwam (docs/wereld.md) gaat daar ook weer naartoe, maar alleen vanaf het scherm dat de deur opent.
-  const naarWereld = zoek.get('van') === 'wereld' && terug(kind.id) === `/kind/${kind.id}`
+  const naarWereld = zoek.get('van') === 'wereld' && (wereldDeur || terug(kind.id) === `/kind/${kind.id}`)
 
   const terugKnop = (
     <Link to={naarWereld ? `/kind/${kind.id}/wereld` : terug(kind.id)} className="rond" aria-label={naarWereld ? 'Terug naar de wereld' : 'Terug'}>

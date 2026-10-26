@@ -19,6 +19,21 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.38',
+    datum: '2026-10-26',
+    titel: 'Sint-Maarten: nieuw verhaal, Bladeren sorteren en een bladerhuisje in de wereld',
+    tekst: 'Over twee weken is het Sint-Maarten, dus de nacht maakte een herfstpakket. Het verhaal is meteen te lezen (Grote ogen). Het spelletje Bladeren sorteren en de zes nieuwe stukken kosten sterren in de winkel en liggen er pas als jullie ze vrijgeven in Kinderen → Winkelaanbod. Het spelletje heeft ook een eigen gebouw in De wereld, het bladerhuisje. Zolang het nieuw is (14 dagen) heeft het een gouden rand, en zolang een kind het spel niet kocht staat er een slotje op de deur. Het gebouw staat er voor een kind pas als jullie het spel voor dat kind vrijgaven. Er is ook een nieuw Springland-level bij: Het herfstbos, het vierde in Zonnevallei.',
+    verhaal: 'De lampion van Sint-Maarten (Grote ogen, 10 bladzijden)',
+    spel: { naam: 'Bladeren sorteren', prijs: 20 },
+    stukken: [
+      'Figuurtje: Herfstmuts (15), Met herfstblad (20), Lampion (15)',
+      'Mijn huis: Bladerhoop (15), Paddenstoelen (20), Lampionnenslinger (25)',
+      'Springland: Het herfstbos (vierde level in Zonnevallei, open door het vorige uit te spelen)',
+      'De wereld: het bladerhuisje met gouden rand en slot',
+    ],
+    open: 'De voorleesopnames voor het nieuwe verhaal en de nieuwe zinnen komen met de volgende ronde van de stemworkflow. Het bladerhuisje is op een tablet nog niet bekeken.',
+  },
+  {
     versie: '0.37',
     datum: '2026-10-25',
     titel: 'In de wereld zie je elkaar rondlopen',

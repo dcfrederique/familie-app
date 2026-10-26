@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest'
+import { spelMenu } from '../../data/spelletjes.ts'
 import { activiteitTegels } from '../../data/thema.ts'
 import { U, gebouwen } from '../../data/wereld.ts'
 import { GROND_Y, deurVan, maakKaart, opDeurmat, stap, voorHuisdeur, type HuisPlek, type Loper } from './kaart.ts'
@@ -58,9 +59,38 @@ describe('de kaart van de wereld', () => {
   })
 })
 
+describe('het gebouw van een spelletje', () => {
+  it('heeft een vrije plek op de deurmat, zodat je er met de joystick naartoe kunt lopen', () => {
+    for (const b of gebouwen.filter((x) => x.spel)) {
+      expect(kaart.vrij(b.x, b.y + 16), b.naam).toBe(true)
+      expect(opDeurmat({ x: b.x, y: b.y + 16 }, b), b.naam).toBe(true)
+    }
+  })
+
+  it('is bereikbaar vanaf elk huis en staat vrij van de straat en van de andere gebouwen', () => {
+    for (const b of gebouwen.filter((x) => x.spel)) {
+      for (const h of huizen) {
+        const pad = kaart.pad(h.deurX, GROND_Y + 70, b.x, b.y + 24)
+        expect(pad, `${b.naam} vanaf ${h.id}`).not.toBeNull()
+        expect(kaart.vrij(pad!.at(-1)![0], pad!.at(-1)![1]), b.naam).toBe(true)
+        // het eindpunt van het pad ligt vlak voor de deur
+        const [ex, ey] = pad!.at(-1)!
+        expect(Math.hypot(ex - b.x, ey - (b.y + 24)), b.naam).toBeLessThan(40)
+      }
+    }
+  })
+
+  it('staat ook in de kaart van een kind dat het gebouw niet ziet niet in de weg', () => {
+    const zonder = maakKaart(huizen, () => '#2D6BD6', gebouwen.filter((x) => !x.spel))
+    const b = gebouwen.find((x) => x.spel)!
+    expect(zonder.vrij(b.x, b.y - 20)).toBe(true)
+    expect(kaart.vrij(b.x, b.y - 20)).toBe(false)
+  })
+})
+
 describe('de gebouwen', () => {
   it('openen alleen schermen die bestaan, of zijn een bouwplaats', () => {
-    const paden = new Set(['winkel', 'spelen', ...activiteitTegels.map((t) => t.pad).filter(Boolean)])
+    const paden = new Set(['winkel', 'spelen', ...spelMenu.map((x) => x.sleutel), ...activiteitTegels.map((t) => t.pad).filter(Boolean)])
     for (const b of gebouwen) if (b.pad) expect(paden.has(b.pad), b.naam).toBe(true)
   })
 })
