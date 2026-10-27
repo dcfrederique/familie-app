@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Drie stijlen voor het poppetje</title>
+<style>
+:root{--bg:#EEF3F8;--kaart:#fff;--inkt:#1C2433;--zacht:#5B6B82;--rand:#D5DCE4}
+@media (prefers-color-scheme:dark){:root{--bg:#141A24;--kaart:#1E2735;--inkt:#EEF3F8;--zacht:#9AA9BE;--rand:#2F3C50}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--inkt);font-family:Nunito,system-ui,sans-serif;padding:16px}
+h1{font-size:22px;margin:0 0 4px}p.lead{margin:0 0 16px;color:var(--zacht);max-width:70ch}
+.rij{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:14px}
+.kaart{background:var(--kaart);border:1px solid var(--rand);border-radius:18px;padding:14px}
+.kaart h2{font-size:17px;margin:0 0 2px}.kaart .sub{color:var(--zacht);font-size:13px;margin:0 0 8px;min-height:3.2em}
+.gras{background:linear-gradient(#7CC46A,#6AB55A);border-radius:12px;padding:10px 6px 6px;display:grid;grid-template-columns:repeat(3,1fr);justify-items:center;gap:2px}
+.gras figure{margin:0;text-align:center}.gras figcaption{font-size:12px;font-weight:800;color:#fff;margin-top:-2px}
+.dir{display:flex;justify-content:space-around;align-items:flex-end;margin-top:10px;background:linear-gradient(#7CC46A,#6AB55A);border-radius:12px;padding:8px 4px}
+.dir canvas{width:23%!important;height:auto!important}
+canvas{display:block;image-rendering:auto}canvas.pix{image-rendering:pixelated}
+.nu img{width:96px;height:auto;display:block}
+.knoppen{margin:12px 0}.knoppen button{font:800 14px inherit;border:2px solid var(--rand);background:var(--kaart);color:var(--inkt);padding:8px 12px;border-radius:12px;cursor:pointer}
+</style></head><body>
+<h1>Drie stijlen voor het poppetje</h1>
+<p class="lead">Dezelfde kinderen, dezelfde kleuren en kleren uit de Kleerkast (kapsel, pet of kroontje, shirt, broek of rok, schoenen), in drie nieuwe stijlen. Elk poppetje loopt en draait rond. Links staat het huidige poppetje ter vergelijking.</p>
+<div class="rij" id="rij"></div>
+<script>
