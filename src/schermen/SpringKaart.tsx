@@ -180,6 +180,17 @@ export default function SpringKaart({ figuur, lezer, af, best, alles, plek, mete
               {/* Groot onzichtbaar tikvlak, het eilandje zelf is niet overal even breed */}
               <ellipse cy="0" rx="70" ry="56" fill="transparent" />
               <g transform="scale(1.15)"><LevelLand stijl={p.level.stijl} /></g>
+              {p.level.baas && (
+                // De baas van de wereld: een grote pompoen op het eilandje.
+                <g transform="translate(0 -26)" className="k-dobber">
+                  <ellipse cx="-14" cy="0" rx="17" ry="20" fill="#F08A24" /><ellipse cx="14" cy="0" rx="17" ry="20" fill="#F08A24" />
+                  <ellipse cx="0" cy="0" rx="15" ry="21" fill="#F6A33B" />
+                  <rect x="-3" y="-30" width="6" height="12" rx="3" fill="#5E8C3A" />
+                  <path d="M-12-6l7 3M12-6l-7 3" stroke="#6B3A12" strokeWidth="3" strokeLinecap="round" />
+                  <circle cx="-8" cy="-1" r="3" fill="#6B3A12" /><circle cx="8" cy="-1" r="3" fill="#6B3A12" />
+                  <path d="M-8 9q8 6 16 0" fill="none" stroke="#6B3A12" strokeWidth="3" strokeLinecap="round" />
+                </g>
+              )}
               {!isOpen && (
                 <g transform="translate(0 -12)">
                   <circle r="24" fill="#FFFFFF" stroke="rgba(0,0,0,.15)" strokeWidth="3" />

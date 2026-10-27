@@ -16,9 +16,9 @@ export const MIST_BREED = 320
 /** Het pad slingert vrij door elke wereld, soms even terug naar links: per wereld een eigen vorm (x als deel van de
  *  breedte zonder de randen, y als deel van de kaarthoogte), om de beurt. Linksboven blijft vrij voor het bordje. */
 const VORMEN: [number, number][][] = [
-  [[0.04, 0.72], [0.24, 0.42], [0.52, 0.34], [0.42, 0.76], [0.9, 0.58]],
-  [[0.06, 0.44], [0.3, 0.78], [0.56, 0.58], [0.62, 0.34], [0.94, 0.5]],
-  [[0.05, 0.58], [0.36, 0.8], [0.26, 0.4], [0.62, 0.34], [0.9, 0.72]],
+  [[0.04, 0.72], [0.2, 0.42], [0.44, 0.34], [0.34, 0.76], [0.66, 0.6], [0.93, 0.4]],
+  [[0.05, 0.44], [0.25, 0.78], [0.46, 0.58], [0.52, 0.3], [0.74, 0.7], [0.95, 0.46]],
+  [[0.04, 0.58], [0.3, 0.8], [0.22, 0.4], [0.52, 0.32], [0.7, 0.74], [0.94, 0.52]],
 ]
 
 export interface Punt { x: number; y: number }

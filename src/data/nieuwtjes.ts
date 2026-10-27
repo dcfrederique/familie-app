@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.53',
+    datum: '2026-10-27',
+    titel: 'Springland: hartjes, vlaggetjes en een baas',
+    tekst: 'Springland is uitdagender. Het figuurtje heeft nu 2 hartjes (3 bij Vanzelf lopen, voor Feline en Yuna): een beestje van opzij raken kost een hartje, erop springen kost niets, vallen in het water ook niet. Zijn de hartjes op, dan sta je met alle hartjes weer terug bij het laatste vlaggetje (of de start) en behoud je de sterren die je al had. Elke wereld eindigt nu met een baas: in Zonnevallei de pompoenbaas, die je met 3 hupjes op zijn hoofd (2 bij Vanzelf lopen) duizelig en dan verslaan moet, waarna het hekje bij het huisje open gaat. Een wereld heeft nu zes plekjes (vijf levels en de baas). Levels mogen voortaan soms moeilijk zijn: dat staat in het plan voor de nachtelijke bouw (docs/springland.md).',
+  },
+  {
     versie: '0.52',
     datum: '2026-10-27',
     titel: 'Eerste Android-app (proefversie)',

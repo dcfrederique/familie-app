@@ -49,7 +49,7 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - `docs/weekmenu.md`: weekmenu met de warme maaltijd per dag (ouderdeel Wij → Weekmenu), de kinderen zien die van vandaag op hun startscherm.
 - `docs/ouderdeel.md` en `prototypes/ouderdeel.html`: plan en mockup van het ouderdeel als beheertoepassing met hamburgermenu, en latere onderdelen (onze taken, boodschappen, notities, gezondheid). Fase 1 (menu, zijbalk op pc, IBM Plex Sans, rechte hoeken), Onze taken, Notities, Boodschappen en Gewicht zitten in de app (alleen voor ouder-accounts, RLS); Fitness en Loopschema nog niet.
 - `docs/gewicht.md`: Gezondheid → Gewicht en Mijn profiel (wegingen, BMI, grafiek met doel), privé per ouder.
-- `docs/springland.md`: Springland, het platformspel met het eigen figuurtje: landkaart met werelden, levels vrijspelen, en hoe je een level of wereld toevoegt (ook de nachtelijke bouw).
+- `docs/springland.md`: Springland, het platformspel met het eigen figuurtje: landkaart met werelden, hartjes en vlaggetjes, de baas op het einde van elke wereld, levels vrijspelen, en hoe je een level of wereld toevoegt (ook de nachtelijke bouw; levels mogen soms moeilijk zijn).
 - `docs/schrijven.md`: Schrijven met de vinger (letters, woorden en lijntjes in grijs volgen); gratis leerdeel, 3 sterren per rondje van vijf.
 - `docs/sterrenlimiet.md`: de ouders stellen per lerend spelletje (rekenen, verhaal, zelf gelezen, kleurplaat, schrijven) een daglimiet in sterren in, voor iedereen of per kind (Spelregels); de server past hem toe in `activiteit_opslaan`.
 - `docs/wereld-isometrisch.md`: onderzoek naar 2.5D/3D voor de wereld (27 oktober 2026). Een 3D-versie (Three.js) is gebouwd en proefgespeeld, maar Frederique **schrapte het 3D-concept volledig** (27 oktober 2026: speelt niet goed, kinderen vinden het niet leuk). **Bouw geen 3D**; de wereld blijft 2D (canvas, `docs/wereld.md`), met de stijl van nu. Wel mag het figuurtje in de wereld (uiterlijk en beweging) verbeterd worden.
@@ -114,7 +114,12 @@ Dit gebeurt in twee fases: eerst uitdenken (ontwerp), daarna coderen (bouw).
 
 - Springland: elke nacht komt er ook **één nieuw level** bij, passend bij het thema van de nacht. Volg
   `docs/springland.md`, "Een level toevoegen": achteraan `springLevelLijst` in `src/data/springen.ts`, in de laatste
-  wereld; is die vol (5 levels), dan eerst een nieuwe wereld achteraan `springWerelden`. De wereldkaart (van bovenaf,
+  wereld; een wereld heeft vijf gewone levels en als zesde de **baas** (`docs/springland.md`, "Baas"): heeft de laatste
+  wereld vijf gewone levels maar nog geen baas, bouw dan die baas (arena met `B`, `baas` in de data) in plaats van een gewoon
+  level, en is de wereld vol, begin dan eerst een nieuwe wereld achteraan `springWerelden`. Levels hebben nu hartjes
+  (2, bij Vanzelf lopen 3), beestjes en de baas kosten een hartje en bij 0 ga je terug naar het laatste vlaggetje. **Een level
+  mag soms moeilijk zijn** (ongeveer om de twee, drie levels een pittig level, zie "Moeilijkheid" in `docs/springland.md`),
+  maar het blijft haalbaar met alleen tikken (Vanzelf lopen voor Feline en Yuna). De wereldkaart (van bovenaf,
   het figuurtje wandelt naar het level) en het vrijspelen volgen vanzelf uit de data. Bedenk het level in het plan
   (naam, wereld, stijl, beestje, fruit, schets van het verloop). De bouw moet het robotje het nieuwe level laten
   uitspelen (`npx vitest run src/lib/spelletjes/springen.test.ts`); lukt dat niet, pas het level aan tot het haalbaar

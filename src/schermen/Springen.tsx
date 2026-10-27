@@ -76,6 +76,11 @@ function SpringScherm({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolea
     if (!level) return
     const v = new SpringVeld(canvas.current!, figuurSvg, {
       opStand: setStand,
+      opGebeurtenis: (g) => {
+        if (lezer) return
+        if (g === 'weer') leesVoor(zin.springenWeer)
+        if (g === 'verslagen') leesVoor(zin.springenBaasKlaar)
+      },
       opKlaar: (s) => {
         const punten = springPunten(s)
         if (!proef) {
@@ -93,7 +98,7 @@ function SpringScherm({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolea
     veld.current = v
     begin.current = Date.now()
     v.start(level, besturing)
-    if (!lezer) leesVoor(besturing === 'vanzelf' ? zin.springenUitleg : zin.springenZelf)
+    if (!lezer) leesVoor(springLevels[level].baas ? zin.springenBaas : besturing === 'vanzelf' ? zin.springenUitleg : zin.springenZelf)
     return () => { v.stop(); veld.current = null }
     // Alleen een ander level bouwt het veld opnieuw op; Nog eens herstart het veld zelf (opnieuw).
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -141,6 +146,18 @@ function SpringScherm({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolea
           <svg className="ic" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d={KAART} /></svg>
           {lezer && ` ${springLevels[level].naam}`}
         </button>
+        <div className="spring-levens" role="img" aria-label={stand ? `${stand.levens} van ${stand.maxLevens} hartjes` : undefined}>
+          {Array.from({ length: stand?.maxLevens ?? 0 }, (_, i) => (
+            <svg key={i} viewBox="0 0 24 24" width="36" height="36" className={`spring-hart${i < (stand?.levens ?? 0) ? '' : ' leeg'}`} aria-hidden="true">
+              <path d="M12 21s-8-5.2-8-11a4.6 4.6 0 0 1 8-3 4.6 4.6 0 0 1 8 3c0 5.800-8 11-8 11z" />
+            </svg>
+          ))}
+          {stand?.baas && !stand.baas.verslagen && (
+            <span className="spring-baas-teller" role="img" aria-label={`Baas: nog ${stand.baas.nodig - stand.baas.geraakt} keer`}>
+              {Array.from({ length: stand.baas.nodig }, (_, i) => <i key={i} className={i < stand.baas!.geraakt ? 'af' : ''} />)}
+            </span>
+          )}
+        </div>
         <div className="spel-score display" aria-live="polite">
           <Ster grootte={28} /> {stand ? gepakt(stand) : 0}<small> / {stand ? totaal(stand) : 0}</small>
         </div>
@@ -168,7 +185,7 @@ function SpringScherm({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolea
         )}
         {klaar && (
           <div className="penalty-einde reken-kaart" role="dialog" aria-label="Thuis!">
-            <h2 className="display klaar-titel">{lezer ? 'Je bent thuis!' : 'Hoera!'}</h2>
+            <h2 className="display klaar-titel">{lezer ? (springLevels[level].baas ? 'Baas verslagen!' : 'Je bent thuis!') : 'Hoera!'}</h2>
             <p className="klaar-uitleg spring-uitslag">
               <Ster grootte={30} /> {gepakt(klaar)} / {totaal(klaar)}
               {lezer && nieuwRecord && <span> · nieuw record!</span>}

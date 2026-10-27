@@ -3,12 +3,15 @@
 import { springLevels, type SpringBesturing, type SpringLevel, type SpringStijl } from '../../data/springen.ts'
 import { geluid } from './geluid.ts'
 import {
-  BEESTJE_HOOG, HOOG, nieuwSpel, spring, stap, type Beestje, type Ding, type Knoppen, type Springen,
+  BAAS_BREED, BAAS_HOOG, BEESTJE_HOOG, HOOG, nieuwSpel, spring, stap, type Baas, type Beestje, type Ding, type Knoppen,
+  type SpringGebeurtenis, type Springen,
 } from './springen.ts'
 
 interface Opties {
   opStand: (spel: Springen) => void
   opKlaar: (spel: Springen) => void
+  /** Bijzondere gebeurtenissen (omvallen, baas geraakt), bv. om voor te lezen. */
+  opGebeurtenis?: (g: SpringGebeurtenis) => void
 }
 
 const STER = new Path2D('M12 3l2.7 5.6l6.1.9l-4.4 4.3l1 6.1L12 17l-5.4 2.9l1-6.1L3.2 9.5l6.1-.9z')
@@ -119,6 +122,13 @@ export class SpringVeld {
       if (g === 'sprong') geluid.draai()
       if (g === 'veer' || g === 'hup') { geluid.paar(); this.veerKlok = 0.25 }
       if (g === 'bots' || g === 'val') geluid.oei()
+      if (g === 'baas' || g === 'verslagen') {
+        geluid.paar(); this.veerKlok = 0.25
+        const b = spel.baas
+        if (b) for (let i = 0; i < (g === 'verslagen' ? 8 : 3); i++) this.glinsters.push({ x: b.x + (i - 3) * 0.3, y: b.y - BAAS_HOOG * (0.4 + (i % 3) * 0.3), t: i * 0.05, kleur: '#F2B33D' })
+      }
+      if (g === 'vlag') geluid.paar()
+      if (g === 'weer' || g === 'baas' || g === 'verslagen' || g === 'vlag') this.opties.opGebeurtenis?.(g)
     }
     this.glinsters = this.glinsters.map((s) => ({ ...s, t: s.t + dt })).filter((s) => s.t < 0.7)
     this.teken()
@@ -167,12 +177,16 @@ export class SpringVeld {
     for (let r = 0; r < spel.hoog; r++) {
       for (let c = van; c < tot; c++) this.tekenVak(c, r, T)
     }
+    for (const v of spel.vlaggen) this.tekenVlag(v.x * T, v.y * T, T, v.bereikt)
     this.tekenHuis(spel.huis.x * T, spel.huis.y * T, T)
+    if (spel.baas && !spel.baas.verslagen) this.tekenPoort(spel, T)
     for (const d of spel.dingen) if (!d.weg && d.x > van - 1 && d.x < tot + 1) this.tekenDing(d, T)
     for (const b of spel.beestjes) this.tekenBeestje(b, T)
+    if (spel.baas && !spel.baas.verslagen) this.tekenBaas(spel.baas, T)
     this.tekenFiguur(T)
     for (const s of this.glinsters) this.tekenGlinster(s, T)
     ctx.restore()
+    this.tekenWeer()
   }
 
   private achtergrond(cam: number, T: number) {
@@ -380,6 +394,85 @@ export class SpringVeld {
       this.oog(-h * 0.22, -h * 0.65, T)
     }
     ctx.restore()
+  }
+
+  /** Een vlaggetje: grijs tot je erlangs liep, daarna rood en vrolijk wapperend. */
+  private tekenVlag(x: number, y: number, T: number, bereikt: boolean) {
+    const { ctx } = this
+    ctx.strokeStyle = '#5B6472'; ctx.lineWidth = T * 0.07
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y - T * 1.3); ctx.stroke()
+    ctx.fillStyle = bereikt ? '#E53935' : '#B8C0CC'
+    const wapper = bereikt ? Math.sin(this.spel.klok * 6 + x) * T * 0.07 : 0
+    ctx.beginPath(); ctx.moveTo(x, y - T * 1.3); ctx.lineTo(x + T * 0.7, y - T * 1.1 + wapper); ctx.lineTo(x, y - T * 0.85); ctx.closePath(); ctx.fill()
+  }
+
+  /** Het hekje voor het huisje: dicht tot de baas verslagen is. */
+  private tekenPoort(spel: Springen, T: number) {
+    const { ctx } = this
+    const x = (spel.huis.x - 2.2) * T, y = spel.huis.y * T
+    ctx.fillStyle = '#C98B4E'
+    for (let i = 0; i < 4; i++) ctx.fillRect(x - T * 0.5 + i * T * 0.3, y - T * 1.4, T * 0.18, T * 1.4)
+    ctx.fillRect(x - T * 0.55, y - T * 1.1, T * 1.3, T * 0.14)
+    ctx.fillRect(x - T * 0.55, y - T * 0.55, T * 1.3, T * 0.14)
+  }
+
+  /** De pompoenbaas: groot, boos-lief, duizelig met sterretjes na een hup, en een zwaaiende steel. */
+  private tekenBaas(b: Baas, T: number) {
+    const { ctx } = this
+    const w = BAAS_BREED * T, h = BAAS_HOOG * T
+    ctx.save()
+    ctx.translate(b.x * T, b.y * T)
+    const plat = b.hupKlok > 0 ? 0.7 : 1
+    const rol = b.duizel > 0 ? Math.sin(this.spel.klok * 10) * 0.12 : Math.sin(this.spel.klok * 8) * 0.03
+    ctx.rotate(rol)
+    ctx.scale(1, plat)
+    ctx.fillStyle = 'rgba(0,0,0,.15)'
+    ctx.beginPath(); ctx.ellipse(0, 0, w * 0.5, T * 0.1, 0, 0, Math.PI * 2); ctx.fill()
+    for (const [dx, kleur] of [[-0.26, '#EE8222'], [0.26, '#EE8222'], [0, '#F6A33B']] as const) {
+      ctx.fillStyle = kleur
+      ctx.beginPath(); ctx.ellipse(dx * w, -h * 0.48, w * (dx ? 0.3 : 0.27), h * 0.48, 0, 0, Math.PI * 2); ctx.fill()
+    }
+    ctx.fillStyle = '#5E8C3A'
+    ctx.beginPath(); ctx.roundRect(-w * 0.06, -h * 1.12, w * 0.12, h * 0.2, w * 0.05); ctx.fill()
+    // Gezicht: wenkbrauwen schuin (stoer), maar grote lieve ogen; duizelig = kruisjes en een scheve mond.
+    ctx.strokeStyle = '#6B3A12'; ctx.lineWidth = T * 0.12; ctx.lineCap = 'round'
+    if (b.duizel > 0) {
+      for (const dx of [-0.17, 0.17]) {
+        ctx.beginPath(); ctx.moveTo(dx * w - T * 0.2, -h * 0.65 - T * 0.2); ctx.lineTo(dx * w + T * 0.2, -h * 0.65 + T * 0.2)
+        ctx.moveTo(dx * w + T * 0.2, -h * 0.65 - T * 0.2); ctx.lineTo(dx * w - T * 0.2, -h * 0.65 + T * 0.2); ctx.stroke()
+      }
+      ctx.beginPath(); ctx.ellipse(0, -h * 0.28, T * 0.22, T * 0.16, 0, 0, Math.PI * 2); ctx.stroke()
+      // Sterretjes rond zijn kop.
+      ctx.fillStyle = '#F2B33D'
+      for (let i = 0; i < 3; i++) {
+        const a = this.spel.klok * 5 + (i * Math.PI * 2) / 3
+        ctx.beginPath(); ctx.arc(Math.cos(a) * w * 0.4, -h * 1.15 + Math.sin(a) * T * 0.2, T * 0.14, 0, Math.PI * 2); ctx.fill()
+      }
+    } else {
+      ctx.beginPath(); ctx.moveTo(-0.3 * w, -h * 0.85); ctx.lineTo(-0.1 * w, -h * 0.74); ctx.moveTo(0.3 * w, -h * 0.85); ctx.lineTo(0.1 * w, -h * 0.74); ctx.stroke()
+      ctx.fillStyle = '#FFFFFF'
+      for (const dx of [-0.17, 0.17]) { ctx.beginPath(); ctx.arc(dx * w, -h * 0.62, T * 0.22, 0, Math.PI * 2); ctx.fill() }
+      ctx.fillStyle = '#1C2433'
+      for (const dx of [-0.17, 0.17]) { ctx.beginPath(); ctx.arc(dx * w + b.richting * T * 0.07, -h * 0.62, T * 0.11, 0, Math.PI * 2); ctx.fill() }
+      ctx.beginPath(); ctx.arc(0, -h * 0.3, T * 0.35, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke()
+    }
+    ctx.restore()
+  }
+
+  /** Na het omvallen een bemoedigend bannertje bovenaan, niet in beeld bij gewoon spelen. */
+  private tekenWeer() {
+    const { ctx, W, H, spel } = this
+    if (spel.weerKlok <= 0) return
+    const a = Math.min(1, spel.weerKlok)
+    ctx.globalAlpha = a
+    ctx.fillStyle = '#FFFFFF'
+    const b = Math.min(W * 0.8, 420), h = Math.max(48, H * 0.1)
+    ctx.beginPath(); ctx.roundRect((W - b) / 2, H * 0.12, b, h, h / 2); ctx.fill()
+    ctx.fillStyle = '#1C2433'
+    ctx.font = `800 ${Math.round(h * 0.5)}px 'Baloo 2', Nunito, sans-serif`
+    ctx.textAlign = 'center'; ctx.textBaseline = 'middle'
+    ctx.fillText('Nog eens proberen!', W / 2, H * 0.12 + h / 2)
+    ctx.globalAlpha = 1
   }
 
   private oog(x: number, y: number, T: number) {

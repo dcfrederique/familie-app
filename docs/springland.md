@@ -26,6 +26,30 @@ Platformspel van opzij waarin het kind met zijn eigen figuurtje loopt en springt
   wandelt zelf naar het volgende plekje en start het.
 
 
+## Hartjes en vlaggetjes
+
+- Hartjes (27 oktober 2026, op vraag van Frederique): `LEVENS` in `springen.ts`, 2 bij Zelf lopen en 3 bij Vanzelf
+  lopen (Feline en Yuna lezen nog niet). Alleen een beestje van opzij (of de baas) kost een hartje; vallen niet.
+- Zijn de hartjes op, dan ga je terug naar het laatste **vlaggetje** (`C` in de kaart, wordt rood als je er langs
+  loopt) of naar de start, met alle hartjes weer vol en de sterren die je al had. Het level opnieuw beginnen is dus
+  nooit helemaal straffend, en wie niet leest hoort "Oei, je hartjes zijn op. Nog eens proberen!".
+- Een level zonder eigen `C` krijgt vanzelf één vlaggetje in het midden (twee bij meer dan 120 kolommen) op stevige
+  grond. Een pittig level mag er zelf een of twee zetten (liefst vlak voor het lastige stuk).
+
+## Baas (einde van een wereld)
+
+- Elke wereld heeft zes plekjes: **vijf gewone levels en als zesde de baas** (`levelsPerWereld = 6`). Een wereld is dus pas
+  vol met de baas erbij. De baas zit in een eigen level met `baas: { soort, naam }` in de data en een `B` in de
+  kaart: een korte aanloop (sterren, een gat of twee, een beestje) en dan een open stuk grond waar hij heen en weer
+  rolt voor het hekje bij het huisje (`POORT_AFSTAND`: dicht tot hij verslagen is).
+- Hup op zijn hoofd: dan is hij 2 seconden duizelig (kruisjes in zijn ogen, sterretjes, onschadelijk, je kan er
+  zelfs op blijven kaatsen) en rolt daarna iets sneller. 3 hups (`BAAS_NODIG`: 2 bij Vanzelf lopen) en hij is
+  verslagen. Van opzij raken kost een hartje en de baas draait om. De bolletjes naast de hartjes tellen af.
+- Geen schrik: de baas is boos-lief getekend, er is geen geweld, hij wordt gewoon duizelig en "poef" weg.
+- De eerste baas is de **pompoenbaas** (Zonnevallei, stijl bos). Een nieuwe baas = een nieuw `soort`: tekening in
+  `tekenBaas` (`springenVeld.ts`) en op het eilandje van de kaart (`SpringKaart.tsx`).
+- Robotje: `springen.test.ts` laat het robotje ook de baas verslaan (hij hupt als de baas aan komt rollen).
+
 ## Op de gsm
 
 - Liggend op een gsm (schermhoogte tot 520 px) vult Springland het hele scherm zoals een gsm-spelletje: de kop wordt
@@ -57,14 +81,27 @@ Alles is data in `src/data/springen.ts`; de kaart, het pad en het vrijspelen vol
    `kaart` (11 rijen van gelijke lengte, de bovenste rij leeg, 90 tot 150 kolommen, `P` links en `H` rechts).
 2. Wereld: hoogstens `levelsPerWereld` (5) levels per wereld. Is de laatste wereld vol, voeg dan eerst een nieuwe
    wereld toe achteraan `springWerelden` (`id`, `naam`, `stijl`: groen, zand, sneeuw of snoep) en zet het level daarin.
+   Een wereld heeft vijf gewone levels en als **zesde en laatste de baas** (zie "Baas"): heeft de laatste wereld vijf
+   gewone levels maar nog geen baas, dan bouwt de nacht die baas in plaats van een gewoon level.
 3. Stijl van het level: weide, bos, wolken, strand of sneeuw. Een nieuwe stijl kan, maar vraagt code: een rij in
    `kleuren` en een achtergrond in `springenVeld.ts`, en een icoon in `StijlIcoon` (`SpringKaart.tsx`) en een eilandje in `LevelLand`
    (`SpringKaartPrent.tsx`). Een nieuwe wereldstijl vraagt een rij in `wereldKleur`, grond in `Grond`, stukken in
    `Versiersel` en de lijsten `groot` en `klein` in `springKaart.ts`.
-4. Moeilijkheid: elk level iets anders dan het vorige, niet altijd moeilijker. Gaten hoogstens 3 vakjes breed,
-   een opstapje hoogstens 2 vakjes hoog, na een springpaddenstoel minstens 4 vakjes grond voor een gat, niets
-   recht boven een paddenstoel, en een beestje minstens 4 vakjes van een gat (het wandelt 2 vakjes heen en weer).
+4. Moeilijkheid: elk level iets anders dan het vorige. **Een level mag soms moeilijk zijn** (Frederique, 27 oktober
+   2026): een kind hoeft niet elk level de eerste keer te halen, en met hartjes en vlaggetjes is opnieuw proberen
+   zacht. Kies zelf een mooie mix: ongeveer om de twee, drie levels een pittig level.
+   - Gewoon: gaten hoogstens 3 vakjes breed, een opstapje hoogstens 2 vakjes hoog, na een springpaddenstoel minstens
+     4 vakjes grond voor een gat, niets recht boven een paddenstoel, en een beestje minstens 4 vakjes van een gat
+     (het wandelt 2 vakjes heen en weer).
+   - Pittig: twee of drie gaten kort na elkaar, een gat van 4 vakjes (met een planke of springveer als hulp), smalle
+     planken, twee beestjes vlak na elkaar of een beestje net na een gat, sneller wandelende beestjes (`snelheid` tot
+     1.6 in de data) en een vlaggetje (`C`) net voor het lastigste stuk. Het blijft haalbaar met één soort sprong en het
+     blijft vriendelijk: geen gaten waar je zonder hulp niet over kan, en nooit een stuk dat je helemaal niet
+     kan zien aankomen.
+   - Houd rekening met **Vanzelf lopen** (Feline, Yuna): daar loopt het figuurtje zelf (5 vakjes per seconde), je kan
+     enkel springen, en je hebt 3 hartjes. Een pittig level moet dus ook met alleen tikken te halen zijn; het robotje
+     test beide besturingen.
    Laat het aansluiten bij het seizoen of feest (CLAUDE.md, "Seizoenen en feesten") via naam, stijl en fruit.
-5. Draai `npm test`: `springen.test.ts` laat een robotje elk level uitspelen (vanzelf en zelf lopen) zonder te
-   vallen en `springKaart.test.ts` controleert werelden en volgorde. Lukt het robotje niet, pas dan de kaart aan.
+5. Draai `npm test`: `springen.test.ts` laat een robotje elk level uitspelen (vanzelf en zelf lopen) zonder dat
+   de hartjes op raken (een pittig level mag het robotje af en toe een hartje kosten, maar nooit alle) en `springKaart.test.ts` controleert werelden en volgorde. Lukt het robotje niet, pas dan de kaart aan.
 6. Nieuwtje met het volgende versienummer: "Springland: nieuw level <naam> in <wereld>".

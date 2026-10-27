@@ -8,6 +8,8 @@
 //   #  grond          =  plank of wolkje (vast, ook van onder)   ^  springveer (vast, kaatst je hoog op)
 //   *  ster           o  fruit                                   e  beestje dat heen en weer wandelt
 //   P  start          H  huisje (de finish)                      ~  water onderaan een gat (alleen versiering)
+//   C  vlaggetje: hier kom je terug als je hartjes op zijn (zonder C komen er vanzelf een of twee)
+//   B  de baas (alleen in het laatste level van een wereld, in een arena)
 
 export type SpringLevel = string
 
@@ -31,11 +33,15 @@ export interface SpringLevelInfo {
   /** Wat er in dit level wandelt en welk fruit er ligt (alleen de tekening verschilt). */
   beestje: 'slak' | 'egel' | 'vogel'
   fruit: 'appel' | 'aardbei' | 'kers'
+  /** Een baas op het einde van de wereld (het laatste level): de kaart is dan een kleine arena met B. */
+  baas?: { soort: 'pompoen'; naam: string }
+  /** Hoe snel de beestjes wandelen, 1 = gewoon. Een pittig level mag er een tikje sneller zijn (tot 1.6). */
+  snelheid?: number
   kaart: readonly string[]
 }
 
-/** Zoveel levels passen er in een wereld; is de laatste wereld vol, dan begint de nacht een nieuwe. */
-export const levelsPerWereld = 5
+/** Zoveel levels passen er in een wereld: vijf gewone en als zesde de baas. Is de laatste wereld vol, dan begint de nacht een nieuwe. */
+export const levelsPerWereld = 6
 
 /** De werelden in volgorde op de landkaart. */
 export const springWerelden: SpringWereld[] = [
@@ -127,6 +133,24 @@ export const springLevelLijst: SpringLevelInfo[] = [
       '  P    o o o          ^                     e       ##    o o         e               ^                         o o o   H   ',
       '####################################   #######################################   #######################   #################',
       '####################################~~~#######################################~~~#######################~~~#################',
+    ],
+  },
+  {
+    id: 'pompoenbaas', wereld: 'zonnevallei', stijl: 'bos',
+    naam: 'De pompoenbaas', beestje: 'egel', fruit: 'appel',
+    baas: { soort: 'pompoen', naam: 'Pompoenbaas' },
+    kaart: [
+      '                                                                  ',
+      '                                                                  ',
+      '                                                                  ',
+      '                                                                  ',
+      '                      ***                               ***       ',
+      '                                            *****                 ',
+      '            **               ****                                 ',
+      '                             ====                                 ',
+      '  P   o o o     e                   o C o         B           H   ',
+      '#########################  #######  ##############################',
+      '#########################~~#######~~##############################',
     ],
   },
 ]

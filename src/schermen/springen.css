@@ -160,3 +160,11 @@
 }
 @keyframes spring-draai { 0%, 30% { transform: rotate(0); } 60%, 100% { transform: rotate(-90deg); } }
 @media (prefers-reduced-motion: reduce) { .spring-draai svg { animation: none; } }
+
+/* Hartjes (levens) en de teller van de baas in de kop van het level */
+.spring-levens { display: flex; align-items: center; gap: 4px; padding: 6px 12px; border-radius: 999px; background: var(--surface); }
+.spring-hart { fill: #E53935; stroke: #fff; stroke-width: 1.2; transition: transform .2s; }
+.spring-hart.leeg { fill: #B8C0CC; opacity: .6; transform: scale(.85); }
+.spring-baas-teller { display: inline-flex; gap: 4px; margin-left: 10px; padding-left: 10px; border-left: 3px solid rgba(0, 0, 0, .12); }
+.spring-baas-teller i { width: 22px; height: 22px; border-radius: 50%; background: #F08A24; border: 3px solid #fff; box-shadow: 0 0 0 1px rgba(0, 0, 0, .15); }
+.spring-baas-teller i.af { background: #D9DEE6; }

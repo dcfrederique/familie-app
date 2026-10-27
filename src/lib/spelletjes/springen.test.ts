@@ -26,8 +26,11 @@ function robot(s: Springen): { s: Springen; knoppen: Knoppen } {
   const voor = Math.floor(s.x + 0.6)
   const muur = isVast(s, voor, r - 1) || isVast(s, voor, r - 2)
   const gat = !isVast(s, Math.floor(s.x + 0.55), r) && !isVast(s, Math.floor(s.x + 1.2), r) && !isVast(s, Math.floor(s.x + 1.2), r + 1)
-  const beestje = s.beestjes.some((b) => b.x - s.x > 0 && b.x - s.x < 1.9 && Math.abs(b.y - s.y) < 1)
-  return { s: s.opGrond && (muur || gat || beestje) ? spring(s) : s, knoppen: rechts }
+  const beestje = s.beestjes.some((b) => b.x - s.x > 0 && b.x - s.x < 2.6 && Math.abs(b.y - s.y) < 1)
+  // De baas: hupsen als hij net voor je rolt (een duizelige baas laat je gewoon links liggen).
+  const b = s.baas
+  const baas = !!b && !b.verslagen && b.duizel <= 0 && Math.abs(b.x - s.x) < 3 && (s.x < s.huis.x - 3.3 || Math.sign(s.x - b.x) === b.richting)
+  return { s: s.opGrond && (muur || gat || beestje || baas) ? spring(s) : s, knoppen: rechts }
 }
 
 describe('Springland', () => {
@@ -101,7 +104,11 @@ describe('Springland', () => {
         const { s, alles } = speel(nieuwSpel(level, besturing), 180, robot)
         expect(s.klaar).toBe(true)
         expect(alles.at(-1)).toBe('klaar')
-        expect(s.vallen).toBe(0)
+        // Een beestje kan je net in een gat duwen; anders val je nooit.
+        if (s.geraakt === 0) expect(s.vallen).toBe(0)
+        // Je haalt elk level zonder dat alle hartjes op raken (een beestje raakt je hoogstens af en toe).
+        expect(s.omvallen).toBe(0)
+        expect(s.baas ? s.baas.verslagen : true).toBe(true)
         expect(springPunten(s)).toBeGreaterThan(totaal(s) / 3)
       })
     }
