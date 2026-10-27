@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="nl"><meta charset="utf-8"><title>Wereld: fantasiehuisjes</title>
+<style>
+body{margin:0;background:#7CC46A;font-family:Nunito,system-ui,sans-serif}
+.vak{position:relative;height:640px;overflow:hidden}
+.t{position:absolute;left:14px;top:12px;background:#FFF6DC;border:3px solid #8A5A33;border-radius:14px;padding:6px 14px;font-weight:800;color:#3B2A00;font-size:20px;z-index:2}
+svg{width:100%;height:100%}
+</style>
+<body><div class="vak"><div class="t">Speelse fantasiewereld: elk gebouw een eigen vorm en draai</div><svg viewBox="0 0 1200 640" id="s"></svg></div>
+<script>
+const R=(i,k)=>{const n=Math.sin(i*127.1+k*311.7)*43758.5453;return n-Math.floor(n)}
+const L='stroke-linejoin="round" stroke-linecap="round"'
+let h='<rect width="1200" height="640" fill="#7CC46A"/>'
+for(let i=0;i<70;i++)h+=`<ellipse cx="${R(i,1)*1200}" cy="${R(i,2)*640}" rx="50" ry="16" fill="#6AB55A" opacity=".5"/>`
+// kronkelend grindpad
+h+='<path d="M-20 520Q200 470 420 520T820 520T1240 500" fill="none" stroke="#CDBF9F" stroke-width="104" stroke-linecap="round"/><path d="M-20 520Q200 470 420 520T820 520T1240 500" fill="none" stroke="#E2D9C6" stroke-width="94" stroke-linecap="round"/>'
+for(let i=0;i<500;i++){const x=R(i,3)*1200,y=470+R(i,4)*110;h+=`<circle cx="${x}" cy="${y}" r="${1.2+i%3*.6}" fill="${i%3?'#F1EBDD':'#B9AA88'}" opacity=".9"/>`}
+// bloemen
+for(let i=0;i<70;i++){const x=R(i,5)*1200,y=60+R(i,6)*400;const k=['#fff','#FFD84A','#FF8FB8','#C9A6F2'][i%4];h+=`<circle cx="${x}" cy="${y}" r="4" fill="${k}"/><circle cx="${x}" cy="${y}" r="1.4" fill="#F2B33D"/>`}
+const boom=(x,y,k,s=1)=>`<g transform="translate(${x} ${y}) scale(${s})"><ellipse cx="14" cy="3" rx="44" ry="13" fill="#000" opacity=".15"/><path d="M-10 0Q-6-40-14-70H14Q6-40 10 0Z" fill="#7A4A2A"/><circle cx="0" cy="-104" r="64" fill="#2E8A3E"/><circle cx="-36" cy="-90" r="40" fill="#3FA04C"/><circle cx="38" cy="-88" r="38" fill="#2A7E39"/><circle cx="-8" cy="-132" r="38" fill="#4DB65A"/>`+[[-44,-112],[-12,-150],[30,-128],[52,-96],[-60,-86],[8,-100]].map(([a,b])=>`<circle cx="${a}" cy="${b}" r="7" fill="${k}"/><circle cx="${a-2}" cy="${b-2}" r="2.2" fill="#fff" opacity=".6"/>`).join('')+`</g>`
+const schaduw=(x,y,w)=>`<ellipse cx="${x+w/2+20}" cy="${y+6}" rx="${w/2+40}" ry="16" fill="#000" opacity=".16"/>`
+const bloembak=(x,y)=>`<rect x="${x}" y="${y-14}" width="44" height="14" rx="5" fill="#B9854F"/>`+[0,1,2].map(i=>`<circle cx="${x+8+i*14}" cy="${y-20}" r="7" fill="${['#FF6B8B','#FFD84A','#C9A6F2'][i]}"/>`).join('')
+const rondraam=(x,y,r=17)=>`<circle cx="${x}" cy="${y}" r="${r+5}" fill="#fff"/><circle cx="${x}" cy="${y}" r="${r}" fill="#9CCBEA"/><path d="M${x-r} ${y}h${2*r}M${x} ${y-r}v${2*r}" stroke="#fff" stroke-width="3"/><circle cx="${x-r*.4}" cy="${y-r*.4}" r="3" fill="#fff" opacity=".7"/>`
+const slinger=(x0,x1,y,kl)=>{let s=`<path d="M${x0} ${y}Q${(x0+x1)/2} ${y+26} ${x1} ${y}" fill="none" stroke="#6E4224" stroke-width="2"/>`;const n=7;for(let i=1;i<n;i++){const t=i/n,x=x0+(x1-x0)*t,yy=y+26*2*t*(1-t);s+=`<path d="M${x-7} ${yy}L${x+7} ${yy}L${x} ${yy+16}Z" fill="${kl[i%kl.length]}"/>`}return s}
+
+// 1. Sprookjeshuisje met golvend dak, ronde ramen, scheve schoorsteen, bloembak
+function cottage(x,y){
+  let s=schaduw(x,y,190)
+  // zijgevel (rechts)
+  s+=`<polygon points="${x+190} ${y} ${x+270} ${y-44} ${x+270} ${y-146} ${x+190} ${y-100}" fill="#D9A8C8"/><circle cx="${x+230}" cy="${y-92}" r="19" fill="#fff"/><circle cx="${x+230}" cy="${y-92}" r="14" fill="#9CCBEA"/>`
+  // dakvlak rechts met scallops
+  s+=`<path d="M${x+95} ${y-196}L${x+175} ${y-240}L${x+290} ${y-190}L${x+205} ${y-134}Z" fill="#7B4FC4"/>`
+  for(let i=0;i<5;i++)s+=`<path d="M${x+100+i*22} ${y-190-i*2} q14 14 28 0" fill="none" stroke="#5B35A0" stroke-width="3" ${L}/>`
+  // voorgevel + gevelspits
+  s+=`<path d="M${x} ${y}H${x+190}V${y-100}Q${x+190} ${y-130} ${x+95} ${y-196}Q${x} ${y-130} ${x} ${y-100}Z" fill="#FFE0A8"/>`
+  // golvende dakrand voor
+  s+=`<path d="M${x-16} ${y-96}Q${x+10} ${y-150} ${x+95} ${y-208}Q${x+180} ${y-150} ${x+206} ${y-96}Q${x+190} ${y-104} ${x+170} ${y-96}Q${x+150} ${y-108} ${x+130} ${y-96}Q${x+110} ${y-108} ${x+90} ${y-96}Q${x+70} ${y-108} ${x+50} ${y-96}Q${x+30} ${y-108} ${x+10} ${y-96}Z" fill="#9B6BE0" stroke="#5B35A0" stroke-width="3" ${L}/>`
+  s+=rondraam(x+95,y-150,16)+rondraam(x+40,y-56)+rondraam(x+150,y-56)
+  s+=`<path d="M${x+75} ${y}V${y-52}Q${x+75} ${y-76} ${x+95} ${y-76}Q${x+115} ${y-76} ${x+115} ${y-52}V${y}Z" fill="#E46AA8"/><circle cx="${x+107}" cy="${y-30}" r="3" fill="#F2C230"/>`
+  s+=bloembak(x+12,y-2)+bloembak(x+134,y-2)
+  // scheve schoorsteen met rookpluim
+  s+=`<g transform="rotate(8 ${x+215} ${y-190})"><rect x="${x+205}" y="${y-250}" width="26" height="46" fill="#B7714A" rx="3"/></g><circle cx="${x+226}" cy="${y-268}" r="9" fill="#fff" opacity=".85"/><circle cx="${x+240}" cy="${y-290}" r="13" fill="#fff" opacity=".7"/><circle cx="${x+258}" cy="${y-316}" r="16" fill="#fff" opacity=".5"/>`
+  return s
+}
+// 2. Paddenstoelhuis (voorkant)
+function paddenstoel(x,y){
+  let s=schaduw(x,y,150)
+  s+=`<path d="M${x+20} ${y}Q${x+10} ${y-60} ${x+30} ${y-100}H${x+130}Q${x+150} ${y-60} ${x+140} ${y}Z" fill="#FFF1D6"/>`
+  s+=`<path d="M${x+30} ${y-100}H${x+130}" stroke="#E5CFA0" stroke-width="4"/>`
+  s+=`<path d="M${x-40} ${y-96}Q${x-30} ${y-230} ${x+80} ${y-236}Q${x+190} ${y-230} ${x+200} ${y-96}Q${x+80} ${y-70} ${x-40} ${y-96}Z" fill="#E04B3A" stroke="#A8301F" stroke-width="3" ${L}/>`
+  for(const [a,b,r] of [[10,-170,15],[66,-205,12],[120,-176,17],[150,-130,10],[30,-120,9],[92,-150,13]])s+=`<circle cx="${x+a}" cy="${y+b}" r="${r}" fill="#fff"/>`
+  s+=`<path d="M${x+56} ${y}V${y-40}Q${x+56} ${y-62} ${x+80} ${y-62}Q${x+104} ${y-62} ${x+104} ${y-40}V${y}Z" fill="#8A5A33"/><circle cx="${x+96}" cy="${y-28}" r="3" fill="#F2C230"/>`
+  s+=rondraam(x+34,y-52,12)+rondraam(x+126,y-52,12)
+  s+=`<path d="M${x+10} ${y}q-10-26 6-30M${x+150} ${y}q10-26-6-30" stroke="#2E8A3E" stroke-width="5" fill="none" ${L}/>`
+  return s
+}
+// 3. Torenhuis met kegeldak en vlag, schuin naar links (gespiegeld)
+function toren(x,y){
+  let s=schaduw(x,y,120)
+  s+=`<rect x="${x}" y="${y-210}" width="120" height="210" rx="10" fill="#BFE3FA"/>`
+  s+=`<polygon points="${x+120} ${y} ${x+190} ${y-38} ${x+190} ${y-244} ${x+120} ${y-210}" fill="#8EB8DE"/><path d="M${x+120} ${y-100}L${x+190} ${y-138}M${x+120} ${y-170}L${x+190} ${y-208}" stroke="#7AA5CC" stroke-width="3"/>`
+  s+=`<path d="M${x-26} ${y-200}L${x+60} ${y-330}L${x+146} ${y-200}Q${x+60} ${y-176} ${x-26} ${y-200}Z" fill="#FF8A3D" stroke="#C25A12" stroke-width="3" ${L}/>`
+  s+=`<polygon points="${x+60} ${y-330} ${x+146} ${y-200} ${x+198} ${y-232} ${x+104} ${y-306}" fill="#E5701F" opacity=".95"/>`
+  s+=`<path d="M${x+60} ${y-330}V${y-372}" stroke="#6E4224" stroke-width="4"/><path d="M${x+60} ${y-372}l46 12l-46 14z" fill="#FFD84A" stroke="#C79A10" stroke-width="2" ${L}/>`
+  s+=rondraam(x+60,y-150,20)+rondraam(x+60,y-88,14)
+  s+=`<path d="M${x+38} ${y}V${y-40}Q${x+38} ${y-58} ${x+60} ${y-58}Q${x+82} ${y-58} ${x+82} ${y-40}V${y}Z" fill="#7A4A2A"/>`
+  s+=slinger(x-10,x+130,y-190,['#FF6B8B','#FFD84A','#7AD0FF','#7DE08A'])
+  return s
+}
+h+=boom(1100,470,'#D93A3A',1.05)+boom(20,455,'#F2994A',1.1)
+h+=cottage(70,460)
+h+=paddenstoel(460,470)
+h+=`<g transform="translate(${2*790+120} 0) scale(-1 1)">${toren(790,456)}</g>`
+h+=boom(1010,420,'#D93A3A',.9)
+// een paar paddenstoeltjes en een vlinder
+for(const [x,y] of [[400,520],[690,560],[960,540]])h+=`<ellipse cx="${x}" cy="${y+4}" rx="12" ry="4" fill="#000" opacity=".15"/><rect x="${x-3}" y="${y-12}" width="6" height="14" fill="#FFF1D6"/><path d="M${x-12} ${y-10}Q${x} ${y-30} ${x+12} ${y-10}Z" fill="#E04B3A"/><circle cx="${x-3}" cy="${y-17}" r="2" fill="#fff"/><circle cx="${x+4}" cy="${y-14}" r="1.6" fill="#fff"/>`
+for(const [x,y,k] of [[330,200,'#FF8FB8'],[900,160,'#FFD84A'],[640,250,'#8EC5FF']])h+=`<ellipse cx="${x-5}" cy="${y}" rx="6" ry="7" fill="${k}" transform="rotate(-20 ${x-5} ${y})"/><ellipse cx="${x+5}" cy="${y}" rx="6" ry="7" fill="${k}" transform="rotate(20 ${x+5} ${y})"/><rect x="${x-1}" y="${y-6}" width="2" height="12" fill="#3B2A2A"/>`
+// figuurtje
+h+=`<ellipse cx="560" cy="590" rx="17" ry="6" fill="#000" opacity=".18"/><rect x="547" y="558" width="26" height="30" rx="5" fill="#2D6BD6"/><circle cx="560" cy="544" r="15" fill="#F5D2B3"/><path d="M545 542q15-22 30 0q-15-8-30 0z" fill="#6B3E1F"/><circle cx="555" cy="546" r="2" fill="#1C2433"/><circle cx="565" cy="546" r="2" fill="#1C2433"/>`
+s.innerHTML=h
+</script></html>
