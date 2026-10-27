@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="nl"><meta charset="utf-8"><title>Wereld: camera dichtbij met scherm eromheen</title>
+<style>
+body{margin:0;background:#222;font-family:"Baloo 2",Nunito,system-ui,sans-serif}
+.vak{position:relative;width:1194px;height:834px;margin:0 auto;overflow:hidden}
+svg{width:100%;height:100%;display:block}
+.kaart{position:absolute;background:#FFF6DC;border:3px solid #8A5A33;border-radius:18px;color:#3B2A00;font-weight:800;box-shadow:0 4px 0 rgba(0,0,0,.18)}
+.prof{left:14px;top:14px;padding:8px 16px 8px 8px;display:flex;gap:10px;align-items:center;font-size:22px}
+.prof .av{width:54px;height:54px;border-radius:14px;background:#E3ECFB;overflow:hidden}
+.prof small{display:block;font-size:14px;font-weight:700;color:#7A5A2A}
+.opd{left:14px;top:96px;width:290px;padding:10px 14px;font-size:17px;line-height:1.25}
+.opd b{background:#2D6BD6;color:#fff;border-radius:8px;padding:1px 8px;font-size:14px;margin-right:6px}
+.mini{right:14px;top:14px;width:150px;height:150px;border-radius:50%;overflow:hidden;padding:0;border-width:5px}
+.menu{right:14px;top:182px;width:64px;height:64px;border-radius:50%;display:grid;place-items:center;font-size:30px}
+.sterren{right:178px;top:20px;padding:8px 18px;font-size:26px}
+</style>
+<body><div class="vak">
+<svg viewBox="0 0 1194 834" id="s"></svg>
+<div class="kaart prof"><div class="av"><svg viewBox="0 0 54 54"><rect width="54" height="54" fill="#E3ECFB"/><rect x="13" y="34" width="28" height="22" rx="8" fill="#2D6BD6"/><circle cx="27" cy="24" r="13" fill="#F5D2B3"/><path d="M13 22q14-22 28 0q-14-8-28 0z" fill="#6B3E1F"/><circle cx="22" cy="26" r="2" fill="#1C2433"/><circle cx="32" cy="26" r="2" fill="#1C2433"/></svg></div><div>Luca<small>⭐ 50 sterren</small></div></div>
+<div class="kaart opd"><b>Opdracht</b>Breng de brief naar Yuna's huis<br><span style="font-weight:700;color:#7A5A2A">Volg de gele pijl ➜</span></div>
+<div class="kaart mini"><svg viewBox="0 0 150 150"><rect width="150" height="150" fill="#7CC46A"/><path d="M0 90H150M75 90V150" stroke="#E2D9C6" stroke-width="16"/><rect x="20" y="40" width="22" height="22" rx="4" fill="#C8452F"/><rect x="96" y="38" width="22" height="22" rx="4" fill="#3E6FB5"/><circle cx="60" cy="118" r="14" fill="#4FB3E8"/><circle cx="70" cy="92" r="7" fill="#2D6BD6" stroke="#fff" stroke-width="3"/><circle cx="104" cy="92" r="5" fill="#E46AA8" stroke="#fff" stroke-width="2"/></svg></div>
+<div class="kaart menu">☰</div>
+</div>
+<script>
+const R=(i,k)=>{const n=Math.sin(i*127.1+k*311.7)*43758.5453;return n-Math.floor(n)}
+const L='stroke-linejoin="round" stroke-linecap="round"'
+let h=`<defs>
+<radialGradient id="hoofd" cx=".38" cy=".3" r=".8"><stop offset="0" stop-color="#FFE6CF"/><stop offset=".6" stop-color="#F5D2B3"/><stop offset="1" stop-color="#D9A982"/></radialGradient>
+<linearGradient id="shirt" x1="0" x2="1"><stop offset="0" stop-color="#4C8CF0"/><stop offset=".55" stop-color="#2D6BD6"/><stop offset="1" stop-color="#1F4FA6"/></linearGradient>
+<linearGradient id="broek" x1="0" x2="1"><stop offset="0" stop-color="#4A5568"/><stop offset="1" stop-color="#2B3240"/></linearGradient>
+<linearGradient id="haar" x1="0" x2="1"><stop offset="0" stop-color="#8A5530"/><stop offset="1" stop-color="#5A3418"/></linearGradient>
+</defs>`
+h+='<rect width="1194" height="834" fill="#7CC46A"/>'
+for(let i=0;i<70;i++)h+=`<ellipse cx="${R(i,1)*1194}" cy="${R(i,2)*834}" rx="60" ry="20" fill="#6AB55A" opacity=".5"/>`
+// verharde pleinvloer met tegels (zoals in het voorbeeld), opgehoogd met zijkant
+const plein=(x0,y0,x1,y1)=>{let s=`<rect x="${x0+4}" y="${y0+24}" width="${x1-x0+10}" height="${y1-y0}" rx="26" fill="#000" opacity=".16"/><rect x="${x0}" y="${y0+14}" width="${x1-x0+6}" height="${y1-y0}" rx="24" fill="#A89674" stroke="#8F7E5C" stroke-width="4"/><rect x="${x0}" y="${y0}" width="${x1-x0}" height="${y1-y0}" rx="24" fill="#E2D9C6" stroke="#CDBF9F" stroke-width="4"/>`
+ for(let y=y0+20;y<y1-10;y+=44){const o=((y-y0)/44|0)%2?22:0;for(let x=x0+16+o;x<x1-30;x+=44)s+=`<rect x="${x}" y="${y}" width="40" height="40" rx="9" fill="${(x+y)%3?'#EAE2D1':'#DDD3BD'}" stroke="#CDBF9F" stroke-width="2"/>`}return s}
+h+=plein(-40,430,1240,640)
+// bloementuin met hekje (zoals in het voorbeeld)
+const tuin=(x,y,w,hh)=>{let s=`<rect x="${x}" y="${y}" width="${w}" height="${hh}" rx="14" fill="#8A5A33" opacity=".55"/><rect x="${x+6}" y="${y+6}" width="${w-12}" height="${hh-12}" rx="10" fill="#6E4A2A"/>`
+ for(let i=0;i<14;i++){const cx=x+22+R(i,9)*(w-44),cy=y+18+R(i,10)*(hh-36),k=['#FF5A6E','#FFD84A','#FF8FB8','#fff'][i%4];s+=`<path d="M${cx} ${cy+10}V${cy+2}" stroke="#2E8A3E" stroke-width="3"/><circle cx="${cx}" cy="${cy}" r="8" fill="${k}"/><circle cx="${cx}" cy="${cy}" r="3" fill="#F2B33D"/>`}
+ for(let i=0;i<=w;i+=22)s+=`<rect x="${x+i-3}" y="${y+hh-4}" width="6" height="24" rx="2" fill="#B9854F"/>`
+ s+=`<rect x="${x}" y="${y+hh+4}" width="${w}" height="6" rx="3" fill="#D9A06A"/><rect x="${x}" y="${y+hh+14}" width="${w}" height="5" rx="2.5" fill="#B9854F"/>`;return s}
+h+=tuin(820,420,300,110)
+const boom=(x,y,k,s=1)=>`<g transform="translate(${x} ${y}) scale(${s})"><ellipse cx="16" cy="3" rx="46" ry="14" fill="#000" opacity=".16"/><path d="M-10 0Q-6-40-14-70H14Q6-40 10 0Z" fill="#7A4A2A"/><circle cx="0" cy="-104" r="64" fill="#2E8A3E"/><circle cx="-36" cy="-90" r="40" fill="#3FA04C"/><circle cx="38" cy="-88" r="38" fill="#2A7E39"/><circle cx="-8" cy="-132" r="38" fill="#4DB65A"/>`+[[-44,-112],[-12,-150],[30,-128],[52,-96],[-60,-86],[8,-100]].map(([a,b])=>`<circle cx="${a}" cy="${b}" r="7" fill="${k}"/><circle cx="${a-2}" cy="${b-2}" r="2.2" fill="#fff" opacity=".6"/>`).join('')+`</g>`
+// huis met zijgevel (kopie van Mijn huis in schuine tekening)
+function huis(x,y,{W=190,H=104,P=62,dx=92,dy=-52,muur='#F2D9A8',zij='#D9BE88',dak='#D8452B',dakD='#A93A27',deur='#E46AA8'}={}){
+  const R_=x+W,T=y-H,A=[x+W/2,T-P],wand=(u,v)=>`${R_+u*dx} ${y+u*dy-v}`
+  let s=`<polygon points="${x} ${y} ${R_} ${y} ${R_+dx+40} ${y+dy+8} ${x+dx+40} ${y+dy+8}" fill="#000" opacity=".16"/>`
+  s+=`<polygon points="${wand(0,0)} ${wand(1,0)} ${wand(1,H)} ${wand(0,H)}" fill="${zij}"/>`
+  for(const u0 of [.18,.58]){const u1=u0+.24;s+=`<polygon points="${wand(u0,28)} ${wand(u1,28)} ${wand(u1,82)} ${wand(u0,82)}" fill="#fff"/><polygon points="${wand(u0+.02,32)} ${wand(u1-.02,32)} ${wand(u1-.02,78)} ${wand(u0+.02,78)}" fill="#9CCBEA"/>`}
+  s+=`<polygon points="${A[0]} ${A[1]} ${A[0]+dx} ${A[1]+dy} ${R_+dx+10} ${T+dy+6} ${R_+10} ${T+6}" fill="${dak}" stroke="${dakD}" stroke-width="3" ${L}/>`
+  for(let i=1;i<6;i++){const t=i/6;s+=`<path d="M${A[0]+(R_+10-A[0])*t} ${A[1]+(T+6-A[1])*t}l${dx} ${dy}" stroke="${dakD}" stroke-width="2" opacity=".7"/>`}
+  s+=`<polygon points="${x} ${y} ${R_} ${y} ${R_} ${T} ${A[0]} ${A[1]} ${x} ${T}" fill="${muur}"/>`
+  s+=`<polygon points="${x-12} ${T+6} ${A[0]} ${A[1]-6} ${R_+10} ${T+6} ${R_+10} ${T+16} ${A[0]} ${A[1]+4} ${x-12} ${T+16}" fill="${dak}" stroke="${dakD}" stroke-width="3" ${L}/>`
+  const raam=rx=>`<rect x="${rx}" y="${T+34}" width="44" height="44" rx="4" fill="#fff"/><rect x="${rx+5}" y="${T+39}" width="34" height="34" fill="#9CCBEA"/><path d="M${rx+22} ${T+39}v34M${rx+5} ${T+56}h34" stroke="#fff" stroke-width="3"/>`
+  s+=raam(x+16)+raam(R_-60)+`<rect x="${x+W/2-22}" y="${y-72}" width="44" height="72" rx="6" fill="${deur}"/><rect x="${x+W/2-14}" y="${y-64}" width="28" height="24" rx="3" fill="#BFE3FA"/><rect x="${x+W/2-30}" y="${y-4}" width="60" height="8" rx="3" fill="#C8CED6"/>`
+  return s
+}
+// figuurtje met volume: verlopen kleuren, ronde vormen, lichtpunt, schaduw; kijkt schuin naar rechts
+function figuur(x,y,{naam='',kleur='#2D6BD6',schaal=1.5,schirt='url(#shirt)',loop=0}={}){
+  const s=schaal
+  let o=`<g transform="translate(${x} ${y}) scale(${s})">`
+  o+=`<ellipse cx="6" cy="2" rx="24" ry="8" fill="#000" opacity=".22"/>`
+  // benen (stappen), schoenen
+  o+=`<path d="M-11 -34l${-3+loop} 28" stroke="url(#broek)" stroke-width="13" ${L}/><path d="M7 -34l${4-loop} 28" stroke="url(#broek)" stroke-width="13" ${L}/>`
+  o+=`<ellipse cx="${-14+loop}" cy="-4" rx="9" ry="5" fill="#F4F4F4" stroke="#C8CED6" stroke-width="2"/><ellipse cx="${12-loop}" cy="-4" rx="10" ry="5" fill="#fff" stroke="#C8CED6" stroke-width="2"/>`
+  // armen achter en voor
+  o+=`<path d="M-20 -66q-8 14-4 28" stroke="#1F4FA6" stroke-width="10" ${L} fill="none"/>`
+  o+=`<rect x="-22" y="-72" width="44" height="42" rx="15" fill="${schirt}"/><path d="M-20 -48q20 10 42 0" stroke="#fff" stroke-width="2" opacity=".18" fill="none"/>`
+  o+=`<path d="M20 -66q9 14 5 28" stroke="#4C8CF0" stroke-width="10" ${L} fill="none"/><circle cx="25" cy="-36" r="6" fill="url(#hoofd)"/><circle cx="-24" cy="-37" r="6" fill="#D9A982"/>`
+  // hoofd, schuin naar rechts: gezicht naar rechts verschoven
+  o+=`<rect x="-3" y="-80" width="10" height="10" rx="4" fill="#D9A982"/>`
+  o+=`<circle cx="2" cy="-100" r="24" fill="url(#hoofd)"/><ellipse cx="-10" cy="-96" rx="5" ry="8" fill="#D9A982"/>`
+  o+=`<path d="M-22 -100q-2-28 26-27q22 1 24 24q-8-12-22-12q-16-1-28 15z" fill="url(#haar)"/><path d="M-6 -122q10-4 20 2" stroke="#B07A4A" stroke-width="3" fill="none" ${L} opacity=".7"/>`
+  o+=`<circle cx="9" cy="-98" r="3" fill="#1C2433"/><circle cx="20" cy="-98" r="3" fill="#1C2433"/><circle cx="10" cy="-99" r=".9" fill="#fff"/><circle cx="21" cy="-99" r=".9" fill="#fff"/><path d="M9 -88q7 6 14 0" stroke="#1C2433" stroke-width="2.4" fill="none" ${L}/><circle cx="19" cy="-90" r="4" fill="#FF9AA8" opacity=".45"/>`
+  o+=`</g>`
+  if(naam){const w=naam.length*13+26;o+=`<g transform="translate(${x} ${y-142*s})"><rect x="${-w/2}" y="-14" width="${w}" height="28" rx="14" fill="${kleur}" stroke="#fff" stroke-width="3"/><text y="7" text-anchor="middle" font-family="Baloo 2,Nunito,sans-serif" font-weight="800" font-size="17" fill="#fff">${naam}</text></g>`}
+  return o
+}
+// achtergrond: bomenrij, huis, tuin
+for(const [x,y,k] of [[60,330,'#D93A3A'],[200,300,'#F2994A'],[1090,320,'#D93A3A'],[1010,280,'#F2994A']])h+=boom(x,y,k,1.05)
+h+=huis(300,420,{})
+h+=huis(640,420,{muur:'#CFE3F7',zij:'#A9C6E4',dak:'#3E6FB5',dakD:'#27508C',deur:'#F2C230',W:170,H:96,P:56,dx:84,dy:-48})
+h+=tuin(820,455,300,100)
+// gele pijl en spelers
+h+=`<path d="M590 560l30-18v12h40v12h-40v12z" fill="#FFD84A" stroke="#C79A10" stroke-width="3" ${L}/>`
+h+=figuur(930,640,{naam:'Yuna',kleur:'#E46AA8',schaal:1.3,schirt:'#E46AA8',loop:2})
+h+=figuur(240,650,{naam:'Mama',kleur:'#8E44C9',schaal:1.35,schirt:'#8E44C9'})
+h+=figuur(520,700,{naam:'Luca',kleur:'#2D6BD6',schaal:1.7,loop:4})
+// lantaarns
+for(const x of [120,1150])h+=`<rect x="${x-5}" y="480" width="10" height="150" rx="4" fill="#5A6475"/><rect x="${x-18}" y="440" width="36" height="42" rx="10" fill="#FFE9A0" stroke="#5A6475" stroke-width="6"/>`
+// vlinders
+for(const [x,y,k] of [[420,300,'#FF8FB8'],[800,360,'#FFD84A']])h+=`<ellipse cx="${x-6}" cy="${y}" rx="7" ry="9" fill="${k}" transform="rotate(-20 ${x-6} ${y})"/><ellipse cx="${x+6}" cy="${y}" rx="7" ry="9" fill="${k}" transform="rotate(20 ${x+6} ${y})"/><rect x="${x-1}" y="${y-7}" width="2" height="14" fill="#3B2A2A"/>`
+// joystick
+h+=`<circle cx="110" cy="740" r="72" fill="#fff" opacity=".35"/><circle cx="110" cy="740" r="34" fill="#C92D7B" stroke="#fff" stroke-width="5"/>`
+s.innerHTML=h
+</script></html>
