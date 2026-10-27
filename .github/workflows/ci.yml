@@ -136,7 +136,8 @@ jobs:
   # download bij de release "android-latest". Mislukt dit, dan blokkeert het het deployen niet.
   android:
     needs: [bouwen-en-testen]
-    if: github.event.action != 'closed'
+    # Voorlopig alleen op aanvraag (Actions → CI → Run workflow): Frederique wil nog geen nieuwe APK bij elke push.
+    if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     timeout-minutes: 30
     permissions:

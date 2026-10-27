@@ -17,7 +17,8 @@ public class ImmersiefPlugin extends Plugin {
         boolean aan = Boolean.TRUE.equals(call.getBoolean("aan", false));
         getActivity().runOnUiThread(() -> {
             Window venster = getActivity().getWindow();
-            WindowCompat.setDecorFitsSystemWindows(venster, !aan);
+            // setDecorFitsSystemWindows niet aanraken: Capacitor (SystemBars) beheert de randen en het toetsenbord zelf;
+            // erin ingrijpen gaf op de ouder-gsm kapotte formulieren en selects.
             WindowInsetsControllerCompat beheer = WindowCompat.getInsetsController(venster, venster.getDecorView());
             if (aan) {
                 beheer.setSystemBarsBehavior(WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE);

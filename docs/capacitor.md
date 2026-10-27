@@ -26,6 +26,8 @@ Status: stap 1 en 2 gebouwd op 2026-10-27 (`capacitor.config.ts`, `android/`, `s
 Stap 1 en 2 samen, zonder meldingen: Capacitor toevoegen met `server.url`, naam en icoon, `android/` in de repo, en CI laat een **debug-APK** als download bouwen (geen Android Studio nodig om hem te krijgen). Frederique installeert die op één kindertablet en kijkt of de app opent, of Family Link het toelaat en hoe het voelt. Zo weten we meteen het grootste risico (installeren op een kindertoestel) voor we Firebase opzetten. Daarna volgt stap 3 (stand en fullscreen), dan meldingen. Geschat: een halve dag werk van mijn kant plus de test.
 
 
+> **Let op (27 oktober, na de eerste test op een ouder-gsm):** formulieren en selects werkten niet goed in de eerste APK. Vermoedelijke oorzaak: `ImmersiefPlugin` riep `setDecorFitsSystemWindows` aan en kwam daarmee in botsing met de randen- en toetsenbordafhandeling van Capacitor (SystemBars, targetSdk 36). Dat is uit de code gehaald; nog niet op een toestel bevestigd. De CI-job `android` draait voorlopig alleen op aanvraag (workflow_dispatch), tot Frederique een nieuwe APK wil.
+
 ## Waarom
 
 - **Meldingen tonen het webadres.** Chrome zet onder elke web-push de site-URL (`thankful-meadow-0d992b403.5.azurestaticapps.net`). Dat is lelijk en niet te verbergen zolang de app een website is. Een echte app toont enkel haar eigen naam en icoon.
