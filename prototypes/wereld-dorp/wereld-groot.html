@@ -1,0 +1,266 @@
+<title>Onze wereld groot</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&display=swap">
+<style>
+/* Indeling: koptekst, drie dorpsplattegronden achter tabs (zelfde kaart van 56 × 28 tegels), daarna vergelijking en plan. Kleuren van de wereld in de app. */
+:root{--bg:#EEF3F8;--kaart:#FFFFFF;--inkt:#1C2433;--zacht:#566379;--rand:#D5DCE4;--accent:#2D6BD6;--accent-t:#FFFFFF;--lijst:#F5F8FB;--gras:#7CC46A}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121821;--kaart:#1B2431;--inkt:#EAF0F7;--zacht:#9BAABF;--rand:#2E3B4F;--accent:#6C9BF0;--accent-t:#0E1622;--lijst:#222D3D;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121821;--kaart:#1B2431;--inkt:#EAF0F7;--zacht:#9BAABF;--rand:#2E3B4F;--accent:#6C9BF0;--accent-t:#0E1622;--lijst:#222D3D;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--inkt);font:500 16px/1.5 Nunito,system-ui,sans-serif;padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:1100px;margin:0 auto;display:grid;gap:18px}
+h1{font-size:clamp(26px,5vw,36px);line-height:1.1;margin:0 0 6px;font-weight:800;text-wrap:balance}
+h2{font-size:19px;margin:0 0 6px;font-weight:800;text-wrap:balance}
+p{margin:0;max-width:70ch;text-wrap:pretty}.zacht{color:var(--zacht)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px}
+.tab{font:700 15px/1 Nunito,system-ui;border:1.5px solid var(--rand);background:var(--lijst);color:var(--inkt);border-radius:999px;padding:12px 16px;min-height:44px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--accent);color:var(--accent-t);border-color:var(--accent)}
+.tab:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.vak{background:var(--kaart);border:1px solid var(--rand);border-radius:16px;padding:14px;min-width:0;display:grid;gap:12px}
+.kaartwrap{border-radius:10px;overflow:hidden;background:var(--gras);line-height:0}
+svg{width:100%;height:auto;display:block}
+.bed{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center}
+label.ch{display:flex;gap:6px;align-items:center;font-size:14px;font-weight:700;min-height:44px}
+.legenda{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--zacht)}
+.legenda i{display:inline-block;width:14px;height:14px;border-radius:3px;margin-right:5px;vertical-align:-2px;border:1px solid rgba(0,0,0,.25)}
+.cijfers{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.cijfers div{background:var(--lijst);border-radius:10px;padding:10px 12px;font-size:14px}.cijfers b{display:block;font-size:13px;color:var(--zacht);font-weight:700}
+ul{margin:0;padding-left:20px;display:grid;gap:4px}
+.tafel{overflow-x:auto}table{border-collapse:collapse;min-width:620px;width:100%;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--rand);vertical-align:top}th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--zacht)}
+.aanrader{display:inline-block;background:var(--accent);color:var(--accent-t);border-radius:999px;padding:2px 10px;font-size:12px;font-weight:800;margin-left:6px;vertical-align:2px}
+</style>
+<main>
+<header>
+<h1>Een echte wereld, veel groter</h1>
+<p class="zacht">Het dorp (indeling B) is het hart, maar niet meer omringd door bomen. Er lopen wegen naar andere gebieden: Springland, het bos, de berg, het platteland, het meer, het strand en meer. Auto's staan langs de weg, er ligt een stenen plein en je kunt een rondje om het hele land wandelen. Het zijn schetsen om te kiezen en bij te sturen.</p>
+</header>
+<div class="tabs" role="tablist" aria-label="Weergave">
+<button class="tab" role="tab" id="t-w" aria-selected="true" data-k="w">De hele wereld</button>
+<button class="tab" role="tab" id="t-d" aria-selected="false" data-k="d">Het dorp, open aan de randen</button>
+</div>
+<section class="vak" aria-live="polite">
+<div class="kaartwrap"><svg id="kaart" role="img" aria-label="Plattegrond"></svg></div>
+<div class="bed" id="bed"></div>
+<div class="legenda" id="legenda"></div>
+<ul id="punten"></ul>
+</section>
+<section class="vak">
+<h2>Gebieden en wat erin kan</h2>
+<div class="tafel"><table>
+<thead><tr><th>Gebied</th><th>Wat je er doet</th><th>Status</th></tr></thead>
+<tbody>
+<tr><th>Dorp</th><td>Plein met fontein, winkels, huizen van de kinderen, park, speelplein, voetbal. Het hart van de wereld.</td><td>bestaat, wordt uitgebreid (indeling B)</td></tr>
+<tr><th>Springland</th><td>Het springkasteel-gebied in het westen: de wereldkaart van Springland wordt een deel van dit gebied, met de levels als plekjes langs het pad.</td><td>spel bestaat, gebied nieuw</td></tr>
+<tr><th>Bos</th><td>Wandelpaden, boomhutten, de eekhoornboom, een kampvuurplek, paddenstoelen in de herfst.</td><td>idee</td></tr>
+<tr><th>Berg</th><td>Een pad omhoog met bankjes en een hut; sneeuw in de winter.</td><td>idee</td></tr>
+<tr><th>Platteland</th><td>Boerderij met dieren, akkers, windmolen, tractor.</td><td>idee</td></tr>
+<tr><th>Meer</th><td>Steiger, bootjes, eendjes, een picknickplek.</td><td>idee</td></tr>
+<tr><th>Strand en haven</th><td>Zandkastelen, pier, strandtent, vuurtoren (zomer).</td><td>idee</td></tr>
+<tr><th>Sportpark en stadje</th><td>Sporthal, zwembad, een straat met winkels en een station.</td><td>later</td></tr>
+</tbody></table></div>
+</section>
+<section class="vak">
+<h2>Hoe bouw je zo'n grote wereld</h2>
+<ul>
+<li><b>Gebieden als aparte kaarten.</b> Elk gebied is een eigen kaart van ongeveer 56 × 28 tegels, zoals de wereld nu. Een weg of poort aan de rand verbindt twee gebieden: de camera laadt dan het volgende gebied met een korte overgang (zoals de iris bij een gebouw). Zo blijft elke ondergrond een kleine bitmap en blijft de wereld vlot op de oude tablets. Eén reusachtige kaart zou dat niet zijn.</li>
+<li><b>Eén gegevensbestand.</b> <code>src/data/gebieden.ts</code>: per gebied de naam, de ondergrondstijl, de straten, de plekken en de poorten naar buurgebieden. De dorpsindeling uit <code>docs/wereld-dorp.md</code> wordt het eerste gebied.</li>
+<li><b>Stenen paden en wegen.</b> Nieuwe ondergronden naast grind: kasseien (plein en dorpsstraten), stenen pad (door het park en het bos), asfalt (hoofdwegen met een streep), zand en gras. Het zijn gewoon tegelsoorten met een eigen kleur en structuur.</li>
+<li><b>Auto's.</b> Geparkeerde auto's zijn decor langs de weg. Een paar auto's rijden langzaam op een vaste lus op de hoofdwegen, stoppen bij een zebrapad en toeteren vriendelijk; kinderen worden nooit geraakt, een auto wacht gewoon. Voor Feline: grote, duidelijke auto's, geen schrikgeluid.</li>
+<li><b>Snel reizen.</b> Een bushalte (en later een fiets of trein) brengt je naar een ander gebied, zodat een groot land niet lastig is voor de jongsten. De knop "ga naar" blijft ook bestaan. Wandelen blijft een keuze, geen straf.</li>
+<li><b>Live.</b> De positie van de anderen krijgt een gebied erbij; je ziet elkaar alleen in hetzelfde gebied.</li>
+<li><b>Nachtroutine.</b> De backlog wordt per gebied. Eerst het dorp af, daarna elke week een gebied openen met een eerste, kleine versie.</li>
+<li><b>2.5D.</b> Werkt vanzelf mee: gebouwen en bomen staan rechtop, wegen en velden zijn gewoon grond.</li>
+</ul>
+</section>
+</main>
+<script>
+const NS = 'http://www.w3.org/2000/svg', svg = document.getElementById('kaart')
+const KL = { pad: '#E2D9C6', rand: '#C9BB98', gras2: '#6FB85E', park: '#58AE55', zand: '#F2E3B5', water: '#4FB3E8', veld: '#6FC25C', huis: '#F3DDB0', dak: '#D4432F' }
+const hash = (a, b) => { const n = Math.sin(a * 127.1 + b * 311.7) * 43758.5453; return n - Math.floor(n) }
+const el = (naam, a, kind) => { const e = document.createElementNS(NS, naam); for (const k in a) e.setAttribute(k, a[k]); if (kind) e.textContent = kind; return e }
+
+// Bouwstenen van de plattegrond (alles in tegels)
+const lagen = { grond: [], weg: [], dingen: [], rond: [], namen: [] }
+const glad = pts => { let d = `M${pts[0][0]} ${pts[0][1]}`; for (let i = 0; i < pts.length - 1; i++) { const p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2; d += ` C${p1[0] + (p2[0] - p0[0]) / 6} ${p1[1] + (p2[1] - p0[1]) / 6} ${p2[0] - (p3[0] - p1[0]) / 6} ${p2[1] - (p3[1] - p1[1]) / 6} ${p2[0]} ${p2[1]}` } return d }
+const weg = (d, w) => { lagen.weg.push(el('path', { d, fill: 'none', stroke: KL.rand, 'stroke-width': w + 0.32, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' })); lagen.weg.push(el('path', { d, fill: 'none', stroke: KL.pad, 'stroke-width': w, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' })) }
+const lijn = (pts, w) => weg('M' + pts.map(p => p.join(' ')).join(' L'), w)
+const ring = (x, y, b, h, r, w) => weg(`M${x + r} ${y} H${x + b - r} Q${x + b} ${y} ${x + b} ${y + r} V${y + h - r} Q${x + b} ${y + h} ${x + b - r} ${y + h} H${x + r} Q${x} ${y + h} ${x} ${y + h - r} V${y + r} Q${x} ${y} ${x + r} ${y} Z`, w)
+const cirkelweg = (cx, cy, r, w) => weg(`M${cx - r} ${cy} A${r} ${r} 0 1 0 ${cx + r} ${cy} A${r} ${r} 0 1 0 ${cx - r} ${cy} Z`, w)
+const rondje = d => lagen.rond.push(el('path', { d, fill: 'none', stroke: '#7A3BD6', 'stroke-width': 0.34, 'stroke-dasharray': '0.9 0.7', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }))
+const rondRect = (x, y, b, h) => rondje(`M${x} ${y} H${x + b} V${y + h} H${x} Z`)
+const naam = (x, y, t, kl = '#fff', s = 0.95) => lagen.namen.push(el('text', { x, y, 'font-size': s, 'text-anchor': 'middle', fill: kl, 'font-weight': 800, 'font-family': 'Nunito,system-ui,sans-serif', 'paint-order': 'stroke', stroke: 'rgba(0,0,0,.45)', 'stroke-width': 0.18 }, t))
+const vlak = (x, y, b, h, vul, kader, extra = {}) => lagen.grond.push(el('rect', { x, y, width: b, height: h, rx: 0.5, fill: vul, stroke: kader || 'none', 'stroke-width': 0.2, ...extra }))
+const gebouw = (x, y, b, h, kl, t, opt = {}) => {
+  const vrij = opt.vrij
+  lagen.dingen.push(el('rect', { x, y, width: b, height: h, rx: 0.35, fill: vrij ? 'rgba(255,255,255,.18)' : kl, stroke: vrij ? '#fff' : 'rgba(0,0,0,.35)', 'stroke-width': vrij ? 0.2 : 0.16, 'stroke-dasharray': vrij ? '0.6 0.45' : 'none' }))
+  if (!vrij) lagen.dingen.push(el('rect', { x, y, width: b, height: Math.min(0.7, h * 0.28), rx: 0.35, fill: 'rgba(0,0,0,.18)' }))
+  if (t) naam(x + b / 2, y + h / 2 + 0.3, t, '#fff', Math.min(0.95, b / (t.length * 0.62 + 1)))
+}
+const huis = (x, y, kl, t, vrij) => {
+  if (vrij) return gebouw(x, y, 3, 2.6, '', t || 'vrij', { vrij: true })
+  lagen.dingen.push(el('rect', { x, y, width: 3, height: 2.6, rx: 0.25, fill: KL.huis, stroke: 'rgba(0,0,0,.3)', 'stroke-width': 0.14 }))
+  lagen.dingen.push(el('rect', { x: x - 0.1, y: y - 0.05, width: 3.2, height: 1.2, rx: 0.2, fill: KL.dak }))
+  lagen.dingen.push(el('rect', { x: x + 1.2, y: y + 1.5, width: 0.6, height: 1.1, rx: 0.1, fill: kl }))
+  if (t) naam(x + 1.5, y - 0.35, t, '#fff', 0.85)
+}
+const park = (x, y, b, h, t) => { vlak(x, y, b, h, KL.park, 'rgba(0,0,0,.15)'); for (let i = 0; i < Math.round(b * h / 5); i++) lagen.grond.push(el('circle', { cx: x + 0.8 + hash(i, x) * (b - 1.6), cy: y + 0.8 + hash(y, i) * (h - 1.6), r: 0.5 + hash(i, 3) * 0.25, fill: '#3F9A47', stroke: 'rgba(0,0,0,.15)', 'stroke-width': 0.08 })); if (t) naam(x + b / 2, y + 1.2, t, '#fff', 0.9) }
+const vijver = (cx, cy, rx, ry) => { lagen.grond.push(el('ellipse', { cx, cy, rx: rx + 0.5, ry: ry + 0.45, fill: KL.zand })); lagen.grond.push(el('ellipse', { cx, cy, rx, ry, fill: KL.water })) }
+const zand = (x, y, b, h, t) => { vlak(x, y, b, h, KL.zand, '#E2CE96'); if (t) naam(x + b / 2, y + h / 2 + 0.3, t, '#fff', 0.95) }
+const veld = (x, y, b, h) => { vlak(x, y, b, h, KL.veld, 'rgba(255,255,255,.8)'); lagen.grond.push(el('line', { x1: x, y1: y + h / 2, x2: x + b, y2: y + h / 2, stroke: 'rgba(255,255,255,.8)', 'stroke-width': 0.14 })); lagen.grond.push(el('circle', { cx: x + b / 2, cy: y + h / 2, r: 1, fill: 'none', stroke: 'rgba(255,255,255,.8)', 'stroke-width': 0.14 })); naam(x + b / 2, y + h / 2 + Math.min(3, h / 2 - 0.9), 'Voetbalveld', '#fff', 0.85) }
+const bomen = (pts) => pts.forEach(([x, y]) => lagen.dingen.push(el('circle', { cx: x, cy: y, r: 0.55, fill: '#3F9A47', stroke: 'rgba(0,0,0,.2)', 'stroke-width': 0.1 })))
+const stub = (x, y0, y1) => lijn([[x, y0], [x, y1]], 1.1)
+const BLAUW = '#2D6BD6', ROZE = '#D2458B', GROEN = '#1F7A4A', PAARS = '#6A5BD1'
+const C = { winkel: '#E98A3C', spel: '#7C5CD6', nieuw: '#7C5CD6', bakker: '#D9A53A', cafe: '#B8744A', biblio: '#3E7FC4', brand: '#D93A3A', kerk: '#8C8CA6', boer: '#A8611E', markt: '#E08A4A', sport: '#3E9AA0', halte: '#5B6B82' }
+const rand = () => bomen(Array.from({ length: 52 }, (_, i) => [1 + i * 1.07, hash(i, 1) < .5 ? 0.9 : 27.1]).concat(Array.from({ length: 22 }, (_, i) => [hash(i, 4) < .5 ? 0.9 : 55.1, 2 + i * 1.15])))
+
+const defs = () => { const d = el('defs', {}); const p = el('pattern', { id: 'kassei', width: 0.9, height: 0.9, patternUnits: 'userSpaceOnUse' }); p.appendChild(el('rect', { width: 0.9, height: 0.9, fill: '#C9BDA6' })); p.appendChild(el('rect', { x: 0.06, y: 0.06, width: 0.38, height: 0.38, rx: 0.1, fill: '#D9CDB6' })); p.appendChild(el('rect', { x: 0.5, y: 0.5, width: 0.38, height: 0.38, rx: 0.1, fill: '#D3C6AE' })); p.appendChild(el('rect', { x: 0.5, y: 0.06, width: 0.38, height: 0.38, rx: 0.1, fill: '#CFC2AA' })); p.appendChild(el('rect', { x: 0.06, y: 0.5, width: 0.38, height: 0.38, rx: 0.1, fill: '#D6CAB2' })); d.appendChild(p); return d }
+const asfalt = (d, w, streep = true) => { lagen.weg.push(el('path', { d, fill: 'none', stroke: '#E9E2D0', 'stroke-width': w + 0.5, 'stroke-linecap': 'butt', 'stroke-linejoin': 'round' })); lagen.weg.push(el('path', { d, fill: 'none', stroke: '#7E8490', 'stroke-width': w, 'stroke-linecap': 'butt', 'stroke-linejoin': 'round' })); if (streep) lagen.weg.push(el('path', { d, fill: 'none', stroke: 'rgba(255,255,255,.75)', 'stroke-width': 0.1, 'stroke-dasharray': '0.8 0.6', 'stroke-linejoin': 'round' })) }
+const kassei = (d, w) => { lagen.weg.push(el('path', { d, fill: 'none', stroke: '#A89C85', 'stroke-width': w + 0.3, 'stroke-linejoin': 'round' })); lagen.weg.push(el('path', { d, fill: 'none', stroke: 'url(#kassei)', 'stroke-width': w, 'stroke-linejoin': 'round' })) }
+const steen = (d, w) => { lagen.weg.push(el('path', { d, fill: 'none', stroke: '#9A9588', 'stroke-width': w + 0.25, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' })); lagen.weg.push(el('path', { d, fill: 'none', stroke: '#C7C1B2', 'stroke-width': w, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' })); lagen.weg.push(el('path', { d, fill: 'none', stroke: '#B2AC9C', 'stroke-width': w * 0.8, 'stroke-dasharray': '0.35 0.55', 'stroke-linecap': 'butt', 'stroke-linejoin': 'round' })) }
+const lijnP = pts => 'M' + pts.map(p => p.join(' ')).join(' L')
+const AUTOKL = ['#D93A3A', '#2D6BD6', '#F2B33D', '#3E9A5A', '#FFFFFF', '#7C5CD6', '#E98A3C']
+const auto = (x, y, i, h = true) => { const w = 1.7, l = 0.95, kl = AUTOKL[i % AUTOKL.length]; const g = el('g', { transform: `translate(${x} ${y}) rotate(${h ? 0 : 90})` }); g.appendChild(el('rect', { x: -w / 2, y: -l / 2, width: w, height: l, rx: 0.3, fill: kl, stroke: 'rgba(0,0,0,.4)', 'stroke-width': 0.08 })); g.appendChild(el('rect', { x: -w * 0.15, y: -l / 2 + 0.12, width: w * 0.38, height: l - 0.24, rx: 0.15, fill: 'rgba(190,225,250,.9)' })); g.appendChild(el('rect', { x: -w / 2 + 0.08, y: -l / 2 + 0.1, width: 0.12, height: 0.18, fill: '#FFE9A8' })); g.appendChild(el('rect', { x: -w / 2 + 0.08, y: l / 2 - 0.28, width: 0.12, height: 0.18, fill: '#FFE9A8' })); lagen.dingen.push(g) }
+const zebra = (x, y, horizontaal) => { for (let i = 0; i < 5; i++) lagen.dingen.push(el('rect', horizontaal ? { x: x - 0.25, y: y - 0.9 + i * 0.42, width: 0.5, height: 0.22, fill: '#fff' } : { x: x - 0.9 + i * 0.42, y: y - 0.25, width: 0.22, height: 0.5, fill: '#fff' })) }
+const bord = (x, y, t, pijl) => { lagen.dingen.push(el('rect', { x: x - 0.1, y, width: 0.2, height: 1.2, fill: '#5B6B82' })); lagen.dingen.push(el('rect', { x: x - 3, y: y - 1.3, width: 6, height: 1.5, rx: 0.3, fill: '#2D6BD6', stroke: '#fff', 'stroke-width': 0.14 })); naam(x, y - 0.22, (pijl || '') + ' ' + t, '#fff', 0.75) }
+const weglabel = (x, t) => { lagen.dingen.push(el('rect', { x: x - 3.2, y: 13.35, width: 6.4, height: 1.3, rx: 0.3, fill: '#2D6BD6', stroke: '#fff', 'stroke-width': 0.12 })); naam(x, 14.3, t, '#fff', 0.8) }
+const heg = (x1, y1, x2, y2) => lagen.dingen.push(el('line', { x1, y1, x2, y2, stroke: '#3E8A44', 'stroke-width': 0.5, 'stroke-linecap': 'round' }))
+const akker = (x, y, b, h) => { vlak(x, y, b, h, '#C9D46A', 'rgba(0,0,0,.12)'); for (let i = 1; i < b; i += 0.8) lagen.grond.push(el('line', { x1: x + i, y1: y + 0.2, x2: x + i, y2: y + h - 0.2, stroke: '#A9B94E', 'stroke-width': 0.18 })) }
+const klein = (cx, cy, n, sp = 1.4, s = 0) => bomen(Array.from({ length: n }, (_, i) => [cx + (hash(i, s) - 0.5) * sp * 2, cy + (hash(s, i) - 0.5) * sp * 1.4]))
+
+function dorp() {
+  svg.setAttribute('viewBox', '0 0 56 28'); svg.appendChild(defs())
+  svg.appendChild(el('rect', { width: 56, height: 28, fill: '#7CC46A' }))
+  for (let i = 0; i < 160; i++) svg.appendChild(el('ellipse', { cx: hash(i, 1) * 56, cy: hash(i, 2) * 28, rx: 0.8 + hash(i, 3) * 2, ry: 0.4 + hash(i, 4) * 1, fill: '#6FB85E', opacity: .6 }))
+  // buiten het dorp: akkers, heggen en een paar bosjes in plaats van een rij bomen
+  akker(0.5, 0.5, 9, 3); akker(46, 0.5, 9, 3.2); akker(0.5, 24.5, 9, 3); akker(46.5, 24.3, 9, 3.2)
+  heg(10.5, 0.8, 10.5, 3.6); heg(45, 0.8, 45, 3.6); heg(10.5, 24.5, 10.5, 27.2); heg(45.5, 24.3, 45.5, 27.2)
+  klein(13, 1.8, 4, 2, 3); klein(42, 1.5, 3, 2, 5); klein(2.6, 12, 3, 1.5, 7); klein(53.3, 12, 3, 1.5, 9); klein(10, 26.3, 3, 2, 1); klein(42, 26.4, 3, 2, 11)
+  // stroompje door de hoek linksonder met een bruggetje (het stenen pad loopt over de brug)
+  lagen.grond.push(el('path', { d: glad([[0, 22.6], [6, 21.8], [11, 22.6], [15, 21.2]]), fill: 'none', stroke: '#4FB3E8', 'stroke-width': 1.1, 'stroke-linecap': 'round' }))
+  // wegen: asfalt buiten, kasseien in het dorp
+  asfalt(`M2.5 14 H0`, 1.8, false)
+  asfalt(lijnP([[0, 14], [19.5, 14]]), 1.8); asfalt(lijnP([[36.5, 14], [56, 14]]), 1.8); asfalt(lijnP([[28, 0], [28, 7.5]]), 1.8); asfalt(lijnP([[28, 20.5], [28, 28]]), 1.8)
+  asfalt(`M${2.5 + 3} 3.5 H${53.5 - 3} Q53.5 3.5 53.5 6.5 V21.5 Q53.5 24.5 50.5 24.5 H5.5 Q2.5 24.5 2.5 21.5 V6.5 Q2.5 3.5 5.5 3.5 Z`, 1.6)
+  kassei(`M21.1 7.5 H34.9 Q36.5 7.5 36.5 9.1 V18.9 Q36.5 20.5 34.9 20.5 H21.1 Q19.5 20.5 19.5 18.9 V9.1 Q19.5 7.5 21.1 7.5 Z`, 1.6)
+  vlak(21, 9, 14, 10, 'url(#kassei)', '#A89C85'); lagen.grond.push(el('circle', { cx: 28, cy: 14, r: 1.9, fill: '#4FB3E8', stroke: '#E9E2D0', 'stroke-width': 0.5 })); naam(28, 17.6, 'Dorpsplein (kasseien)', '#fff', 0.8)
+  // huizen langs de westelijke weg met stoepjes
+  ;[[3.6, BLAUW, 'Luca'], [9.4, ROZE, 'Yuna']].forEach(([x, k, n]) => { huis(x, 10.2, k, n); kassei(lijnP([[x + 1.5, 12.8], [x + 1.5, 13.1]]), 1.1) })
+  ;[[3.6, GROEN, 'Feline'], [9.4, PAARS, 'Ouders']].forEach(([x, k, n]) => { huis(x, 15.4, k, ''); naam(x + 1.5, 19, n, '#fff', 0.85) })
+  huis(41, 10.2, '', 'vrij', true); huis(47, 10.2, '', 'vrij', true); huis(41, 15.4, '', 'vrij', true); huis(47, 15.4, '', 'vrij', true)
+  gebouw(21.5, 3.9, 4.8, 2.9, C.winkel, 'Winkel'); gebouw(30, 3.9, 3.2, 2.9, C.bakker, 'Bakker'); gebouw(33.6, 3.9, 2.6, 2.9, C.cafe, 'Café', {})
+  gebouw(21.5, 21.2, 4.6, 2.8, C.biblio, 'Biblio'); gebouw(30, 21.2, 5.2, 2.8, C.spel, 'Spellenhuis')
+  gebouw(14.8, 9.6, 4, 3, C.brand, 'Brandw.', {}); gebouw(37.2, 9.6, 3.6, 3, C.kerk, 'Kerk', {}); gebouw(14.8, 15.4, 4, 3, C.markt, 'Markt', {}); gebouw(37.2, 15.4, 3.6, 3, C.sport, 'Hal', { vrij: true })
+  park(4.4, 4.9, 13.2, 4.2, ''); vijver(10, 7, 3.6, 1.4); naam(10, 6.4, 'Park', '#fff', 0.9)
+  steen(glad([[4.4, 9.4], [9, 9.2], [13, 8.6], [17.8, 5.2]]), 0.8)
+  gebouw(39, 4.9, 4.2, 3.2, C.spel, 'Eekhoorn'); gebouw(43.6, 4.9, 4.2, 3.2, C.spel, 'Bladeren'); gebouw(48.2, 4.9, 4.4, 3.2, C.spel, 'Bouwplaats', { vrij: true })
+  zand(4.4, 19.8, 12, 2.2, ''); naam(10.4, 21, 'Speelplein', '#fff', 0.85); veld(39, 19.8, 7, 4.2); gebouw(47.4, 19.6, 5, 4, C.boer, 'Boerderij', { vrij: true })
+  steen(glad([[17.8, 4.4], [24, 2.6], [26.4, 3.2]]), 0.7)
+  // zebrapaden, halte en borden naar de andere gebieden
+  zebra(17, 14, true); zebra(38.6, 14, true); zebra(28, 6.2, false); zebra(28, 21.8, false)
+  gebouw(23.6, 0.8, 2.4, 1.2, '#5B6B82', 'Halte'); lagen.dingen.push(el('rect', { x: 25.6, y: 1.2, width: 2.2, height: 1.1, rx: 0.3, fill: '#2D6BD6', stroke: '#fff', 'stroke-width': 0.08 }))
+  bord(28, 2.5, 'Bos', '↑'); bord(28, 26.6, 'Strand', '↓'); weglabel(4.6, 'Springland ←'); weglabel(51.4, '→ Meer')
+  // auto's: geparkeerd langs de buitenring en de westelijke weg, twee rijden
+  ;[[8, 3.95, 0], [11, 3.95, 1], [40, 3.95, 2], [44, 24.15, 3], [13, 24.15, 4], [16, 24.15, 5], [47, 14.5, 6], [14, 13.5, 1]].forEach(([x, y, i]) => auto(x, y, i))
+  ;[[24.3, 5.2, 2], [24.3, 22.0, 0]].forEach(() => {})
+  auto(33, 3.05, 0); auto(28.9, 25.2, 3, false); auto(11.6, 14.5, 5); auto(31, 13.3, 1); auto(52.8, 8, 6, false)
+  lagen.dingen.push(el('path', { d: 'M30.2 2.9 h-1.5 M29 2.6 l-0.5 0.3 l0.5 0.3', stroke: '#fff', 'stroke-width': 0.14, fill: 'none' }))
+  rondje(`M2.5 3.5 H53.5 V24.5 H2.5 Z`); rondje(`M19.5 7.5 H36.5 V20.5 H19.5 Z`)
+}
+
+function wereld() {
+  svg.setAttribute('viewBox', '0 0 168 84'); svg.appendChild(defs())
+  svg.appendChild(el('rect', { width: 168, height: 84, fill: '#7AB866' }))
+  const R = (c, r, kl, rand = '#5E9E52') => svg.appendChild(el('rect', { x: c * 56 + 1, y: r * 28 + 1, width: 54, height: 26, rx: 3.5, fill: kl, stroke: rand, 'stroke-width': 0.35 }))
+  R(0, 0, '#4F9C50'); R(1, 0, '#A9B5A8', '#8A978A'); R(2, 0, '#BFD66B', '#A3BB55'); R(0, 1, '#92DB7E'); R(1, 1, '#7CC46A'); R(2, 1, '#86CC72'); R(0, 2, '#74C35E'); R(1, 2, '#F0DFAE', '#D8C58E'); R(2, 2, '#CFC8BE', '#B3ABA0')
+  const L = [], zet = (e) => L.push(e)
+  // rivier van de berg naar het meer, en van het meer naar de zee
+  const rivier = d => { svg.appendChild(el('path', { d, fill: 'none', stroke: '#4FB3E8', 'stroke-width': 2.2, 'stroke-linecap': 'round' })) }
+  // strand: zee onderaan
+  svg.appendChild(el('rect', { x: 58, y: 75.5, width: 52, height: 7.3, rx: 3, fill: '#4FB3E8' })); for (let i = 0; i < 9; i++) svg.appendChild(el('path', { d: `M${62 + i * 5.4} 78.6 q1.2 -1.2 2.4 0 t2.4 0`, stroke: '#A6DEF8', 'stroke-width': 0.25, fill: 'none' }))
+  // bos
+  for (let i = 0; i < 46; i++) svg.appendChild(el('circle', { cx: 4 + hash(i, 1) * 48, cy: 3.5 + hash(i, 2) * 21, r: 1 + hash(i, 3) * 0.9, fill: ['#2F7F3C', '#3F9A47', '#357F3A'][i % 3], stroke: 'rgba(0,0,0,.2)', 'stroke-width': 0.12 }))
+  svg.appendChild(el('rect', { x: 9, y: 7.4, width: 3.2, height: 2.4, rx: 0.3, fill: '#A9733B', stroke: '#6F4520', 'stroke-width': 0.2 })); svg.appendChild(el('circle', { cx: 42, cy: 21, r: 1.1, fill: '#F2994A' }))
+  // berg
+  ;[[64, 22, 14], [74, 24, 18], [84, 22, 14], [93, 24, 16], [102, 22, 12]].forEach(([x, y, h], i) => { svg.appendChild(el('path', { d: `M${x - h * 0.62} ${y} L${x} ${y - h} L${x + h * 0.62} ${y} Z`, fill: i % 2 ? '#8E9A8E' : '#9AA79A', stroke: 'rgba(0,0,0,.25)', 'stroke-width': 0.2 })); svg.appendChild(el('path', { d: `M${x - h * 0.2} ${y - h * 0.68} L${x} ${y - h} L${x + h * 0.2} ${y - h * 0.68} L${x + h * 0.08} ${y - h * 0.74} L${x - h * 0.04} ${y - h * 0.66} Z`, fill: '#fff' })) })
+  // platteland
+  ;[[116, 3, 12, 6, '#D9C75A'], [129, 3, 12, 6, '#A6CF5A'], [116, 10, 10, 7, '#A6CF5A'], [127, 10, 14, 7, '#D9C75A'], [116, 18, 12, 6, '#8BC34A'], [129, 18, 8, 6, '#D9C75A']].forEach(([x, y, w, h, kl]) => { svg.appendChild(el('rect', { x, y, width: w, height: h, rx: 0.5, fill: kl, stroke: 'rgba(0,0,0,.15)', 'stroke-width': 0.15 })); for (let i = 1; i < w; i += 1.1) svg.appendChild(el('line', { x1: x + i, y1: y + 0.3, x2: x + i, y2: y + h - 0.3, stroke: 'rgba(0,0,0,.1)', 'stroke-width': 0.2 })) })
+  svg.appendChild(el('rect', { x: 152, y: 5, width: 6, height: 4, rx: 0.4, fill: '#C0392B', stroke: 'rgba(0,0,0,.3)', 'stroke-width': 0.2 })); svg.appendChild(el('path', { d: 'M151.5 5 L155 2 L158.5 5 Z', fill: '#8E2A1F' }))
+  svg.appendChild(el('circle', { cx: 147, cy: 18, r: 0.6, fill: '#fff' })); for (let a = 0; a < 4; a++) svg.appendChild(el('line', { x1: 147, y1: 18, x2: 147 + Math.cos(a * 1.57 + 0.5) * 3, y2: 18 + Math.sin(a * 1.57 + 0.5) * 3, stroke: '#fff', 'stroke-width': 0.4 }))
+  // Springland: wolkachtig gebied met levelplekjes
+  ;[[10, 36], [20, 33], [30, 37], [40, 33], [47, 38]].forEach(([x, y], i) => { svg.appendChild(el('ellipse', { cx: x, cy: y + 1.2, rx: 3.6, ry: 2.2, fill: 'rgba(0,0,0,.12)' })); svg.appendChild(el('ellipse', { cx: x, cy: y, rx: 3.4, ry: 2.1, fill: ['#8ED77A', '#8ED77A', '#F2E3B5', '#F2E3B5', '#CFE8F5'][i], stroke: 'rgba(0,0,0,.2)', 'stroke-width': 0.2 })); svg.appendChild(el('text', { x, y: y + 0.6, 'font-size': 1.9, 'text-anchor': 'middle', fill: '#fff', 'font-weight': 800, stroke: 'rgba(0,0,0,.35)', 'stroke-width': 0.2, 'paint-order': 'stroke', 'font-family': 'Nunito,system-ui,sans-serif' }, String(i + 1))) })
+  svg.appendChild(el('path', { d: glad([[10, 36], [20, 33], [30, 37], [40, 33], [47, 38]]), fill: 'none', stroke: '#fff', 'stroke-width': 0.4, 'stroke-dasharray': '0.8 0.6', opacity: .9 }))
+  svg.appendChild(el('rect', { x: 5, y: 42.5, width: 6, height: 5, rx: 0.4, fill: '#F2B33D', stroke: 'rgba(0,0,0,.3)', 'stroke-width': 0.2 })); svg.appendChild(el('path', { d: 'M5 42.5 l1.5 -2 l1.5 2 l1.5 -2 l1.5 2', fill: '#D4432F', stroke: 'rgba(0,0,0,.3)', 'stroke-width': 0.2 })); svg.appendChild(el('rect', { x: 7.2, y: 44.5, width: 1.6, height: 3, rx: 0.3, fill: '#2D6BD6' }))
+  // meer
+  svg.appendChild(el('ellipse', { cx: 140, cy: 38, rx: 17, ry: 9.4, fill: '#F2E3B5' })); svg.appendChild(el('ellipse', { cx: 140, cy: 38, rx: 16, ry: 8.5, fill: '#4FB3E8' }))
+  svg.appendChild(el('path', { d: 'M152 46 l3 -2.4 l3 2.4 Z', fill: '#fff', stroke: 'rgba(0,0,0,.25)', 'stroke-width': 0.2 })); svg.appendChild(el('rect', { x: 150, y: 46, width: 9, height: 0.8, fill: '#A9733B' }))
+  svg.appendChild(el('path', { d: 'M136 36 l4 0 l-1 1.6 l-2 0 Z', fill: '#E98A3C' }))
+  // sportpark
+  svg.appendChild(el('rect', { x: 6, y: 61, width: 18, height: 11, rx: 0.8, fill: '#6FC25C', stroke: '#fff', 'stroke-width': 0.3 })); svg.appendChild(el('line', { x1: 15, y1: 61, x2: 15, y2: 72, stroke: '#fff', 'stroke-width': 0.3 })); svg.appendChild(el('circle', { cx: 15, cy: 66.5, r: 2.2, fill: 'none', stroke: '#fff', 'stroke-width': 0.3 }))
+  svg.appendChild(el('rect', { x: 32, y: 60, width: 14, height: 9, rx: 0.8, fill: '#4FB3E8', stroke: '#fff', 'stroke-width': 0.5 })); svg.appendChild(el('rect', { x: 30, y: 71, width: 8, height: 3.6, rx: 0.5, fill: '#3E9AA0', stroke: 'rgba(0,0,0,.3)', 'stroke-width': 0.2 }))
+  // strand
+  svg.appendChild(el('rect', { x: 59, y: 62, width: 50, height: 12, rx: 3, fill: '#F2E3B5' })); svg.appendChild(el('line', { x1: 92, y1: 74, x2: 92, y2: 82.4, stroke: '#A9733B', 'stroke-width': 1.2 }))
+  ;[[68, 66], [74, 68]].forEach(([x, y], i) => { svg.appendChild(el('path', { d: `M${x - 2.4} ${y + 1.6} L${x} ${y - 1.6} L${x + 2.4} ${y + 1.6} Z`, fill: i ? '#2D6BD6' : '#D93A3A', stroke: '#fff', 'stroke-width': 0.2 })) })
+  svg.appendChild(el('rect', { x: 100, y: 64, width: 2, height: 5, fill: '#fff', stroke: 'rgba(0,0,0,.3)', 'stroke-width': 0.15 })); svg.appendChild(el('path', { d: 'M99.6 64 l1.4 -1.8 l1.4 1.8 Z', fill: '#D93A3A' }))
+  // stadje
+  ;[[116, 62, 6, 5, '#D98A6A'], [123, 62, 5, 7, '#E6B34A'], [129, 62, 7, 5, '#8DA9C4'], [137, 63, 6, 6, '#C9A06A'], [145, 62, 6, 5, '#D98A6A'], [116, 70, 8, 4, '#8DA9C4'], [125, 71, 5, 3.4, '#E6B34A'], [145, 70, 8, 4, '#C9A06A']].forEach(([x, y, w, h, kl]) => svg.appendChild(el('rect', { x, y, width: w, height: h, rx: 0.4, fill: kl, stroke: 'rgba(0,0,0,.3)', 'stroke-width': 0.2 })))
+  svg.appendChild(el('rect', { x: 152, y: 66, width: 9, height: 4, rx: 0.5, fill: '#5B6B82', stroke: '#fff', 'stroke-width': 0.2 }))
+  // dorp (klein, indeling B)
+  svg.appendChild(el('rect', { x: 62, y: 31, width: 44, height: 22, rx: 3, fill: 'none', stroke: 'rgba(0,0,0,.12)', 'stroke-width': 0.3 }))
+  svg.appendChild(el('rect', { x: 77, y: 37, width: 14, height: 10, rx: 0.8, fill: 'url(#kassei)', stroke: '#A89C85', 'stroke-width': 0.3 })); svg.appendChild(el('circle', { cx: 84, cy: 42, r: 1.5, fill: '#4FB3E8' }))
+  ;[[66, 37], [70.6, 37], [66, 43.5], [70.6, 43.5]].forEach(([x, y]) => { svg.appendChild(el('rect', { x, y, width: 3.4, height: 2.8, fill: '#F3DDB0', stroke: 'rgba(0,0,0,.3)', 'stroke-width': 0.2 })); svg.appendChild(el('rect', { x: x - 0.2, y: y - 0.2, width: 3.8, height: 1.2, fill: '#D4432F' })) })
+  ;[[96, 36], [100, 36], [96, 44], [100, 44]].forEach(([x, y]) => svg.appendChild(el('rect', { x, y, width: 3, height: 2.5, fill: 'rgba(255,255,255,.3)', stroke: '#fff', 'stroke-width': 0.2, 'stroke-dasharray': '0.5 0.4' })))
+  rivier(glad([[92, 6], [100, 15], [118, 25], [131, 33]])); rivier(glad([[146, 47], [133, 57], [113, 69], [101, 76]]))
+  // wegen: rondweg door het midden van elk gebied, hoofdwegen naar het dorp
+  const W = (pts, w, k) => svg.appendChild(el('path', { d: lijnP(pts), fill: 'none', stroke: k ? '#6E737E' : '#BDB296', 'stroke-width': w + 0.5, 'stroke-linejoin': 'round' })) && svg.appendChild(el('path', { d: lijnP(pts), fill: 'none', stroke: k ? '#8B909B' : '#E2D9C6', 'stroke-width': w, 'stroke-linejoin': 'round' }))
+  W([[28, 14], [140, 14]], 1.4); W([[28, 70], [140, 70]], 1.4); W([[28, 14], [28, 70]], 1.4); W([[140, 14], [140, 70]], 1.4)
+  W([[28, 42], [140, 42]], 2.4, 1); W([[84, 14], [84, 70]], 2.4, 1)
+  svg.appendChild(el('path', { d: lijnP([[28, 42], [140, 42]]), stroke: 'rgba(255,255,255,.75)', 'stroke-width': 0.2, 'stroke-dasharray': '1 0.8', fill: 'none' })); svg.appendChild(el('path', { d: lijnP([[84, 14], [84, 70]]), stroke: 'rgba(255,255,255,.75)', 'stroke-width': 0.2, 'stroke-dasharray': '1 0.8', fill: 'none' }))
+  // bruggen
+  ;[[98.6, 14], [143, 50], [112, 70]].forEach(([x, y]) => { svg.appendChild(el('rect', { x: x - 2, y: y - 1.5, width: 4, height: 3, rx: 0.3, fill: '#A9733B', stroke: '#6F4520', 'stroke-width': 0.2 })) })
+  // auto's langs de wegen
+  ;[[40, 41.1, 0], [60, 43, 1], [105, 41.1, 2], [125, 43, 3], [84.9, 25, 4, 1], [83.1, 58, 5, 1], [60, 13.2, 6], [100, 15, 0], [60, 69.2, 1], [127, 71, 4], [28.9, 28, 2, 1], [139.2, 28, 5, 1], [28.9, 58, 3, 1], [139.2, 55, 6, 1]].forEach(([x, y, i, v]) => { const g = el('g', { transform: `translate(${x} ${y}) rotate(${v ? 90 : 0}) scale(1.2)` }); g.appendChild(el('rect', { x: -0.85, y: -0.48, width: 1.7, height: 0.95, rx: 0.3, fill: AUTOKL[i % 7], stroke: 'rgba(0,0,0,.4)', 'stroke-width': 0.08 })); g.appendChild(el('rect', { x: -0.13, y: -0.36, width: 0.65, height: 0.72, rx: 0.15, fill: 'rgba(190,225,250,.9)' })); svg.appendChild(g) })
+  // poorten, namen
+  const t = (x, y, s, size = 2.4, kl = '#fff') => svg.appendChild(el('text', { x, y, 'font-size': size, 'text-anchor': 'middle', fill: kl, 'font-weight': 800, 'font-family': 'Nunito,system-ui,sans-serif', 'paint-order': 'stroke', stroke: 'rgba(0,0,0,.55)', 'stroke-width': size * 0.12 }, s))
+  svg.appendChild(el('rect', { x: 52.4, y: 40.4, width: 3.2, height: 3.2, rx: 0.4, fill: '#D93A3A', stroke: '#fff', 'stroke-width': 0.25 })); t(54, 39.6, 'poort', 1.5)
+  ;[['Bos', 28, 5.2], ['Berg', 84, 5.2], ['Platteland', 140, 5.2], ['Springland', 28, 30.2], ['Dorp', 84, 33.2], ['Meer', 140, 29.6], ['Sportpark', 28, 63.4], ['Strand en haven', 84, 60.2], ['Stadje', 140, 63.4]].forEach(([n, x, y]) => t(x, y, n, 2.6))
+  ;[['idee', 28, 7.6], ['idee', 84, 7.6], ['idee', 140, 7.6], ['spel bestaat', 28, 32.6], ['bestaat', 84, 35.6], ['idee', 140, 31.6], ['later', 28, 65.8], ['idee', 84, 62.6], ['later', 140, 65.8]].forEach(([n, x, y]) => t(x, y, n, 1.4, '#FFF3C4'))
+  // routes
+  const rond = el('path', { d: 'M28 14 H140 V70 H28 Z', fill: 'none', stroke: '#7A3BD6', 'stroke-width': 0.5, 'stroke-dasharray': '1.2 0.9', 'stroke-linecap': 'round' }); rond.dataset.laag = 'rond'; svg.appendChild(rond)
+  const bus = el('g', {}); bus.dataset.laag = 'bus'
+  bus.appendChild(el('path', { d: 'M28 42 H140 M84 14 V70', fill: 'none', stroke: '#E0A800', 'stroke-width': 0.7, 'stroke-dasharray': '0.1 1.3', 'stroke-linecap': 'round' }))
+  ;[[84, 42], [28, 42], [140, 42], [84, 14], [84, 70], [28, 14], [140, 14], [28, 70], [140, 70]].forEach(([x, y]) => { bus.appendChild(el('circle', { cx: x, cy: y, r: 1.3, fill: '#fff', stroke: '#E0A800', 'stroke-width': 0.5 })); bus.appendChild(el('text', { x, y: y + 0.55, 'font-size': 1.6, 'text-anchor': 'middle', fill: '#8A6A00', 'font-weight': 800, 'font-family': 'Nunito,system-ui,sans-serif' }, 'H')) })
+  svg.appendChild(bus)
+  svg.appendChild(el('g', {}))
+}
+
+let nu = 'w'
+function teken() {
+  for (const l of Object.values(lagen)) l.length = 0
+  svg.replaceChildren()
+  const bed = document.getElementById('bed'), leg = document.getElementById('legenda'), pt = document.getElementById('punten')
+  if (nu === 'w') {
+    wereld()
+    bed.innerHTML = `<label class="ch" for="c-rond"><input id="c-rond" type="checkbox" checked>Rondje om het hele land</label><label class="ch" for="c-bus"><input id="c-bus" type="checkbox" checked>Bushaltes (snel reizen)</label>`
+    leg.innerHTML = '<span><i style="background:#8B909B"></i>Hoofdweg (asfalt)</span><span><i style="background:#E2D9C6"></i>Landweg</span><span><i style="background:#4FB3E8"></i>Rivier, meer en zee</span><span><i style="background:#A9733B"></i>Brug</span><span><i style="background:#fff;border:2px solid #E0A800"></i>Bushalte</span><span><i style="background:transparent;border:2px dashed #7A3BD6"></i>Wandelrondje</span>'
+    pt.innerHTML = '<li><b>Ongeveer 168 × 84 tegels in totaal</b>, verdeeld over negen gebieden van elk zo groot als de wereld nu. Je ziet maar één gebied tegelijk; wegen en poorten aan de rand brengen je naar het volgende.</li><li>Vanuit het dorp lopen vier hoofdwegen naar buiten: west naar Springland, noord naar de berg, oost naar het meer en zuid naar het strand. Een landweg verbindt de buitenste gebieden: je kunt een rondje om het hele land lopen.</li><li>Een rivier stroomt van de berg door het meer naar de zee; hoofdwegen kruisen hem met een brug.</li><li>Bushaltes zijn de snelle weg voor wie niet wil lopen.</li>'
+    document.getElementById('c-rond').addEventListener('change', e => svg.querySelectorAll('[data-laag=rond]').forEach(x => x.style.display = e.target.checked ? '' : 'none'))
+    document.getElementById('c-bus').addEventListener('change', e => svg.querySelectorAll('[data-laag=bus]').forEach(x => x.style.display = e.target.checked ? '' : 'none'))
+  } else {
+    dorp()
+    const rondjes = () => document.getElementById('c-rond').checked, namen = () => document.getElementById('c-namen').checked
+    const g = e => svg.appendChild(e)
+    lagen.grond.forEach(g); lagen.weg.forEach(g); lagen.dingen.forEach(g)
+    const rl = el('g', { id: 'rondlaag' }); lagen.rond.forEach(e => rl.appendChild(e)); g(rl)
+    const nl = el('g', { id: 'naamlaag' }); lagen.namen.forEach(e => nl.appendChild(e)); g(nl)
+    bed.innerHTML = `<label class="ch" for="c-rond"><input id="c-rond" type="checkbox" checked>Wandelrondjes</label><label class="ch" for="c-namen"><input id="c-namen" type="checkbox" checked>Namen</label>`
+    leg.innerHTML = '<span><i style="background:#8B909B"></i>Asfalt</span><span><i style="background:#D3C6AE"></i>Kasseien</span><span><i style="background:#C7C1B2"></i>Stenen pad</span><span><i style="background:#D93A3A"></i>Auto</span><span><i style="background:#2D6BD6"></i>Wegwijzer naar ander gebied</span><span><i style="background:transparent;border:2px dashed #7A3BD6"></i>Wandelrondje</span>'
+    pt.innerHTML = '<li>Geen rij bomen meer rond het dorp: aan alle vier de kanten loopt een weg naar buiten met een wegwijzer (Springland, Bos, Meer, Strand). Daartussen akkers, heggen, een stroompje met een bruggetje en kleine bosjes.</li><li>Het plein en de ring eromheen zijn kasseien, de buitenring en de wegen naar buiten zijn asfalt met een streep, het park heeft een stenen pad. Zebrapaden bij de ring.</li><li>Auto\'s staan langs de weg; een paar rijden langzaam een vaste lus en wachten op kinderen. Bij de bushalte stap je in om naar een ander gebied te gaan.</li>'
+    document.getElementById('c-rond').addEventListener('change', e => { document.getElementById('rondlaag').style.display = e.target.checked ? '' : 'none' })
+    document.getElementById('c-namen').addEventListener('change', e => { document.getElementById('naamlaag').style.display = e.target.checked ? '' : 'none' })
+  }
+}
+document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => { nu = b.dataset.k; document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', String(t === b))); teken() }))
+window.__k = k => { nu = k; teken() }
+teken()
+</script>
