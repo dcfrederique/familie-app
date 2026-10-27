@@ -56,7 +56,10 @@ export const toeval = (a: number, b = 0, s = 0) => {
 
 export function vasteDingen(huizen: HuisPlek[], kleurVan: (id: string) => string): Ding[] {
   const d: Ding[] = []
-  const zet = (id: string, x: number, y: number, extra: Partial<Ding> = {}) => d.push({ id, x, y, voet: VOET[id] ?? [60, 18], ...extra })
+  // bomen krijgen appels, sinaasappels of niets (vast per plek)
+  const vrucht = (x: number, y: number) => ['#D93A3A', '#D93A3A', '#F2994A', 'kaal'][Math.floor(toeval(x, y, 9) * 4)]
+  const zet = (id: string, x: number, y: number, extra: Partial<Ding> = {}) =>
+    d.push({ id, x, y, voet: VOET[id] ?? [60, 18], ...(id === 'boom' ? { kleur: vrucht(x, y) } : {}), ...extra })
   // bomen langs de rand en hier en daar
   for (let x = 0.6 * U; x < WERELD_BREED; x += 1.9 * U) {
     zet('boom', x + toeval(x, 1) * 20, 1.4 * U + toeval(x, 2) * 14)

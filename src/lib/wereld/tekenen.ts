@@ -16,8 +16,8 @@ const DAG = '--huis-gras:#7CC46A;--huis-gras2:#6AB55A;--huis-heuvel:#A6D98C;--hu
 const NACHT = '--huis-gras:#2E5A3A;--huis-gras2:#264E30;--huis-heuvel:#1E3B4C;--huis-glas:#FFD66B;--huis-pad:#5E5A52;--huis-rook:#7A859A;'
 
 const PAL = {
-  d: { gras: '#7CC46A', gras2: '#6AB55A', pad: '#E2D9C6', padRand: '#CDBF9F', zand: '#F2E3B5', zandPunt: '#E2CE96', water: '#4FB3E8', waterL: '#A6DEF8', veld1: '#6FC25C', veld2: '#84CC72' },
-  n: { gras: '#2E5A3A', gras2: '#264E30', pad: '#5E5A52', padRand: '#4A463F', zand: '#7C7458', zandPunt: '#6A6349', water: '#25497A', waterL: '#3E6BA3', veld1: '#2A5736', veld2: '#33663F' },
+  d: { gras: '#7CC46A', gras2: '#6AB55A', pad: '#E2D9C6', padRand: '#CDBF9F', grind: '#F1EBDD', grindD: '#B9AA88', tuf: '#5BA84C', zand: '#F2E3B5', zandPunt: '#E2CE96', water: '#4FB3E8', waterL: '#A6DEF8', veld1: '#6FC25C', veld2: '#84CC72' },
+  n: { gras: '#2E5A3A', gras2: '#264E30', pad: '#5E5A52', padRand: '#4A463F', grind: '#74706A', grindD: '#3E3A34', tuf: '#1F4A2D', zand: '#7C7458', zandPunt: '#6A6349', water: '#25497A', waterL: '#3E6BA3', veld1: '#2A5736', veld2: '#33663F' },
 }
 
 /** Zijde van het hubbordje in schermpunten (ook voor de link erover). */
@@ -133,8 +133,26 @@ export class Tekenaar {
     // wegen
     for (const r of wegen) rr(r[0] - 4, r[1] - 4, r[2] + 4, r[3] + 4, 22, P.padRand)
     for (const r of wegen) rr(r[0], r[1], r[2], r[3], 20, P.pad)
-    c2.fillStyle = P.padRand
-    for (let i = 0; i < 220; i++) c2.fillRect(1 * U + toeval(i, 21) * 42 * U, 12.6 * U + toeval(i, 22) * 1.7 * U, 4, 2)
+    // grind: kleine steentjes in twee tinten over alle paden, en een lichte rand langs de bovenkant
+    wegen.forEach((r, w) => {
+      const n = Math.round(((r[2] - r[0]) * (r[3] - r[1])) / 110)
+      for (let i = 0; i < n; i++) {
+        c2.fillStyle = i % 3 ? P.grind : P.grindD
+        c2.globalAlpha = i % 3 ? 0.9 : 0.55
+        c2.beginPath()
+        c2.ellipse(r[0] + 6 + toeval(i, w, 21) * (r[2] - r[0] - 12), r[1] + 6 + toeval(i, w, 22) * (r[3] - r[1] - 12), 1.6 + toeval(i, w, 23) * 1.6, 1 + toeval(i, w, 24), 0, 0, 7)
+        c2.fill()
+      }
+    })
+    c2.globalAlpha = 1
+    // grasplukjes: kleine streepjes in drie lukjes, niet op paden, plein, veld of vijver
+    c2.strokeStyle = P.tuf; c2.lineWidth = 2; c2.lineCap = 'round'; c2.globalAlpha = 0.7
+    for (let i = 0; i < 900; i++) {
+      const x = toeval(i, 41) * WERELD_BREED, y = toeval(i, 42) * WERELD_HOOG
+      if (opWeg(wegen, x, y, 12) || inRechthoek(x, y, PLEIN) || inRechthoek(x, y, VELD) || inPoel(x, y, 40)) continue
+      c2.beginPath(); c2.moveTo(x - 4, y); c2.lineTo(x - 5, y - 6); c2.moveTo(x, y); c2.lineTo(x, y - 8); c2.moveTo(x + 4, y); c2.lineTo(x + 5, y - 6); c2.stroke()
+    }
+    c2.globalAlpha = 1
     // hek om het speelplein, met een poortje
     const [a, b, cc, d] = PLEIN, p = 10 * U
     const paal = (x: number, y: number) => { c2.fillStyle = '#FFFFFF'; c2.strokeStyle = '#D5DCE4'; c2.lineWidth = 2; c2.beginPath(); c2.roundRect(x - 4, y - 14, 8, 22, 3); c2.fill(); c2.stroke() }
@@ -318,6 +336,7 @@ export class Tekenaar {
       } })
     }
     lijst.sort((a, b) => a.y - b.y).forEach((o) => o.d())
+    if (!this.rustig && !overzicht) this.vlinders(t, camX, camY, VW, VH)
 
     if (this.nacht) {
       g.save(); g.globalCompositeOperation = 'multiply'; g.fillStyle = '#A9B4E8'; g.fillRect(camX - 10, camY - 10, VW / Z + 20, VH / Z + 20); g.restore()
@@ -333,6 +352,23 @@ export class Tekenaar {
     g.restore()
     this.tekenHubBord(t, kleur)
     return [camX, camY, Z] as const
+  }
+
+  /** Een paar vlinders fladderen rond in beeld (niet bij "minder beweging"). */
+  private vlinders(t: number, camX: number, camY: number, VW: number, VH: number) {
+    const g = this.g, kleuren = ['#FF8FB8', '#FFD84A', '#8EC5FF', '#C9A6F2']
+    for (let i = 0; i < 4; i++) {
+      const x = camX + VW * (0.15 + 0.7 * (0.5 + 0.5 * Math.sin(t * (0.11 + i * 0.03) + i * 2))) + Math.sin(t * 1.7 + i) * 18
+      const y = camY + VH * (0.2 + 0.6 * (0.5 + 0.5 * Math.cos(t * (0.09 + i * 0.025) + i * 3))) + Math.sin(t * 2.3 + i * 2) * 14
+      const klap = 0.35 + 0.65 * Math.abs(Math.sin(t * 9 + i * 1.7))
+      g.save(); g.translate(x, y)
+      g.fillStyle = 'rgba(0,0,0,.12)'; g.beginPath(); g.ellipse(0, 30, 6, 2, 0, 0, 7); g.fill()
+      g.fillStyle = kleuren[i]
+      g.beginPath(); g.ellipse(-4 * klap, -2, 5 * klap, 6, -0.4, 0, 7); g.fill()
+      g.beginPath(); g.ellipse(4 * klap, -2, 5 * klap, 6, 0.4, 0, 7); g.fill()
+      g.fillStyle = '#3B2A2A'; g.fillRect(-0.8, -6, 1.6, 10)
+      g.restore()
+    }
   }
 
   /** Rechtsboven staat een houten bordje met een huisje in de wereld zelf: tikken erop (een onzichtbare link ligt erover) brengt je terug naar het startscherm. */
@@ -385,7 +421,10 @@ export class Tekenaar {
     const { im, s } = this.ding(d)
     g.save()
     g.fillStyle = 'rgba(0,0,0,.14)'
-    g.beginPath(); g.ellipse(d.x, d.y, Math.max(10, d.voet[0] * 0.52), Math.max(4, d.voet[1] * 0.32), 0, 0, 7); g.fill()
+    g.beginPath()
+    if (d.id === 'boom') g.ellipse(d.x + 10, d.y + 2, 40, 13, 0, 0, 7) // de kruin werpt een brede schaduw
+    else g.ellipse(d.x, d.y, Math.max(10, d.voet[0] * 0.52), Math.max(4, d.voet[1] * 0.32), 0, 0, 7)
+    g.fill()
     if (this.klaar(im)) g.drawImage(im, d.x - s / 2, d.y - s * 0.9, s, s)
     g.restore()
   }

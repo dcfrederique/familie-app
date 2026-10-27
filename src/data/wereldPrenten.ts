@@ -48,6 +48,15 @@ export const gebouwTekening: Record<string, string> = {
 
 /** Dingen op straat die (nog) niet in de huiscatalogus staan; viewBox -100 -220 200 240. */
 export const straatTekening: Record<string, string | ((kleur: string) => string)> = {
+  // fruitboom met een volle kruin in lichtere en donkerdere groentinten; `kleur` is de vrucht (appel of sinaasappel) of 'kaal'
+  boom: (kleur) => {
+    const vrucht = kleur === 'kaal' ? '' : [[-44, -112], [-12, -150], [30, -128], [52, -96], [-60, -86], [8, -100], [-26, -82], [40, -66]]
+      .map(([x, y]) => `<circle cx="${x}" cy="${y}" r="7" fill="${kleur}"/><circle cx="${x - 2}" cy="${y - 2.4}" r="2.2" fill="#fff" opacity=".55"/>`).join('')
+    return `<rect x="-9" y="-70" width="18" height="70" rx="6" fill="#7A4A2A"/><rect x="-9" y="-70" width="6" height="70" rx="3" fill="#9A6238"/>
+    <circle cx="0" cy="-104" r="66" fill="#2E8A3E"/><circle cx="-38" cy="-90" r="42" fill="#3FA04C"/><circle cx="40" cy="-88" r="40" fill="#2A7E39"/><circle cx="-8" cy="-134" r="40" fill="#4DB65A"/>
+    <path d="M-52 -104a28 28 0 0 1 22-30" stroke="#7AD08A" stroke-width="7" stroke-linecap="round" fill="none" opacity=".7"/>
+    <path d="M20 -50q36 4 54-20" stroke="#1F6B2E" stroke-width="9" stroke-linecap="round" fill="none" opacity=".55"/>${vrucht}`
+  },
   bank: `<rect x="-62" y="-52" width="124" height="16" rx="6" fill="#C08850"/><rect x="-62" y="-82" width="124" height="22" rx="7" fill="#D9A06A"/><path d="M-50 -36V0M50 -36V0" stroke="#6E4224" stroke-width="9" stroke-linecap="round"/><path d="M-62 -78H62M-62 -66H62" stroke="#B07A45" stroke-width="2"/>`,
   lantaarn: `<rect x="-5" y="-150" width="10" height="150" rx="4" fill="#5A6475"/><rect x="-18" y="-190" width="36" height="42" rx="10" fill="#FFE9A0" stroke="#5A6475" stroke-width="6"/><path d="M-24 -190L0 -214L24 -190Z" fill="#5A6475"/><rect x="-14" y="-6" width="28" height="8" rx="4" fill="#5A6475"/>`,
   vogelhuisje: `<rect x="-4" y="-110" width="8" height="110" rx="3" fill="#8A5A33"/><rect x="-34" y="-170" width="68" height="62" rx="6" fill="#D9A06A"/><path d="M-44 -166L0 -204L44 -166Z" fill="#C8452F"/><circle cx="0" cy="-138" r="12" fill="#6E4224"/><path d="M-26 -104H26" stroke="#8A5A33" stroke-width="7" stroke-linecap="round"/>`,
