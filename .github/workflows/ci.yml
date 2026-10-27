@@ -151,7 +151,8 @@ jobs:
         with:
           distribution: temurin
           java-version: 21
-      - uses: android-actions/setup-android@v3
+      # De runner heeft de Android-SDK al; licenties aanvaarden zodat Gradle ontbrekende onderdelen zelf haalt.
+      - run: yes | "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" --licenses > /dev/null || true
       - run: npm ci
       - run: npm run build
       - run: npx cap sync android
