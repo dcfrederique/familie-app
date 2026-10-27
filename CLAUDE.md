@@ -84,10 +84,11 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 - Schrijf tests voor de sterrenlogica (reserveren, toekennen, terugboeken, dagplafond).
 - Content (verhalen, taken, spelletjes-niveaus) als data, niet hardcoded in componenten.
 
-# Nachtelijke uitbreidingen: verhalen en spelletjes
+# Nachtelijke uitbreidingen: verhalen, kleurplaten en spelletjes
 
 ## Doel
-Elke nacht wordt de familie-app uitgebreid met 1 nieuw verhaal en 1 nieuw spelletje.
+Elke nacht wordt de familie-app uitgebreid met 1 nieuw verhaal, 1 nieuwe kleurplaat en 1 nieuw spelletje
+(de routine is er om elke nacht nieuwe content voor de kinderen te maken; vraag van Frederique, 27 oktober 2026).
 Dit gebeurt in twee fases: eerst uitdenken (ontwerp), daarna coderen (bouw).
 
 ## Doelgroep en toon
@@ -145,6 +146,13 @@ seizoen van de komende weken:
 Niet elk verhaal hoeft een feest te zijn: buiten de feestperiodes past het seizoen. Wissel af,
 zodat niet alle verhalen van één periode op elkaar lijken. Gebruik geen beschermde personages.
 
+- Kleurplaten: elke nacht komt er **één nieuwe kleurplaat** bij, in het thema van de nacht (zie "Seizoenen en feesten"),
+  net als het verhaal meteen beschikbaar (gratis, geen winkel, geen vrijgave). Eigen ontwerp in de stijl van de bestaande
+  platen in `src/data/kleurplaten.ts`: vlakken in viewBox 400 × 300 (`r`, `c`, `e`, `d`), minstens 8 vlakken, grote vlakken die
+  een kind van 4 met één tik kan inkleuren, lijnen alleen als versiering, een ingekleurd `voorbeeld` met één kleur per vlak
+  (`kleurplaten.test.ts` controleert dat) en een unieke `sleutel`. Plan: titel, sleutel, wat er op staat en een schets van
+  de vlakken. Geen beschermde personages.
+
 ## Mappenstructuur
 - Plannen: `ideeen/YYYY-MM-DD.md`
 - Samenvattingen van de bouw: `ideeen/YYYY-MM-DD-resultaat.md`
@@ -155,7 +163,7 @@ zodat niet alle verhalen van één periode op elkaar lijken. Gebruik geen besche
 - Kies het thema volgens "Seizoenen en feesten" en zet het bovenaan het plan
 - Wijzig GEEN code, schrijf alleen het plan
 - Stel in het plan een sterrenprijs voor het spelletje voor (in lijn met de bestaande prijzen)
-- Het plan bevat: titel, volledige verhaaltekst, spelregels,
+- Het plan bevat: titel, volledige verhaaltekst, de kleurplaat van de nacht, spelregels,
   benodigde schermen/componenten en acceptatiecriteria, en het nieuwe level voor Springland
 
 ## Regels voor de bouwfase
@@ -166,21 +174,21 @@ zodat niet alle verhalen van één periode op elkaar lijken. Gebruik geen besche
 - Als iets niet lukt: noteer het in het resultaatbestand in plaats van te gokken;
   blijft iets rood, push dan geen code maar alleen het resultaatbestand
 - Schrijf een korte samenvatting in `ideeen/YYYY-MM-DD-resultaat.md`
-- Zet bovenaan `src/data/nieuwtjes.ts` een item voor vandaag (verhaal, spel met prijs, wat open staat) met het
+- Zet bovenaan `src/data/nieuwtjes.ts` een item voor vandaag (verhaal, kleurplaat, spel met prijs, wat open staat) met het
   volgende oplopende `versie` (harde kernregel); ouders lezen het in het ouderdeel onder "Nieuw in de app"
 
 ---
 
 ## Taakprompt 1 – Ontwerp (bv. 01:00)
 Lees CLAUDE.md en volg de regels voor de ontwerpfase. Bekijk de bestaande
-verhalen en spellen. Bedenk 1 nieuw verhaal, 1 nieuw spelletje en 1 nieuw level
+verhalen en spellen. Bedenk 1 nieuw verhaal, 1 nieuwe kleurplaat, 1 nieuw spelletje en 1 nieuw level
 voor Springland dat bij de app past. Schrijf het volledige plan naar ideeen/<datum van vandaag>.md.
 Wijzig geen code.
 
 ## Taakprompt 2 – Bouw (bv. 03:00)
 Lees CLAUDE.md en volg de regels voor de bouwfase. Open
 ideeen/<datum van vandaag>.md. Als dat bestand niet bestaat, stop dan en
-schrijf dat in het resultaatbestand. Implementeer het verhaal (direct beschikbaar),
+schrijf dat in het resultaatbestand. Implementeer het verhaal en de kleurplaat (direct beschikbaar),
 het spelletje (te koop met sterren in de winkel) en het nieuwe level van Springland, draai lint, tests en build,
 schrijf de samenvatting naar ideeen/<datum van vandaag>-resultaat.md en push naar main.
 
