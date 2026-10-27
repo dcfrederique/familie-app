@@ -11,6 +11,8 @@ import {
   GROND_Y, MAX_HUIZEN, deurVan, inRechthoek, maakKaart, opDeurmat, stap, voorHuisdeur, huisRechthoek, type Loper,
 } from '../lib/wereld/kaart.ts'
 import { Tekenaar } from '../lib/wereld/tekenen.ts'
+import { drieDAan, kanWebGL, zetDrieD } from '../lib/wereld3d/schakelaar.ts'
+import type { Raak } from '../lib/wereld3d/tekenaar.ts'
 import { WEG_NA, Zender, metPositie, verbind, volg, type Ander } from '../lib/wereld/live.ts'
 import { supabase } from '../lib/supabase.ts'
 import { useSessie } from '../lib/sessie.tsx'
@@ -29,6 +31,19 @@ const isNacht = () => {
   return thema === 'dark' || (thema !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)
 }
 const minderBeweging = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+/** Wat de lus van een wereldtekenaar nodig heeft: de canvas-`Tekenaar` of, achter de schakelaar, de 3D-wereld (docs/wereld-3d.md). */
+interface TekenLaag {
+  nacht: boolean
+  rustig: boolean
+  vw: number
+  vh: number
+  zet(breed: number, hoog: number): void
+  teken: Tekenaar['teken']
+  /** Alleen de 3D-wereld: wat raakt een tik? */
+  raak?(clientX: number, clientY: number): Raak | null
+  stop?(): void
+}
 
 /** De wereld van een kind (/kind/:id/wereld). */
 export default function Wereld() {
@@ -80,6 +95,10 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
   const knopRef = useRef<HTMLDivElement>(null)
   const [bericht, setBericht] = useState<{ tekst: string; prent: string } | null>(null)
   const [sluit, setSluit] = useState(false)
+  // De 3D-wereld staat achter een schakelaar (standaard uit); lukt WebGL niet, dan valt hij terug op de gewone wereld.
+  const [wil3d, setWil3d] = useState(() => drieDAan())
+  const [valTerug, setValTerug] = useState(false)
+  const drie = wil3d && !valTerug
   useEffect(() => { gebruikStem(kind.voorleesstem) }, [kind])
 
   // De eerste vier kinderen hebben elk een huis langs de straat, in de volgorde van het gezin.
@@ -99,7 +118,7 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
     route: [] as [number, number][], doel: null as null | { gebouw?: GebouwBeeld; huis?: string },
     joy: { x: 0, y: 0 }, held: { up: false, down: false, left: false, right: false },
     anderen: new Map<string, Ander>(),
-    cam: [0, 0, 1] as readonly [number, number, number], bezig: false, maat: [960, 640] as [number, number],
+    cam: [0, 0, 1] as readonly [number, number, number], bezig: false, maat: [960, 640] as [number, number], tek: null as TekenLaag | null,
   })
 
   const meld = useCallback((tekst: string, prent: string) => {
@@ -138,79 +157,97 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
   useEffect(() => {
     const cv = canvasRef.current
     if (!cv) return
-    const s = toestand.current
-    const eigen = huizen.find((h) => h.id === kind.id)
-    // Een ouder staat op de straat zelf, tussen de huizen.
-    s.pl = ouder ? { x: 26 * U, y: 13.4 * U, face: 'down', moving: false, fase: 0 } : { x: eigen?.deurX ?? deurVan(0), y: GROND_Y + 70, face: 'down', moving: false, fase: 0 }
-    s.route = []; s.doel = null; s.bezig = false
-    const tek = new Tekenaar(cv, Math.min(2, Math.max(1, window.devicePixelRatio || 1)) > 1.4 ? 1.5 : 1)
-    tek.nacht = isNacht()
-    tek.rustig = minderBeweging()
-    // Het beeld vult het hele scherm; bij draaien of vergroten past het zich aan.
-    const pas = () => { const r = cv.getBoundingClientRect(); if (r.width > 0) tek.zet(r.width, r.height); s.maat = [tek.vw, tek.vh] }
-    pas()
-    const waarnemer = new ResizeObserver(pas)
-    waarnemer.observe(cv)
-    // Live: de anderen uit het gezin (ook de ouders) lopen mee. Alleen wat ze tonen is bekend, niets wordt bewaard.
-    const leden = new Map(gebruikers.map((g) => [g.id, g]))
-    s.anderen.clear()
-    const zender = new Zender()
-    const nuPositie = () => ({ id: kind.id, x: s.pl.x, y: s.pl.y, face: s.pl.face, moving: s.pl.moving })
-    const verbinding = verbind({
-      gezin: account?.gezin_id ?? 'demo', ik: kind.id, client: supabase,
-      ontvang: (b) => {
-        if (!leden.has(b.id)) return
-        if (b.t === 'weg') s.anderen.delete(b.id)
-        else if (b.t === 'hallo') verbinding.stuur(zender.nu(nuPositie(), performance.now()))
-        else s.anderen.set(b.id, metPositie(s.anderen.get(b.id), b, performance.now()))
-      },
-    })
-    const zichtbaarheid = () => { if (document.hidden) verbinding.weg(); else verbinding.hallo() }
-    document.addEventListener('visibilitychange', zichtbaarheid)
-    let t = 0, laatst = performance.now(), raf = 0
-    const lus = (nu: number) => {
-      const dt = Math.min(0.05, (nu - laatst) / 1000); laatst = nu; t += dt
-      if (!s.bezig) {
-        let ix = s.joy.x, iy = s.joy.y
-        if (!ix && !iy) {
-          ix = (s.held.right ? 1 : 0) - (s.held.left ? 1 : 0); iy = (s.held.down ? 1 : 0) - (s.held.up ? 1 : 0)
-        }
-        if (ix || iy) { s.route = []; s.doel = null; setBericht(null) }
-        else if (s.route.length) {
-          const [tx, ty] = s.route[0], dx = tx - s.pl.x, dy = ty - s.pl.y, d = Math.hypot(dx, dy)
-          if (d < 7) { s.route.shift(); if (!s.route.length) eindeRoute() } else { ix = dx / d; iy = dy / d }
-        }
-        stap(s.pl, dt, ix, iy, kaart)
-        if (!(ix || iy)) s.pl.fase = 0
-        for (const b of gebouwLijst) if (opDeurmat(s.pl, b)) { aanDeur(b); break }
-        for (const h of huizen) if (voorHuisdeur(s.pl, h)) { aanHuis(h.id); break }
-      }
-      if (!document.hidden) {
-        const te = zender.tick(nuPositie(), nu)
-        if (te) verbinding.stuur(te)
-      }
-      for (const [anderId, a] of s.anderen) {
-        if (nu - a.gezien > WEG_NA) s.anderen.delete(anderId)
-        else volg(a, dt)
-      }
-      s.cam = tek.teken({
-        t, kaart, huizen, gebouwen: gebouwLijst, me: s.pl, mijnId: kind.id, kleur: kleurVan(kind.id), figuurtjes, overzicht: false,
-        anderen: [...s.anderen.values()].flatMap((a) => {
-          const lid = leden.get(a.id)
-          return lid ? [{ ...a, naam: lid.naam, figuur: figuurtjeVan(lid), kleur: lid.rol === 'ouder' ? '#6A5BD1' : kidKleur[lid.thema ?? 'blauw'] }] : []
-        }),
-        kleurVan: { ...Object.fromEntries(huizen.map((h) => [h.id, h.kleur])), [kind.id]: kleurVan(kind.id) },
+    const start = (tek: TekenLaag) => {
+      const s = toestand.current
+      s.tek = tek
+      const eigen = huizen.find((h) => h.id === kind.id)
+      // Een ouder staat op de straat zelf, tussen de huizen.
+      s.pl = ouder ? { x: 26 * U, y: 13.4 * U, face: 'down', moving: false, fase: 0 } : { x: eigen?.deurX ?? deurVan(0), y: GROND_Y + 70, face: 'down', moving: false, fase: 0 }
+      s.route = []; s.doel = null; s.bezig = false
+      tek.nacht = isNacht()
+      tek.rustig = minderBeweging()
+      // Het beeld vult het hele scherm; bij draaien of vergroten past het zich aan.
+      const pas = () => { const r = cv.getBoundingClientRect(); if (r.width > 0) tek.zet(r.width, r.height); s.maat = [tek.vw, tek.vh] }
+      pas()
+      const waarnemer = new ResizeObserver(pas)
+      waarnemer.observe(cv)
+      // Live: de anderen uit het gezin (ook de ouders) lopen mee. Alleen wat ze tonen is bekend, niets wordt bewaard.
+      const leden = new Map(gebruikers.map((g) => [g.id, g]))
+      s.anderen.clear()
+      const zender = new Zender()
+      const nuPositie = () => ({ id: kind.id, x: s.pl.x, y: s.pl.y, face: s.pl.face, moving: s.pl.moving })
+      const verbinding = verbind({
+        gezin: account?.gezin_id ?? 'demo', ik: kind.id, client: supabase,
+        ontvang: (b) => {
+          if (!leden.has(b.id)) return
+          if (b.t === 'weg') s.anderen.delete(b.id)
+          else if (b.t === 'hallo') verbinding.stuur(zender.nu(nuPositie(), performance.now()))
+          else s.anderen.set(b.id, metPositie(s.anderen.get(b.id), b, performance.now()))
+        },
       })
+      const zichtbaarheid = () => { if (document.hidden) verbinding.weg(); else verbinding.hallo() }
+      document.addEventListener('visibilitychange', zichtbaarheid)
+      let t = 0, laatst = performance.now(), raf = 0
+      const lus = (nu: number) => {
+        const dt = Math.min(0.05, (nu - laatst) / 1000); laatst = nu; t += dt
+        if (!s.bezig) {
+          let ix = s.joy.x, iy = s.joy.y
+          if (!ix && !iy) {
+            ix = (s.held.right ? 1 : 0) - (s.held.left ? 1 : 0); iy = (s.held.down ? 1 : 0) - (s.held.up ? 1 : 0)
+          }
+          if (ix || iy) { s.route = []; s.doel = null; setBericht(null) }
+          else if (s.route.length) {
+            const [tx, ty] = s.route[0], dx = tx - s.pl.x, dy = ty - s.pl.y, d = Math.hypot(dx, dy)
+            if (d < 7) { s.route.shift(); if (!s.route.length) eindeRoute() } else { ix = dx / d; iy = dy / d }
+          }
+          stap(s.pl, dt, ix, iy, kaart)
+          if (!(ix || iy)) s.pl.fase = 0
+          for (const b of gebouwLijst) if (opDeurmat(s.pl, b)) { aanDeur(b); break }
+          for (const h of huizen) if (voorHuisdeur(s.pl, h)) { aanHuis(h.id); break }
+        }
+        if (!document.hidden) {
+          const te = zender.tick(nuPositie(), nu)
+          if (te) verbinding.stuur(te)
+        }
+        for (const [anderId, a] of s.anderen) {
+          if (nu - a.gezien > WEG_NA) s.anderen.delete(anderId)
+          else volg(a, dt)
+        }
+        s.cam = tek.teken({
+          t, kaart, huizen, gebouwen: gebouwLijst, me: s.pl, mijnId: kind.id, kleur: kleurVan(kind.id), figuurtjes, overzicht: false,
+          anderen: [...s.anderen.values()].flatMap((a) => {
+            const lid = leden.get(a.id)
+            return lid ? [{ ...a, naam: lid.naam, figuur: figuurtjeVan(lid), kleur: lid.rol === 'ouder' ? '#6A5BD1' : kidKleur[lid.thema ?? 'blauw'] }] : []
+          }),
+          kleurVan: { ...Object.fromEntries(huizen.map((h) => [h.id, h.kleur])), [kind.id]: kleurVan(kind.id) },
+        })
+        raf = requestAnimationFrame(lus)
+      }
+      const eindeRoute = () => {
+        const d = s.doel; s.doel = null
+        if (d?.gebouw) aanDeur(d.gebouw)
+        else if (d?.huis) aanHuis(d.huis)
+      }
       raf = requestAnimationFrame(lus)
+      return () => { cancelAnimationFrame(raf); waarnemer.disconnect(); document.removeEventListener('visibilitychange', zichtbaarheid); verbinding.stop(); s.tek = null; tek.stop?.() }
     }
-    const eindeRoute = () => {
-      const d = s.doel; s.doel = null
-      if (d?.gebouw) aanDeur(d.gebouw)
-      else if (d?.huis) aanHuis(d.huis)
-    }
-    raf = requestAnimationFrame(lus)
-    return () => { cancelAnimationFrame(raf); waarnemer.disconnect(); document.removeEventListener('visibilitychange', zichtbaarheid); verbinding.stop() }
-  }, [kind, ouder, gebruikers, account, huizen, kaart, figuurtjes, aanDeur, aanHuis, gebouwLijst])
+    let gestopt = false, ruim: (() => void) | undefined
+    const sterk = Math.min(2, Math.max(1, window.devicePixelRatio || 1)) > 1.4 ? 1.5 : 1
+    void (async () => {
+      let tek: TekenLaag
+      if (drie && kanWebGL()) {
+        try {
+          const { Tekenaar3D } = await import('../lib/wereld3d/tekenaar.ts')
+          // Pas na het laden bouwen, en niet meer als dit effect al is opgeruimd: een tweede effect gebruikt hetzelfde canvas.
+          if (gestopt) return
+          tek = new Tekenaar3D(cv, sterk)
+        } catch { if (!gestopt) setValTerug(true); return }
+      } else tek = new Tekenaar(cv, sterk)
+      if (gestopt) { tek.stop?.(); return }
+      ruim = start(tek)
+    })()
+    return () => { gestopt = true; ruim?.() }
+  }, [kind, ouder, gebruikers, account, huizen, kaart, figuurtjes, aanDeur, aanHuis, gebouwLijst, drie])
 
   // Tikken op de grond: loop erheen, of naar de deur van het gebouw of huis dat je aantikt.
   function tik(ev: React.PointerEvent<HTMLCanvasElement>) {
@@ -218,6 +255,16 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
     if (s.bezig) return
     ev.preventDefault()
     setBericht(null)
+    // 3D: de tik wordt een straal naar de grond, gebouwen en huizen worden er direct mee herkend.
+    const raak = s.tek?.raak?.(ev.clientX, ev.clientY)
+    if (raak) {
+      const b = raak.gebouw ? gebouwLijst.find((x) => x.id === raak.gebouw) : undefined
+      const h = raak.huis ? huizen.find((x) => x.id === raak.huis) : undefined
+      if (b) { s.route = kaart.pad(s.pl.x, s.pl.y, b.x, b.y + 24) ?? []; s.doel = { gebouw: b } }
+      else if (h) { s.route = kaart.pad(s.pl.x, s.pl.y, h.deurX, GROND_Y + 22) ?? []; s.doel = { huis: h.id } }
+      else { s.route = kaart.pad(s.pl.x, s.pl.y, raak.x, raak.y) ?? []; s.doel = null }
+      return
+    }
     const r = ev.currentTarget.getBoundingClientRect()
     const wx = (ev.clientX - r.left) / r.width * s.maat[0] + s.cam[0], wy = (ev.clientY - r.top) / r.height * s.maat[1] + s.cam[1]
     for (const b of gebouwLijst) {
@@ -266,11 +313,17 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
   const lezer = kind.kan_lezen
   const thuis = ouder ? '/ouder' : `/kind/${kind.id}`
   return (
-    <div className={`wereld kleur-${kind.thema ?? 'blauw'}`}>
-      <canvas ref={canvasRef} className="wereld-veld" onPointerDown={tik}
+    <div className={`wereld kleur-${kind.thema ?? 'blauw'}${drie ? ' wereld-3d' : ''}`}>
+      <canvas key={drie ? '3d' : '2d'} ref={canvasRef} className="wereld-veld" onPointerDown={tik}
               role="img" aria-label="De straat met de huizen, de winkel en het Spellenhuis" />
       {!ouder && saldo !== undefined && saldo !== null && (
         <div className="wereld-sterren" role="img" aria-label={`${saldo} sterren`}><Ster grootte={34} /><b className="display">{saldo}</b></div>
+      )}
+      {ouder && (
+        <button type="button" className="wereld-3d-knop" aria-pressed={wil3d}
+                onClick={() => { zetDrieD(!wil3d); setValTerug(false); setWil3d(!wil3d) }}>
+          {wil3d ? '3D uitzetten' : '3D proberen'}
+        </button>
       )}
       <Link to={thuis} className="wereld-hub" aria-label={ouder ? "Terug naar het ouderdeel" : "Terug naar het startscherm"}
             onClick={() => { if (!lezer) leesVoor('Startscherm') }}>

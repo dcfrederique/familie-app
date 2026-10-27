@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.41',
+    datum: '2026-10-27',
+    titel: 'De wereld in 3D (proefversie)',
+    tekst: 'De eerste 3D-versie van de wereld staat klaar, nog verborgen achter een schakelaar: de straat, de huizen van de kinderen (met hun kleuren en dak), de gebouwen, bomen, het speelplein en de vijver met een schuine camera, een chibi-figuurtje dat loopt met joystick of tik, en de anderen live. Ouders zetten hem aan met de knop 3D proberen in hun wereldscherm (Wij → De wereld); op een tablet kan het met ?3d=1 achter het adres. De gewone wereld blijft de standaard; Mijn huis en de Kleerkast blijven zoals ze zijn. Nog niet alle stukken hebben een 3D-versie (dan ziet het kind een eenvoudige vorm); die komen stap voor stap erbij.',
+  },
+  {
     versie: '0.40',
     datum: '2026-10-27',
     titel: 'De wereld ziet er rijker uit',

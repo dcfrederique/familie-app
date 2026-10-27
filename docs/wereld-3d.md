@@ -1,6 +1,6 @@
 # Plan van aanpak: de wereld in 3D
 
-Status: plan van 27 oktober 2026, nog niet gebouwd (alleen de proef `prototypes/wereld-3d/`, zie `docs/wereld-isometrisch.md` voor onderzoek en besluit). Opdrachtgever: Frederique. Bouwt voort op `docs/wereld.md` (concept, fases, live) en `docs/huis.md`.
+Status: fase 1 (basisversie achter de schakelaar) gebouwd op 27 oktober 2026, zie "Stand van de bouw" onderaan. Proef: `prototypes/wereld-3d/`; onderzoek en besluit: `docs/wereld-isometrisch.md`. Opdrachtgever: Frederique. Bouwt voort op `docs/wereld.md` (concept, fases, live) en `docs/huis.md`.
 
 ## Doel
 
@@ -73,3 +73,13 @@ Doel: de basisversie wordt niet in één grote klap afgemaakt. Elke nacht pakt e
 2. Moet het figuurtje in 3D alle kleren tonen vanaf de start, of beginnen met kleuren en kapsels?
 3. Welke gebouwen als eerste in fantasiestijl na Winkel en Spellenhuis?
 4. Opdrachten en minikaart in fase 1 of pas in fase 4?
+
+
+## Stand van de bouw (fase 1, 27 oktober 2026)
+
+- **Schakelaar:** niet per gezin in de database maar per toestel (`src/lib/wereld3d/schakelaar.ts`): `?3d=1` achter het adres van de wereld zet 3D aan op dat toestel (onthouden), `?3d=0` zet uit. Ouders hebben ook de knop "3D proberen" in hun wereldscherm (Wij → De wereld). Er is dus géén aparte route `/wereld3d`: dezelfde route `/kind/:id/wereld` kiest de tekenaar. Een gezinsbrede instelling komt pas bij fase 5 (omschakelen).
+- **Opzet in de code:** `Wereld.tsx` kiest tussen `Tekenaar` (canvas) en `Tekenaar3D` (`src/lib/wereld3d/tekenaar.ts`, via een dynamische import zodat three alleen bij 3D geladen wordt). Beide krijgen dezelfde `teken`-aanroep, dus kaartlogica, live, joystick, deuren en vrijgave zijn gedeeld. Geen WebGL of een fout bij het starten: automatisch de gewone wereld.
+- **Bestanden:** `bouwstenen.ts` (materialen, afgeronde blokken, doeken, labels), `figuur.ts` (chibi uit de Figuurtje-gegevens), `huis.ts` (huis uit Mijn huis: model, dak, kleuren, deur, schoorsteen, twee tuinstukken), `gebouw.ts` (Winkel, Spellenhuis, spelgebouwen met gouden rand en slot, bouwplaats), `natuur.ts` (bomen als instances, lantaarn, bank, speeltoestellen, hek), `dekking.ts` (`HEEFT_3D`: welke stukken een eigen 3D-vorm hebben; `ontbreekt3D()` meldt de rest) en `wereld3d.test.ts`.
+- **Terugval:** elk stuk dat niet in `HEEFT_3D` staat krijgt een eenvoudige vorm; de test bouwt elk stuk van beide catalogi en elk gebouw. Nieuwe stukken van de nachtelijke bouw hoeven niets te doen; de 3D-routine werkt `HEEFT_3D` en de backlog bij.
+- **Schermafdrukken:** `node scripts/wereld3d-foto.cjs <map> ArrowDown:9000 ArrowRight:30000` (Vite moet draaien; `NACHT=1` voor donker). Software-WebGL is traag, houd het scherm klein en geef lopen veel tijd.
+- **Nog niet in fase 1:** opdrachten, minikaart, camera-instelling, geluid, alle figuur- en huisstukken (zie de backlog), echte 3D-gebouwen in fantasiestijl, test op de oudste tablet en in de Capacitor-WebView.

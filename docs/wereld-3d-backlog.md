@@ -3,7 +3,7 @@
 Zie `docs/wereld-3d.md`, "Nachtelijke routine". Werk van boven naar beneden; zet `[x]` voor wat klaar is en noteer de datum. Pas na de basisversie (fase 1) start de routine.
 
 ## Voorwaarde
-- [ ] Fase 1 (basisversie achter de schakelaar) staat op main
+- [x] Fase 1 (basisversie achter de schakelaar) staat op main (2026-10-27; schakelaar per toestel, zie docs/wereld-3d.md "Stand van de bouw")
 
 ## Figuurtje (src/lib/wereld3d/figuur.ts en stukken/)
 - [ ] Alle kapsels van `src/data/figuurtje.ts` (korte, lange, staart, krullen, ...)
