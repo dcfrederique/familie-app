@@ -16,8 +16,8 @@ const DAG = '--huis-gras:#7CC46A;--huis-gras2:#6AB55A;--huis-heuvel:#A6D98C;--hu
 const NACHT = '--huis-gras:#2E5A3A;--huis-gras2:#264E30;--huis-heuvel:#1E3B4C;--huis-glas:#FFD66B;--huis-pad:#5E5A52;--huis-rook:#7A859A;'
 
 const PAL = {
-  d: { gras: '#7CC46A', gras2: '#6AB55A', pad: '#E2D9C6', padRand: '#CDBF9F', grind: '#F1EBDD', grindD: '#B9AA88', tuf: '#5BA84C', zand: '#F2E3B5', zandPunt: '#E2CE96', water: '#4FB3E8', waterL: '#A6DEF8', veld1: '#6FC25C', veld2: '#84CC72' },
-  n: { gras: '#2E5A3A', gras2: '#264E30', pad: '#5E5A52', padRand: '#4A463F', grind: '#74706A', grindD: '#3E3A34', tuf: '#1F4A2D', zand: '#7C7458', zandPunt: '#6A6349', water: '#25497A', waterL: '#3E6BA3', veld1: '#2A5736', veld2: '#33663F' },
+  d: { gras: '#7CC46A', gras2: '#6AB55A', pad: '#E2D9C6', padRand: '#CDBF9F', padZij: '#A8966C', grind: '#F1EBDD', grindD: '#B9AA88', tuf: '#5BA84C', zand: '#F2E3B5', zandPunt: '#E2CE96', water: '#4FB3E8', waterL: '#A6DEF8', veld1: '#6FC25C', veld2: '#84CC72' },
+  n: { gras: '#2E5A3A', gras2: '#264E30', pad: '#5E5A52', padRand: '#4A463F', padZij: '#3A362F', grind: '#74706A', grindD: '#3E3A34', tuf: '#1F4A2D', zand: '#7C7458', zandPunt: '#6A6349', water: '#25497A', waterL: '#3E6BA3', veld1: '#2A5736', veld2: '#33663F' },
 }
 
 /** Zijde van het hubbordje in schermpunten (ook voor de link erover). */
@@ -131,8 +131,10 @@ export class Tekenaar {
     c2.beginPath(); c2.moveTo(VELD[0] + 6, (VELD[1] + VELD[3]) / 2); c2.lineTo(VELD[2] - 12, (VELD[1] + VELD[3]) / 2); c2.stroke()
     c2.beginPath(); c2.arc((VELD[0] + VELD[2] - 6) / 2, (VELD[1] + VELD[3]) / 2, 26, 0, 7); c2.stroke()
     // wegen
-    for (const r of wegen) rr(r[0] - 4, r[1] - 4, r[2] + 4, r[3] + 4, 22, P.padRand)
-    for (const r of wegen) rr(r[0], r[1], r[2], r[3], 20, P.pad)
+    // een licht opgehoogd pad: eerst de schaduw op het gras, dan de zijkant (onder en rechts), dan het pad zelf
+    for (const r of wegen) rr(r[0] - 2, r[1] + 8, r[2] + 14, r[3] + 26, 26, 'rgba(0,0,0,.18)')
+    for (const r of wegen) rr(r[0], r[1] + 15, r[2] + 6, r[3] + 15, 22, P.padZij, P.padRand)
+    for (const r of wegen) rr(r[0], r[1], r[2], r[3], 20, P.pad, P.padRand)
     // grind: kleine steentjes in twee tinten over alle paden, en een lichte rand langs de bovenkant
     wegen.forEach((r, w) => {
       const n = Math.round(((r[2] - r[0]) * (r[3] - r[1])) / 110)

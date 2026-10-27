@@ -22,7 +22,7 @@ export const nieuwtjes: Nieuwtje[] = [
     versie: '0.40',
     datum: '2026-10-27',
     titel: 'De wereld ziet er rijker uit',
-    tekst: 'De wereld kreeg meer sfeer, naar het voorbeeld van Frederique: grindpaden met steentjes, grasplukjes, fruitbomen met appels of sinaasappels en een brede schaduw, en vlinders die rondfladderen (niet bij minder beweging). Dit is de eerste stap; huizen met zichtbaar dak en een meebewegende camera zijn voorgesteld in docs/wereld-isometrisch.md.',
+    tekst: 'De wereld kreeg meer sfeer, naar het voorbeeld van Frederique: grindpaden met steentjes en een opgehoogde rand met schaduw, grasplukjes, fruitbomen met appels of sinaasappels en een brede schaduw, en vlinders die rondfladderen (niet bij minder beweging). Dit is de eerste stap; huizen met zichtbaar dak en een meebewegende camera zijn voorgesteld in docs/wereld-isometrisch.md.',
   },
   {
     versie: '0.39',
