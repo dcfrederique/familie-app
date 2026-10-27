@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.51',
+    datum: '2026-10-27',
+    titel: 'Geen verspringen meer in de wereld',
+    tekst: 'Het figuurtje sprong soms terug naar een andere plek terwijl je rondliep: dat gebeurde wanneer de app op de achtergrond gezinsgegevens ververste. Nu blijft het staan waar het is. Daarnaast opent de live verbinding (je ziet elkaar lopen) pas als er nog iemand van het gezin in de wereld is; alleen in de wereld kijkt de app om de 10 seconden of er iemand bijkwam. Zo gaan er geen onnodige Realtime-berichten over de lijn.',
+  },
+  {
     versie: '0.50',
     datum: '2026-10-27',
     titel: 'Boodschappen: prijs per eenheid',

@@ -16,7 +16,7 @@ import { Tekenaar25 } from '../lib/wereld/tekenen25.ts'
 import { standaardWeergave, type WereldWeergave } from '../lib/wereld/weergave.ts'
 import { DUUR, isToestel, naarBal, nieuweBal, pose, rol, schop, voorToestel, type Toestel } from '../lib/wereld/speel.ts'
 import { lichtVan, weerVan } from '../lib/wereld/weer.ts'
-import { WEG_NA, Zender, metPositie, verbind, volg, type Ander } from '../lib/wereld/live.ts'
+import { WEG_NA, Zender, metPositie, verbindZuinig, volg, type Ander } from '../lib/wereld/live.ts'
 import { supabase } from '../lib/supabase.ts'
 import { useSessie } from '../lib/sessie.tsx'
 import { useGegevens } from '../lib/gegevens.ts'
@@ -137,6 +137,8 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
     aankomst: null as null | [number, number], plekGelezen: false,
     cam: [0, 0, 1] as readonly [number, number, number], bezig: false, maat: [960, 640] as [number, number],
     tek: null as Tekenaar25 | null,
+    /** Voor welk kind, gebied en loopstijl de plek van het figuurtje het laatst begon (zie het effect hieronder). */
+    startSleutel: '',
   })
 
   const meld = useCallback((tekst: string, prent: string) => {
@@ -203,25 +205,31 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
     const cv = canvasRef.current
     if (!cv) return
     const s = toestand.current
-    const eigen = huizen.find((h) => h.id === kind.id)
-    // Een ouder staat op de straat zelf, tussen de huizen; een kind begint voor zijn eigen deur.
-    const start = ouder ? { x: 26 * U, y: 13.4 * U } : eigen ? { x: eigen.deurX, y: deurYvan(eigen) + 70 } : { x: 28 * U, y: 13.5 * U }
-    // Terug uit een gebouw of Springland: op de plek van vorige keer. Door een poort: bij de aankomsttegel.
-    if (!s.plekGelezen) {
-      s.plekGelezen = true
-      const vorige = ouder ? null : leesPlek(kind.id)
-      if (vorige && vorige.g === gebiedRef.current) s.aankomst = [vorige.tx, vorige.ty]
-      try { sessionStorage.removeItem(plekSleutel(kind.id)) } catch { /* niets te wissen */ }
+    // Dit effect start ook opnieuw als gezinsgegevens verversen (nieuwe lijsten met dezelfde inhoud): dan blijft het figuurtje staan
+    // waar het is. Alleen een ander kind, gebied of loopstijl zet het opnieuw op een beginplek.
+    const sleutel = `${kind.id}|${ouder}|${gebiedRef.current}|${tegelLopen}`
+    if (s.startSleutel !== sleutel) {
+      s.startSleutel = sleutel
+      const eigen = huizen.find((h) => h.id === kind.id)
+      // Een ouder staat op de straat zelf, tussen de huizen; een kind begint voor zijn eigen deur.
+      const start = ouder ? { x: 26 * U, y: 13.4 * U } : eigen ? { x: eigen.deurX, y: deurYvan(eigen) + 70 } : { x: 28 * U, y: 13.5 * U }
+      // Terug uit een gebouw of Springland: op de plek van vorige keer. Door een poort: bij de aankomsttegel.
+      if (!s.plekGelezen) {
+        s.plekGelezen = true
+        const vorige = ouder ? null : leesPlek(kind.id)
+        if (vorige && vorige.g === gebiedRef.current) s.aankomst = [vorige.tx, vorige.ty]
+        try { sessionStorage.removeItem(plekSleutel(kind.id)) } catch { /* niets te wissen */ }
+      }
+      if (s.aankomst) { start.x = tegelMidden(s.aankomst[0]); start.y = tegelMidden(s.aankomst[1]); s.aankomst = null }
+      // Tegel voor tegel begint op het midden van een (vrije) tegel.
+      if (tegelLopen) {
+        const [vx, vy] = dichtstbijVrij(tegels, Math.floor(start.x / U), Math.floor(start.y / U))
+        start.x = tegelMidden(vx); start.y = tegelMidden(vy)
+      }
+      setSluit(false)
+      s.pl = { ...start, face: 'down', moving: false, fase: 0, tegel: nieuweTegelStand() }
+      s.route = []; s.doel = null; s.bezig = false; s.spelen = null; s.klaarMet = ''; s.bal = nieuweBal()
     }
-    if (s.aankomst) { start.x = tegelMidden(s.aankomst[0]); start.y = tegelMidden(s.aankomst[1]); s.aankomst = null }
-    // Tegel voor tegel begint op het midden van een (vrije) tegel.
-    if (tegelLopen) {
-      const [vx, vy] = dichtstbijVrij(tegels, Math.floor(start.x / U), Math.floor(start.y / U))
-      start.x = tegelMidden(vx); start.y = tegelMidden(vy)
-    }
-    setSluit(false)
-    s.pl = { ...start, face: 'down', moving: false, fase: 0, tegel: nieuweTegelStand() }
-    s.route = []; s.doel = null; s.bezig = false; s.spelen = null; s.klaarMet = ''; s.bal = nieuweBal()
     const tek = new Tekenaar25(cv, Math.min(2, Math.max(1, window.devicePixelRatio || 1)) > 1.4 ? 1.5 : 1)
     // Dag, schemer en nacht volgen de klok; het weer wisselt per blok van drie uur (weer.ts). Elke halve minuut kijken we opnieuw.
     const klok = () => { const nu = new Date(), l = lichtVan(nu); tek.nacht = l.nacht; tek.schemer = l.schemer; tek.weer = weerVan(nu) }
@@ -239,8 +247,14 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
     s.anderen.clear()
     const zender = new Zender()
     const nuPositie = () => ({ id: kind.id, x: s.pl.x, y: s.pl.y, face: s.pl.face, moving: s.pl.moving, g: gebiedRef.current })
-    const verbinding = verbind({
+    const sb = supabase
+    const verbinding = verbindZuinig({
       gezin: account?.gezin_id ?? 'demo', ik: kind.id, client: supabase,
+      // Met Supabase: pas Realtime openen als er iemand anders in de wereld is (kijkt om de 10 s).
+      ...(sb ? {
+        aanwezig: async () => { const { data, error } = await sb.rpc('wereld_aanwezig', { p_ik: kind.id }); if (error) throw error; return Number(data) || 0 },
+        afmelden: () => { void sb.rpc('wereld_weg', { p_ik: kind.id }) },
+      } : {}),
       ontvang: (b) => {
         if (!leden.has(b.id)) return
         if (b.t === 'weg') s.anderen.delete(b.id)

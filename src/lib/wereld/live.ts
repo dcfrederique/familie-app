@@ -151,3 +151,37 @@ export function verbind(opties: { gezin: string; ik: string; client: SupabaseCli
     stop: () => { zend({ t: 'weg', id: ik }); kanaal.close() },
   }
 }
+
+/** Zo vaak (ms) kijken of er iemand anders in de wereld is, zolang er geen verbinding open is. */
+export const KIJK_TUSSENTIJD = 10_000
+
+/**
+ * Houdt de Realtime-verbinding dicht zolang je alleen in de wereld bent. `aanwezig` meldt jezelf en geeft terug hoeveel
+ * anderen er zijn (om de 10 seconden); pas bij iemand anders gaat de verbinding open, en weer dicht als die weggaat.
+ * Zonder `aanwezig` (demo) is het gewoon `verbind`.
+ */
+export function verbindZuinig(opties: Parameters<typeof verbind>[0] & { aanwezig?: () => Promise<number>; afmelden?: () => void }): Verbinding {
+  const { aanwezig, afmelden, ...rest } = opties
+  if (!aanwezig) return verbind(rest)
+  let v: Verbinding | null = null
+  let gestopt = false
+  let loopt = false
+  const kijk = async () => {
+    if (gestopt || loopt) return
+    loopt = true
+    try {
+      const anderen = await aanwezig()
+      if (gestopt) return
+      if (anderen > 0 && !v) v = verbind(rest)
+      else if (anderen === 0 && v) { v.stop(); v = null }
+    } catch { /* geen verbinding met de server: even niets veranderen */ } finally { loopt = false }
+  }
+  void kijk()
+  const timer = setInterval(() => { if (!document.hidden) void kijk() }, KIJK_TUSSENTIJD)
+  return {
+    stuur: (p) => v?.stuur(p),
+    hallo: () => { v?.hallo(); void kijk() },
+    weg: () => v?.weg(),
+    stop: () => { gestopt = true; clearInterval(timer); v?.stop(); v = null; afmelden?.() },
+  }
+}
