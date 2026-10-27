@@ -121,3 +121,14 @@ Wat ze gemeen hebben: de wegen lopen recht (horizontaal en verticaal), de tegels
 - Geen nieuwe projectie en geen engine nodig: de huidige canvas-wereld blijft de basis. Het wordt een **kunstopdracht**: meer diepte en detail in dezelfde kaart.
 - Wat verandert: huizen en gebouwen met een dakvlak en een kleine zijkant, bomen en struiken met schaduw en volume, gravel- en grastextuur, bloemen, lantaarns, hekken, drukker leven (vlinders, vogels, kinderen), figuurtjes met een zachte schaduw.
 - Wat blijft: kaart, joystick, tikken, live, de SVG-stijl van de app en het figuurtje.
+
+## Besluit (27 oktober 2026): echte 3D met een schuine perspectiefcamera
+
+Na meerdere mockups kwam Frederique tot het eigenlijke voorbeeld: een Pokémon-achtige MMO (fangame) met een schuin van boven kijkende perspectiefcamera, kleine chibi-figuurtjes met naamlabel, afgeronde 3D-gebouwen met schaduw, een tegelvloer in perspectief en een scherm eromheen (profiel, opdracht, minikaart, menu). Platte tekeningen in schuin bovenaanzicht gaven dat gevoel niet ("te veel 2D"). De proef in Three.js wel (`prototypes/wereld-3d/`, bouwen met `bouw.sh`, online als artifact): "dat is wat ik bedoel", met de wens dat de camera iets verder staat voor meer overzicht.
+
+Gevolgen voor het plan:
+- **Three.js wordt de basis van de wereld** (niet Phaser, niet het canvas). Bundel ongeveer 132 KB gzip; laad hem pas bij het openen van de wereld.
+- Alles wordt met code gemaakt (afgeronde blokken, bollen, kegels, canvas-texturen), geen 3D-modellen. Huizen komen uit de catalogus van Mijn huis (model, dak, muur, deur, ramen, tuin, extra) als 3D-versie; de gebouwen van de wereld (Winkel, Spellenhuis, spelgebouwen) in een speelse stijl met ronde vormen.
+- Behouden: kaartlogica (botsen, bereikbaarheid), live via Realtime, joystick, vrijgave en slot per gebouw, hub-wisseling. Opnieuw: tekenen, camera, figuurtje (nu chibi in 3D met de kleuren en kleren van het kind).
+- Risico's: prestaties en geheugen op de oudste tablet en in de Capacitor-WebView (testen), verlies van WebGL-context bij schermvergrendeling (hervatten), en het figuurtje met alle kledingstukken in 3D (eerst basiskleding, daarna stukken).
+- Voorstel voor fases: (1) de 3D-wereld naast de huidige, achter een schakelaar voor ouders; (2) kinderhuizen uit Mijn huis; (3) gebouwen en spelgebouwen; (4) live, camera-instelling, minikaart en opdrachten; (5) de oude canvas-wereld verwijderen.

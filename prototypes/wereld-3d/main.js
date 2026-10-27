@@ -293,9 +293,9 @@ function tekenMini() {
 // ---------- lus ----------
 function pas() { const b = innerWidth, h = innerHeight; renderer.setSize(b, h, false); cam.aspect = b / h; cam.updateProjectionMatrix() }
 addEventListener('resize', pas); pas()
-const camPos = new THREE.Vector3(2, 9.8, 17.8)
+const camPos = new THREE.Vector3(2, 13.5, 20.6)
 let vorige = performance.now()
-const cfg = { hoogte: 9.8, afstand: 13.4, vooruit: 4.2 }
+const cfg = { hoogte: 13.5, afstand: 17.5, vooruit: 5.5 }
 function lus(nu) {
   const dt = Math.min(.05, (nu - vorige) / 1000); vorige = nu; const t = nu / 1000
   let ix = (toets.d || toets.arrowright ? 1 : 0) - (toets.a || toets.arrowleft ? 1 : 0) + stick.x
