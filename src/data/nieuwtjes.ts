@@ -19,6 +19,13 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.52',
+    datum: '2026-10-27',
+    titel: 'Eerste Android-app (proefversie)',
+    tekst: 'De Familie-app bestaat nu ook als echte Android-app (een schil rond de gewone app, zodat nieuwe versies vanzelf binnenkomen). Op een kindertablet blijft het scherm altijd liggend en verdwijnen de systeembalken; op een ouder-gsm draait het scherm vrij. De APK om te installeren staat na elke groene bouw in GitHub bij Releases (android-latest). De gewone webversie op pc en gsm blijft werken. Plan en vervolg (meldingen zonder webadres, camera, duels) staan in docs/capacitor.md.',
+    open: 'Nog niet: meldingen via Firebase (die tonen nog het webadres), een vaste handtekening voor updates (een nieuwe APK installeren vraagt voorlopig eerst de oude te verwijderen) en een test of Family Link het installeren toelaat.',
+  },
+  {
     versie: '0.51',
     datum: '2026-10-27',
     titel: 'Geen verspringen meer in de wereld',

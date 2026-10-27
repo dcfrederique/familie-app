@@ -1,6 +1,6 @@
 # Echte Android-app met Capacitor (plan, nog niet gebouwd)
 
-Status: plan, nog niet gebouwd (geschreven 2026-10-25, bijgewerkt 2026-10-27). Er is nog geen code geschreven en niets verandert aan de gehoste app.
+Status: stap 1 en 2 gebouwd op 2026-10-27 (`capacitor.config.ts`, `android/`, `src/lib/schil.ts`, CI-job `android` met debug-APK in Releases → android-latest; stand en fullscreen zitten er al in). Meldingen via FCM, vaste handtekening en Play Store volgen nog. Geschreven 2026-10-25, bijgewerkt 2026-10-27. Er is nog geen code geschreven en niets verandert aan de gehoste app.
 
 ## Bijgewerkt op 27 oktober: wat er sindsdien veranderde
 

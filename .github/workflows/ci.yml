@@ -132,6 +132,44 @@ jobs:
           supabase secrets set --project-ref "$ref" VAPID_PUBLIC_KEY="$VAPID_PUBLIC_KEY" VAPID_PRIVATE_KEY="$VAPID_PRIVATE_KEY" MELDING_GEHEIM="$geheim"
           supabase functions deploy melding --project-ref "$ref" --no-verify-jwt
 
+  # Android-schil (docs/capacitor.md): bouwt een debug-APK die de gehoste site opent. Op main komt hij ook als
+  # download bij de release "android-latest". Mislukt dit, dan blokkeert het het deployen niet.
+  android:
+    needs: [bouwen-en-testen]
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: write # de release android-latest bijwerken (alleen op main)
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 21
+      - uses: android-actions/setup-android@v3
+      - run: npm ci
+      - run: npm run build
+      - run: npx cap sync android
+      - run: ./gradlew assembleDebug --no-daemon
+        working-directory: android
+      - run: cp android/app/build/outputs/apk/debug/app-debug.apk familie.apk
+      - uses: actions/upload-artifact@v5
+        with:
+          name: familie-apk
+          path: familie.apk
+          retention-days: 30
+      - if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release view android-latest >/dev/null 2>&1 || gh release create android-latest --title "Android-app (laatste)" --notes "Debug-APK van de Familie-app (docs/capacitor.md)."
+          gh release upload android-latest familie.apk --clobber
+
   # Naar Azure Static Web Apps, pas als alle tests groen zijn (docs/hosting.md).
   # Push op main = de echte app; een PR krijgt een eigen voorbeeld-adres.
   # Zonder het secret AZURE_STATIC_WEB_APPS_API_TOKEN slaat deze job zich over.

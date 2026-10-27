@@ -31,3 +31,12 @@ dist-ssr
 # Gegenereerde prenten (komen in Azure Blob, niet in de repo)
 /prenten/
 test-results/
+
+# Android-schil: bouwresultaten en lokale instellingen
+android/.gradle/
+android/local.properties
+android/app/build/
+android/capacitor-cordova-android-plugins/
+android/app/src/main/assets/public/
+android/app/src/main/assets/capacitor.config.json
+android/app/src/main/assets/capacitor.plugins.json

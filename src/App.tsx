@@ -1,6 +1,7 @@
 import { Navigate, Outlet, Route, Routes, useLocation, useParams } from 'react-router-dom'
 import { ProefPoort, proefAan } from './lib/proef.tsx'
 import { useSessie } from './lib/sessie.tsx'
+import { useSchil } from './lib/schil.ts'
 import Basket from './schermen/Basket.tsx'
 import ExtraTijd from './schermen/ExtraTijd.tsx'
 import Goedkeuren from './schermen/Goedkeuren.tsx'
@@ -57,6 +58,8 @@ import WieSpeelt from './schermen/WieSpeelt.tsx'
 
 export default function App() {
   const { status, isAnoniem, account, mijnKind } = useSessie()
+  // Android-schil: kindertablet liggend en beeldvullend, ouder-gsm vrij.
+  useSchil(account?.soort === 'tablet')
 
   if (status === 'laden') return <main className="wie"><p className="leeg">Even laden…</p></main>
   // Zelfde plaats in de boom voor beide gevallen, zodat het koppelformulier zijn invoer behoudt.
