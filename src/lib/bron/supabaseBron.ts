@@ -2,7 +2,7 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Aanbod } from '../../data/aanbod.ts'
 import { maakWeergave, type WereldWeergave } from '../wereld/weergave.ts'
 import { leesOpgeslagen, type Opgeslagen as WereldKaart } from '../wereld/gebieden.ts'
-import type { ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, ChatOverzicht, GezondheidProfiel, SpraakToken, Inzending, LogRegel, Maaltijd, NieuweNotitie, NieuweOuderTaak, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Saldo, Spelregels, Taak, Tijdverzoek, Winkel } from './types.ts'
+import type { ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, ChatOverzicht, GezondheidProfiel, SpraakToken, Inzending, LogRegel, Maaltijd, NieuweNotitie, NieuweOuderTaak, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Saldo, Spelregels, Taak, Tijdverzoek, Winkel, VoorraadArtikel, VoorraadLogRegel, VoorraadOverzicht } from './types.ts'
 
 // Postgres numeric komt als tekst of getal binnen.
 const getal = (w: unknown) => (w === null || w === undefined ? null : Number(w))
@@ -23,6 +23,7 @@ async function verklein(foto: Blob): Promise<Blob> {
     canvas.toBlob((b) => (b ? klaar(b) : mislukt(new Error('foto kon niet verkleind worden'))), 'image/jpeg', 0.8))
 }
 
+const VOORRAAD_KOLOMMEN = 'id, naam, eenheid, aantal, minimum, aankoop_aantal, plaats, categorie_id, winkel_id, houdbaar_tot'
 const BOODSCHAP_KOLOMMEN = 'id, naam, hoeveel, winkel_id, dag, gerecht, gekocht_op, aangemaakt_op, categorie_id, prijs, eenheidsprijs, aantal'
 
 export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
@@ -187,6 +188,30 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
         .gte('gekocht_op', van).lt('gekocht_op', tot).order('gekocht_op').limit(5000)
       fout(error)
       return (data ?? []) as Boodschap[]
+    },
+    async voorraad() {
+      const sinds = new Date(Date.now() - 21 * 86400_000).toLocaleDateString('sv-SE')
+      const [artikelen, recepten, ingredienten, instellingen, gekookt] = await Promise.all([
+        sb.from('voorraad_artikelen').select(VOORRAAD_KOLOMMEN).order('naam'),
+        sb.from('recepten').select('id, naam, personen').order('naam'),
+        sb.from('recept_ingredienten').select('recept_id, artikel_id, hoeveelheid'),
+        sb.from('voorraad_instellingen').select('eters').maybeSingle(),
+        sb.from('voorraad_gekookt').select('dag').gte('dag', sinds),
+      ])
+      for (const r of [artikelen, recepten, ingredienten, instellingen, gekookt]) fout(r.error)
+      return {
+        artikelen: (artikelen.data ?? []).map((a) => ({ ...a, aantal: Number(a.aantal), minimum: getal(a.minimum), aankoop_aantal: Number(a.aankoop_aantal) })) as VoorraadArtikel[],
+        recepten: (recepten.data ?? []).map((r) => ({
+          ...r, ingredienten: (ingredienten.data ?? []).filter((i) => i.recept_id === r.id).map((i) => ({ artikel_id: i.artikel_id, hoeveelheid: Number(i.hoeveelheid) })),
+        })),
+        eters: instellingen.data?.eters ?? 5,
+        gekookt: (gekookt.data ?? []).map((g) => g.dag as string),
+      } satisfies VoorraadOverzicht
+    },
+    async voorraadLog(limiet = 40) {
+      const { data, error } = await sb.from('voorraad_log').select('id, naam, verschil, nieuw_aantal, reden, uitleg, aangemaakt_op').order('id', { ascending: false }).limit(limiet)
+      fout(error)
+      return (data ?? []).map((r) => ({ ...r, verschil: Number(r.verschil), nieuw_aantal: Number(r.nieuw_aantal) })) as VoorraadLogRegel[]
     },
     async gezondheidProfiel() {
       const { data, error } = await sb.from('gezondheid_profielen').select('geboortedatum, lengte_cm, doelgewicht_kg').maybeSingle()
@@ -408,6 +433,57 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
     },
     async boodschapVerwijderen(id) {
       fout((await sb.from('boodschappen').delete().eq('id', id)).error)
+    },
+    async voorraadArtikelOpslaan({ id, ...a }) {
+      const rij = { naam: a.naam.trim(), eenheid: a.eenheid.trim(), minimum: a.minimum, aankoop_aantal: a.aankoop_aantal, plaats: a.plaats,
+                    categorie_id: a.categorie_id, winkel_id: a.winkel_id, houdbaar_tot: a.houdbaar_tot, bijgewerkt_op: new Date().toISOString() }
+      if (id) fout((await sb.from('voorraad_artikelen').update(rij).eq('id', id)).error)
+      else fout((await sb.from('voorraad_artikelen').insert({ ...rij, aantal: a.aantal ?? 0, gezin_id: gezinId })).error)
+    },
+    async voorraadArtikelVerwijderen(id) {
+      fout((await sb.from('voorraad_artikelen').delete().eq('id', id)).error)
+    },
+    async voorraadBijstellen(id, waarde, absoluut) {
+      fout((await sb.rpc('voorraad_bijstellen', { p_artikel: id, p_waarde: waarde, p_reden: absoluut ? 'telling' : 'handmatig', p_absoluut: absoluut })).error)
+    },
+    async receptOpslaan({ id, naam, personen, ingredienten }) {
+      // Onbekende artikels maken we eerst aan, zodat een recept meteen kan verwijzen.
+      const { data: bestaand, error: leesFout } = await sb.from('voorraad_artikelen').select('id, naam')
+      fout(leesFout)
+      const sl = (t: string) => t.trim().toLocaleLowerCase('nl-BE')
+      const idVan = new Map((bestaand ?? []).map((a) => [sl(a.naam), a.id as string]))
+      for (const i of ingredienten) {
+        if (idVan.has(sl(i.naam))) continue
+        const { data, error } = await sb.from('voorraad_artikelen').insert({ gezin_id: gezinId, naam: i.naam.trim(), eenheid: i.eenheid.trim() || 'stuk' }).select('id').single()
+        fout(error)
+        idVan.set(sl(i.naam), data!.id as string)
+      }
+      const rij = { naam: naam.trim(), personen }
+      let receptId = id
+      if (id) fout((await sb.from('recepten').update(rij).eq('id', id)).error)
+      else {
+        const { data, error } = await sb.from('recepten').insert({ ...rij, gezin_id: gezinId }).select('id').single()
+        fout(error)
+        receptId = data!.id as string
+      }
+      fout((await sb.from('recept_ingredienten').delete().eq('recept_id', receptId!)).error)
+      if (ingredienten.length) {
+        // Hetzelfde artikel tweemaal in één recept telt samen.
+        const som = new Map<string, number>()
+        for (const i of ingredienten) som.set(idVan.get(sl(i.naam))!, (som.get(idVan.get(sl(i.naam))!) ?? 0) + i.hoeveelheid)
+        fout((await sb.from('recept_ingredienten').insert([...som].map(([artikel_id, hoeveelheid]) => ({ gezin_id: gezinId, recept_id: receptId, artikel_id, hoeveelheid })))).error)
+      }
+    },
+    async receptVerwijderen(id) {
+      fout((await sb.from('recepten').delete().eq('id', id)).error)
+    },
+    async voorraadGekookt(dag, overslaan) {
+      const { data, error } = await sb.rpc('voorraad_gekookt', { p_dag: dag, p_overslaan: overslaan })
+      fout(error)
+      return Number(data ?? 0)
+    },
+    async voorraadEters(eters) {
+      fout((await sb.from('voorraad_instellingen').upsert({ gezin_id: gezinId, eters })).error)
     },
     async categorieOpslaan({ id, naam, volgorde }) {
       const rij = { naam: naam.trim(), volgorde }

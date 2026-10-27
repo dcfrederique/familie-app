@@ -3,7 +3,7 @@
 export type MenuIcoon =
   | 'vandaag' | 'goedkeuren' | 'taken' | 'kinderen' | 'spelregels'
   | 'onzetaken' | 'boodschappen' | 'notities' | 'gewicht' | 'profiel' | 'fitness' | 'lopen'
-  | 'chat' | 'weekmenu' | 'toestellen' | 'pincode' | 'winkels' | 'uitgaven' | 'nieuw' | 'aanbod' | 'melding' | 'proberen' | 'springland' | 'wereld'
+  | 'chat' | 'weekmenu' | 'toestellen' | 'pincode' | 'winkels' | 'uitgaven' | 'nieuw' | 'aanbod' | 'melding' | 'proberen' | 'springland' | 'wereld' | 'voorraad' | 'recepten'
 
 export interface MenuItem {
   naam: string
@@ -43,6 +43,8 @@ export const ouderMenu: MenuGroep[] = [
     { naam: 'Weekmenu', icoon: 'weekmenu', pad: '/ouder/weekmenu' },
     { naam: 'Onze taken', icoon: 'onzetaken', pad: '/ouder/onze-taken', teller: 'onzetaken' },
     { naam: 'Boodschappen', icoon: 'boodschappen', pad: '/ouder/boodschappen' },
+    { naam: 'Voorraad', icoon: 'voorraad', pad: '/ouder/voorraad' },
+    { naam: 'Recepten', icoon: 'recepten', pad: '/ouder/recepten' },
     { naam: 'Uitgaven', icoon: 'uitgaven', pad: '/ouder/uitgaven' },
     { naam: 'Notities', icoon: 'notities', pad: '/ouder/notities' },
     { naam: 'Chat met de kinderen', icoon: 'chat', pad: '/ouder/chat', teller: 'chat' },

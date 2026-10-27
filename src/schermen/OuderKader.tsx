@@ -55,6 +55,10 @@ const iconen: Record<MenuIcoon | 'menu' | 'bel' | 'terug', ReactNode> = {
   wereld: <><path d="M3 20h18M5 20v-7l4-4l4 4v7M9 20v-4h0M16 20v-5M16 15a2.5 2.5 0 1 0 0-5a2.5 2.5 0 0 0 0 5z" /></>,
   springland: <><path d="M3 20h18M5 20v-5h4v5M14 20v-9h5v9" /><circle cx="9.5" cy="6.5" r="2" /><path d="M7 11l2.5-2.5L12 10" /></>,
   nieuw: <path d="M12 3l2.3 5.4 5.7.5-4.3 3.8 1.3 5.6L12 15.4l-5 2.9 1.3-5.6L4 8.9l5.7-.5z" />,
+  // Kast met twee schappen en doosjes.
+  voorraad: <><rect x="4" y="3.5" width="16" height="17" rx="2" /><path d="M4 12h16M8 8h3M13 8h3M8 16.5h3M13 16.5h3" /></>,
+  // Opengeslagen kookboek.
+  recepten: <path d="M12 6c-2-1.5-5-2-8-1.5v13c3-.5 6 0 8 1.5 2-1.5 5-2 8-1.5v-13c-3-.5-6 0-8 1.5zM12 6v13" />,
   uitgaven: <><path d="M4 20V10M10 20V4M16 20v-7M22 20H2" /></>,
   winkels: <path d="M4 9.5L5.5 4h13L20 9.5M4 9.5a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0 2.7 2.7 0 0 0 5.3 0M5.5 12v8h13v-8M10 20v-5h4v5" />,
 }

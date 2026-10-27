@@ -41,6 +41,8 @@ import OnzeTaken from './schermen/OnzeTaken.tsx'
 import Notities from './schermen/Notities.tsx'
 import Boodschappen from './schermen/Boodschappen.tsx'
 import Winkels from './schermen/Winkels.tsx'
+import Voorraad from './schermen/Voorraad.tsx'
+import Recepten from './schermen/Recepten.tsx'
 import Uitgaven from './schermen/Uitgaven.tsx'
 import Gewicht from './schermen/Gewicht.tsx'
 import MijnProfiel from './schermen/MijnProfiel.tsx'
@@ -128,6 +130,8 @@ export default function App() {
       <Route path="/ouder/kaart" element={<KaartBewerken />} />
       <Route path="/ouder/boodschappen" element={<Boodschappen />} />
       <Route path="/ouder/winkels" element={<Winkels />} />
+      <Route path="/ouder/voorraad" element={<Voorraad />} />
+      <Route path="/ouder/recepten" element={<Recepten />} />
       <Route path="/ouder/uitgaven" element={<Uitgaven />} />
       <Route path="/ouder/gewicht" element={<Gewicht />} />
       <Route path="/ouder/profiel" element={<MijnProfiel />} />

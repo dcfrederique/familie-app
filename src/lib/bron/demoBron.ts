@@ -11,7 +11,7 @@ import { maakWeergave, standaardWeergave, type WereldWeergave } from '../wereld/
 import { leesOpgeslagen, leegOpgeslagen, type Opgeslagen as WereldKaart } from '../wereld/gebieden.ts'
 import { activiteitOmschrijving, activiteitSterren, blokKeuzes, limietVoor, regels as standaardRegels } from '../regels.ts'
 import type { Weging } from '../gewicht.ts'
-import type { ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, GezondheidProfiel, Inzending, LogRegel, Maaltijd, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Spelregels, Taak, Tijdverzoek, Winkel } from './types.ts'
+import type { ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, GezondheidProfiel, Inzending, LogRegel, Maaltijd, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Spelregels, Taak, Tijdverzoek, VoorraadArtikel, VoorraadLogRegel, Recept, Winkel } from './types.ts'
 
 const DEMO_PIN = '1234'
 const WELKOM = 'Welkom! Je eerste sterren'
@@ -40,6 +40,11 @@ interface Toestand {
   wereldWeergave: WereldWeergave
   wereldKaart: WereldKaart
   limieten: ActiviteitLimiet[]
+  voorraad: VoorraadArtikel[]
+  recepten: Recept[]
+  eters: number
+  gekookt: string[]
+  voorraadLog: VoorraadLogRegel[]
 }
 
 const voorbeeld: [string, string, number, Taak['herhaling'], boolean, 'alle' | 'lezers' | 'niet_lezers'][] = [
@@ -74,6 +79,18 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
     hoeraDag: {},
     // Vandaag al iets op het menu, zodat het startscherm van de kinderen het meteen toont.
     weekmenu: [{ dag: dagVan(new Date()), gerecht: 'Spaghetti bolognese', prentje: null }],
+    // Een kleine voorraad en één recept, zodat Voorraad en Recepten niet leeg openen.
+    voorraad: ([
+      ['va-1', 'Cola', 'fles', 4, 3, 6, 'Kelder', 'ca-7', 'wi-3'], ['va-2', 'Water', 'fles', 12, 6, 6, 'Kelder', 'ca-7', 'wi-1'],
+      ['va-3', 'Melk', 'l', 3, 2, 6, 'Koelkast', 'ca-3', 'wi-1'], ['va-4', 'Gehakt', 'kg', 0.5, null, 1, 'Diepvries', 'ca-2', 'wi-1'],
+      ['va-5', 'Pasta', 'pak', 3, 1, 1, 'Kast', 'ca-5', 'wi-1'], ['va-6', 'Tomatensaus', 'pot', 2, 1, 1, 'Kast', 'ca-5', 'wi-1'],
+    ] as [string, string, string, number, number | null, number, string, string, string][]).map(([id, naam, eenheid, aantal, minimum, aankoop_aantal, plaats, categorie_id, winkel_id]): VoorraadArtikel =>
+      ({ id, naam, eenheid, aantal, minimum, aankoop_aantal, plaats, categorie_id, winkel_id, houdbaar_tot: null })),
+    recepten: [{ id: 're-1', naam: 'Spaghetti bolognese', personen: 4, ingredienten: [
+      { artikel_id: 'va-4', hoeveelheid: 0.4 }, { artikel_id: 'va-5', hoeveelheid: 1 }, { artikel_id: 'va-6', hoeveelheid: 1 }] }],
+    eters: 5,
+    gekookt: [],
+    voorraadLog: [],
     // Een paar voorbeelden zodat Onze taken en Notities niet leeg openen.
     ouderTaken: [
       { id: 'ot-1', titel: 'Vuilnis buiten zetten', datum: dagVan(new Date()), wie: null, herhaling: 'wekelijks', herhaal_dagen: null, gedaan_op: null, gedaan_door: null },
@@ -133,6 +150,36 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
   let volgnr = 1000
   const id = () => `demo-${++volgnr}`
   const volgendeVan = new Map<string, string>()
+  let logNr = 0
+
+  // Zoals de Postgres-functie voorraad_bijstellen: nooit onder 0, in het log, onder het minimum komt het artikel op de lijst.
+  const voorraadWijzig = (artikel: VoorraadArtikel, waarde: number, absoluut: boolean, reden: VoorraadLogRegel['reden'], uitleg: string | null) => {
+    const nieuw = Math.round(Math.max(0, absoluut ? waarde : artikel.aantal + waarde) * 1000) / 1000
+    if (nieuw === artikel.aantal) return
+    const oud = artikel.aantal
+    artikel.aantal = nieuw
+    t.voorraadLog.unshift({ id: ++logNr, naam: artikel.naam, verschil: Math.round((nieuw - oud) * 1000) / 1000, nieuw_aantal: nieuw, reden, uitleg, aangemaakt_op: new Date().toISOString() })
+    const open = t.boodschappen.some((b) => !b.gekocht_op && b.naam.trim().toLowerCase() === artikel.naam.trim().toLowerCase())
+    if (artikel.minimum !== null && nieuw <= artikel.minimum && nieuw < oud && reden !== 'boodschappen' && !open) {
+      t.boodschappen.push({ id: id(), naam: artikel.naam, hoeveel: '', winkel_id: artikel.winkel_id, dag: null, gerecht: null, gekocht_op: null,
+                            aangemaakt_op: new Date().toISOString(), categorie_id: artikel.categorie_id, prijs: null, eenheidsprijs: null, aantal: null })
+    }
+  }
+  const artikelVoor = (naam: string) => t.voorraad.find((a) => a.naam.trim().toLowerCase() === naam.trim().toLowerCase())
+  const bijgeboekt = new Map<string, number>()
+  // Een boodschap gaat op gekocht (of terug): de voorraad volgt, zoals de trigger boodschap_naar_voorraad.
+  const boodschapNaarVoorraad = (b: Boodschap, gekocht: boolean) => {
+    const a = artikelVoor(b.naam)
+    if (!a) return
+    if (gekocht && !bijgeboekt.has(b.id)) {
+      const erbij = Math.round((b.aantal ?? 1) * a.aankoop_aantal * 1000) / 1000
+      voorraadWijzig(a, erbij, false, 'boodschappen', b.naam)
+      bijgeboekt.set(b.id, erbij)
+    } else if (!gekocht && bijgeboekt.has(b.id)) {
+      voorraadWijzig(a, -bijgeboekt.get(b.id)!, false, 'boodschappen', `terugzetten: ${b.naam}`)
+      bijgeboekt.delete(b.id)
+    }
+  }
 
   const saldo = (kind: string) => t.log.filter((l) => l.kind_id === kind).reduce((s, l) => s + l.delta, 0)
   const gereserveerd = (kind: string) =>
@@ -464,16 +511,73 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
         if (oud) Object.assign(oud, rij)
         else {
           const nu = new Date().toISOString()
-          t.boodschappen.push({ id: id(), dag: b.dag ?? null, gerecht: b.gerecht ?? null, categorie_id: b.categorie_id ?? null, prijs: b.prijs ?? null,
-                                eenheidsprijs: null, aantal: null, gekocht_op: b.gekocht ? nu : null, aangemaakt_op: nu, ...rij })
+          const nieuw: Boodschap = { id: id(), dag: b.dag ?? null, gerecht: b.gerecht ?? null, categorie_id: b.categorie_id ?? null, prijs: b.prijs ?? null,
+                                     eenheidsprijs: null, aantal: b.aantal ?? null, gekocht_op: b.gekocht ? nu : null, aangemaakt_op: nu, ...rij }
+          t.boodschappen.push(nieuw)
+          if (b.gekocht) boodschapNaarVoorraad(nieuw, true)
         }
       }
     },
     async boodschapAfvinken(boodschapId, gekocht) {
       const b = t.boodschappen.find((x) => x.id === boodschapId)
-      if (b) b.gekocht_op = gekocht ? new Date().toISOString() : null
+      if (b) {
+        const was = Boolean(b.gekocht_op)
+        b.gekocht_op = gekocht ? new Date().toISOString() : null
+        if (was !== gekocht) boodschapNaarVoorraad(b, gekocht)
+      }
     },
     async boodschapVerwijderen(boodschapId) { t.boodschappen = t.boodschappen.filter((x) => x.id !== boodschapId) },
+    async voorraad() {
+      return { artikelen: t.voorraad.map((a) => ({ ...a })), recepten: t.recepten.map((r) => ({ ...r, ingredienten: r.ingredienten.map((i) => ({ ...i })) })), eters: t.eters, gekookt: [...t.gekookt] }
+    },
+    async voorraadLog(limiet = 40) { return t.voorraadLog.slice(0, limiet).map((r) => ({ ...r })) },
+    async voorraadArtikelOpslaan({ id: artikelId, aantal, ...rest }) {
+      const dubbel = t.voorraad.find((a) => a.id !== artikelId && a.naam.trim().toLowerCase() === rest.naam.trim().toLowerCase())
+      if (dubbel) throw new Error('duplicate key: die naam staat al in de lijst')
+      const oud = t.voorraad.find((a) => a.id === artikelId)
+      if (oud) Object.assign(oud, { ...rest, naam: rest.naam.trim() })
+      else t.voorraad.push({ id: id(), aantal: aantal ?? 0, ...rest, naam: rest.naam.trim() })
+    },
+    async voorraadArtikelVerwijderen(artikelId) {
+      t.voorraad = t.voorraad.filter((a) => a.id !== artikelId)
+      for (const r of t.recepten) r.ingredienten = r.ingredienten.filter((i) => i.artikel_id !== artikelId)
+    },
+    async voorraadBijstellen(artikelId, waarde, absoluut) {
+      const a = t.voorraad.find((x) => x.id === artikelId)
+      if (a) voorraadWijzig(a, waarde, absoluut, absoluut ? 'telling' : 'handmatig', null)
+    },
+    async receptOpslaan({ id: receptId, naam, personen, ingredienten }) {
+      const ingr: Recept['ingredienten'] = []
+      for (const i of ingredienten) {
+        let a = artikelVoor(i.naam)
+        if (!a) { a = { id: id(), naam: i.naam.trim(), eenheid: i.eenheid.trim() || 'stuk', aantal: 0, minimum: null, aankoop_aantal: 1, plaats: 'Kast', categorie_id: null, winkel_id: null, houdbaar_tot: null }; t.voorraad.push(a) }
+        const bestaand = ingr.find((x) => x.artikel_id === a!.id)
+        if (bestaand) bestaand.hoeveelheid += i.hoeveelheid
+        else ingr.push({ artikel_id: a.id, hoeveelheid: i.hoeveelheid })
+      }
+      const oud = t.recepten.find((r) => r.id === receptId)
+      if (oud) Object.assign(oud, { naam: naam.trim(), personen, ingredienten: ingr })
+      else t.recepten.push({ id: id(), naam: naam.trim(), personen, ingredienten: ingr })
+    },
+    async receptVerwijderen(receptId) { t.recepten = t.recepten.filter((r) => r.id !== receptId) },
+    async voorraadGekookt(dag, overslaan) {
+      const maaltijd = t.weekmenu.find((m) => m.dag === dag)
+      if (!maaltijd) throw new Error('Er staat niets op het weekmenu voor die dag')
+      if (t.gekookt.includes(dag)) throw new Error('Die dag is al afgeboekt')
+      let teller = 0
+      if (!overslaan) {
+        const recept = t.recepten.find((r) => r.naam.trim().toLowerCase() === maaltijd.gerecht.trim().toLowerCase())
+        if (!recept) throw new Error(`Er is geen recept voor ${maaltijd.gerecht}`)
+        for (const i of recept.ingredienten) {
+          const a = t.voorraad.find((x) => x.id === i.artikel_id)
+          if (a) voorraadWijzig(a, -Math.round(i.hoeveelheid * t.eters / recept.personen * 1000) / 1000, false, 'recept', maaltijd.gerecht)
+          teller++
+        }
+      }
+      t.gekookt.push(dag)
+      return teller
+    },
+    async voorraadEters(eters) { t.eters = eters },
     async categorieOpslaan({ id: categorieId, naam, volgorde }) {
       const dubbel = t.categorieen.find((c) => c.id !== categorieId && c.naam.trim().toLowerCase() === naam.trim().toLowerCase())
       if (dubbel) throw new Error(`${dubbel.naam} staat al in de lijst`)

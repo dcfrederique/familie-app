@@ -19,6 +19,13 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.55',
+    datum: '2026-10-27',
+    titel: 'Voorraad en recepten',
+    tekst: 'Onder Wij staan nu Voorraad en Recepten. In Voorraad zet je wat er in huis is (drank, blikken, diepvries) met een plek, een eenheid en eventueel een minimum en een houdbaarheidsdatum; met min en plus pas je het aantal aan. Afvinken op de boodschappenlijst telt automatisch bij de voorraad (een pak van 6 flessen = 6, instelbaar per artikel) en terugzetten haalt het er weer af. Zakt een artikel tot zijn minimum, dan komt het vanzelf op de boodschappenlijst. In Recepten geef je per gerecht van het weekmenu op wat het van de voorraad gebruikt, voor een aantal personen; op de dag zelf tik je in Voorraad op Gekookt en gaat het eraf, omgerekend naar het aantal eters (standaard 5). De app toont ook wat er voor de gerechten van de komende dagen te weinig in huis is, met een knop om het op de lijst te zetten. Alle wijzigingen staan in een logboek. Alleen op de gsm van een ouder.',
+    open: 'Nog niet: automatisch afboeken zonder tikken, omrekenen tussen eenheden (gram en kilo moeten in dezelfde eenheid als het artikel staan) en een scanner voor streepjescodes.',
+  },
+  {
     versie: '0.54',
     datum: '2026-10-27',
     titel: 'Springland: vijanden verslaan door erop te springen',

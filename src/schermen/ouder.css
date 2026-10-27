@@ -364,3 +364,22 @@ a.vink-tekst { text-decoration: none; }
 /* Wereldinstellingen */
 .ouder .knoppenrij { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .ouder .veld.rij { display: flex; align-items: center; gap: 8px; }
+
+/* Voorraad en Recepten (docs/voorraad.md) */
+.voorraad-rij { display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 8px; padding: 0 12px; border-bottom: 1px solid var(--line); }
+.voorraad-rij:last-child { border-bottom: 0; }
+.voorraad-rij.is-leeg .vink-tekst b { color: var(--muted); font-weight: 400; }
+.stapper { display: flex; align-items: center; gap: 2px; }
+.stap { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid var(--line); background: var(--surface); color: var(--ink); font: inherit; font-size: 20px; line-height: 1; cursor: pointer; }
+.stap:disabled { color: var(--muted); cursor: default; }
+.stap-aantal { min-width: 64px; text-align: center; font-variant-numeric: tabular-nums; }
+.stap-aantal small { color: var(--muted); font-size: 12px; }
+.voorraad-toevoegen { display: grid; grid-template-columns: 84px 1fr 1fr; gap: 8px; padding: 12px; }
+.voorraad-toevoegen input:first-child { grid-column: 1 / -1; }
+.voorraad-toevoegen button, .voorraad-toevoegen .fout { grid-column: 1 / -1; }
+.voorraad-toevoegen input, .voorraad-toevoegen select { min-height: 44px; border: 1px solid var(--line); padding: 0 10px; font: inherit; background: var(--surface); color: var(--ink); min-width: 0; }
+.voorraad-houdbaar { color: var(--warn-ink); }
+.voorraad-kook h2 { margin-bottom: 2px; }
+.recept-rijen { list-style: none; margin: 0 0 8px; padding: 0; display: grid; gap: 8px; }
+.recept-rijen li { display: grid; grid-template-columns: 1fr 64px 64px 44px; gap: 6px; align-items: center; }
+.recept-rijen input { min-width: 0; }

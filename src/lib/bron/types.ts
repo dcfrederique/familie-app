@@ -211,6 +211,62 @@ export interface Boodschap {
 export type NieuweBoodschap = Pick<Boodschap, 'naam' | 'hoeveel' | 'winkel_id'>
   & Partial<Pick<Boodschap, 'dag' | 'gerecht' | 'categorie_id' | 'prijs' | 'eenheidsprijs' | 'aantal'>> & { id?: string; gekocht?: boolean }
 
+/** Eén artikel in de voorraad (docs/voorraad.md). */
+export interface VoorraadArtikel {
+  id: string
+  naam: string
+  /** Waarin we tellen: stuk, fles, pak, kg, l, ... */
+  eenheid: string
+  aantal: number
+  /** Valt het aantal tot hier of lager, dan komt het artikel vanzelf op de boodschappenlijst; null = nooit. */
+  minimum: number | null
+  /** Hoeveel één aankoop bijbrengt (een pak van 6 flessen = 6). */
+  aankoop_aantal: number
+  plaats: string
+  categorie_id: string | null
+  winkel_id: string | null
+  /** 'JJJJ-MM-DD' of null. */
+  houdbaar_tot: string | null
+}
+
+/** Een artikel toevoegen (zonder id) of aanpassen (met id); het aantal wijzig je met `voorraadBijstellen`, behalve bij een nieuw artikel. */
+export type NieuwVoorraadArtikel = Omit<VoorraadArtikel, 'id' | 'aantal'> & { id?: string; aantal?: number }
+
+/** Een recept: wat een gerecht van het weekmenu van de voorraad gebruikt, voor `personen` personen, in de eenheid van het artikel. */
+export interface Recept {
+  id: string
+  naam: string
+  personen: number
+  ingredienten: { artikel_id: string; hoeveelheid: number }[]
+}
+
+/** Een recept bewaren; ingrediënten staan op naam, een onbekend artikel wordt aangemaakt (aantal 0). */
+export interface NieuwRecept {
+  id?: string
+  naam: string
+  personen: number
+  ingredienten: { naam: string; eenheid: string; hoeveelheid: number }[]
+}
+
+export interface VoorraadLogRegel {
+  id: number
+  naam: string
+  verschil: number
+  nieuw_aantal: number
+  reden: 'handmatig' | 'telling' | 'boodschappen' | 'recept'
+  uitleg: string | null
+  aangemaakt_op: string
+}
+
+export interface VoorraadOverzicht {
+  artikelen: VoorraadArtikel[]
+  recepten: Recept[]
+  /** Voor hoeveel mensen er gekookt wordt. */
+  eters: number
+  /** Weekmenu-dagen van de laatste weken die al afgeboekt of overgeslagen zijn. */
+  gekookt: string[]
+}
+
 /** Profiel van een ouder voor Gezondheid → Gewicht (docs/gewicht.md); privé. */
 export interface GezondheidProfiel {
   /** 'JJJJ-MM-DD' */
@@ -292,6 +348,10 @@ export interface Bron {
   categorieen(): Promise<Categorie[]>
   /** Alles wat gekocht is van `van` tot `tot` (ISO-tijdstippen, tot niet inbegrepen), met of zonder prijs. */
   gekochteBoodschappen(van: string, tot: string): Promise<Boodschap[]>
+  /** De voorraad, de recepten en welke weekmenu-dagen al afgeboekt zijn. Alleen voor een ouder-account; leeg zonder migratie 20261027000700_voorraad. */
+  voorraad(): Promise<VoorraadOverzicht>
+  /** De laatste wijzigingen in de voorraad, nieuwste eerst. */
+  voorraadLog(limiet?: number): Promise<VoorraadLogRegel[]>
   /** Je eigen gezondheidsprofiel; null als je het nog niet invulde. Privé, ook niet voor je partner. */
   gezondheidProfiel(): Promise<GezondheidProfiel | null>
   /** Al je eigen wegingen, van oud naar nieuw. */
@@ -366,6 +426,19 @@ export interface Bron {
   categorieOpslaan(categorie: Pick<Categorie, 'naam' | 'volgorde'> & { id?: string }): Promise<void>
   /** Gooit een categorie weg; haar boodschappen blijven staan, zonder categorie. */
   categorieVerwijderen(id: string): Promise<void>
+  voorraadArtikelOpslaan(artikel: NieuwVoorraadArtikel): Promise<void>
+  /** Gooit een artikel weg, met zijn plek in de recepten. */
+  voorraadArtikelVerwijderen(id: string): Promise<void>
+  /**
+   * Het aantal van een artikel aanpassen: `absoluut` zet het nieuwe aantal (tellen), anders is het een verschil.
+   * Gaat nooit onder 0; valt het aantal tot het minimum, dan komt het artikel op de boodschappenlijst.
+   */
+  voorraadBijstellen(id: string, waarde: number, absoluut: boolean): Promise<void>
+  receptOpslaan(recept: NieuwRecept): Promise<void>
+  receptVerwijderen(id: string): Promise<void>
+  /** Een weekmenu-dag is gekookt (de ingrediënten gaan van de voorraad) of overgeslagen (er gaat niets af). Geeft het aantal afgeboekte artikels. */
+  voorraadGekookt(dag: string, overslaan: boolean): Promise<number>
+  voorraadEters(eters: number): Promise<void>
   gezondheidProfielOpslaan(profiel: GezondheidProfiel): Promise<void>
   /** Bewaart de weging van een dag; een tweede weging op dezelfde dag vervangt de eerste. */
   wegingOpslaan(dag: string, kg: number): Promise<void>
