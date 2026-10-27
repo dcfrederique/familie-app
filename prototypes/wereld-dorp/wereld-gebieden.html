@@ -1,0 +1,350 @@
+<title>Onze wereld, gebied per gebied</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&display=swap">
+<style>
+/* Indeling: koptekst, drie dorpsplattegronden achter tabs (zelfde kaart van 56 × 28 tegels), daarna vergelijking en plan. Kleuren van de wereld in de app. */
+:root{--bg:#EEF3F8;--kaart:#FFFFFF;--inkt:#1C2433;--zacht:#566379;--rand:#D5DCE4;--accent:#2D6BD6;--accent-t:#FFFFFF;--lijst:#F5F8FB;--gras:#7CC46A}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121821;--kaart:#1B2431;--inkt:#EAF0F7;--zacht:#9BAABF;--rand:#2E3B4F;--accent:#6C9BF0;--accent-t:#0E1622;--lijst:#222D3D;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121821;--kaart:#1B2431;--inkt:#EAF0F7;--zacht:#9BAABF;--rand:#2E3B4F;--accent:#6C9BF0;--accent-t:#0E1622;--lijst:#222D3D;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--inkt);font:500 16px/1.5 Nunito,system-ui,sans-serif;padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:1100px;margin:0 auto;display:grid;gap:18px}
+h1{font-size:clamp(26px,5vw,36px);line-height:1.1;margin:0 0 6px;font-weight:800;text-wrap:balance}
+h2{font-size:19px;margin:0 0 6px;font-weight:800;text-wrap:balance}
+p{margin:0;max-width:70ch;text-wrap:pretty}.zacht{color:var(--zacht)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px}
+.tab{font:700 15px/1 Nunito,system-ui;border:1.5px solid var(--rand);background:var(--lijst);color:var(--inkt);border-radius:999px;padding:12px 16px;min-height:44px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--accent);color:var(--accent-t);border-color:var(--accent)}
+.tab:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.vak{background:var(--kaart);border:1px solid var(--rand);border-radius:16px;padding:14px;min-width:0;display:grid;gap:12px}
+.kaartwrap{border-radius:10px;overflow:hidden;background:var(--gras);line-height:0}
+svg{width:100%;height:auto;display:block}
+.bed{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center}
+label.ch{display:flex;gap:6px;align-items:center;font-size:14px;font-weight:700;min-height:44px}
+.legenda{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--zacht)}
+.legenda i{display:inline-block;width:14px;height:14px;border-radius:3px;margin-right:5px;vertical-align:-2px;border:1px solid rgba(0,0,0,.25)}
+.cijfers{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.cijfers div{background:var(--lijst);border-radius:10px;padding:10px 12px;font-size:14px}.cijfers b{display:block;font-size:13px;color:var(--zacht);font-weight:700}
+ul{margin:0;padding-left:20px;display:grid;gap:4px}
+.tafel{overflow-x:auto}table{border-collapse:collapse;min-width:620px;width:100%;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--rand);vertical-align:top}th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--zacht)}
+.aanrader{display:inline-block;background:var(--accent);color:var(--accent-t);border-radius:999px;padding:2px 10px;font-size:12px;font-weight:800;margin-left:6px;vertical-align:2px}
+
+.gsm-rij{display:flex;flex-wrap:wrap;gap:22px;justify-content:center}
+.gsm{margin:0;width:min(100%,340px);border:9px solid #1C2433;border-radius:30px;background:var(--kaart);overflow:hidden;display:grid;align-content:start;gap:0;line-height:1.35}
+.gsm figcaption{position:absolute;left:-9999px}
+.gsm-kop{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;font-size:15px;border-bottom:1px solid var(--rand)}.sl{font-size:12px;color:var(--zacht)}
+.gsm-gebied,.gsm-tabs{display:flex;gap:6px;padding:8px 10px;overflow:hidden}
+.chip{font:700 12px/1 Nunito;border:1.5px solid var(--rand);background:var(--lijst);border-radius:999px;padding:8px 11px;white-space:nowrap}.chip.on{background:var(--accent);color:var(--accent-t);border-color:var(--accent)}
+.gsm-kaart{background:var(--gras);line-height:0}.gsm-hint{font-size:12px;color:var(--zacht);padding:8px 12px}
+.gsm-pal{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:6px 10px}
+.tegel{display:grid;justify-items:center;gap:4px;border:1.5px solid var(--rand);border-radius:12px;padding:8px 2px;font-size:11px;font-weight:700;background:var(--lijst)}.tegel i{width:34px;height:26px;border-radius:6px;border:1px solid rgba(0,0,0,.2)}.tegel.sel{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.gsm-knoppen{display:flex;gap:6px;padding:10px;flex-wrap:wrap}.gsm-knoppen button{flex:1;min-height:44px;border:1.5px solid var(--rand);background:var(--lijst);color:var(--inkt);border-radius:12px;font:700 12px Nunito;padding:0 6px}.gsm-knoppen .hoofd{background:var(--accent);color:var(--accent-t);border-color:var(--accent)}
+.kav{display:grid;gap:6px;padding:4px 10px}.kavrij{display:flex;gap:10px;align-items:center;border:1.5px solid var(--rand);border-radius:12px;padding:8px 10px;min-height:48px}.kavrij.sel{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}.kavrij b{width:30px;height:30px;border-radius:50%;color:#fff;display:grid;place-items:center;flex:none}.kavrij div{flex:1;display:grid;font-size:14px;line-height:1.2}.kavrij small{color:var(--zacht);font-size:11px}.kavrij span{font-size:12px;font-weight:800;color:var(--accent)}
+.uitleg{margin-top:6px}code{background:var(--lijst);padding:1px 5px;border-radius:5px;font-size:13px}
+</style>
+<main>
+<header>
+<h1>Elk gebied apart, en het dorp vol gebouwd</h1>
+<p class="zacht">Per gebied een eigen kaart van 56 × 28 tegels met grindpaden (routes) naar de buren, zoals in een klassiek Pokémon-spel; elk gebied laadt apart zodra je binnenloopt. Het dorp is hier de eindtoestand, met de kinderhuizen ver uit elkaar. Het laatste tabblad toont hoe de ouders de kaart bewerken op hun gsm. Het zijn schetsen om op te sturen.</p>
+</header>
+<div class="tabs" id="tabs" role="tablist" aria-label="Gebied"></div>
+<section class="vak" aria-live="polite">
+<div class="kaartwrap"><svg id="kaart" role="img" aria-label="Plattegrond van het gebied"></svg></div>
+<div id="editor" style="display:none"></div>
+<div class="bed" id="bed"></div>
+<div class="legenda" id="legenda"></div>
+<ul id="punten"></ul>
+</section>
+</main>
+<script>
+const NS = 'http://www.w3.org/2000/svg'; let svg = document.getElementById('kaart')
+const KL = { pad: '#E2D9C6', rand: '#C9BB98', gras2: '#6FB85E', park: '#58AE55', zand: '#F2E3B5', water: '#4FB3E8', veld: '#6FC25C', huis: '#F3DDB0', dak: '#D4432F' }
+const hash = (a, b) => { const n = Math.sin(a * 127.1 + b * 311.7) * 43758.5453; return n - Math.floor(n) }
+const el = (naam, a, kind) => { const e = document.createElementNS(NS, naam); for (const k in a) e.setAttribute(k, a[k]); if (kind) e.textContent = kind; return e }
+
+// Bouwstenen van de plattegrond (alles in tegels)
+const lagen = { grond: [], weg: [], dingen: [], rond: [], namen: [] }
+const glad = pts => { let d = `M${pts[0][0]} ${pts[0][1]}`; for (let i = 0; i < pts.length - 1; i++) { const p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2; d += ` C${p1[0] + (p2[0] - p0[0]) / 6} ${p1[1] + (p2[1] - p0[1]) / 6} ${p2[0] - (p3[0] - p1[0]) / 6} ${p2[1] - (p3[1] - p1[1]) / 6} ${p2[0]} ${p2[1]}` } return d }
+const weg = (d, w) => { lagen.weg.push(el('path', { d, fill: 'none', stroke: KL.rand, 'stroke-width': w + 0.32, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' })); lagen.weg.push(el('path', { d, fill: 'none', stroke: KL.pad, 'stroke-width': w, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' })) }
+const lijn = (pts, w) => weg('M' + pts.map(p => p.join(' ')).join(' L'), w)
+const ring = (x, y, b, h, r, w) => weg(`M${x + r} ${y} H${x + b - r} Q${x + b} ${y} ${x + b} ${y + r} V${y + h - r} Q${x + b} ${y + h} ${x + b - r} ${y + h} H${x + r} Q${x} ${y + h} ${x} ${y + h - r} V${y + r} Q${x} ${y} ${x + r} ${y} Z`, w)
+const cirkelweg = (cx, cy, r, w) => weg(`M${cx - r} ${cy} A${r} ${r} 0 1 0 ${cx + r} ${cy} A${r} ${r} 0 1 0 ${cx - r} ${cy} Z`, w)
+const rondje = d => lagen.rond.push(el('path', { d, fill: 'none', stroke: '#7A3BD6', 'stroke-width': 0.34, 'stroke-dasharray': '0.9 0.7', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }))
+const rondRect = (x, y, b, h) => rondje(`M${x} ${y} H${x + b} V${y + h} H${x} Z`)
+const naam = (x, y, t, kl = '#fff', s = 0.95) => lagen.namen.push(el('text', { x, y, 'font-size': s, 'text-anchor': 'middle', fill: kl, 'font-weight': 800, 'font-family': 'Nunito,system-ui,sans-serif', 'paint-order': 'stroke', stroke: 'rgba(0,0,0,.45)', 'stroke-width': 0.18 }, t))
+const vlak = (x, y, b, h, vul, kader, extra = {}) => lagen.grond.push(el('rect', { x, y, width: b, height: h, rx: 0.5, fill: vul, stroke: kader || 'none', 'stroke-width': 0.2, ...extra }))
+const gebouw = (x, y, b, h, kl, t, opt = {}) => {
+  const vrij = opt.vrij
+  lagen.dingen.push(el('rect', { x, y, width: b, height: h, rx: 0.35, fill: vrij ? 'rgba(255,255,255,.18)' : kl, stroke: vrij ? '#fff' : 'rgba(0,0,0,.35)', 'stroke-width': vrij ? 0.2 : 0.16, 'stroke-dasharray': vrij ? '0.6 0.45' : 'none' }))
+  if (!vrij) lagen.dingen.push(el('rect', { x, y, width: b, height: Math.min(0.7, h * 0.28), rx: 0.35, fill: 'rgba(0,0,0,.18)' }))
+  if (t) naam(x + b / 2, y + h / 2 + 0.3, t, '#fff', Math.min(0.95, b / (t.length * 0.62 + 1)))
+}
+const huis = (x, y, kl, t, vrij) => {
+  if (vrij) return gebouw(x, y, 3, 2.6, '', t || 'vrij', { vrij: true })
+  lagen.dingen.push(el('rect', { x, y, width: 3, height: 2.6, rx: 0.25, fill: KL.huis, stroke: 'rgba(0,0,0,.3)', 'stroke-width': 0.14 }))
+  lagen.dingen.push(el('rect', { x: x - 0.1, y: y - 0.05, width: 3.2, height: 1.2, rx: 0.2, fill: KL.dak }))
+  lagen.dingen.push(el('rect', { x: x + 1.2, y: y + 1.5, width: 0.6, height: 1.1, rx: 0.1, fill: kl }))
+  if (t) naam(x + 1.5, y - 0.35, t, '#fff', 0.85)
+}
+const park = (x, y, b, h, t) => { vlak(x, y, b, h, KL.park, 'rgba(0,0,0,.15)'); for (let i = 0; i < Math.round(b * h / 5); i++) lagen.grond.push(el('circle', { cx: x + 0.8 + hash(i, x) * (b - 1.6), cy: y + 0.8 + hash(y, i) * (h - 1.6), r: 0.5 + hash(i, 3) * 0.25, fill: '#3F9A47', stroke: 'rgba(0,0,0,.15)', 'stroke-width': 0.08 })); if (t) naam(x + b / 2, y + 1.2, t, '#fff', 0.9) }
+const vijver = (cx, cy, rx, ry) => { lagen.grond.push(el('ellipse', { cx, cy, rx: rx + 0.5, ry: ry + 0.45, fill: KL.zand })); lagen.grond.push(el('ellipse', { cx, cy, rx, ry, fill: KL.water })) }
+const zand = (x, y, b, h, t) => { vlak(x, y, b, h, KL.zand, '#E2CE96'); if (t) naam(x + b / 2, y + h / 2 + 0.3, t, '#fff', 0.95) }
+const veld = (x, y, b, h) => { vlak(x, y, b, h, KL.veld, 'rgba(255,255,255,.8)'); lagen.grond.push(el('line', { x1: x, y1: y + h / 2, x2: x + b, y2: y + h / 2, stroke: 'rgba(255,255,255,.8)', 'stroke-width': 0.14 })); lagen.grond.push(el('circle', { cx: x + b / 2, cy: y + h / 2, r: 1, fill: 'none', stroke: 'rgba(255,255,255,.8)', 'stroke-width': 0.14 })); naam(x + b / 2, y + h / 2 + Math.min(3, h / 2 - 0.9), 'Voetbalveld', '#fff', 0.85) }
+const bomen = (pts) => pts.forEach(([x, y]) => lagen.dingen.push(el('circle', { cx: x, cy: y, r: 0.55, fill: '#3F9A47', stroke: 'rgba(0,0,0,.2)', 'stroke-width': 0.1 })))
+const stub = (x, y0, y1) => lijn([[x, y0], [x, y1]], 1.1)
+const BLAUW = '#2D6BD6', ROZE = '#D2458B', GROEN = '#1F7A4A', PAARS = '#6A5BD1'
+const C = { winkel: '#E98A3C', spel: '#7C5CD6', nieuw: '#7C5CD6', bakker: '#D9A53A', cafe: '#B8744A', biblio: '#3E7FC4', brand: '#D93A3A', kerk: '#8C8CA6', boer: '#A8611E', markt: '#E08A4A', sport: '#3E9AA0', halte: '#5B6B82' }
+const rand = () => bomen(Array.from({ length: 52 }, (_, i) => [1 + i * 1.07, hash(i, 1) < .5 ? 0.9 : 27.1]).concat(Array.from({ length: 22 }, (_, i) => [hash(i, 4) < .5 ? 0.9 : 55.1, 2 + i * 1.15])))
+
+const defs = () => { const d = el('defs', {}); const p = el('pattern', { id: 'kassei', width: 0.9, height: 0.9, patternUnits: 'userSpaceOnUse' }); p.appendChild(el('rect', { width: 0.9, height: 0.9, fill: '#C9BDA6' })); p.appendChild(el('rect', { x: 0.06, y: 0.06, width: 0.38, height: 0.38, rx: 0.1, fill: '#D9CDB6' })); p.appendChild(el('rect', { x: 0.5, y: 0.5, width: 0.38, height: 0.38, rx: 0.1, fill: '#D3C6AE' })); p.appendChild(el('rect', { x: 0.5, y: 0.06, width: 0.38, height: 0.38, rx: 0.1, fill: '#CFC2AA' })); p.appendChild(el('rect', { x: 0.06, y: 0.5, width: 0.38, height: 0.38, rx: 0.1, fill: '#D6CAB2' })); d.appendChild(p); return d }
+const asfalt = (d, w, streep = true) => { lagen.weg.push(el('path', { d, fill: 'none', stroke: '#B8A87F', 'stroke-width': w + 0.3, 'stroke-linecap': 'butt', 'stroke-linejoin': 'round' })); lagen.weg.push(el('path', { d, fill: 'none', stroke: '#D9CBA3', 'stroke-width': w, 'stroke-linecap': 'butt', 'stroke-linejoin': 'round' })); if (false && streep) lagen.weg.push(el('path', { d, fill: 'none', stroke: 'rgba(255,255,255,.75)', 'stroke-width': 0.1, 'stroke-dasharray': '0.8 0.6', 'stroke-linejoin': 'round' })) }
+const kassei = (d, w) => { lagen.weg.push(el('path', { d, fill: 'none', stroke: '#A89C85', 'stroke-width': w + 0.3, 'stroke-linejoin': 'round' })); lagen.weg.push(el('path', { d, fill: 'none', stroke: 'url(#kassei)', 'stroke-width': w, 'stroke-linejoin': 'round' })) }
+const steen = (d, w) => { lagen.weg.push(el('path', { d, fill: 'none', stroke: '#9A9588', 'stroke-width': w + 0.25, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' })); lagen.weg.push(el('path', { d, fill: 'none', stroke: '#C7C1B2', 'stroke-width': w, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' })); lagen.weg.push(el('path', { d, fill: 'none', stroke: '#B2AC9C', 'stroke-width': w * 0.8, 'stroke-dasharray': '0.35 0.55', 'stroke-linecap': 'butt', 'stroke-linejoin': 'round' })) }
+const lijnP = pts => 'M' + pts.map(p => p.join(' ')).join(' L')
+const AUTOKL = ['#D93A3A', '#2D6BD6', '#F2B33D', '#3E9A5A', '#FFFFFF', '#7C5CD6', '#E98A3C']
+const auto = (x, y, i, h = true) => { const w = 1.7, l = 0.95, kl = AUTOKL[i % AUTOKL.length]; const g = el('g', { transform: `translate(${x} ${y}) rotate(${h ? 0 : 90})` }); g.appendChild(el('rect', { x: -w / 2, y: -l / 2, width: w, height: l, rx: 0.3, fill: kl, stroke: 'rgba(0,0,0,.4)', 'stroke-width': 0.08 })); g.appendChild(el('rect', { x: -w * 0.15, y: -l / 2 + 0.12, width: w * 0.38, height: l - 0.24, rx: 0.15, fill: 'rgba(190,225,250,.9)' })); g.appendChild(el('rect', { x: -w / 2 + 0.08, y: -l / 2 + 0.1, width: 0.12, height: 0.18, fill: '#FFE9A8' })); g.appendChild(el('rect', { x: -w / 2 + 0.08, y: l / 2 - 0.28, width: 0.12, height: 0.18, fill: '#FFE9A8' })); lagen.dingen.push(g) }
+const zebra = (x, y, horizontaal) => { for (let i = 0; i < 5; i++) lagen.dingen.push(el('rect', horizontaal ? { x: x - 0.25, y: y - 0.9 + i * 0.42, width: 0.5, height: 0.22, fill: '#fff' } : { x: x - 0.9 + i * 0.42, y: y - 0.25, width: 0.22, height: 0.5, fill: '#fff' })) }
+const bord = (x, y, t, pijl) => { lagen.dingen.push(el('rect', { x: x - 0.1, y, width: 0.2, height: 1.2, fill: '#5B6B82' })); lagen.dingen.push(el('rect', { x: x - 3, y: y - 1.3, width: 6, height: 1.5, rx: 0.3, fill: '#2D6BD6', stroke: '#fff', 'stroke-width': 0.14 })); naam(x, y - 0.22, (pijl || '') + ' ' + t, '#fff', 0.75) }
+const weglabel = (x, t) => { lagen.dingen.push(el('rect', { x: x - 3.2, y: 13.35, width: 6.4, height: 1.3, rx: 0.3, fill: '#2D6BD6', stroke: '#fff', 'stroke-width': 0.12 })); naam(x, 14.3, t, '#fff', 0.8) }
+const heg = (x1, y1, x2, y2) => lagen.dingen.push(el('line', { x1, y1, x2, y2, stroke: '#3E8A44', 'stroke-width': 0.5, 'stroke-linecap': 'round' }))
+const akker = (x, y, b, h) => { vlak(x, y, b, h, '#C9D46A', 'rgba(0,0,0,.12)'); for (let i = 1; i < b; i += 0.8) lagen.grond.push(el('line', { x1: x + i, y1: y + 0.2, x2: x + i, y2: y + h - 0.2, stroke: '#A9B94E', 'stroke-width': 0.18 })) }
+const klein = (cx, cy, n, sp = 1.4, s = 0) => bomen(Array.from({ length: n }, (_, i) => [cx + (hash(i, s) - 0.5) * sp * 2, cy + (hash(s, i) - 0.5) * sp * 1.4]))
+
+
+// ---------- Gebieden: elk gebied is een eigen kaart van 56 × 28 tegels; routes lopen op x = 28 (noord-zuid) en y = 14 (west-oost) ----------
+const G = (kl, fl, n = 140) => { lagen.grond.push(el('rect', { width: 56, height: 28, fill: kl })); for (let i = 0; i < n; i++) lagen.grond.push(el('ellipse', { cx: hash(i, 1) * 56, cy: hash(i, 2) * 28, rx: 0.8 + hash(i, 3) * 2, ry: 0.4 + hash(i, 4), fill: fl, opacity: .55 })) }
+const boom = (x, y, r = 0.9, kl = '#3F9A47') => { lagen.dingen.push(el('ellipse', { cx: x + 0.15, cy: y + r * 0.55, rx: r, ry: r * 0.5, fill: 'rgba(0,0,0,.14)' })); lagen.dingen.push(el('circle', { cx: x, cy: y, r, fill: kl, stroke: 'rgba(0,0,0,.22)', 'stroke-width': 0.1 })); lagen.dingen.push(el('circle', { cx: x - r * 0.3, cy: y - r * 0.3, r: r * 0.45, fill: 'rgba(255,255,255,.14)' })) }
+const den = (x, y, h = 2) => { lagen.dingen.push(el('path', { d: `M${x} ${y - h} L${x + h * 0.45} ${y} L${x - h * 0.45} ${y} Z`, fill: '#2F6B3A', stroke: 'rgba(0,0,0,.25)', 'stroke-width': 0.1 })); lagen.dingen.push(el('path', { d: `M${x} ${y - h * 1.35} L${x + h * 0.35} ${y - h * 0.55} L${x - h * 0.35} ${y - h * 0.55} Z`, fill: '#3C8049', stroke: 'rgba(0,0,0,.2)', 'stroke-width': 0.08 })) }
+const bank = (x, y, h = true) => { lagen.dingen.push(el('rect', { x: x - (h ? 0.7 : 0.25), y: y - (h ? 0.25 : 0.7), width: h ? 1.4 : 0.5, height: h ? 0.5 : 1.4, rx: 0.1, fill: '#A9733B', stroke: '#6F4520', 'stroke-width': 0.07 })) }
+const paddo = (x, y) => { lagen.dingen.push(el('rect', { x: x - 0.07, y, width: 0.14, height: 0.35, fill: '#F3EBDD' })); lagen.dingen.push(el('ellipse', { cx: x, cy: y, rx: 0.4, ry: 0.28, fill: '#D93A3A', stroke: 'rgba(0,0,0,.25)', 'stroke-width': 0.05 })); lagen.dingen.push(el('circle', { cx: x - 0.15, cy: y - 0.05, r: 0.06, fill: '#fff' })); lagen.dingen.push(el('circle', { cx: x + 0.15, cy: y, r: 0.06, fill: '#fff' })) }
+const poortL = (x, y, t) => { lagen.dingen.push(el('rect', { x: x - 3.4, y: y - 0.7, width: 6.8, height: 1.4, rx: 0.3, fill: '#2D6BD6', stroke: '#fff', 'stroke-width': 0.12 })); naam(x, y + 0.28, t, '#fff', 0.72) }
+const routeBord = (x, y, n) => { lagen.dingen.push(el('rect', { x: x - 0.1, y, width: 0.2, height: 0.9, fill: '#8B6B3D' })); lagen.dingen.push(el('rect', { x: x - 1.5, y: y - 0.9, width: 3, height: 1.1, rx: 0.2, fill: '#fff', stroke: '#8B6B3D', 'stroke-width': 0.12 })); naam(x, y - 0.1, 'Route ' + n, '#5B4524', 0.6); lagen.namen.pop() ; lagen.dingen.push(el('text', { x, y: y - 0.1, 'font-size': 0.62, 'text-anchor': 'middle', fill: '#5B4524', 'font-weight': 800, 'font-family': 'Nunito,system-ui,sans-serif' }, 'Route ' + n)) }
+const pad = pts => asfalt(lijnP(pts), 1.2, false)
+const koe = (x, y, i) => { lagen.dingen.push(el('ellipse', { cx: x, cy: y, rx: 0.8, ry: 0.5, fill: '#fff', stroke: 'rgba(0,0,0,.35)', 'stroke-width': 0.07 })); lagen.dingen.push(el('circle', { cx: x + 0.7, cy: y - 0.15, r: 0.3, fill: '#fff', stroke: 'rgba(0,0,0,.35)', 'stroke-width': 0.07 })); lagen.dingen.push(el('ellipse', { cx: x - 0.2, cy: y - 0.1, rx: 0.28, ry: 0.2, fill: i % 2 ? '#333' : '#8B5A2B' })) }
+const schaap = (x, y) => { lagen.dingen.push(el('circle', { cx: x, cy: y, r: 0.5, fill: '#F6F2E8', stroke: 'rgba(0,0,0,.3)', 'stroke-width': 0.07 })); lagen.dingen.push(el('circle', { cx: x + 0.5, cy: y - 0.1, r: 0.22, fill: '#444' })) }
+const boot = (x, y, kl) => { lagen.dingen.push(el('ellipse', { cx: x, cy: y, rx: 1, ry: 0.4, fill: kl, stroke: 'rgba(0,0,0,.3)', 'stroke-width': 0.07 })); lagen.dingen.push(el('path', { d: `M${x} ${y - 0.2} L${x} ${y - 1.3} L${x + 0.8} ${y - 0.3} Z`, fill: '#fff', stroke: 'rgba(0,0,0,.25)', 'stroke-width': 0.06 })) }
+const eend = (x, y) => { lagen.dingen.push(el('circle', { cx: x, cy: y, r: 0.35, fill: '#F7D54A' })); lagen.dingen.push(el('rect', { x: x + 0.3, y: y - 0.08, width: 0.28, height: 0.16, fill: '#F08A24' })) }
+const parasol = (x, y, kl) => { lagen.dingen.push(el('ellipse', { cx: x, cy: y + 0.3, rx: 0.9, ry: 0.3, fill: 'rgba(0,0,0,.12)' })); lagen.dingen.push(el('circle', { cx: x, cy: y, r: 0.85, fill: kl, stroke: '#fff', 'stroke-width': 0.14, 'stroke-dasharray': '0.7 0.7' })) }
+const kasteel = (x, y) => { lagen.dingen.push(el('path', { d: `M${x - 1} ${y + 0.7} L${x - 0.7} ${y - 0.2} L${x - 0.3} ${y - 0.2} L${x} ${y - 0.8} L${x + 0.3} ${y - 0.2} L${x + 0.7} ${y - 0.2} L${x + 1} ${y + 0.7} Z`, fill: '#E6CD8E', stroke: '#C9B070', 'stroke-width': 0.1 })); lagen.dingen.push(el('path', { d: `M${x} ${y - 0.8} v-0.8 l0.6 0.25 l-0.6 0.25`, fill: '#D93A3A', stroke: '#8B6B3D', 'stroke-width': 0.08 })) }
+const rail = (x1, y, x2) => { lagen.weg.push(el('line', { x1, y1: y - 0.35, x2, y2: y - 0.35, stroke: '#7A7568', 'stroke-width': 0.14 })); lagen.weg.push(el('line', { x1, y1: y + 0.35, x2, y2: y + 0.35, stroke: '#7A7568', 'stroke-width': 0.14 })); for (let x = x1; x < x2; x += 0.6) lagen.weg.push(el('line', { x1: x, y1: y - 0.5, x2: x, y2: y + 0.5, stroke: '#9C7B4C', 'stroke-width': 0.14 })) }
+const nietNabij = (x, y, lijst) => lijst.every(([a, b, c, d]) => x < a - 1 || x > c + 1 || y < b - 1 || y > d + 1)
+
+function bos() {
+  G('#4A9548', '#3F8A44')
+  const vrij = [[24, 8, 32, 18], [26.4, 14, 56, 14.2], [27.4, 16, 28.6, 28], [0, 14, 6, 14.2]]
+  for (let i = 0; i < 110; i++) { const x = 1 + hash(i, 5) * 54, y = 1 + hash(i, 6) * 26; if (nietNabij(x, y, vrij) && !(x > 26 && y > 12 && y < 16)) i % 4 ? boom(x, y, 0.9 + hash(i, 7) * 0.7, ['#2F7F3C', '#3F9A47', '#357F3A'][i % 3]) : den(x, y + 1, 2 + hash(i, 8)) }
+  lagen.grond.push(el('circle', { cx: 28, cy: 13, r: 5.6, fill: '#7CC46A', stroke: '#5E9E52', 'stroke-width': 0.2 }))
+  pad([[56, 14], [40, 14], [32, 13.4], [28, 13]]); pad([[28, 28], [28, 22], [29, 18], [28, 13]]); pad([[0, 14], [14, 14], [22, 12]])
+  steen(glad([[24, 12], [20, 8], [14, 7.5]]), 0.6)
+  lagen.dingen.push(el('circle', { cx: 28, cy: 13, r: 1.5, fill: '#8C8C94', stroke: '#6F6F78', 'stroke-width': 0.15 })); lagen.dingen.push(el('circle', { cx: 28, cy: 13, r: 0.8, fill: '#F2994A' })); lagen.dingen.push(el('circle', { cx: 28, cy: 12.8, r: 0.4, fill: '#FFE08A' }))
+  ;[[25.8, 15.6], [30.2, 15.6], [25.4, 10.6], [30.6, 10.6]].forEach(([x, y]) => { lagen.dingen.push(el('rect', { x: x - 0.7, y: y - 0.2, width: 1.4, height: 0.4, rx: 0.2, fill: '#8B5A2B', stroke: '#5B3A1B', 'stroke-width': 0.06 })) })
+  ;[[14, 5], [40, 21]].forEach(([x, y]) => { boom(x, y - 0.5, 1.8, '#2F7F3C'); lagen.dingen.push(el('rect', { x: x - 1.6, y, width: 3.2, height: 2.2, rx: 0.2, fill: '#A9733B', stroke: '#6F4520', 'stroke-width': 0.14 })); lagen.dingen.push(el('path', { d: `M${x - 1.9} ${y} L${x} ${y - 1.3} L${x + 1.9} ${y} Z`, fill: '#8E5A2A', stroke: '#5B3A1B', 'stroke-width': 0.12 })); lagen.dingen.push(el('rect', { x: x - 0.3, y: y + 0.9, width: 0.6, height: 1.3, rx: 0.1, fill: '#4A2F14' })); naam(x, y + 3.2, 'Boomhut', '#fff', 0.8) })
+  boom(37, 6, 1.7, '#2A7336'); lagen.dingen.push(el('circle', { cx: 37.5, cy: 6.4, r: 0.35, fill: '#F2994A' })); naam(37, 8.6, 'Eekhoornboom', '#fff', 0.8)
+  ;[[24, 17.2], [25.5, 18], [31.6, 17.5], [8, 16], [9, 16.8], [47, 8], [48, 8.8], [20, 22]].forEach(([x, y]) => paddo(x, y))
+  bank(36, 14.9); bank(20, 14.9); bank(28.9, 21, false)
+  routeBord(34, 12.6, 1); routeBord(7, 12.6, 6)
+  poortL(51, 12.2, 'Berg →'); poortL(24, 26.4, 'Springland ↓'); poortL(5, 12.2, '← Bos-pad')
+  naam(28, 7.2, 'Kampvuurplek', '#fff', 0.95)
+}
+function berg() {
+  G('#A9B6A7', '#98A698', 110)
+  lagen.grond.push(el('rect', { x: 0, y: 0, width: 56, height: 9, fill: '#9AA79A' }))
+  ;[[8, 12, 10], [16, 11, 13], [26, 12, 11], [35, 10, 14], [45, 12, 12], [52, 12, 9]].forEach(([x, b, h], i) => { const t = 6; lagen.dingen.push(el('path', { d: `M${x - b / 2 - 1} ${t + h * 0.7 + 1} L${x} ${t - 1 + (14 - h) * 0.3} L${x + b / 2 + 1} ${t + h * 0.7 + 1} Z`, fill: i % 2 ? '#8E9A8E' : '#7F8C7F', stroke: 'rgba(0,0,0,.25)', 'stroke-width': 0.15 })); lagen.dingen.push(el('path', { d: `M${x - 1.8} ${t + 1.4 + (14 - h) * 0.3} L${x} ${t - 1 + (14 - h) * 0.3} L${x + 1.8} ${t + 1.4 + (14 - h) * 0.3} L${x + 0.6} ${t + 0.8 + (14 - h) * 0.3} L${x} ${t + 1.6 + (14 - h) * 0.3} L${x - 0.6} ${t + 0.8 + (14 - h) * 0.3} Z`, fill: '#fff' })) })
+  lagen.grond.push(el('path', { d: glad([[40, 0], [42, 7], [48, 14], [52, 19], [56, 20]]), fill: 'none', stroke: '#4FB3E8', 'stroke-width': 1.3, 'stroke-linecap': 'round' }))
+  steen(glad([[28, 28], [28, 24], [20, 21], [33, 18], [24, 16], [28, 14]]), 0.9)
+  pad([[0, 14], [28, 14]]); pad([[28, 14], [47, 14]]); pad([[49.5, 14], [56, 14]])
+  lagen.dingen.push(el('rect', { x: 47, y: 12.9, width: 2.8, height: 2.2, rx: 0.2, fill: '#A9733B', stroke: '#6F4520', 'stroke-width': 0.14 }))
+  steen(glad([[28, 14], [30, 11], [34, 10.5]]), 0.8)
+  gebouw(33.6, 8.2, 4, 2.8, '#8C5A32', 'Berghut'); lagen.dingen.push(el('path', { d: 'M33.3 8.2 L35.6 6.5 L37.9 8.2 Z', fill: '#C0392B', stroke: 'rgba(0,0,0,.3)', 'stroke-width': 0.1 }))
+  ;[[24, 18.6], [30, 17.4], [24.8, 22.3], [10, 16], [38, 16]].forEach(([x, y]) => bank(x, y))
+  for (let i = 0; i < 40; i++) { const x = 2 + hash(i, 1) * 52, y = 17 + hash(i, 2) * 10; if (Math.abs(x - 28) > 6 && !(y > 13 && y < 15.5)) den(x, y, 1.6 + hash(i, 3)) }
+  routeBord(26, 13, 2)
+  poortL(7, 12.2, '← Bos'); poortL(51.5, 12.2, 'Platteland →'); poortL(33, 26.4, 'Dorp ↓')
+  naam(28, 3.2, 'De berg', '#fff', 1.2)
+}
+function platteland() {
+  G('#BFD66B', '#B2CC5C', 120)
+  const akkerK = (x, y, b, h, kl, s) => { vlak(x, y, b, h, kl, 'rgba(0,0,0,.12)'); for (let i = 1; i < b; i += 0.8) lagen.grond.push(el('line', { x1: x + i, y1: y + 0.2, x2: x + i, y2: y + h - 0.2, stroke: s, 'stroke-width': 0.18 })) }
+  ;[[2, 2, 10, 6, '#D9C75A', '#BBA83F'], [13, 2, 10, 6, '#A6CF5A', '#8DB840'], [2, 17, 10, 8, '#8BC34A', '#6FA832'], [13, 17, 10, 8, '#D9C75A', '#BBA83F']].forEach(a => akkerK(...a))
+  vlak(36, 14.8, 18, 10.4, '#A9D86E', 'rgba(0,0,0,.12)')
+  ;[[36, 14.8, 54, 14.8], [36, 25.2, 54, 25.2], [36, 14.8, 36, 25.2], [54, 14.8, 54, 25.2]].forEach(([a, b, c, d]) => heg(a, b, c, d))
+  pad([[0, 14], [28, 14]]); pad([[28, 28], [28, 14]]); pad([[28, 14], [34, 14], [34, 8]])
+  gebouw(33, 2.6, 8, 5, '#B5392B', 'Schuur'); lagen.dingen.push(el('path', { d: 'M33 2.6 h8 l-1 1.2 h-6 z', fill: '#8E2A1F' })); gebouw(43, 3.6, 4.6, 3.6, '#E8C98C', 'Boerderij'); lagen.dingen.push(el('path', { d: 'M42.7 3.6 L45.3 1.6 L47.9 3.6 Z', fill: '#C0392B' }))
+  lagen.dingen.push(el('circle', { cx: 51.5, cy: 5, r: 1.2, fill: '#C9CFD6', stroke: '#8C95A0', 'stroke-width': 0.12 })); lagen.dingen.push(el('path', { d: 'M50.3 4 A1.2 1.2 0 0 1 52.7 4 Z', fill: '#8C95A0' })); naam(51.5, 7.1, 'Silo', '#fff', 0.7)
+  lagen.dingen.push(el('rect', { x: 26.7, y: 4, width: 1.2, height: 4.2, fill: '#E9E2D0', stroke: '#9C9684', 'stroke-width': 0.1 })); lagen.dingen.push(el('circle', { cx: 27.3, cy: 4, r: 0.35, fill: '#6F4520' })); for (let a = 0; a < 4; a++) lagen.dingen.push(el('line', { x1: 27.3, y1: 4, x2: 27.3 + Math.cos(a * 1.57 + 0.6) * 3.2, y2: 4 + Math.sin(a * 1.57 + 0.6) * 3.2, stroke: '#fff', 'stroke-width': 0.5, 'stroke-linecap': 'round' })); naam(27.3, 9.3, 'Windmolen', '#fff', 0.8)
+  lagen.dingen.push(el('rect', { x: 22.5, y: 11, width: 2.2, height: 1.2, rx: 0.2, fill: '#3E9A5A', stroke: 'rgba(0,0,0,.3)', 'stroke-width': 0.08 })); lagen.dingen.push(el('circle', { cx: 23, cy: 12.3, r: 0.45, fill: '#333' })); lagen.dingen.push(el('circle', { cx: 24.4, cy: 12.3, r: 0.35, fill: '#333' }))
+  ;[[38.5, 17.5], [42, 20], [46, 17.6], [50, 21], [40, 23.4]].forEach(([x, y], i) => koe(x, y, i)); ;[[47, 23.4], [51, 18], [44, 22.4]].forEach(([x, y]) => schaap(x, y)); naam(45, 26.5, 'Weide met dieren', '#fff', 0.8)
+  klein(20, 12, 3, 1.5, 3); klein(26, 22, 3, 1.5, 8); klein(2, 13, 2, 1.5, 4)
+  routeBord(30.5, 13, 7); poortL(7, 12.2, '← Berg'); poortL(33, 26.4, 'Meer ↓')
+}
+function springland() {
+  G('#92DB7E', '#7FCB6C', 100)
+  const pts = [[10, 14], [20, 11], [30, 15], [40, 11], [48, 16]]
+  lagen.grond.push(el('path', { d: glad(pts), fill: 'none', stroke: '#fff', 'stroke-width': 0.5, 'stroke-dasharray': '0.8 0.6', opacity: .9 }))
+  pts.forEach(([x, y], i) => { lagen.dingen.push(el('ellipse', { cx: x, cy: y + 1.3, rx: 3.8, ry: 2.3, fill: 'rgba(0,0,0,.12)' })); lagen.dingen.push(el('ellipse', { cx: x, cy: y, rx: 3.6, ry: 2.2, fill: ['#8ED77A', '#8ED77A', '#F2E3B5', '#F2E3B5', '#CFE8F7'][i], stroke: 'rgba(0,0,0,.2)', 'stroke-width': 0.15 })); lagen.dingen.push(el('text', { x, y: y + 0.5, 'font-size': 1.6, 'text-anchor': 'middle', fill: '#fff', 'font-weight': 800, stroke: 'rgba(0,0,0,.4)', 'stroke-width': 0.2, 'paint-order': 'stroke', 'font-family': 'Nunito,system-ui,sans-serif' }, String(i + 1))) })
+  ;[[4, 4], [13, 6], [24, 4], [36, 5], [47, 4], [52, 9]].forEach(([x, y]) => { lagen.dingen.push(el('ellipse', { cx: x, cy: y, rx: 2.4, ry: 1, fill: 'rgba(255,255,255,.85)' })); lagen.dingen.push(el('ellipse', { cx: x + 1, cy: y - 0.5, rx: 1.6, ry: 0.8, fill: 'rgba(255,255,255,.85)' })) })
+  lagen.dingen.push(el('rect', { x: 4, y: 19, width: 6, height: 4.5, rx: 0.5, fill: '#F2B33D', stroke: 'rgba(0,0,0,.3)', 'stroke-width': 0.15 })); lagen.dingen.push(el('path', { d: 'M3.6 19 L5.5 16.6 L7 19 L8.5 16.6 L10.4 19 Z', fill: '#D93A3A' })); lagen.dingen.push(el('rect', { x: 6.2, y: 21, width: 1.6, height: 2.5, rx: 0.4, fill: '#2D6BD6' }))
+  lagen.dingen.push(el('rect', { x: 20, y: 19.5, width: 16, height: 5, rx: 0.7, fill: 'rgba(255,255,255,.88)', stroke: '#fff' })); naam(28, 22.5, 'De bestaande kaart van Springland', '#2A3A55', 0.95); lagen.namen.pop(); lagen.dingen.push(el('text', { x: 28, y: 21.6, 'font-size': 0.95, 'text-anchor': 'middle', fill: '#2A3A55', 'font-weight': 800, 'font-family': 'Nunito,system-ui,sans-serif' }, 'Zoals nu: SpringKaart')); lagen.dingen.push(el('text', { x: 28, y: 23.2, 'font-size': 0.8, 'text-anchor': 'middle', fill: '#2A3A55', 'font-family': 'Nunito,system-ui,sans-serif' }, 'tik op een level om te spelen'))
+  poortL(8, 26.4, '← Terug naar het dorp')
+  naam(28, 2, 'Springland', '#fff', 1.3)
+}
+function meer() {
+  G('#86CC72', '#78BE66')
+  vijver(38, 14, 12.5, 7); lagen.grond.push(el('ellipse', { cx: 33, cy: 12, rx: 5, ry: 2, fill: 'rgba(255,255,255,.18)' }))
+  for (let i = 0; i < 14; i++) { const a = i / 14 * 6.28, x = 38 + Math.cos(a) * 13.4, y = 14 + Math.sin(a) * 7.8; lagen.dingen.push(el('line', { x1: x, y1: y, x2: x, y2: y - 0.9, stroke: '#6B8F3E', 'stroke-width': 0.14 })); lagen.dingen.push(el('line', { x1: x + 0.2, y1: y, x2: x + 0.3, y2: y - 0.7, stroke: '#8C6B2D', 'stroke-width': 0.14 })) }
+  pad([[0, 14], [19, 14]]); pad([[28, 0], [28, 4], [21, 8], [19, 14]]); pad([[28, 28], [28, 24], [21, 20], [19, 14]])
+  lagen.dingen.push(el('rect', { x: 20, y: 13.4, width: 8, height: 1.2, rx: 0.15, fill: '#A9733B', stroke: '#6F4520', 'stroke-width': 0.1 })); for (let i = 0; i < 8; i++) lagen.dingen.push(el('line', { x1: 20.5 + i, y1: 13.4, x2: 20.5 + i, y2: 14.6, stroke: '#6F4520', 'stroke-width': 0.08 }))
+  boot(33, 11, '#D93A3A'); boot(40, 17, '#2D6BD6'); boot(44, 11, '#F2B33D'); ;[[36, 15], [37.2, 15.6], [38, 14.8], [45, 15.5], [30, 17]].forEach(([x, y]) => eend(x, y))
+  lagen.grond.push(el('rect', { x: 6, y: 18, width: 4, height: 3, fill: '#fff' })); for (let i = 0; i < 4; i++) for (let j = 0; j < 3; j++) if ((i + j) % 2 === 0) lagen.grond.push(el('rect', { x: 6 + i, y: 18 + j, width: 1, height: 1, fill: '#D93A3A' })); lagen.dingen.push(el('rect', { x: 7.4, y: 18.9, width: 1.2, height: 0.8, rx: 0.2, fill: '#A9733B' })); naam(8, 22.6, 'Picknickplek', '#fff', 0.8)
+  bank(22.5, 10.5); bank(22.5, 17.5); boom(5, 6, 1.1); boom(8, 8, 1); boom(48, 3, 1.2); boom(51, 5, 1); boom(48, 25, 1.1)
+  routeBord(23, 12.4, 3); poortL(7, 12.2, '← Dorp'); poortL(33, 2.6, 'Platteland ↑'); poortL(34, 26.4, 'Stadje ↓')
+  naam(38, 14.6, 'Het meer', '#fff', 1.1)
+}
+function strand() {
+  G('#F0DFAE', '#E6D29A', 90)
+  lagen.grond.push(el('rect', { x: 0, y: 19.5, width: 56, height: 8.5, fill: '#4FB3E8' })); lagen.grond.push(el('path', { d: 'M0 19.5 Q7 18 14 19.5 T28 19.5 T42 19.5 T56 19.5 V21 H0 Z', fill: '#BFEAFB' }))
+  for (let i = 0; i < 12; i++) lagen.grond.push(el('path', { d: `M${3 + i * 4.6} ${23 + (i % 3)} q1.2 -1.2 2.4 0 t2.4 0`, stroke: '#A6DEF8', 'stroke-width': 0.25, fill: 'none' }))
+  pad([[0, 14], [56, 14]]); pad([[28, 0], [28, 14]])
+  gebouw(33, 7.4, 6.4, 3.4, '#E98A3C', 'Strandtent'); for (let i = 0; i < 6; i++) lagen.dingen.push(el('rect', { x: 33 + i * 1.07, y: 7.4, width: 0.53, height: 0.8, fill: '#fff' }))
+  lagen.dingen.push(el('rect', { x: 7.6, y: 2.2, width: 1.8, height: 6, fill: '#fff', stroke: '#9C9684', 'stroke-width': 0.1 })); lagen.dingen.push(el('rect', { x: 7.6, y: 4, width: 1.8, height: 1.2, fill: '#D93A3A' })); lagen.dingen.push(el('rect', { x: 7.6, y: 6.2, width: 1.8, height: 1.2, fill: '#D93A3A' })); lagen.dingen.push(el('rect', { x: 7.3, y: 1.4, width: 2.4, height: 0.9, rx: 0.2, fill: '#F2B33D' })); lagen.dingen.push(el('path', { d: 'M7.1 1.4 L8.5 0.4 L9.9 1.4 Z', fill: '#333' })); naam(8.5, 9.4, 'Vuurtoren', '#fff', 0.8)
+  ;[[14, 16.4, '#D93A3A'], [19, 17.2, '#2D6BD6'], [44, 16.6, '#F2B33D'], [49, 17.2, '#D93A3A'], [15, 11.5, '#3E9A5A']].forEach(([x, y, k]) => parasol(x, y, k)); ;[[22, 10], [24, 8.6], [20, 9]].forEach(([x, y]) => kasteel(x, y))
+  lagen.dingen.push(el('rect', { x: 40, y: 18.6, width: 1.8, height: 8.4, fill: '#A9733B', stroke: '#6F4520', 'stroke-width': 0.1 })); for (let i = 0; i < 8; i++) lagen.dingen.push(el('line', { x1: 40, y1: 19.4 + i, x2: 41.8, y2: 19.4 + i, stroke: '#6F4520', 'stroke-width': 0.07 })); naam(41, 18.1, 'Pier', '#fff', 0.8)
+  boot(10, 24, '#F2B33D'); boot(17, 25.4, '#D93A3A'); boot(49, 24, '#2D6BD6'); boot(52, 26, '#3E9A5A')
+  ;[[17.5, 15.3], [24.5, 15.3], [30.6, 17.3]].forEach(([x, y], i) => { lagen.dingen.push(el('rect', { x: x - 0.7, y: y - 0.4, width: 1.4, height: 0.8, rx: 0.1, fill: ['#F2B33D', '#D2458B', '#4FB3E8'][i], stroke: 'rgba(0,0,0,.25)', 'stroke-width': 0.06 })) })
+  routeBord(25, 13, 4); poortL(7, 12.2, '← Sportpark'); poortL(49, 12.2, 'Stadje →'); poortL(33, 2.2, 'Dorp ↑')
+}
+function sport() {
+  G('#74C35E', '#66B650', 110)
+  veld(3, 3, 17, 10)
+  vlak(33, 3, 11, 6, '#4FB3E8', '#E9E2D0'); for (let i = 1; i < 5; i++) lagen.grond.push(el('line', { x1: 33.4, y1: 3 + i * 1.2, x2: 43.6, y2: 3 + i * 1.2, stroke: 'rgba(255,255,255,.7)', 'stroke-width': 0.1, 'stroke-dasharray': '0.5 0.4' })); naam(38.5, 6.4, 'Zwembad', '#fff', 0.9)
+  gebouw(47, 3, 7, 5, C.sport, 'Sporthal')
+  vlak(33, 17, 9, 6, '#4A9AA5', '#fff'); lagen.grond.push(el('rect', { x: 34, y: 18, width: 7, height: 4, fill: 'none', stroke: '#fff', 'stroke-width': 0.12 })); lagen.grond.push(el('line', { x1: 37.5, y1: 17.6, x2: 37.5, y2: 22.4, stroke: '#fff', 'stroke-width': 0.14 })); naam(37.5, 24.2, 'Tennisbaan', '#fff', 0.8)
+  lagen.grond.push(el('ellipse', { cx: 13, cy: 21, rx: 9.5, ry: 4.6, fill: '#C9694A', stroke: '#fff', 'stroke-width': 0.2 })); lagen.grond.push(el('ellipse', { cx: 13, cy: 21, rx: 6.5, ry: 2.4, fill: '#74C35E', stroke: '#fff', 'stroke-width': 0.15 })); naam(13, 21.4, 'Loopbaan', '#fff', 0.85)
+  zand(45, 17, 10, 7, ''); naam(50, 25, 'Speeltuin', '#fff', 0.8); lagen.dingen.push(el('path', { d: 'M47 18.4 L48.2 21.6 M49.4 18.4 L48.2 21.6 M46.6 18.4 H49.8', stroke: '#8B6B3D', 'stroke-width': 0.2, fill: 'none' })); lagen.dingen.push(el('rect', { x: 51, y: 19, width: 2.4, height: 1.2, rx: 0.2, fill: '#D93A3A' })); lagen.dingen.push(el('circle', { cx: 52, cy: 22, r: 0.8, fill: '#F2B33D' }))
+  pad([[28, 0], [28, 14]]); pad([[28, 14], [56, 14]]); pad([[0, 14], [28, 14]])
+  ;[[22, 13], [30, 12.9]].forEach(([x, y]) => bank(x, y)); klein(25, 6, 3, 2, 5); klein(30, 22, 3, 2, 6); klein(26, 25, 2, 1.5, 8)
+  routeBord(25, 12.8, 5); poortL(33, 12.2, 'Strand →'); poortL(6, 12.2, '')
+  lagen.dingen.pop(); lagen.namen.pop(); poortL(33, 1.6, 'Springland ↑')
+}
+function stadje() {
+  G('#CFC8BE', '#C5BDB0', 80)
+  kassei(lijnP([[0, 14], [56, 14]]), 2); kassei(lijnP([[28, 0], [28, 28]]), 2); kassei(lijnP([[10, 0], [10, 28]]), 1.2); kassei(lijnP([[46, 0], [46, 28]]), 1.2)
+  vlak(25.6, 11.6, 4.8, 4.8, 'url(#kassei)', '#A89C85'); lagen.grond.push(el('circle', { cx: 28, cy: 14, r: 1.4, fill: '#4FB3E8', stroke: '#E9E2D0', 'stroke-width': 0.4 }))
+  const rij = [[11.5, 3, 4.5, 'Bakker', C.bakker], [17, 3, 4.5, 'Bloemen', '#C95A9C'], [22.5, 3, 4.5, 'Ijssalon', '#4FB3E8'], [30, 3, 6, 'Stadhuis', '#8C8CA6'], [37, 3, 8, 'Museum', '#B8744A'], [11.5, 17.5, 5, 'School', C.brand], [17.5, 17.5, 5, 'Bibliotheek', C.biblio], [23, 17.5, 4, 'Kapper', '#7C5CD6'], [30, 17.5, 5, 'Speelgoed', C.winkel], [36, 17.5, 8, 'Station', C.halte]]
+  rij.forEach(([x, y, b, t, k]) => gebouw(x, y, b, 4.4, k, t))
+  gebouw(1, 3, 8, 4.4, '#E08A4A', 'Markt'); gebouw(1, 17.5, 8, 4.4, C.sport, 'Zwemles'); gebouw(47.5, 3, 7, 4.4, '#C95A9C', 'Pretpark'); rail(0, 24.6, 56); lagen.dingen.push(el('rect', { x: 40, y: 23.7, width: 8, height: 1.8, rx: 0.5, fill: '#D93A3A', stroke: '#fff', 'stroke-width': 0.12 })); naam(44, 24.9, 'Trein', '#fff', 0.7)
+  ;[[12, 14.9, 1], [20, 13.1, 4], [34, 14.9, 0], [43, 13.1, 5], [16, 11.2, 6]].forEach(([x, y, i]) => auto(x, y, i)); ;[[10.5, 9], [10.5, 22], [46.5, 9], [46.5, 22], [28, 9], [28, 22]].forEach(([x, y]) => boom(x, y, 0.8))
+  routeBord(38, 12.8, 8); poortL(7, 12.2, '')
+  lagen.dingen.pop(); lagen.namen.pop(); poortL(8, 12.2, '← Strand'); poortL(33, 1.2, 'Meer ↑')
+}
+function dorpVol() {
+  svg.setAttribute('viewBox', '0 0 56 28'); svg.appendChild(defs())
+  svg.appendChild(el('rect', { width: 56, height: 28, fill: '#7CC46A' }))
+  for (let i = 0; i < 160; i++) svg.appendChild(el('ellipse', { cx: hash(i, 1) * 56, cy: hash(i, 2) * 28, rx: 0.8 + hash(i, 3) * 2, ry: 0.4 + hash(i, 4), fill: '#6FB85E', opacity: .6 }))
+  akker(0.5, 0.5, 9, 3); akker(46, 0.5, 9, 3.2); akker(0.5, 24.5, 9, 3); akker(46.5, 24.3, 9, 3.2)
+  heg(10.5, 0.8, 10.5, 3.6); heg(45, 0.8, 45, 3.6); heg(10.5, 24.5, 10.5, 27.2); heg(45.5, 24.3, 45.5, 27.2)
+  klein(13, 1.8, 4, 2, 3); klein(42, 1.5, 3, 2, 5); klein(2.6, 12, 3, 1.5, 7); klein(53.3, 12, 3, 1.5, 9); klein(10, 26.3, 3, 2, 1); klein(42, 26.4, 3, 2, 11)
+  lagen.grond.push(el('path', { d: glad([[0, 22.6], [6, 21.8], [11, 22.6], [15, 21.2]]), fill: 'none', stroke: '#4FB3E8', 'stroke-width': 1.1, 'stroke-linecap': 'round' }))
+  asfalt(lijnP([[0, 14], [19.5, 14]]), 1.2); asfalt(lijnP([[36.5, 14], [56, 14]]), 1.2); asfalt(lijnP([[28, 0], [28, 7.5]]), 1.2); asfalt(lijnP([[28, 20.5], [28, 28]]), 1.2)
+  asfalt(`M5.5 3.5 H50.5 Q53.5 3.5 53.5 6.5 V21.5 Q53.5 24.5 50.5 24.5 H5.5 Q2.5 24.5 2.5 21.5 V6.5 Q2.5 3.5 5.5 3.5 Z`, 1.1)
+  kassei(`M21.1 7.5 H34.9 Q36.5 7.5 36.5 9.1 V18.9 Q36.5 20.5 34.9 20.5 H21.1 Q19.5 20.5 19.5 18.9 V9.1 Q19.5 7.5 21.1 7.5 Z`, 1.1)
+  vlak(21, 9, 14, 10, 'url(#kassei)', '#A89C85'); lagen.grond.push(el('circle', { cx: 28, cy: 14, r: 1.9, fill: '#4FB3E8', stroke: '#E9E2D0', 'stroke-width': 0.5 })); naam(28, 17.6, 'Dorpsplein', '#fff', 0.8)
+  // huizen van de kinderen ver uit elkaar: Luca west, Feline zuidwest, Yuna oost; de ouders aan de oostkant
+  huis(3.4, 9.8, BLAUW, 'Luca'); huis(3.6, 19, GROEN, 'Feline'); huis(47.8, 9.6, ROZE, 'Yuna'); huis(47.6, 15.2, PAARS, 'Ouders')
+  gebouw(41, 9.4, 4.8, 3, '#E98A3C', 'Dokter'); gebouw(41, 15.2, 4.8, 3.4, '#C95A9C', 'Bloemist')
+  gebouw(21.5, 3.9, 4.8, 2.9, C.winkel, 'Winkel'); gebouw(30, 3.9, 3.2, 2.9, C.bakker, 'Bakker'); gebouw(33.6, 3.9, 2.6, 2.9, C.cafe, 'Café')
+  gebouw(21.5, 21.2, 4.6, 2.8, C.biblio, 'Biblio'); gebouw(30, 21.2, 5.2, 2.8, C.spel, 'Spellenhuis')
+  gebouw(14.8, 9.6, 4, 3, C.brand, 'Brandw.'); gebouw(37.2, 9.6, 3.6, 3, C.kerk, 'Kerk'); gebouw(14.8, 15.4, 4, 3, C.markt, 'Markt'); gebouw(37.2, 15.4, 3.6, 3, C.sport, 'Hal')
+  park(4.4, 4.9, 13.2, 4.2, ''); vijver(10, 7, 3.6, 1.4); naam(10, 6.4, 'Park', '#fff', 0.9); steen(glad([[4.4, 9.4], [9, 9.2], [13, 8.6], [17.8, 5.2]]), 0.8)
+  gebouw(39, 4.9, 4.2, 3.2, C.spel, 'Eekhoorn'); gebouw(43.6, 4.9, 4.2, 3.2, C.spel, 'Bladeren'); gebouw(48.2, 4.9, 4.4, 3.2, '#C95A9C', 'Pretpark')
+  zand(9.6, 20.4, 7.6, 2.2, ''); naam(13.4, 21.7, 'Speelplein', '#fff', 0.8); veld(39, 19.8, 7, 4.2); gebouw(47.4, 20.2, 5.2, 3.6, C.boer, 'Boerderij')
+  steen(glad([[17.8, 4.4], [24, 2.6], [26.4, 3.2]]), 0.7)
+  zebra(17, 14, true); zebra(38.6, 14, true); zebra(28, 6.2, false); zebra(28, 21.8, false)
+  gebouw(23.6, 0.8, 2.4, 1.2, C.halte, 'Halte')
+  poortL(28, 2.1, ''); lagen.dingen.pop(); lagen.namen.pop(); bord(28, 2.6, 'Berg', '↑'); bord(28, 26.6, 'Strand', '↓'); weglabel(4.6, 'Springland ←'); weglabel(51.4, '→ Meer')
+  auto(33, 3.05, 0); auto(11.6, 14.5, 5); auto(52.8, 8, 6, false); auto(28.9, 25.2, 3, false)
+  ;[[12.6, 19.2], [18, 12.9], [34, 19.4], [36, 6.6], [20.3, 7.2], [44.4, 14.1], [8.6, 23.6]].forEach(([x, y]) => { lagen.dingen.push(el('rect', { x: x - 0.06, y: y - 0.9, width: 0.12, height: 0.9, fill: '#5B6B82' })); lagen.dingen.push(el('circle', { cx: x, cy: y - 1, r: 0.3, fill: '#FFE08A', stroke: '#5B6B82', 'stroke-width': 0.07 })) })
+  ;[[16, 18.8], [34.6, 12.8], [8, 14.8], [44, 19.6]].forEach(([x, y]) => bank(x, y)); bomen([[12, 17.4], [17.6, 21.6], [43.4, 12.7], [44.3, 22.2], [49, 18.9], [7, 17.7], [20, 6.1], [53, 8.2], [7.6, 12.6], [46, 8.6]])
+  rondje(`M2.5 3.5 H53.5 V24.5 H2.5 Z`)
+}
+
+// ---------- Tabs ----------
+const INFO = {
+  dorp: { bouw: dorpVol, t: ['Alle kavels zijn bebouwd: dokter, bloemist, pretpark en boerderij staan er nu. De winkels, de kerk, de bibliotheek en de bushalte zijn gebleven.', 'De huizen van de kinderen staan ver uit elkaar: Luca in het westen bij het park, Feline in het zuidwesten bij het speelplein, Yuna in het oosten. Het ouderhuis staat daar vlak onder, aan de oostkant.', 'Het dorp is nog altijd klein genoeg om op één scherm te passen; de rest van de wereld zit in de andere gebieden.'] , leg: 'kinderen' },
+  bos: { bouw: bos, t: ['Dicht bos met een open plek en kampvuur, twee boomhutten, de eekhoornboom en paddenstoelen (alleen een gewoon rood-wit paddenstoeltje, in de herfst meer).', 'Twee routes komen binnen: een van het oosten (naar de Berg) en een uit het zuiden (naar Springland). Een smal stenen pad loopt naar de boomhut.', 'Poort aan de rand: loop het grindpad uit en het volgende gebied laadt.'] },
+  berg: { bouw: berg, t: ['Bergpad met haarspeldbochten, bankjes en een berghut; sneeuwtoppen die in de winter dikker worden.', 'Een riviertje loopt van de berg naar het meer; de route naar het platteland kruist het met een houten brug.', 'Noord blijft rustig en grijs, de zuidkant heeft dennenbomen.'] },
+  platteland: { bouw: platteland, t: ['Akkers in verschillende kleuren, een schuur, boerderij, silo en windmolen, een tractor die geparkeerd staat, en een weide met koeien en schapen.', 'Geen rijdende voertuigen: de tractor is decor.', 'Dieren staan stil of draaien een korte lus; tikken op een dier laat het geluid maken (later).'] },
+  springland: { bouw: springland, t: ['Dit is de bestaande wereldkaart van Springland (SpringKaart) met de vijf levels, precies zoals nu. De mockup toont ze maar klein.', 'Je komt hier binnen via de poort links in het dorp, tikt op een level om te spelen, en de pijl terug brengt je naar de poort.', 'Er verandert niets aan het vrijspelen of de kaart zelf.'] },
+  meer: { bouw: meer, t: ['Meer met steiger, bootjes, eendjes en een picknickplek. Kinderen kunnen op de steiger gaan zitten (later: vissen).', 'Het pad loopt langs de westkant van het water; noord en zuid hebben elk een route naar het platteland en het stadje.'] },
+  strand: { bouw: strand, t: ['Strand met zee, golven, een strandtent, vuurtoren, pier, parasols, zandkastelen en kleine bootjes.', 'Het grindpad loopt van west naar oost over het zand; noordwaarts gaat het naar het dorp.', 'Zomerversie met extra parasols, winter met alleen de vuurtoren en een paar eenden.'] },
+  sport: { bouw: sport, t: ['Voetbalveld, zwembad, sporthal, tennisbaan, loopbaan met gras in het midden en een speeltuin met schommel en glijbaan.', 'Penalty\'s en andere sportspelletjes kunnen hier hun plekje krijgen.'] },
+  stadje: { bouw: stadje, t: ['Stadje met kasseienstraten, een fontein op het kruispunt, winkels, school, bibliotheek, stadhuis, museum, pretpark en een station met treinrails.', 'Het station wordt later de snelle weg naar andere gebieden. Auto\'s staan geparkeerd, er rijdt niets.'] }
+}
+const TAB = [['dorp', 'Dorp, vol gebouwd'], ['bos', 'Bos'], ['berg', 'Berg'], ['platteland', 'Platteland'], ['springland', 'Springland'], ['meer', 'Meer'], ['strand', 'Strand en haven'], ['sport', 'Sportpark'], ['stadje', 'Stadje'], ['bewerk', 'Ouders bewerken de kaart']]
+let nu = 'dorp'
+function teken() {
+  for (const l of Object.values(lagen)) l.length = 0
+  svg = document.getElementById('kaart'); svg.replaceChildren()
+  const bed = document.getElementById('bed'), leg = document.getElementById('legenda'), pt = document.getElementById('punten'), kw = document.querySelector('.kaartwrap'), ed = document.getElementById('editor')
+  document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', String(t.dataset.k === nu)))
+  if (nu === 'bewerk') { kw.style.display = 'none'; ed.style.display = ''; bed.innerHTML = ''; leg.innerHTML = ''; bewerker(); return }
+  kw.style.display = ''; ed.style.display = 'none'
+  const i = INFO[nu]
+  if (nu === 'dorp') { i.bouw() } else { svg.setAttribute('viewBox', '0 0 56 28'); svg.appendChild(defs()); i.bouw() }
+  const g = e => svg.appendChild(e)
+  lagen.grond.forEach(g); lagen.weg.forEach(g); lagen.dingen.forEach(g)
+  const rl = el('g', { id: 'rondlaag' }); lagen.rond.forEach(e => rl.appendChild(e)); g(rl)
+  const nl = el('g', { id: 'naamlaag' }); lagen.namen.forEach(e => nl.appendChild(e)); g(nl)
+  bed.innerHTML = `<label class="ch" for="c-namen"><input id="c-namen" type="checkbox" checked>Namen</label>` + (nu === 'dorp' ? `<label class="ch" for="c-rond"><input id="c-rond" type="checkbox">Wandelrondje</label>` : '')
+  document.getElementById('c-namen').addEventListener('change', e => { nl.style.display = e.target.checked ? '' : 'none' })
+  if (nu === 'dorp') { rl.style.display = 'none'; document.getElementById('c-rond').addEventListener('change', e => { rl.style.display = e.target.checked ? '' : 'none' }) }
+  leg.innerHTML = '<span><i style="background:#D9CBA3"></i>Grindpad (route)</span><span><i style="background:#D3C6AE"></i>Kasseien</span><span><i style="background:#C7C1B2"></i>Stenen pad</span><span><i style="background:#2D6BD6"></i>Wegwijzer naar ander gebied</span><span><i style="background:#fff;border:2px solid #8B6B3D"></i>Routebordje</span>'
+  pt.innerHTML = i.t.map(x => `<li>${x}</li>`).join('')
+}
+
+// ---------- Kaartbewerker voor ouders (gsm) ----------
+function bewerker() {
+  const ed = document.getElementById('editor')
+  ed.innerHTML = `
+  <div class="gsm-rij">
+    <figure class="gsm"><figcaption>Kaart bewerken</figcaption>
+      <div class="gsm-kop"><b>‹ Kaart bewerken</b><span class="sl">🔒 pincode ✓</span></div>
+      <div class="gsm-gebied"><span class="chip on">Dorp</span><span class="chip">Bos</span><span class="chip">Berg</span><span class="chip">Meer</span><span class="chip">Strand</span><span class="chip">+</span></div>
+      <div class="gsm-kaart"><svg id="k1" role="img" aria-label="Dorp met raster en geselecteerde winkel"></svg></div>
+      <div class="gsm-hint">Tik een gebouw om het te verplaatsen. Sleep een nieuw stuk uit de lijst naar een groene tegel.</div>
+      <div class="gsm-tabs"><span class="chip on">Gebouwen</span><span class="chip">Huizen</span><span class="chip">Natuur</span><span class="chip">Paden</span><span class="chip">Dingen</span></div>
+      <div class="gsm-pal" id="pal"></div>
+      <div class="gsm-knoppen"><button>↺ Draai</button><button>🗑 Wis</button><button>↶ Ongedaan</button><button class="hoofd">Bewaar</button></div>
+    </figure>
+    <figure class="gsm"><figcaption>Kavels van de kinderen</figcaption>
+      <div class="gsm-kop"><b>‹ Waar wonen de kinderen?</b><span class="sl">🔒 pincode ✓</span></div>
+      <div class="gsm-kaart"><svg id="k2" role="img" aria-label="Dorp met de vier kavels"></svg></div>
+      <div class="gsm-hint">Elk kind krijgt een eigen kavel. Tik een kind en kies een vrije plek (de stippellijnen). Het huis zelf richt het kind zelf in.</div>
+      <div class="kav" id="kav"></div>
+      <div class="gsm-knoppen"><button>Per kind zichtbaar</button><button class="hoofd">Bewaar</button></div>
+    </figure>
+  </div>
+  <ul class="uitleg"><li><b>Alleen voor ouders.</b> Het bewerken zit in het ouderdeel (Wij → Kaart bewerken), achter pincode of biometrie, ook op het toestel van een kind.</li><li><b>Wat een ouder kan.</b> Gebouwen, bomen, banken en paden neerzetten, verplaatsen, draaien en wissen; per gebied; ongedaan maken. Alles ligt op de tegels van 48 px, dus niets kan op een weg of een ander gebouw komen.</li><li><b>Kinderhuizen.</b> Een ouder kiest per kind de kavel; het kind richt het huis zelf in (Mijn huis). Zo staan de kinderen niet naast elkaar.</li><li><b>Per kind verbergen.</b> Zoals in het Winkelaanbod kan een ouder een nieuw stuk eerst voor één kind tonen.</li><li><b>De server controleert.</b> Plaatsen worden op de server gecontroleerd (bezet, buiten de kaart, aantal), de kaart wordt bewaard per gezin en gebied (<code>gezinnen.wereld_kaart</code>, nieuwe migratie).</li><li><b>Nachtroutine.</b> Wat de nachtroutine bouwt, staat standaard als voorstel in dezelfde lijst, zodat de ouders het kunnen verplaatsen of weghalen.</li></ul>`
+  const teken2 = (id, vb, extra) => { svg = document.getElementById(id); svg.replaceChildren(); for (const l of Object.values(lagen)) l.length = 0; dorpVol(); svg.setAttribute('viewBox', vb); const g = e => svg.appendChild(e); lagen.grond.forEach(g); lagen.weg.forEach(g); lagen.dingen.forEach(g); lagen.namen.forEach(g); if (extra) extra() }
+  teken2('k1', '10 2 32 24', () => {
+    for (let x = 10; x <= 42; x++) svg.appendChild(el('line', { x1: x, y1: 2, x2: x, y2: 26, stroke: 'rgba(255,255,255,.28)', 'stroke-width': 0.05 })); for (let y = 2; y <= 26; y++) svg.appendChild(el('line', { x1: 10, y1: y, x2: 42, y2: y, stroke: 'rgba(255,255,255,.28)', 'stroke-width': 0.05 }))
+    svg.appendChild(el('rect', { x: 14.5, y: 15.1, width: 4.6, height: 3.6, rx: 0.4, fill: 'rgba(45,107,214,.16)', stroke: '#2D6BD6', 'stroke-width': 0.2, 'stroke-dasharray': '0.5 0.35' }))
+    ;[[14.5, 15.1], [19.1, 15.1], [14.5, 18.7], [19.1, 18.7]].forEach(([x, y]) => svg.appendChild(el('circle', { cx: x, cy: y, r: 0.4, fill: '#fff', stroke: '#2D6BD6', 'stroke-width': 0.14 })))
+    svg.appendChild(el('rect', { x: 10.6, y: 10.6, width: 3.2, height: 2.4, rx: 0.3, fill: 'rgba(233,138,60,.45)', stroke: '#E98A3C', 'stroke-width': 0.18, 'stroke-dasharray': '0.4 0.3' })); svg.appendChild(el('path', { d: 'M15.6 15.1 C14.5 13.6 13.8 12.8 13.4 12.2', stroke: '#2D6BD6', 'stroke-width': 0.16, fill: 'none', 'stroke-dasharray': '0.3 0.3' }))
+    svg.appendChild(el('text', { x: 12.2, y: 12, 'font-size': 0.8, 'text-anchor': 'middle', fill: '#7A4210', 'font-weight': 800, 'font-family': 'Nunito,system-ui,sans-serif' }, 'Bakker?'))
+  })
+  teken2('k2', '0 0 56 28', () => {
+    const pin = (x, y, l, k, sel) => { svg.appendChild(el('circle', { cx: x, cy: y, r: 2.1, fill: k, stroke: sel ? '#FFE08A' : '#fff', 'stroke-width': sel ? 0.5 : 0.3 })); svg.appendChild(el('text', { x, y: y + 0.8, 'font-size': 2.2, 'text-anchor': 'middle', fill: '#fff', 'font-weight': 800, 'font-family': 'Nunito,system-ui,sans-serif' }, l)) }
+    pin(5, 11.2, 'L', BLAUW); pin(5.2, 20.5, 'F', GROEN, true); pin(49.4, 11, 'Y', ROZE); pin(49.2, 16.6, 'O', PAARS)
+    ;[[16.5, 26], [44, 14.5], [8, 16.2]].forEach(([x, y]) => svg.appendChild(el('rect', { x: x - 1.8, y: y - 1.5, width: 3.6, height: 3, rx: 0.4, fill: 'rgba(255,255,255,.35)', stroke: '#fff', 'stroke-width': 0.3, 'stroke-dasharray': '0.7 0.5' })))
+  })
+  const pal = [['Winkel', C.winkel], ['Café', C.cafe], ['Bakker', C.bakker], ['Kerk', C.kerk], ['Boom', '#3F9A47'], ['Bank', '#A9733B'], ['Lantaarn', '#FFE08A'], ['Vijver', '#4FB3E8']]
+  document.getElementById('pal').innerHTML = pal.map(([n, k], i) => `<div class="tegel${i === 2 ? ' sel' : ''}"><i style="background:${k}"></i><span>${n}</span></div>`).join('')
+  document.getElementById('kav').innerHTML = [['Luca', BLAUW, 'West, bij het park'], ['Feline', GROEN, 'Zuidwest, bij het speelplein'], ['Yuna', ROZE, 'Oost'], ['Ouders', PAARS, 'Oost, onder Yuna']].map(([n, k, p], i) => `<div class="kavrij${i === 1 ? ' sel' : ''}"><b style="background:${k}">${n[0]}</b><div><strong>${n}</strong><small>${p}</small></div><span>Verplaats ›</span></div>`).join('')
+}
+document.getElementById('tabs').innerHTML = TAB.map(([k, t]) => `<button class="tab" role="tab" data-k="${k}" aria-selected="${k === nu}">${t}</button>`).join('')
+document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => { nu = b.dataset.k; teken() }))
+window.__k = k => { nu = k; teken() }
+teken()
+</script>

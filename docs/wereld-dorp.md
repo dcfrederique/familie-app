@@ -71,3 +71,11 @@ Mockup: `prototypes/wereld-dorp/wereld-groot.html` (tabs: de hele wereld, het do
 1. Welke gebieden eerst (voorstel: bos, dan Springland als gebied, dan strand)?
 2. Beslist: auto's staan alleen geparkeerd, er rijdt niets.
 3. Mag de nachtroutine blijven rusten tot de eerste fases staan?
+
+## Gebieden apart en het dorp vol gebouwd (27 oktober 2026)
+
+Mockup `prototypes/wereld-dorp/wereld-gebieden.html` (beelden in de projectmap `schermen/wereld-gebieden/`): elk gebied als eigen kaart (bos, berg, platteland, Springland, meer, strand en haven, sportpark, stadje), het dorp in de eindtoestand, en een tabblad "Ouders bewerken de kaart".
+
+- **Kinderhuizen niet naast elkaar**: in de eindtoestand woont Luca in het westen (bij het park), Feline in het zuidwesten (bij het speelplein) en Yuna in het oosten; het ouderhuis staat onder Yuna. De ouders kiezen per kind de kavel; het kind richt het huis zelf in (Mijn huis).
+- **Ouders bewerken de kaart**: ouderdeel (Wij → Kaart bewerken, achter pincode), per gebied gebouwen, bomen, banken en paden neerzetten, verplaatsen, draaien, wissen en ongedaan maken, op het tegelraster. De server controleert de plaatsing; opslag per gezin en gebied (voorstel `gezinnen.wereld_kaart`, nieuwe migratie). Wat de nachtroutine bouwt, staat als voorstel in dezelfde lijst. Per kind verbergen kan zoals in het Winkelaanbod.
+- Springland toont de bestaande SpringKaart; de andere gebieden zijn schetsen en nog niets is gebouwd.
