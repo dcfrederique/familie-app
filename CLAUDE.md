@@ -212,30 +212,32 @@ en elke nacht worden de schermen een beetje mooier. Loopt na de nachtelijke bouw
   Let op: tikvlakken niet onder ±44 px, canvas-spelletjes en Bladzijden moeten correct meten.
 - Bewust scrollend (meldingen mogen blijven): de landkaart van Springland (`.spring-kaart`, slepen) en de chatgeschiedenis.
 
-## Playwright-tests (eerste nachtelijke ronde, daarna uitbreiden)
-- Vraag van Frederique (25 oktober 2026): de controle wordt ook echte Playwright-tests in de repo. De eerste ronde
-  (nacht van 25 op 26 oktober) zet dat op, nog voor het herstellen van schermen:
-  `@playwright/test` als devDependency (zelfde versie als de globale Playwright, met `executablePath`
-  `/opt/pw-browsers/chromium` als de versie verschilt), `playwright.config.ts` met `webServer` (vite demo), map `e2e/`,
-  script `npm run test:e2e`.
-- Tests: (1) passen zonder scrollen, als test per scherm en toestel, gebaseerd op `scripts/schermcontrole.cjs`
-  (deel de meet-code, geen twee versies); schermen die nog open staan als `test.fixme` met een verwijzing naar het
-  verslag, zodat ze rood worden zodra iemand ze vergeet. (2) Brede werkingstests in de demo: welkomstpad, taak indienen,
-  tijd aanvragen, winkel kopen, Mijn huis en figuurtje bewaren, een verhaal lezen, ouder goedkeuren met pincode 1234.
-- Daarna in CI (`.github/workflows`): e2e-job naast lint/test/build, met `npx playwright install --with-deps chromium`;
-  een rode e2e-test blokkeert het deployen net als de gewone tests. Elke volgende nacht houdt de tests groen en zet
-  een `fixme` om in een gewone test zodra het scherm past.
+## Playwright-tests (`npm run test:e2e`, ook in CI)
+- Opgezet 26-27 oktober 2026 op vraag van Frederique. `playwright.config.ts` start de vite-demo zelf; tests in `e2e/`.
+  Lokaal in de cloud: `npx playwright test --workers=6` (±5 min). In CI draait de job `e2e` met 4 workers en blokkeert
+  migraties en deployen als hij rood is.
+- `e2e/werking.spec.ts`: welkomstpad met welkomstbonus, sterrenlus (taak indienen, tijd aanvragen, ouder keurt goed en
+  kent toe, pincode als die gevraagd wordt), winkel kopen, Mijn huis en figuurtje bewaren, een verhaal openen.
+  Vaste klok (10:00) wegens het tijdvenster. Nieuwe kinderflows krijgen hier een test.
+- `e2e/schermen.spec.ts`: per kind en toestel (tablets liggend en staand, gsm liggend) elk kinderscherm uit
+  `SCHERMEN`, met dezelfde meetcode als het nachtelijke verslag (`scripts/schermmeting.cjs`) en vast toeval.
+  Wat nog niet past, staat in `e2e/schermen-open.ts` ('kind scherm BxH'). Een nieuw probleem maakt de test rood, en
+  een scherm dat intussen past ook ("haal het weg uit schermen-open.ts"): zo krimpt de lijst elke nacht.
+  Lijst opnieuw opmaken: `OPEN_OPNEMEN=1 npx playwright test e2e/schermen.spec.ts --workers=6` en
+  `node scripts/open-bijwerken.cjs ideeen/<datum>-schermen.md`. Een nieuw kinderscherm: zet het in `SCHERMEN`.
+- De lijst mag alleen krimpen. Iets erbij zetten mag enkel voor een nieuw scherm of toestel, nooit om een rode test
+  stil te krijgen; herstel dan het scherm.
 
 ## Afronden
-- Lint, tests, e2e-tests en build groen; dan pas push naar `main`. Rood en niet op te lossen: alleen het verslag pushen.
+- Lint, tests, `npx playwright test` en build groen; dan pas push naar `main`. Rood en niet op te lossen: alleen het verslag pushen.
 - Verslag in `ideeen/YYYY-MM-DD-schermen.md`: wat hersteld is (voor en na, aantal passende schermen), welke details erbij
   kwamen en wat nog open staat (de volgende nacht begint daar).
 - Merken ouders er iets van, dan een item bovenaan `src/data/nieuwtjes.ts` met het volgende `versie` (harde kernregel).
 - Korte melding aan Frederique in de thread "Elke nacht schermen nakijken en verfijnen".
 
 ## Taakprompt 3 – Schermcontrole (05:07)
-Lees CLAUDE.md en volg "Nachtelijke schermcontrole". Haal main binnen; bestaan er nog geen Playwright-tests (`e2e/`),
-zet die dan eerst op volgens "Playwright-tests". Draai scripts/schermcontrole.cjs op alle kinderen,
+Lees CLAUDE.md en volg "Nachtelijke schermcontrole". Haal main binnen, draai de Playwright-tests en
+scripts/schermcontrole.cjs op alle kinderen,
 herstel wat op een tablet scrolt of buiten beeld valt (begin bij de schermen met de meeste meldingen), daarna een paar
 schermen voor de gsm liggend, voeg een paar kleine
-visuele details toe, draai lint, tests en build, schrijf ideeen/<datum van vandaag>-schermen.md en push naar main.
+visuele details toe, haal wat nu past uit e2e/schermen-open.ts, draai lint, tests, e2e en build, schrijf ideeen/<datum van vandaag>-schermen.md en push naar main.
