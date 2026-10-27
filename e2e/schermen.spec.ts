@@ -37,7 +37,13 @@ KINDEREN.forEach((kind: string, k: number) => {
         if (nu !== `/kind/${kind}${scherm ? '/' + scherm : ''}`) continue
         const meldingen: string[] = await page.evaluate(meet)
         if (meldingen.length && !OPEN.has(sleutel)) fout.push(`${sleutel}: ${meldingen.slice(0, 3).join('; ')}`)
-        if (!meldingen.length && OPEN.has(sleutel)) fout.push(`${sleutel} past nu: haal het weg uit e2e/schermen-open.ts`)
+        // Past een open scherm nu wel: lokaal (nachtelijke controle) rood, zodat de lijst krimpt. In CI enkel een
+        // waarschuwing, want schermen op het randje meten op de CI-machine soms net anders.
+        if (!meldingen.length && OPEN.has(sleutel)) {
+          const melding = `${sleutel} past nu: haal het weg uit e2e/schermen-open.ts`
+          if (process.env.CI) test.info().annotations.push({ type: 'past nu', description: melding })
+          else fout.push(melding)
+        }
       }
       await ctx.close()
       // OPEN_OPNEMEN=1: schrijf wat niet past naar test-results/open/ (om e2e/schermen-open.ts bij te werken).

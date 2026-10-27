@@ -222,7 +222,7 @@ en elke nacht worden de schermen een beetje mooier. Loopt na de nachtelijke bouw
 - `e2e/schermen.spec.ts`: per kind en toestel (tablets liggend en staand, gsm liggend) elk kinderscherm uit
   `SCHERMEN`, met dezelfde meetcode als het nachtelijke verslag (`scripts/schermmeting.cjs`) en vast toeval.
   Wat nog niet past, staat in `e2e/schermen-open.ts` ('kind scherm BxH'). Een nieuw probleem maakt de test rood, en
-  een scherm dat intussen past ook ("haal het weg uit schermen-open.ts"): zo krimpt de lijst elke nacht.
+  een scherm dat intussen past ook ("haal het weg uit schermen-open.ts"; in CI enkel een waarschuwing, want schermen op het randje meten daar soms net anders): zo krimpt de lijst elke nacht.
   Lijst opnieuw opmaken: `OPEN_OPNEMEN=1 npx playwright test e2e/schermen.spec.ts --workers=6` en
   `node scripts/open-bijwerken.cjs ideeen/<datum>-schermen.md`. Een nieuw kinderscherm: zet het in `SCHERMEN`.
 - De lijst mag alleen krimpen. Iets erbij zetten mag enkel voor een nieuw scherm of toestel, nooit om een rode test
