@@ -2,6 +2,8 @@
 
 Gevraagd door Frederique op 27 oktober 2026: het grindpad terug zoals het was, dag en nacht met simpel weer, de huizen gespreid, een echte stad in plaats van een lege straat, bruikbare speeltoestellen en een bal om op te schieten. Alles in stappen, en 's nachts bouwt een routine de stad verder uit. De wereld blijft 2D (3D is geschrapt, bouw dat niet).
 
+Dorpsindelingen voor stap 5 en 6 (meer straten en rondjes): drie voorstellen in `docs/wereld-dorp.md`; wacht op de keuze van Frederique (27 oktober 2026), daarna volgen stap 5 en de backlog de gekozen indeling.
+
 ## Stappen
 
 | Stap | Wat | Status |

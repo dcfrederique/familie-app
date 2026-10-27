@@ -1,0 +1,201 @@
+<title>Dorpsindelingen</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&display=swap">
+<style>
+/* Indeling: koptekst, drie dorpsplattegronden achter tabs (zelfde kaart van 56 × 28 tegels), daarna vergelijking en plan. Kleuren van de wereld in de app. */
+:root{--bg:#EEF3F8;--kaart:#FFFFFF;--inkt:#1C2433;--zacht:#566379;--rand:#D5DCE4;--accent:#2D6BD6;--accent-t:#FFFFFF;--lijst:#F5F8FB;--gras:#7CC46A}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121821;--kaart:#1B2431;--inkt:#EAF0F7;--zacht:#9BAABF;--rand:#2E3B4F;--accent:#6C9BF0;--accent-t:#0E1622;--lijst:#222D3D;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121821;--kaart:#1B2431;--inkt:#EAF0F7;--zacht:#9BAABF;--rand:#2E3B4F;--accent:#6C9BF0;--accent-t:#0E1622;--lijst:#222D3D;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--inkt);font:500 16px/1.5 Nunito,system-ui,sans-serif;padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:1100px;margin:0 auto;display:grid;gap:18px}
+h1{font-size:clamp(26px,5vw,36px);line-height:1.1;margin:0 0 6px;font-weight:800;text-wrap:balance}
+h2{font-size:19px;margin:0 0 6px;font-weight:800;text-wrap:balance}
+p{margin:0;max-width:70ch;text-wrap:pretty}.zacht{color:var(--zacht)}
+.tabs{display:flex;flex-wrap:wrap;gap:8px}
+.tab{font:700 15px/1 Nunito,system-ui;border:1.5px solid var(--rand);background:var(--lijst);color:var(--inkt);border-radius:999px;padding:12px 16px;min-height:44px;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--accent);color:var(--accent-t);border-color:var(--accent)}
+.tab:focus-visible,input:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.vak{background:var(--kaart);border:1px solid var(--rand);border-radius:16px;padding:14px;min-width:0;display:grid;gap:12px}
+.kaartwrap{border-radius:10px;overflow:hidden;background:var(--gras);line-height:0}
+svg{width:100%;height:auto;display:block}
+.bed{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center}
+label.ch{display:flex;gap:6px;align-items:center;font-size:14px;font-weight:700;min-height:44px}
+.legenda{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:13px;color:var(--zacht)}
+.legenda i{display:inline-block;width:14px;height:14px;border-radius:3px;margin-right:5px;vertical-align:-2px;border:1px solid rgba(0,0,0,.25)}
+.cijfers{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:10px}
+.cijfers div{background:var(--lijst);border-radius:10px;padding:10px 12px;font-size:14px}.cijfers b{display:block;font-size:13px;color:var(--zacht);font-weight:700}
+ul{margin:0;padding-left:20px;display:grid;gap:4px}
+.tafel{overflow-x:auto}table{border-collapse:collapse;min-width:620px;width:100%;font-size:14px}
+th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--rand);vertical-align:top}th{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--zacht)}
+.aanrader{display:inline-block;background:var(--accent);color:var(--accent-t);border-radius:999px;padding:2px 10px;font-size:12px;font-weight:800;margin-left:6px;vertical-align:2px}
+</style>
+<main>
+<header>
+<h1>Hoe kan ons dorpje eruitzien?</h1>
+<p class="zacht">Drie plattegronden van bovenaf op dezelfde kaart als nu (56 × 28 tegels). Alle drie hebben meer straten, rondjes om te dwalen en plek voor wat de nachtroutine nog bouwt. Het zijn schetsen, geen eindtekening: kies wat je het fijnst vindt.</p>
+</header>
+<div class="tabs" role="tablist" aria-label="Indeling">
+<button class="tab" role="tab" id="t-a" aria-selected="true" data-k="a">A · Straten in een raster</button>
+<button class="tab" role="tab" id="t-b" aria-selected="false" data-k="b">B · Dorpsplein met ringweg</button>
+<button class="tab" role="tab" id="t-c" aria-selected="false" data-k="c">C · Slingerweg met hofjes</button>
+</div>
+<section class="vak" aria-live="polite">
+<div class="kaartwrap"><svg id="kaart" viewBox="0 0 56 28" role="img" aria-label="Plattegrond van het dorpje"></svg></div>
+<div class="bed">
+<label class="ch" for="rondjes"><input id="rondjes" type="checkbox" checked>Wandelrondjes tonen</label>
+<label class="ch" for="namen"><input id="namen" type="checkbox" checked>Namen tonen</label>
+</div>
+<div class="legenda"><span><i style="background:#E2D9C6"></i>Straat</span><span><i style="background:#F3DDB0;border-color:#D4432F"></i>Huis van een kind</span><span><i style="background:#E98A3C"></i>Gebouw dat er al is</span><span><i style="background:#7C5CD6"></i>Nieuw gebouw (nachtroutine)</span><span><i style="background:transparent;border:1.5px dashed #fff"></i>Nog vrije plek</span><span><i style="background:transparent;border:2px dashed #7A3BD6"></i>Wandelrondje</span></div>
+<div class="cijfers" id="cijfers"></div>
+<ul id="punten"></ul>
+</section>
+<section class="vak">
+<h2>De drie naast elkaar</h2>
+<div class="tafel"><table>
+<thead><tr><th>&nbsp;</th><th>A · Raster</th><th>B · Plein en ring <span class="aanrader">voorstel</span></th><th>C · Slingerweg</th></tr></thead>
+<tbody>
+<tr><th>Oriëntatie voor Feline (4)</th><td>Heel duidelijk: rechte straten, blokjes.</td><td>Heel duidelijk: alles ligt rond het plein.</td><td>Moeilijker: bochten en hofjes lijken op elkaar.</td></tr>
+<tr><th>Rondjes om te dwalen</th><td>Elk blokje is een rondje, plus één grote.</td><td>Ring om het plein, grote buitenring, 4 hoeken.</td><td>Rondjes in de hofjes en rond het park, plus bosrondje.</td></tr>
+<tr><th>Sfeer</th><td>Netjes, wat stijf.</td><td>Dorpsgevoel met een hart; plein is gezellig.</td><td>Meest "ontdekken", minst netjes.</td></tr>
+<tr><th>Bouwen in de code</th><td>Eenvoudig: straten zijn rechthoeken zoals nu.</td><td>Eenvoudig: ook rechthoeken (met afgeronde hoeken als tekening).</td><td>Moeilijker: kromme wegen vragen een tegelkaart in plaats van rechthoeken.</td></tr>
+<tr><th>Plek voor de nachtroutine</th><td>Elk blok is een plek; groeit door nieuwe straten.</td><td>Vier hoeken en de spaken; groeit door buitenring uit te breiden.</td><td>Hofjes en randen; minder voorspelbaar.</td></tr>
+</tbody></table></div>
+</section>
+<section class="vak">
+<h2>Plan om de wereld voller te bouwen</h2>
+<ul>
+<li><b>1. Eén kaartbestand.</b> Straten, huisplekken, gebouwplekken, parken en vrije plekken komen in één databestand (<code>src/data/dorp.ts</code>) in plaats van verspreid in <code>kaart.ts</code> en <code>wereld.ts</code>. De platte wereld en de 2.5D-wereld lezen hetzelfde.</li>
+<li><b>2. Wegen en bestaande gebouwen verplaatsen.</b> De huizen staan nu op één rij (stap 5 van het levendige-wereldplan); ze gaan naar hun plek in de gekozen indeling. De kaart wordt zo nodig groter of blijft 56 × 28.</li>
+<li><b>3. Eerste uitbreiding.</b> Het plein of park, twee extra straten en de eerste winkels (bakker, café, bibliotheek) als decor met bordje.</li>
+<li><b>4. Rondjes en kleine dingen.</b> Bankjes, bruggetje over de vijver, bushalte, fontein, zebrapad: dingen die je tegenkomt op een wandeling.</li>
+<li><b>5. Nachtroutine.</b> Elke nacht vult de routine één vrije plek uit de lijst (zelfde regels als nu: één stuk, tests groen, nieuwtje). De backlog volgt de indeling: eerst de plekken dicht bij het plein.</li>
+<li><b>Snelreizen.</b> Een groter dorp mag niet lastig worden voor Feline: een knop "ga naar" (winkel, thuis, spellenhuis) en een kleine kaart blijven nodig.</li>
+</ul>
+</section>
+</main>
+<script>
+const NS = 'http://www.w3.org/2000/svg', svg = document.getElementById('kaart')
+const KL = { pad: '#E2D9C6', rand: '#C9BB98', gras2: '#6FB85E', park: '#58AE55', zand: '#F2E3B5', water: '#4FB3E8', veld: '#6FC25C', huis: '#F3DDB0', dak: '#D4432F' }
+const hash = (a, b) => { const n = Math.sin(a * 127.1 + b * 311.7) * 43758.5453; return n - Math.floor(n) }
+const el = (naam, a, kind) => { const e = document.createElementNS(NS, naam); for (const k in a) e.setAttribute(k, a[k]); if (kind) e.textContent = kind; return e }
+
+// Bouwstenen van de plattegrond (alles in tegels)
+const lagen = { grond: [], weg: [], dingen: [], rond: [], namen: [] }
+const glad = pts => { let d = `M${pts[0][0]} ${pts[0][1]}`; for (let i = 0; i < pts.length - 1; i++) { const p0 = pts[i - 1] || pts[i], p1 = pts[i], p2 = pts[i + 1], p3 = pts[i + 2] || p2; d += ` C${p1[0] + (p2[0] - p0[0]) / 6} ${p1[1] + (p2[1] - p0[1]) / 6} ${p2[0] - (p3[0] - p1[0]) / 6} ${p2[1] - (p3[1] - p1[1]) / 6} ${p2[0]} ${p2[1]}` } return d }
+const weg = (d, w) => { lagen.weg.push(el('path', { d, fill: 'none', stroke: KL.rand, 'stroke-width': w + 0.32, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' })); lagen.weg.push(el('path', { d, fill: 'none', stroke: KL.pad, 'stroke-width': w, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' })) }
+const lijn = (pts, w) => weg('M' + pts.map(p => p.join(' ')).join(' L'), w)
+const ring = (x, y, b, h, r, w) => weg(`M${x + r} ${y} H${x + b - r} Q${x + b} ${y} ${x + b} ${y + r} V${y + h - r} Q${x + b} ${y + h} ${x + b - r} ${y + h} H${x + r} Q${x} ${y + h} ${x} ${y + h - r} V${y + r} Q${x} ${y} ${x + r} ${y} Z`, w)
+const cirkelweg = (cx, cy, r, w) => weg(`M${cx - r} ${cy} A${r} ${r} 0 1 0 ${cx + r} ${cy} A${r} ${r} 0 1 0 ${cx - r} ${cy} Z`, w)
+const rondje = d => lagen.rond.push(el('path', { d, fill: 'none', stroke: '#7A3BD6', 'stroke-width': 0.34, 'stroke-dasharray': '0.9 0.7', 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }))
+const rondRect = (x, y, b, h) => rondje(`M${x} ${y} H${x + b} V${y + h} H${x} Z`)
+const naam = (x, y, t, kl = '#fff', s = 0.95) => lagen.namen.push(el('text', { x, y, 'font-size': s, 'text-anchor': 'middle', fill: kl, 'font-weight': 800, 'font-family': 'Nunito,system-ui,sans-serif', 'paint-order': 'stroke', stroke: 'rgba(0,0,0,.45)', 'stroke-width': 0.18 }, t))
+const vlak = (x, y, b, h, vul, kader, extra = {}) => lagen.grond.push(el('rect', { x, y, width: b, height: h, rx: 0.5, fill: vul, stroke: kader || 'none', 'stroke-width': 0.2, ...extra }))
+const gebouw = (x, y, b, h, kl, t, opt = {}) => {
+  const vrij = opt.vrij
+  lagen.dingen.push(el('rect', { x, y, width: b, height: h, rx: 0.35, fill: vrij ? 'rgba(255,255,255,.18)' : kl, stroke: vrij ? '#fff' : 'rgba(0,0,0,.35)', 'stroke-width': vrij ? 0.2 : 0.16, 'stroke-dasharray': vrij ? '0.6 0.45' : 'none' }))
+  if (!vrij) lagen.dingen.push(el('rect', { x, y, width: b, height: Math.min(0.7, h * 0.28), rx: 0.35, fill: 'rgba(0,0,0,.18)' }))
+  if (t) naam(x + b / 2, y + h / 2 + 0.3, t, '#fff', Math.min(0.95, b / (t.length * 0.62 + 1)))
+}
+const huis = (x, y, kl, t, vrij) => {
+  if (vrij) return gebouw(x, y, 3, 2.6, '', t || 'vrij', { vrij: true })
+  lagen.dingen.push(el('rect', { x, y, width: 3, height: 2.6, rx: 0.25, fill: KL.huis, stroke: 'rgba(0,0,0,.3)', 'stroke-width': 0.14 }))
+  lagen.dingen.push(el('rect', { x: x - 0.1, y: y - 0.05, width: 3.2, height: 1.2, rx: 0.2, fill: KL.dak }))
+  lagen.dingen.push(el('rect', { x: x + 1.2, y: y + 1.5, width: 0.6, height: 1.1, rx: 0.1, fill: kl }))
+  if (t) naam(x + 1.5, y - 0.35, t, '#fff', 0.85)
+}
+const park = (x, y, b, h, t) => { vlak(x, y, b, h, KL.park, 'rgba(0,0,0,.15)'); for (let i = 0; i < Math.round(b * h / 5); i++) lagen.grond.push(el('circle', { cx: x + 0.8 + hash(i, x) * (b - 1.6), cy: y + 0.8 + hash(y, i) * (h - 1.6), r: 0.5 + hash(i, 3) * 0.25, fill: '#3F9A47', stroke: 'rgba(0,0,0,.15)', 'stroke-width': 0.08 })); if (t) naam(x + b / 2, y + 1.2, t, '#fff', 0.9) }
+const vijver = (cx, cy, rx, ry) => { lagen.grond.push(el('ellipse', { cx, cy, rx: rx + 0.5, ry: ry + 0.45, fill: KL.zand })); lagen.grond.push(el('ellipse', { cx, cy, rx, ry, fill: KL.water })) }
+const zand = (x, y, b, h, t) => { vlak(x, y, b, h, KL.zand, '#E2CE96'); if (t) naam(x + b / 2, y + h / 2 + 0.3, t, '#fff', 0.95) }
+const veld = (x, y, b, h) => { vlak(x, y, b, h, KL.veld, 'rgba(255,255,255,.8)'); lagen.grond.push(el('line', { x1: x, y1: y + h / 2, x2: x + b, y2: y + h / 2, stroke: 'rgba(255,255,255,.8)', 'stroke-width': 0.14 })); lagen.grond.push(el('circle', { cx: x + b / 2, cy: y + h / 2, r: 1, fill: 'none', stroke: 'rgba(255,255,255,.8)', 'stroke-width': 0.14 })); naam(x + b / 2, y + h / 2 + Math.min(3, h / 2 - 0.9), 'Voetbalveld', '#fff', 0.85) }
+const bomen = (pts) => pts.forEach(([x, y]) => lagen.dingen.push(el('circle', { cx: x, cy: y, r: 0.55, fill: '#3F9A47', stroke: 'rgba(0,0,0,.2)', 'stroke-width': 0.1 })))
+const stub = (x, y0, y1) => lijn([[x, y0], [x, y1]], 1.1)
+const BLAUW = '#2D6BD6', ROZE = '#D2458B', GROEN = '#1F7A4A', PAARS = '#6A5BD1'
+const C = { winkel: '#E98A3C', spel: '#7C5CD6', nieuw: '#7C5CD6', bakker: '#D9A53A', cafe: '#B8744A', biblio: '#3E7FC4', brand: '#D93A3A', kerk: '#8C8CA6', boer: '#A8611E', markt: '#E08A4A', sport: '#3E9AA0', halte: '#5B6B82' }
+const rand = () => bomen(Array.from({ length: 52 }, (_, i) => [1 + i * 1.07, hash(i, 1) < .5 ? 0.9 : 27.1]).concat(Array.from({ length: 22 }, (_, i) => [hash(i, 4) < .5 ? 0.9 : 55.1, 2 + i * 1.15])))
+
+const indelingen = {
+  a: {
+    cijfers: [['Straten', '3 lange + 4 dwars'], ['Rondjes', '12 blokjes + 1 grote'], ['Vrije plekken', '6'], ['Nieuwe gebouwen', 'bakker, café, bibliotheek, brandweer, markt, kerk, boerderij, sporthal, bushalte']],
+    punten: ['Hoofdstraat in het midden zoals nu, met nog een straat erboven en eronder; vier dwarsstraten verbinden ze. Zo krijg je blokjes met elk iets: speelplein, winkelstraat, park met vijver, voetbal en spellen.', 'Je kunt elk blokje rondlopen, of de grote lus rond het hele dorp.', 'Het meest voor de hand liggend om te bouwen: alle straten zijn rechthoeken, zoals de huidige kaart.'],
+    bouw() {
+      lijn([[2, 4.5], [54, 4.5]], 1.6); lijn([[1, 13.5], [55, 13.5]], 2.2); lijn([[1, 22.5], [55, 22.5]], 1.6)
+      for (const x of [13.5, 25.5, 37.5, 49.5]) lijn([[x, 4.5], [x, 22.5]], 1.6)
+      ;[[6, BLAUW, 'Luca'], [18, ROZE, 'Yuna'], [30, GROEN, 'Feline'], [42, PAARS, 'Ouders']].forEach(([x, k, n]) => { huis(x, 7.6, k, n); stub(x + 1.5, 10.2, 12.5) })
+      ;[[3, 'vrij'], [9, 'vrij'], [15, 'vrij'], [21, 'vrij'], [27, 'vrij']].slice(0, 3).forEach(([x]) => huis(x + 0.3, 0.9, '', 'vrij', true))
+      zand(2, 15.6, 10, 5.6, 'Speelplein')
+      gebouw(15, 15.4, 4.2, 3.2, C.winkel, 'Winkel'); gebouw(19.7, 15.4, 4.2, 3.2, C.bakker, 'Bakker', { }); gebouw(15, 19, 4.2, 2.6, C.cafe, 'Café'); gebouw(19.7, 19, 4.2, 2.6, C.biblio, 'Biblio')
+      park(26.5, 14.8, 10.2, 6.8, ''); vijver(31.6, 18.3, 3.2, 1.9); naam(31.6, 16, 'Park', '#fff', 0.95)
+      veld(39.2, 15.2, 6.4, 6.4); gebouw(46, 15.4, 2.5, 3, C.sport, 'Hal', { vrij: true }); gebouw(46, 18.8, 2.5, 2.6, '', 'Bouw', { vrij: true })
+      gebouw(50.6, 15, 4.2, 3.2, C.spel, 'Spellen'); gebouw(50.6, 18.6, 4.2, 2.8, C.spel, 'Bouwplaats', { vrij: true })
+      gebouw(51, 5.7, 3.8, 2.8, C.spel, 'Eekhoorn'); gebouw(51, 9.2, 3.8, 2.8, C.spel, 'Bladeren')
+      gebouw(2.5, 24, 4.6, 3, C.brand, 'Brandweer', {}); zand(14.4, 24, 10.2, 3, 'Marktplein'); gebouw(27.6, 24, 4, 3, C.kerk, 'Kerkje'); gebouw(38.6, 24, 9.8, 3, C.boer, 'Boerderij', { vrij: true }); gebouw(50.4, 24.2, 2.6, 2.2, C.halte, 'Halte')
+      rondRect(13.5, 13.5, 12, 9); rondRect(25.5, 13.5, 12, 9); rondRect(1, 4.5, 54, 18)
+      rand()
+    },
+  },
+  b: {
+    cijfers: [['Straten', 'ringweg om het plein, buitenring, 4 spaken'], ['Rondjes', 'plein, buitenring, 4 hoeken'], ['Vrije plekken', '7'], ['Nieuwe gebouwen', 'bakker, café, bibliotheek, brandweer, kerk, sporthal, boerderij']],
+    punten: ['Een dorpsplein met fontein in het midden: daar komt alles samen. Een kleine ringweg erom, vier spaken naar buiten en een grote buitenring.', 'De huizen van de kinderen liggen langs de westelijke straat, het plein heeft winkels en cafés rondom, en elke hoek is een eigen wijkje (park, speelplein, voetbal, spellen).', 'Makkelijk te onthouden voor de kleintjes: "alles ligt rond het plein". Het dorp groeit naar buiten door de buitenring uit te breiden.'],
+    bouw() {
+      ring(2.5, 3.5, 51, 21, 3, 1.6); ring(19.5, 7.5, 17, 13, 1.6, 1.6)
+      lijn([[28, 3.5], [28, 7.5]], 1.8); lijn([[28, 20.5], [28, 24.5]], 1.8); lijn([[2.5, 14], [19.5, 14]], 1.8); lijn([[36.5, 14], [53.5, 14]], 1.8)
+      vlak(21, 9, 14, 10, '#EADFC0', '#D8C99C'); lagen.grond.push(el('circle', { cx: 28, cy: 14, r: 1.8, fill: KL.water, stroke: '#EADFC0', 'stroke-width': 0.5 })); naam(28, 17.4, 'Dorpsplein', '#6B5B2F', 0.95)
+      ;[[3.6, BLAUW, 'Luca'], [9.4, ROZE, 'Yuna']].forEach(([x, k, n]) => { huis(x, 10.2, k, n); stub(x + 1.5, 12.8, 13.1) })
+      ;[[3.6, GROEN, 'Feline'], [9.4, PAARS, 'Ouders']].forEach(([x, k, n]) => { huis(x, 15.4, k, ''); naam(x + 1.5, 19, n, '#fff', 0.85); stub(x + 1.5, 14.9, 15.4) })
+      huis(41, 10.2, '', 'vrij', true); huis(47, 10.2, '', 'vrij', true); huis(41, 15.4, '', 'vrij', true); huis(47, 15.4, '', 'vrij', true)
+      gebouw(21.5, 3.9, 4.8, 2.9, C.winkel, 'Winkel'); gebouw(30, 3.9, 3.2, 2.9, C.bakker, 'Bakker'); gebouw(33.6, 3.9, 2.6, 2.9, C.cafe, 'Café', {})
+      gebouw(21.5, 21.2, 4.6, 2.8, C.biblio, 'Biblio'); gebouw(30, 21.2, 5.2, 2.8, C.spel, 'Spellenhuis')
+      gebouw(14.8, 9.6, 4, 3, C.brand, 'Brandw.', {}); gebouw(37.2, 9.6, 3.6, 3, C.kerk, 'Kerk', {}); gebouw(14.8, 15.4, 4, 3, C.markt, 'Markt', {}); gebouw(37.2, 15.4, 3.6, 3, C.sport, 'Hal', { vrij: true })
+      park(4.4, 4.9, 13.2, 4.2, ''); vijver(10, 7, 3.6, 1.4); naam(10, 6.4, 'Park', '#fff', 0.9)
+      gebouw(39, 4.9, 4.2, 3.2, C.spel, 'Eekhoorn'); gebouw(43.6, 4.9, 4.2, 3.2, C.spel, 'Bladeren'); gebouw(48.2, 4.9, 4.4, 3.2, C.spel, 'Bouwplaats', { vrij: true })
+      zand(4.4, 19.8, 12, 4.2, 'Speelplein'); veld(39, 19.8, 7, 4.2); gebouw(47.4, 19.6, 5, 4.4, C.boer, 'Boerderij', { vrij: true })
+      rondRect(19.5, 7.5, 17, 13); rondRect(2.5, 3.5, 51, 21); rondRect(2.5, 14, 17, 10.5)
+      rand()
+    },
+  },
+  c: {
+    cijfers: [['Straten', 'slingerweg + 3 hofjes + park-pad'], ['Rondjes', '3 hofjes, parkrondje, bosrondje'], ['Vrije plekken', '5'], ['Nieuwe gebouwen', 'bakker, café, bibliotheek, boerderij, markt']],
+    punten: ['Eén slingerende dorpsweg door het hele dorp, met zijpaadjes naar hofjes: elk hofje heeft een eigen rondje met huizen eromheen. Meer sfeer van "ik ontdek iets".', 'Park met vijver en een wandelpad eromheen, een bosrondje langs de rand.', 'Mooiest om te lopen, maar het moeilijkst om te bouwen: kromme wegen kun je niet als rechthoeken opslaan. Het wegennet moet dan een tegelkaart worden. Voor Feline is het ook minder overzichtelijk.'],
+    bouw() {
+      lagen.weg.push(el('path', { d: glad([[1, 15], [9, 13.6], [18, 16.4], [28, 13], [38, 15.6], [47, 12.6], [55, 14]]), fill: 'none', stroke: KL.rand, 'stroke-width': 2.52, 'stroke-linecap': 'round' }))
+      lagen.weg.push(el('path', { d: glad([[1, 15], [9, 13.6], [18, 16.4], [28, 13], [38, 15.6], [47, 12.6], [55, 14]]), fill: 'none', stroke: KL.pad, 'stroke-width': 2.2, 'stroke-linecap': 'round' }))
+      lijn([[9, 13.6], [9, 9.6]], 1.2); cirkelweg(9, 7, 2.5, 1.1)
+      lijn([[24, 14.6], [24, 10]], 1.2); cirkelweg(24, 7.6, 2.5, 1.1)
+      lijn([[39.6, 15.4], [39.6, 9.4]], 1.2); cirkelweg(39.6, 7, 2.5, 1.1)
+      huis(2.6, 5.4, BLAUW, 'Luca'); huis(12.4, 5.4, ROZE, 'Yuna'); huis(7.5, 0.8, GROEN, 'Feline')
+      huis(17.8, 5.9, PAARS, 'Ouders'); huis(27.4, 5.9, '', 'vrij', true); huis(22.5, 1.1, '', 'vrij', true)
+      gebouw(33, 4.6, 4.2, 3, C.spel, 'Spellenhuis'); gebouw(43.4, 5.2, 4.2, 3, C.spel, 'Bladeren'); gebouw(37.6, 0.8, 4, 2.8, C.spel, 'Eekhoorn'); gebouw(48.2, 1.6, 4.4, 3, C.spel, 'Bouwplaats', { vrij: true })
+      park(7.6, 17.8, 12, 8.6, ''); vijver(13.6, 22.1, 3.4, 2); cirkelweg(13.6, 22.1, 4.6, 0.9); naam(13.6, 19.4, 'Park', '#fff', 0.9)
+      zand(21.6, 19.6, 8.4, 5.4, 'Speelplein'); gebouw(1.4, 17.4, 5.2, 5, C.boer, 'Boerderij', { vrij: true })
+      gebouw(30.4, 17.4, 4.2, 3, C.winkel, 'Winkel'); gebouw(35, 17.6, 3.4, 3, C.bakker, 'Bakker'); gebouw(38.8, 18, 3.6, 3, C.cafe, 'Café', {}); gebouw(31, 21.6, 5, 3, C.biblio, 'Biblio', {}); zand(37, 21.8, 5, 2.8, 'Markt')
+      veld(44, 19.2, 7, 5.6)
+      lagen.weg.push(el('path', { d: glad([[1, 16], [1.5, 26], [27, 26.6], [54, 26], [55, 14.5]]), fill: 'none', stroke: KL.pad, 'stroke-width': 0.9, 'stroke-linecap': 'round', opacity: .85 }))
+      rondje(`M${9 - 2.5} 7 A2.5 2.5 0 1 0 ${9 + 2.5} 7 A2.5 2.5 0 1 0 ${9 - 2.5} 7`); rondje(`M${24 - 2.5} 7.6 A2.5 2.5 0 1 0 ${24 + 2.5} 7.6 A2.5 2.5 0 1 0 ${24 - 2.5} 7.6`); rondje(`M${39.6 - 2.5} 7 A2.5 2.5 0 1 0 ${39.6 + 2.5} 7 A2.5 2.5 0 1 0 ${39.6 - 2.5} 7`)
+      rondje(`M${13.6 - 4.6} 22.1 A4.6 4.6 0 1 0 ${13.6 + 4.6} 22.1 A4.6 4.6 0 1 0 ${13.6 - 4.6} 22.1`)
+      rondje(glad([[1, 16], [1.5, 26], [27, 26.6], [54, 26], [55, 14.5]]))
+      rand()
+    },
+  },
+}
+
+function teken(k) {
+  for (const l of Object.values(lagen)) l.length = 0
+  svg.replaceChildren()
+  svg.appendChild(el('rect', { width: 56, height: 28, fill: '#7CC46A' }))
+  for (let i = 0; i < 160; i++) svg.appendChild(el('ellipse', { cx: hash(i, 1) * 56, cy: hash(i, 2) * 28, rx: 0.8 + hash(i, 3) * 2, ry: 0.4 + hash(i, 4) * 1, fill: '#6FB85E', opacity: .6 }))
+  indelingen[k].bouw()
+  const rondjes = document.getElementById('rondjes').checked, namen = document.getElementById('namen').checked
+  const g = e => (Array.isArray(e) ? e : [e]).forEach(x => svg.appendChild(x))
+  lagen.grond.forEach(g); lagen.weg.forEach(g); lagen.dingen.forEach(g)
+  if (rondjes) lagen.rond.forEach(g)
+  if (namen) lagen.namen.forEach(g)
+  document.getElementById('cijfers').innerHTML = indelingen[k].cijfers.map(([a, b]) => `<div><b>${a}</b>${b}</div>`).join('')
+  document.getElementById('punten').innerHTML = indelingen[k].punten.map(t => `<li>${t}</li>`).join('')
+}
+let nu = 'a'
+document.querySelectorAll('.tab').forEach(b => b.addEventListener('click', () => { nu = b.dataset.k; document.querySelectorAll('.tab').forEach(t => t.setAttribute('aria-selected', String(t === b))); teken(nu) }))
+document.getElementById('rondjes').addEventListener('change', () => teken(nu)); document.getElementById('namen').addEventListener('change', () => teken(nu))
+window.__k = k => { nu = k; teken(k) }
+teken('a')
+</script>
