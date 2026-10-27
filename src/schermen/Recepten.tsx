@@ -2,7 +2,7 @@ import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import type { NieuwRecept, Recept, VoorraadArtikel } from '../lib/bron/types.ts'
 import { useSessie } from '../lib/sessie.tsx'
-import { aantalTekst, EENHEDEN, gerechtenZonderRecept, leesHoeveelheid } from '../lib/voorraad.ts'
+import { aantalTekst, EENHEDEN, gerechtenZonderRecept, hoeveelheidTekst, leesHoeveelheid } from '../lib/voorraad.ts'
 import OuderKader from './OuderKader.tsx'
 import { useVoorraad, zonderVoorraadMigratie } from './Voorraad.tsx'
 
@@ -11,6 +11,7 @@ export default function Recepten() {
   const { bron } = useSessie()
   const { data, fout, ververs, basis, opGsm } = useVoorraad()
   const [bewerk, setBewerk] = useState<Recept | { naam: string } | null>(null)
+  const [toon, setToon] = useState<string | null>(null)
   const [melding, setMelding] = useState('')
 
   async function doe(actie: () => Promise<void>) {
@@ -39,9 +40,37 @@ export default function Recepten() {
     return (
       <OuderKader titel={'id' in bewerk ? 'Recept aanpassen' : 'Nieuw recept'}>
         <ReceptFormulier recept={bewerk} artikelen={artikelen} annuleer={() => setBewerk(null)}
-                         bewaar={(r) => doe(async () => { await bron!.receptOpslaan(r); setBewerk(null) })}
-                         weg={'id' in bewerk ? () => doe(async () => { await bron!.receptVerwijderen(bewerk.id); setBewerk(null) }) : null} />
+                         bewaar={(r) => doe(async () => { await bron!.receptOpslaan(r); setBewerk(null); setToon(null) })}
+                         weg={'id' in bewerk ? () => doe(async () => { await bron!.receptVerwijderen(bewerk.id); setBewerk(null); setToon(null) }) : null} />
         {melding && <p className="fout" role="alert">{melding}</p>}
+      </OuderKader>
+    )
+  }
+
+  const getoond = recepten.find((r) => r.id === toon)
+  if (getoond) {
+    return (
+      <OuderKader titel={getoond.naam}>
+        <section className="kaart lijst-kaart kaart-breed" aria-label={`Recept ${getoond.naam}`}>
+          <h2 className="lijst-kop">Ingrediënten<span>voor {getoond.personen} {getoond.personen === 1 ? 'persoon' : 'personen'}</span></h2>
+          <ul className="vink-lijst">
+            {getoond.ingredienten.length === 0 && <li className="mijn-taken-leeg tip">Nog geen ingrediënten.</li>}
+            {getoond.ingredienten.map((i) => {
+              const a = artikelen.find((x) => x.id === i.artikel_id)
+              return a && (
+                <li key={i.artikel_id} className="voorraad-rij">
+                  <span className="vink-tekst"><b>{a.naam}</b><small>in huis: {hoeveelheidTekst(a.aantal, a.eenheid)}</small></span>
+                  <span className="stap-aantal"><b>{aantalTekst(i.hoeveelheid)}</b> <small>{a.eenheid}</small></span>
+                </li>
+              )
+            })}
+          </ul>
+        </section>
+        <p className="tip">Bij het afboeken rekent de app om naar {eters} eters.</p>
+        <div className="knoppen">
+          <button type="button" className="knop knop-primair" onClick={() => setBewerk(getoond)}>Bewerken</button>
+          <button type="button" className="knop knop-licht" onClick={() => setToon(null)}>Terug naar de lijst</button>
+        </div>
       </OuderKader>
     )
   }
@@ -50,35 +79,40 @@ export default function Recepten() {
   return (
     <OuderKader titel="Recepten">
       {(fout || melding) && <p className="fout" role="alert">{zonderVoorraadMigratie(melding || fout)}</p>}
-      <div className="knoppen">
-        <button type="button" className="knop knop-primair" onClick={() => setBewerk({ naam: '' })}>Nieuw recept</button>
-      </div>
-      {zonder.length > 0 && (
-        <section className="kaart kaart-breed" aria-label="Gerechten zonder recept">
-          <h2>Op het weekmenu, nog zonder recept</h2>
-          <div className="knoppen">
-            {zonder.map((g) => <button key={g} type="button" className="knop knop-licht" onClick={() => setBewerk({ naam: g })}>{g}</button>)}
-          </div>
-        </section>
-      )}
       {data && recepten.length === 0 && (
         <p className="tip">Nog geen recepten. Maak er een voor een gerecht van het weekmenu: de app weet dan wat er van de voorraad af moet en waar je tekort aan hebt.</p>
       )}
       {recepten.length > 0 && (
         <section className="kaart lijst-kaart kaart-breed" aria-label="Recepten">
-          <h2 className="lijst-kop">Jullie recepten<span>{recepten.length}</span></h2>
-          <ul className="vink-lijst">
+          <ul className="vink-lijst recept-lijst">
             {recepten.map((r) => (
-              <li key={r.id} className="voorraad-rij">
-                <button type="button" className="vink-tekst" onClick={() => setBewerk(r)}>
+              <li key={r.id}>
+                <button type="button" className="recept-rij" onClick={() => setToon(r.id)}>
                   <b>{r.naam}</b>
-                  <small>voor {r.personen} · {r.ingredienten.map((i) => artikelen.find((a) => a.id === i.artikel_id)?.naam).filter(Boolean).join(', ') || 'nog geen ingrediënten'}</small>
+                  <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M9 6l6 6-6 6" /></svg>
                 </button>
               </li>
             ))}
           </ul>
         </section>
       )}
+      {zonder.length > 0 && (
+        <section className="kaart lijst-kaart kaart-breed" aria-label="Gerechten zonder recept">
+          <h2 className="lijst-kop">Op het weekmenu, nog zonder recept</h2>
+          <ul className="vink-lijst recept-lijst">
+            {zonder.map((g) => (
+              <li key={g}>
+                <button type="button" className="recept-rij is-nieuw" onClick={() => setBewerk({ naam: g })}>
+                  <b>{g}</b><span>Recept maken</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
+      <div className="knoppen">
+        <button type="button" className="knop knop-primair" onClick={() => setBewerk({ naam: '' })}>Nieuw recept</button>
+      </div>
       <p className="tip">Een recept geldt voor een aantal personen; de app rekent om naar {eters} eters. <Link to="/ouder/voorraad">Voorraad</Link> · <Link to="/ouder/weekmenu">Weekmenu</Link></p>
     </OuderKader>
   )
