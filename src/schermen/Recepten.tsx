@@ -34,7 +34,7 @@ export default function Recepten() {
 
   const artikelen = data?.voorraad.artikelen ?? []
   const recepten = data?.voorraad.recepten ?? []
-  const eters = data?.voorraad.eters ?? 5
+  const eters = data?.voorraad.eters ?? 6
 
   if (bewerk) {
     return (

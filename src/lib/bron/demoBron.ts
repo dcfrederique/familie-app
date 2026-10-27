@@ -88,7 +88,7 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
       ({ id, naam, eenheid, aantal, minimum, aankoop_aantal, plaats, categorie_id, winkel_id, houdbaar_tot: null })),
     recepten: [{ id: 're-1', naam: 'Spaghetti bolognese', personen: 4, ingredienten: [
       { artikel_id: 'va-4', hoeveelheid: 0.4 }, { artikel_id: 'va-5', hoeveelheid: 1 }, { artikel_id: 'va-6', hoeveelheid: 1 }] }],
-    eters: 5,
+    eters: 6,
     gekookt: [],
     voorraadLog: [],
     // Een paar voorbeelden zodat Onze taken en Notities niet leeg openen.

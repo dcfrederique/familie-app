@@ -13,6 +13,10 @@ Taal van de app en van de code-commentaren: **Nederlands (Vlaams)**.
 | Feline (4) | Tablet, liggend | Werkt zonder lezen: prentjes, voorleesknop per taak, sterren tellen; vraagt zelf geen tijd aan |
 | 2 ouders | Gsm | Taken toewijzen, goedkeuren, tijd toekennen, activiteiten per kind beheren |
 
+## Het gezin
+
+Wij zijn met 6: twee ouders, Luca, Yuna, Feline en **Maxim** (anderhalf jaar). Maxim heeft geen account en komt niet voor in de app (geen sterren, taken of tablet), maar hij eet wel mee: reken voor eten, boodschappen en voorraad (`docs/voorraad.md`) met 6 personen.
+
 ## Kernregels (niet zonder overleg wijzigen)
 
 - Punten heten voor de kinderen **sterren**. 1 ster = 1 minuut extra tijd.

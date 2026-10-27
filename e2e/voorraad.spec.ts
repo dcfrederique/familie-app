@@ -9,12 +9,12 @@ test('voorraad: gekookt, minimum naar de lijst en afvinken telt bij', async ({ p
   await expect(rij(page, 'Gehakt')).toContainText('0,5')
   await expect(rij(page, 'Tomatensaus')).toContainText('2')
 
-  // Recept voor 4, we koken voor 5: 0,5 kg gehakt, 1,25 pak pasta en 1,25 pot tomatensaus gaan eraf.
+  // Recept voor 4, we koken voor 6: 0,5 kg gehakt, 1,25 pak pasta en 1,25 pot tomatensaus gaan eraf.
   await page.getByRole('button', { name: 'Gekookt, boek af' }).click()
   await expect(page.getByRole('heading', { name: /Vandaag: Spaghetti bolognese/ })).toHaveCount(0)
   await expect(rij(page, 'Gehakt')).toContainText('0')
-  await expect(rij(page, 'Pasta')).toContainText('1,75')
-  await expect(rij(page, 'Tomatensaus')).toContainText('0,75')
+  await expect(rij(page, 'Pasta')).toContainText('1,5')
+  await expect(rij(page, 'Tomatensaus')).toContainText('0,5')
   await expect(rij(page, 'Tomatensaus')).toContainText('op de lijst')
 
   // Melk staat open op de lijst; afvinken telt een aankoop van 6 liter bij de 3 liter.

@@ -72,17 +72,17 @@ insert into public.recept_ingredienten (gezin_id, recept_id, artikel_id, hoeveel
 insert into public.weekmenu (gezin_id, dag, gerecht) values (:'gezin', '2026-10-27', 'spaghetti Bolognese '), (:'gezin', '2026-10-28', 'Stoofvlees');
 select pg_temp.fout('select public.voorraad_gekookt(''2026-10-29'')', 'niets op het weekmenu');
 select pg_temp.fout('select public.voorraad_gekookt(''2026-10-28'')', 'geen recept');
--- Standaard 5 eters bij een recept voor 4: 0,4 kg × 5 / 4 = 0,5 kg.
+-- Standaard 6 eters bij een recept voor 4: 0,4 kg × 6 / 4 = 0,6 kg.
 select pg_temp.gelijk(public.voorraad_gekookt('2026-10-27'), 2, 'twee ingrediënten');
-select pg_temp.gelijk((select aantal from public.voorraad_artikelen where id = :'gehakt'), 1.5::numeric, 'gehakt omlaag');
-select pg_temp.gelijk((select aantal from public.voorraad_artikelen where id = :'pasta'), 2::numeric, 'pasta omlaag');
+select pg_temp.gelijk((select aantal from public.voorraad_artikelen where id = :'gehakt'), 1.4::numeric, 'gehakt omlaag');
+select pg_temp.gelijk((select aantal from public.voorraad_artikelen where id = :'pasta'), 1.8::numeric, 'pasta omlaag');
 select pg_temp.fout('select public.voorraad_gekookt(''2026-10-27'')', 'al afgeboekt');
 select public.voorraad_gekookt('2026-10-28', true);
-select pg_temp.gelijk((select aantal from public.voorraad_artikelen where id = :'gehakt'), 1.5::numeric, 'overslaan laat de voorraad staan');
+select pg_temp.gelijk((select aantal from public.voorraad_artikelen where id = :'gehakt'), 1.4::numeric, 'overslaan laat de voorraad staan');
 insert into public.voorraad_instellingen (gezin_id, eters) values (:'gezin', 2);
 insert into public.weekmenu (gezin_id, dag, gerecht) values (:'gezin', '2026-10-29', 'Spaghetti bolognese');
 select public.voorraad_gekookt('2026-10-29');
-select pg_temp.gelijk((select aantal from public.voorraad_artikelen where id = :'gehakt'), 1.3::numeric, 'twee eters: 0,2 kg');
+select pg_temp.gelijk((select aantal from public.voorraad_artikelen where id = :'gehakt'), 1.2::numeric, 'twee eters: 0,2 kg');
 
 \echo '5. Een recept kan geen artikel van een ander gezin gebruiken'
 select pg_temp.als('00000000-0000-0000-0000-0000000a1f04', false);

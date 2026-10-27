@@ -67,7 +67,7 @@ export default function Voorraad() {
   const lijst = basis.data?.lijst ?? []
   const artikelen = data?.voorraad.artikelen ?? []
   const recepten = data?.voorraad.recepten ?? []
-  const eters = data?.voorraad.eters ?? 5
+  const eters = data?.voorraad.eters ?? 6
   const gekookt = data?.voorraad.gekookt ?? []
   const menu = data?.menu ?? []
   const vandaag = dagVan(new Date())

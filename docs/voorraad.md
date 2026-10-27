@@ -20,3 +20,7 @@ Vraag van Frederique (27 oktober 2026): de voorraad registreren (hoeveel drank e
 - Hoeveelheden van een recept staan in de eenheid van het artikel; geen omrekening tussen g en kg (dat kan later).
 - Het aantal gaat nooit onder 0; het logboek toont wat echt veranderde.
 - Alles is ouder-only (RLS), de tablets zien niets. Tests: `supabase/tests/voorraad.test.sql`, `src/lib/voorraad.test.ts`, `e2e/voorraad.spec.ts`.
+
+## Het gezin
+
+Wij zijn met 6: twee ouders, Luca, Yuna, Feline en **Maxim** (anderhalf jaar). Maxim heeft geen account en telt niet mee in de app (sterren, taken, tablets), maar eet wel mee. Daarom rekent de voorraad standaard met 6 eters (migratie 20261027000800); in Voorraad kan het aantal aangepast worden.

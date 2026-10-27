@@ -204,7 +204,7 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
         recepten: (recepten.data ?? []).map((r) => ({
           ...r, ingredienten: (ingredienten.data ?? []).filter((i) => i.recept_id === r.id).map((i) => ({ artikel_id: i.artikel_id, hoeveelheid: Number(i.hoeveelheid) })),
         })),
-        eters: instellingen.data?.eters ?? 5,
+        eters: instellingen.data?.eters ?? 6,
         gekookt: (gekookt.data ?? []).map((g) => g.dag as string),
       } satisfies VoorraadOverzicht
     },
