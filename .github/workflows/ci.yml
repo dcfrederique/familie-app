@@ -28,27 +28,6 @@ jobs:
       - run: npm test
       - run: npm run build
 
-  # Playwright-tests in de demo (e2e/): werking van de sterrenlus en of elk kinderscherm past op gangbare tablets.
-  e2e:
-    if: github.event.action != 'closed'
-    runs-on: ubuntu-latest
-    timeout-minutes: 30
-    steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
-        with:
-          node-version: 22
-          cache: npm
-      - run: npm ci
-      - run: npx playwright install --with-deps chromium
-      - run: npx playwright test --workers=4
-      - if: failure()
-        uses: actions/upload-artifact@v5
-        with:
-          name: playwright-uitslag
-          path: test-results/
-          retention-days: 7
-
   database:
     if: github.event.action != 'closed'
     runs-on: ubuntu-latest
@@ -73,7 +52,7 @@ jobs:
   # Nieuwe migraties op de echte Supabase-database, alleen voor main en pas als alle tests groen zijn.
   # Zonder het secret SUPABASE_DB_URL (session pooler, docs/hosting.md) slaat deze job zich over.
   migraties:
-    needs: [bouwen-en-testen, database, e2e]
+    needs: [bouwen-en-testen, database]
     runs-on: ubuntu-latest
     timeout-minutes: 10
     env:
@@ -176,7 +155,7 @@ jobs:
   # Push op main = de echte app; een PR krijgt een eigen voorbeeld-adres.
   # Zonder het secret AZURE_STATIC_WEB_APPS_API_TOKEN slaat deze job zich over.
   deployen:
-    needs: [bouwen-en-testen, database, migraties, e2e]
+    needs: [bouwen-en-testen, database, migraties]
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     permissions:

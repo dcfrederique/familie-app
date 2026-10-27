@@ -212,7 +212,7 @@ en elke nacht worden de schermen een beetje mooier. Loopt na de nachtelijke bouw
 - **Fase 2, enkel nieuwigheden**: zodra `e2e/schermen-open.ts` leeg is, kijkt de nacht alleen nog de kinderschermen na die
   sinds de vorige schermcontrole nieuw of veranderd zijn (`git log` sinds het vorige `ideeen/*-schermen.md`, vooral de
   nachtelijke bouw). Nieuw scherm: in `SCHERMEN` zetten, meten met `--scherm` op alle kinderen en toestellen (ook de
-  speltoestand), herstellen tot het past op tablets en gsm liggend. De e2e-schermtests in CI bewaken de rest.
+  speltoestand), herstellen tot het past op tablets en gsm liggend. De e2e-schermtests (elke nacht) bewaken de rest.
   Geen nieuwigheden: alleen een kort verslag en een melding.
 
 ## Werkwijze
@@ -239,17 +239,19 @@ en elke nacht worden de schermen een beetje mooier. Loopt na de nachtelijke bouw
   Let op: tikvlakken niet onder ±44 px, canvas-spelletjes en Bladzijden moeten correct meten.
 - Bewust scrollend (meldingen mogen blijven): de landkaart van Springland (`.spring-kaart`, slepen) en de chatgeschiedenis.
 
-## Playwright-tests (`npm run test:e2e`, ook in CI)
+## Playwright-tests (`npm run test:e2e`, elke nacht)
 - Opgezet 26-27 oktober 2026 op vraag van Frederique. `playwright.config.ts` start de vite-demo zelf; tests in `e2e/`.
-  Lokaal in de cloud: `npx playwright test --workers=6` (±5 min). In CI draait de job `e2e` met 4 workers en blokkeert
-  migraties en deployen als hij rood is.
+  Lokaal in de cloud: `npx playwright test --workers=6` (±5 min). Ze lopen **niet** bij elke push (te traag, Frederique
+  27 oktober 2026): de nachtelijke schermcontrole draait ze zelf voor ze pusht, en de workflow `.github/workflows/e2e.yml`
+  draait ze elke nacht om 4:41 UTC en op aanvraag (Actions → E2E). Ze blokkeren het deployen niet; rood meldt de
+  schermcontrole in de thread en herstelt ze de volgende nacht eerst.
 - `e2e/werking.spec.ts`: welkomstpad met welkomstbonus, sterrenlus (taak indienen, tijd aanvragen, ouder keurt goed en
   kent toe, pincode als die gevraagd wordt), winkel kopen, Mijn huis en figuurtje bewaren, een verhaal openen.
   Vaste klok (10:00) wegens het tijdvenster. Nieuwe kinderflows krijgen hier een test.
 - `e2e/schermen.spec.ts`: per kind en toestel (tablets liggend en staand, gsm liggend) elk kinderscherm uit
   `SCHERMEN`, met dezelfde meetcode als het nachtelijke verslag (`scripts/schermmeting.cjs`) en vast toeval.
   Wat nog niet past, staat in `e2e/schermen-open.ts` ('kind scherm BxH'). Een nieuw probleem maakt de test rood, en
-  een scherm dat intussen past ook ("haal het weg uit schermen-open.ts"; in CI enkel een waarschuwing, want schermen op het randje meten daar soms net anders): zo krimpt de lijst elke nacht.
+  een scherm dat intussen past ook ("haal het weg uit schermen-open.ts"; in de E2E-workflow enkel een waarschuwing, want schermen op het randje meten daar soms net anders): zo krimpt de lijst elke nacht.
   Lijst opnieuw opmaken: `OPEN_OPNEMEN=1 npx playwright test e2e/schermen.spec.ts --workers=6` en
   `node scripts/open-bijwerken.cjs ideeen/<datum>-schermen.md`. Een nieuw kinderscherm: zet het in `SCHERMEN`.
 - De lijst mag alleen krimpen. Iets erbij zetten mag enkel voor een nieuw scherm of toestel, nooit om een rode test

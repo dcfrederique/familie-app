@@ -1,0 +1,30 @@
+name: E2E
+
+# Playwright-tests in de demo (e2e/): werking van de sterrenlus en of elk kinderscherm past op gangbare tablets.
+# Ze duren ±10 minuten en lopen daarom niet bij elke push (Frederique, 27 oktober 2026), maar elke nacht na de
+# schermcontrole (die ze ook zelf draait voor ze pusht) en op aanvraag (Actions → E2E → Run workflow).
+# Rood = mail van GitHub aan wie de workflow beheert; de nachtelijke schermcontrole meldt het ook in de thread.
+on:
+  schedule:
+    - cron: '41 4 * * *'
+  workflow_dispatch:
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test --workers=4
+      - if: failure()
+        uses: actions/upload-artifact@v5
+        with:
+          name: playwright-uitslag
+          path: test-results/
+          retention-days: 7
