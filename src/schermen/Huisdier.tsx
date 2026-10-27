@@ -10,7 +10,7 @@ import { dierProper, wasZeg, zin } from '../data/zinnen.ts'
 
 export default function Huisdier() {
   return (
-    <SpelKader titel="Huisdier wassen" terug={(id) => `/kind/${id}/spelen`}>
+    <SpelKader titel="Huisdier wassen" terug={(id) => `/kind/${id}/spelen`} vol>
       {(kind) => <Wasplaats kind={kind} />}
     </SpelKader>
   )

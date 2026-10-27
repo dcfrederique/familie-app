@@ -31,3 +31,22 @@
 @keyframes pompoen-schud { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-4deg); } 75% { transform: rotate(4deg); } }
 .pompoen-groot.schudt { animation: pompoen-schud 0.4s ease-in-out; }
 @media (prefers-reduced-motion: reduce) { .pompoen-groot.schudt, .pompoen-mini.nieuw { animation: none; } }
+
+/* Liggende tablet: de pompoen links, de keuzes en het lichtje rechts, zodat alles zonder scrollen past. */
+@media (min-width: 600px) and (min-height: 560px) and (orientation: landscape) {
+  .pompoen {
+    display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto 1fr auto;
+    grid-template-areas: "chips chips" "bord keuzes" "bord licht"; column-gap: clamp(16px, 3vw, 40px); row-gap: clamp(8px, 1.6dvh, 18px);
+    align-items: center; justify-items: center; padding-inline: 16px;
+  }
+  .pompoen > .chips { grid-area: chips; }
+  .pompoen > .pompoen-bord { grid-area: bord; }
+  .pompoen > .pompoen-keuzes { grid-area: keuzes; align-self: end; gap: clamp(8px, 1.4dvh, 12px); }
+  .pompoen > .pompoen-licht { grid-area: licht; align-self: start; }
+  .pompoen > .pompoen-eind { grid-column: 1 / -1; grid-row: 2 / 4; }
+  .pompoen .pompoen-rij { flex-wrap: nowrap; }
+  .pompoen .pompoen-knop { width: clamp(76px, 12dvh, 116px); height: clamp(64px, 10dvh, 92px); }
+  .pompoen-groot { width: clamp(170px, min(46dvh, 28vw), 380px); }
+  .pompoen-kaartje .pompoen-tekening.klein { width: clamp(90px, 18dvh, 170px); }
+  .pompoen-eind .pompoen-tekening { width: clamp(150px, 28dvh, 280px); }
+}

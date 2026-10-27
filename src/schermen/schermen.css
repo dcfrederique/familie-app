@@ -370,3 +370,10 @@ a.sterren-pil { text-decoration: none; }
   box-shadow: 0 8px 28px rgba(0, 0, 0, .25); }
 .ouder-sterren-melding strong { font-size: 22px; }
 .ouder-sterren-melding p { margin: 4px 0 0; color: var(--muted); font-weight: 700; }
+
+/* Gsm liggend: een lagere balk bovenaan (zelfde opmaak als op de tablet). */
+@media (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .balk { padding-top: 8px; padding-bottom: 4px; }
+  .balk .rond { width: 48px; height: 48px; }
+  .balk-titel { font-size: 24px; }
+}

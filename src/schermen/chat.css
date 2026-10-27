@@ -66,3 +66,32 @@
 /* Knop met bolletje op het startscherm van het kind */
 .rond.chat-knop { position: relative; }
 .chat-bolletje { position: absolute; top: -4px; right: -4px; min-width: 26px; height: 26px; padding: 0 6px; border-radius: 99px; background: var(--warn); color: #fff; font-weight: 800; font-size: 15px; display: grid; place-items: center; }
+
+/* Op tablet vult het gesprek de hoogte onder de kop (SpelKader vol), zonder vaste maat. */
+@media (min-width: 600px) and (min-height: 560px) {
+  .kind-vol .gesprek-kind { flex: 1 1 0; height: auto; min-height: 0; padding-bottom: 0; }
+  .kind-vol .gesprek-kind .gesprek-lijst { min-height: 96px; }
+  .kind-vol .stickers.groot .sticker { min-height: clamp(84px, 13dvh, 120px); }
+  .kind-vol .stickers.groot .sticker-emoji { font-size: clamp(44px, 7dvh, 64px); }
+}
+
+/* Gsm liggend: het gesprek vult de hoogte onder de lagere kop, de stickers op één of twee lage rijen. */
+@media (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .kind .gesprek-kind { height: calc(100dvh - 104px); padding-bottom: 8px; gap: 8px; }
+  .kind.thema .gesprek-kind { height: calc(100dvh - 120px); }
+  .kind .gesprek-kind .gesprek-lijst { min-height: 64px; padding: 8px; }
+  .gesprek-kind .stickers { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+  .gesprek-kind .sticker { min-height: 44px; padding: 4px 8px; font-size: 13px; }
+  .gesprek-kind .sticker-emoji { font-size: 22px; }
+  .gesprek-kind .stickers.groot { grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 6px; }
+  .gesprek-kind .stickers.groot .sticker { min-height: 64px; border-radius: 18px; }
+  .gesprek-kind .stickers.groot .sticker-emoji { font-size: 36px; }
+  .gesprek-kind .gesprek-form input { padding-block: 8px; }
+  .gesprek-kind .gesprek-verstuur { width: 48px; height: 48px; }
+}
+
+/* Detail: een briefje dat zachtjes zweeft boven een leeg gesprek. */
+.gesprek-kind .gesprek-leeg::before { content: '💌'; display: block; font-size: 2.2em; margin-bottom: 6px; animation: briefje 2.4s ease-in-out infinite; }
+@keyframes briefje { 50% { transform: translateY(-6px) rotate(-6deg); } }
+@media (prefers-reduced-motion: reduce) { .gesprek-kind .gesprek-leeg::before { animation: none; } }
+@media (orientation: landscape) and (max-height: 520px) and (min-width: 640px) { .gesprek-kind .gesprek-leeg::before { font-size: 1.4em; margin-bottom: 2px; } }

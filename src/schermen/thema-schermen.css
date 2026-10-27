@@ -474,3 +474,13 @@
   .kind.thema *, .kind.thema *::before, .kind.thema *::after { animation: none !important; }
   .thema-feest { display: none; }
 }
+
+/* Gsm liggend: dezelfde kop als op de tablet, alleen lager, zodat het scherm eronder plaats houdt. */
+@media (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .thema-kop { height: 84px; margin: 8px auto 6px; border-radius: 22px; }
+  .thema-kop.laag { height: 64px; }
+  .thema-kop-inhoud { padding: 0 12px; gap: 10px; }
+  .thema-kop .rond { width: 48px; height: 48px; }
+  .thema-kop-titel, .thema-kop.laag .thema-kop-titel { font-size: 22px; }
+  .thema-kop-sub { font-size: 14px; }
+}

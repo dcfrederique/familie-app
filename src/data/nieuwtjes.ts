@@ -19,6 +19,13 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.42',
+    datum: '2026-10-27',
+    titel: 'Berichten, Huisdier wassen, Koken, Pompoenen en Schrijven passen op elke tablet',
+    tekst: 'Deze schermen scrollen niet meer, op geen enkele gangbare tablet, liggend of staand. Koken en Huisdier wassen schalen mee met de hoogte, ook tijdens het spel. In Koken stond de kast soms als één lange lijst onder elkaar: dat is hersteld. Pompoenen maken zet op een liggende tablet de pompoen links en de keuzes rechts, en bij Schrijven staat het prentje naast het blad. Op een liggende gsm is de kop bovenaan lager, en passen Berichten, Huisdier wassen, Koken en Herfstketting nu ook. Kleine extra\'s: zeepbelletjes in het bad en een zwevend briefje in een leeg gesprek.',
+    open: 'Nog niet overal: Tekenen, het startscherm en Taken staand, Thema kiezen, Memory staand en Rekenen op lage tablets, en de meeste schermen op een liggende gsm. De nachtelijke controle gaat verder.',
+  },
+  {
     versie: '0.41',
     datum: '2026-10-27',
     titel: 'De wereld in 3D (proefversie)',

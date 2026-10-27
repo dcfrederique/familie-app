@@ -37,3 +37,16 @@ path.inkt-goed, path.inkt-fout { fill: none; }
 .schrijf-uitslag { gap: 4px; }
 .schrijf-uitslag .groot-knop { min-height: 60px; padding: 0 40px; flex: 0 0 auto; }
 .schrijf .reken-kaart { gap: 14px; }
+
+/* Liggende tablet: het prentje staat links naast het blad, en het blad krimpt mee met de hoogte, zodat er niets scrollt. */
+@media (min-width: 600px) and (min-height: 560px) and (orientation: landscape) {
+  .schrijf .reken-kaart { flex: 0 0 auto; position: relative; gap: clamp(8px, 1.6dvh, 14px); padding-block: clamp(14px, 2.4dvh, 28px); }
+  .schrijf .reken-kaart > .schrijf-rij, .schrijf .reken-kaart > .schrijf-prent { position: absolute; left: clamp(16px, 3vw, 36px); top: 50%; transform: translateY(-50%); flex-direction: column; gap: 14px; }
+  .schrijf-prent { width: clamp(80px, 13dvh, 108px); height: clamp(80px, 13dvh, 108px); }
+  .schrijf-prent svg { width: 78%; height: 78%; }
+  .schrijf-blad { height: clamp(150px, calc(100dvh - 390px), 340px); max-width: calc(100% - 2 * clamp(110px, 16dvh, 140px)); }
+  .schrijf-blad.vrij { height: clamp(140px, calc(100dvh - 400px), 280px); }
+  .schrijf .klaar-uitleg { margin: 0; }
+  .schrijf .groot-knop { min-height: clamp(56px, 8dvh, 72px); }
+  .schrijf-uitslag .schrijf-procent { font-size: clamp(36px, 6dvh, 64px); }
+}

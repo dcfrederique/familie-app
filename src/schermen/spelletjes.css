@@ -174,7 +174,7 @@
 .kook-rechts { display: flex; flex-direction: column; align-items: center; gap: 16px; min-width: 0; }
 .pan { width: min(100%, 420px); }
 .in-pan { animation: plons .45s ease-out; }
-.kast { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 12px; width: 100%; }
+.kook-kast { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 12px; width: 100%; }
 .kast-ding {
   min-height: 104px; border: 0; border-radius: 24px; background: var(--surface); color: var(--ink); box-shadow: 0 5px 0 var(--shade);
   display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 8px; font-weight: 800; font-size: 15px;
@@ -201,3 +201,55 @@
   .kind-vol > .kind-inhoud > .penalty { flex: 1; min-height: 0; }
   .kind-vol .penalty > .spel-veld, .kind-vol .penalty > .penalty-veld { flex: 1; height: auto; min-height: 0; }
 }
+
+/* Huisdier wassen en Koken vullen op tablet precies het scherm (SpelKader vol): de keuze en het spel delen de vrije hoogte. */
+@media (min-width: 600px) and (min-height: 560px) {
+  .kind-vol > .kind-inhoud > .dier-keuze, .kind-vol > .kind-inhoud > .kook-roeren { flex: 1; min-height: 0; }
+  .kind-vol .dier-knop { width: clamp(150px, min(20vw, 30dvh), 240px); padding: 12px; }
+  .kind-vol .recept-knop { width: clamp(140px, min(19vw, 27dvh), 260px); }
+  .kind-vol .dier-keuze { gap: clamp(10px, 2dvh, 24px); }
+  .kind-vol .dier-keuze h2 { font-size: clamp(28px, 5dvh, 40px); }
+  .kind-vol .dier-rij { gap: clamp(14px, 2.4dvh, 24px); }
+  .kind-vol .kook { grid-template-columns: minmax(180px, min(300px, calc((100dvh - 230px) * 0.62))) 1fr; }
+  .kind-vol .recept-kaart { padding: clamp(12px, 2dvh, 20px); gap: clamp(8px, 1.4dvh, 14px); }
+  .kind-vol .recept-kaart h2 { font-size: clamp(24px, 4dvh, 32px); }
+  .kind-vol .kook-rechts .pan { width: min(100%, 420px, calc((100dvh - 420px) * 300 / 210)); }
+  .kind-vol .kast-ding { min-height: clamp(80px, 12dvh, 104px); }
+  .kind-vol .kast-ding svg { width: clamp(44px, 7dvh, 64px); height: clamp(44px, 7dvh, 64px); }
+  .kind-vol > .kind-inhoud > .wasplaats { flex: 1; min-height: 0; }
+  .kind-vol > .kind-inhoud > .wasplaats { flex-wrap: nowrap; }
+  .kind-vol .was-bad { position: relative; min-height: 0; }
+  .kind-vol .was-tekening { position: absolute; inset: 12px; width: calc(100% - 24px); height: calc(100% - 24px); }
+  .kind-vol .roer-vlak { width: min(640px, 90vw, calc((100dvh - 330px) * 300 / 210)); }
+  .kind-vol .kook-klaar .gerecht { width: auto; max-width: min(520px, 80%); height: auto; max-height: calc(100dvh - 400px); }
+}
+@media (min-width: 600px) and (min-height: 560px) and (orientation: portrait) {
+  .kind-vol > .kind-inhoud > .wasplaats { flex-direction: column; flex-wrap: nowrap; align-items: stretch; }
+  .kind-vol .was-bad { flex: 1 1 0; }
+  .kind-vol .was-zijkant { flex: none; }
+}
+
+/* Gsm liggend: de keuze van diertje of recept zoals op de tablet, alleen kleiner. */
+@media (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .dier-keuze { min-height: 0; gap: 8px; padding-bottom: 8px; }
+  .dier-keuze h2 { font-size: 22px; }
+  .dier-keuze .chips { transform: scale(.9); margin-block: -4px; }
+  .dier-rij { gap: 14px; flex-wrap: nowrap; }
+  .dier-knop { width: min(20vw, 52dvh); padding: 8px; border-radius: 24px; font-size: 18px; }
+  .recept-knop { width: min(18vw, 40dvh); }
+}
+
+/* Detail: zeepbelletjes die zachtjes opstijgen in het bad (niet bij minder beweging). */
+.was-bad { position: relative; overflow: hidden; }
+.was-bad::before, .was-bad::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: -40px; height: 60%; pointer-events: none;
+  background:
+    radial-gradient(circle at 12% 80%, rgba(255,255,255,.85) 0 7px, rgba(185,211,242,.9) 8px, transparent 9px),
+    radial-gradient(circle at 30% 60%, rgba(255,255,255,.8) 0 4px, rgba(185,211,242,.9) 5px, transparent 6px),
+    radial-gradient(circle at 84% 70%, rgba(255,255,255,.85) 0 9px, rgba(185,211,242,.9) 10px, transparent 11px),
+    radial-gradient(circle at 66% 90%, rgba(255,255,255,.8) 0 5px, rgba(185,211,242,.9) 6px, transparent 7px);
+  animation: belletjes 7s linear infinite; opacity: 0;
+}
+.was-bad::after { animation-delay: -3.5s; left: 6%; }
+@keyframes belletjes { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: .9; } 85% { opacity: .7; } 100% { transform: translateY(-110%); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .was-bad::before, .was-bad::after { animation: none; opacity: 0; } }

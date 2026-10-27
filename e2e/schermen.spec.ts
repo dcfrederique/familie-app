@@ -27,6 +27,7 @@ KINDEREN.forEach((kind: string, k: number) => {
       // Thema per kind en toestel, zodat alle thema's aan bod komen.
       await welkomstpad(page, k + t)
       const fout: string[] = []
+      const nietPassend: string[] = []
       for (const scherm of SCHERMEN as string[]) {
         await naarScherm(page, `/kind/${kind}${scherm ? '/' + scherm : ''}`)
         const sleutel = `${kind} ${scherm || 'start'} ${w}x${h}`
@@ -36,6 +37,7 @@ KINDEREN.forEach((kind: string, k: number) => {
         expect(nu, sleutel).not.toContain('/welkom')
         if (nu !== `/kind/${kind}${scherm ? '/' + scherm : ''}`) continue
         const meldingen: string[] = await page.evaluate(meet)
+        if (meldingen.length) nietPassend.push(sleutel)
         if (meldingen.length && !OPEN.has(sleutel)) fout.push(`${sleutel}: ${meldingen.slice(0, 3).join('; ')}`)
         // Past een open scherm nu wel: lokaal (nachtelijke controle) rood, zodat de lijst krimpt. In CI enkel een
         // waarschuwing, want schermen op het randje meten op de CI-machine soms net anders.
@@ -50,7 +52,7 @@ KINDEREN.forEach((kind: string, k: number) => {
       if (process.env.OPEN_OPNEMEN) {
         const fs = await import('node:fs')
         fs.mkdirSync('test-results/open', { recursive: true })
-        fs.writeFileSync(`test-results/open/${kind}-${w}x${h}.json`, JSON.stringify(fout.filter((f) => !f.includes('past nu')).map((f) => f.split(':')[0])))
+        fs.writeFileSync(`test-results/open/${kind}-${w}x${h}.json`, JSON.stringify(nietPassend))
         return
       }
       expect(fout).toEqual([])

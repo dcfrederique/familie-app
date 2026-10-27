@@ -11,7 +11,7 @@ import { zin } from '../data/zinnen.ts'
 
 export default function Koken() {
   return (
-    <SpelKader titel="Koken" terug={(id) => `/kind/${id}/spelen`}>
+    <SpelKader titel="Koken" terug={(id) => `/kind/${id}/spelen`} vol>
       {(kind) => <Keuken kind={kind} />}
     </SpelKader>
   )
@@ -191,7 +191,7 @@ function Keuken({ kind }: { kind: Gebruiker }) {
       </div>
       <div className="kook-rechts">
         <Pan erin={bestelling.erin} />
-        <div className="kast" role="group" aria-label="Kast">
+        <div className="kook-kast" role="group" aria-label="Kast">
           {bestelling.kast.map((id) => {
             const erin = bestelling.erin.includes(id)
             return (
