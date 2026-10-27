@@ -1,6 +1,30 @@
 # Echte Android-app met Capacitor (plan, nog niet gebouwd)
 
-Status: plan voor later (2026-10-25). Er is nog geen code geschreven en niets verandert aan de gehoste app.
+Status: plan, nog niet gebouwd (geschreven 2026-10-25, bijgewerkt 2026-10-27). Er is nog geen code geschreven en niets verandert aan de gehoste app.
+
+## Bijgewerkt op 27 oktober: wat er sindsdien veranderde
+
+- **De wereld is een canvas in 2.5D** (`docs/wereld-25d.md`; de echte 3D met Three.js is geschrapt). Dat is gewoon 2D-tekenen in de WebView: geen WebGL-risico, wel dezelfde eis als nu, namelijk soepel op de kindertablets. Immersive fullscreen en vaste liggende stand helpen hier direct: meer beeld, geen verspringende hoogte bij het draaien. Controleer wel dat de wereld bij `server.url` even vlot loopt als in Chrome.
+- **Realtime alleen bij gezelschap:** de live verbinding (Supabase Broadcast) opent pas als er nog iemand in de wereld is, met een controle om de 10 seconden. Dat is ook batterijvriendelijk en verandert niets aan de schil. Wel de moeite: een app op de achtergrond (scherm uit) moet de verbinding netjes sluiten; de WebView pauzeert dan meestal zelf.
+- **Playwright draait nu in CI** (job `e2e`, blokkeert deployen). Voor de schil zijn geen aparte tests nodig: de webcode blijft dezelfde. Wel nieuw: `platform.ts` krijgt een eenvoudige test (web = geen native), en de schermcontrole meet op een WebView-toestel iets andere hoogtes zonder systeembalken (meer ruimte, dus geen nieuwe scrollproblemen verwacht).
+- **PWA-update:** `registerType: 'prompt'` met `src/lib/nieuweversie.ts` kiest zelf een goed moment om te wisselen. Met `server.url` werkt dat ongewijzigd door: de service worker in de WebView haalt de nieuwe versie en wisselt op hetzelfde moment als nu. Dus geen APK-update per deploy, wat de aanbeveling "live laden" versterkt.
+- Meldingen (`melding`-functie, `ci.yml` job `meldingen`) zijn niet gewijzigd; de FCM-tak komt er nog bij zoals hieronder.
+- Het nieuwtje-nummer staat intussen op 0.51; een Capacitor-stap met zichtbaar effect (meldingen, fullscreen) krijgt weer een item bovenaan `src/data/nieuwtjes.ts`.
+
+## Wat er van Frederique nodig is
+
+| Wat | Wanneer | Moeite |
+| --- | --- | --- |
+| **Android Studio** op de pc (of enkel de SDK-opdrachtlijn) om de eerste APK te bouwen en te testen met USB-foutopsporing op één tablet | Stap 2. Later bouwt CI de APK zelf en is Android Studio niet meer nodig | ±1 uur installeren |
+| **Firebase-project** (gratis, console.firebase.google.com): Android-app toevoegen met het package-id, `google-services.json` downloaden, service-account-JSON aanmaken en als GitHub-secret `FCM_SERVICE_ACCOUNT` zetten | Stap 4 (meldingen) | ±30 min, ik geef de klikstappen |
+| **Google Play Console** ($25 eenmalig) | Enkel als we de interne testtrack willen. Niet nodig voor de start | later beslissen |
+| Keuze van naam en package-id | Voor stap 1 | 5 min |
+| Eén tablet en één ouder-gsm om op te testen, plus nagaan of Family Link het installeren van een app van buiten de Play Store toelaat | Stap 2 | ±15 min |
+
+## Voorstel eerste concrete stap
+
+Stap 1 en 2 samen, zonder meldingen: Capacitor toevoegen met `server.url`, naam en icoon, `android/` in de repo, en CI laat een **debug-APK** als download bouwen (geen Android Studio nodig om hem te krijgen). Frederique installeert die op één kindertablet en kijkt of de app opent, of Family Link het toelaat en hoe het voelt. Zo weten we meteen het grootste risico (installeren op een kindertoestel) voor we Firebase opzetten. Daarna volgt stap 3 (stand en fullscreen), dan meldingen. Geschat: een halve dag werk van mijn kant plus de test.
+
 
 ## Waarom
 
