@@ -90,10 +90,10 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
     categorieen: ['Groenten en fruit', 'Vlees en vis', 'Zuivel en eieren', 'Brood en ontbijt', 'Droge voeding', 'Diepvries',
       'Dranken', 'Snoep en koeken', 'Huishouden', 'Verzorging', 'Andere'].map((naam, i) => ({ id: `ca-${i + 1}`, naam, volgorde: i + 1 })),
     boodschappen: [
-      { id: 'bo-1', naam: 'Melk', hoeveel: '2 l', winkel_id: 'wi-1', dag: null, gerecht: null, gekocht_op: null, aangemaakt_op: nu, categorie_id: 'ca-3', prijs: null },
-      { id: 'bo-2', naam: 'Brood', hoeveel: '', winkel_id: 'wi-1', dag: null, gerecht: null, gekocht_op: null, aangemaakt_op: nu, categorie_id: 'ca-4', prijs: null },
-      { id: 'bo-3', naam: 'Bananen', hoeveel: '', winkel_id: 'wi-3', dag: null, gerecht: null, gekocht_op: null, aangemaakt_op: nu, categorie_id: 'ca-1', prijs: null },
-      { id: 'bo-4', naam: 'Pindakaas', hoeveel: '', winkel_id: 'wi-4', dag: null, gerecht: null, gekocht_op: null, aangemaakt_op: nu, categorie_id: null, prijs: null },
+      { id: 'bo-1', naam: 'Melk', hoeveel: '2 l', winkel_id: 'wi-1', dag: null, gerecht: null, gekocht_op: null, aangemaakt_op: nu, categorie_id: 'ca-3', prijs: null, eenheidsprijs: null, aantal: null },
+      { id: 'bo-2', naam: 'Brood', hoeveel: '', winkel_id: 'wi-1', dag: null, gerecht: null, gekocht_op: null, aangemaakt_op: nu, categorie_id: 'ca-4', prijs: null, eenheidsprijs: null, aantal: null },
+      { id: 'bo-3', naam: 'Bananen', hoeveel: '', winkel_id: 'wi-3', dag: null, gerecht: null, gekocht_op: null, aangemaakt_op: nu, categorie_id: 'ca-1', prijs: null, eenheidsprijs: null, aantal: null },
+      { id: 'bo-4', naam: 'Pindakaas', hoeveel: '', winkel_id: 'wi-4', dag: null, gerecht: null, gekocht_op: null, aangemaakt_op: nu, categorie_id: null, prijs: null, eenheidsprijs: null, aantal: null },
       // Wat de laatste weken gekocht is, zodat Uitgaven meteen een overzicht toont.
       ...([
         ['Gehakt', 'wi-1', 'ca-2', 7.4, 2], ['Appelen', 'wi-1', 'ca-1', 3.2, 2], ['Yoghurt', 'wi-2', 'ca-3', 4.1, 5],
@@ -101,7 +101,7 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
         ['Kipfilet', 'wi-1', 'ca-2', 8.9, 12], ['Pasta', 'wi-1', 'ca-5', 2.8, 12], ['Frieten', 'wi-4', 'ca-6', 3.6, 20],
         ['Shampoo', 'wi-4', 'ca-10', 5.4, 20], ['Boter', 'wi-2', 'ca-3', 2.7, 34], ['Tomaten', 'wi-1', 'ca-1', 4.5, 36],
       ] as [string, string, string, number, number][]).map(([naam, winkel_id, categorie_id, prijs, dagenGeleden], i): Boodschap => ({
-        id: `bo-h${i}`, naam, hoeveel: '', winkel_id, dag: null, gerecht: null, categorie_id, prijs,
+        id: `bo-h${i}`, naam, hoeveel: '', winkel_id, dag: null, gerecht: null, categorie_id, prijs, eenheidsprijs: null, aantal: null,
         gekocht_op: new Date(Date.now() - dagenGeleden * 86400_000).toISOString(), aangemaakt_op: nu,
       })),
     ],
@@ -458,13 +458,14 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
     async boodschappenOpslaan(lijst) {
       for (const b of lijst) {
         const rij = { naam: b.naam.trim(), hoeveel: b.hoeveel.trim(), winkel_id: b.winkel_id,
-                      ...(b.categorie_id !== undefined ? { categorie_id: b.categorie_id } : {}), ...(b.prijs !== undefined ? { prijs: b.prijs } : {}) }
+                      ...(b.categorie_id !== undefined ? { categorie_id: b.categorie_id } : {}), ...(b.prijs !== undefined ? { prijs: b.prijs } : {}),
+                      ...(b.eenheidsprijs !== undefined ? { eenheidsprijs: b.eenheidsprijs } : {}), ...(b.aantal !== undefined ? { aantal: b.aantal } : {}) }
         const oud = b.id && t.boodschappen.find((x) => x.id === b.id)
         if (oud) Object.assign(oud, rij)
         else {
           const nu = new Date().toISOString()
           t.boodschappen.push({ id: id(), dag: b.dag ?? null, gerecht: b.gerecht ?? null, categorie_id: b.categorie_id ?? null, prijs: b.prijs ?? null,
-                                gekocht_op: b.gekocht ? nu : null, aangemaakt_op: nu, ...rij })
+                                eenheidsprijs: null, aantal: null, gekocht_op: b.gekocht ? nu : null, aangemaakt_op: nu, ...rij })
         }
       }
     },

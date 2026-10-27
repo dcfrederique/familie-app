@@ -1,9 +1,9 @@
 import { describe, expect, it } from 'vitest'
 import type { Boodschap, Categorie, Winkel } from './bron/types.ts'
-import { categorieVoor, eerdereNamen, leesBedrag, maandGrenzen, perWinkel, staatOpLijst, stelIngredientenVoor, uitgavenOverzicht, winkelVoor } from './boodschappen.ts'
+import { invoerVan, leesAantal, prijsUitInvoer, categorieVoor, eerdereNamen, leesBedrag, maandGrenzen, perWinkel, staatOpLijst, stelIngredientenVoor, uitgavenOverzicht, winkelVoor } from './boodschappen.ts'
 
 const b = (id: string, naam: string, winkel_id: string | null, extra: Partial<Boodschap> = {}): Boodschap =>
-  ({ id, naam, hoeveel: '', winkel_id, dag: null, gerecht: null, gekocht_op: null, categorie_id: null, prijs: null, aangemaakt_op: `2026-10-2${id}T10:00:00Z`, ...extra })
+  ({ id, naam, hoeveel: '', winkel_id, dag: null, gerecht: null, gekocht_op: null, categorie_id: null, prijs: null, eenheidsprijs: null, aantal: null, aangemaakt_op: `2026-10-2${id}T10:00:00Z`, ...extra })
 
 const winkels: Winkel[] = [{ id: 'aldi', naam: 'Aldi', volgorde: 2 }, { id: 'colruyt', naam: 'Colruyt', volgorde: 1 }]
   .sort((a, b2) => a.volgorde - b2.volgorde)
@@ -109,5 +109,27 @@ describe('uitgaven', () => {
     expect(new Date(m.van).getMonth()).toBe(11)
     expect(new Date(m.tot).getMonth()).toBe(0)
     expect(m.label).toBe('december 2025')
+  })
+})
+
+describe('prijs per eenheid', () => {
+  it('rekent totaal = eenheidsprijs × aantal op de cent', () => {
+    expect(prijsUitInvoer({ eenheid: true, prijs: '1,29', aantal: '3' })).toEqual({ prijs: 3.87, eenheidsprijs: 1.29, aantal: 3, fout: false })
+    expect(prijsUitInvoer({ eenheid: true, prijs: '2,49', aantal: '1,5' }).prijs).toBe(3.74)
+  })
+  it('aantal leeg is 1; prijs leeg is geen prijs', () => {
+    expect(prijsUitInvoer({ eenheid: true, prijs: '2', aantal: '' }).prijs).toBe(2)
+    expect(prijsUitInvoer({ eenheid: true, prijs: '', aantal: '4' })).toMatchObject({ prijs: null, fout: false })
+  })
+  it('weigert een ongeldig aantal of bedrag', () => {
+    expect(prijsUitInvoer({ eenheid: true, prijs: '1', aantal: '0' }).fout).toBe(true)
+    expect(prijsUitInvoer({ eenheid: true, prijs: 'x', aantal: '2' }).fout).toBe(true)
+    expect(leesAantal('abc')).toBeNaN()
+  })
+  it('totaalprijs wist de eenheidsvelden', () => {
+    expect(prijsUitInvoer({ eenheid: false, prijs: '5', aantal: '9' })).toEqual({ prijs: 5, eenheidsprijs: null, aantal: null, fout: false })
+  })
+  it('invoerVan leest een bewaarde eenheidsprijs terug', () => {
+    expect(invoerVan({ prijs: 3.87, eenheidsprijs: 1.29, aantal: 3 })).toEqual({ eenheid: true, prijs: '1,29', aantal: '3' })
   })
 })

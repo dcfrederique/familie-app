@@ -23,7 +23,7 @@ async function verklein(foto: Blob): Promise<Blob> {
     canvas.toBlob((b) => (b ? klaar(b) : mislukt(new Error('foto kon niet verkleind worden'))), 'image/jpeg', 0.8))
 }
 
-const BOODSCHAP_KOLOMMEN = 'id, naam, hoeveel, winkel_id, dag, gerecht, gekocht_op, aangemaakt_op, categorie_id, prijs'
+const BOODSCHAP_KOLOMMEN = 'id, naam, hoeveel, winkel_id, dag, gerecht, gekocht_op, aangemaakt_op, categorie_id, prijs, eenheidsprijs, aantal'
 
 export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
   return {
@@ -390,13 +390,15 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
       const ik = lijst.some((b) => !b.id && b.gekocht) ? (await sb.rpc('mijn_ouder')).data : null
       const nieuw = lijst.filter((b) => !b.id).map((b) => ({
         gezin_id: gezinId, naam: b.naam.trim(), hoeveel: b.hoeveel.trim(), winkel_id: b.winkel_id, dag: b.dag ?? null, gerecht: b.gerecht ?? null,
-        categorie_id: b.categorie_id ?? null, prijs: b.prijs ?? null, ...(b.gekocht ? { gekocht_op: nu, gekocht_door: ik } : {}),
+        categorie_id: b.categorie_id ?? null, prijs: b.prijs ?? null,
+        eenheidsprijs: b.eenheidsprijs ?? null, aantal: b.aantal ?? null, ...(b.gekocht ? { gekocht_op: nu, gekocht_door: ik } : {}),
       }))
       if (nieuw.length) fout((await sb.from('boodschappen').insert(nieuw)).error)
       for (const b of lijst.filter((x) => x.id)) {
         // Wat ontbreekt blijft zoals het was.
         const rij = { naam: b.naam.trim(), hoeveel: b.hoeveel.trim(), winkel_id: b.winkel_id,
-                      ...(b.categorie_id !== undefined ? { categorie_id: b.categorie_id } : {}), ...(b.prijs !== undefined ? { prijs: b.prijs } : {}) }
+                      ...(b.categorie_id !== undefined ? { categorie_id: b.categorie_id } : {}), ...(b.prijs !== undefined ? { prijs: b.prijs } : {}),
+                      ...(b.eenheidsprijs !== undefined ? { eenheidsprijs: b.eenheidsprijs } : {}), ...(b.aantal !== undefined ? { aantal: b.aantal } : {}) }
         fout((await sb.from('boodschappen').update(rij).eq('id', b.id!)).error)
       }
     },

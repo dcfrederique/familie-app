@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.50',
+    datum: '2026-10-27',
+    titel: 'Boodschappen: prijs per eenheid',
+    tekst: 'Bij een artikel (Wij → Boodschappen, tikken om te bewerken, en bij Afrekenen) kies je nu Totaal of Per eenheid. Bij Per eenheid vul je de prijs per stuk, kilo of liter in en het aantal (ook 1,5 kan), en de app rekent het totaal zelf uit: prijs × aantal. Dat totaal telt mee in Wij → Uitgaven.',
+  },
+  {
     versie: '0.49',
     datum: '2026-10-27',
     titel: 'De wereld in gebieden, en de kaart bewerken',

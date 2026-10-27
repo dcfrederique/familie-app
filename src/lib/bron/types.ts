@@ -198,6 +198,10 @@ export interface Boodschap {
   categorie_id: string | null
   /** Wat het kostte in euro; null = niet ingevuld. */
   prijs: number | null
+  /** Prijs per eenheid (stuk, kg, l) als de prijs zo ingegeven is; dan is prijs = eenheidsprijs × aantal. Anders null. */
+  eenheidsprijs: number | null
+  /** Het aantal eenheden bij een eenheidsprijs (mag een komma hebben, bv. 1,5 kg); anders null. */
+  aantal: number | null
 }
 
 /**
@@ -205,7 +209,7 @@ export interface Boodschap {
  * `gekocht` zet een nieuw artikel meteen op gekocht (aankopen die niet op de lijst stonden).
  */
 export type NieuweBoodschap = Pick<Boodschap, 'naam' | 'hoeveel' | 'winkel_id'>
-  & Partial<Pick<Boodschap, 'dag' | 'gerecht' | 'categorie_id' | 'prijs'>> & { id?: string; gekocht?: boolean }
+  & Partial<Pick<Boodschap, 'dag' | 'gerecht' | 'categorie_id' | 'prijs' | 'eenheidsprijs' | 'aantal'>> & { id?: string; gekocht?: boolean }
 
 /** Profiel van een ouder voor Gezondheid → Gewicht (docs/gewicht.md); privé. */
 export interface GezondheidProfiel {

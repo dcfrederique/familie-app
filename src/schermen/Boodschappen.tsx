@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import type { Boodschap, Categorie, NieuweBoodschap, Winkel } from '../lib/bron/types.ts'
-import { categorieVoor, eerdereNamen, euro, leesBedrag, perWinkel, winkelVoor } from '../lib/boodschappen.ts'
+import { categorieVoor, eerdereNamen, euro, invoerVan, leesBedrag, perWinkel, prijsUitInvoer, winkelVoor, type PrijsInvoer } from '../lib/boodschappen.ts'
 import { useGegevens } from '../lib/gegevens.ts'
 import { useSessie } from '../lib/sessie.tsx'
 import OuderKader from './OuderKader.tsx'
@@ -202,12 +202,12 @@ function BoodschapFormulier({ boodschap, winkels, categorieen, bewaar, annuleer,
   boodschap: Boodschap; winkels: Winkel[]; categorieen: Categorie[]; bewaar: (b: NieuweBoodschap) => Promise<void>; annuleer: () => void; weg: () => Promise<void>
 }) {
   const [b, setB] = useState<NieuweBoodschap>({ id: boodschap.id, naam: boodschap.naam, hoeveel: boodschap.hoeveel, winkel_id: boodschap.winkel_id, categorie_id: boodschap.categorie_id })
-  const [prijs, setPrijs] = useState(boodschap.prijs === null ? '' : String(boodschap.prijs).replace('.', ','))
-  const bedrag = leesBedrag(prijs)
+  const [invoer, setInvoer] = useState<PrijsInvoer>(() => invoerVan(boodschap))
+  const uitslag = prijsUitInvoer(invoer)
   function verstuur(e: FormEvent) {
     e.preventDefault()
-    if (Number.isNaN(bedrag)) return
-    void bewaar({ ...b, prijs: bedrag })
+    if (uitslag.fout) return
+    void bewaar({ ...b, prijs: uitslag.prijs, eenheidsprijs: uitslag.eenheidsprijs, aantal: uitslag.aantal })
   }
   return (
     <form className="kaart kaart-breed formulier" onSubmit={verstuur}>
@@ -223,17 +223,39 @@ function BoodschapFormulier({ boodschap, winkels, categorieen, bewaar, annuleer,
       <label className="veld"><span>Categorie</span>
         <CategorieKiezer categorieen={categorieen} waarde={b.categorie_id ?? null} kies={(c) => setB({ ...b, categorie_id: c })} label="Categorie" />
       </label>
-      <label className="veld"><span>Prijs in euro (mag leeg)</span>
-        <input inputMode="decimal" value={prijs} maxLength={9} placeholder="bv. 1,29" aria-invalid={Number.isNaN(bedrag)} onChange={(e) => setPrijs(e.target.value)} />
-        {Number.isNaN(bedrag) && <small className="fout" role="alert">Schrijf een bedrag zoals 1,29.</small>}
-      </label>
+      <div className="veld"><span>Prijs in euro (mag leeg)</span>
+        <PrijsVelden invoer={invoer} wijzig={setInvoer} naam={b.naam} />
+      </div>
       {boodschap.gerecht && <p className="tip">Uit het weekmenu: {boodschap.gerecht}{boodschap.dag ? `, ${dagTekst(boodschap.dag)}` : ''}.</p>}
       <div className="knoppen">
-        <button type="submit" className="knop knop-primair" disabled={!b.naam.trim() || Number.isNaN(bedrag)}>Bewaren</button>
+        <button type="submit" className="knop knop-primair" disabled={!b.naam.trim() || uitslag.fout}>Bewaren</button>
         <button type="button" className="knop knop-licht" onClick={annuleer}>Annuleren</button>
         <button type="button" className="knop knop-licht knop-weg" onClick={() => void weg()}>Verwijderen</button>
       </div>
     </form>
+  )
+}
+
+/** Prijs als totaal of per eenheid; bij een eenheidsprijs rekent de app zelf totaal = prijs × aantal uit. */
+function PrijsVelden({ invoer, wijzig, naam }: { invoer: PrijsInvoer; wijzig: (i: PrijsInvoer) => void; naam: string }) {
+  const uitslag = prijsUitInvoer(invoer)
+  return (
+    <span className="prijs-velden">
+      <span className="prijs-keuze" role="group" aria-label={`Soort prijs van ${naam}`}>
+        <button type="button" className={`knop knop-klein ${invoer.eenheid ? 'knop-licht' : 'knop-primair'}`} aria-pressed={!invoer.eenheid}
+                onClick={() => wijzig({ ...invoer, eenheid: false })}>Totaal</button>
+        <button type="button" className={`knop knop-klein ${invoer.eenheid ? 'knop-primair' : 'knop-licht'}`} aria-pressed={invoer.eenheid}
+                onClick={() => wijzig({ ...invoer, eenheid: true, aantal: invoer.aantal || '1' })}>Per eenheid</button>
+      </span>
+      <input inputMode="decimal" aria-label={`${invoer.eenheid ? 'Prijs per eenheid' : 'Prijs'} van ${naam}`} placeholder={invoer.eenheid ? '€ per eenheid' : '€'}
+             maxLength={9} value={invoer.prijs} aria-invalid={uitslag.fout} onChange={(e) => wijzig({ ...invoer, prijs: e.target.value })} />
+      {invoer.eenheid && (
+        <input inputMode="decimal" aria-label={`Aantal van ${naam}`} placeholder="aantal" maxLength={9} value={invoer.aantal}
+               aria-invalid={uitslag.fout} onChange={(e) => wijzig({ ...invoer, aantal: e.target.value })} />
+      )}
+      {invoer.eenheid && uitslag.prijs !== null && <small className="prijs-totaal">{euro(uitslag.eenheidsprijs!)} × {String(uitslag.aantal).replace('.', ',')} = <b>{euro(uitslag.prijs)}</b></small>}
+      {uitslag.fout && <small className="fout" role="alert">Schrijf een bedrag zoals 1,29{invoer.eenheid ? ' en een aantal zoals 3 of 1,5' : ''}.</small>}
+    </span>
   )
 }
 
@@ -242,24 +264,25 @@ function Afrekenen({ winkel, gekocht, categorieen, lijst, bewaar, annuleer }: {
   winkel: Winkel | null; gekocht: Boodschap[]; categorieen: Categorie[]; lijst: Boodschap[]
   bewaar: (items: NieuweBoodschap[]) => Promise<void>; annuleer: () => void
 }) {
-  const [prijzen, setPrijzen] = useState<Record<string, string>>(
-    () => Object.fromEntries(gekocht.map((b) => [b.id, b.prijs === null ? '' : String(b.prijs).replace('.', ',')])))
+  const [invoeren, setInvoeren] = useState<Record<string, PrijsInvoer>>(
+    () => Object.fromEntries(gekocht.map((b) => [b.id, invoerVan(b)])))
   const [categorie, setCategorie] = useState<Record<string, string | null>>(
     () => Object.fromEntries(gekocht.map((b) => [b.id, b.categorie_id ?? categorieVoor(b.naam, lijst, categorieen)])))
   const andere = categorieen.find((c) => c.naam.toLowerCase() === 'andere')
   const [rest, setRest] = useState('')
   const [restCategorie, setRestCategorie] = useState<string | null>(andere?.id ?? null)
 
-  const bedragen = gekocht.map((b) => leesBedrag(prijzen[b.id] ?? ''))
+  const uitslagen = gekocht.map((b) => prijsUitInvoer(invoeren[b.id] ?? invoerVan(b)))
   const restBedrag = leesBedrag(rest)
-  const fout = bedragen.some(Number.isNaN) || Number.isNaN(restBedrag)
-  const totaal = bedragen.reduce<number>((som, x) => som + (x ?? 0), 0) + (restBedrag ?? 0)
+  const fout = uitslagen.some((u) => u.fout) || Number.isNaN(restBedrag)
+  const totaal = uitslagen.reduce((som, u) => som + (u.prijs ?? 0), 0) + (restBedrag ?? 0)
 
   function verstuur(e: FormEvent) {
     e.preventDefault()
     if (fout) return
     const items: NieuweBoodschap[] = gekocht.map((b, i) => ({
-      id: b.id, naam: b.naam, hoeveel: b.hoeveel, winkel_id: b.winkel_id, prijs: bedragen[i], categorie_id: categorie[b.id] ?? null,
+      id: b.id, naam: b.naam, hoeveel: b.hoeveel, winkel_id: b.winkel_id, prijs: uitslagen[i].prijs, eenheidsprijs: uitslagen[i].eenheidsprijs, aantal: uitslagen[i].aantal,
+      categorie_id: categorie[b.id] ?? null,
     }))
     if (restBedrag) {
       // Wat niet op de lijst stond komt als gekocht artikel in de uitgaven, zodat winkel en categorie kloppen.
@@ -272,11 +295,10 @@ function Afrekenen({ winkel, gekocht, categorieen, lijst, bewaar, annuleer }: {
     <form className="kaart kaart-breed formulier afrekenen" onSubmit={verstuur}>
       <p className="tip">Vul de prijs in zoals op de kassabon. Wat je leeg laat, telt niet mee in de uitgaven.</p>
       <ul className="afreken-lijst">
-        {gekocht.map((b, i) => (
+        {gekocht.map((b) => (
           <li key={b.id}>
             <b>{b.naam}{b.hoeveel && <small> · {b.hoeveel}</small>}</b>
-            <input inputMode="decimal" aria-label={`Prijs van ${b.naam}`} placeholder="€" maxLength={9} value={prijzen[b.id] ?? ''}
-                   aria-invalid={Number.isNaN(bedragen[i])} onChange={(e) => setPrijzen({ ...prijzen, [b.id]: e.target.value })} />
+            <PrijsVelden invoer={invoeren[b.id] ?? invoerVan(b)} wijzig={(i2) => setInvoeren({ ...invoeren, [b.id]: i2 })} naam={b.naam} />
             <CategorieKiezer categorieen={categorieen} waarde={categorie[b.id] ?? null} kies={(c) => setCategorie({ ...categorie, [b.id]: c })} label={`Categorie van ${b.naam}`} />
           </li>
         ))}

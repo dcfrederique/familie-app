@@ -37,3 +37,7 @@ Tests: `supabase/tests/boodschappen.test.sql`, `supabase/tests/uitgaven.test.sql
 - Een prijs per eenheid of een kassabon als geheel (de prijs hoort bij het artikel; een totaal zonder artikels kan als "Andere aankopen").
 - Budget of vergelijking met vorige maand.
 - Hoeveelheden uit het weekmenu (alles komt zonder hoeveelheid op de lijst).
+
+## Prijs per eenheid (27 oktober 2026, nieuwtje 0.50)
+
+Bij een artikel (bewerken en Afrekenen) kies je Totaal of Per eenheid. Per eenheid: prijs per stuk/kg/l plus aantal (komma mag, leeg = 1); de app berekent totaal = eenheidsprijs × aantal (op de cent) en bewaart dat in `prijs`, zodat Uitgaven ongewijzigd optelt. Kolommen `eenheidsprijs` en `aantal` (migratie 20261027000500) onthouden hoe het ingegeven werd. Logica: `prijsUitInvoer` in `src/lib/boodschappen.ts`.

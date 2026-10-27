@@ -110,6 +110,39 @@ export function leesBedrag(tekst: string): number | null {
   return Math.round(Number(t) * 100) / 100
 }
 
+/** Een aantal uit een tekstveld ("3" of "1,5", hoogstens drie decimalen); null als het leeg is, NaN als het geen geldig aantal is. */
+export function leesAantal(tekst: string): number | null {
+  const t = tekst.trim().replace(',', '.')
+  if (t === '') return null
+  if (!/^\d{1,5}(\.\d{1,3})?$/.test(t) || Number(t) <= 0) return NaN
+  return Number(t)
+}
+
+/** Wat de ouder invult: een totaalprijs, of een prijs per eenheid met een aantal. */
+export interface PrijsInvoer { eenheid: boolean; prijs: string; aantal: string }
+
+export interface PrijsUitslag { prijs: number | null; eenheidsprijs: number | null; aantal: number | null; fout: boolean }
+
+const komma = (n: number) => String(n).replace('.', ',')
+
+/** De invoervelden bij een artikel dat al een prijs heeft. */
+export function invoerVan(b: Pick<Boodschap, 'prijs' | 'eenheidsprijs' | 'aantal'>): PrijsInvoer {
+  if (b.eenheidsprijs !== null) return { eenheid: true, prijs: komma(b.eenheidsprijs), aantal: b.aantal === null ? '' : komma(b.aantal) }
+  return { eenheid: false, prijs: b.prijs === null ? '' : komma(b.prijs), aantal: '' }
+}
+
+/** Het totaal is bij een eenheidsprijs eenheidsprijs × aantal (aantal leeg = 1), op de cent afgerond; dat totaal komt in de uitgaven. */
+export function prijsUitInvoer(i: PrijsInvoer): PrijsUitslag {
+  const bedrag = leesBedrag(i.prijs)
+  if (!i.eenheid) return { prijs: bedrag, eenheidsprijs: null, aantal: null, fout: Number.isNaN(bedrag) }
+  const aantal = leesAantal(i.aantal)
+  if (Number.isNaN(bedrag) || Number.isNaN(aantal)) return { prijs: null, eenheidsprijs: null, aantal: null, fout: true }
+  if (bedrag === null) return { prijs: null, eenheidsprijs: null, aantal: null, fout: false }
+  const totaal = Math.round(bedrag * (aantal ?? 1) * 100) / 100
+  if (totaal >= 100000) return { prijs: null, eenheidsprijs: null, aantal: null, fout: true }
+  return { prijs: totaal, eenheidsprijs: bedrag, aantal: aantal ?? 1, fout: false }
+}
+
 export interface UitgavenBedrag { naam: string; id: string | null; totaal: number; aantal: number }
 export interface UitgavenGroep extends UitgavenBedrag { details: UitgavenBedrag[] }
 export interface UitgavenOverzicht {
