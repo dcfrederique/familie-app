@@ -1,6 +1,6 @@
 # Plan: de wereld voller bouwen (dorpsindeling)
 
-Update 27 oktober 2026: Frederique kiest **B, maar groter en open**: het dorp niet omringd door bomen, met stenen paden, kasseien, auto's langs de weg en wegen naar andere gebieden (Springland enzovoort), "een echte wereld, veel groter". Uitwerking in het deel "Groter geheel" onderaan; mockup `prototypes/wereld-dorp/wereld-groot.html`.
+Update 27 oktober 2026: Frederique kiest **B, maar groter en open**: het dorp niet omringd door bomen, met stenen paden, kasseien, een paar geparkeerde auto's en grindpaden (routes) naar andere gebieden (Springland enzovoort), "een echte wereld, veel groter". Uitwerking in het deel "Groter geheel" onderaan; mockup `prototypes/wereld-dorp/wereld-groot.html`.
 
 Status: voorstel van 27 oktober 2026, op vraag van Frederique ("de wereld wat meer vol gebouwd, meer straten en ronddwaalmogelijkheden"). Niets gebouwd. Mockup met drie indelingen: `prototypes/wereld-dorp/dorp.html` (online als artifact), beelden in de projectmap `schermen/wereld-dorp/`. Bouwt voort op `docs/wereld-levendig.md` (stap 5 huizen spreiden en stap 6 stad uitbouwen) en blijft 2D van bovenaf (`docs/wereld.md`, `docs/wereld-25d.md` is de schuine weergave van dezelfde kaart).
 
@@ -44,18 +44,18 @@ De routine werkt nu van een vrije lijst in `docs/wereld-levendig.md`. Zolang er 
 
 Mockup: `prototypes/wereld-dorp/wereld-groot.html` (tabs: de hele wereld, het dorp open aan de randen); beelden in de projectmap `schermen/wereld-dorp/`.
 
-**De hele wereld** is een raster van negen gebieden van elk ongeveer 56 × 28 tegels (samen ±168 × 84): bos, berg, platteland (boven), Springland, dorp, meer (midden), sportpark, strand en haven, stadje (onder). Vier hoofdwegen (asfalt) lopen vanuit het dorp naar buiten, landwegen verbinden de buitenste gebieden (een rondje om het hele land), een rivier loopt van de berg door het meer naar de zee en wordt met bruggen gekruist. Bushaltes zijn de snelle weg.
+**De hele wereld** is een raster van negen gebieden van elk ongeveer 56 × 28 tegels (samen ±168 × 84): bos, berg, platteland (boven), Springland, dorp, meer (midden), sportpark, strand en haven, stadje (onder). Vier routes (grindpaden, klassiek Pokémon-gevoel, geen autowegen) lopen vanuit het dorp naar buiten, paden verbinden de buitenste gebieden (een rondje om het hele land), een rivier loopt van de berg door het meer naar de zee en wordt met bruggen gekruist. Bushaltes zijn de snelle weg.
 
-**Het dorp zelf** (B): plein en ring zijn kasseien, de buitenring en de uitgaande wegen asfalt met een streep, in het park een stenen pad, zebrapaden, geparkeerde auto's (en een paar rijdende), een bushalte, wegwijzers naar de andere gebieden, en geen rij bomen meer maar akkers, heggen, een stroompje en bosjes.
+**Het dorp zelf** (B): plein en ring zijn kasseien, de buitenring en de uitgaande routes grindpad, in het park een stenen pad, zebrapaden, een paar geparkeerde auto's als decor, een bushalte, wegwijzers naar de andere gebieden, en geen rij bomen meer maar akkers, heggen, een stroompje en bosjes.
 
 ### Techniek (voorstel)
 
-- **Gebieden als aparte kaarten.** Elk gebied is een eigen kaart (`src/data/gebieden.ts`: naam, ondergrondstijl, straten, plekken, poorten naar buurgebieden). Aan de rand brengt een weg of poort je naar het volgende gebied met een korte overgang (zoals de iris bij een gebouw). Zo blijft elke ondergrond een kleine bitmap (nu 2688 × 1344 maal de verfijning) en blijft het vlot op de oude tablets; één reusachtige kaart zou dat niet blijven.
-- **Nieuwe ondergronden**: kasseien, stenen pad, asfalt met streep, zand en gras als tegelsoorten met eigen kleur en structuur; `wegen()` in `kaart.ts` krijgt een soort per weg.
-- **Auto's**: geparkeerde auto's zijn decor (`Ding` met voet). Rijdende auto's volgen een vaste lus op de hoofdwegen, rijden langzaam, wachten bij een zebrapad en een kind in de weg; nooit raken, geen schrikgeluid.
+- **Gebieden als aparte kaarten.** **Gebieden laden apart bij het binnenlopen; het hoeft geen één geheel te zijn (Frederique, 27 oktober 2026).** Elk gebied is een eigen kaart (`src/data/gebieden.ts`: naam, ondergrondstijl, straten, plekken, poorten naar buurgebieden). Aan de rand brengt een weg of poort je naar het volgende gebied met een korte overgang (zoals de iris bij een gebouw). Zo blijft elke ondergrond een kleine bitmap (nu 2688 × 1344 maal de verfijning) en blijft het vlot op de oude tablets; één reusachtige kaart zou dat niet blijven.
+- **Nieuwe ondergronden**: kasseien, stenen pad, grindpad (route), zand en gras als tegelsoorten met eigen kleur en structuur; `wegen()` in `kaart.ts` krijgt een soort per weg.
+- **Auto's**: alleen geparkeerd als decor (`Ding` met voet). Er rijdt niets en er zijn geen autowegen.
 - **Snel reizen**: bushalte (later fiets of trein) naar een ander gebied, naast de bestaande knop "ga naar". Wandelen blijft een keuze.
 - **Live** (`live.ts`): de positie krijgt een gebied erbij; je ziet elkaar alleen in hetzelfde gebied.
-- **Springland** wordt het westelijke gebied: de wereldkaart met levels (`SpringKaart.tsx`) gaat op in dat gebied, zoals al in `docs/wereld.md` staat; het vrijspelen blijft zoals het is.
+- **Springland** blijft zoals het nu is: de poort in het dorp opent gewoon de bestaande wereldkaart (`SpringKaart.tsx`), terug brengt je bij de poort. Het gaat dus niet op in de wereld; de oudere zin daarover in `docs/wereld.md` vervalt.
 - **Nachtroutine**: de backlog wordt per gebied. Eerst het dorp af (B), daarna elke paar dagen een nieuw gebied met een eerste kleine versie.
 - **2.5D** werkt vanzelf mee (gebouwen en bomen rechtop, wegen en velden gewoon grond).
 
@@ -63,11 +63,11 @@ Mockup: `prototypes/wereld-dorp/wereld-groot.html` (tabs: de hele wereld, het do
 
 1. `gebieden.ts` en de gebiedsoverdracht (één extra gebied als proef, bv. het bos, met een poort in het dorp).
 2. Dorp naar indeling B met kasseien en asfalt, plus de nieuwe tegelsoorten.
-3. Auto's (geparkeerd, dan rijdend) en zebrapaden; bushalte met snel reizen.
-4. Springland als gebied, dan de andere gebieden één voor één (berg, platteland, meer, strand, sportpark, stadje).
+3. Geparkeerde auto's en zebrapaden; bushalte met snel reizen.
+4. Springland als poort naar de bestaande kaart, dan de andere gebieden één voor één (berg, platteland, meer, strand, sportpark, stadje).
 
 ### Open vragen
 
 1. Welke gebieden eerst (voorstel: bos, dan Springland als gebied, dan strand)?
-2. Rijden er auto's rond, of staan ze alleen langs de weg?
+2. Beslist: auto's staan alleen geparkeerd, er rijdt niets.
 3. Mag de nachtroutine blijven rusten tot de eerste fases staan?

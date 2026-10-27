@@ -33,7 +33,7 @@ th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--rand);verti
 <main>
 <header>
 <h1>Een echte wereld, veel groter</h1>
-<p class="zacht">Het dorp (indeling B) is het hart, maar niet meer omringd door bomen. Er lopen wegen naar andere gebieden: Springland, het bos, de berg, het platteland, het meer, het strand en meer. Auto's staan langs de weg, er ligt een stenen plein en je kunt een rondje om het hele land wandelen. Het zijn schetsen om te kiezen en bij te sturen.</p>
+<p class="zacht">Het dorp (indeling B) is het hart, maar niet meer omringd door bomen. Er lopen wegen naar andere gebieden: Springland, het bos, de berg, het platteland, het meer, het strand en meer. Een paar auto's staan geparkeerd, er ligt een stenen plein en grindpaden (routes) leiden naar de andere gebieden, zoals in een klassiek Pokémon-spel. Elk gebied laadt apart zodra je er binnenloopt. Het zijn schetsen om te kiezen en bij te sturen.</p>
 </header>
 <div class="tabs" role="tablist" aria-label="Weergave">
 <button class="tab" role="tab" id="t-w" aria-selected="true" data-k="w">De hele wereld</button>
@@ -51,7 +51,7 @@ th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--rand);verti
 <thead><tr><th>Gebied</th><th>Wat je er doet</th><th>Status</th></tr></thead>
 <tbody>
 <tr><th>Dorp</th><td>Plein met fontein, winkels, huizen van de kinderen, park, speelplein, voetbal. Het hart van de wereld.</td><td>bestaat, wordt uitgebreid (indeling B)</td></tr>
-<tr><th>Springland</th><td>Het springkasteel-gebied in het westen: de wereldkaart van Springland wordt een deel van dit gebied, met de levels als plekjes langs het pad.</td><td>spel bestaat, gebied nieuw</td></tr>
+<tr><th>Springland</th><td>Poort in het westen. Je loopt binnen en ziet de bestaande wereldkaart van Springland precies zoals nu (SpringKaart); terug brengt je bij de poort in het dorp.</td><td>spel bestaat, gebied nieuw</td></tr>
 <tr><th>Bos</th><td>Wandelpaden, boomhutten, de eekhoornboom, een kampvuurplek, paddenstoelen in de herfst.</td><td>idee</td></tr>
 <tr><th>Berg</th><td>Een pad omhoog met bankjes en een hut; sneeuw in de winter.</td><td>idee</td></tr>
 <tr><th>Platteland</th><td>Boerderij met dieren, akkers, windmolen, tractor.</td><td>idee</td></tr>
@@ -65,7 +65,7 @@ th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--rand);verti
 <ul>
 <li><b>Gebieden als aparte kaarten.</b> Elk gebied is een eigen kaart van ongeveer 56 × 28 tegels, zoals de wereld nu. Een weg of poort aan de rand verbindt twee gebieden: de camera laadt dan het volgende gebied met een korte overgang (zoals de iris bij een gebouw). Zo blijft elke ondergrond een kleine bitmap en blijft de wereld vlot op de oude tablets. Eén reusachtige kaart zou dat niet zijn.</li>
 <li><b>Eén gegevensbestand.</b> <code>src/data/gebieden.ts</code>: per gebied de naam, de ondergrondstijl, de straten, de plekken en de poorten naar buurgebieden. De dorpsindeling uit <code>docs/wereld-dorp.md</code> wordt het eerste gebied.</li>
-<li><b>Stenen paden en wegen.</b> Nieuwe ondergronden naast grind: kasseien (plein en dorpsstraten), stenen pad (door het park en het bos), asfalt (hoofdwegen met een streep), zand en gras. Het zijn gewoon tegelsoorten met een eigen kleur en structuur.</li>
+<li><b>Stenen paden en wegen.</b> Nieuwe ondergronden naast grind: kasseien (plein en dorpsstraten), stenen pad (door het park en het bos), grindpad (routes tussen gebieden, geen autoweg), zand en gras. Het zijn gewoon tegelsoorten met een eigen kleur en structuur.</li>
 <li><b>Auto's.</b> Geparkeerde auto's zijn decor langs de weg. Een paar auto's rijden langzaam op een vaste lus op de hoofdwegen, stoppen bij een zebrapad en toeteren vriendelijk; kinderen worden nooit geraakt, een auto wacht gewoon. Voor Feline: grote, duidelijke auto's, geen schrikgeluid.</li>
 <li><b>Snel reizen.</b> Een bushalte (en later een fiets of trein) brengt je naar een ander gebied, zodat een groot land niet lastig is voor de jongsten. De knop "ga naar" blijft ook bestaan. Wandelen blijft een keuze, geen straf.</li>
 <li><b>Live.</b> De positie van de anderen krijgt een gebied erbij; je ziet elkaar alleen in hetzelfde gebied.</li>
@@ -115,7 +115,7 @@ const C = { winkel: '#E98A3C', spel: '#7C5CD6', nieuw: '#7C5CD6', bakker: '#D9A5
 const rand = () => bomen(Array.from({ length: 52 }, (_, i) => [1 + i * 1.07, hash(i, 1) < .5 ? 0.9 : 27.1]).concat(Array.from({ length: 22 }, (_, i) => [hash(i, 4) < .5 ? 0.9 : 55.1, 2 + i * 1.15])))
 
 const defs = () => { const d = el('defs', {}); const p = el('pattern', { id: 'kassei', width: 0.9, height: 0.9, patternUnits: 'userSpaceOnUse' }); p.appendChild(el('rect', { width: 0.9, height: 0.9, fill: '#C9BDA6' })); p.appendChild(el('rect', { x: 0.06, y: 0.06, width: 0.38, height: 0.38, rx: 0.1, fill: '#D9CDB6' })); p.appendChild(el('rect', { x: 0.5, y: 0.5, width: 0.38, height: 0.38, rx: 0.1, fill: '#D3C6AE' })); p.appendChild(el('rect', { x: 0.5, y: 0.06, width: 0.38, height: 0.38, rx: 0.1, fill: '#CFC2AA' })); p.appendChild(el('rect', { x: 0.06, y: 0.5, width: 0.38, height: 0.38, rx: 0.1, fill: '#D6CAB2' })); d.appendChild(p); return d }
-const asfalt = (d, w, streep = true) => { lagen.weg.push(el('path', { d, fill: 'none', stroke: '#E9E2D0', 'stroke-width': w + 0.5, 'stroke-linecap': 'butt', 'stroke-linejoin': 'round' })); lagen.weg.push(el('path', { d, fill: 'none', stroke: '#7E8490', 'stroke-width': w, 'stroke-linecap': 'butt', 'stroke-linejoin': 'round' })); if (streep) lagen.weg.push(el('path', { d, fill: 'none', stroke: 'rgba(255,255,255,.75)', 'stroke-width': 0.1, 'stroke-dasharray': '0.8 0.6', 'stroke-linejoin': 'round' })) }
+const asfalt = (d, w, streep = true) => { lagen.weg.push(el('path', { d, fill: 'none', stroke: '#B8A87F', 'stroke-width': w + 0.3, 'stroke-linecap': 'butt', 'stroke-linejoin': 'round' })); lagen.weg.push(el('path', { d, fill: 'none', stroke: '#D9CBA3', 'stroke-width': w, 'stroke-linecap': 'butt', 'stroke-linejoin': 'round' })); if (false && streep) lagen.weg.push(el('path', { d, fill: 'none', stroke: 'rgba(255,255,255,.75)', 'stroke-width': 0.1, 'stroke-dasharray': '0.8 0.6', 'stroke-linejoin': 'round' })) }
 const kassei = (d, w) => { lagen.weg.push(el('path', { d, fill: 'none', stroke: '#A89C85', 'stroke-width': w + 0.3, 'stroke-linejoin': 'round' })); lagen.weg.push(el('path', { d, fill: 'none', stroke: 'url(#kassei)', 'stroke-width': w, 'stroke-linejoin': 'round' })) }
 const steen = (d, w) => { lagen.weg.push(el('path', { d, fill: 'none', stroke: '#9A9588', 'stroke-width': w + 0.25, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' })); lagen.weg.push(el('path', { d, fill: 'none', stroke: '#C7C1B2', 'stroke-width': w, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' })); lagen.weg.push(el('path', { d, fill: 'none', stroke: '#B2AC9C', 'stroke-width': w * 0.8, 'stroke-dasharray': '0.35 0.55', 'stroke-linecap': 'butt', 'stroke-linejoin': 'round' })) }
 const lijnP = pts => 'M' + pts.map(p => p.join(' ')).join(' L')
@@ -138,11 +138,11 @@ function dorp() {
   klein(13, 1.8, 4, 2, 3); klein(42, 1.5, 3, 2, 5); klein(2.6, 12, 3, 1.5, 7); klein(53.3, 12, 3, 1.5, 9); klein(10, 26.3, 3, 2, 1); klein(42, 26.4, 3, 2, 11)
   // stroompje door de hoek linksonder met een bruggetje (het stenen pad loopt over de brug)
   lagen.grond.push(el('path', { d: glad([[0, 22.6], [6, 21.8], [11, 22.6], [15, 21.2]]), fill: 'none', stroke: '#4FB3E8', 'stroke-width': 1.1, 'stroke-linecap': 'round' }))
-  // wegen: asfalt buiten, kasseien in het dorp
-  asfalt(`M2.5 14 H0`, 1.8, false)
-  asfalt(lijnP([[0, 14], [19.5, 14]]), 1.8); asfalt(lijnP([[36.5, 14], [56, 14]]), 1.8); asfalt(lijnP([[28, 0], [28, 7.5]]), 1.8); asfalt(lijnP([[28, 20.5], [28, 28]]), 1.8)
-  asfalt(`M${2.5 + 3} 3.5 H${53.5 - 3} Q53.5 3.5 53.5 6.5 V21.5 Q53.5 24.5 50.5 24.5 H5.5 Q2.5 24.5 2.5 21.5 V6.5 Q2.5 3.5 5.5 3.5 Z`, 1.6)
-  kassei(`M21.1 7.5 H34.9 Q36.5 7.5 36.5 9.1 V18.9 Q36.5 20.5 34.9 20.5 H21.1 Q19.5 20.5 19.5 18.9 V9.1 Q19.5 7.5 21.1 7.5 Z`, 1.6)
+  // grindpaden buiten, kasseien in het dorp
+  asfalt(`M2.5 14 H0`, 1.2, false)
+  asfalt(lijnP([[0, 14], [19.5, 14]]), 1.2); asfalt(lijnP([[36.5, 14], [56, 14]]), 1.2); asfalt(lijnP([[28, 0], [28, 7.5]]), 1.2); asfalt(lijnP([[28, 20.5], [28, 28]]), 1.2)
+  asfalt(`M${2.5 + 3} 3.5 H${53.5 - 3} Q53.5 3.5 53.5 6.5 V21.5 Q53.5 24.5 50.5 24.5 H5.5 Q2.5 24.5 2.5 21.5 V6.5 Q2.5 3.5 5.5 3.5 Z`, 1.1)
+  kassei(`M21.1 7.5 H34.9 Q36.5 7.5 36.5 9.1 V18.9 Q36.5 20.5 34.9 20.5 H21.1 Q19.5 20.5 19.5 18.9 V9.1 Q19.5 7.5 21.1 7.5 Z`, 1.1)
   vlak(21, 9, 14, 10, 'url(#kassei)', '#A89C85'); lagen.grond.push(el('circle', { cx: 28, cy: 14, r: 1.9, fill: '#4FB3E8', stroke: '#E9E2D0', 'stroke-width': 0.5 })); naam(28, 17.6, 'Dorpsplein (kasseien)', '#fff', 0.8)
   // huizen langs de westelijke weg met stoepjes
   ;[[3.6, BLAUW, 'Luca'], [9.4, ROZE, 'Yuna']].forEach(([x, k, n]) => { huis(x, 10.2, k, n); kassei(lijnP([[x + 1.5, 12.8], [x + 1.5, 13.1]]), 1.1) })
@@ -212,14 +212,13 @@ function wereld() {
   ;[[96, 36], [100, 36], [96, 44], [100, 44]].forEach(([x, y]) => svg.appendChild(el('rect', { x, y, width: 3, height: 2.5, fill: 'rgba(255,255,255,.3)', stroke: '#fff', 'stroke-width': 0.2, 'stroke-dasharray': '0.5 0.4' })))
   rivier(glad([[92, 6], [100, 15], [118, 25], [131, 33]])); rivier(glad([[146, 47], [133, 57], [113, 69], [101, 76]]))
   // wegen: rondweg door het midden van elk gebied, hoofdwegen naar het dorp
-  const W = (pts, w, k) => svg.appendChild(el('path', { d: lijnP(pts), fill: 'none', stroke: k ? '#6E737E' : '#BDB296', 'stroke-width': w + 0.5, 'stroke-linejoin': 'round' })) && svg.appendChild(el('path', { d: lijnP(pts), fill: 'none', stroke: k ? '#8B909B' : '#E2D9C6', 'stroke-width': w, 'stroke-linejoin': 'round' }))
+  const W = (pts, w, k) => svg.appendChild(el('path', { d: lijnP(pts), fill: 'none', stroke: k ? '#B8A87F' : '#BDB296', 'stroke-width': w + 0.5, 'stroke-linejoin': 'round' })) && svg.appendChild(el('path', { d: lijnP(pts), fill: 'none', stroke: k ? '#D9CBA3' : '#E2D9C6', 'stroke-width': w, 'stroke-linejoin': 'round' }))
   W([[28, 14], [140, 14]], 1.4); W([[28, 70], [140, 70]], 1.4); W([[28, 14], [28, 70]], 1.4); W([[140, 14], [140, 70]], 1.4)
-  W([[28, 42], [140, 42]], 2.4, 1); W([[84, 14], [84, 70]], 2.4, 1)
-  svg.appendChild(el('path', { d: lijnP([[28, 42], [140, 42]]), stroke: 'rgba(255,255,255,.75)', 'stroke-width': 0.2, 'stroke-dasharray': '1 0.8', fill: 'none' })); svg.appendChild(el('path', { d: lijnP([[84, 14], [84, 70]]), stroke: 'rgba(255,255,255,.75)', 'stroke-width': 0.2, 'stroke-dasharray': '1 0.8', fill: 'none' }))
+  W([[28, 42], [140, 42]], 1.5, 1); W([[84, 14], [84, 70]], 1.5, 1)
   // bruggen
   ;[[98.6, 14], [143, 50], [112, 70]].forEach(([x, y]) => { svg.appendChild(el('rect', { x: x - 2, y: y - 1.5, width: 4, height: 3, rx: 0.3, fill: '#A9733B', stroke: '#6F4520', 'stroke-width': 0.2 })) })
-  // auto's langs de wegen
-  ;[[40, 41.1, 0], [60, 43, 1], [105, 41.1, 2], [125, 43, 3], [84.9, 25, 4, 1], [83.1, 58, 5, 1], [60, 13.2, 6], [100, 15, 0], [60, 69.2, 1], [127, 71, 4], [28.9, 28, 2, 1], [139.2, 28, 5, 1], [28.9, 58, 3, 1], [139.2, 55, 6, 1]].forEach(([x, y, i, v]) => { const g = el('g', { transform: `translate(${x} ${y}) rotate(${v ? 90 : 0}) scale(1.2)` }); g.appendChild(el('rect', { x: -0.85, y: -0.48, width: 1.7, height: 0.95, rx: 0.3, fill: AUTOKL[i % 7], stroke: 'rgba(0,0,0,.4)', 'stroke-width': 0.08 })); g.appendChild(el('rect', { x: -0.13, y: -0.36, width: 0.65, height: 0.72, rx: 0.15, fill: 'rgba(190,225,250,.9)' })); svg.appendChild(g) })
+  // geen auto's op de wereldkaart: routes zijn grindpaden
+  ;[[40,12,1],[84,24,2],[112,40,3],[84,58,4],[56,40,5],[30,24,6],[140,24,7],[112,58,8]].forEach(([x,y,n])=>{svg.appendChild(el('rect',{x:x-2.2,y:y-0.9,width:4.4,height:1.8,rx:0.3,fill:'#fff',stroke:'#8B6B3D','stroke-width':0.18}));const tt=el('text',{x,y:y+0.45,'text-anchor':'middle','font-size':1.2,'font-weight':800,fill:'#5B4524'});tt.textContent='Route '+n;svg.appendChild(tt)})
   // poorten, namen
   const t = (x, y, s, size = 2.4, kl = '#fff') => svg.appendChild(el('text', { x, y, 'font-size': size, 'text-anchor': 'middle', fill: kl, 'font-weight': 800, 'font-family': 'Nunito,system-ui,sans-serif', 'paint-order': 'stroke', stroke: 'rgba(0,0,0,.55)', 'stroke-width': size * 0.12 }, s))
   svg.appendChild(el('rect', { x: 52.4, y: 40.4, width: 3.2, height: 3.2, rx: 0.4, fill: '#D93A3A', stroke: '#fff', 'stroke-width': 0.25 })); t(54, 39.6, 'poort', 1.5)
@@ -242,8 +241,8 @@ function teken() {
   if (nu === 'w') {
     wereld()
     bed.innerHTML = `<label class="ch" for="c-rond"><input id="c-rond" type="checkbox" checked>Rondje om het hele land</label><label class="ch" for="c-bus"><input id="c-bus" type="checkbox" checked>Bushaltes (snel reizen)</label>`
-    leg.innerHTML = '<span><i style="background:#8B909B"></i>Hoofdweg (asfalt)</span><span><i style="background:#E2D9C6"></i>Landweg</span><span><i style="background:#4FB3E8"></i>Rivier, meer en zee</span><span><i style="background:#A9733B"></i>Brug</span><span><i style="background:#fff;border:2px solid #E0A800"></i>Bushalte</span><span><i style="background:transparent;border:2px dashed #7A3BD6"></i>Wandelrondje</span>'
-    pt.innerHTML = '<li><b>Ongeveer 168 × 84 tegels in totaal</b>, verdeeld over negen gebieden van elk zo groot als de wereld nu. Je ziet maar één gebied tegelijk; wegen en poorten aan de rand brengen je naar het volgende.</li><li>Vanuit het dorp lopen vier hoofdwegen naar buiten: west naar Springland, noord naar de berg, oost naar het meer en zuid naar het strand. Een landweg verbindt de buitenste gebieden: je kunt een rondje om het hele land lopen.</li><li>Een rivier stroomt van de berg door het meer naar de zee; hoofdwegen kruisen hem met een brug.</li><li>Bushaltes zijn de snelle weg voor wie niet wil lopen.</li>'
+    leg.innerHTML = '<span><i style="background:#8B909B"></i>Route (grindpad)</span><span><i style="background:#E2D9C6"></i>Smal pad</span><span><i style="background:#4FB3E8"></i>Rivier, meer en zee</span><span><i style="background:#A9733B"></i>Brug</span><span><i style="background:#fff;border:2px solid #E0A800"></i>Bushalte</span><span><i style="background:transparent;border:2px dashed #7A3BD6"></i>Wandelrondje</span>'
+    pt.innerHTML = '<li><b>Ongeveer 168 × 84 tegels in totaal</b>, verdeeld over negen gebieden van elk zo groot als de wereld nu. Je ziet maar één gebied tegelijk; wegen en poorten aan de rand brengen je naar het volgende.</li><li>Vanuit het dorp lopen vier routes (grindpaden) naar buiten: west naar Springland, noord naar de berg, oost naar het meer en zuid naar het strand. Elk gebied laadt apart zodra je binnenloopt. Een landweg verbindt de buitenste gebieden: je kunt een rondje om het hele land lopen.</li><li>Een rivier stroomt van de berg door het meer naar de zee; routes kruisen hem met een brug.</li><li>Bushaltes zijn de snelle weg voor wie niet wil lopen.</li>'
     document.getElementById('c-rond').addEventListener('change', e => svg.querySelectorAll('[data-laag=rond]').forEach(x => x.style.display = e.target.checked ? '' : 'none'))
     document.getElementById('c-bus').addEventListener('change', e => svg.querySelectorAll('[data-laag=bus]').forEach(x => x.style.display = e.target.checked ? '' : 'none'))
   } else {
@@ -254,8 +253,8 @@ function teken() {
     const rl = el('g', { id: 'rondlaag' }); lagen.rond.forEach(e => rl.appendChild(e)); g(rl)
     const nl = el('g', { id: 'naamlaag' }); lagen.namen.forEach(e => nl.appendChild(e)); g(nl)
     bed.innerHTML = `<label class="ch" for="c-rond"><input id="c-rond" type="checkbox" checked>Wandelrondjes</label><label class="ch" for="c-namen"><input id="c-namen" type="checkbox" checked>Namen</label>`
-    leg.innerHTML = '<span><i style="background:#8B909B"></i>Asfalt</span><span><i style="background:#D3C6AE"></i>Kasseien</span><span><i style="background:#C7C1B2"></i>Stenen pad</span><span><i style="background:#D93A3A"></i>Auto</span><span><i style="background:#2D6BD6"></i>Wegwijzer naar ander gebied</span><span><i style="background:transparent;border:2px dashed #7A3BD6"></i>Wandelrondje</span>'
-    pt.innerHTML = '<li>Geen rij bomen meer rond het dorp: aan alle vier de kanten loopt een weg naar buiten met een wegwijzer (Springland, Bos, Meer, Strand). Daartussen akkers, heggen, een stroompje met een bruggetje en kleine bosjes.</li><li>Het plein en de ring eromheen zijn kasseien, de buitenring en de wegen naar buiten zijn asfalt met een streep, het park heeft een stenen pad. Zebrapaden bij de ring.</li><li>Auto\'s staan langs de weg; een paar rijden langzaam een vaste lus en wachten op kinderen. Bij de bushalte stap je in om naar een ander gebied te gaan.</li>'
+    leg.innerHTML = '<span><i style="background:#D9CBA3"></i>Grindpad (route)</span><span><i style="background:#D3C6AE"></i>Kasseien</span><span><i style="background:#C7C1B2"></i>Stenen pad</span><span><i style="background:#D93A3A"></i>Geparkeerde auto</span><span><i style="background:#2D6BD6"></i>Wegwijzer naar ander gebied</span><span><i style="background:transparent;border:2px dashed #7A3BD6"></i>Wandelrondje</span>'
+    pt.innerHTML = '<li>Geen rij bomen meer rond het dorp: aan alle vier de kanten loopt een weg naar buiten met een wegwijzer (Springland, Bos, Meer, Strand). Daartussen akkers, heggen, een stroompje met een bruggetje en kleine bosjes.</li><li>Het plein en de ring eromheen zijn kasseien, de buitenring en de routes naar buiten zijn grindpad, het park heeft een stenen pad. Zebrapaden bij de ring.</li><li>Een paar auto\'s staan geparkeerd als decor, er rijdt niets. Bij de bushalte stap je in om naar een ander gebied te gaan.</li>'
     document.getElementById('c-rond').addEventListener('change', e => { document.getElementById('rondlaag').style.display = e.target.checked ? '' : 'none' })
     document.getElementById('c-namen').addEventListener('change', e => { document.getElementById('naamlaag').style.display = e.target.checked ? '' : 'none' })
   }
