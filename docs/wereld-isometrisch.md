@@ -1,5 +1,7 @@
 # Onderzoek: de wereld in 2.5D isometrisch
 
+> **Geschrapt (27 oktober 2026):** de 3D-versie (Three.js) is gebouwd en proefgespeeld, maar Frederique schrapte het 3D-concept volledig: het speelt niet goed en de kinderen vinden het niet leuk. De code is uit de app gehaald. Dit document blijft als geschiedenis; volg het besluit onderaan niet meer. De wereld blijft 2D (`docs/wereld.md`).
+
 Status: onderzoek van 27 oktober 2026, op vraag van Frederique. Niets gebouwd. Bouwt voort op `docs/wereld.md` (concept en fases) en `docs/straatje.md`.
 
 ## De vraag

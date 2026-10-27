@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.43',
+    datum: '2026-10-27',
+    titel: 'De 3D-wereld is geschrapt',
+    tekst: 'De proef met een 3D-wereld (versie 0.41) is weer weggehaald: het speelde niet goed en de kinderen vonden het niet leuk. De wereld blijft zoals ze was, in 2D. Het menu-item De wereld in 3D (proef) bestaat niet meer. Wel wordt gekeken of het figuurtje in de wereld mooier en natuurlijker kan bewegen.',
+  },
+  {
     versie: '0.42',
     datum: '2026-10-27',
     titel: 'Berichten, Huisdier wassen, Koken, Pompoenen en Schrijven passen op elke tablet',
