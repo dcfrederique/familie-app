@@ -4,6 +4,7 @@ import type { Figuurtje } from '../../data/figuurtje.ts'
 import type { Huis } from '../../data/huis.ts'
 import type { Kleur, WereldLopen } from '../../data/gezin.ts'
 import type { Activiteit } from '../regels.ts'
+import type { WereldWeergave } from '../wereld/weergave.ts'
 import type { Weging } from '../gewicht.ts'
 import type { StemKeuze } from '../stem.ts'
 
@@ -253,6 +254,8 @@ export interface Bron {
   saldi(): Promise<Record<string, Saldo>>
   log(kindId: string): Promise<LogRegel[]>
   spelregels(): Promise<Spelregels>
+  /** Hoe de wereld eruitziet en hoe snel het figuurtje loopt (Instellingen → Wereldinstellingen); zonder migratie de standaard. */
+  wereldWeergave(): Promise<WereldWeergave>
   /** Daglimieten per spelletje die de ouders instelden (leeg zonder migratie). */
   activiteitLimieten(): Promise<ActiviteitLimiet[]>
   /** Wat elk kind gekocht heeft in de winkel, als sleutels 'hoofd:kroon' of 'spel:racen' (docs/winkel.md). */
@@ -321,6 +324,7 @@ export interface Bron {
   taakOpslaan(taak: NieuweTaak): Promise<void>
   taakVerwijderen(id: string): Promise<void>
   spelregelsOpslaan(regels: Spelregels): Promise<void>
+  wereldWeergaveOpslaan(weergave: WereldWeergave): Promise<void>
   /** Zet de daglimiet van een spelletje voor één kind (kindId) of voor allemaal (null); max null wist hem. */
   activiteitLimietZetten(kindId: string | null, activiteit: LimietActiviteit, max: number | null): Promise<void>
   kindAanpassen(id: string, wijziging: KindWijziging): Promise<void>

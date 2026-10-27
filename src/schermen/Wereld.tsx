@@ -11,7 +11,8 @@ import {
   GROND_Y, MAX_HUIZEN, deurVan, inRechthoek, maakKaart, maakTegels, nieuweTegelStand, opDeurmat, richtingVan, stap, tegelMidden, tegelStap, voorHuisdeur,
   huisRechthoek, type Loper, type TegelStand,
 } from '../lib/wereld/kaart.ts'
-import { Tekenaar } from '../lib/wereld/tekenen.ts'
+import { Tekenaar25 } from '../lib/wereld/tekenen25.ts'
+import { standaardWeergave, type WereldWeergave } from '../lib/wereld/weergave.ts'
 import { DUUR, isToestel, naarBal, nieuweBal, pose, rol, schop, voorToestel, type Toestel } from '../lib/wereld/speel.ts'
 import { lichtVan, weerVan } from '../lib/wereld/weer.ts'
 import { WEG_NA, Zender, metPositie, verbind, volg, type Ander } from '../lib/wereld/live.ts'
@@ -19,6 +20,7 @@ import { supabase } from '../lib/supabase.ts'
 import { useSessie } from '../lib/sessie.tsx'
 import { useGegevens } from '../lib/gegevens.ts'
 import { Ster } from './onderdelen.tsx'
+import { WereldWeergaveFormulier, useWereldWeergave } from './WereldInstellingen.tsx'
 import { gebruikStem, kanVoorlezen, leesVoor } from '../lib/voorlezen.ts'
 import './wereld.css'
 
@@ -56,14 +58,14 @@ export function OuderWereld() {
 function WereldLader({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolean }) {
   const { bron } = useSessie()
   const { data, fout } = useGegevens(bron ? async () => {
-    const [aankopen, aanbod] = await Promise.all([ouder ? Promise.resolve({} as Record<string, string[]>) : bron.aankopen(), bron.aanbod()])
-    return { eigen: new Set(aankopen[kind.id] ?? []), aanbod }
+    const [aankopen, aanbod, weergave] = await Promise.all([ouder ? Promise.resolve({} as Record<string, string[]>) : bron.aankopen(), bron.aanbod(), bron.wereldWeergave().catch(() => standaardWeergave)])
+    return { eigen: new Set(aankopen[kind.id] ?? []), aanbod, weergave }
   } : null, [bron, kind.id, ouder])
   if (bron && !data && !fout) return <div className="wereld" aria-busy="true" />
   return <WereldScherm kind={kind} ouder={ouder} winkel={data} />
 }
 
-function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?: boolean; winkel: { eigen: Set<string>; aanbod: Aanbod } | null }) {
+function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?: boolean; winkel: { eigen: Set<string>; aanbod: Aanbod; weergave: WereldWeergave } | null }) {
   const { kinderen, bron, gebruikers, account } = useSessie()
   // Zonder gegevens (offline of een fout) blijven de gebouwen van de spelletjes weg: wat niet vrij is, mag niet zichtbaar zijn.
   const [gebouwLijst] = useState<GebouwBeeld[]>(() => gebouwenVoor({
@@ -77,6 +79,11 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const joyRef = useRef<HTMLDivElement>(null)
   const knopRef = useRef<HTMLDivElement>(null)
+  // Plat of 2.5D, camerahoek en loopsnelheid (Instellingen → Wereldinstellingen). Een ouder kan ze in de wereld zelf proberen.
+  const { w: weergave, wijzig: wijzigWeergave, melding: weergaveMelding } = useWereldWeergave(winkel?.weergave ?? standaardWeergave)
+  const weergaveRef = useRef(weergave)
+  useEffect(() => { weergaveRef.current = weergave }, [weergave])
+  const [instelOpen, setInstelOpen] = useState(false)
   const [bericht, setBericht] = useState<{ tekst: string; prent: string } | null>(null)
   const [sluit, setSluit] = useState(false)
   useEffect(() => { gebruikStem(kind.voorleesstem) }, [kind])
@@ -104,6 +111,7 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
     spelen: null as null | { id: Toestel; x: number; y: number; van: { x: number; y: number }; t: number },
     klaarMet: '' as string, bal: nieuweBal(), balRust: 0,
     cam: [0, 0, 1] as readonly [number, number, number], bezig: false, maat: [960, 640] as [number, number],
+    tek: null as Tekenaar25 | null,
   })
 
   const meld = useCallback((tekst: string, prent: string) => {
@@ -150,11 +158,12 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
     if (tegelLopen) { start.x = tegelMidden(Math.floor(start.x / U)); start.y = tegelMidden(Math.floor(start.y / U)) }
     s.pl = { ...start, face: 'down', moving: false, fase: 0, tegel: nieuweTegelStand() }
     s.route = []; s.doel = null; s.bezig = false; s.spelen = null; s.klaarMet = ''; s.bal = nieuweBal()
-    const tek = new Tekenaar(cv, Math.min(2, Math.max(1, window.devicePixelRatio || 1)) > 1.4 ? 1.5 : 1)
+    const tek = new Tekenaar25(cv, Math.min(2, Math.max(1, window.devicePixelRatio || 1)) > 1.4 ? 1.5 : 1)
     // Dag, schemer en nacht volgen de klok; het weer wisselt per blok van drie uur (weer.ts). Elke halve minuut kijken we opnieuw.
     const klok = () => { const nu = new Date(), l = lichtVan(nu); tek.nacht = l.nacht; tek.schemer = l.schemer; tek.weer = weerVan(nu) }
     klok()
     const klokTik = setInterval(klok, 30_000)
+    s.tek = tek
     tek.rustig = minderBeweging()
     // Het beeld vult het hele scherm; bij draaien of vergroten past het zich aan.
     const pas = () => { const r = cv.getBoundingClientRect(); if (r.width > 0) tek.zet(r.width, r.height); s.maat = [tek.vw, tek.vh] }
@@ -185,6 +194,9 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
         if (!ix && !iy) {
           ix = (s.held.right ? 1 : 0) - (s.held.left ? 1 : 0); iy = (s.held.down ? 1 : 0) - (s.held.up ? 1 : 0)
         }
+        // In 2.5D wijst omhoog op het scherm een andere kant op in de wereld; de camera rekent het om.
+        const wg = weergaveRef.current, schuin = wg.stijl === 'schuin', dts = dt * wg.snelheid
+        if (schuin && (ix || iy)) [ix, iy] = tek.richting(ix, iy)
         if (ix || iy) { s.route = []; s.doel = null; setBericht(null); s.spelen = null }
         let aangekomen = true
         if (s.spelen) {
@@ -193,7 +205,7 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
           aangekomen = false
         } else if (tegelLopen) {
           // een stap per tegel; deuren pas als er een tegel bereikt is
-          const uit = tegelStap(s.pl, dt, richtingVan(ix, iy), s.route, tegels)
+          const uit = tegelStap(s.pl, dts, richtingVan(ix, iy), s.route, tegels)
           aangekomen = uit !== null
           if (uit === 'einde') eindeRoute()
         } else {
@@ -201,7 +213,7 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
             const [tx, ty] = s.route[0], dx = tx - s.pl.x, dy = ty - s.pl.y, d = Math.hypot(dx, dy)
             if (d < 7) { s.route.shift(); if (!s.route.length) eindeRoute() } else { ix = dx / d; iy = dy / d }
           }
-          stap(s.pl, dt, ix, iy, kaart)
+          stap(s.pl, dts, ix, iy, kaart)
           if (!(ix || iy)) s.pl.fase = 0
         }
         if (aangekomen) {
@@ -239,14 +251,15 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
         const po = pose(s.spelen.id, { id: s.spelen.id, x: s.spelen.x, y: s.spelen.y, voet: [0, 0] }, s.spelen.van, s.spelen.t)
         me = { ...s.pl, x: po.x, y: po.y, sorteerY: po.sorteerY, moving: false, face: 'down' }
       }
-      s.cam = tek.teken({
+      const opties = {
         t, kaart, huizen, gebouwen: gebouwLijst, me, bal: s.bal, mijnId: kind.id, kleur: kleurVan(kind.id), figuurtjes, overzicht: false,
         anderen: [...s.anderen.values()].flatMap((a) => {
           const lid = leden.get(a.id)
           return lid ? [{ ...a, naam: lid.naam, figuur: figuurtjeVan(lid), kleur: lid.rol === 'ouder' ? '#6A5BD1' : kidKleur[lid.thema ?? 'blauw'] }] : []
         }),
         kleurVan: { ...Object.fromEntries(huizen.map((h) => [h.id, h.kleur])), [kind.id]: kleurVan(kind.id) },
-      })
+      }
+      s.cam = weergaveRef.current.stijl === 'schuin' ? tek.teken25(opties, weergaveRef.current) : tek.teken(opties)
       raf = requestAnimationFrame(lus)
     }
     const eindeRoute = () => {
@@ -271,15 +284,20 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
     ev.preventDefault()
     setBericht(null); s.spelen = null
     const r = ev.currentTarget.getBoundingClientRect()
-    const wx = (ev.clientX - r.left) / r.width * s.maat[0] + s.cam[0], wy = (ev.clientY - r.top) / r.height * s.maat[1] + s.cam[1]
+    const px = (ev.clientX - r.left) / r.width * s.maat[0], py = (ev.clientY - r.top) / r.height * s.maat[1]
+    // Plat: de tik is meteen een punt in de wereld. In 2.5D staan gebouwen en huizen rechtop, dus die tikken we ten opzichte van hun voet.
+    const schuin = weergaveRef.current.stijl === 'schuin' && s.tek
+    const [wx, wy] = schuin ? s.tek!.naarWereld(px, py) : [px + s.cam[0], py + s.cam[1]]
+    const opVoet = (vx: number, vy: number): [number, number] => schuin ? (([a, b]) => [vx + a, vy + b] as [number, number])(s.tek!.opPrent(px, py, vx, vy)) : [wx, wy]
     for (const b of gebouwLijst) {
-      if (inRechthoek(wx, wy, [b.x - b.w * 0.45, b.y - b.w * 0.8, b.x + b.w * 0.45, b.y + 22])) {
+      const [hx, hy] = opVoet(b.x, b.y)
+      if (inRechthoek(hx, hy, [b.x - b.w * 0.45, b.y - b.w * 0.8, b.x + b.w * 0.45, b.y + 22])) {
         s.route = loopPad(s.pl.x, s.pl.y, b.x, b.y + 24); s.doel = { gebouw: b }; return
       }
     }
     for (const h of huizen) {
-      const hr = huisRechthoek(h)
-      if (inRechthoek(wx, wy, [hr[0], hr[1] - 40, hr[2], GROND_Y + 20])) {
+      const hr = huisRechthoek(h), [hx, hy] = opVoet(h.deurX, GROND_Y)
+      if (inRechthoek(hx, hy, [hr[0], hr[1] - 40, hr[2], GROND_Y + 20])) {
         s.route = loopPad(s.pl.x, s.pl.y, h.deurX, GROND_Y + 22); s.doel = { huis: h.id }; return
       }
     }
@@ -323,6 +341,16 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
               role="img" aria-label="De straat met de huizen, de winkel en het Spellenhuis" />
       {!ouder && saldo !== undefined && saldo !== null && (
         <div className="wereld-sterren" role="img" aria-label={`${saldo} sterren`}><Ster grootte={34} /><b className="display">{saldo}</b></div>
+      )}
+      {ouder && (
+        <>
+          <button type="button" className="wereld-instel-knop" aria-expanded={instelOpen} aria-label="Wereldinstellingen proberen" onClick={() => setInstelOpen((x) => !x)}>⚙</button>
+          {instelOpen && (
+            <div className="wereld-instel" role="dialog" aria-label="Wereldinstellingen">
+              <WereldWeergaveFormulier w={weergave} wijzig={wijzigWeergave} melding={weergaveMelding} compact />
+            </div>
+          )}
+        </>
       )}
       <Link to={thuis} className="wereld-hub" aria-label={ouder ? "Terug naar het ouderdeel" : "Terug naar het startscherm"}
             onClick={() => { if (!lezer) leesVoor('Startscherm') }}>

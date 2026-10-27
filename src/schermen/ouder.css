@@ -353,3 +353,7 @@ a.vink-tekst { text-decoration: none; }
 .limiet-spel { border: 0; padding: 0; margin: 0 0 12px; }
 .limiet-spel legend { font-weight: 600; padding: 0; margin-bottom: 4px; }
 .limiet-spel legend small { font-weight: 400; color: var(--muted); }
+
+/* Wereldinstellingen */
+.ouder .knoppenrij { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.ouder .veld.rij { display: flex; align-items: center; gap: 8px; }

@@ -106,3 +106,23 @@ async function pincodeAlsGevraagd(page: Page) {
     await page.keyboard.press('Enter')
   }
 }
+
+test('wereldinstellingen: ouder zet 2.5D aan en loopt rond zonder fouten', async ({ page }) => {
+  const fouten: string[] = []
+  page.on('pageerror', (e) => fouten.push(e.message))
+  await startAls(page, 'luca')
+  await naar(page, '/ouder/wereld-instellingen')
+  await pincodeAlsGevraagd(page)
+  await page.getByRole('button', { name: '2.5D schuin' }).click()
+  await page.getByRole('button', { name: 'Isometrisch' }).click()
+  await expect(page.getByText('Bewaard.')).toBeVisible()
+  await page.getByRole('link', { name: 'Proberen in de wereld' }).click()
+  await expect(page.locator('canvas.wereld-veld')).toBeVisible()
+  await page.keyboard.down('ArrowRight')
+  await page.waitForTimeout(800)
+  await page.keyboard.up('ArrowRight')
+  await page.getByRole('button', { name: 'Wereldinstellingen proberen' }).click()
+  await page.getByRole('button', { name: 'Plat (zoals nu)' }).click()
+  await page.waitForTimeout(300)
+  expect(fouten).toEqual([])
+})

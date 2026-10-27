@@ -1,6 +1,10 @@
 # Concept: de wereld in 2.5D (schuin bovenaanzicht)
 
-Status: concept met speelbare proef van 27 oktober 2026, op vraag van Frederique. **Niets in de app gebouwd.** Proef: `prototypes/wereld-25d/` (bouwen met `sh prototypes/wereld-25d/bouw.sh <uitvoer.html>`), beelden in de projectmap `schermen/wereld-25d/`.
+Status: concept met speelbare proef van 27 oktober 2026, op vraag van Frederique. **Een werkbare versie zit in de app (nieuwtje 0.48)** als schakelaar Plat / 2.5D schuin in Instellingen → Wereldinstellingen, met dezelfde opties als de proef plus loopsnelheid; standaard blijft de wereld plat. Hieronder staat het oorspronkelijke concept; de app-versie wijkt op een punt af: de kinderhuizen en gebouwen blijven hun bestaande tekening, die naar achteren wordt uitgetrokken (zijkant en dak per rij gekleurd, schaduw op de grond), in plaats van opnieuw als vlakken getekend te worden.
+
+**In de app:** `src/lib/wereld/camera.ts` (projectie, getest), `weergave.ts` (instellingen), `tekenen25.ts` (`Tekenaar25 extends Tekenaar`, `teken25`), opslag in `gezinnen.wereld_instellingen` (migratie 20261027000300), scherm `src/schermen/WereldInstellingen.tsx`; een ouder kan in De wereld in (tandwiel) live proberen. Loopsnelheid werkt ook in de platte wereld.
+
+**Nog niet:** de 2.5D-wereld is niet op echte tablets getest; Springland verandert niet. Proef: `prototypes/wereld-25d/` (bouwen met `sh prototypes/wereld-25d/bouw.sh <uitvoer.html>`), beelden in de projectmap `schermen/wereld-25d/`.
 
 **Geen Three.js, geen WebGL, geen spelraamwerk.** Het blijft het gewone 2D-canvas van `src/lib/wereld/`. Het verschil met vroeger: de camera kijkt schuin, en huizen en hekjes krijgen een zijkant en een dak (vlakken met een tekening erop). Dat is een andere look dan "de stijl van nu" uit `CLAUDE.md`; Frederique beslist of dat mag voor het in de app komt.
 

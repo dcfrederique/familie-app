@@ -14,11 +14,11 @@ import { GROND_Y, HUIS_SCHAAL, POEL, PLEIN, VELD, inPoel, inRechthoek, opWeg, to
 /** Het beeld toont ongeveer 960 × 640 eenheden van de wereld, in de verhouding van het scherm; Q is de verfijning voor scherpte. */
 const OPPERVLAK = 960 * 640
 
-const BASIS = 470
+export const BASIS = 470
 const DAG = '--huis-gras:#7CC46A;--huis-gras2:#6AB55A;--huis-heuvel:#A6D98C;--huis-glas:#BFE3FA;--huis-pad:#E2D9C6;--huis-rook:#E6EAF0;'
 const NACHT = '--huis-gras:#2E5A3A;--huis-gras2:#264E30;--huis-heuvel:#1E3B4C;--huis-glas:#FFD66B;--huis-pad:#5E5A52;--huis-rook:#7A859A;'
 
-const PAL = {
+export const PAL = {
   d: { gras: '#7CC46A', gras2: '#6AB55A', pad: '#E2D9C6', padRand: '#CDBF9F', grind: '#F1EBDD', grindD: '#B9AA88', tuf: '#5BA84C', zand: '#F2E3B5', zandPunt: '#E2CE96', water: '#4FB3E8', waterL: '#A6DEF8', veld1: '#6FC25C', veld2: '#84CC72' },
   n: { gras: '#2E5A3A', gras2: '#264E30', pad: '#5E5A52', padRand: '#4A463F', grind: '#74706A', grindD: '#3E3A34', tuf: '#1F4A2D', zand: '#7C7458', zandPunt: '#6A6349', water: '#25497A', waterL: '#3E6BA3', veld1: '#2A5736', veld2: '#33663F' },
 }
@@ -36,8 +36,8 @@ const wasmaker = () => document.createElement('canvas')
 export class Tekenaar {
   readonly canvas: HTMLCanvasElement
   readonly g: CanvasRenderingContext2D
-  private plaatjes = new Map<string, HTMLImageElement>()
-  private grond = new Map<string, HTMLCanvasElement>()
+  protected plaatjes = new Map<string, HTMLImageElement>()
+  protected grond = new Map<string, HTMLCanvasElement>()
   nacht = false
   /** Warme gloed bij zonsopgang en -ondergang (0 tot 1) en het weer van nu; zie weer.ts. */
   schemer = 0
@@ -66,7 +66,7 @@ export class Tekenaar {
     this.canvas.height = Math.round(this.vh * this.Q)
   }
 
-  private plaatje(sleutel: string, vb: string, inner: string, w: number, h: number, kleur = '#2D6BD6', uitsnede?: string) {
+  protected plaatje(sleutel: string, vb: string, inner: string, w: number, h: number, kleur = '#2D6BD6', uitsnede?: string) {
     const k = sleutel + (this.nacht ? 'n' : 'd')
     const bestaand = this.plaatjes.get(k)
     if (bestaand) return bestaand
@@ -77,23 +77,23 @@ export class Tekenaar {
     return im
   }
 
-  private klaar = (im?: HTMLImageElement | null): im is HTMLImageElement => !!im && im.complete && im.naturalWidth > 0
+  protected klaar = (im?: HTMLImageElement | null): im is HTMLImageElement => !!im && im.complete && im.naturalWidth > 0
 
   /** Het figuurtje als plaatje van 49 × 70. */
   figuur(sleutel: string, f: Figuurtje, kleur: string) {
     return this.plaatje('f' + sleutel + JSON.stringify(f), volledigeUitsnede, tekenFiguurtje(f, 'wf' + sleutel.replace(/\W/g, '')), 49, 70, kleur)
   }
 
-  private huis(sleutel: string, h: Huis, kleur: string) {
+  protected huis(sleutel: string, h: Huis, kleur: string) {
     const vb = huisUitsnede(h.model), [vx, vy, vw] = vb.split(' ').map(Number), px = vw * HUIS_SCHAAL
     return { im: this.plaatje('h' + sleutel + JSON.stringify(h), vb, tekenHuis(h, { id: 'wh' + sleutel.replace(/\W/g, ''), kaal: true }), px, px, kleur), px, vx, vy }
   }
 
-  private gebouwPlaatje(b: GebouwBeeld) {
+  protected gebouwPlaatje(b: GebouwBeeld) {
     return this.plaatje('g' + b.id, '0 0 400 300', gebouwTekening[b.id] ?? '', b.w, b.w * 0.75)
   }
 
-  private ding(d: Ding) {
+  protected ding(d: Ding) {
     const s = ITEM * (GROOT[d.id] ?? 1)
     const eigen = straatTekening[d.id]
     const inner = typeof eigen === 'function' ? eigen(d.kleur ?? '#2D6BD6') : eigen ?? tuinStuk(d.id)
@@ -101,7 +101,7 @@ export class Tekenaar {
   }
 
   /** De ondergrond: gras, plein, vijver, veld en wegen. Eén keer getekend per dag en nacht. */
-  private ondergrond(wegen: Kaart['wegen']) {
+  protected ondergrond(wegen: Kaart['wegen']) {
     const sl = this.nacht ? 'n' : 'd'
     const bestaand = this.grond.get(sl)
     if (bestaand) return bestaand
@@ -191,12 +191,12 @@ export class Tekenaar {
    * Elke stap zet één voet voor (de andere blijft staan), het lijfje veert mee en de armen zwaaien tegengesteld.
    * `fase` loopt een halve cirkel (π) per stap; de voet wisselt bij elke stap.
    */
-  private tekenFiguur(l: { moving: boolean; fase: number; face: Richting }, f: Figuurtje, _sleutel: string, _kleur: string, x: number, y: number, t: number, o: { schaal?: number } = {}) {
+  protected tekenFiguur(l: { moving: boolean; fase: number; face: Richting }, f: Figuurtje, _sleutel: string, _kleur: string, x: number, y: number, t: number, o: { schaal?: number } = {}) {
     tekenChibi(this.g, f, l.face, l.fase, l.moving, x, y, t, o.schaal ?? 1)
   }
 
   /** Een gebouw. Nieuw = gouden gloed langs de rand; nog niet gekocht = grijzer met een slotje op de deur. */
-  private tekenGebouw(im: HTMLImageElement, b: GebouwBeeld, t: number) {
+  protected tekenGebouw(im: HTMLImageElement, b: GebouwBeeld, t: number) {
     const g = this.g, x = b.x - b.w / 2, h = b.w * 0.75, y = b.y - h * 285 / 300
     g.save()
     if (b.nieuw) {
@@ -350,7 +350,7 @@ export class Tekenaar {
   }
 
   /** Wolkenschaduwen, regen of sneeuw over het hele beeld (in schermeenheden). Bij "minder beweging" staan ze stil. */
-  private tekenWeer(t: number) {
+  protected tekenWeer(t: number) {
     const g = this.g, VW = this.vw, VH = this.vh, Q = this.Q, w = this.weer
     if (w === 'zon' && this.nacht) return
     const tt = this.rustig ? 0 : t
@@ -383,7 +383,7 @@ export class Tekenaar {
   }
 
   /** Een paar vlinders fladderen rond in beeld (niet bij "minder beweging"). */
-  private vlinders(t: number, camX: number, camY: number, VW: number, VH: number) {
+  protected vlinders(t: number, camX: number, camY: number, VW: number, VH: number) {
     const g = this.g, kleuren = ['#FF8FB8', '#FFD84A', '#8EC5FF', '#C9A6F2']
     for (let i = 0; i < 4; i++) {
       const x = camX + VW * (0.15 + 0.7 * (0.5 + 0.5 * Math.sin(t * (0.11 + i * 0.03) + i * 2))) + Math.sin(t * 1.7 + i) * 18
@@ -400,7 +400,7 @@ export class Tekenaar {
   }
 
   /** Rechtsboven staat een houten bordje met een huisje in de wereld zelf: tikken erop (een onzichtbare link ligt erover) brengt je terug naar het startscherm. */
-  private tekenHubBord(t: number, kleur: string) {
+  protected tekenHubBord(t: number, kleur: string) {
     const g = this.g, Q = this.Q
     const eenheid = this.vw / Math.max(1, this.canvas.clientWidth || this.vw) // eenheden per schermpunt
     const maat = HUB_MAAT * eenheid, rand = 14 * eenheid
@@ -424,7 +424,7 @@ export class Tekenaar {
   }
 
   /** Naam in een kleurig bordje boven het hoofd. */
-  private naamLabel(x: number, y: number, tekst: string, kleur: string) {
+  protected naamLabel(x: number, y: number, tekst: string, kleur: string) {
     const g = this.g
     g.save()
     g.font = '800 15px "Baloo 2", Nunito, sans-serif'
@@ -434,7 +434,7 @@ export class Tekenaar {
     g.restore()
   }
 
-  private tekenDing(d: Ding) {
+  protected tekenDing(d: Ding) {
     const g = this.g
     if (d.id === 'naambord') {
       g.save()

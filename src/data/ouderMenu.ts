@@ -58,6 +58,7 @@ export const ouderMenu: MenuGroep[] = [
   { naam: 'Instellingen', items: [
     { naam: 'Toestellen en meldingen', icoon: 'toestellen', pad: '/ouder/toestellen' },
     { naam: 'Testmelding', icoon: 'melding', pad: '/ouder/testmelding', alleenOuderGsm: true },
+    { naam: 'Wereldinstellingen', icoon: 'wereld', pad: '/ouder/wereld-instellingen', alleenOuderGsm: true },
     { naam: 'Pincode', icoon: 'pincode', pad: '/ouder/pincode', alleenOuderGsm: true },
     { naam: 'Winkels en categorieën', icoon: 'winkels', pad: '/ouder/winkels', alleenOuderGsm: true },
   ] },

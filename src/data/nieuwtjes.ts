@@ -19,6 +19,13 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.48',
+    datum: '2026-10-27',
+    titel: 'De wereld in 2.5D om te proberen, met loopsnelheid',
+    tekst: 'Nieuw onder Instellingen → Wereldinstellingen (gsm van een ouder): een schakelaar tussen Plat (zoals nu) en 2.5D schuin. In 2.5D kijkt de camera schuin van boven: de grond staat schuin, elk huis (het eigen Mijn huis van het kind) en elk gebouw krijgt een zijkant, dak en schaduw, en bomen en figuurtjes staan rechtop. Je kiest 3/4 recht, 3/4 licht gedraaid of Isometrisch, of stelt draaien, kantelen, diepte en schaduw zelf in. Daarnaast stel je de loopsnelheid in (half tot dubbel). Alles geldt voor alle kinderen en wordt meteen bewaard; in De wereld in (ouderdeel) staat een tandwiel om het live uit te proberen. Standaard blijft de wereld plat. Eerste proefversie, gebaseerd op docs/wereld-25d.md.',
+    open: 'Niet getest op de echte tablets: kijk of het vlot loopt, en zeg welke hoek je het mooist vindt.',
+  },
+  {
     versie: '0.47',
     datum: '2026-10-27',
     titel: 'Spelen in de wereld: schommel, glijbaan en voetbal',

@@ -60,3 +60,16 @@
 @media (min-width: 600px) and (min-height: 560px) { .kind-start > section[aria-label="De wereld"] { display: flex; flex-direction: column; min-height: 0; } }
 @media (min-width: 600px) and (min-height: 560px) { .wereld-groot { min-height: 0; } }
 .wereld-tip { bottom: auto; top: 18px; left: 18px; transform: none; max-width: calc(100% - 240px); text-align: left; }
+
+/* Een ouder probeert de wereldinstellingen in de wereld zelf (alleen in "De wereld in") */
+.wereld-instel-knop { position: absolute; right: 112px; top: 18px; width: 52px; height: 52px; border-radius: 50%; border: 3px solid #8A5A33; background: #FFF6DC; font-size: 26px; cursor: pointer; z-index: 6; }
+.wereld-instel { position: absolute; right: 14px; top: 112px; width: min(360px, calc(100% - 28px)); max-height: calc(100% - 100px); overflow: auto; z-index: 6; background: var(--surface, #fff); color: var(--text, #1C2433); border-radius: 14px; padding: 14px; box-shadow: 0 6px 24px rgba(0, 0, 0, .3); display: grid; gap: 10px; }
+.wereld-instel h2 { font-size: 18px; margin: 0; }
+.wereld-instel .knoppenrij { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.wereld-instel .veld { display: grid; gap: 4px; font-weight: 700; font-size: 14px; }
+.wereld-instel .veld.rij { display: flex; align-items: center; gap: 8px; }
+.wereld-instel .knop { min-height: 44px; }
+
+.wereld-instel .knop { border: 2px solid #C9D3E0; background: #EEF3F8; color: #1C2433; border-radius: 12px; padding: 8px 12px; font: inherit; font-weight: 700; cursor: pointer; }
+.wereld-instel .knop-primair { background: #2D6BD6; border-color: #2D6BD6; color: #fff; }
+.wereld-instel input[type=range] { width: 100%; }

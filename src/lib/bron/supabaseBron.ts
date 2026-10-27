@@ -1,5 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Aanbod } from '../../data/aanbod.ts'
+import { maakWeergave, type WereldWeergave } from '../wereld/weergave.ts'
 import type { ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, ChatOverzicht, GezondheidProfiel, SpraakToken, Inzending, LogRegel, Maaltijd, NieuweNotitie, NieuweOuderTaak, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Saldo, Spelregels, Taak, Tijdverzoek, Winkel } from './types.ts'
 
 // Postgres numeric komt als tekst of getal binnen.
@@ -74,6 +75,12 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
         .select('dagplafond_minuten, venster_van, venster_tot, max_saldo, activiteit_sterren_per_dag').single()
       fout(error)
       return { ...data, venster_van: data!.venster_van.slice(0, 5), venster_tot: data!.venster_tot.slice(0, 5) } as Spelregels
+    },
+
+    async wereldWeergave() {
+      // Zonder de kolom (migratie nog niet gelopen) of zonder rij blijft de wereld plat en normaal.
+      const { data, error } = await sb.from('gezinnen').select('wereld_instellingen').single()
+      return maakWeergave(error ? null : (data as { wereld_instellingen?: unknown } | null)?.wereld_instellingen)
     },
 
     async activiteitLimieten() {
@@ -288,6 +295,9 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
     async taakVerwijderen(id) {
       // Niet echt wissen: oude inzendingen en de puntenlog verwijzen ernaar.
       fout((await sb.from('taken').update({ actief: false }).eq('id', id)).error)
+    },
+    async wereldWeergaveOpslaan(weergave: WereldWeergave) {
+      fout((await sb.from('gezinnen').update({ wereld_instellingen: maakWeergave(weergave) }).eq('id', gezinId)).error)
     },
     async spelregelsOpslaan(regels: Spelregels) {
       fout((await sb.from('gezinnen').update(regels).eq('id', gezinId)).error)
