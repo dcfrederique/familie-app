@@ -10,7 +10,19 @@ export const HUIS_SCHAAL = 0.6
 export const MAX_HUIZEN = 4
 
 export type Rechthoek = [number, number, number, number]
-export interface HuisPlek { id: string; model: string; deurX: number; /** Naam op het bordje; standaard de id. */ naam?: string }
+export interface HuisPlek { id: string; model: string; deurX: number; /** Hoogte van de voet en de deur; standaard `GROND_Y` (de straat). */ deurY?: number; /** Naam op het bordje; standaard de id. */ naam?: string }
+export const deurYvan = (h: HuisPlek) => h.deurY ?? GROND_Y
+
+/** Een poort aan de rand van een gebied (docs/wereld-dorp.md): wie op de poorttegel stapt, loopt naar het volgende gebied. */
+export type Zijde = 'n' | 'o' | 'z' | 'w'
+/** De twee poorttegels per zijde (kolom, rij); de kaart is 56 × 28 tegels en je loopt tot tegel 2 en 53 en rij 4 en 24. */
+export const POORT_TEGELS: Record<Zijde, [number, number][]> = {
+  w: [[2, 12], [2, 13]], o: [[53, 12], [53, 13]], n: [[27, 4], [28, 4]], z: [[27, 24], [28, 24]],
+}
+/** Waar je staat nadat je door een poort kwam: aan de tegenoverliggende zijde, één tegel naar binnen. */
+export const AANKOMST: Record<Zijde, [number, number]> = { w: [52, 12], o: [3, 12], n: [27, 23], z: [27, 5] }
+export const TEGENOVER: Record<Zijde, Zijde> = { w: 'o', o: 'w', n: 'z', z: 'n' }
+export const poortTegel = (z: Zijde) => POORT_TEGELS[z][0]
 
 export const PLEIN: Rechthoek = [3 * U, 16.6 * U, 18 * U, 24.6 * U]
 export const VELD: Rechthoek = [37 * U, 16.7 * U, 43 * U, 23.4 * U]
@@ -35,7 +47,8 @@ export function wegen(huizen: HuisPlek[], lijst: readonly Gebouw[] = gebouwen): 
 export function huisRechthoek(h: HuisPlek): Rechthoek {
   const m = HUIS_MAAT[h.model] ?? HUIS_MAAT.verdieping
   const x0 = h.deurX + (m[0] - m[2]) * HUIS_SCHAAL, x1 = h.deurX + (m[1] - m[2]) * HUIS_SCHAAL
-  return [x0 + 6, GROND_Y - 5 * U, x1 - 6, GROND_Y]
+  const y = deurYvan(h)
+  return [x0 + 6, y - 5 * U, x1 - 6, y]
 }
 
 export const gebouwRechthoek = (b: Gebouw): Rechthoek => [b.x - b.w * 0.42, b.y - 96, b.x + b.w * 0.42, b.y]
@@ -43,9 +56,9 @@ export const gebouwRechthoek = (b: Gebouw): Rechthoek => [b.x - b.w * 0.42, b.y 
 /** Vaste dingen op straat: x en y zijn de voet; `voet` is breedte en diepte waar je niet doorheen loopt. */
 export interface Ding { id: string; x: number; y: number; voet: [number, number]; kleur?: string; eigenaar?: string }
 
-const VOET: Record<string, [number, number]> = {
+export const VOET: Record<string, [number, number]> = {
   boom: [24, 10], schommel: [86, 20], glijbaan: [110, 22], zandbak: [86, 22], wip: [110, 16], doel: [84, 14],
-  bank: [66, 16], lantaarn: [12, 8], brievenbus: [14, 8], naambord: [16, 8],
+  bank: [66, 16], lantaarn: [12, 8], brievenbus: [14, 8], naambord: [16, 8], poortbord: [16, 8],
 }
 
 /** Klein, herhaalbaar toeval (geen Math.random, zodat de wereld elke keer hetzelfde is). */
@@ -54,22 +67,33 @@ export const toeval = (a: number, b = 0, s = 0) => {
   return n - Math.floor(n)
 }
 
-export function vasteDingen(huizen: HuisPlek[], kleurVan: (id: string) => string): Ding[] {
-  const d: Ding[] = []
-  // bomen krijgen appels, sinaasappels of niets (vast per plek)
-  const vrucht = (x: number, y: number) => ['#D93A3A', '#D93A3A', '#F2994A', 'kaal'][Math.floor(toeval(x, y, 9) * 4)]
-  const zet = (id: string, x: number, y: number, extra: Partial<Ding> = {}) =>
-    d.push({ id, x, y, voet: VOET[id] ?? [60, 18], ...(id === 'boom' ? { kleur: vrucht(x, y) } : {}), ...extra })
-  // bomen langs de rand en hier en daar
+/** Een ding op straat met zijn voet; bomen krijgen appels, sinaasappels of niets (vast per plek). */
+export function maakDing(id: string, x: number, y: number, extra: Partial<Ding> = {}): Ding {
+  const vrucht = ['#D93A3A', '#D93A3A', '#F2994A', 'kaal'][Math.floor(toeval(x, y, 9) * 4)]
+  return { id, x, y, voet: VOET[id] ?? [60, 18], ...(id === 'boom' ? { kleur: vrucht } : {}), ...extra }
+}
+
+/** De bomenrand om een gebied, met een opening bij elke poort. */
+export function randBomen(poorten: readonly { zijde: Zijde }[] = []): Ding[] {
+  const d: Ding[] = [], gaten = new Set(poorten.map((p) => p.zijde))
+  const zet = (x: number, y: number) => d.push(maakDing('boom', x, y))
+  const dichtbij = (a: number, b: number, tot: number) => Math.abs(a - b) < tot
   for (let x = 0.6 * U; x < WERELD_BREED; x += 1.9 * U) {
-    zet('boom', x + toeval(x, 1) * 20, 1.4 * U + toeval(x, 2) * 14)
-    zet('boom', x + 0.9 * U, 2.7 * U + toeval(x, 3) * 12)
-    zet('boom', x + toeval(x, 4) * 20, WERELD_HOOG - 2.3 * U + toeval(x, 5) * 14)
+    const bovenX = x + toeval(x, 1) * 20, onderX = x + toeval(x, 4) * 20
+    if (!(gaten.has('n') && dichtbij(bovenX, 28 * U, 3 * U))) zet(bovenX, 1.4 * U + toeval(x, 2) * 14)
+    if (!(gaten.has('n') && dichtbij(x + 0.9 * U, 28 * U, 3 * U))) zet(x + 0.9 * U, 2.7 * U + toeval(x, 3) * 12)
+    if (!(gaten.has('z') && dichtbij(onderX, 28 * U, 3 * U))) zet(onderX, WERELD_HOOG - 2.3 * U + toeval(x, 5) * 14)
   }
   for (let y = 3.4 * U; y < WERELD_HOOG - 2 * U; y += 1.9 * U) {
-    zet('boom', 0.7 * U + toeval(y, 6) * 10, y)
-    zet('boom', WERELD_BREED - 0.7 * U - toeval(y, 7) * 10, y + 0.5 * U)
+    if (!(gaten.has('w') && dichtbij(y, 13 * U, 3 * U))) zet(0.7 * U + toeval(y, 6) * 10, y)
+    if (!(gaten.has('o') && dichtbij(y + 0.5 * U, 13 * U, 3 * U))) zet(WERELD_BREED - 0.7 * U - toeval(y, 7) * 10, y + 0.5 * U)
   }
+  return d
+}
+
+export function vasteDingen(huizen: HuisPlek[], kleurVan: (id: string) => string, poorten: readonly { zijde: Zijde }[] = []): Ding[] {
+  const d: Ding[] = randBomen(poorten)
+  const zet = (id: string, x: number, y: number, extra: Partial<Ding> = {}) => d.push(maakDing(id, x, y, extra))
   for (const [x, y] of [[13.6, 9.8], [25.6, 9.8], [37.6, 9.8], [2.3, 15.2], [34.8, 15.4], [36, 24], [45.2, 17], [51, 17], [53, 24]]) zet('boom', x * U, y * U)
   for (const [x, y] of [[13.5, 11.8], [25.5, 11.8], [37.5, 11.8], [1.8, 11.8]]) zet('lantaarn', x * U, y * U)
   zet('bank', 26.4 * U, 15.8 * U)
@@ -78,8 +102,8 @@ export function vasteDingen(huizen: HuisPlek[], kleurVan: (id: string) => string
   zet('doel', 40 * U, 18.4 * U); zet('doel', 40 * U, 22.8 * U)
   // bij elk huis een naambordje en een brievenbus
   for (const h of huizen) {
-    zet('brievenbus', h.deurX + 2.7 * U, 11 * U, { kleur: kleurVan(h.id), eigenaar: h.naam ?? h.id })
-    zet('naambord', h.deurX - 2.7 * U, 11 * U, { kleur: kleurVan(h.id), eigenaar: h.naam ?? h.id })
+    zet('brievenbus', h.deurX + 2.7 * U, deurYvan(h) + 0.6 * U, { kleur: kleurVan(h.id), eigenaar: h.naam ?? h.id })
+    zet('naambord', h.deurX - 2.7 * U, deurYvan(h) + 0.6 * U, { kleur: kleurVan(h.id), eigenaar: h.naam ?? h.id })
   }
   return d
 }
@@ -87,8 +111,9 @@ export function vasteDingen(huizen: HuisPlek[], kleurVan: (id: string) => string
 const dingRechthoek = (d: Ding): Rechthoek => [d.x - d.voet[0] / 2, d.y - d.voet[1], d.x + d.voet[0] / 2, d.y + 4]
 
 /** Alles waar het figuurtje niet doorheen loopt, behalve de vijver (die is een ellips). */
-export function obstakels(huizen: HuisPlek[], dingen: Ding[], lijst: readonly Gebouw[] = gebouwen): Rechthoek[] {
+export function obstakels(huizen: HuisPlek[], dingen: Ding[], lijst: readonly Gebouw[] = gebouwen, vast = true): Rechthoek[] {
   const o: Rechthoek[] = [...huizen.map(huisRechthoek), ...lijst.map(gebouwRechthoek), ...dingen.map(dingRechthoek)]
+  if (!vast) return o
   // hek om het speelplein, met een poortje
   const [a, b, c, d] = PLEIN, p = 10 * U
   o.push([a - 6, b - 4, p - 36, b + 6], [p + 36, b - 4, c + 6, b + 6], [a - 6, d - 4, c + 6, d + 6], [a - 6, b, a + 4, d], [c - 4, b, c + 6, d])
@@ -108,6 +133,12 @@ export const opWeg = (rijen: Rechthoek[], x: number, y: number, marge = 0) =>
 const VOETEN = [9, 7] as const
 
 export interface Kaart {
+  /** Heeft dit gebied het vaste dorpsdecor (plein met hek, vijver en voetbalveld)? */
+  vast: boolean
+  /** Ondergrondstijl van het gebied (kleur van het gras en zo), en een sleutel die verandert als de ondergrond verandert. */
+  stijl: string
+  sleutel: string
+  poorten: { zijde: Zijde; doel: string }[]
   wegen: Rechthoek[]
   obstakels: Rechthoek[]
   dingen: Ding[]
@@ -118,12 +149,23 @@ export interface Kaart {
 
 const CEL = 24
 
-export function maakKaart(huizen: HuisPlek[], kleurVan: (id: string) => string, lijst: readonly Gebouw[] = gebouwen): Kaart {
-  const dingen = vasteDingen(huizen, kleurVan)
-  const hindernissen = obstakels(huizen, dingen, lijst)
+/** Een gebied uit de gebiedenkaart (gebieden.ts): de dingen en wegen komen van buiten in plaats van vast uit het dorp. */
+export interface KaartOpties {
+  dingen: Ding[]
+  wegen: Rechthoek[]
+  vast: boolean
+  stijl: string
+  sleutel: string
+  poorten: { zijde: Zijde; doel: string }[]
+}
+
+export function maakKaart(huizen: HuisPlek[], kleurVan: (id: string) => string, lijst: readonly Gebouw[] = gebouwen, opties?: KaartOpties): Kaart {
+  const vast = opties?.vast ?? true
+  const dingen = opties ? opties.dingen : vasteDingen(huizen, kleurVan)
+  const hindernissen = obstakels(huizen, dingen, lijst, vast)
   const vrij = (x: number, y: number) => {
     if (x < 1.6 * U || x > WERELD_BREED - 1.6 * U || y < 3.6 * U || y > WERELD_HOOG - 2.6 * U) return false
-    if (inPoel(x, y, 2)) return false
+    if (vast && inPoel(x, y, 2)) return false
     const r = [x - VOETEN[0], y - VOETEN[1], x + VOETEN[0], y + 2]
     return !hindernissen.some((o) => r[0] < o[2] && r[2] > o[0] && r[1] < o[3] && r[3] > o[1])
   }
@@ -165,7 +207,10 @@ export function maakKaart(huizen: HuisPlek[], kleurVan: (id: string) => string, 
     return uit.slice(1)
   }
 
-  return { wegen: wegen(huizen, lijst), obstakels: hindernissen, dingen, vrij, pad }
+  return {
+    vast, stijl: opties?.stijl ?? 'dorp', sleutel: opties?.sleutel ?? 'dorp', poorten: opties?.poorten ?? [],
+    wegen: opties ? opties.wegen : wegen(huizen, lijst), obstakels: hindernissen, dingen, vrij, pad,
+  }
 }
 
 export type Richting = 'down' | 'up' | 'left' | 'right'
@@ -191,7 +236,7 @@ export const opDeurmat = (l: { x: number; y: number }, b: Gebouw, tegel = false)
 
 /** Staat het figuurtje voor de deur van een huis? */
 export const voorHuisdeur = (l: { x: number; y: number }, h: HuisPlek, tegel = false) =>
-  Math.abs(l.x - h.deurX) < (tegel ? 36 : 30) && l.y <= GROND_Y + (tegel ? U + 26 : 26) && l.y >= GROND_Y - 4
+  Math.abs(l.x - h.deurX) < (tegel ? 36 : 30) && l.y <= deurYvan(h) + (tegel ? U + 26 : 26) && l.y >= deurYvan(h) - 4
 
 // ---------- tegel voor tegel lopen (zoals de eerste Pokémon-spellen) ----------
 
@@ -252,6 +297,20 @@ export function maakTegels(kaart: Kaart) {
   return { kan, pad, tegelVan }
 }
 export type Tegels = ReturnType<typeof maakTegels>
+
+/** De dichtstbijzijnde tegel waar het figuurtje kan staan (te beginnen bij de tegel zelf), of die tegel als er niets vrij is. */
+export function dichtstbijVrij(tegels: Tegels, tx: number, ty: number): [number, number] {
+  for (let r = 0; r <= 8; r++) {
+    let beste: [number, number] | null = null, d0 = Infinity
+    for (let dy = -r; dy <= r; dy++) for (let dx = -r; dx <= r; dx++) {
+      if (Math.max(Math.abs(dx), Math.abs(dy)) !== r || !tegels.kan(tx + dx, ty + dy)) continue
+      const d = dx * dx + dy * dy
+      if (d < d0) { d0 = d; beste = [tx + dx, ty + dy] }
+    }
+    if (beste) return beste
+  }
+  return [tx, ty]
+}
 
 const RICHTING: Record<Richting, [number, number]> = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] }
 

@@ -47,6 +47,7 @@ import Touwspringen from './schermen/Touwspringen.tsx'
 import MijnThema from './schermen/MijnThema.tsx'
 import Wereld, { OuderWereld } from './schermen/Wereld.tsx'
 import WereldInstellingen from './schermen/WereldInstellingen.tsx'
+import KaartBewerken from './schermen/KaartBewerken.tsx'
 import Chat from './schermen/Chat.tsx'
 import OuderChat from './schermen/OuderChat.tsx'
 import Proberen from './schermen/Proberen.tsx'
@@ -121,6 +122,7 @@ export default function App() {
       <Route path="/ouder/springland" element={<OuderSpringland />} />
       <Route path="/ouder/wereld" element={<OuderWereld />} />
       <Route path="/ouder/wereld-instellingen" element={<WereldInstellingen />} />
+      <Route path="/ouder/kaart" element={<KaartBewerken />} />
       <Route path="/ouder/boodschappen" element={<Boodschappen />} />
       <Route path="/ouder/winkels" element={<Winkels />} />
       <Route path="/ouder/uitgaven" element={<Uitgaven />} />

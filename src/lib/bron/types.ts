@@ -5,6 +5,7 @@ import type { Huis } from '../../data/huis.ts'
 import type { Kleur, WereldLopen } from '../../data/gezin.ts'
 import type { Activiteit } from '../regels.ts'
 import type { WereldWeergave } from '../wereld/weergave.ts'
+import type { Opgeslagen as WereldKaart } from '../wereld/gebieden.ts'
 import type { Weging } from '../gewicht.ts'
 import type { StemKeuze } from '../stem.ts'
 
@@ -256,6 +257,8 @@ export interface Bron {
   spelregels(): Promise<Spelregels>
   /** Hoe de wereld eruitziet en hoe snel het figuurtje loopt (Instellingen → Wereldinstellingen); zonder migratie de standaard. */
   wereldWeergave(): Promise<WereldWeergave>
+  /** Wat de ouders aan de kaart van de wereld veranderden (Wij → Kaart bewerken); zonder migratie of zonder aanpassingen leeg. */
+  wereldKaart(): Promise<WereldKaart>
   /** Daglimieten per spelletje die de ouders instelden (leeg zonder migratie). */
   activiteitLimieten(): Promise<ActiviteitLimiet[]>
   /** Wat elk kind gekocht heeft in de winkel, als sleutels 'hoofd:kroon' of 'spel:racen' (docs/winkel.md). */
@@ -325,6 +328,7 @@ export interface Bron {
   taakVerwijderen(id: string): Promise<void>
   spelregelsOpslaan(regels: Spelregels): Promise<void>
   wereldWeergaveOpslaan(weergave: WereldWeergave): Promise<void>
+  wereldKaartOpslaan(kaart: WereldKaart): Promise<void>
   /** Zet de daglimiet van een spelletje voor één kind (kindId) of voor allemaal (null); max null wist hem. */
   activiteitLimietZetten(kindId: string | null, activiteit: LimietActiviteit, max: number | null): Promise<void>
   kindAanpassen(id: string, wijziging: KindWijziging): Promise<void>

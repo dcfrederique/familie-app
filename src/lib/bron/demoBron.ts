@@ -8,6 +8,7 @@ import { kiesCadeau } from '../../data/cadeau.ts'
 import { demoGebruikers, type Gebruiker } from '../../data/gezin.ts'
 import { dagVan } from '../datum.ts'
 import { maakWeergave, standaardWeergave, type WereldWeergave } from '../wereld/weergave.ts'
+import { leesOpgeslagen, leegOpgeslagen, type Opgeslagen as WereldKaart } from '../wereld/gebieden.ts'
 import { activiteitOmschrijving, activiteitSterren, blokKeuzes, limietVoor, regels as standaardRegels } from '../regels.ts'
 import type { Weging } from '../gewicht.ts'
 import type { ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, GezondheidProfiel, Inzending, LogRegel, Maaltijd, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Spelregels, Taak, Tijdverzoek, Winkel } from './types.ts'
@@ -37,6 +38,7 @@ interface Toestand {
   wegingen: Weging[]
   regels: Spelregels
   wereldWeergave: WereldWeergave
+  wereldKaart: WereldKaart
   limieten: ActiviteitLimiet[]
 }
 
@@ -111,6 +113,7 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
       gewicht_kg: Math.round((71.8 - i * 0.22 + (i % 3 === 1 ? 0.4 : 0)) * 10) / 10,
     })),
     wereldWeergave: { ...standaardWeergave },
+    wereldKaart: leegOpgeslagen(),
     regels: {
       dagplafond_minuten: standaardRegels.dagplafondMinuten,
       venster_van: standaardRegels.tijdvenster.van,
@@ -156,6 +159,7 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
     async log(kind) { return t.log.filter((l) => l.kind_id === kind).slice().reverse() },
     async spelregels() { return { ...t.regels } },
     async wereldWeergave() { return { ...t.wereldWeergave } },
+    async wereldKaart() { return structuredClone(t.wereldKaart) },
     async activiteitLimieten() { return t.limieten.map((l) => ({ ...l })) },
     async weekmenu(van, tot) { return t.weekmenu.filter((m) => m.dag >= van && m.dag <= tot).map((m) => ({ ...m })) },
     async ouderTaken() {
@@ -349,6 +353,7 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
     },
     async spelregelsOpslaan(regels) { t.regels = { ...regels } },
     async wereldWeergaveOpslaan(weergave) { t.wereldWeergave = maakWeergave(weergave) },
+    async wereldKaartOpslaan(kaart) { t.wereldKaart = leesOpgeslagen(kaart) },
     async activiteitLimietZetten(kindId, activiteit, max) {
       t.limieten = t.limieten.filter((l) => !(l.kind_id === kindId && l.activiteit === activiteit))
       if (max !== null) t.limieten.push({ kind_id: kindId, activiteit, max_sterren: max })

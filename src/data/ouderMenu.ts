@@ -48,6 +48,7 @@ export const ouderMenu: MenuGroep[] = [
     { naam: 'Chat met de kinderen', icoon: 'chat', pad: '/ouder/chat', teller: 'chat' },
     { naam: 'Springland spelen', icoon: 'springland', pad: '/ouder/springland' },
     { naam: 'De wereld in', icoon: 'wereld', pad: '/ouder/wereld' },
+    { naam: 'Kaart bewerken', icoon: 'wereld', pad: '/ouder/kaart' },
   ] },
   { naam: 'Gezondheid', alleenOuderGsm: true, items: [
     { naam: 'Gewicht', icoon: 'gewicht', pad: '/ouder/gewicht' },

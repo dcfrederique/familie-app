@@ -5,7 +5,7 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import { WERELD_BREED, WERELD_HOOG } from '../../data/wereld.ts'
 import type { Richting } from './kaart.ts'
 
-export interface Positie { id: string; x: number; y: number; face: Richting; moving: boolean }
+export interface Positie { id: string; x: number; y: number; face: Richting; moving: boolean; /** In welk gebied (gebieden.ts); zonder is het dorp. */ g?: string }
 export type Bericht =
   | ({ t: 'pos' } & Positie)
   | { t: 'hallo'; id: string }
@@ -30,8 +30,9 @@ export function leesBericht(ruw: unknown): Bericht | null {
   const x = Number(b.x), y = Number(b.y)
   if (!Number.isFinite(x) || !Number.isFinite(y)) return null
   const face = RICHTINGEN.find((r) => r === b.face) ?? 'down'
+  const g = typeof b.g === 'string' && /^[a-z]{2,16}$/.test(b.g) ? b.g : undefined
   return {
-    t: 'pos', id: b.id, face, moving: b.moving === true,
+    t: 'pos', id: b.id, face, moving: b.moving === true, ...(g ? { g } : {}),
     x: Math.max(0, Math.min(WERELD_BREED, x)), y: Math.max(0, Math.min(WERELD_HOOG, y)),
   }
 }
@@ -76,6 +77,7 @@ export interface Ander {
   moving: boolean
   fase: number
   gezien: number
+  g?: string
 }
 
 /** Tempo waarmee een ander figuurtje naar zijn laatste positie schuift (eenheden per seconde). */
@@ -83,8 +85,10 @@ const INHAAL = 230
 
 /** Zet een nieuw bericht om in de toestand van die ander. Een nieuwe komt meteen op zijn plek te staan. */
 export function metPositie(oud: Ander | undefined, p: Positie, nu: number): Ander {
-  if (!oud) return { id: p.id, x: p.x, y: p.y, doelX: p.x, doelY: p.y, face: p.face, moving: p.moving, fase: 0, gezien: nu }
-  return { ...oud, doelX: p.x, doelY: p.y, face: p.face, gezien: nu, moving: oud.moving || p.moving }
+  if (!oud) return { id: p.id, x: p.x, y: p.y, doelX: p.x, doelY: p.y, face: p.face, moving: p.moving, fase: 0, gezien: nu, g: p.g }
+  // Een ander gebied is een sprong: meteen op de nieuwe plek.
+  if (oud.g !== p.g) return { ...oud, x: p.x, y: p.y, doelX: p.x, doelY: p.y, face: p.face, gezien: nu, moving: p.moving, g: p.g }
+  return { ...oud, doelX: p.x, doelY: p.y, face: p.face, gezien: nu, moving: oud.moving || p.moving, g: p.g }
 }
 
 /** Schuift de ander een stukje op naar zijn doel; stappen terwijl het beweegt, stil op de plek. */

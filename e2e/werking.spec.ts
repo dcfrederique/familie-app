@@ -126,3 +126,28 @@ test('wereldinstellingen: ouder zet 2.5D aan en loopt rond zonder fouten', async
   await page.waitForTimeout(300)
   expect(fouten).toEqual([])
 })
+
+test('kaart bewerken: ouder zet het huis van Luca in het bos, Luca begint daar en loopt door de poort', async ({ page }) => {
+  const fouten: string[] = []
+  page.on('pageerror', (e) => fouten.push(e.message))
+  await startAls(page, 'luca')
+  await doorWelkomstpad(page)
+  await naar(page, '/ouder/kaart')
+  await pincodeAlsGevraagd(page)
+  await page.getByRole('tab', { name: 'Huizen' }).click()
+  await page.getByRole('button', { name: /Huis van Luca/ }).click()
+  await page.getByRole('tab', { name: 'Bos' }).click()
+  const vlak = page.locator('.kb-vlak')
+  await vlak.scrollIntoViewIfNeeded()
+  const doos = (await vlak.boundingBox())!
+  await page.mouse.click(doos.x + doos.width * (20.5 / 56), doos.y + doos.height * (10.5 / 28))
+  await page.getByRole('button', { name: 'Bewaar' }).click()
+  await expect(page.locator('.kb-melding')).toContainText('Bewaard')
+  // Luca staat nu in het bos en kan er gewoon lopen
+  await naar(page, '/kind/luca/wereld')
+  await expect(page.locator('canvas.wereld-veld')).toHaveAttribute('aria-label', 'De wereld: Bos')
+  await page.keyboard.down('ArrowDown')
+  await page.waitForTimeout(400)
+  await page.keyboard.up('ArrowDown')
+  expect(fouten).toEqual([])
+})

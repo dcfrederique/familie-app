@@ -4,8 +4,8 @@
 // - Huizen en gebouwen krijgen diepte: hun eigen tekening wordt naar achteren uitgetrokken (zijkant en dak) en werpt een schaduw.
 // Alles op het gewone 2D-canvas, zonder bibliotheek.
 import { HUIS_MAAT, WERELD_BREED, WERELD_HOOG, type GebouwBeeld } from '../../data/wereld.ts'
-import { GROND_Y, HUIS_SCHAAL, POEL, toeval } from './kaart.ts'
-import { BASIS, PAL, Tekenaar } from './tekenen.ts'
+import { HUIS_SCHAAL, POEL, deurYvan, toeval } from './kaart.ts'
+import { BASIS, Tekenaar, stijlPalet } from './tekenen.ts'
 import { WEER_TINT } from './weer.ts'
 import { maakCamera, type Camera } from './camera.ts'
 import type { WereldWeergave } from './weergave.ts'
@@ -122,7 +122,7 @@ export class Tekenaar25 extends Tekenaar {
     const { t, kaart, huizen, me } = o
     const g = this.g, Q = this.Q, VW = this.vw, VH = this.vh
     this.cam = maakCamera(w.draaien, w.kantelen)
-    const cam = this.cam, P = PAL[this.nacht ? 'n' : 'd']
+    const cam = this.cam, P = stijlPalet(kaart.stijl, this.nacht)
     const stand = `${w.draaien}|${w.kantelen}`
     if (stand !== this.zijSleutel) { this.zijkanten.clear(); this.zijSleutel = stand }
     // de camera blijft binnen de wereld, met wat marge
@@ -136,7 +136,7 @@ export class Tekenaar25 extends Tekenaar {
     g.fillStyle = P.gras; g.fillRect(0, 0, VW, VH)
 
     // ondergrond: het stuk van de bitmap dat in beeld is, schuin gezet
-    const grond = this.ondergrond(kaart.wegen)
+    const grond = this.ondergrond(kaart)
     const hoeken = [[0, 0], [VW, 0], [VW, VH], [0, VH]].map(([px, py]) => cam.naarWereld(px - VW / 2, py - VH / 2 + OPTILLEN, this.mX, this.mY))
     const x0 = Math.max(0, Math.floor(Math.min(...hoeken.map((p) => p[0])))), x1 = Math.min(WERELD_BREED, Math.ceil(Math.max(...hoeken.map((p) => p[0]))))
     const y0 = Math.max(0, Math.floor(Math.min(...hoeken.map((p) => p[1])))), y1 = Math.min(WERELD_HOOG, Math.ceil(Math.max(...hoeken.map((p) => p[1]))))
@@ -144,7 +144,7 @@ export class Tekenaar25 extends Tekenaar {
     g.transform(a, b, c, d, e, f)
     if (x1 > x0 && y1 > y0) g.drawImage(grond, x0 * Q, y0 * Q, (x1 - x0) * Q, (y1 - y0) * Q, x0, y0, x1 - x0, y1 - y0)
     g.strokeStyle = P.waterL; g.lineWidth = 2.5; g.lineCap = 'round'
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < (kaart.vast ? 7 : 0); i++) {
       const an = toeval(i, 50) * 6.28, r = 0.3 + toeval(i, 51) * 0.55, x = POEL.x + Math.cos(an) * POEL.rx * r, y = POEL.y + Math.sin(an) * POEL.ry * r
       const wd = 8 + Math.sin(t * 1.5 + i) * 4
       g.beginPath(); g.moveTo(x - wd, y); g.quadraticCurveTo(x, y - 3, x + wd, y); g.stroke()
@@ -155,7 +155,7 @@ export class Tekenaar25 extends Tekenaar {
     const huisMaat = huizen.map((h) => {
       const m = HUIS_MAAT[h.model] ?? HUIS_MAAT.verdieping
       const links = h.deurX - (m[2] - m[0]) * HUIS_SCHAAL, rechts = h.deurX + (m[1] - m[2]) * HUIS_SCHAAL
-      return { h, links, rechts, breed: rechts - links, diepte: (rechts - links) * 0.75 * w.diepte }
+      return { h, gy: deurYvan(h), links, rechts, breed: rechts - links, diepte: (rechts - links) * 0.75 * w.diepte }
     })
     if (w.schaduw) {
       const lg = this.schaduwLaag ??= wasmaker()
@@ -163,7 +163,7 @@ export class Tekenaar25 extends Tekenaar {
       const s = lg.getContext('2d')!
       s.setTransform(1, 0, 0, 1, 0, 0); s.clearRect(0, 0, lg.width, lg.height)
       s.setTransform(Q * a, Q * b, Q * c, Q * d, Q * e, Q * f); s.fillStyle = '#000'
-      for (const m of huisMaat) this.schaduwDoos(s, m.links, GROND_Y - m.diepte, m.rechts, GROND_Y, m.breed * 0.4, -m.breed * 0.1)
+      for (const m of huisMaat) this.schaduwDoos(s, m.links, m.gy - m.diepte, m.rechts, m.gy, m.breed * 0.4, -m.breed * 0.1)
       for (const bg of o.gebouwen) { const bb = bg.w * 0.8, dd = bg.w * 0.36 * w.diepte; this.schaduwDoos(s, bg.x - bb / 2, bg.y - dd, bg.x + bb / 2, bg.y, bg.w * 0.3, -bg.w * 0.08) }
       g.save(); g.setTransform(1, 0, 0, 1, 0, 0); g.globalAlpha = this.nacht ? 0.1 : 0.16; g.drawImage(lg, 0, 0); g.restore()
     }
@@ -191,11 +191,12 @@ export class Tekenaar25 extends Tekenaar {
     }
     for (const m of huisMaat) {
       const hh = m.h
-      lijst.push({ d: cam.diepte(hh.deurX, GROND_Y), teken: () => {
+      const gy = m.gy
+      lijst.push({ d: cam.diepte(hh.deurX, gy), teken: () => {
         const p = this.huis(hh.id, hh.huis, hh.kleur)
         if (!this.klaar(p.im)) return
-        this.rechtop(hh.deurX, GROND_Y, () => {
-          const x = hh.deurX - ((HUIS_MAAT[hh.model] ?? HUIS_MAAT.verdieping)[2] - p.vx) * HUIS_SCHAAL, y = GROND_Y - (BASIS - p.vy) * HUIS_SCHAAL
+        this.rechtop(hh.deurX, gy, () => {
+          const x = hh.deurX - ((HUIS_MAAT[hh.model] ?? HUIS_MAAT.verdieping)[2] - p.vx) * HUIS_SCHAAL, y = gy - (BASIS - p.vy) * HUIS_SCHAAL
           const z = this.zijkant('h' + hh.id + JSON.stringify(hh.huis), p.im, p.px, p.px, m.diepte)
           if (z) this.g.drawImage(z.c, x + z.minx, y + z.miny, z.b, z.h)
           this.g.drawImage(p.im, x, y, p.px, p.px)
@@ -203,7 +204,7 @@ export class Tekenaar25 extends Tekenaar {
             for (let i = 0; i < 3; i++) {
               const q = (t * 0.35 + i / 3) % 1
               this.g.fillStyle = `rgba(${this.nacht ? '150,160,185' : '235,238,245'},${0.75 * (1 - q)})`
-              this.g.beginPath(); this.g.arc(hh.deurX - 56 + q * 20, GROND_Y - 205 - q * 50, 6 + q * 8, 0, 7); this.g.fill()
+              this.g.beginPath(); this.g.arc(hh.deurX - 56 + q * 20, gy - 205 - q * 50, 6 + q * 8, 0, 7); this.g.fill()
             }
           }
         })
@@ -225,7 +226,7 @@ export class Tekenaar25 extends Tekenaar {
     for (const an of o.anderen ?? []) {
       lijst.push({ d: cam.diepte(an.x, an.y), teken: () => this.rechtop(an.x, an.y, () => { this.tekenFiguur(an, an.figuur, an.id, an.kleur, an.x, an.y, t); this.naamLabel(an.x, an.y, an.naam, an.kleur) }) })
     }
-    for (const i of [0, 1]) {
+    for (const i of kaart.vast ? [0, 1] : []) {
       const ang = t * 0.35 + i * 3, ex = POEL.x + Math.cos(ang) * 130, ey = POEL.y + Math.sin(ang * 1.3) * 52, r = -Math.sin(ang) > 0 ? 1 : -1
       lijst.push({ d: cam.diepte(ex, ey), teken: () => this.rechtop(ex, ey, () => {
         g.save(); g.translate(ex, ey); g.scale(r, 1)

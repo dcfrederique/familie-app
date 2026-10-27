@@ -9,7 +9,7 @@ import { tekenChibi } from './chibi.ts'
 import type { Bal } from './speel.ts'
 import { WEER_TINT, type Weer } from './weer.ts'
 import { huisUitsnede, tekenHuis, tuinStuk } from '../huis/tekenen.ts'
-import { GROND_Y, HUIS_SCHAAL, POEL, PLEIN, VELD, inPoel, inRechthoek, opWeg, toeval, type Ding, type HuisPlek, type Kaart, type Richting } from './kaart.ts'
+import { HUIS_SCHAAL, POEL, PLEIN, VELD, deurYvan, inPoel, inRechthoek, opWeg, toeval, type Ding, type HuisPlek, type Kaart, type Richting } from './kaart.ts'
 
 /** Het beeld toont ongeveer 960 × 640 eenheden van de wereld, in de verhouding van het scherm; Q is de verfijning voor scherpte. */
 const OPPERVLAK = 960 * 640
@@ -22,6 +22,18 @@ export const PAL = {
   d: { gras: '#7CC46A', gras2: '#6AB55A', pad: '#E2D9C6', padRand: '#CDBF9F', grind: '#F1EBDD', grindD: '#B9AA88', tuf: '#5BA84C', zand: '#F2E3B5', zandPunt: '#E2CE96', water: '#4FB3E8', waterL: '#A6DEF8', veld1: '#6FC25C', veld2: '#84CC72' },
   n: { gras: '#2E5A3A', gras2: '#264E30', pad: '#5E5A52', padRand: '#4A463F', grind: '#74706A', grindD: '#3E3A34', tuf: '#1F4A2D', zand: '#7C7458', zandPunt: '#6A6349', water: '#25497A', waterL: '#3E6BA3', veld1: '#2A5736', veld2: '#33663F' },
 }
+
+/** Het gras per gebiedsstijl (docs/wereld-dorp.md): kleuren voor dag en nacht; zonder een stijl geldt het dorp. */
+const STIJL: Record<string, { d: Partial<(typeof PAL)['d']>; n: Partial<(typeof PAL)['n']>; bloemen?: boolean }> = {
+  bos: { d: { gras: '#4A9548', gras2: '#3F8A44', tuf: '#2F7F3C' }, n: { gras: '#1E4A2A', gras2: '#193F23', tuf: '#143522' } },
+  berg: { d: { gras: '#A9B6A7', gras2: '#98A698', tuf: '#7E8F7E' }, n: { gras: '#4A5550', gras2: '#414B47', tuf: '#394340' }, bloemen: false },
+  platteland: { d: { gras: '#BFD66B', gras2: '#B2CC5C', tuf: '#8FAE3F' }, n: { gras: '#4F5F2E', gras2: '#445227', tuf: '#3A4822' } },
+  meer: { d: { gras: '#86CC72', gras2: '#78BE66', tuf: '#5BA84C' }, n: { gras: '#2F6040', gras2: '#28553A', tuf: '#1F4A2D' } },
+  strand: { d: { gras: '#F0DFAE', gras2: '#E6D29A', tuf: '#D2BD80' }, n: { gras: '#7C7458', gras2: '#6A6349', tuf: '#5A543F' }, bloemen: false },
+  sport: { d: { gras: '#74C35E', gras2: '#66B650', tuf: '#4FA441' }, n: { gras: '#2A5A36', gras2: '#234F2E', tuf: '#1F4A2D' } },
+  stad: { d: { gras: '#CFC8BE', gras2: '#C5BDB0', tuf: '#B3AB9D' }, n: { gras: '#5A5852', gras2: '#4F4D48', tuf: '#46443F' }, bloemen: false },
+}
+export const stijlPalet = (stijl: string, nacht: boolean) => ({ ...PAL[nacht ? 'n' : 'd'], ...STIJL[stijl]?.[nacht ? 'n' : 'd'] })
 
 /** Zijde van het hubbordje in schermpunten (ook voor de link erover). */
 export const HUB_MAAT = 76
@@ -38,6 +50,7 @@ export class Tekenaar {
   readonly g: CanvasRenderingContext2D
   protected plaatjes = new Map<string, HTMLImageElement>()
   protected grond = new Map<string, HTMLCanvasElement>()
+  private grondSleutel = ''
   nacht = false
   /** Warme gloed bij zonsopgang en -ondergang (0 tot 1) en het weer van nu; zie weer.ts. */
   schemer = 0
@@ -101,11 +114,14 @@ export class Tekenaar {
   }
 
   /** De ondergrond: gras, plein, vijver, veld en wegen. Eén keer getekend per dag en nacht. */
-  protected ondergrond(wegen: Kaart['wegen']) {
-    const sl = this.nacht ? 'n' : 'd'
+  protected ondergrond(kaart: Kaart) {
+    const sl = this.nacht ? 'n' : 'd', wegen = kaart.wegen, vast = kaart.vast
+    // één ondergrond tegelijk bewaren: het volgende gebied of een aangepaste weg is een nieuwe bitmap
+    if (this.grondSleutel !== kaart.sleutel) { this.grond.clear(); this.grondSleutel = kaart.sleutel }
     const bestaand = this.grond.get(sl)
     if (bestaand) return bestaand
-    const P = PAL[sl], Q = this.Q, c = wasmaker()
+    const P = stijlPalet(kaart.stijl, this.nacht), Q = this.Q, c = wasmaker()
+    const metBloemen = STIJL[kaart.stijl]?.bloemen !== false
     c.width = WERELD_BREED * Q
     c.height = WERELD_HOOG * Q
     const c2 = c.getContext('2d')!
@@ -125,19 +141,21 @@ export class Tekenaar {
       if (vul) { c2.fillStyle = vul; c2.fill() }
       if (rand) { c2.strokeStyle = rand; c2.lineWidth = 5; c2.stroke() }
     }
-    rr(PLEIN[0], PLEIN[1], PLEIN[2], PLEIN[3], 36, P.zand, P.zandPunt)
-    c2.fillStyle = P.zandPunt
-    for (let i = 0; i < 90; i++) c2.fillRect(PLEIN[0] + 14 + toeval(i, 8) * (PLEIN[2] - PLEIN[0] - 28), PLEIN[1] + 14 + toeval(i, 9) * (PLEIN[3] - PLEIN[1] - 28), 3, 2)
-    c2.fillStyle = P.zand
-    c2.beginPath(); c2.ellipse(POEL.x, POEL.y, POEL.rx + 26, POEL.ry + 22, 0, 0, 7); c2.fill()
-    // voetbalveldje
-    rr(VELD[0], VELD[1], VELD[2] - 6, VELD[3], 20, P.veld1)
-    const strook = (VELD[3] - VELD[1] - 12) / 6
-    for (let i = 0; i < 6; i++) { c2.fillStyle = i % 2 ? P.veld2 : P.veld1; c2.fillRect(VELD[0] + 6, VELD[1] + 6 + i * strook, VELD[2] - VELD[0] - 18, strook) }
-    c2.strokeStyle = 'rgba(255,255,255,.85)'; c2.lineWidth = 3
-    c2.strokeRect(VELD[0] + 6, VELD[1] + 6, VELD[2] - VELD[0] - 18, VELD[3] - VELD[1] - 12)
-    c2.beginPath(); c2.moveTo(VELD[0] + 6, (VELD[1] + VELD[3]) / 2); c2.lineTo(VELD[2] - 12, (VELD[1] + VELD[3]) / 2); c2.stroke()
-    c2.beginPath(); c2.arc((VELD[0] + VELD[2] - 6) / 2, (VELD[1] + VELD[3]) / 2, 26, 0, 7); c2.stroke()
+    if (vast) {
+      rr(PLEIN[0], PLEIN[1], PLEIN[2], PLEIN[3], 36, P.zand, P.zandPunt)
+      c2.fillStyle = P.zandPunt
+      for (let i = 0; i < 90; i++) c2.fillRect(PLEIN[0] + 14 + toeval(i, 8) * (PLEIN[2] - PLEIN[0] - 28), PLEIN[1] + 14 + toeval(i, 9) * (PLEIN[3] - PLEIN[1] - 28), 3, 2)
+      c2.fillStyle = P.zand
+      c2.beginPath(); c2.ellipse(POEL.x, POEL.y, POEL.rx + 26, POEL.ry + 22, 0, 0, 7); c2.fill()
+      // voetbalveldje
+      rr(VELD[0], VELD[1], VELD[2] - 6, VELD[3], 20, P.veld1)
+      const strook = (VELD[3] - VELD[1] - 12) / 6
+      for (let i = 0; i < 6; i++) { c2.fillStyle = i % 2 ? P.veld2 : P.veld1; c2.fillRect(VELD[0] + 6, VELD[1] + 6 + i * strook, VELD[2] - VELD[0] - 18, strook) }
+      c2.strokeStyle = 'rgba(255,255,255,.85)'; c2.lineWidth = 3
+      c2.strokeRect(VELD[0] + 6, VELD[1] + 6, VELD[2] - VELD[0] - 18, VELD[3] - VELD[1] - 12)
+      c2.beginPath(); c2.moveTo(VELD[0] + 6, (VELD[1] + VELD[3]) / 2); c2.lineTo(VELD[2] - 12, (VELD[1] + VELD[3]) / 2); c2.stroke()
+      c2.beginPath(); c2.arc((VELD[0] + VELD[2] - 6) / 2, (VELD[1] + VELD[3]) / 2, 26, 0, 7); c2.stroke()
+    }
     // wegen
     for (const r of wegen) rr(r[0] - 4, r[1] - 4, r[2] + 4, r[3] + 4, 22, P.padRand)
     for (const r of wegen) rr(r[0], r[1], r[2], r[3], 20, P.pad)
@@ -157,28 +175,30 @@ export class Tekenaar {
     c2.strokeStyle = P.tuf; c2.lineWidth = 2; c2.lineCap = 'round'; c2.globalAlpha = 0.7
     for (let i = 0; i < 900; i++) {
       const x = toeval(i, 41) * WERELD_BREED, y = toeval(i, 42) * WERELD_HOOG
-      if (opWeg(wegen, x, y, 12) || inRechthoek(x, y, PLEIN) || inRechthoek(x, y, VELD) || inPoel(x, y, 40)) continue
+      if (opWeg(wegen, x, y, 12) || (vast && (inRechthoek(x, y, PLEIN) || inRechthoek(x, y, VELD) || inPoel(x, y, 40)))) continue
       c2.beginPath(); c2.moveTo(x - 4, y); c2.lineTo(x - 5, y - 6); c2.moveTo(x, y); c2.lineTo(x, y - 8); c2.moveTo(x + 4, y); c2.lineTo(x + 5, y - 6); c2.stroke()
     }
     c2.globalAlpha = 1
-    // hek om het speelplein, met een poortje
-    const [a, b, cc, d] = PLEIN, p = 10 * U
-    const paal = (x: number, y: number) => { c2.fillStyle = '#FFFFFF'; c2.strokeStyle = '#D5DCE4'; c2.lineWidth = 2; c2.beginPath(); c2.roundRect(x - 4, y - 14, 8, 22, 3); c2.fill(); c2.stroke() }
-    const lat = (x0: number, y0: number, x1: number, y1: number) => {
-      c2.strokeStyle = '#FFFFFF'; c2.lineWidth = 5; c2.beginPath(); c2.moveTo(x0, y0 - 4); c2.lineTo(x1, y1 - 4); c2.stroke()
-      c2.strokeStyle = '#D5DCE4'; c2.lineWidth = 1.5; c2.beginPath(); c2.moveTo(x0, y0 - 1); c2.lineTo(x1, y1 - 1); c2.stroke()
+    if (vast) {
+      // hek om het speelplein, met een poortje
+      const [a, b, cc, d] = PLEIN, p = 10 * U
+      const paal = (x: number, y: number) => { c2.fillStyle = '#FFFFFF'; c2.strokeStyle = '#D5DCE4'; c2.lineWidth = 2; c2.beginPath(); c2.roundRect(x - 4, y - 14, 8, 22, 3); c2.fill(); c2.stroke() }
+      const lat = (x0: number, y0: number, x1: number, y1: number) => {
+        c2.strokeStyle = '#FFFFFF'; c2.lineWidth = 5; c2.beginPath(); c2.moveTo(x0, y0 - 4); c2.lineTo(x1, y1 - 4); c2.stroke()
+        c2.strokeStyle = '#D5DCE4'; c2.lineWidth = 1.5; c2.beginPath(); c2.moveTo(x0, y0 - 1); c2.lineTo(x1, y1 - 1); c2.stroke()
+      }
+      lat(a, b, p - 34, b); lat(p + 34, b, cc, b); lat(a, d, cc, d); lat(a, b, a, d); lat(cc, b, cc, d)
+      for (let x = a; x <= cc; x += 34) if (x < p - 30 || x > p + 30) { paal(x, b); paal(x, d) }
+      for (let y = b; y <= d; y += 34) { paal(a, y); paal(cc, y) }
+      // vijver
+      c2.fillStyle = P.water; c2.beginPath(); c2.ellipse(POEL.x, POEL.y, POEL.rx, POEL.ry, 0, 0, 7); c2.fill()
+      c2.strokeStyle = P.waterL; c2.lineWidth = 3; c2.beginPath(); c2.ellipse(POEL.x, POEL.y, POEL.rx - 10, POEL.ry - 8, 0, 0, 7); c2.stroke()
     }
-    lat(a, b, p - 34, b); lat(p + 34, b, cc, b); lat(a, d, cc, d); lat(a, b, a, d); lat(cc, b, cc, d)
-    for (let x = a; x <= cc; x += 34) if (x < p - 30 || x > p + 30) { paal(x, b); paal(x, d) }
-    for (let y = b; y <= d; y += 34) { paal(a, y); paal(cc, y) }
-    // vijver
-    c2.fillStyle = P.water; c2.beginPath(); c2.ellipse(POEL.x, POEL.y, POEL.rx, POEL.ry, 0, 0, 7); c2.fill()
-    c2.strokeStyle = P.waterL; c2.lineWidth = 3; c2.beginPath(); c2.ellipse(POEL.x, POEL.y, POEL.rx - 10, POEL.ry - 8, 0, 0, 7); c2.stroke()
     // bloemetjes
     const bloem = ['#FFFFFF', '#FFD84A', '#FF8FB8', '#C9A6F2']
-    for (let i = 0; i < 260; i++) {
+    for (let i = 0; i < (metBloemen ? 260 : 0); i++) {
       const x = 1.4 * U + toeval(i, 31) * (WERELD_BREED - 2.8 * U), y = 3.5 * U + toeval(i, 32) * (WERELD_HOOG - 6 * U)
-      if (opWeg(wegen, x, y, 10) || inRechthoek(x, y, PLEIN) || inRechthoek(x, y, VELD) || inPoel(x, y, 40)) continue
+      if (opWeg(wegen, x, y, 10) || (vast && (inRechthoek(x, y, PLEIN) || inRechthoek(x, y, VELD) || inPoel(x, y, 40)))) continue
       c2.fillStyle = bloem[i % 4]; c2.beginPath(); c2.arc(x, y, 3.2, 0, 7); c2.fill()
       c2.fillStyle = '#F2B33D'; c2.beginPath(); c2.arc(x, y, 1.2, 0, 7); c2.fill()
     }
@@ -246,17 +266,17 @@ export class Tekenaar {
     const Z = overzicht ? Math.min(VW / WERELD_BREED, VH / WERELD_HOOG) : 1
     const camX = overzicht ? 0 : Math.max(0, Math.min(WERELD_BREED - VW, me.x - VW / 2))
     const camY = overzicht ? 0 : Math.max(0, Math.min(WERELD_HOOG - VH, me.y - VH / 2 - 36))
-    const P = PAL[this.nacht ? 'n' : 'd']
+    const P = stijlPalet(kaart.stijl, this.nacht)
     g.save()
     g.setTransform(Q * Z, 0, 0, Q * Z, 0, 0)
     g.fillStyle = P.gras; g.fillRect(0, 0, VW / Z, VH / Z)
-    const grond = this.ondergrond(kaart.wegen)
+    const grond = this.ondergrond(kaart)
     g.drawImage(grond, camX * Q, camY * Q, (overzicht ? WERELD_BREED : VW) * Q, (overzicht ? WERELD_HOOG : VH) * Q, 0, 0, overzicht ? WERELD_BREED : VW, overzicht ? WERELD_HOOG : VH)
     g.translate(-camX, -camY)
 
     // vijver: glinsteringen en lelieblaadjes
     g.strokeStyle = P.waterL; g.lineWidth = 2.5; g.lineCap = 'round'
-    for (let i = 0; i < 7; i++) {
+    for (let i = 0; i < (kaart.vast ? 7 : 0); i++) {
       const a = toeval(i, 50) * 6.28, r = 0.3 + toeval(i, 51) * 0.55, x = POEL.x + Math.cos(a) * POEL.rx * r, y = POEL.y + Math.sin(a) * POEL.ry * r
       const w = 8 + Math.sin(t * 1.5 + i) * 4
       g.beginPath(); g.moveTo(x - w, y); g.quadraticCurveTo(x, y - 3, x + w, y); g.stroke()
@@ -275,16 +295,17 @@ export class Tekenaar {
       } })
     }
     for (const h of huizen) {
-      lijst.push({ y: GROND_Y, d: () => {
+      const gy = deurYvan(h)
+      lijst.push({ y: gy, d: () => {
         const p = this.huis(h.id, h.huis, h.kleur)
         if (!this.klaar(p.im)) return
         const m = HUIS_MAAT[h.model] ?? HUIS_MAAT.verdieping
-        g.drawImage(p.im, h.deurX - (m[2] - p.vx) * HUIS_SCHAAL, GROND_Y - (BASIS - p.vy) * HUIS_SCHAAL, p.px, p.px)
+        g.drawImage(p.im, h.deurX - (m[2] - p.vx) * HUIS_SCHAAL, gy - (BASIS - p.vy) * HUIS_SCHAAL, p.px, p.px)
         if (h.huis.extra.includes('schoorsteen')) {
           for (let i = 0; i < 3; i++) {
             const q = (t * 0.35 + i / 3) % 1
             g.fillStyle = `rgba(${this.nacht ? '150,160,185' : '235,238,245'},${0.75 * (1 - q)})`
-            g.beginPath(); g.arc(h.deurX - 56 + q * 20, GROND_Y - 205 - q * 50, 6 + q * 8, 0, 7); g.fill()
+            g.beginPath(); g.arc(h.deurX - 56 + q * 20, gy - 205 - q * 50, 6 + q * 8, 0, 7); g.fill()
           }
         }
       } })
@@ -309,7 +330,7 @@ export class Tekenaar {
       } })
     }
     // eendjes op de vijver
-    for (const i of [0, 1]) {
+    for (const i of kaart.vast ? [0, 1] : []) {
       lijst.push({ y: POEL.y - 60 + i, d: () => {
         const a = t * 0.35 + i * 3, x = POEL.x + Math.cos(a) * 130, y = POEL.y + Math.sin(a * 1.3) * 52, r = -Math.sin(a) > 0 ? 1 : -1
         g.save(); g.translate(x, y); g.scale(r, 1)
@@ -344,8 +365,7 @@ export class Tekenaar {
       g.save(); g.globalCompositeOperation = 'multiply'; g.fillStyle = tint; g.fillRect(camX - 10, camY - 10, VW / Z + 20, VH / Z + 20); g.restore()
     }
     g.restore()
-    this.tekenWeer(t)
-    this.tekenHubBord(t, kleur)
+    if (!overzicht) { this.tekenWeer(t); this.tekenHubBord(t, kleur) }
     return [camX, camY, Z] as const
   }
 
@@ -443,6 +463,19 @@ export class Tekenaar {
       g.fillStyle = d.kleur ?? '#2D6BD6'; g.beginPath(); g.roundRect(d.x - 28, d.y - 72, 56, 34, 10); g.fill()
       g.fillStyle = '#fff'; g.font = '800 14px "Baloo 2", Nunito, sans-serif'; g.textAlign = 'center'
       g.fillText(d.eigenaar ?? '', d.x, d.y - 50)
+      g.restore()
+      return
+    }
+    if (d.id === 'poortbord') {
+      // een wegwijzer bij de rand van het gebied: de naam van wat erachter ligt
+      g.save()
+      g.fillStyle = 'rgba(0,0,0,.15)'; g.beginPath(); g.ellipse(d.x, d.y + 1, 16, 5, 0, 0, 7); g.fill()
+      g.fillStyle = '#6E4224'; g.fillRect(d.x - 3, d.y - 44, 6, 44)
+      g.font = '800 15px "Baloo 2", Nunito, sans-serif'
+      const tekst = d.eigenaar ?? '', breed = Math.max(70, g.measureText(tekst).width + 26)
+      g.fillStyle = '#2D6BD6'; g.beginPath(); g.roundRect(d.x - breed / 2, d.y - 78, breed, 36, 11); g.fill()
+      g.strokeStyle = '#fff'; g.lineWidth = 2.5; g.beginPath(); g.roundRect(d.x - breed / 2 + 3, d.y - 75, breed - 6, 30, 8); g.stroke()
+      g.fillStyle = '#fff'; g.textAlign = 'center'; g.fillText(tekst, d.x, d.y - 54)
       g.restore()
       return
     }

@@ -1,0 +1,23 @@
+/* Kaart bewerken (ouderdeel, gsm): het gebied in een scrollbaar vak, gereedschap eronder. Grote tikvlakken (≥ 48 px). */
+.kaartbew { display: grid; gap: 10px; }
+.kaartbew .kb-gebieden, .kaartbew .kb-tabs { display: flex; gap: 6px; overflow-x: auto; padding-bottom: 4px; }
+.kaartbew .kb-chip { flex: none; min-height: 48px; padding: 0 14px; border: 1.5px solid var(--rand); background: var(--lijst); color: var(--inkt); border-radius: 999px; font: 700 14px/1 inherit; font-family: inherit; }
+.kaartbew .kb-chip.klein { min-height: 44px; padding: 0 12px; }
+.kaartbew .kb-chip.aan { background: var(--accent); color: var(--accent-t); border-color: var(--accent); }
+.kaartbew .kb-balk { display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap; }
+.kaartbew .kb-titel { font-weight: 800; }
+.kaartbew .kb-zoom { display: flex; gap: 6px; }
+.kaartbew .kb-vak { overflow: auto; border: 1px solid var(--rand); border-radius: 12px; max-height: 58vh; background: #7CC46A; -webkit-overflow-scrolling: touch; }
+.kaartbew .kb-doek { position: relative; line-height: 0; min-width: 100%; }
+.kaartbew .kb-canvas { width: 100%; aspect-ratio: 2 / 1; display: block; }
+.kaartbew .kb-vlak { position: absolute; inset: 0; width: 100%; height: 100%; touch-action: manipulation; cursor: pointer; }
+.kaartbew .kb-melding { min-height: 1.4em; margin: 0; font-size: 14px; }
+.kaartbew .kb-pal { display: grid; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); gap: 8px; }
+.kaartbew .kb-tegel { display: grid; justify-items: center; gap: 4px; align-content: start; min-height: 72px; padding: 8px 4px; border: 1.5px solid var(--rand); border-radius: 12px; background: var(--lijst); color: var(--inkt); font: 700 12px/1.2 inherit; font-family: inherit; text-align: center; }
+.kaartbew .kb-tegel b { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: var(--kaart); color: #fff; font-size: 18px; }
+.kaartbew .kb-tegel.sel { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+.kaartbew .kb-gekozen { display: grid; gap: 6px; padding: 10px; border: 1.5px solid var(--accent); border-radius: 12px; background: var(--lijst); }
+.kaartbew .kb-pijlen { display: flex; gap: 6px; flex-wrap: wrap; }
+.kaartbew .kb-pijlen button { min-width: 48px; min-height: 48px; border: 1.5px solid var(--rand); border-radius: 12px; background: var(--kaart); color: var(--inkt); font: 800 16px/1 inherit; font-family: inherit; }
+.kaartbew .kb-pijlen .wis { padding: 0 14px; font-size: 14px; }
+.kaartbew .kb-acties .knop[disabled] { opacity: .5; }

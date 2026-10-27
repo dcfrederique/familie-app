@@ -19,6 +19,13 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.49',
+    datum: '2026-10-27',
+    titel: 'De wereld in gebieden, en de kaart bewerken',
+    tekst: 'Nieuw onder Wij → Kaart bewerken (gsm van een ouder, achter de pincode): jullie bepalen zelf waar alles in de wereld staat. Per gebied kun je de huizen van de kinderen, de gebouwen, bomen, banken, lantaarns, speeltoestellen en paden verplaatsen, erbij zetten of wissen, en dus elk kind zijn huis ver van de andere zetten. De wereld bestaat nu uit acht gebieden die elk apart laden als je er binnenloopt: het dorp met poorten naar Berg, Meer en Springland, en daarachter bos, platteland, stadje, strand en sportpark, nog leeg op de wegen na. Springland opent gewoon de bestaande kaart. Wat de nachtroutine later bouwt, komt als standaard op de kaart en kunnen jullie verschuiven of weghalen.',
+    open: 'Het plein met speeltuin, de vijver en het voetbalveld in het dorp liggen nog vast. Het dorp heeft nog geen zuidpoort (de vijver ligt in de weg).',
+  },
+  {
     versie: '0.48',
     datum: '2026-10-27',
     titel: 'De wereld in 2.5D om te proberen, met loopsnelheid',

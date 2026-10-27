@@ -8,9 +8,10 @@ import { spelMenu } from '../data/spelletjes.ts'
 import { zin } from '../data/zinnen.ts'
 import { U, gebouwenVoor, kidKleur, type GebouwBeeld } from '../data/wereld.ts'
 import {
-  GROND_Y, MAX_HUIZEN, deurVan, inRechthoek, maakKaart, maakTegels, nieuweTegelStand, opDeurmat, richtingVan, stap, tegelMidden, tegelStap, voorHuisdeur,
+  MAX_HUIZEN, deurYvan, dichtstbijVrij, inRechthoek, maakTegels, nieuweTegelStand, opDeurmat, richtingVan, stap, tegelMidden, tegelStap, voorHuisdeur,
   huisRechthoek, type Loper, type TegelStand,
 } from '../lib/wereld/kaart.ts'
+import { aankomstNa, effectieveItems, gebiedVan, leegOpgeslagen, maakGebiedKaart, poortOp, type GebiedId, type Opgeslagen, type Poort } from '../lib/wereld/gebieden.ts'
 import { Tekenaar25 } from '../lib/wereld/tekenen25.ts'
 import { standaardWeergave, type WereldWeergave } from '../lib/wereld/weergave.ts'
 import { DUUR, isToestel, naarBal, nieuweBal, pose, rol, schop, voorToestel, type Toestel } from '../lib/wereld/speel.ts'
@@ -27,9 +28,19 @@ import './wereld.css'
 // De wereld (docs/wereld.md): de straat van bovenaf. Het figuurtje loopt met de joystick of naar een tik toe;
 // de deur van een gebouw opent het bestaande scherm. Het startscherm blijft de basis en is één knop weg.
 
-const PRENT: Record<string, string> = { winkel: '🛍 ⭐', spellen: '🎮 ⭐', bouw: '🚧 ❓', huis: '🏠 ✨', bladeren: '🍂 ⭐', ketting: '🌰 ⭐', slot: '🔒 ⭐' }
+const PRENT: Record<string, string> = { springland: '🦘 ⭐', gebied: '🗺 ✨', winkel: '🛍 ⭐', spellen: '🎮 ⭐', bouw: '🚧 ❓', huis: '🏠 ✨', bladeren: '🍂 ⭐', ketting: '🌰 ⭐', slot: '🔒 ⭐' }
 
 const minderBeweging = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+/** Waar het kind stond toen het een gebouw of Springland inging, zodat het daar terugkomt (alleen in deze sessie). */
+const plekSleutel = (kindId: string) => `wereld-plek-${kindId}`
+function leesPlek(kindId: string): { g: GebiedId; tx: number; ty: number } | null {
+  try {
+    const p = JSON.parse(sessionStorage.getItem(plekSleutel(kindId)) ?? 'null') as { g?: string; tx?: number; ty?: number } | null
+    if (p && typeof p.tx === 'number' && typeof p.ty === 'number' && typeof p.g === 'string' && gebiedVan(p.g).id === p.g) return { g: p.g as GebiedId, tx: p.tx, ty: p.ty }
+  } catch { /* geen sessie of geen opslag */ }
+  return null
+}
 
 /** De wereld van een kind (/kind/:id/wereld). */
 export default function Wereld() {
@@ -58,17 +69,20 @@ export function OuderWereld() {
 function WereldLader({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolean }) {
   const { bron } = useSessie()
   const { data, fout } = useGegevens(bron ? async () => {
-    const [aankopen, aanbod, weergave] = await Promise.all([ouder ? Promise.resolve({} as Record<string, string[]>) : bron.aankopen(), bron.aanbod(), bron.wereldWeergave().catch(() => standaardWeergave)])
-    return { eigen: new Set(aankopen[kind.id] ?? []), aanbod, weergave }
+    const [aankopen, aanbod, weergave, opgeslagen] = await Promise.all([
+      ouder ? Promise.resolve({} as Record<string, string[]>) : bron.aankopen(), bron.aanbod(),
+      bron.wereldWeergave().catch(() => standaardWeergave), bron.wereldKaart().catch(() => leegOpgeslagen()),
+    ])
+    return { eigen: new Set(aankopen[kind.id] ?? []), aanbod, weergave, opgeslagen }
   } : null, [bron, kind.id, ouder])
   if (bron && !data && !fout) return <div className="wereld" aria-busy="true" />
   return <WereldScherm kind={kind} ouder={ouder} winkel={data} />
 }
 
-function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?: boolean; winkel: { eigen: Set<string>; aanbod: Aanbod; weergave: WereldWeergave } | null }) {
+function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?: boolean; winkel: { eigen: Set<string>; aanbod: Aanbod; weergave: WereldWeergave; opgeslagen: Opgeslagen } | null }) {
   const { kinderen, bron, gebruikers, account } = useSessie()
   // Zonder gegevens (offline of een fout) blijven de gebouwen van de spelletjes weg: wat niet vrij is, mag niet zichtbaar zijn.
-  const [gebouwLijst] = useState<GebouwBeeld[]>(() => gebouwenVoor({
+  const [alleGebouwen] = useState<GebouwBeeld[]>(() => gebouwenVoor({
     kindId: kind.id, ouder, allesVrij: kind.figuurtje_alles_vrij, kanLezen: kind.kan_lezen,
     eigen: winkel?.eigen ?? new Set<string>(),
     aanbod: winkel?.aanbod ?? { ...leegAanbod, dicht: spelMenu.map((x) => `spel:${x.sleutel}`) },
@@ -91,12 +105,21 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
   // De eerste vier kinderen hebben elk een huis langs de straat, in de volgorde van het gezin.
   const bewoners = useMemo(() => kinderen.slice(0, MAX_HUIZEN), [kinderen])
   const spelers = useMemo(() => ouder ? [...bewoners, kind] : bewoners, [ouder, bewoners, kind])
-  const huizen = useMemo(() => bewoners.map((k, i) => {
+  const kinderHuizen = useMemo(() => bewoners.map((k) => {
     const huis = huisVan(k)
-    return { id: k.id, naam: k.naam, model: huis.model, deurX: deurVan(i), huis, kleur: kidKleur[k.thema ?? 'blauw'] }
+    return { id: k.id, naam: k.naam, model: huis.model, huis, kleur: kidKleur[k.thema ?? 'blauw'] }
   }), [bewoners])
-  const kleurVan = useCallback((kid: string) => huizen.find((h) => h.id === kid)?.kleur ?? '#6A5BD1', [huizen])
-  const kaart = useMemo(() => maakKaart(huizen, kleurVan, gebouwLijst), [huizen, kleurVan, gebouwLijst])
+  const kleurVan = useCallback((kid: string) => kinderHuizen.find((h) => h.id === kid)?.kleur ?? '#6A5BD1', [kinderHuizen])
+  // Elk gebied is een eigen kaart (docs/wereld-dorp.md); wat erin staat komt uit de standaardplekken en wat de ouders aanpasten.
+  const items = useMemo(() => effectieveItems(bewoners.map((k) => k.id), winkel?.opgeslagen), [bewoners, winkel])
+  const [gebied, setGebied] = useState<GebiedId>(() => (ouder ? 'dorp' : leesPlek(kind.id)?.g ?? items.find((i) => i.id === `huis:${kind.id}`)?.gebied ?? 'dorp'))
+  const gebiedRef = useRef(gebied)
+  useEffect(() => { gebiedRef.current = gebied }, [gebied])
+  const { kaart, huizen: huisPlekken, gebouwen: gebouwLijst } = useMemo(() => maakGebiedKaart(gebied, items, kinderHuizen, kleurVan, alleGebouwen), [gebied, items, kinderHuizen, kleurVan, alleGebouwen])
+  const huizen = useMemo(() => huisPlekken.map((h) => {
+    const k = kinderHuizen.find((x) => x.id === h.id)!
+    return { ...h, naam: k.naam, huis: k.huis, kleur: k.kleur }
+  }), [huisPlekken, kinderHuizen])
   // Lopen tegel voor tegel (standaard) of vrij: een ouder kiest per kind bij Kinderen.
   const tegelLopen = kind.wereld_lopen !== 'vrij'
   const tegels = useMemo(() => maakTegels(kaart), [kaart])
@@ -110,6 +133,8 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
     anderen: new Map<string, Ander>(),
     spelen: null as null | { id: Toestel; x: number; y: number; van: { x: number; y: number }; t: number },
     klaarMet: '' as string, bal: nieuweBal(), balRust: 0,
+    /** De tegel waar het figuurtje na een poort of terug uit een gebouw begint, en of de plek van vorige keer al gelezen is. */
+    aankomst: null as null | [number, number], plekGelezen: false,
     cam: [0, 0, 1] as readonly [number, number, number], bezig: false, maat: [960, 640] as [number, number],
     tek: null as Tekenaar25 | null,
   })
@@ -119,11 +144,16 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
     if (kind && !kind.kan_lezen) leesVoor(tekst)
   }, [kind])
 
-  const ga = useCallback((pad: string, tekst: string, prent: string) => {
+  const ga = useCallback((pad: string, tekst: string, prent: string, terug?: [GebiedId, number, number]) => {
     const s = toestand.current
     if (s.bezig || ouder) return
     s.bezig = true
     s.route = []
+    // onthoud waar het kind stond, zodat het daar terugkomt
+    try {
+      const [g, tx, ty] = terug ?? [gebiedRef.current, Math.floor(s.pl.x / U), Math.floor(s.pl.y / U)]
+      sessionStorage.setItem(plekSleutel(kind.id), JSON.stringify({ g, tx, ty }))
+    } catch { /* geen opslag: het kind begint bij zijn huis */ }
     meld(tekst, prent)
     setSluit(true)
     setTimeout(() => navigate(`/kind/${kind.id}/${pad}${pad.includes('?') ? '&' : '?'}van=wereld`), minderBeweging() ? 600 : 1000)
@@ -144,18 +174,52 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
     if (!h) return
     s.route = []
     if (h.id === kind.id && !ouder) ga('huis', 'Hier woon jij!', PRENT.huis)
-    else { s.pl.y = GROND_Y + 44; meld(`Het huis van ${h.naam}.`, PRENT.huis) }
+    else { s.pl.y = deurYvan(h) + 44; meld(`Het huis van ${h.naam}.`, PRENT.huis) }
   }, [ga, huizen, kind, meld, ouder])
+
+  /** Door een poort naar het volgende gebied (de iris sluit even), of naar de bestaande kaart van Springland. */
+  const reis = useCallback((poort: Poort) => {
+    const s = toestand.current
+    if (s.bezig) return
+    s.route = []
+    if (poort.doel === 'springland') {
+      if (ouder) {
+        // een ouder kijkt alleen mee: een stap terug
+        s.pl.x += poort.zijde === 'w' ? U : poort.zijde === 'o' ? -U : 0; s.pl.y += poort.zijde === 'n' ? U : poort.zijde === 'z' ? -U : 0
+        meld('Springland: hier spelen de kinderen.', PRENT.springland)
+        return
+      }
+      ga('springen', 'Naar Springland!', PRENT.springland, ['dorp', 3, 12])
+      return
+    }
+    const aan = aankomstNa(poort)
+    if (!aan) return
+    s.bezig = true
+    setSluit(true)
+    setTimeout(() => { s.aankomst = aan.tegel; setBericht(null); setGebied(aan.gebied); meld(gebiedVan(aan.gebied).naam, PRENT.gebied) }, minderBeweging() ? 150 : 450)
+  }, [ga, meld, ouder])
 
   useEffect(() => {
     const cv = canvasRef.current
     if (!cv) return
     const s = toestand.current
     const eigen = huizen.find((h) => h.id === kind.id)
-    // Een ouder staat op de straat zelf, tussen de huizen.
-    const start = ouder ? { x: 26 * U, y: 13.4 * U } : { x: eigen?.deurX ?? deurVan(0), y: GROND_Y + 70 }
-    // Tegel voor tegel begint op het midden van een tegel.
-    if (tegelLopen) { start.x = tegelMidden(Math.floor(start.x / U)); start.y = tegelMidden(Math.floor(start.y / U)) }
+    // Een ouder staat op de straat zelf, tussen de huizen; een kind begint voor zijn eigen deur.
+    const start = ouder ? { x: 26 * U, y: 13.4 * U } : eigen ? { x: eigen.deurX, y: deurYvan(eigen) + 70 } : { x: 28 * U, y: 13.5 * U }
+    // Terug uit een gebouw of Springland: op de plek van vorige keer. Door een poort: bij de aankomsttegel.
+    if (!s.plekGelezen) {
+      s.plekGelezen = true
+      const vorige = ouder ? null : leesPlek(kind.id)
+      if (vorige && vorige.g === gebiedRef.current) s.aankomst = [vorige.tx, vorige.ty]
+      try { sessionStorage.removeItem(plekSleutel(kind.id)) } catch { /* niets te wissen */ }
+    }
+    if (s.aankomst) { start.x = tegelMidden(s.aankomst[0]); start.y = tegelMidden(s.aankomst[1]); s.aankomst = null }
+    // Tegel voor tegel begint op het midden van een (vrije) tegel.
+    if (tegelLopen) {
+      const [vx, vy] = dichtstbijVrij(tegels, Math.floor(start.x / U), Math.floor(start.y / U))
+      start.x = tegelMidden(vx); start.y = tegelMidden(vy)
+    }
+    setSluit(false)
     s.pl = { ...start, face: 'down', moving: false, fase: 0, tegel: nieuweTegelStand() }
     s.route = []; s.doel = null; s.bezig = false; s.spelen = null; s.klaarMet = ''; s.bal = nieuweBal()
     const tek = new Tekenaar25(cv, Math.min(2, Math.max(1, window.devicePixelRatio || 1)) > 1.4 ? 1.5 : 1)
@@ -174,7 +238,7 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
     const leden = new Map(gebruikers.map((g) => [g.id, g]))
     s.anderen.clear()
     const zender = new Zender()
-    const nuPositie = () => ({ id: kind.id, x: s.pl.x, y: s.pl.y, face: s.pl.face, moving: s.pl.moving })
+    const nuPositie = () => ({ id: kind.id, x: s.pl.x, y: s.pl.y, face: s.pl.face, moving: s.pl.moving, g: gebiedRef.current })
     const verbinding = verbind({
       gezin: account?.gezin_id ?? 'demo', ik: kind.id, client: supabase,
       ontvang: (b) => {
@@ -219,6 +283,9 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
         if (aangekomen) {
           for (const b of gebouwLijst) if (opDeurmat(s.pl, b, tegelLopen)) { aanDeur(b); break }
           for (const h of huizen) if (voorHuisdeur(s.pl, h, tegelLopen)) { aanHuis(h.id); break }
+          // een poort aan de rand: door naar het volgende gebied
+          const poort = poortOp(gebiedRef.current, Math.floor(s.pl.x / U), Math.floor(s.pl.y / U))
+          if (poort && !s.bezig) reis(poort)
           // speeltoestel: wie vlak voor een toestel staat, gaat spelen (pas opnieuw als je eerst weggaat)
           const toestel = kaart.dingen.find((d) => isToestel(d.id) && voorToestel(s.pl, d))
           if (!toestel) s.klaarMet = ''
@@ -238,7 +305,7 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
         else volg(a, dt)
       }
       // de bal: wie ertegenaan loopt, schopt hem weg; in een doel is het een doelpunt
-      if (!s.bezig) {
+      if (!s.bezig && kaart.vast) {
         if (!s.spelen && schop(s.bal, s.pl)) s.pl.face = naarBal(s.pl, s.bal)
         if (s.balRust > 0) { s.balRust -= dt; if (s.balRust <= 0) s.bal = nieuweBal() }
         else if (rol(s.bal, dt, kaart.dingen.filter((d) => d.id === 'doel')) === 'doel') {
@@ -252,8 +319,8 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
         me = { ...s.pl, x: po.x, y: po.y, sorteerY: po.sorteerY, moving: false, face: 'down' }
       }
       const opties = {
-        t, kaart, huizen, gebouwen: gebouwLijst, me, bal: s.bal, mijnId: kind.id, kleur: kleurVan(kind.id), figuurtjes, overzicht: false,
-        anderen: [...s.anderen.values()].flatMap((a) => {
+        t, kaart, huizen, gebouwen: gebouwLijst, me, bal: kaart.vast ? s.bal : undefined, mijnId: kind.id, kleur: kleurVan(kind.id), figuurtjes, overzicht: false,
+        anderen: [...s.anderen.values()].filter((a) => (a.g ?? 'dorp') === gebiedRef.current).flatMap((a) => {
           const lid = leden.get(a.id)
           return lid ? [{ ...a, naam: lid.naam, figuur: figuurtjeVan(lid), kleur: lid.rol === 'ouder' ? '#6A5BD1' : kidKleur[lid.thema ?? 'blauw'] }] : []
         }),
@@ -269,7 +336,7 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
     }
     raf = requestAnimationFrame(lus)
     return () => { clearInterval(klokTik); cancelAnimationFrame(raf); waarnemer.disconnect(); document.removeEventListener('visibilitychange', zichtbaarheid); verbinding.stop() }
-  }, [kind, ouder, gebruikers, account, huizen, kaart, figuurtjes, aanDeur, aanHuis, gebouwLijst, tegelLopen, tegels])
+  }, [kind, ouder, gebruikers, account, huizen, kaart, figuurtjes, aanDeur, aanHuis, reis, gebouwLijst, tegelLopen, tegels])
 
   /** Looppad voor een tik: over tegels (tegel voor tegel) of over de fijne kaart (vrij lopen). */
   const loopPad = (sx: number, sy: number, ex: number, ey: number): [number, number][] =>
@@ -296,9 +363,9 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
       }
     }
     for (const h of huizen) {
-      const hr = huisRechthoek(h), [hx, hy] = opVoet(h.deurX, GROND_Y)
-      if (inRechthoek(hx, hy, [hr[0], hr[1] - 40, hr[2], GROND_Y + 20])) {
-        s.route = loopPad(s.pl.x, s.pl.y, h.deurX, GROND_Y + 22); s.doel = { huis: h.id }; return
+      const hr = huisRechthoek(h), gy = deurYvan(h), [hx, hy] = opVoet(h.deurX, gy)
+      if (inRechthoek(hx, hy, [hr[0], hr[1] - 40, hr[2], gy + 20])) {
+        s.route = loopPad(s.pl.x, s.pl.y, h.deurX, gy + 22); s.doel = { huis: h.id }; return
       }
     }
     s.route = loopPad(s.pl.x, s.pl.y, wx, wy); s.doel = null
@@ -338,7 +405,7 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
   return (
     <div className={`wereld kleur-${kind.thema ?? 'blauw'}`}>
       <canvas ref={canvasRef} className="wereld-veld" onPointerDown={tik}
-              role="img" aria-label="De straat met de huizen, de winkel en het Spellenhuis" />
+              role="img" aria-label={`De wereld: ${gebiedVan(gebied).naam}`} />
       {!ouder && saldo !== undefined && saldo !== null && (
         <div className="wereld-sterren" role="img" aria-label={`${saldo} sterren`}><Ster grootte={34} /><b className="display">{saldo}</b></div>
       )}
