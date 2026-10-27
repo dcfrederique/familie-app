@@ -117,7 +117,8 @@ Dit gebeurt in twee fases: eerst uitdenken (ontwerp), daarna coderen (bouw).
   wereld; een wereld heeft vijf gewone levels en als zesde de **baas** (`docs/springland.md`, "Baas"): heeft de laatste
   wereld vijf gewone levels maar nog geen baas, bouw dan die baas (arena met `B`, `baas` in de data) in plaats van een gewoon
   level, en is de wereld vol, begin dan eerst een nieuwe wereld achteraan `springWerelden`. Levels hebben nu hartjes
-  (2, bij Vanzelf lopen 3), beestjes en de baas kosten een hartje en bij 0 ga je terug naar het laatste vlaggetje. **Een level
+  (2, bij Vanzelf lopen 3), beestjes en de baas kosten een hartje en bij 0 ga je terug naar het laatste vlaggetje. **Vijanden
+  verslaan door erop te springen (slak 1 hup, egel rolt op en 2 hups, vogel fladdert), `docs/springland.md` "Vijanden"; een nieuw level mag die soorten (en een nieuwe soort) gebruiken. Een level
   mag soms moeilijk zijn** (ongeveer om de twee, drie levels een pittig level, zie "Moeilijkheid" in `docs/springland.md`),
   maar het blijft haalbaar met alleen tikken (Vanzelf lopen voor Feline en Yuna). De wereldkaart (van bovenaf,
   het figuurtje wandelt naar het level) en het vrijspelen volgen vanzelf uit de data. Bedenk het level in het plan

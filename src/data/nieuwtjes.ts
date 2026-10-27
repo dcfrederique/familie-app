@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.54',
+    datum: '2026-10-27',
+    titel: 'Springland: vijanden verslaan door erop te springen',
+    tekst: 'In Springland kan het kind de beestjes nu verslaan door erop te springen: poef, een wolkje sterretjes. Elke soort heeft een eigen manier: de slak is na één hup weg, de egel rolt zich bij de eerste hup op tot een onschadelijk stekelbolletje en gaat bij de tweede hup weg, en de vogel fladdert op en neer en moet je op het juiste moment raken. Van opzij raken kost nog altijd een hartje. Nieuwe levels van de nachtelijke bouw mogen deze soorten gebruiken.',
+  },
+  {
     versie: '0.53',
     datum: '2026-10-27',
     titel: 'Springland: hartjes, vlaggetjes en een baas',

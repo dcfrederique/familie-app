@@ -128,6 +128,12 @@ export class SpringVeld {
         if (b) for (let i = 0; i < (g === 'verslagen' ? 8 : 3); i++) this.glinsters.push({ x: b.x + (i - 3) * 0.3, y: b.y - BAAS_HOOG * (0.4 + (i % 3) * 0.3), t: i * 0.05, kleur: '#F2B33D' })
       }
       if (g === 'vlag') geluid.paar()
+      if (g === 'vijand') {
+        // Poef: een wolkje sterretjes op de plek van het beestje dat net verslagen werd.
+        geluid.paar(); this.veerKlok = 0.25
+        const b = this.spel.beestjes.filter((x) => x.weg).sort((a, c) => Math.abs(a.x - spel.x) - Math.abs(c.x - spel.x))[0]
+        if (b) for (let i = 0; i < 6; i++) this.glinsters.push({ x: b.x + (i - 2.5) * 0.15, y: b.y - b.op - 0.4, t: i * 0.04, kleur: i % 2 ? '#F2B33D' : '#FFFFFF' })
+      }
       if (g === 'weer' || g === 'baas' || g === 'verslagen' || g === 'vlag') this.opties.opGebeurtenis?.(g)
     }
     this.glinsters = this.glinsters.map((s) => ({ ...s, t: s.t + dt })).filter((s) => s.t < 0.7)
@@ -181,7 +187,7 @@ export class SpringVeld {
     this.tekenHuis(spel.huis.x * T, spel.huis.y * T, T)
     if (spel.baas && !spel.baas.verslagen) this.tekenPoort(spel, T)
     for (const d of spel.dingen) if (!d.weg && d.x > van - 1 && d.x < tot + 1) this.tekenDing(d, T)
-    for (const b of spel.beestjes) this.tekenBeestje(b, T)
+    for (const b of spel.beestjes) if (!b.weg) this.tekenBeestje(b, T)
     if (spel.baas && !spel.baas.verslagen) this.tekenBaas(spel.baas, T)
     this.tekenFiguur(T)
     for (const s of this.glinsters) this.tekenGlinster(s, T)
@@ -358,9 +364,29 @@ export class SpringVeld {
     const soort = springLevels[this.spel.level].beestje
     const plat = b.hupKlok > 0 ? 0.65 : 1
     ctx.save()
-    ctx.translate(b.x * T, b.y * T)
+    ctx.translate(b.x * T, (b.y - b.op) * T)
     ctx.scale(b.richting, plat)
     const h = BEESTJE_HOOG * T
+    if (b.krul > 0 && soort === 'egel') {
+      // Opgerold tot een stekelbolletje: onschadelijk, wiebelt even.
+      ctx.rotate(Math.sin(this.spel.klok * 12) * 0.12)
+      ctx.fillStyle = '#6D4C41'
+      ctx.beginPath()
+      for (let i = 0; i < 14; i++) {
+        const a = (i / 14) * Math.PI * 2, r = i % 2 ? h * 0.5 : h * 0.4
+        ctx.lineTo(Math.cos(a) * r, -h * 0.4 + Math.sin(a) * r)
+      }
+      ctx.closePath(); ctx.fill()
+      ctx.fillStyle = '#D7B899'
+      ctx.beginPath(); ctx.arc(0, -h * 0.4, h * 0.2, 0, Math.PI * 2); ctx.fill()
+      ctx.restore()
+      return
+    }
+    if (b.op > 0) {
+      // Een vogel fladdert: schaduwtje op de grond en wiekjes.
+      ctx.fillStyle = 'rgba(0,0,0,.12)'
+      ctx.beginPath(); ctx.ellipse(0, b.op * T, T * 0.4, T * 0.07, 0, 0, Math.PI * 2); ctx.fill()
+    }
     if (soort === 'slak') {
       ctx.fillStyle = '#C5E1A5'
       ctx.beginPath(); ctx.roundRect(-T * 0.45, -h * 0.35, T * 0.9, h * 0.35, h * 0.17); ctx.fill()

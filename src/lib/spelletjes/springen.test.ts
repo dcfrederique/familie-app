@@ -26,7 +26,7 @@ function robot(s: Springen): { s: Springen; knoppen: Knoppen } {
   const voor = Math.floor(s.x + 0.6)
   const muur = isVast(s, voor, r - 1) || isVast(s, voor, r - 2)
   const gat = !isVast(s, Math.floor(s.x + 0.55), r) && !isVast(s, Math.floor(s.x + 1.2), r) && !isVast(s, Math.floor(s.x + 1.2), r + 1)
-  const beestje = s.beestjes.some((b) => b.x - s.x > 0 && b.x - s.x < 2.6 && Math.abs(b.y - s.y) < 1)
+  const beestje = s.beestjes.some((b) => !b.weg && b.x - s.x > 0 && b.x - s.x < 2.6 && Math.abs(b.y - s.y) < 1)
   // De baas: hupsen als hij net voor je rolt (een duizelige baas laat je gewoon links liggen).
   const b = s.baas
   const baas = !!b && !b.verslagen && b.duizel <= 0 && Math.abs(b.x - s.x) < 3 && (s.x < s.huis.x - 3.3 || Math.sign(s.x - b.x) === b.richting)
@@ -87,7 +87,35 @@ describe('Springland', () => {
     expect(opzij).toContain('bots')
     expect(opzij).not.toContain('val')
     const boven = { ...s, x: b.x, y: b.y - 3, vy: 0, opGrond: false, beestjes: [{ ...b, richting: 1 as const }] }
-    expect(speel(boven, 1).alles).toContain('hup')
+    expect(speel(boven, 1).alles).toContain('vijand')
+  })
+
+  it('elke soort vijand wordt op een eigen manier verslagen', () => {
+    // Boven op het beestje laten vallen; geeft het beestje en de gebeurtenissen terug.
+    const val = (level: string, voor?: (b: Springen['beestjes'][number]) => Springen['beestjes'][number]) => {
+      const s = nieuwSpel(level, 'zelf')
+      const b = voor ? voor(s.beestjes[0]) : s.beestjes[0]
+      const boven = { ...s, x: b.x, y: b.y - b.op - 2.2, vy: 4, opGrond: false, beestjes: [{ ...b, richting: 1 as const }] }
+      const r = speel(boven, 0.6)
+      return { b: r.s.beestjes[0], alles: r.alles }
+    }
+    // Slak: één hup en hij is weg.
+    expect(val('weide').b.weg).toBe(true)
+    expect(val('weide').alles).toContain('vijand')
+    // Egel: de eerste hup rolt hem op (onschadelijk), de tweede hup verslaat hem.
+    const eerste = val('bos')
+    expect(eerste.b.weg).toBe(false)
+    expect(eerste.b.krul).toBeGreaterThan(0)
+    expect(eerste.alles).toContain('hup')
+    expect(val('bos', (b) => ({ ...b, leven: 1, krul: 1 })).b.weg).toBe(true)
+    // Een opgerolde egel doet je niets, ook niet van opzij.
+    const s = nieuwSpel('bos', 'zelf')
+    const egel = { ...s.beestjes[0], krul: 2 }
+    const naast = { ...s, x: egel.x - 1.2, y: egel.y, veilig: { x: egel.x - 1.2, y: egel.y }, beestjes: [egel] }
+    expect(speel(naast, 0.6, (x) => ({ s: x, knoppen: rechts })).s.geraakt).toBe(0)
+    // Vogel: fladdert boven de grond en gaat met één hup weg.
+    expect(nieuwSpel('wolken', 'zelf').beestjes[0].soort).toBe('vogel')
+    expect(val('wolken', (b) => ({ ...b, op: 0.5 })).b.weg).toBe(true)
   })
 
   it('een springveer kaatst hoog op', () => {
@@ -104,8 +132,8 @@ describe('Springland', () => {
         const { s, alles } = speel(nieuwSpel(level, besturing), 180, robot)
         expect(s.klaar).toBe(true)
         expect(alles.at(-1)).toBe('klaar')
-        // Een beestje kan je net in een gat duwen; anders val je nooit.
-        if (s.geraakt === 0) expect(s.vallen).toBe(0)
+        // Een hup op een vijand kaatst je soms net in een gat: dat kost niets, maar vaak mag het niet zijn.
+        expect(s.vallen).toBeLessThanOrEqual(1)
         // Je haalt elk level zonder dat alle hartjes op raken (een beestje raakt je hoogstens af en toe).
         expect(s.omvallen).toBe(0)
         expect(s.baas ? s.baas.verslagen : true).toBe(true)

@@ -42,7 +42,25 @@ export const POORT_AFSTAND = 3
 
 export type Vak = ' ' | '#' | '=' | '^' | '~'
 export interface Ding { x: number; y: number; soort: 'ster' | 'fruit'; weg: boolean }
-export interface Beestje { x: number; y: number; thuis: number; richting: -1 | 1; hupKlok: number }
+/** Elke soort wordt op een eigen manier verslagen (docs/springland.md, "Vijanden"): de slak met één hup, de egel
+ *  rolt zich bij de eerste hup op (dan is hij onschadelijk) en gaat bij de tweede weg, de vogel fladdert op en neer
+ *  en moet met één hup op het juiste moment geraakt worden. */
+export type BeestjeSoort = 'slak' | 'egel' | 'vogel'
+export const BEESTJE_LEVENS: Record<BeestjeSoort, number> = { slak: 1, egel: 2, vogel: 1 }
+/** Hoelang een egel opgerold blijft na een hup. */
+export const KRUL = 2.5
+/** Hoe hoog een vogel fladdert boven de grond. */
+export const VOGEL_FLADDER = 1.1
+export interface Beestje {
+  x: number; y: number; thuis: number; richting: -1 | 1; hupKlok: number
+  soort: BeestjeSoort
+  /** Hoeveel hupsen er nog nodig zijn; weg = verslagen (poef). */
+  leven: number
+  weg: boolean
+  krul: number
+  /** Hoe ver het beestje boven de grond zweeft (alleen de vogel). */
+  op: number
+}
 
 export interface Baas {
   x: number; y: number; thuis: number; richting: -1 | 1
@@ -92,7 +110,7 @@ export interface Springen {
 }
 
 export interface Knoppen { links: boolean; rechts: boolean }
-export type SpringGebeurtenis = 'sprong' | 'veer' | 'hup' | 'ster' | 'fruit' | 'bots' | 'val' | 'klaar' | 'weer' | 'vlag' | 'baas' | 'verslagen'
+export type SpringGebeurtenis = 'sprong' | 'veer' | 'hup' | 'ster' | 'fruit' | 'bots' | 'val' | 'klaar' | 'weer' | 'vlag' | 'baas' | 'verslagen' | 'vijand'
 
 const vast = (v: Vak | undefined) => v === '#' || v === '=' || v === '^'
 
@@ -112,7 +130,7 @@ export function nieuwSpel(level: SpringLevel, besturing: SpringBesturing): Sprin
     vakken.push(Array.from({ length: breed }, (_, c) => {
       const t = rij[c] ?? ' '
       if (t === '*' || t === 'o') dingen.push({ x: c + 0.5, y: r + 0.5, soort: t === '*' ? 'ster' : 'fruit', weg: false })
-      if (t === 'e') beestjes.push({ x: c + 0.5, y: r + 1, thuis: c + 0.5, richting: -1, hupKlok: 0 })
+      if (t === 'e') beestjes.push({ x: c + 0.5, y: r + 1, thuis: c + 0.5, richting: -1, hupKlok: 0, soort: springLevels[level].beestje, leven: BEESTJE_LEVENS[springLevels[level].beestje], weg: false, krul: 0, op: 0 })
       if (t === 'C') vlaggen.push({ x: c + 0.5, y: r + 1, bereikt: false })
       if (t === 'B') baas = { x: c + 0.5, y: r + 1, thuis: c + 0.5, richting: -1, geraakt: 0, nodig: BAAS_NODIG[besturing], duizel: 0, hupKlok: 0, verslagen: false }
       if (t === 'P') start = { x: c + 0.5, y: r + 1 }
@@ -231,7 +249,7 @@ function deelstap(s: Springen, dt: number, knoppen: Knoppen, uit: SpringGebeurte
   if (s.opGrond && landing !== '^') {
     const r = Math.round(s.y)
     const stevig = [-1, 0, 1].every((d) => isVast(s, Math.floor(s.x + d), r))
-    if (stevig && s.beestjes.every((b) => Math.abs(b.x - s.x) > 3)) s.veilig = { x: s.x, y: s.y }
+    if (stevig && s.beestjes.every((b) => b.weg || Math.abs(b.x - s.x) > 3)) s.veilig = { x: s.x, y: s.y }
   }
 
   beestjesLopen(s, dt, uit)
@@ -312,24 +330,32 @@ function beweegY(s: Springen, dy: number): Vak | null {
 
 function beestjesLopen(s: Springen, dt: number, uit: SpringGebeurtenis[]) {
   for (const b of s.beestjes) {
+    if (b.weg) continue
     b.hupKlok = Math.max(0, b.hupKlok - dt)
-    // Omkeren aan een muur, aan de rand van de grond of ver genoeg van huis.
-    const voor = b.x + b.richting * (BEESTJE_BREED / 2 + 0.05)
-    const r = Math.round(b.y)
-    if (isVast(s, Math.floor(voor), r - 1) || !isVast(s, Math.floor(voor), r) || Math.abs(voor - b.thuis) > BEESTJE_BEREIK) {
-      b.richting = b.richting === 1 ? -1 : 1
+    b.krul = Math.max(0, b.krul - dt)
+    b.op = b.soort === 'vogel' ? Math.abs(Math.sin(s.klok * 2.2 + b.thuis)) * VOGEL_FLADDER : 0
+    if (b.krul <= 0) {
+      // Omkeren aan een muur, aan de rand van de grond of ver genoeg van huis.
+      const voor = b.x + b.richting * (BEESTJE_BREED / 2 + 0.05)
+      const r = Math.round(b.y)
+      if (isVast(s, Math.floor(voor), r - 1) || !isVast(s, Math.floor(voor), r) || Math.abs(voor - b.thuis) > BEESTJE_BEREIK) {
+        b.richting = b.richting === 1 ? -1 : 1
+      }
+      else b.x += b.richting * BEESTJE_SNELHEID * (springLevels[s.level]?.snelheid ?? 1) * dt
     }
-    else b.x += b.richting * BEESTJE_SNELHEID * (springLevels[s.level]?.snelheid ?? 1) * dt
 
+    const boven = b.y - b.op
     const raakX = Math.abs(b.x - s.x) < (BREED + BEESTJE_BREED) / 2
-    const raakY = s.y > b.y - BEESTJE_HOOG && s.y - HOOG < b.y
+    const raakY = s.y > boven - BEESTJE_HOOG && s.y - HOOG < boven
     if (!raakX || !raakY) continue
-    if (s.vy > 0 && s.y < b.y - BEESTJE_HOOG + 0.35) {
-      // Van boven: je hupt erop en het beestje giechelt (rolt zich even op).
-      s.vy = -HUP; s.y = b.y - BEESTJE_HOOG; b.hupKlok = 0.6
-      uit.push('hup')
-    } else if (s.knipper <= 0) {
-      // Van opzij: een hartje minder en een zacht duwtje terug.
+    if (s.vy > 0 && s.y < boven - BEESTJE_HOOG + 0.45) {
+      // Van boven: je hupt erop. Slak en vogel zijn dan verslagen, een egel rolt zich eerst op en gaat bij de tweede hup weg.
+      s.vy = -HUP; s.y = boven - BEESTJE_HOOG; b.hupKlok = 0.6
+      b.leven--
+      if (b.leven <= 0) { b.weg = true; uit.push('vijand') }
+      else { b.krul = KRUL; uit.push('hup') }
+    } else if (b.krul <= 0 && s.knipper <= 0) {
+      // Van opzij: een hartje minder en een zacht duwtje terug (een opgerolde egel doet niets).
       geraaktDoor(s, b.x, uit)
     }
   }

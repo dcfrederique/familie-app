@@ -36,6 +36,22 @@ Platformspel van opzij waarin het kind met zijn eigen figuurtje loopt en springt
 - Een level zonder eigen `C` krijgt vanzelf één vlaggetje in het midden (twee bij meer dan 120 kolommen) op stevige
   grond. Een pittig level mag er zelf een of twee zetten (liefst vlak voor het lastige stuk).
 
+## Vijanden
+
+Erop springen verslaat een vijand (27 oktober 2026, Frederique): hij gaat "poef" weg met sterretjes, je kaatst vrolijk
+verder. De soort vijand volgt uit het `beestje` van het level, en elke soort heeft een eigen manier (`BEESTJE_LEVENS` in
+`springen.ts`):
+
+- **Slak**: één hup op zijn huisje en hij is weg.
+- **Egel**: de eerste hup rolt hem op tot een stekelbolletje (2,5 seconden onschadelijk, je kan er langs lopen); een
+  tweede hup, ook terwijl hij opgerold ligt, verslaat hem. Wacht je te lang, dan rolt hij weer open en loopt verder.
+- **Vogel**: fladdert op en neer boven de grond (`VOGEL_FLADDER`): raak hem met een hup op het juiste moment, of
+  spring er ruim onderdoor of overheen. Eén hup en hij is weg.
+
+Een nieuwe soort (bv. een bij of een krab) is een nieuwe waarde bij `beestje` met tekening in `tekenBeestje`
+(`springenVeld.ts`) en een rij in `BEESTJE_LEVENS`; denk goed na over een eigen manier om hem te verslaan en leg die hier uit.
+Van opzij raken kost nog altijd een hartje. De baas heeft zijn eigen regels (zie hieronder).
+
 ## Baas (einde van een wereld)
 
 - Elke wereld heeft zes plekjes: **vijf gewone levels en als zesde de baas** (`levelsPerWereld = 6`). Een wereld is dus pas
