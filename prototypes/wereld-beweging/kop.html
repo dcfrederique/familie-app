@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="nl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Proef: lopen in de wereld</title>
+<style>
+:root{--bruin:#8A5A33;--room:#FFF6DC;--inkt:#3A2410}
+*{box-sizing:border-box}html,body{margin:0;height:100%;background:#7CC46A;font-family:Nunito,system-ui,sans-serif;color:var(--inkt);overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none}
+#veld{position:fixed;inset:0;width:100%;height:100%;display:block;image-rendering:auto}
+.balk{position:fixed;top:10px;left:10px;right:10px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;pointer-events:none}
+.balk>*{pointer-events:auto}
+.groep{display:flex;background:var(--room);border:3px solid var(--bruin);border-radius:16px;box-shadow:0 4px 0 rgba(60,36,16,.4);overflow:hidden}
+.groep button{border:0;background:transparent;font:800 15px/1 inherit;padding:11px 14px;color:var(--inkt);cursor:pointer}
+.groep button[aria-pressed=true]{background:#2D6BD6;color:#fff}
+.tip{background:var(--room);border:3px solid var(--bruin);border-radius:14px;padding:6px 12px;font-weight:800;font-size:14px;box-shadow:0 4px 0 rgba(60,36,16,.4)}
+#joy{position:fixed;left:22px;bottom:22px;width:132px;height:132px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.5) 0 34%,rgba(255,255,255,.28) 35%);box-shadow:inset 0 0 0 6px rgba(255,255,255,.7),0 8px 18px rgba(0,0,0,.2);touch-action:none}
+#knop{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;background:#2D6BD6;box-shadow:0 6px 0 rgba(0,0,0,.22),inset 0 0 0 5px rgba(255,255,255,.35);pointer-events:none}
+</style></head><body>
+<canvas id="veld"></canvas>
+<div class="balk">
+  <div class="groep" id="modus"><button data-m="nu" aria-pressed="false">Nu: vrij lopen</button><button data-m="nieuw" aria-pressed="true">Nieuw: tegel voor tegel</button></div>
+  <div class="groep" id="kind"><button data-k="Luca" aria-pressed="true">Luca</button><button data-k="Yuna" aria-pressed="false">Yuna</button><button data-k="Feline" aria-pressed="false">Feline</button></div>
+  <div class="tip" id="tip">Joystick, pijltjes of tik op de grond</div>
+</div>
+<div id="joy"><div id="knop"></div></div>
+<script>
