@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.47',
+    datum: '2026-10-27',
+    titel: 'Spelen in de wereld: schommel, glijbaan en voetbal',
+    tekst: 'In De wereld kan het figuurtje nu echt spelen op het speelplein: sta je vlak voor de schommel, de glijbaan, de wip of de zandbak, dan ga je er automatisch op en weer af. Op het voetbalveldje ligt een bal: loop ertegenaan om hem weg te schoppen en rol hem in het doel voor een doelpunt. Eerste versie; wat er nog bij komt staat in docs/wereld-levendig.md.',
+  },
+  {
     versie: '0.46',
     datum: '2026-10-27',
     titel: 'Dag, nacht en weer in de wereld',

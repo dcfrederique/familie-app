@@ -6,6 +6,7 @@ import { gebouwTekening, straatTekening } from '../../data/wereldPrenten.ts'
 import { U, WERELD_BREED, WERELD_HOOG, HUIS_MAAT, type GebouwBeeld } from '../../data/wereld.ts'
 import { tekenFiguurtje, volledigeUitsnede } from '../figuurtje/tekenen.ts'
 import { tekenChibi } from './chibi.ts'
+import type { Bal } from './speel.ts'
 import { WEER_TINT, type Weer } from './weer.ts'
 import { huisUitsnede, tekenHuis, tuinStuk } from '../huis/tekenen.ts'
 import { GROND_Y, HUIS_SCHAAL, POEL, PLEIN, VELD, inPoel, inRechthoek, opWeg, toeval, type Ding, type HuisPlek, type Kaart, type Richting } from './kaart.ts'
@@ -226,7 +227,9 @@ export class Tekenaar {
     kaart: Kaart
     huizen: (HuisPlek & { huis: Huis; kleur: string; naam: string })[]
     gebouwen: GebouwBeeld[]
-    me: { x: number; y: number; face: Richting; moving: boolean; fase: number }
+    me: { x: number; y: number; face: Richting; moving: boolean; fase: number; /** Sorteerhoogte als het figuurtje op een toestel speelt. */ sorteerY?: number }
+    /** De voetbal op het veld. */
+    bal?: Bal
     mijnId: string
     /** Kleur van het huisje op het bordje. */
     kleur: string
@@ -287,7 +290,18 @@ export class Tekenaar {
       } })
     }
     const f = opties.figuurtjes[opties.mijnId]
-    if (f) lijst.push({ y: me.y, d: () => this.tekenFiguur(me, f, opties.mijnId, opties.kleurVan[opties.mijnId] ?? '#2D6BD6', me.x, me.y, t) })
+    if (f) lijst.push({ y: me.sorteerY ?? me.y, d: () => this.tekenFiguur(me, f, opties.mijnId, opties.kleurVan[opties.mijnId] ?? '#2D6BD6', me.x, me.y, t) })
+    if (opties.bal) {
+      const b = opties.bal
+      lijst.push({ y: b.y, d: () => {
+        g.fillStyle = 'rgba(0,0,0,.2)'; g.beginPath(); g.ellipse(b.x, b.y + 2, 9, 3.5, 0, 0, 7); g.fill()
+        const draai = (b.x + b.y) * 0.08
+        g.fillStyle = '#FFFFFF'; g.strokeStyle = '#2B2420'; g.lineWidth = 2
+        g.beginPath(); g.arc(b.x, b.y - 8, 9, 0, 7); g.fill(); g.stroke()
+        g.fillStyle = '#2B2420'
+        for (let i = 0; i < 3; i++) { const a = draai + i * 2.1; g.beginPath(); g.arc(b.x + Math.cos(a) * 4.5, b.y - 8 + Math.sin(a) * 4.5, 2.2, 0, 7); g.fill() }
+      } })
+    }
     for (const a of opties.anderen ?? []) {
       lijst.push({ y: a.y, d: () => {
         this.tekenFiguur(a, a.figuur, a.id, a.kleur, a.x, a.y, t)

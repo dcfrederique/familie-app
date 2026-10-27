@@ -12,6 +12,7 @@ import {
   huisRechthoek, type Loper, type TegelStand,
 } from '../lib/wereld/kaart.ts'
 import { Tekenaar } from '../lib/wereld/tekenen.ts'
+import { DUUR, isToestel, naarBal, nieuweBal, pose, rol, schop, voorToestel, type Toestel } from '../lib/wereld/speel.ts'
 import { lichtVan, weerVan } from '../lib/wereld/weer.ts'
 import { WEG_NA, Zender, metPositie, verbind, volg, type Ander } from '../lib/wereld/live.ts'
 import { supabase } from '../lib/supabase.ts'
@@ -100,6 +101,8 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
     route: [] as [number, number][], doel: null as null | { gebouw?: GebouwBeeld; huis?: string },
     joy: { x: 0, y: 0 }, held: { up: false, down: false, left: false, right: false },
     anderen: new Map<string, Ander>(),
+    spelen: null as null | { id: Toestel; x: number; y: number; van: { x: number; y: number }; t: number },
+    klaarMet: '' as string, bal: nieuweBal(), balRust: 0,
     cam: [0, 0, 1] as readonly [number, number, number], bezig: false, maat: [960, 640] as [number, number],
   })
 
@@ -146,7 +149,7 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
     // Tegel voor tegel begint op het midden van een tegel.
     if (tegelLopen) { start.x = tegelMidden(Math.floor(start.x / U)); start.y = tegelMidden(Math.floor(start.y / U)) }
     s.pl = { ...start, face: 'down', moving: false, fase: 0, tegel: nieuweTegelStand() }
-    s.route = []; s.doel = null; s.bezig = false
+    s.route = []; s.doel = null; s.bezig = false; s.spelen = null; s.klaarMet = ''; s.bal = nieuweBal()
     const tek = new Tekenaar(cv, Math.min(2, Math.max(1, window.devicePixelRatio || 1)) > 1.4 ? 1.5 : 1)
     // Dag, schemer en nacht volgen de klok; het weer wisselt per blok van drie uur (weer.ts). Elke halve minuut kijken we opnieuw.
     const klok = () => { const nu = new Date(), l = lichtVan(nu); tek.nacht = l.nacht; tek.schemer = l.schemer; tek.weer = weerVan(nu) }
@@ -182,9 +185,13 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
         if (!ix && !iy) {
           ix = (s.held.right ? 1 : 0) - (s.held.left ? 1 : 0); iy = (s.held.down ? 1 : 0) - (s.held.up ? 1 : 0)
         }
-        if (ix || iy) { s.route = []; s.doel = null; setBericht(null) }
+        if (ix || iy) { s.route = []; s.doel = null; setBericht(null); s.spelen = null }
         let aangekomen = true
-        if (tegelLopen) {
+        if (s.spelen) {
+          s.spelen.t += dt
+          if (s.spelen.t > DUUR[s.spelen.id]) s.spelen = null
+          aangekomen = false
+        } else if (tegelLopen) {
           // een stap per tegel; deuren pas als er een tegel bereikt is
           const uit = tegelStap(s.pl, dt, richtingVan(ix, iy), s.route, tegels)
           aangekomen = uit !== null
@@ -200,6 +207,14 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
         if (aangekomen) {
           for (const b of gebouwLijst) if (opDeurmat(s.pl, b, tegelLopen)) { aanDeur(b); break }
           for (const h of huizen) if (voorHuisdeur(s.pl, h, tegelLopen)) { aanHuis(h.id); break }
+          // speeltoestel: wie vlak voor een toestel staat, gaat spelen (pas opnieuw als je eerst weggaat)
+          const toestel = kaart.dingen.find((d) => isToestel(d.id) && voorToestel(s.pl, d))
+          if (!toestel) s.klaarMet = ''
+          else if (!ouder && s.klaarMet !== toestel.id + toestel.x && isToestel(toestel.id)) {
+            s.klaarMet = toestel.id + toestel.x
+            s.spelen = { id: toestel.id, x: toestel.x, y: toestel.y, van: { x: s.pl.x, y: s.pl.y }, t: 0 }
+            s.route = []; s.pl.face = 'down'; s.pl.moving = false
+          }
         }
       }
       if (!document.hidden) {
@@ -210,8 +225,22 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
         if (nu - a.gezien > WEG_NA) s.anderen.delete(anderId)
         else volg(a, dt)
       }
+      // de bal: wie ertegenaan loopt, schopt hem weg; in een doel is het een doelpunt
+      if (!s.bezig) {
+        if (!s.spelen && schop(s.bal, s.pl)) s.pl.face = naarBal(s.pl, s.bal)
+        if (s.balRust > 0) { s.balRust -= dt; if (s.balRust <= 0) s.bal = nieuweBal() }
+        else if (rol(s.bal, dt, kaart.dingen.filter((d) => d.id === 'doel')) === 'doel') {
+          s.balRust = 1.4; s.bal.vx = s.bal.vy = 0
+          meld('Doelpunt!', '⚽ 🎉')
+        }
+      }
+      let me: typeof s.pl & { sorteerY?: number } = s.pl
+      if (s.spelen) {
+        const po = pose(s.spelen.id, { id: s.spelen.id, x: s.spelen.x, y: s.spelen.y, voet: [0, 0] }, s.spelen.van, s.spelen.t)
+        me = { ...s.pl, x: po.x, y: po.y, sorteerY: po.sorteerY, moving: false, face: 'down' }
+      }
       s.cam = tek.teken({
-        t, kaart, huizen, gebouwen: gebouwLijst, me: s.pl, mijnId: kind.id, kleur: kleurVan(kind.id), figuurtjes, overzicht: false,
+        t, kaart, huizen, gebouwen: gebouwLijst, me, bal: s.bal, mijnId: kind.id, kleur: kleurVan(kind.id), figuurtjes, overzicht: false,
         anderen: [...s.anderen.values()].flatMap((a) => {
           const lid = leden.get(a.id)
           return lid ? [{ ...a, naam: lid.naam, figuur: figuurtjeVan(lid), kleur: lid.rol === 'ouder' ? '#6A5BD1' : kidKleur[lid.thema ?? 'blauw'] }] : []
@@ -240,7 +269,7 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
     const s = toestand.current
     if (s.bezig) return
     ev.preventDefault()
-    setBericht(null)
+    setBericht(null); s.spelen = null
     const r = ev.currentTarget.getBoundingClientRect()
     const wx = (ev.clientX - r.left) / r.width * s.maat[0] + s.cam[0], wy = (ev.clientY - r.top) / r.height * s.maat[1] + s.cam[1]
     for (const b of gebouwLijst) {
