@@ -1,0 +1,30 @@
+<title>De wereld in 3D</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;800&family=Nunito:wght@700;800&display=swap">
+<style>
+:root{--room:#FFF6DC;--bruin:#8A5A33;--tekst:#3B2A00;--zacht:#7A5A2A;--blauw:#2D6BD6;--roze:#C92D7B;--gras:#7CC46A}
+html,body{height:100%;margin:0;padding:0;overflow:hidden;background:var(--gras);color:var(--tekst);font-family:"Baloo 2",Nunito,system-ui,sans-serif}
+:root{padding:0}
+#wereld{position:fixed;inset:0;width:100%;height:100%;display:block;touch-action:none}
+.kaart{position:fixed;background:var(--room);border:3px solid var(--bruin);border-radius:18px;font-weight:800;box-shadow:0 4px 0 rgba(0,0,0,.18)}
+.prof{left:12px;top:12px;padding:7px 16px 7px 7px;display:flex;gap:10px;align-items:center;font-size:21px;line-height:1.1}
+.prof svg{width:50px;height:50px;border-radius:13px;display:block}
+.prof small{display:block;font-size:14px;font-weight:700;color:var(--zacht)}
+.opd{left:12px;top:84px;width:min(280px,60vw);padding:9px 13px;font-size:16px;line-height:1.25}
+.opd b{background:var(--blauw);color:#fff;border-radius:8px;padding:1px 8px;font-size:13px;margin-right:6px}
+.opd span{font-weight:700;color:var(--zacht)}
+.mini{right:12px;top:12px;width:150px;height:150px;border-radius:50%;overflow:hidden;border-width:5px}
+.mini canvas{display:block;width:100%;height:100%}
+.menu{right:12px;top:172px;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;font-size:28px}
+#joy{position:fixed;left:max(18px,env(safe-area-inset-left,0px));bottom:max(18px,env(safe-area-inset-bottom,0px));width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.35);border:3px solid rgba(255,255,255,.7);touch-action:none}
+#joyknop{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;background:var(--roze);border:4px solid #fff;box-shadow:0 3px 0 rgba(0,0,0,.2)}
+.tip{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);background:var(--room);border:3px solid var(--bruin);border-radius:14px;padding:6px 14px;font-weight:800;font-size:15px;color:var(--tekst);white-space:nowrap;max-width:calc(100vw - 32px);overflow:hidden;text-overflow:ellipsis}
+@media (max-width:560px){.tip{display:none}.mini{width:110px;height:110px}.menu{top:132px;width:50px;height:50px}}
+</style>
+<canvas id="wereld"></canvas>
+<div class="kaart prof"><svg viewBox="0 0 54 54"><rect width="54" height="54" fill="#E3ECFB"/><rect x="13" y="34" width="28" height="22" rx="8" fill="#2D6BD6"/><circle cx="27" cy="24" r="13" fill="#F5D2B3"/><path d="M13 22q14-22 28 0q-14-8-28 0z" fill="#6B3E1F"/><circle cx="22" cy="26" r="2" fill="#1C2433"/><circle cx="32" cy="26" r="2" fill="#1C2433"/></svg><div>Luca<small>50 sterren</small></div></div>
+<div class="kaart opd"><b>Opdracht</b>Breng de brief naar Yuna<br><span>Het blauwe huis in het midden</span></div>
+<div class="kaart mini"><canvas id="mini" width="150" height="150"></canvas></div>
+<div class="kaart menu">&#9776;</div>
+<div id="joy"><div id="joyknop"></div></div>
+<div class="tip">Sleep de joystick of gebruik de pijltjes of WASD</div>
+<script>
