@@ -6,7 +6,7 @@ body{margin:0;background:#7CC46A;font-family:Nunito,system-ui,sans-serif}
 .t{position:absolute;left:14px;top:12px;background:#FFF6DC;border:3px solid #8A5A33;border-radius:14px;padding:6px 14px;font-weight:800;color:#3B2A00;font-size:20px;z-index:2}
 svg{width:100%;height:100%}
 </style>
-<body><div class="vak"><div class="t">Voorstel: voorgevel + zijgevel + dak (schuin van rechtsboven)</div><svg viewBox="0 0 1200 600" id="s"></svg></div>
+<body><div class="vak"><div class="t">Voorstel: elk gebouw heeft een eigen draai (links schuin, voorkant, rechts schuin)</div><svg viewBox="0 0 1200 600" id="s"></svg></div>
 <script>
 const R=(i,k)=>{const n=Math.sin(i*127.1+k*311.7)*43758.5453;return n-Math.floor(n)}
 let h='<rect width="1200" height="600" fill="#7CC46A"/>'
@@ -46,11 +46,32 @@ function huis(x,y,{W=190,H=104,P=62,dx=92,dy=-52,muur='#F2D9A8',zij='#D9BE88',da
   s+=`<circle cx="${A[0]}" cy="${T-22}" r="10" fill="#fff"/><circle cx="${A[0]}" cy="${T-22}" r="6" fill="#9CCBEA"/>`
   return s
 }
+
+function huisVoor(x,y,{W=200,H=100,muur='#F2D9A8',dak='#D8452B',dakD='#A93A27',deur='#E46AA8'}={}){
+  const T=y-H,R_=x+W,top=T-74
+  let s=`<ellipse cx="${x+W/2+8}" cy="${y+4}" rx="${W/2+30}" ry="14" fill="#000" opacity=".16"/>`
+  s+=`<rect x="${x}" y="${T}" width="${W}" height="${H}" fill="${muur}"/>`
+  // schaduw onder de dakrand
+  s+=`<rect x="${x}" y="${T+8}" width="${W}" height="16" fill="#000" opacity=".14"/>`
+  const raam=(rx)=>`<rect x="${rx}" y="${T+34}" width="44" height="44" rx="4" fill="#fff"/><rect x="${rx+5}" y="${T+39}" width="34" height="34" fill="#9CCBEA"/><path d="M${rx+22} ${T+39}v34M${rx+5} ${T+56}h34" stroke="#fff" stroke-width="3"/>`
+  s+=raam(x+18)+raam(R_-62)
+  s+=`<rect x="${x+W/2-22}" y="${y-72}" width="44" height="72" rx="6" fill="${deur}"/><rect x="${x+W/2-14}" y="${y-64}" width="28" height="24" rx="3" fill="#BFE3FA"/><circle cx="${x+W/2+12}" cy="${y-30}" r="3" fill="#F2C230"/><rect x="${x+W/2-30}" y="${y-4}" width="60" height="8" rx="3" fill="#C8CED6"/>`
+  // schilddak van voren: breed vlak met dikte (dakrand), nok bovenaan en twee schuine hoekribben
+  s+=`<polygon points="${x-14} ${T+10} ${x+34} ${top} ${R_-34} ${top} ${R_+14} ${T+10}" fill="${dak}"/>`
+  s+=`<polygon points="${x-14} ${T+10} ${R_+14} ${T+10} ${R_+14} ${T+22} ${x-14} ${T+22}" fill="${dakD}"/>`
+  for(let i=1;i<5;i++){const t=i/5,yy=top+(T+10-top)*t,l=x+34-(48)*t,r=R_-34+(48)*t;s+=`<path d="M${l} ${yy}H${r}" stroke="${dakD}" stroke-width="2.5" opacity=".7"/>`}
+  s+=`<path d="M${x+34} ${top}L${x-14} ${T+10}M${R_-34} ${top}L${R_+14} ${T+10}" stroke="${dakD}" stroke-width="3"/><path d="M${x+34} ${top}H${R_-34}" stroke="#E8604A" stroke-width="6" stroke-linecap="round"/>`
+  s+=`<rect x="${R_-80}" y="${top+8}" width="30" height="36" fill="#9A5B3A"/><rect x="${R_-84}" y="${top+4}" width="38" height="9" rx="2" fill="#B7714A"/>`
+  return s
+}
+// zelfde huis gespiegeld: schuin naar links
+const spiegel=(f,x,W)=>`<g transform="translate(${2*x+W} 0) scale(-1 1)">${f}</g>`
 h+=boom(70,420,'#D93A3A')
-h+=huis(190,430,{})
-h+=boom(520,425,'#F2994A')
-h+=huis(640,436,{muur:'#CFE3F7',zij:'#A9C6E4',dak:'#3E6FB5',dakD:'#27508C',deur:'#F2C230',W:170,H:96,P:56,dx:84,dy:-48})
-h+=boom(1130,430,'#D93A3A')
+h+=spiegel(huis(120,430,{}),120,190)
+h+=boom(500,425,'#F2994A')
+h+=huisVoor(560,436,{muur:'#CFE3F7',dak:'#3E6FB5',dakD:'#27508C',deur:'#F2C230'})
+h+=huis(880,436,{muur:'#F6D6D6',zij:'#D9AFAF',dak:'#6B8F3E',dakD:'#4A6A27',deur:'#2D6BD6',W:160,H:96,P:54,dx:80,dy:-46})
+h+=boom(1160,430,'#D93A3A')
 h+=`<ellipse cx="420" cy="540" rx="17" ry="6" fill="#000" opacity=".18"/><rect x="407" y="508" width="26" height="30" rx="5" fill="#2D6BD6"/><circle cx="420" cy="494" r="15" fill="#F5D2B3"/><path d="M405 492q15-22 30 0q-15-8-30 0z" fill="#6B3E1F"/><circle cx="415" cy="496" r="2" fill="#1C2433"/><circle cx="425" cy="496" r="2" fill="#1C2433"/>`
 s.innerHTML=h
 </script></html>
