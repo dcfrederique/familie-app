@@ -1,0 +1,64 @@
+<title>Wereld in 2.5D</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&display=swap">
+<style>
+/* Indeling: koptekst, de speelbare wereld met camerabediening, daarna een lijst met wat de diepte maakt. Kleuren en lettertypes van de app (Nunito, gras, rood dak). */
+:root{--bg:#EEF3F8;--kaart:#FFFFFF;--inkt:#1C2433;--zacht:#566379;--rand:#D5DCE4;--accent:#2D6BD6;--accent-t:#FFFFFF;--gras:#7CC46A;--dak:#D4432F;--lijst:#F5F8FB}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121821;--kaart:#1B2431;--inkt:#EAF0F7;--zacht:#9BAABF;--rand:#2E3B4F;--accent:#6C9BF0;--accent-t:#0E1622;--lijst:#222D3D;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#121821;--kaart:#1B2431;--inkt:#EAF0F7;--zacht:#9BAABF;--rand:#2E3B4F;--accent:#6C9BF0;--accent-t:#0E1622;--lijst:#222D3D;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--inkt);font:500 16px/1.5 Nunito,system-ui,sans-serif;padding-block:20px 40px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+main{max-width:1100px;margin:0 auto;display:grid;gap:20px}
+h1{font-size:clamp(26px,5vw,38px);line-height:1.1;margin:0 0 6px;font-weight:800;text-wrap:balance}
+h2{font-size:19px;margin:0 0 6px;font-weight:800;text-wrap:balance}
+p{margin:0;max-width:68ch;text-wrap:pretty}.zacht{color:var(--zacht)}
+.speel{background:var(--kaart);border:1px solid var(--rand);border-radius:18px;padding:12px;display:grid;gap:12px;min-width:0}
+.doek{position:relative;border-radius:12px;overflow:hidden;background:var(--gras);touch-action:none}
+canvas{display:block;width:100%;cursor:pointer}
+.pijlen{position:absolute;right:10px;bottom:10px;display:grid;grid-template-columns:repeat(3,52px);grid-template-rows:repeat(2,52px);gap:6px;touch-action:none}
+.pijlen button{border:0;border-radius:14px;background:rgba(255,255,255,.88);color:#1C2433;font:800 20px/1 Nunito,system-ui;box-shadow:0 2px 0 rgba(0,0,0,.18);touch-action:none;cursor:pointer}
+.pijlen button:active{background:#fff;transform:translateY(1px)}.pijlen .b{grid-column:2}
+.bed{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
+.groep{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.knop{font:700 14px/1 Nunito,system-ui;border:1.5px solid var(--rand);background:var(--lijst);color:var(--inkt);border-radius:999px;padding:11px 15px;cursor:pointer;min-height:44px}
+.knop[aria-pressed="true"]{background:var(--accent);color:var(--accent-t);border-color:var(--accent)}
+.knop:focus-visible,input:focus-visible,button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+label.sl{display:grid;gap:2px;font-size:13px;font-weight:700;color:var(--zacht);min-width:150px;flex:1}
+label.sl span b{color:var(--inkt)}input[type=range]{width:100%;accent-color:var(--accent)}
+label.ch{display:flex;gap:6px;align-items:center;font-size:14px;font-weight:700;min-height:44px}
+.hint{font-size:13px;color:var(--zacht)}
+.rooster{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px}
+.vak{background:var(--kaart);border:1px solid var(--rand);border-radius:14px;padding:14px;min-width:0}
+.vak p{font-size:15px}
+.vak h2{display:flex;gap:8px;align-items:baseline}
+.vak h2 i{font:800 12px Nunito;font-style:normal;letter-spacing:.06em;text-transform:uppercase;color:var(--zacht)}
+.dak{display:inline-block;width:14px;height:14px;background:var(--dak);border-radius:3px 3px 0 0;clip-path:polygon(0 100%,50% 0,100% 100%);flex:none}
+</style>
+<main>
+<header>
+<h1>Onze wereld in 2.5D</h1>
+<p class="zacht">Dezelfde wereld, schuin van boven bekeken. Huizen hebben een zijkant en een dak, bomen en poppetjes staan rechtop op de grond. Alles op een gewoon 2D-canvas, zonder 3D-bibliotheek. Loop zelf rond: pijltjes, WASD, de knoppen of tik op de grond.</p>
+</header>
+<section class="speel" aria-label="Speelbare proef">
+<div class="doek"><canvas id="wereld" aria-label="De wereld in 2.5D met drie huizen, appelbomen en een zandbak"></canvas>
+<div class="pijlen" aria-label="Lopen"><button class="b" data-pijl="0,-1" aria-label="Omhoog">▲</button><span></span><button data-pijl="-1,0" aria-label="Links">◀</button><button data-pijl="0,1" aria-label="Omlaag">▼</button><button data-pijl="1,0" aria-label="Rechts">▶</button></div></div>
+<div class="bed">
+<div class="groep" role="group" aria-label="Camerahoek">
+<button class="knop" data-hoek="0,52" aria-pressed="false">3/4 recht</button>
+<button class="knop" data-hoek="18,48" aria-pressed="true">3/4 licht gedraaid</button>
+<button class="knop" data-hoek="45,30" aria-pressed="false">Isometrisch</button></div>
+<label class="sl" for="yaw"><span>Draaien <b id="yaw-w"></b></span><input id="yaw" type="range" min="0" max="60" step="1" value="18"></label>
+<label class="sl" for="pit"><span>Kantelen <b id="pit-w"></b></span><input id="pit" type="range" min="28" max="75" step="1" value="48"></label>
+<label class="ch" for="nacht"><input id="nacht" type="checkbox">Nacht</label>
+<label class="ch" for="schaduw"><input id="schaduw" type="checkbox" checked>Schaduwen</label>
+<label class="ch" for="raster"><input id="raster" type="checkbox">Tegelraster</label>
+</div>
+<p class="hint">De schuiven zijn alleen voor het proberen. In de app kiest de ouder of wij één vaste hoek; het poppetje is het echte chibi-figuurtje uit de app.</p>
+</section>
+<section class="rooster" aria-label="Wat de diepte maakt">
+<div class="vak"><h2><span class="dak"></span>Huizen met volume</h2><p>Muur, gevel, twee daghellingen en dakrand zijn vlakken met een tekening erop. Zichtbaar is wat naar de camera kijkt, links is lichter dan rechts. Raam, deur en bordje blijven zoals nu.</p></div>
+<div class="vak"><h2>Rechtop op de grond</h2><p>Bomen, lantaarns en naambordjes zijn rechtopstaande prenten met een schaduw op de grond. Je loopt er echt achterlangs: wie lager staat, komt ervoor.</p></div>
+<div class="vak"><h2>Het poppetje</h2><p>Hetzelfde chibi-figuurtje met kleren en kleuren uit de Kleerkast, stap voor stap over de tegels, met een schaduw en richting naar het scherm.</p></div>
+<div class="vak"><h2>Plat blijft plat</h2><p>Gras, grindpad en zand blijven vlak zoals in de app nu. Alleen de tegels zijn korter van boven naar onder, zodat het schuin lijkt.</p></div>
+</section>
+</main>
