@@ -111,3 +111,13 @@ Eén kanttekening over mijn eigen advies: ik kan de proef goed bouwen en met sch
 5. **Kinderhuizen:** mag het huis in de wereld een vereenvoudigd blokhuis zijn met de kleuren en het model van het kind, terwijl Mijn huis zelf de gedetailleerde voorgevel blijft?
 6. **Springland:** nu mee in de proef, of pas later?
 7. **Voorkeur voor gewicht:** gaat het vooral om "mooier" of ook om "meer wereld" (hoogteverschil, bergen, water)? Het eerste past in optie A, het tweede vraagt meer.
+
+## Antwoord van Frederique (27 oktober 2026): twee voorbeelden
+
+Frederique stuurde twee schermafbeeldingen: een Pokémon-achtig mobiel spel (schuin van boven, bomen, huizen en figuurtjes in een licht 3D-uiterlijk, met knoppen en kaart in het beeld) en een kindvriendelijke getekende dorpsstraat (gravelpaden, huizen met zichtbaar dak, appelbomen met schaduw, lantaarns, naamborden, joystick, ouder en kinderen lopen rond).
+
+Wat ze gemeen hebben: de wegen lopen recht (horizontaal en verticaal), de tegels zijn vierkant, gebouwen tonen de voorkant met een dak erboven, en er is geen ruitvormig raster. Dat is **optie 2 (schuin bovenaanzicht)**, niet echte isometrie. Gevolg:
+
+- Geen nieuwe projectie en geen engine nodig: de huidige canvas-wereld blijft de basis. Het wordt een **kunstopdracht**: meer diepte en detail in dezelfde kaart.
+- Wat verandert: huizen en gebouwen met een dakvlak en een kleine zijkant, bomen en struiken met schaduw en volume, gravel- en grastextuur, bloemen, lantaarns, hekken, drukker leven (vlinders, vogels, kinderen), figuurtjes met een zachte schaduw.
+- Wat blijft: kaart, joystick, tikken, live, de SVG-stijl van de app en het figuurtje.
