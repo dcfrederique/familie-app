@@ -90,8 +90,8 @@ export class Tekenaar3D {
       for (const x of (Array.isArray(mm) ? mm : mm ? [mm] : [])) { (x as MeshLambertMaterial).map?.dispose(); x.dispose() }
     })
     ruimOp()
+    // Geen forceContextLoss: Wereld.tsx bouwt bij een nieuwe render opnieuw op hetzelfde canvas, en een verloren context blijft verloren.
     this.renderer.dispose()
-    this.renderer.forceContextLoss()
   }
 
   private licht() {

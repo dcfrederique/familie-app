@@ -213,15 +213,22 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
           if (nu - a.gezien > WEG_NA) s.anderen.delete(anderId)
           else volg(a, dt)
         }
+      try {
         s.cam = tek.teken({
-          t, kaart, huizen, gebouwen: gebouwLijst, me: s.pl, mijnId: kind.id, kleur: kleurVan(kind.id), figuurtjes, overzicht: false,
-          anderen: [...s.anderen.values()].flatMap((a) => {
-            const lid = leden.get(a.id)
-            return lid ? [{ ...a, naam: lid.naam, figuur: figuurtjeVan(lid), kleur: lid.rol === 'ouder' ? '#6A5BD1' : kidKleur[lid.thema ?? 'blauw'] }] : []
-          }),
-          kleurVan: { ...Object.fromEntries(huizen.map((h) => [h.id, h.kleur])), [kind.id]: kleurVan(kind.id) },
-        })
-        raf = requestAnimationFrame(lus)
+            t, kaart, huizen, gebouwen: gebouwLijst, me: s.pl, mijnId: kind.id, kleur: kleurVan(kind.id), figuurtjes, overzicht: false,
+            anderen: [...s.anderen.values()].flatMap((a) => {
+              const lid = leden.get(a.id)
+              return lid ? [{ ...a, naam: lid.naam, figuur: figuurtjeVan(lid), kleur: lid.rol === 'ouder' ? '#6A5BD1' : kidKleur[lid.thema ?? 'blauw'] }] : []
+            }),
+            kleurVan: { ...Object.fromEntries(huizen.map((h) => [h.id, h.kleur])), [kind.id]: kleurVan(kind.id) },
+          })
+      } catch (e) {
+        // Faalt het tekenen (bv. WebGL), dan niet vastlopen: terug naar de gewone wereld.
+        console.error('Wereld tekenen mislukt', e)
+        if (tek.raak) setValTerug(true)
+        return
+      }
+      raf = requestAnimationFrame(lus)
       }
       const eindeRoute = () => {
         const d = s.doel; s.doel = null
