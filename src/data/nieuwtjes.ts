@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.46',
+    datum: '2026-10-27',
+    titel: 'Dag, nacht en weer in de wereld',
+    tekst: 'In De wereld volgt het licht nu de klok: overdag fris, bij zonsopgang en -ondergang een warme gloed en \'s nachts donker met lichtjes. Het weer wisselt per blok van drie uur tussen zon, bewolkt, regen en in de winter sneeuw. Ook is het grindpad weer plat zoals het was. Binnenkort volgen bruikbare speeltoestellen, een bal en meer stad (plan in docs/wereld-levendig.md).',
+  },
+  {
     versie: '0.45',
     datum: '2026-10-27',
     titel: 'Nieuw poppetje in de wereld',

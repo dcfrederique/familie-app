@@ -6,6 +6,7 @@ import { gebouwTekening, straatTekening } from '../../data/wereldPrenten.ts'
 import { U, WERELD_BREED, WERELD_HOOG, HUIS_MAAT, type GebouwBeeld } from '../../data/wereld.ts'
 import { tekenFiguurtje, volledigeUitsnede } from '../figuurtje/tekenen.ts'
 import { tekenChibi } from './chibi.ts'
+import { WEER_TINT, type Weer } from './weer.ts'
 import { huisUitsnede, tekenHuis, tuinStuk } from '../huis/tekenen.ts'
 import { GROND_Y, HUIS_SCHAAL, POEL, PLEIN, VELD, inPoel, inRechthoek, opWeg, toeval, type Ding, type HuisPlek, type Kaart, type Richting } from './kaart.ts'
 
@@ -17,8 +18,8 @@ const DAG = '--huis-gras:#7CC46A;--huis-gras2:#6AB55A;--huis-heuvel:#A6D98C;--hu
 const NACHT = '--huis-gras:#2E5A3A;--huis-gras2:#264E30;--huis-heuvel:#1E3B4C;--huis-glas:#FFD66B;--huis-pad:#5E5A52;--huis-rook:#7A859A;'
 
 const PAL = {
-  d: { gras: '#7CC46A', gras2: '#6AB55A', pad: '#E2D9C6', padRand: '#CDBF9F', padZij: '#A8966C', grind: '#F1EBDD', grindD: '#B9AA88', tuf: '#5BA84C', zand: '#F2E3B5', zandPunt: '#E2CE96', water: '#4FB3E8', waterL: '#A6DEF8', veld1: '#6FC25C', veld2: '#84CC72' },
-  n: { gras: '#2E5A3A', gras2: '#264E30', pad: '#5E5A52', padRand: '#4A463F', padZij: '#3A362F', grind: '#74706A', grindD: '#3E3A34', tuf: '#1F4A2D', zand: '#7C7458', zandPunt: '#6A6349', water: '#25497A', waterL: '#3E6BA3', veld1: '#2A5736', veld2: '#33663F' },
+  d: { gras: '#7CC46A', gras2: '#6AB55A', pad: '#E2D9C6', padRand: '#CDBF9F', grind: '#F1EBDD', grindD: '#B9AA88', tuf: '#5BA84C', zand: '#F2E3B5', zandPunt: '#E2CE96', water: '#4FB3E8', waterL: '#A6DEF8', veld1: '#6FC25C', veld2: '#84CC72' },
+  n: { gras: '#2E5A3A', gras2: '#264E30', pad: '#5E5A52', padRand: '#4A463F', grind: '#74706A', grindD: '#3E3A34', tuf: '#1F4A2D', zand: '#7C7458', zandPunt: '#6A6349', water: '#25497A', waterL: '#3E6BA3', veld1: '#2A5736', veld2: '#33663F' },
 }
 
 /** Zijde van het hubbordje in schermpunten (ook voor de link erover). */
@@ -37,6 +38,9 @@ export class Tekenaar {
   private plaatjes = new Map<string, HTMLImageElement>()
   private grond = new Map<string, HTMLCanvasElement>()
   nacht = false
+  /** Warme gloed bij zonsopgang en -ondergang (0 tot 1) en het weer van nu; zie weer.ts. */
+  schemer = 0
+  weer: Weer = 'zon'
   /** Met `prefers-reduced-motion`: de gouden rand pulseert niet. */
   rustig = false
   /** Hoeveel wereld er in beeld is (in eenheden); volgt de verhouding van het scherm. */
@@ -134,10 +138,8 @@ export class Tekenaar {
     c2.beginPath(); c2.moveTo(VELD[0] + 6, (VELD[1] + VELD[3]) / 2); c2.lineTo(VELD[2] - 12, (VELD[1] + VELD[3]) / 2); c2.stroke()
     c2.beginPath(); c2.arc((VELD[0] + VELD[2] - 6) / 2, (VELD[1] + VELD[3]) / 2, 26, 0, 7); c2.stroke()
     // wegen
-    // een licht opgehoogd pad: eerst de schaduw op het gras, dan de zijkant (onder en rechts), dan het pad zelf
-    for (const r of wegen) rr(r[0] - 2, r[1] + 8, r[2] + 14, r[3] + 26, 26, 'rgba(0,0,0,.18)')
-    for (const r of wegen) rr(r[0], r[1] + 15, r[2] + 6, r[3] + 15, 22, P.padZij, P.padRand)
-    for (const r of wegen) rr(r[0], r[1], r[2], r[3], 20, P.pad, P.padRand)
+    for (const r of wegen) rr(r[0] - 4, r[1] - 4, r[2] + 4, r[3] + 4, 22, P.padRand)
+    for (const r of wegen) rr(r[0], r[1], r[2], r[3], 20, P.pad)
     // grind: kleine steentjes in twee tinten over alle paden, en een lichte rand langs de bovenkant
     wegen.forEach((r, w) => {
       const n = Math.round(((r[2] - r[0]) * (r[3] - r[1])) / 110)
@@ -306,7 +308,7 @@ export class Tekenaar {
       } })
     }
     lijst.sort((a, b) => a.y - b.y).forEach((o) => o.d())
-    if (!this.rustig && !overzicht) this.vlinders(t, camX, camY, VW, VH)
+    if (!this.rustig && !overzicht && !this.nacht && (this.weer === 'zon' || this.weer === 'bewolkt')) this.vlinders(t, camX, camY, VW, VH)
 
     if (this.nacht) {
       g.save(); g.globalCompositeOperation = 'multiply'; g.fillStyle = '#A9B4E8'; g.fillRect(camX - 10, camY - 10, VW / Z + 20, VH / Z + 20); g.restore()
@@ -319,9 +321,51 @@ export class Tekenaar {
       }
       g.restore()
     }
+    // zonsopgang en -ondergang: een warme gloed over alles
+    if (this.schemer > 0) {
+      g.save(); g.globalCompositeOperation = 'multiply'; g.globalAlpha = 0.55 * this.schemer; g.fillStyle = '#FFB98A'; g.fillRect(camX - 10, camY - 10, VW / Z + 20, VH / Z + 20); g.restore()
+    }
+    const tint = WEER_TINT[this.weer]
+    if (tint && !this.nacht) {
+      g.save(); g.globalCompositeOperation = 'multiply'; g.fillStyle = tint; g.fillRect(camX - 10, camY - 10, VW / Z + 20, VH / Z + 20); g.restore()
+    }
     g.restore()
+    this.tekenWeer(t)
     this.tekenHubBord(t, kleur)
     return [camX, camY, Z] as const
+  }
+
+  /** Wolkenschaduwen, regen of sneeuw over het hele beeld (in schermeenheden). Bij "minder beweging" staan ze stil. */
+  private tekenWeer(t: number) {
+    const g = this.g, VW = this.vw, VH = this.vh, Q = this.Q, w = this.weer
+    if (w === 'zon' && this.nacht) return
+    const tt = this.rustig ? 0 : t
+    g.save()
+    g.setTransform(Q, 0, 0, Q, 0, 0)
+    if (w !== 'regen' && w !== 'sneeuw') {
+      // wolkenschaduwen die langzaam voorbij drijven (bij zon een paar, bij bewolkt veel)
+      const n = w === 'bewolkt' ? 7 : 3
+      g.fillStyle = this.nacht ? 'rgba(0,0,20,.10)' : 'rgba(30,50,80,.10)'
+      for (let i = 0; i < n; i++) {
+        const x = ((toeval(i, 61) * (VW + 400) + tt * (9 + i * 2)) % (VW + 400)) - 200, y = toeval(i, 62) * VH
+        g.beginPath(); g.ellipse(x, y, 90 + toeval(i, 63) * 90, 40 + toeval(i, 64) * 30, 0, 0, 7); g.fill()
+      }
+    } else if (w === 'regen') {
+      g.strokeStyle = this.nacht ? 'rgba(170,190,230,.55)' : 'rgba(80,120,190,.55)'; g.lineWidth = 1.6; g.lineCap = 'round'
+      g.beginPath()
+      for (let i = 0; i < 110; i++) {
+        const x = (toeval(i, 71) * (VW + 40) - tt * 40 % (VW + 40) + VW + 40) % (VW + 40), y = (toeval(i, 72) * VH + tt * (420 + toeval(i, 73) * 120)) % VH
+        g.moveTo(x, y); g.lineTo(x - 4, y + 14)
+      }
+      g.stroke()
+    } else {
+      g.fillStyle = 'rgba(255,255,255,.9)'
+      for (let i = 0; i < 80; i++) {
+        const y = (toeval(i, 81) * VH + tt * (40 + toeval(i, 82) * 30)) % VH, x = toeval(i, 83) * VW + Math.sin(tt * 1.2 + i) * 12
+        g.beginPath(); g.arc(x, y, 1.8 + toeval(i, 84) * 2, 0, 7); g.fill()
+      }
+    }
+    g.restore()
   }
 
   /** Een paar vlinders fladderen rond in beeld (niet bij "minder beweging"). */

@@ -2,6 +2,8 @@
 
 > Update 27 oktober 2026: een echte 3D-versie is geprobeerd en geschrapt (`docs/wereld-isometrisch.md`). De wereld blijft 2D, in de stijl van nu.
 
+Plan om de wereld levendiger te maken: `docs/wereld-levendig.md`.
+
 Status: idee van Frederique (25 oktober 2026); de eerste versie staat in de app. Besluit van 27 oktober 2026: de wereld gaat naar echte 3D, zie `docs/wereld-3d.md` (plan) en `docs/wereld-isometrisch.md` (onderzoek). Mockup: `prototypes/straatje.html` (online: https://claude.ai/artifact/8yr9BdZx2BcZFZoSvmWiD8). Bouwt voort op `docs/straatje.md` (de straat, het bouwen, de fases) en `docs/huis.md`.
 
 ## Het idee

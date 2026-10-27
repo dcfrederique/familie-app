@@ -12,6 +12,7 @@ import {
   huisRechthoek, type Loper, type TegelStand,
 } from '../lib/wereld/kaart.ts'
 import { Tekenaar } from '../lib/wereld/tekenen.ts'
+import { lichtVan, weerVan } from '../lib/wereld/weer.ts'
 import { WEG_NA, Zender, metPositie, verbind, volg, type Ander } from '../lib/wereld/live.ts'
 import { supabase } from '../lib/supabase.ts'
 import { useSessie } from '../lib/sessie.tsx'
@@ -25,10 +26,6 @@ import './wereld.css'
 
 const PRENT: Record<string, string> = { winkel: '🛍 ⭐', spellen: '🎮 ⭐', bouw: '🚧 ❓', huis: '🏠 ✨', bladeren: '🍂 ⭐', ketting: '🌰 ⭐', slot: '🔒 ⭐' }
 
-const isNacht = () => {
-  const thema = document.documentElement.dataset.theme
-  return thema === 'dark' || (thema !== 'light' && window.matchMedia('(prefers-color-scheme: dark)').matches)
-}
 const minderBeweging = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
 /** De wereld van een kind (/kind/:id/wereld). */
@@ -151,7 +148,10 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
     s.pl = { ...start, face: 'down', moving: false, fase: 0, tegel: nieuweTegelStand() }
     s.route = []; s.doel = null; s.bezig = false
     const tek = new Tekenaar(cv, Math.min(2, Math.max(1, window.devicePixelRatio || 1)) > 1.4 ? 1.5 : 1)
-    tek.nacht = isNacht()
+    // Dag, schemer en nacht volgen de klok; het weer wisselt per blok van drie uur (weer.ts). Elke halve minuut kijken we opnieuw.
+    const klok = () => { const nu = new Date(), l = lichtVan(nu); tek.nacht = l.nacht; tek.schemer = l.schemer; tek.weer = weerVan(nu) }
+    klok()
+    const klokTik = setInterval(klok, 30_000)
     tek.rustig = minderBeweging()
     // Het beeld vult het hele scherm; bij draaien of vergroten past het zich aan.
     const pas = () => { const r = cv.getBoundingClientRect(); if (r.width > 0) tek.zet(r.width, r.height); s.maat = [tek.vw, tek.vh] }
@@ -226,7 +226,7 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
       else if (d?.huis) aanHuis(d.huis)
     }
     raf = requestAnimationFrame(lus)
-    return () => { cancelAnimationFrame(raf); waarnemer.disconnect(); document.removeEventListener('visibilitychange', zichtbaarheid); verbinding.stop() }
+    return () => { clearInterval(klokTik); cancelAnimationFrame(raf); waarnemer.disconnect(); document.removeEventListener('visibilitychange', zichtbaarheid); verbinding.stop() }
   }, [kind, ouder, gebruikers, account, huizen, kaart, figuurtjes, aanDeur, aanHuis, gebouwLijst, tegelLopen, tegels])
 
   /** Looppad voor een tik: over tegels (tegel voor tegel) of over de fijne kaart (vrij lopen). */
