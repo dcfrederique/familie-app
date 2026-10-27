@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.44',
+    datum: '2026-10-27',
+    titel: 'Lopen in de wereld: tegel voor tegel',
+    tekst: 'In de wereld loopt het figuurtje nu tegel voor tegel, zoals de eerste Pokémon-spellen: een stapje per tegel, even omdraaien als je van richting verandert, wippen tegen een muur, en tikken op de grond loopt het pad af. Het figuurtje zet bij elke stap één voet voor, veert mee en zwaait met de armen. Het blijft het eigen figuurtje van elk kind. Een ouder kan het per kind terugzetten naar vrij lopen bij Kinderen → Lopen in de wereld.',
+  },
+  {
     versie: '0.43',
     datum: '2026-10-27',
     titel: 'De 3D-wereld is geschrapt',

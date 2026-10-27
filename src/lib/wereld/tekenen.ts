@@ -23,6 +23,11 @@ const PAL = {
 /** Zijde van het hubbordje in schermpunten (ook voor de link erover). */
 export const HUB_MAAT = 76
 
+/** Waar de armen in de tekening van het figuurtje zitten (tekeneenheden): lijf = alles behalve de armen. */
+const ARMEN = 'M-4 -12H204V302H-4Z M-4 100H66V232H-4Z M134 100H204V232H134Z'
+const ARM_L = 'M-4 100H66V232H-4Z'
+const ARM_R = 'M134 100H204V232H134Z'
+
 const GROOT: Record<string, number> = { boom: 1.25, glijbaan: 1.25 }
 const ITEM = 90
 
@@ -58,12 +63,12 @@ export class Tekenaar {
     this.canvas.height = Math.round(this.vh * this.Q)
   }
 
-  private plaatje(sleutel: string, vb: string, inner: string, w: number, h: number, kleur = '#2D6BD6') {
+  private plaatje(sleutel: string, vb: string, inner: string, w: number, h: number, kleur = '#2D6BD6', uitsnede?: string) {
     const k = sleutel + (this.nacht ? 'n' : 'd')
     const bestaand = this.plaatjes.get(k)
     if (bestaand) return bestaand
     const im = new Image()
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" width="${Math.round(w * this.Q)}" height="${Math.round(h * this.Q)}"><style>svg{${this.nacht ? NACHT : DAG}--kid:${kleur};}.huis-rook{display:none}</style>${inner}</svg>`
+    const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${vb}" width="${Math.round(w * this.Q)}" height="${Math.round(h * this.Q)}"><style>svg{${this.nacht ? NACHT : DAG}--kid:${kleur};}.huis-rook{display:none}</style>${uitsnede ? `<clipPath id="u${k.replace(/\W/g, '')}"><path clip-rule="evenodd" d="${uitsnede}"/></clipPath><g clip-path="url(#u${k.replace(/\W/g, '')})">${inner}</g>` : inner}</svg>`
     im.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg)
     this.plaatjes.set(k, im)
     return im
@@ -74,6 +79,18 @@ export class Tekenaar {
   /** Het figuurtje als plaatje van 49 × 70. */
   figuur(sleutel: string, f: Figuurtje, kleur: string) {
     return this.plaatje('f' + sleutel + JSON.stringify(f), volledigeUitsnede, tekenFiguurtje(f, 'wf' + sleutel.replace(/\W/g, '')), 49, 70, kleur)
+  }
+
+  /** Het figuurtje in drie stukken (lijf, linkerarm, rechterarm) zodat de armen kunnen zwaaien; dezelfde tekening als `figuur`. */
+  private delen(sleutel: string, f: Figuurtje, kleur: string) {
+    const inner = tekenFiguurtje(f, 'wf' + sleutel.replace(/\W/g, ''))
+    const k = 'f' + sleutel + JSON.stringify(f)
+    return {
+      heel: this.figuur(sleutel, f, kleur),
+      lijf: this.plaatje(k + 'lijf', volledigeUitsnede, inner, 49, 70, kleur, ARMEN),
+      armL: this.plaatje(k + 'al', volledigeUitsnede, inner, 49, 70, kleur, ARM_L),
+      armR: this.plaatje(k + 'ar', volledigeUitsnede, inner, 49, 70, kleur, ARM_R),
+    }
   }
 
   private huis(sleutel: string, h: Huis, kleur: string) {
@@ -180,13 +197,19 @@ export class Tekenaar {
     return c
   }
 
-  /** Het figuurtje kijkt de kant op die het loopt: gezicht naar je toe, de rug bij omhoog, de zijkant bij links en rechts. De voeten stappen. */
-  private tekenFiguur(l: { moving: boolean; fase: number; face: Richting }, f: Figuurtje, im: HTMLImageElement, x: number, y: number, t: number, o: { schaal?: number } = {}) {
-    if (!this.klaar(im)) return
+  /**
+   * Het figuurtje kijkt de kant op die het loopt: gezicht naar je toe, de rug bij omhoog, de zijkant bij links en rechts.
+   * Elke stap zet één voet voor (de andere blijft staan), het lijfje veert mee en de armen zwaaien tegengesteld.
+   * `fase` loopt een halve cirkel (π) per stap; de voet wisselt bij elke stap.
+   */
+  private tekenFiguur(l: { moving: boolean; fase: number; face: Richting }, f: Figuurtje, sleutel: string, kleur: string, x: number, y: number, t: number, o: { schaal?: number } = {}) {
+    const d = this.delen(sleutel, f, kleur), im = d.heel
+    if (!this.klaar(im) || !this.klaar(d.lijf) || !this.klaar(d.armL) || !this.klaar(d.armR)) return
     const g = this.g, FW = 49, FH = 70, SPLIT = 250
-    const face = l.face, mv = l.moving, ph = l.fase, sc = o.schaal ?? 1
-    const bob = mv ? Math.abs(Math.sin(ph)) * 3.2 : Math.sin(t * 2 + x * 0.01) * 0.5
-    const lean = mv ? Math.sin(ph) * 0.045 : 0
+    const face = l.face, mv = l.moving, sc = o.schaal ?? 1
+    const stap = Math.floor(l.fase / Math.PI), voet = stap % 2 === 0 ? 1 : -1, prog = ((l.fase / Math.PI) % 1 + 1) % 1
+    const p = mv ? Math.sin(Math.PI * prog) : 0
+    const bob = mv ? p * 2.8 : Math.sin(t * 2 + x * 0.01) * 0.5
     const huid = Object.hasOwn(huidKleuren, f.huid) ? huidKleuren[f.huid as keyof typeof huidKleuren] : huidKleuren.licht
     const haar = Object.hasOwn(haarKleuren, f.haarKleur) ? haarKleuren[f.haarKleur as keyof typeof haarKleuren] : haarKleuren.bruin
     const shirt = Object.hasOwn(kledingKleuren, f.shirtKleur) ? kledingKleuren[f.shirtKleur as keyof typeof kledingKleuren] : kledingKleuren.blauw
@@ -197,16 +220,20 @@ export class Tekenaar {
     g.fillStyle = 'rgba(0,0,0,.18)'; g.beginPath(); g.ellipse(x, y, 17, 6, 0, 0, 7); g.fill()
     const zij = face === 'left' || face === 'right'
     g.translate(x, y - bob)
-    g.scale(sc * (face === 'left' ? -1 : 1) * (zij ? 0.94 : 1), sc)
-    g.rotate(face === 'up' || face === 'down' ? lean : lean * 0.6 + (mv ? 0.05 : 0))
-    // voeten: vooraan of achteraan wisselen, opzij schuiven ze heen en weer
-    const sw = Math.sin(ph), lift = (v: number) => mv ? Math.max(0, v) * 4.2 : 0
-    const lx = zij ? sw * 4.5 : 0, rx = zij ? -sw * 4.5 : 0
-    const ly = zij ? lift(sw) * 0.6 : lift(sw), ry = zij ? lift(-sw) * 0.6 : lift(-sw)
-    g.drawImage(im, 0, 0, nw, nh * (SPLIT + 12) / 302, bx, by, FW, kn)
+    g.scale(sc * (face === 'left' ? -1 : 1) * (zij ? 0.94 : 1), sc * (1 - p * 0.025))
+    // voeten: een voet gaat omhoog (van opzij: naar voren), de andere blijft staan
+    const lift = 4.6 * p, liftL = voet < 0 ? lift : 0, liftR = voet > 0 ? lift : 0
+    const schuif = zij && mv ? voet * p * 4.5 : 0
     const half = nw * 0.5, ys = nh * (SPLIT + 12) / 302, yh = nh - ys, dh = FH - kn
-    g.drawImage(im, 0, ys, half, yh, bx + lx, by + kn - ly, FW / 2, dh)
-    g.drawImage(im, half, ys, nw - half, yh, bx + FW / 2 + rx, by + kn - ry, FW / 2, dh)
+    g.drawImage(d.lijf, 0, 0, nw, ys, bx, by, FW, kn)
+    g.drawImage(d.lijf, 0, ys, half, yh, bx + schuif, by + kn - liftL, FW / 2, dh)
+    g.drawImage(d.lijf, half, ys, nw - half, yh, bx + FW / 2 - schuif, by + kn - liftR, FW / 2, dh)
+    // armen: draaien om de schouder
+    const hoek = mv ? voet * Math.sin(Math.PI * prog) * 0.55 : 0
+    const arm = (arm: HTMLImageElement, schouderX: number, a: number) => {
+      g.save(); g.translate(schouderX, uy(124)); g.rotate(a); g.drawImage(arm, bx - schouderX, by - uy(124), FW, FH); g.restore()
+    }
+    arm(d.armL, ux(66), zij ? -hoek * 0.8 : hoek); arm(d.armR, ux(134), zij ? hoek * 0.8 : hoek)
     const rr = (a: number, b: number, c: number, d: number, r: number, kleur: string) => {
       g.fillStyle = kleur; g.beginPath(); g.roundRect(ux(a), uy(b), uw(c - a), uh(d - b), Math.max(1, uw(r))); g.fill()
     }
@@ -317,10 +344,10 @@ export class Tekenaar {
       } })
     }
     const f = opties.figuurtjes[opties.mijnId]
-    if (f) lijst.push({ y: me.y, d: () => this.tekenFiguur(me, f, this.figuur(opties.mijnId, f, opties.kleurVan[opties.mijnId] ?? '#2D6BD6'), me.x, me.y, t) })
+    if (f) lijst.push({ y: me.y, d: () => this.tekenFiguur(me, f, opties.mijnId, opties.kleurVan[opties.mijnId] ?? '#2D6BD6', me.x, me.y, t) })
     for (const a of opties.anderen ?? []) {
       lijst.push({ y: a.y, d: () => {
-        this.tekenFiguur(a, a.figuur, this.figuur(a.id, a.figuur, a.kleur), a.x, a.y, t)
+        this.tekenFiguur(a, a.figuur, a.id, a.kleur, a.x, a.y, t)
         this.naamLabel(a.x, a.y, a.naam, a.kleur)
       } })
     }

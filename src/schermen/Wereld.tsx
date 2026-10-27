@@ -8,7 +8,8 @@ import { spelMenu } from '../data/spelletjes.ts'
 import { zin } from '../data/zinnen.ts'
 import { U, gebouwenVoor, kidKleur, type GebouwBeeld } from '../data/wereld.ts'
 import {
-  GROND_Y, MAX_HUIZEN, deurVan, inRechthoek, maakKaart, opDeurmat, stap, voorHuisdeur, huisRechthoek, type Loper,
+  GROND_Y, MAX_HUIZEN, deurVan, inRechthoek, maakKaart, maakTegels, nieuweTegelStand, opDeurmat, richtingVan, stap, tegelMidden, tegelStap, voorHuisdeur,
+  huisRechthoek, type Loper, type TegelStand,
 } from '../lib/wereld/kaart.ts'
 import { Tekenaar } from '../lib/wereld/tekenen.ts'
 import { WEG_NA, Zender, metPositie, verbind, volg, type Ander } from '../lib/wereld/live.ts'
@@ -91,11 +92,14 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
   }), [bewoners])
   const kleurVan = useCallback((kid: string) => huizen.find((h) => h.id === kid)?.kleur ?? '#6A5BD1', [huizen])
   const kaart = useMemo(() => maakKaart(huizen, kleurVan, gebouwLijst), [huizen, kleurVan, gebouwLijst])
+  // Lopen tegel voor tegel (standaard) of vrij: een ouder kiest per kind bij Kinderen.
+  const tegelLopen = kind.wereld_lopen !== 'vrij'
+  const tegels = useMemo(() => maakTegels(kaart), [kaart])
   const figuurtjes = useMemo(() => Object.fromEntries(spelers.map((k) => [k.id, figuurtjeVan(k)])), [spelers])
 
   // Alles wat de tekenlus nodig heeft, zodat hij niet bij elke render opnieuw begint.
   const toestand = useRef({
-    pl: { x: 0, y: 0, face: 'down', moving: false, fase: 0 } as Loper,
+    pl: { x: 0, y: 0, face: 'down', moving: false, fase: 0, tegel: nieuweTegelStand() } as Loper & { tegel: TegelStand },
     route: [] as [number, number][], doel: null as null | { gebouw?: GebouwBeeld; huis?: string },
     joy: { x: 0, y: 0 }, held: { up: false, down: false, left: false, right: false },
     anderen: new Map<string, Ander>(),
@@ -141,7 +145,10 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
     const s = toestand.current
     const eigen = huizen.find((h) => h.id === kind.id)
     // Een ouder staat op de straat zelf, tussen de huizen.
-    s.pl = ouder ? { x: 26 * U, y: 13.4 * U, face: 'down', moving: false, fase: 0 } : { x: eigen?.deurX ?? deurVan(0), y: GROND_Y + 70, face: 'down', moving: false, fase: 0 }
+    const start = ouder ? { x: 26 * U, y: 13.4 * U } : { x: eigen?.deurX ?? deurVan(0), y: GROND_Y + 70 }
+    // Tegel voor tegel begint op het midden van een tegel.
+    if (tegelLopen) { start.x = tegelMidden(Math.floor(start.x / U)); start.y = tegelMidden(Math.floor(start.y / U)) }
+    s.pl = { ...start, face: 'down', moving: false, fase: 0, tegel: nieuweTegelStand() }
     s.route = []; s.doel = null; s.bezig = false
     const tek = new Tekenaar(cv, Math.min(2, Math.max(1, window.devicePixelRatio || 1)) > 1.4 ? 1.5 : 1)
     tek.nacht = isNacht()
@@ -176,14 +183,24 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
           ix = (s.held.right ? 1 : 0) - (s.held.left ? 1 : 0); iy = (s.held.down ? 1 : 0) - (s.held.up ? 1 : 0)
         }
         if (ix || iy) { s.route = []; s.doel = null; setBericht(null) }
-        else if (s.route.length) {
-          const [tx, ty] = s.route[0], dx = tx - s.pl.x, dy = ty - s.pl.y, d = Math.hypot(dx, dy)
-          if (d < 7) { s.route.shift(); if (!s.route.length) eindeRoute() } else { ix = dx / d; iy = dy / d }
+        let aangekomen = true
+        if (tegelLopen) {
+          // een stap per tegel; deuren pas als er een tegel bereikt is
+          const uit = tegelStap(s.pl, dt, richtingVan(ix, iy), s.route, tegels)
+          aangekomen = uit !== null
+          if (uit === 'einde') eindeRoute()
+        } else {
+          if (!ix && !iy && s.route.length) {
+            const [tx, ty] = s.route[0], dx = tx - s.pl.x, dy = ty - s.pl.y, d = Math.hypot(dx, dy)
+            if (d < 7) { s.route.shift(); if (!s.route.length) eindeRoute() } else { ix = dx / d; iy = dy / d }
+          }
+          stap(s.pl, dt, ix, iy, kaart)
+          if (!(ix || iy)) s.pl.fase = 0
         }
-        stap(s.pl, dt, ix, iy, kaart)
-        if (!(ix || iy)) s.pl.fase = 0
-        for (const b of gebouwLijst) if (opDeurmat(s.pl, b)) { aanDeur(b); break }
-        for (const h of huizen) if (voorHuisdeur(s.pl, h)) { aanHuis(h.id); break }
+        if (aangekomen) {
+          for (const b of gebouwLijst) if (opDeurmat(s.pl, b, tegelLopen)) { aanDeur(b); break }
+          for (const h of huizen) if (voorHuisdeur(s.pl, h, tegelLopen)) { aanHuis(h.id); break }
+        }
       }
       if (!document.hidden) {
         const te = zender.tick(nuPositie(), nu)
@@ -210,7 +227,13 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
     }
     raf = requestAnimationFrame(lus)
     return () => { cancelAnimationFrame(raf); waarnemer.disconnect(); document.removeEventListener('visibilitychange', zichtbaarheid); verbinding.stop() }
-  }, [kind, ouder, gebruikers, account, huizen, kaart, figuurtjes, aanDeur, aanHuis, gebouwLijst])
+  }, [kind, ouder, gebruikers, account, huizen, kaart, figuurtjes, aanDeur, aanHuis, gebouwLijst, tegelLopen, tegels])
+
+  /** Looppad voor een tik: over tegels (tegel voor tegel) of over de fijne kaart (vrij lopen). */
+  const loopPad = (sx: number, sy: number, ex: number, ey: number): [number, number][] =>
+    (tegelLopen
+      ? tegels.pad(Math.floor(sx / U), Math.floor(sy / U), Math.floor(ex / U), Math.floor(ey / U))?.map(([a, b]): [number, number] => [tegelMidden(a), tegelMidden(b)])
+      : kaart.pad(sx, sy, ex, ey)) ?? []
 
   // Tikken op de grond: loop erheen, of naar de deur van het gebouw of huis dat je aantikt.
   function tik(ev: React.PointerEvent<HTMLCanvasElement>) {
@@ -222,16 +245,16 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
     const wx = (ev.clientX - r.left) / r.width * s.maat[0] + s.cam[0], wy = (ev.clientY - r.top) / r.height * s.maat[1] + s.cam[1]
     for (const b of gebouwLijst) {
       if (inRechthoek(wx, wy, [b.x - b.w * 0.45, b.y - b.w * 0.8, b.x + b.w * 0.45, b.y + 22])) {
-        s.route = kaart.pad(s.pl.x, s.pl.y, b.x, b.y + 24) ?? []; s.doel = { gebouw: b }; return
+        s.route = loopPad(s.pl.x, s.pl.y, b.x, b.y + 24); s.doel = { gebouw: b }; return
       }
     }
     for (const h of huizen) {
       const hr = huisRechthoek(h)
       if (inRechthoek(wx, wy, [hr[0], hr[1] - 40, hr[2], GROND_Y + 20])) {
-        s.route = kaart.pad(s.pl.x, s.pl.y, h.deurX, GROND_Y + 22) ?? []; s.doel = { huis: h.id }; return
+        s.route = loopPad(s.pl.x, s.pl.y, h.deurX, GROND_Y + 22); s.doel = { huis: h.id }; return
       }
     }
-    s.route = kaart.pad(s.pl.x, s.pl.y, wx, wy) ?? []; s.doel = null
+    s.route = loopPad(s.pl.x, s.pl.y, wx, wy); s.doel = null
   }
 
   // Joystick: sleep, de lengte van de vector is het tempo.

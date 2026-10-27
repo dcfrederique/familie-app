@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { figuurtjeVan } from '../data/figuurtje.ts'
-import { kleurKlasse, type Gebruiker, type Kleur } from '../data/gezin.ts'
+import { kleurKlasse, type Gebruiker, type Kleur, type WereldLopen } from '../data/gezin.ts'
 import { themaKeuzes } from '../data/thema.ts'
 import type { KindWijziging } from '../lib/bron/types.ts'
 import { useGegevens } from '../lib/gegevens.ts'
@@ -106,6 +106,13 @@ function KindBeheer({ kind, vrij, magBeheren, ververs }: {
           <label className="veld">
             <span>Verjaardag</span>
             <input type="date" value={kind.geboortedatum ?? ''} onChange={(e) => wijzig({ geboortedatum: e.target.value || null })} />
+          </label>
+          <label className="veld">
+            <span>Lopen in de wereld</span>
+            <select value={kind.wereld_lopen} onChange={(e) => wijzig({ wereld_lopen: e.target.value as WereldLopen })}>
+              <option value="tegel">Tegel voor tegel</option>
+              <option value="vrij">Vrij lopen</option>
+            </select>
           </label>
           <label className="veld">
             <span>Voorleesstem</span>

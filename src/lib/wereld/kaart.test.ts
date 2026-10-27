@@ -2,7 +2,10 @@ import { describe, expect, it } from 'vitest'
 import { spelMenu } from '../../data/spelletjes.ts'
 import { activiteitTegels } from '../../data/thema.ts'
 import { U, gebouwen } from '../../data/wereld.ts'
-import { GROND_Y, deurVan, maakKaart, opDeurmat, stap, voorHuisdeur, type HuisPlek, type Loper } from './kaart.ts'
+import {
+  GROND_Y, TEGEL_DRAAI, TEGEL_STAP, deurVan, maakKaart, maakTegels, nieuweTegelStand, opDeurmat, richtingVan, stap, tegelMidden, tegelStap, voorHuisdeur,
+  type HuisPlek, type Loper, type TegelStand,
+} from './kaart.ts'
 
 const huizen: HuisPlek[] = [0, 1, 2].map((i) => ({ id: `kind${i}`, model: 'verdieping', deurX: deurVan(i), naam: `Kind ${i}` }))
 const kaart = maakKaart(huizen, () => '#2D6BD6')
@@ -92,5 +95,75 @@ describe('de gebouwen', () => {
   it('openen alleen schermen die bestaan, of zijn een bouwplaats', () => {
     const paden = new Set(['winkel', 'spelen', ...spelMenu.map((x) => x.sleutel), ...activiteitTegels.map((t) => t.pad).filter(Boolean)])
     for (const b of gebouwen) if (b.pad) expect(paden.has(b.pad), b.naam).toBe(true)
+  })
+})
+
+describe('tegel voor tegel lopen', () => {
+  const tegels = maakTegels(kaart)
+  const maakLoper = (tx: number, ty: number): Loper & { tegel: TegelStand } =>
+    ({ x: tegelMidden(tx), y: tegelMidden(ty), face: 'down', moving: false, fase: 0, tegel: nieuweTegelStand() })
+  // een tegel op de hoofdstraat met vrije tegels links en rechts
+  const [tx0, ty0] = [Math.floor(26 * U / U), Math.floor(13.4 * U / U)]
+  const loop = (l: ReturnType<typeof maakLoper>, sec: number, wens: Parameters<typeof tegelStap>[2], route: [number, number][] = []) => {
+    let uit: ReturnType<typeof tegelStap> = null
+    for (let t = 0; t < sec; t += 0.01) { const u = tegelStap(l, 0.01, wens, route, tegels); if (u) uit = u }
+    return uit
+  }
+
+  it('begint met een korte draai als de richting verandert, daarna loopt hij precies één tegel per stap', () => {
+    expect(tegels.kan(tx0, ty0)).toBe(true)
+    const l = maakLoper(tx0, ty0)
+    loop(l, TEGEL_DRAAI * 0.5, 'right')
+    expect(l.face).toBe('right')
+    expect(l.x).toBe(tegelMidden(tx0)) // nog niet gelopen
+    loop(l, TEGEL_DRAAI + TEGEL_STAP * 1.05, 'right')
+    expect(l.x).toBeGreaterThan(tegelMidden(tx0))
+  })
+
+  it('loopt door zolang je de richting vasthoudt en blijft na het loslaten op een tegelmidden staan', () => {
+    const l = maakLoper(tx0, ty0)
+    loop(l, TEGEL_DRAAI + TEGEL_STAP * 3.4, 'right')
+    loop(l, TEGEL_STAP * 1.5, null)
+    expect(l.moving).toBe(false)
+    expect((l.x / U) % 1).toBeCloseTo(0.5, 5)
+    expect(l.x).toBeGreaterThan(tegelMidden(tx0 + 2))
+  })
+
+  it('wipt op zijn plek tegen een muur en blijft op de tegel', () => {
+    // vlak onder het huis van het eerste kind: omhoog is het huis
+    const ty = Math.floor((GROND_Y + 70) / U), tx = Math.floor(huizen[0].deurX / U)
+    const l = maakLoper(tx, ty - 1) // de deurmat
+    l.face = 'up'
+    const x0 = l.x, y0 = l.y
+    loop(l, 1, 'up')
+    expect(tegels.kan(tx, ty - 2)).toBe(false)
+    expect(l.x).toBe(x0); expect(l.y).toBe(y0)
+    expect(l.moving).toBe(true)
+  })
+
+  it('volgt een route van tegelmiddens en meldt het einde', () => {
+    const l = maakLoper(tx0, ty0)
+    const pad = tegels.pad(tx0, ty0, tx0 + 3, ty0)
+    expect(pad).not.toBeNull()
+    const route = pad!.map(([a, b]): [number, number] => [tegelMidden(a), tegelMidden(b)])
+    const uit = loop(l, 3, null, route)
+    expect(uit === 'einde' || l.x === tegelMidden(tx0 + 3)).toBe(true)
+    expect(l.x).toBe(tegelMidden(tx0 + 3))
+  })
+
+  it('bereikt elke deur van een gebouw over tegels', () => {
+    const l0 = maakLoper(Math.floor(start.x / U), Math.floor(start.y / U))
+    for (const b of gebouwen) {
+      const pad = tegels.pad(Math.floor(l0.x / U), Math.floor(l0.y / U), Math.floor(b.x / U), Math.floor((b.y + 24) / U))
+      expect(pad, b.naam).not.toBeNull()
+      const laatste = pad!.at(-1)!
+      expect(opDeurmat({ x: tegelMidden(laatste[0]), y: tegelMidden(laatste[1]) }, b, true), b.naam).toBe(true)
+    }
+  })
+
+  it('richtingVan neemt de sterkste kant van een joystick', () => {
+    expect(richtingVan(0.1, 0.1)).toBeNull()
+    expect(richtingVan(0.8, 0.3)).toBe('right')
+    expect(richtingVan(-0.2, -0.9)).toBe('up')
   })
 })

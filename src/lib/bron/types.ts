@@ -2,7 +2,7 @@
 import type { Aanbod } from '../../data/aanbod.ts'
 import type { Figuurtje } from '../../data/figuurtje.ts'
 import type { Huis } from '../../data/huis.ts'
-import type { Kleur } from '../../data/gezin.ts'
+import type { Kleur, WereldLopen } from '../../data/gezin.ts'
 import type { Activiteit } from '../regels.ts'
 import type { Weging } from '../gewicht.ts'
 import type { StemKeuze } from '../stem.ts'
@@ -88,6 +88,8 @@ export interface KindWijziging {
   welkom_klaar?: boolean
   /** Het kind mag berichten sturen naar de ouders (docs/chat.md). */
   chat_aan?: boolean
+  /** Hoe het figuurtje in de wereld loopt (docs/wereld.md). */
+  wereld_lopen?: WereldLopen
 }
 
 /** Een bericht in de chat tussen een kind en de ouders (docs/chat.md). */

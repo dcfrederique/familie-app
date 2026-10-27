@@ -29,7 +29,11 @@ export interface Gebruiker {
   welkom_klaar: boolean
   /** Het kind mag berichten sturen naar de ouders (docs/chat.md); standaard uit. */
   chat_aan: boolean
+  /** Hoe het figuurtje in de wereld loopt: tegel voor tegel (standaard) of vrij; een ouder kiest bij Kinderen. */
+  wereld_lopen: WereldLopen
 }
+
+export type WereldLopen = 'tegel' | 'vrij'
 
 export interface NieuwKind {
   naam: string
@@ -50,12 +54,12 @@ const kleuren: Kleur[] = ['blauw', 'roze', 'lila', 'groen']
 /** Startdata voor de demo zonder Supabase. */
 export const demoGebruikers: Gebruiker[] = [
   { id: 'mama', naam: 'Mama', rol: 'ouder', thema: null, kan_lezen: true, vraagt_zelf_tijd: true, volgorde: 1,
-    figuurtje: null, figuurtje_alles_vrij: false, huis: null, voorleesstem: 'afwisselend', geboortedatum: null, welkom_klaar: true, chat_aan: false },
+    figuurtje: null, figuurtje_alles_vrij: false, huis: null, voorleesstem: 'afwisselend', geboortedatum: null, welkom_klaar: true, chat_aan: false, wereld_lopen: 'tegel' },
   ...startKinderen.map((k, i) => ({
     id: k.naam.toLowerCase(), rol: 'kind' as const, thema: kleuren[i % 4], volgorde: 10 + i, ...k,
     figuurtje: null, figuurtje_alles_vrij: false, huis: null, voorleesstem: 'afwisselend' as const,
     // In de demo doorloopt elk kind het welkomstpad als je het op deze tablet kiest.
-    geboortedatum: null, welkom_klaar: false, chat_aan: true,
+    geboortedatum: null, welkom_klaar: false, chat_aan: true, wereld_lopen: 'tegel' as const,
   })),
 ]
 

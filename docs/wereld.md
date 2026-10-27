@@ -128,3 +128,8 @@ Elk nieuw spelletje van de nachtelijke bouw heeft een eigen gebouw in de wereld.
 - **Slot:** zolang het kind het spel niet kocht (`spelIsVrij`, ook met de eigen prijs van de ouders en "alles vrij") is het gebouw grijzer met een gouden slotje op de deur; naar binnen gaan zegt "Dit spel kost sterren. Koop het eerst in de winkel!" (voorgelezen voor wie niet leest). Na de aankoop verdwijnt het slot.
 - **Plek:** een gebouw boven de hoofdstraat krijgt vanzelf een stoepje naar de straat (`wegen()` in `src/lib/wereld/kaart.ts`). `kaart.test.ts` controleert dat elk spelgebouw bereikbaar is vanaf elk huis en een vrije deurmat heeft. Bezet (in tegels): Winkel (21,3; 21,5), Spellenhuis (48; 21), Bouwplaats (52,7; 21), Bladerhuisje (51,5; 11,6), Eekhoornboom (47,2; 11,6). Zoek voor een volgend gebouw een open plek langs de hoofdstraat en test hem.
 - **Terugknop:** een spel met een eigen gebouw geeft `wereldDeur` aan `SpelKader`, zodat "terug" in de wereld voor de deur uitkomt.
+
+
+## Lopen: tegel voor tegel of vrij (27 oktober 2026)
+
+Het figuurtje loopt standaard tegel voor tegel (`tegelStap` in `src/lib/wereld/kaart.ts`: 0,24 s per tegel, korte draai bij een nieuwe richting, wippen tegen een muur, tikken loopt een tegelpad af, deuren pas bij het bereiken van een tegel; de deurmat is dan de tegel onder de deur). Een ouder kan per kind terug naar vrij lopen: Kinderen → Lopen in de wereld (kolom `gebruikers.wereld_lopen`, migratie 20261027000200). Het figuurtje wordt in drie stukken getekend (lijf, twee armen) zodat de armen zwaaien en één voet per stap omhoog gaat. De proef staat in `prototypes/wereld-beweging/`.

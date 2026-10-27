@@ -170,7 +170,7 @@ export function maakKaart(huizen: HuisPlek[], kleurVan: (id: string) => string, 
 
 export type Richting = 'down' | 'up' | 'left' | 'right'
 
-export interface Loper { x: number; y: number; face: Richting; moving: boolean; fase: number }
+export interface Loper { x: number; y: number; face: Richting; moving: boolean; fase: number; tegel?: TegelStand }
 
 /** Zet het figuurtje een stapje in de richting (ix, iy) (lengte 0 tot 1 = tempo); botst het, dan schuift het langs de rand. */
 export function stap(l: Loper, dt: number, ix: number, iy: number, kaart: Kaart, snelheid = 205) {
@@ -185,10 +185,117 @@ export function stap(l: Loper, dt: number, ix: number, iy: number, kaart: Kaart,
   l.fase += dt * 11
 }
 
-/** Staat het figuurtje op de deurmat van een gebouw? */
-export const opDeurmat = (l: { x: number; y: number }, b: Gebouw) =>
-  Math.abs(l.x - b.x) < 30 && l.y <= b.y + 26 && l.y >= b.y - 4
+/** Staat het figuurtje op de deurmat van een gebouw? Tegel voor tegel lopen staat op tegelmiddens: de mat is dan de tegel onder de deur. */
+export const opDeurmat = (l: { x: number; y: number }, b: Gebouw, tegel = false) =>
+  Math.abs(l.x - b.x) < (tegel ? 36 : 30) && l.y <= b.y + (tegel ? U + 26 : 26) && l.y >= b.y - 4
 
 /** Staat het figuurtje voor de deur van een huis? */
-export const voorHuisdeur = (l: { x: number; y: number }, h: HuisPlek) =>
-  Math.abs(l.x - h.deurX) < 30 && l.y <= GROND_Y + 26 && l.y >= GROND_Y - 4
+export const voorHuisdeur = (l: { x: number; y: number }, h: HuisPlek, tegel = false) =>
+  Math.abs(l.x - h.deurX) < (tegel ? 36 : 30) && l.y <= GROND_Y + (tegel ? U + 26 : 26) && l.y >= GROND_Y - 4
+
+// ---------- tegel voor tegel lopen (zoals de eerste Pokémon-spellen) ----------
+
+/** Seconden voor één tegel, en de korte draai als je van richting verandert voor het lopen begint. */
+export const TEGEL_STAP = 0.24
+export const TEGEL_DRAAI = 0.1
+
+/** Wat het tegel-lopen onthoudt: het lopende stapje (van en naar in beeldpunten), welke voet aan de beurt is, de draaipauze en het botsen. */
+export interface TegelStand {
+  van: [number, number] | null
+  naar: [number, number] | null
+  /** 0 tot 1 binnen een stap; tegen een muur loopt hij door als de voetjes wippen. */
+  prog: number
+  voet: 1 | -1
+  draai: number
+  bots: number
+}
+export const nieuweTegelStand = (): TegelStand => ({ van: null, naar: null, prog: 0, voet: 1, draai: 0, bots: 0 })
+
+const tegelVan = (v: number) => Math.floor(v / U)
+export const tegelMidden = (t: number) => (t + 0.5) * U
+
+/** Het raster van tegels waar het figuurtje op kan staan, en een looppad over die tegels (4 richtingen). */
+export function maakTegels(kaart: Kaart) {
+  const breed = Math.floor(WERELD_BREED / U), hoog = Math.floor(WERELD_HOOG / U)
+  const vrij = new Uint8Array(breed * hoog)
+  for (let ty = 0; ty < hoog; ty++) for (let tx = 0; tx < breed; tx++) vrij[ty * breed + tx] = kaart.vrij(tegelMidden(tx), tegelMidden(ty)) ? 1 : 0
+  const kan = (tx: number, ty: number) => tx >= 0 && ty >= 0 && tx < breed && ty < hoog && vrij[ty * breed + tx] === 1
+  /** Looppad van tegel naar tegel (zonder de eerste), eindigend op de dichtstbijzijnde vrije tegel bij het doel. */
+  function pad(sx: number, sy: number, ex: number, ey: number): [number, number][] | null {
+    let e: [number, number] | null = null
+    if (kan(ex, ey)) e = [ex, ey]
+    else {
+      let beste = Infinity
+      for (let dy = -4; dy <= 4; dy++) for (let dx = -4; dx <= 4; dx++) {
+        const d = dx * dx + dy * dy
+        if (kan(ex + dx, ey + dy) && d < beste) { beste = d; e = [ex + dx, ey + dy] }
+      }
+    }
+    if (!e) return null
+    const k = (x: number, y: number) => y * breed + x
+    const rij: [number, number][] = [[sx, sy]], van = new Map<number, number>([[k(sx, sy), -1]])
+    for (let i = 0; i < rij.length; i++) {
+      const [x, y] = rij[i]
+      if (x === e[0] && y === e[1]) break
+      for (const [dx, dy] of [[1, 0], [-1, 0], [0, 1], [0, -1]]) {
+        const nx = x + dx, ny = y + dy
+        if (!kan(nx, ny) || van.has(k(nx, ny))) continue
+        van.set(k(nx, ny), k(x, y)); rij.push([nx, ny])
+      }
+    }
+    let c = k(e[0], e[1])
+    if (!van.has(c)) return null
+    const uit: [number, number][] = []
+    while (c !== -1) { uit.unshift([c % breed, Math.floor(c / breed)]); c = van.get(c) as number }
+    return uit.slice(1)
+  }
+  return { kan, pad, tegelVan }
+}
+export type Tegels = ReturnType<typeof maakTegels>
+
+const RICHTING: Record<Richting, [number, number]> = { up: [0, -1], down: [0, 1], left: [-1, 0], right: [1, 0] }
+
+/** De richting die een joystick of toets bedoelt (de sterkste kant), of null als hij stil staat. */
+export function richtingVan(ix: number, iy: number, drempel = 0.3): Richting | null {
+  if (Math.hypot(ix, iy) < drempel) return null
+  return Math.abs(ix) > Math.abs(iy) ? (ix > 0 ? 'right' : 'left') : (iy > 0 ? 'down' : 'up')
+}
+
+/**
+ * Tegel voor tegel lopen: een stap duurt TEGEL_STAP seconden, van richting veranderen is eerst een korte draai, tegen een muur wipt het
+ * figuurtje op zijn plek, en wie de richting blijft vasthouden loopt door. `route` zijn tegelmiddens in beeldpunten (tikken om te lopen).
+ * Geeft 'aangekomen' terug als er net een tegel bereikt is en 'einde' als dat het laatste punt van de route was.
+ */
+export function tegelStap(l: Loper & { tegel: TegelStand }, dt: number, wens: Richting | null, route: [number, number][], tegels: Tegels): 'einde' | 'aangekomen' | null {
+  const t = l.tegel
+  let uit: 'einde' | 'aangekomen' | null = null
+  if (t.naar && t.van) {
+    t.prog += dt / TEGEL_STAP
+    if (t.prog < 1) { l.x = t.van[0] + (t.naar[0] - t.van[0]) * t.prog; l.y = t.van[1] + (t.naar[1] - t.van[1]) * t.prog; l.moving = true; l.fase = t.prog * Math.PI + (t.voet < 0 ? Math.PI : 0); return null }
+    l.x = t.naar[0]; l.y = t.naar[1]; t.naar = t.van = null; t.prog = 0; t.voet = t.voet === 1 ? -1 : 1
+    uit = 'aangekomen'
+    if (route.length && Math.abs(route[0][0] - l.x) < 1 && Math.abs(route[0][1] - l.y) < 1) { route.shift(); if (!route.length) uit = 'einde' }
+  }
+  l.moving = false
+  const tx = tegelVan(l.x), ty = tegelVan(l.y)
+  let d = wens
+  if (!d && route.length) {
+    const rx = tegelVan(route[0][0]), ry = tegelVan(route[0][1])
+    if (rx === tx && ry === ty) { route.shift(); return route.length ? uit : 'einde' }
+    d = Math.abs(rx - tx) >= Math.abs(ry - ty) && rx !== tx ? (rx > tx ? 'right' : 'left') : (ry > ty ? 'down' : 'up')
+  }
+  if (!d) { t.draai = 0; t.bots = 0; t.prog = 0; l.fase = 0; return uit }
+  if (d !== l.face) { l.face = d; t.draai = TEGEL_DRAAI; return uit }
+  if (t.draai > 0) { t.draai -= dt; return uit }
+  const [dx, dy] = RICHTING[d]
+  if (!tegels.kan(tx + dx, ty + dy)) {
+    // tegen een muur: de voetjes wippen op de plek
+    t.bots += dt; l.moving = true; l.fase = (t.bots / (TEGEL_STAP * 1.6)) * Math.PI * 2
+    route.length = 0
+    return uit
+  }
+  t.bots = 0
+  // vanaf de eigen plek naar het midden van de volgende tegel (ook als het figuurtje niet precies op een midden stond)
+  t.van = [l.x, l.y]; t.naar = [tegelMidden(tx + dx), tegelMidden(ty + dy)]; t.prog = 0; l.moving = true
+  return uit
+}
