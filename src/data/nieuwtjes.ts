@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.45',
+    datum: '2026-10-27',
+    titel: 'Nieuw poppetje in de wereld',
+    tekst: 'In De wereld loopt elk kind nu als een stoer poppetje met grote kop en een dikke rand, zoals de oude Pokémon-spellen. Het is nog altijd het eigen figuurtje: kapsel, pet of kroontje, shirt, broek en schoenen komen uit de Kleerkast. Het poppetje in de Kleerkast zelf blijft zoals het was.',
+  },
+  {
     versie: '0.44',
     datum: '2026-10-27',
     titel: 'Lopen in de wereld: tegel voor tegel',

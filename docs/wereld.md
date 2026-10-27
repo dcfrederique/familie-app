@@ -133,3 +133,7 @@ Elk nieuw spelletje van de nachtelijke bouw heeft een eigen gebouw in de wereld.
 ## Lopen: tegel voor tegel of vrij (27 oktober 2026)
 
 Het figuurtje loopt standaard tegel voor tegel (`tegelStap` in `src/lib/wereld/kaart.ts`: 0,24 s per tegel, korte draai bij een nieuwe richting, wippen tegen een muur, tikken loopt een tegelpad af, deuren pas bij het bereiken van een tegel; de deurmat is dan de tegel onder de deur). Een ouder kan per kind terug naar vrij lopen: Kinderen → Lopen in de wereld (kolom `gebruikers.wereld_lopen`, migratie 20261027000200). Het figuurtje wordt in drie stukken getekend (lijf, twee armen) zodat de armen zwaaien en één voet per stap omhoog gaat. De proef staat in `prototypes/wereld-beweging/`.
+
+## Het poppetje in de wereld
+
+Sinds 27 oktober 2026 wordt het figuurtje in de wereld getekend als "chibi met rand" (`src/lib/wereld/chibi.ts`, gekozen door Frederique uit drie voorstellen in `prototypes/figuurtje-stijlen/`). Het leest dezelfde `Figuurtje`-gegevens (kleuren, kapsel, hoofddeksel, shirt, broek, schoenen, gezicht, bril, cape) en loopt met een voetwissel per stap en tegengesteld zwaaiende armen. De SVG-tekening in de Kleerkast blijft ongewijzigd.

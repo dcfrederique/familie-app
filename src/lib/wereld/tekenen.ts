@@ -1,10 +1,11 @@
 // Tekent de wereld op een canvas: ondergrond (één keer), huizen, gebouwen en dingen uit SVG-plaatjes, en het figuurtje
 // dat de kant op kijkt waar het loopt en echt stapt. Gebaseerd op prototypes/straatje.html.
-import { haarKleuren, huidKleuren, kledingKleuren, type Figuurtje } from '../../data/figuurtje.ts'
+import type { Figuurtje } from '../../data/figuurtje.ts'
 import type { Huis } from '../../data/huis.ts'
 import { gebouwTekening, straatTekening } from '../../data/wereldPrenten.ts'
 import { U, WERELD_BREED, WERELD_HOOG, HUIS_MAAT, type GebouwBeeld } from '../../data/wereld.ts'
-import { donkerder, tekenFiguurtje, volledigeUitsnede } from '../figuurtje/tekenen.ts'
+import { tekenFiguurtje, volledigeUitsnede } from '../figuurtje/tekenen.ts'
+import { tekenChibi } from './chibi.ts'
 import { huisUitsnede, tekenHuis, tuinStuk } from '../huis/tekenen.ts'
 import { GROND_Y, HUIS_SCHAAL, POEL, PLEIN, VELD, inPoel, inRechthoek, opWeg, toeval, type Ding, type HuisPlek, type Kaart, type Richting } from './kaart.ts'
 
@@ -24,9 +25,6 @@ const PAL = {
 export const HUB_MAAT = 76
 
 /** Waar de armen in de tekening van het figuurtje zitten (tekeneenheden): lijf = alles behalve de armen. */
-const ARMEN = 'M-4 -12H204V302H-4Z M-4 100H66V232H-4Z M134 100H204V232H134Z'
-const ARM_L = 'M-4 100H66V232H-4Z'
-const ARM_R = 'M134 100H204V232H134Z'
 
 const GROOT: Record<string, number> = { boom: 1.25, glijbaan: 1.25 }
 const ITEM = 90
@@ -79,18 +77,6 @@ export class Tekenaar {
   /** Het figuurtje als plaatje van 49 × 70. */
   figuur(sleutel: string, f: Figuurtje, kleur: string) {
     return this.plaatje('f' + sleutel + JSON.stringify(f), volledigeUitsnede, tekenFiguurtje(f, 'wf' + sleutel.replace(/\W/g, '')), 49, 70, kleur)
-  }
-
-  /** Het figuurtje in drie stukken (lijf, linkerarm, rechterarm) zodat de armen kunnen zwaaien; dezelfde tekening als `figuur`. */
-  private delen(sleutel: string, f: Figuurtje, kleur: string) {
-    const inner = tekenFiguurtje(f, 'wf' + sleutel.replace(/\W/g, ''))
-    const k = 'f' + sleutel + JSON.stringify(f)
-    return {
-      heel: this.figuur(sleutel, f, kleur),
-      lijf: this.plaatje(k + 'lijf', volledigeUitsnede, inner, 49, 70, kleur, ARMEN),
-      armL: this.plaatje(k + 'al', volledigeUitsnede, inner, 49, 70, kleur, ARM_L),
-      armR: this.plaatje(k + 'ar', volledigeUitsnede, inner, 49, 70, kleur, ARM_R),
-    }
   }
 
   private huis(sleutel: string, h: Huis, kleur: string) {
@@ -202,53 +188,8 @@ export class Tekenaar {
    * Elke stap zet één voet voor (de andere blijft staan), het lijfje veert mee en de armen zwaaien tegengesteld.
    * `fase` loopt een halve cirkel (π) per stap; de voet wisselt bij elke stap.
    */
-  private tekenFiguur(l: { moving: boolean; fase: number; face: Richting }, f: Figuurtje, sleutel: string, kleur: string, x: number, y: number, t: number, o: { schaal?: number } = {}) {
-    const d = this.delen(sleutel, f, kleur), im = d.heel
-    if (!this.klaar(im) || !this.klaar(d.lijf) || !this.klaar(d.armL) || !this.klaar(d.armR)) return
-    const g = this.g, FW = 49, FH = 70, SPLIT = 250
-    const face = l.face, mv = l.moving, sc = o.schaal ?? 1
-    const stap = Math.floor(l.fase / Math.PI), voet = stap % 2 === 0 ? 1 : -1, prog = ((l.fase / Math.PI) % 1 + 1) % 1
-    const p = mv ? Math.sin(Math.PI * prog) : 0
-    const bob = mv ? p * 2.8 : Math.sin(t * 2 + x * 0.01) * 0.5
-    const huid = Object.hasOwn(huidKleuren, f.huid) ? huidKleuren[f.huid as keyof typeof huidKleuren] : huidKleuren.licht
-    const haar = Object.hasOwn(haarKleuren, f.haarKleur) ? haarKleuren[f.haarKleur as keyof typeof haarKleuren] : haarKleuren.bruin
-    const shirt = Object.hasOwn(kledingKleuren, f.shirtKleur) ? kledingKleuren[f.shirtKleur as keyof typeof kledingKleuren] : kledingKleuren.blauw
-    const nw = im.naturalWidth, nh = im.naturalHeight, bx = -FW / 2, by = -FH + 5, kn = FH * (SPLIT + 12) / 302
-    const ux = (u: number) => bx + (u + 4) / 208 * FW, uy = (u: number) => by + (u + 12) / 302 * FH
-    const uw = (u: number) => u / 208 * FW, uh = (u: number) => u / 302 * FH
-    g.save()
-    g.fillStyle = 'rgba(0,0,0,.18)'; g.beginPath(); g.ellipse(x, y, 17, 6, 0, 0, 7); g.fill()
-    const zij = face === 'left' || face === 'right'
-    g.translate(x, y - bob)
-    g.scale(sc * (face === 'left' ? -1 : 1) * (zij ? 0.94 : 1), sc * (1 - p * 0.025))
-    // voeten: een voet gaat omhoog (van opzij: naar voren), de andere blijft staan
-    const lift = 4.6 * p, liftL = voet < 0 ? lift : 0, liftR = voet > 0 ? lift : 0
-    const schuif = zij && mv ? voet * p * 4.5 : 0
-    const half = nw * 0.5, ys = nh * (SPLIT + 12) / 302, yh = nh - ys, dh = FH - kn
-    g.drawImage(d.lijf, 0, 0, nw, ys, bx, by, FW, kn)
-    g.drawImage(d.lijf, 0, ys, half, yh, bx + schuif, by + kn - liftL, FW / 2, dh)
-    g.drawImage(d.lijf, half, ys, nw - half, yh, bx + FW / 2 - schuif, by + kn - liftR, FW / 2, dh)
-    // armen: draaien om de schouder
-    const hoek = mv ? voet * Math.sin(Math.PI * prog) * 0.55 : 0
-    const arm = (arm: HTMLImageElement, schouderX: number, a: number) => {
-      g.save(); g.translate(schouderX, uy(124)); g.rotate(a); g.drawImage(arm, bx - schouderX, by - uy(124), FW, FH); g.restore()
-    }
-    arm(d.armL, ux(66), zij ? -hoek * 0.8 : hoek); arm(d.armR, ux(134), zij ? hoek * 0.8 : hoek)
-    const rr = (a: number, b: number, c: number, d: number, r: number, kleur: string) => {
-      g.fillStyle = kleur; g.beginPath(); g.roundRect(ux(a), uy(b), uw(c - a), uh(d - b), Math.max(1, uw(r))); g.fill()
-    }
-    if (face === 'up') {
-      rr(62, 28, 138, 114, 22, haar); rr(70, 36, 130, 60, 14, donkerder(haar, 1.12)); rr(74, 124, 126, 192, 6, shirt)
-    } else if (zij) {
-      rr(66, 58, 134, 104, 8, huid)
-      g.fillStyle = donkerder(huid, 0.84); g.beginPath(); g.ellipse(ux(90), uy(80), uw(8), uh(11), 0, 0, 7); g.fill()
-      g.fillStyle = huid; g.beginPath(); g.ellipse(ux(136), uy(84), uw(7), uh(6), 0, 0, 7); g.fill()
-      g.fillStyle = '#1C2433'; g.beginPath(); g.ellipse(ux(118), uy(74), uw(4.2), uh(6.4), 0, 0, 7); g.fill()
-      g.strokeStyle = '#1C2433'; g.lineWidth = Math.max(0.8, uw(3)); g.lineCap = 'round'
-      g.beginPath(); g.moveTo(ux(116), uy(96)); g.lineTo(ux(128), uy(95)); g.stroke()
-      rr(74, 128, 126, 190, 6, donkerder(shirt, 0.96))
-    }
-    g.restore()
+  private tekenFiguur(l: { moving: boolean; fase: number; face: Richting }, f: Figuurtje, _sleutel: string, _kleur: string, x: number, y: number, t: number, o: { schaal?: number } = {}) {
+    tekenChibi(this.g, f, l.face, l.fase, l.moving, x, y, t, o.schaal ?? 1)
   }
 
   /** Een gebouw. Nieuw = gouden gloed langs de rand; nog niet gekocht = grijzer met een slotje op de deur. */
