@@ -45,6 +45,8 @@ export const gebouwen: Gebouw[] = [
   // Eén gebouw per spelletje dat de nachtelijke bouw maakt: een rij hier en een tekening in wereldPrenten.ts (docs/wereld.md).
   { id: 'bladeren', naam: 'Bladerhuisje', x: 51.5 * U, y: 11.6 * U, w: 240, pad: 'bladeren', welkom: 'Welkom in het bladerhuisje!', telt_mee: true,
     spel: 'bladeren', nieuwSinds: '2026-10-26' },
+  { id: 'ketting', naam: 'Eekhoornboom', x: 47.2 * U, y: 11.6 * U, w: 220, pad: 'ketting', welkom: 'Welkom bij de eekhoornboom!', telt_mee: true,
+    spel: 'ketting', nieuwSinds: '2026-10-27' },
   { id: 'bouw', naam: 'Bouwplaats', x: 52.7 * U, y: 21 * U, w: 150, pad: null, welkom: 'Hier komt later een nieuw gebouw. Wat zou het worden?', telt_mee: false },
 ]
 

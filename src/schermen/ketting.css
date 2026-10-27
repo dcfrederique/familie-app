@@ -1,0 +1,35 @@
+/* Herfstketting: de ketting bovenaan, de kralen om uit te kiezen eronder. */
+.ketting { display: flex; flex-direction: column; align-items: center; gap: clamp(10px, 2.4vh, 22px); width: 100%; }
+.kraal-tekening { display: block; width: 100%; height: auto; }
+.ketting-teller { display: flex; gap: 6px; }
+.ketting-teller span { width: 14px; height: 14px; border-radius: 50%; background: var(--line); }
+.ketting-teller .af { background: var(--gold); }
+.ketting-teller .nu { background: var(--kid); }
+.ketting-rij {
+  --kraal: clamp(40px, min(8.5vw, 11vh), 84px);
+  display: flex; flex-wrap: nowrap; justify-content: center; align-items: center; gap: calc(var(--kraal) * 0.12);
+  padding: 6px 14px; position: relative; max-width: 100%;
+}
+.ketting-rij::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; height: 4px; background: #8A5E32; border-radius: 2px; opacity: 0.55; }
+.ketting-rij .kraal { position: relative; width: var(--kraal); height: var(--kraal); flex: 0 0 auto; }
+.ketting-rij .kraal.leeg { border: 3px dashed var(--line); border-radius: 50%; background: var(--card); box-sizing: border-box; }
+.ketting-rij .kraal.leeg.nu { border-color: var(--kid); animation: kraal-pols 1s ease-in-out infinite; }
+.ketting-rij .kraal.leeg.vol { border: 0; background: transparent; animation: kraal-pop 0.3s ease-out; }
+.ketting-rij.oei { animation: kraal-oei 0.35s ease-out; }
+.ketting-keuzes { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(12px, 3vw, 32px); }
+.ketting-keuze {
+  width: clamp(72px, 14vh, 120px); height: clamp(72px, 14vh, 120px); padding: 10px; border-radius: 22px;
+  border: 3px solid var(--line); background: var(--card); box-shadow: 0 5px 0 var(--line);
+}
+.ketting-keuze:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 2px 0 var(--line); }
+.ketting-keuze.tip { animation: kraal-wip 0.7s ease-in-out infinite; border-color: var(--gold); }
+.ketting-eind { display: grid; justify-items: center; gap: 16px; }
+.ketting-eind .ketting-rij { --kraal: clamp(50px, 10vh, 90px); }
+@keyframes kraal-pols { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.12); } }
+@keyframes kraal-pop { 0% { transform: scale(0.3); } 70% { transform: scale(1.2); } 100% { transform: scale(1); } }
+@keyframes kraal-oei { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
+@keyframes kraal-wip { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+@media (prefers-reduced-motion: reduce) {
+  .ketting-rij .kraal.leeg.nu, .ketting-rij .kraal.leeg.vol, .ketting-rij.oei, .ketting-keuze.tip { animation: none; }
+  .ketting-keuze.tip { outline: 4px solid var(--gold); }
+}

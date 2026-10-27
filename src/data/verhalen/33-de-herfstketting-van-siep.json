@@ -1,0 +1,117 @@
+{
+  "nr": 33,
+  "titel": "De herfstketting van Siep",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Herfst, een cadeau maken",
+  "bladzijden": [
+    {
+      "tekst": "Het is herfst in het bos. De bladeren zijn rood en geel. Siep de eekhoorn rent van boom naar boom. Morgen is Bram de beer jarig, en Siep wil iets moois maken. Maar wat? Hij denkt en denkt, tot zijn staart ervan kriebelt.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "eekhoorn",
+          "boom",
+          "noot"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Ik maak een ketting,\" zegt Siep. Hij zoekt rode bessen, gele blaadjes en bruine eikels. Zijn mandje wordt vol. Het ruikt naar herfst.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "eekhoorn",
+          "struik"
+        ]
+      }
+    },
+    {
+      "tekst": "Siep rijgt een rode bes, een geel blaadje en een bruine eikel aan een draadje. Dan nog een rode bes, nog een geel blaadje en nog een bruine eikel. \"Rood, geel, bruin,\" zingt hij. \"Rood, geel, bruin.\"",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "eekhoorn",
+          "noot"
+        ]
+      }
+    },
+    {
+      "tekst": "Lotte het konijn komt kijken. \"Wat mooi!\" zegt ze. \"Zo zie je meteen wat er daarna komt.\" Siep knikt. Een patroon is een rijtje dat zich blijft herhalen.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "eekhoorn",
+          "konijn"
+        ]
+      }
+    },
+    {
+      "tekst": "Lotte wil helpen. Maar ze rijgt per ongeluk twee gele blaadjes na elkaar. De ketting ziet er raar uit. Siep lacht. \"Geen probleem. We halen ze er samen weer af.\"",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "konijn",
+          "eekhoorn",
+          "struik"
+        ]
+      }
+    },
+    {
+      "tekst": "Ze beginnen opnieuw, en nu kijkt Lotte goed. \"Wat komt er na rood en geel?\" vraagt Siep. \"Bruin!\" roept Lotte. En zo groeit de ketting, kraal na kraal.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "eekhoorn",
+          "konijn",
+          "noot"
+        ]
+      }
+    },
+    {
+      "tekst": "Het wordt avond. De zon kleurt de bomen oranje. De ketting is bijna af. Nog tien kralen, dan kan Siep hem dichtknopen. Lotte geeft hem de kralen één voor één aan, en niemand heeft haast.",
+      "prent": {
+        "decor": "bos-avond",
+        "figuren": [
+          "eekhoorn",
+          "konijn",
+          "boom"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Nu nog één,\" zegt Siep. Hij kijkt naar de ketting. \"Rood, geel, bruin, rood, geel ... \" \"Bruin!\" juichen ze samen. De laatste kraal klikt op zijn plek.",
+      "prent": {
+        "decor": "bos-avond",
+        "figuren": [
+          "eekhoorn",
+          "konijn",
+          "struik"
+        ]
+      }
+    },
+    {
+      "tekst": "De volgende ochtend komt Bram de beer langs. \"Gelukkige verjaardag!\" roepen Siep en Lotte. Ze geven hem de ketting. Bram strijkt zacht over de kleine kralen.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "beer",
+          "eekhoorn",
+          "konijn"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Wat een mooie herfstketting,\" zegt Bram. Hij doet hem om. Hij is zo groot dat hij net past, en hij straalt van oor tot oor. \"Dank jullie wel, lieve vrienden.\" Siep en Lotte kijken elkaar aan. Samen een cadeau maken is het allerleukste.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "beer",
+          "eekhoorn",
+          "konijn",
+          "boom"
+        ]
+      }
+    }
+  ]
+}

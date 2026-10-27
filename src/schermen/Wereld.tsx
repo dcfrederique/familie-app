@@ -22,7 +22,7 @@ import './wereld.css'
 // De wereld (docs/wereld.md): de straat van bovenaf. Het figuurtje loopt met de joystick of naar een tik toe;
 // de deur van een gebouw opent het bestaande scherm. Het startscherm blijft de basis en is één knop weg.
 
-const PRENT: Record<string, string> = { winkel: '🛍 ⭐', spellen: '🎮 ⭐', bouw: '🚧 ❓', huis: '🏠 ✨', bladeren: '🍂 ⭐', slot: '🔒 ⭐' }
+const PRENT: Record<string, string> = { winkel: '🛍 ⭐', spellen: '🎮 ⭐', bouw: '🚧 ❓', huis: '🏠 ✨', bladeren: '🍂 ⭐', ketting: '🌰 ⭐', slot: '🔒 ⭐' }
 
 const isNacht = () => {
   const thema = document.documentElement.dataset.theme

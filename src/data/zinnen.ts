@@ -24,6 +24,8 @@ export const zin = {
   pompoenKlaar: 'Mooi! De pompoen straalt.',
   bladerenUitleg: 'Sleep elk blad in het mandje met dezelfde kleur. Of tik op het mandje!',
   bladerenKlaar: 'Goed gedaan! Alle bladeren liggen op hun plek.',
+  kettingUitleg: 'Maak de ketting af. Tik op de kraal die er daarna komt!',
+  kettingKlaar: 'Mooi! Alle kettingen zijn af.',
   spelSlot: 'Dit spel kost sterren. Koop het eerst in de winkel!',
   springenKiezen: 'Waar ga je springen? Tik op een prentje.',
   springenUitleg: 'Je figuurtje loopt vanzelf. Tik op het scherm om te springen! Pak de sterren en loop naar het huisje.',

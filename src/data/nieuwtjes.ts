@@ -19,6 +19,21 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.39',
+    datum: '2026-10-27',
+    titel: 'Herfstketting, een eekhoornboom in de wereld en het paddenstoelenpad',
+    tekst: 'De herfst gaat door met een cadeau maken. Het verhaal is meteen te lezen (Grote ogen). In het spelletje Herfstketting maak je een ketting van bessen, bladeren, eikels en paddenstoelen af: kies telkens de kraal die er daarna komt (tikken, niet slepen). Het kost sterren in de winkel en ligt er pas als jullie het vrijgeven in Kinderen → Winkelaanbod, net als de zes nieuwe stukken. Wie het spelletje mag zien, ziet in de wereld ook de eekhoornboom, eerst met een gouden rand en een slot tot het gekocht is.',
+    verhaal: 'De herfstketting van Siep (Grote ogen, 10 bladzijden)',
+    spel: { naam: 'Herfstketting', prijs: 20 },
+    stukken: [
+      'Figuurtje: Eikelmuts (15), Met eekhoorn (20), Paraplu (15)',
+      'Mijn huis: Notenboom (25), Egel (15), Herfstkrans (20)',
+      'Springland: Het paddenstoelenpad (vijfde en laatste level van Zonnevallei; de volgende nacht begint een nieuwe wereld)',
+      'De wereld: de eekhoornboom naast het bladerhuisje',
+    ],
+    open: 'De voorleesopnames voor het nieuwe verhaal en de nieuwe zinnen komen met de volgende ronde van de stemworkflow. De eekhoornboom en de Herfstketting zijn op een tablet nog niet bekeken.',
+  },
+  {
     versie: '0.38',
     datum: '2026-10-26',
     titel: 'Sint-Maarten: nieuw verhaal, Bladeren sorteren en een bladerhuisje in de wereld',
