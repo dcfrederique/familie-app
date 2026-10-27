@@ -199,6 +199,15 @@ schrijf de samenvatting naar ideeen/<datum van vandaag>-resultaat.md en push naa
 Doel: geen enkel kinderscherm mag op een tablet scrollen, liggend of staand (vraag van Frederique, 25 oktober 2026),
 en elke nacht worden de schermen een beetje mooier. Loopt na de nachtelijke bouw (01:07 ontwerp, 03:07 bouw).
 
+## Twee fases (Frederique, 27 oktober 2026)
+- **Fase 1, rondgang**: zolang `e2e/schermen-open.ts` nog schermen bevat, doorloopt de nacht alle kinderschermen en
+  herstelt telkens wat nog open staat (zie Werkwijze).
+- **Fase 2, enkel nieuwigheden**: zodra `e2e/schermen-open.ts` leeg is, kijkt de nacht alleen nog de kinderschermen na die
+  sinds de vorige schermcontrole nieuw of veranderd zijn (`git log` sinds het vorige `ideeen/*-schermen.md`, vooral de
+  nachtelijke bouw). Nieuw scherm: in `SCHERMEN` zetten, meten met `--scherm` op alle kinderen en toestellen (ook de
+  speltoestand), herstellen tot het past op tablets en gsm liggend. De e2e-schermtests in CI bewaken de rest.
+  Geen nieuwigheden: alleen een kort verslag en een melding.
+
 ## Werkwijze
 - `npm ci`, dan `npx vite --port 5173 --host 127.0.0.1 &` (demo zonder Supabase) en
   `node scripts/schermcontrole.cjs --json /tmp/uitslag.json` (Playwright staat globaal in de cloudomgeving).
@@ -247,7 +256,7 @@ en elke nacht worden de schermen een beetje mooier. Loopt na de nachtelijke bouw
 - Korte melding aan Frederique in de thread "Elke nacht schermen nakijken en verfijnen".
 
 ## Taakprompt 3 – Schermcontrole (05:07)
-Lees CLAUDE.md en volg "Nachtelijke schermcontrole". Haal main binnen, draai de Playwright-tests en
+Lees CLAUDE.md en volg "Nachtelijke schermcontrole" (kijk eerst in welke fase je zit; in fase 2 alleen de nieuwigheden). Haal main binnen, draai de Playwright-tests en
 scripts/schermcontrole.cjs op alle kinderen,
 herstel wat op een tablet scrolt of buiten beeld valt (begin bij de schermen met de meeste meldingen), daarna een paar
 schermen voor de gsm liggend, voeg een paar kleine
