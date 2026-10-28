@@ -8,6 +8,8 @@ import type { WereldWeergave } from '../wereld/weergave.ts'
 import type { Opgeslagen as WereldKaart } from '../wereld/gebieden.ts'
 import type { Weging } from '../gewicht.ts'
 import type { LoopInvoer, Loopsessie } from '../lopen.ts'
+import type { DoelSoort, LoopDoel, LoopSchoen } from '../loopanalyse.ts'
+import type { Schema } from '../loopschema.ts'
 import type { StemKeuze } from '../stem.ts'
 
 export type Herhaling = 'eenmalig' | 'elke_dag' | 'schooldagen' | 'tweewekelijks' | 'om_de_n_dagen'
@@ -449,4 +451,16 @@ export interface Bron {
   /** Voegt een loop toe, of past er een aan als `id` meegegeven is. */
   loopOpslaan(loop: LoopInvoer): Promise<void>
   loopVerwijderen(id: string): Promise<void>
+  /** Je doelen voor lopen (docs/loop-analyse.md), privé. */
+  loopdoelen(): Promise<LoopDoel[]>
+  /** Zet of vervangt het doel van een soort; `null` haalt het weg. */
+  loopDoelZetten(soort: DoelSoort, waarde: number | null): Promise<void>
+  loopschoenen(): Promise<LoopSchoen[]>
+  /** Voegt een schoen toe, of past er een aan als `id` meegegeven is. */
+  loopSchoenOpslaan(schoen: Omit<LoopSchoen, 'id'> & { id?: string }): Promise<void>
+  loopSchoenVerwijderen(id: string): Promise<void>
+  /** Je loopschema, of null als je er geen hebt. */
+  loopschema(): Promise<Schema | null>
+  /** Bewaart je loopschema (vervangt het vorige); `null` stopt het schema. */
+  loopschemaZetten(schema: Schema | null): Promise<void>
 }

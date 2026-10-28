@@ -2,7 +2,7 @@
 
 export type MenuIcoon =
   | 'vandaag' | 'goedkeuren' | 'taken' | 'kinderen' | 'spelregels'
-  | 'onzetaken' | 'boodschappen' | 'notities' | 'gewicht' | 'profiel' | 'fitness' | 'lopen'
+  | 'onzetaken' | 'boodschappen' | 'notities' | 'gewicht' | 'profiel' | 'fitness' | 'lopen' | 'analyse' | 'schema'
   | 'chat' | 'weekmenu' | 'toestellen' | 'pincode' | 'winkels' | 'uitgaven' | 'nieuw' | 'aanbod' | 'melding' | 'proberen' | 'springland' | 'wereld' | 'voorraad' | 'recepten'
 
 export interface MenuItem {
@@ -57,6 +57,8 @@ export const ouderMenu: MenuGroep[] = [
     { naam: 'Mijn profiel', icoon: 'profiel', pad: '/ouder/profiel' },
     { naam: 'Fitness', icoon: 'fitness' },
     { naam: 'Lopen', icoon: 'lopen', pad: '/ouder/lopen' },
+    { naam: 'Analyse', icoon: 'analyse', pad: '/ouder/lopen-analyse' },
+    { naam: 'Loopschema', icoon: 'schema', pad: '/ouder/loopschema' },
   ] },
   { naam: 'Instellingen', items: [
     { naam: 'Toestellen en meldingen', icoon: 'toestellen', pad: '/ouder/toestellen' },

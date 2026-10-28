@@ -25,10 +25,12 @@ export interface Loopsessie {
   bron: LoopBron
   /** Id bij de bron (bv. uit een geïmporteerd bestand), zodat een loop niet twee keer bewaard wordt. */
   externe_id: string | null
+  /** Schoen waarmee je liep (Analyse → Schoenen). */
+  schoen_id: string | null
 }
 
 /** Wat een ouder invult; `id` bij aanpassen. */
-export type LoopInvoer = Pick<Loopsessie, 'dag' | 'afstand_m' | 'duur_s' | 'soort' | 'gevoel' | 'notitie'> & { id?: string }
+export type LoopInvoer = Pick<Loopsessie, 'dag' | 'afstand_m' | 'duur_s' | 'soort' | 'gevoel' | 'notitie' | 'schoen_id'> & { id?: string }
 
 /** Tempo in seconden per km; null zonder afstand. */
 export function tempoS(afstandM: number, duurS: number): number | null {

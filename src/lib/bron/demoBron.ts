@@ -12,6 +12,8 @@ import { leesOpgeslagen, leegOpgeslagen, type Opgeslagen as WereldKaart } from '
 import { activiteitOmschrijving, activiteitSterren, blokKeuzes, limietVoor, regels as standaardRegels } from '../regels.ts'
 import type { Weging } from '../gewicht.ts'
 import type { Loopsessie } from '../lopen.ts'
+import type { LoopDoel, LoopSchoen } from '../loopanalyse.ts'
+import type { Schema } from '../loopschema.ts'
 import type { ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, GezondheidProfiel, Inzending, LogRegel, Maaltijd, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Spelregels, Taak, Tijdverzoek, VoorraadArtikel, VoorraadLogRegel, Recept, Winkel } from './types.ts'
 
 const DEMO_PIN = '1234'
@@ -38,6 +40,9 @@ interface Toestand {
   profiel: GezondheidProfiel | null
   wegingen: Weging[]
   loopsessies: Loopsessie[]
+  loopdoelen: LoopDoel[]
+  loopschoenen: LoopSchoen[]
+  loopschema: Schema | null
   regels: Spelregels
   wereldWeergave: WereldWeergave
   wereldKaart: WereldKaart
@@ -138,8 +143,14 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
       afstand_m: [5000, 6200, 5000, 8000, 5500, 6000, 5000, 10000, 5200, 6500][i],
       duur_s: [1650, 2050, 1600, 2700, 1750, 1900, 1560, 3300, 1600, 2000][i],
       soort: i % 4 === 3 ? 'lang' : 'rustig', gevoel: i % 3 === 0 ? 4 : 3, notitie: i === 7 ? 'Eerste 10 km!' : null,
-      bron: 'manueel', externe_id: null,
+      bron: 'manueel', externe_id: null, schoen_id: i < 6 ? 'sh-1' : 'sh-2',
     })),
+    loopdoelen: [{ id: 'ld-1', soort: 'km_maand', waarde: 40 }, { id: 'ld-2', soort: 'lopen_week', waarde: 2 }],
+    loopschoenen: [
+      { id: 'sh-1', naam: 'Brooks Ghost 15', start_km: 540, max_km: 800, actief: true },
+      { id: 'sh-2', naam: 'Nike Pegasus 40', start_km: 0, max_km: 700, actief: true },
+    ],
+    loopschema: null,
     wereldWeergave: { ...standaardWeergave },
     wereldKaart: leegOpgeslagen(),
     regels: {
@@ -613,6 +624,23 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       if (oud) Object.assign(oud, rij)
       else t.loopsessies.push({ id: id(), ...rij, bron: 'manueel', externe_id: null })
     },
+    async loopdoelen() { return t.loopdoelen.map((d) => ({ ...d })) },
+    async loopDoelZetten(soort, waarde) {
+      t.loopdoelen = t.loopdoelen.filter((d) => d.soort !== soort)
+      if (waarde !== null) t.loopdoelen.push({ id: id(), soort, waarde })
+    },
+    async loopschoenen() { return t.loopschoenen.map((s) => ({ ...s })) },
+    async loopSchoenOpslaan({ id: schoenId, ...rij }) {
+      const oud = schoenId ? t.loopschoenen.find((s) => s.id === schoenId) : undefined
+      if (oud) Object.assign(oud, rij)
+      else t.loopschoenen.push({ id: id(), ...rij })
+    },
+    async loopSchoenVerwijderen(schoenId) {
+      t.loopschoenen = t.loopschoenen.filter((s) => s.id !== schoenId)
+      t.loopsessies.forEach((l) => { if (l.schoen_id === schoenId) l.schoen_id = null })
+    },
+    async loopschema() { return t.loopschema && { ...t.loopschema } },
+    async loopschemaZetten(schema) { t.loopschema = schema && { ...schema } },
     async loopVerwijderen(loopId) { t.loopsessies = t.loopsessies.filter((l) => l.id !== loopId) },
   }
 }

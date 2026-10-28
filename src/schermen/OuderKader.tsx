@@ -42,6 +42,8 @@ const iconen: Record<MenuIcoon | 'menu' | 'bel' | 'terug', ReactNode> = {
   profiel: <><circle cx="12" cy="8.5" r="3.5" /><path d="M5 20c.8-3.8 3.6-6 7-6s6.2 2.2 7 6" /></>,
   fitness: <path d="M6.5 8v8M17.5 8v8M3.5 10v4M20.5 10v4M6.5 12h11" />,
   lopen: <><circle cx="14" cy="4.5" r="2" /><path d="M10 21l2.5-5.5-3-3 2-4.5 3 3 3.5 1M8.5 12l-2 3H3M12.5 15.5L16 18l1 3" /></>,
+  analyse: <path d="M4 20V4M4 20h16M7.5 15l3.5-4 3 2.5 5-6.5" />,
+  schema: <><rect x="4" y="5" width="16" height="15" /><path d="M4 10h16M9 3v4M15 3v4M8 14.5l2 2 4-4" /></>,
   chat: <path d="M4 5h16v11H10l-5 4v-4H4z" />,
   weekmenu: <path d="M5 3v6a2 2 0 0 0 4 0V3M7 11v10M18 21V3c-2.5 1-4 4-4 9h4" />,
   melding: <path d="M6 16v-5a6 6 0 0 1 12 0v5l1.5 2h-15L6 16zM10 20.5a2.2 2.2 0 0 0 4 0" />,

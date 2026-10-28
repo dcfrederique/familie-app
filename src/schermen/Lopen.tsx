@@ -1,8 +1,10 @@
 import { useState, type FormEvent } from 'react'
+import { Link } from 'react-router-dom'
 import { vandaag } from '../lib/datum.ts'
 import { useGegevens } from '../lib/gegevens.ts'
 import { duurTekst, gevoelNaam, kmTekst, leesDuur, leesKm, nieuwsteEerst, snelste, soortNaam, tempoTekst, weekStart, weekTotalen, type LoopInvoer, type LoopSoort, type Loopsessie } from '../lib/lopen.ts'
 import { useSessie } from '../lib/sessie.tsx'
+import type { LoopSchoen } from '../lib/loopanalyse.ts'
 import OuderKader from './OuderKader.tsx'
 
 /** Foutmelding zonder migratie 20261028000300_lopen. */
@@ -19,7 +21,11 @@ const dagMaand = (dag: string) => new Date(`${dag}T12:00`).toLocaleDateString('n
 export default function Lopen() {
   const { bron, account, status } = useSessie()
   const opGsm = status === 'demo' || account?.soort === 'ouder'
-  const { data, fout, ververs } = useGegevens(bron && opGsm ? () => bron.loopsessies() : null, [bron, opGsm])
+  const { data: gegevens, fout, ververs } = useGegevens(bron && opGsm
+    ? async () => { const [lopen, schoenen] = await Promise.all([bron.loopsessies(), bron.loopschoenen()]); return { lopen, schoenen } }
+    : null, [bron, opGsm])
+  const data = gegevens?.lopen
+  const schoenen = gegevens?.schoenen ?? []
   const [melding, setMelding] = useState('')
   const [alles, setAlles] = useState(false)
   const [bewerk, setBewerk] = useState<Loopsessie | null>(null)
@@ -55,7 +61,7 @@ export default function Lopen() {
 
   return (
     <OuderKader titel="Lopen">
-      <LoopFormulier key={bewerk?.id ?? 'nieuw'} bewerk={bewerk} stop={() => setBewerk(null)}
+      <LoopFormulier key={bewerk?.id ?? 'nieuw'} bewerk={bewerk} schoenen={schoenen} stop={() => setBewerk(null)}
                      bewaar={async (invoer) => { const ok = await doe(() => bron!.loopOpslaan(invoer)); if (ok) setBewerk(null); return ok }} />
       {(fout || melding) && <p className="fout kaart-breed" role="alert">{zonderLopenMigratie(melding || fout)}</p>}
 
@@ -124,18 +130,21 @@ export default function Lopen() {
         </section>
       )}
 
+      <p className="kaart-breed loop-links"><Link to="/ouder/lopen-analyse">Analyse: voortgang, doelen en records</Link> · <Link to="/ouder/loopschema">Loopschema</Link></p>
       <p className="tip kaart-breed">Alleen jij ziet je lopen. Je partner en de tablets van de kinderen niet.</p>
     </OuderKader>
   )
 }
 
-function LoopFormulier({ bewerk, bewaar, stop }: { bewerk: Loopsessie | null; bewaar: (invoer: LoopInvoer) => Promise<boolean>; stop: () => void }) {
+function LoopFormulier({ bewerk, schoenen, bewaar, stop }: { bewerk: Loopsessie | null; schoenen: LoopSchoen[]; bewaar: (invoer: LoopInvoer) => Promise<boolean>; stop: () => void }) {
   const [dag, setDag] = useState(bewerk?.dag ?? vandaag())
   const [km, setKm] = useState(bewerk ? String(bewerk.afstand_m / 1000).replace('.', ',') : '')
   const [duur, setDuur] = useState(bewerk ? duurTekst(bewerk.duur_s) : '')
   const [soort, setSoort] = useState<LoopSoort>(bewerk?.soort ?? 'rustig')
   const [gevoel, setGevoel] = useState<number | null>(bewerk?.gevoel ?? null)
   const [notitie, setNotitie] = useState(bewerk?.notitie ?? '')
+  // Nieuwe loop: de eerste actieve schoen staat al ingevuld.
+  const [schoen, setSchoen] = useState(bewerk ? bewerk.schoen_id ?? '' : (schoenen.find((x) => x.actief)?.id ?? ''))
   const afstand = leesKm(km)
   const seconden = leesDuur(duur)
   const geldig = afstand !== null && afstand >= 100 && afstand <= 500000 && seconden !== null && seconden >= 30 && seconden <= 172800
@@ -143,7 +152,7 @@ function LoopFormulier({ bewerk, bewaar, stop }: { bewerk: Loopsessie | null; be
   async function verstuur(e: FormEvent) {
     e.preventDefault()
     if (!geldig) return
-    const ok = await bewaar({ id: bewerk?.id, dag, afstand_m: afstand!, duur_s: seconden!, soort, gevoel, notitie: notitie.trim() || null })
+    const ok = await bewaar({ id: bewerk?.id, dag, afstand_m: afstand!, duur_s: seconden!, soort, gevoel, notitie: notitie.trim() || null, schoen_id: schoen || null })
     if (ok && !bewerk) { setKm(''); setDuur(''); setSoort('rustig'); setGevoel(null); setNotitie('') }
   }
 
@@ -167,6 +176,14 @@ function LoopFormulier({ bewerk, bewaar, stop }: { bewerk: Loopsessie | null; be
         </label>
       </div>
       {afstand !== null && seconden !== null && seconden > 0 && <p className="tip">Tempo: <b>{tempoTekst(afstand, seconden)} /km</b></p>}
+      {schoenen.length > 0 && (
+        <label className="veld"><span>Schoen</span>
+          <select value={schoen} onChange={(e) => setSchoen(e.target.value)}>
+            <option value="">Geen</option>
+            {schoenen.filter((x) => x.actief || x.id === schoen).map((x) => <option key={x.id} value={x.id}>{x.naam}</option>)}
+          </select>
+        </label>
+      )}
       <div className="veld"><span>Hoe ging het?</span>
         <div className="schakelaar loop-gevoel" role="group" aria-label="Hoe ging het?">
           {[1, 2, 3, 4, 5].map((g) => (

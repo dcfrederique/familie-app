@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest'
 import { duurTekst, kmTekst, leesDuur, leesKm, nieuwsteEerst, snelste, tempoTekst, weekStart, weekTotalen, type Loopsessie } from './lopen.ts'
 
 const loop = (id: string, dag: string, afstand_m: number, duur_s: number): Loopsessie =>
-  ({ id, dag, afstand_m, duur_s, soort: 'rustig', gevoel: null, notitie: null, bron: 'manueel', externe_id: null })
+  ({ id, dag, afstand_m, duur_s, soort: 'rustig', gevoel: null, notitie: null, bron: 'manueel', externe_id: null, schoen_id: null })
 
 describe('lopen', () => {
   it('rekent het tempo uit', () => {

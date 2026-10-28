@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.64',
+    datum: '2026-10-28',
+    titel: 'Lopen: analyse en loopschema',
+    tekst: 'Onder Gezondheid staan er nu twee onderdelen bij Lopen. Analyse toont je voortgang (tempo over de tijd), doelen per maand, jaar of week, een weekverslag, persoonlijke records, belasting en vorm, een wedstrijdvoorspelling, je schoenen (kilometers per paar) en wanneer je loopt. Loopschema bouwt een opbouwschema naar 5 km, 10 km of een halve marathon, met een rustweek om de vierde week en het vinkt trainingen zelf af als je een loop invult. Alles wordt berekend uit de lopen die je zelf invult en is privé per ouder. Bij een loop kies je nu ook je schoen.',
+  },
+  {
     versie: '0.63',
     datum: '2026-10-28',
     titel: 'Lopen bijhouden in het ouderdeel',

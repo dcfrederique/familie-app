@@ -11,6 +11,14 @@ Onderdeel van het ouderdeel (`docs/ouderdeel.md`, groep Gezondheid). Het grotere
   - **Per week**: staafjes van de laatste 8 weken.
   - Lijst van alle lopen met aanpassen en verwijderen.
 
+## Analyse en loopschema (28 oktober 2026)
+
+Mockup: `prototypes/loop-analyse.html`; plan en uitleg van de formules: `docs/loop-analyse.md`. Rekenwerk in `src/lib/loopanalyse.ts` en `src/lib/loopschema.ts` (met tests), schermen `src/schermen/LoopAnalyse.tsx` (`/ouder/lopen-analyse`) en `src/schermen/Loopschema.tsx` (`/ouder/loopschema`), migratie `20261028000600_lopen_analyse.sql`.
+
+- **Analyse:** voortgang (tempo met gemiddelde van de laatste 5 lopen, vergeleken met de periode ervoor), doelen (km per maand of jaar, lopen per week, met prognose), weekverslag, records (1, 5, 10 km en halve, geschat uit het tempo van de hele loop), belasting en vorm (fitness ±6 weken, vermoeidheid ±1 week, inspanning uit duur × soort × hoe het ging), voorspelling met Riegel, schoenen (kilometers uit de lopen plus een startstand) en lopen per weekdag.
+- **Loopschema:** doel, aantal keer per week, lange loop nu en startdag zijn de enige opgeslagen waarden (`loopschemas`); de weken worden berekend. De lange loop groeit hoogstens 10% per week (minstens een halve km), om de vierde week is het een rustweek, het schema stopt na twee pieklopen. Een training is afgevinkt als er die week een loop van minstens 90% van de afstand is.
+- **Later:** een AI-assistent (Azure) die een schema voorstelt; de knop staat grijs op het scherm.
+
 ## Privacy
 
 Privé per ouder, net als Gewicht: RLS op `public.mijn_ouder()`. De partner en de tablets zien niets.
