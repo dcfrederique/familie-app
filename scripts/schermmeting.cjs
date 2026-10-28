@@ -13,7 +13,7 @@ const KINDEREN = ['luca', 'yuna', 'feline']
 const SCHERMEN = [
   '', 'wereld', 'taken', 'huis', 'figuurtje', 'thema', 'spelen', 'winkel', 'tijd', 'verhalen', 'verhaal/1', 'kleurplaten', 'tekenen',
   'schrijven', 'chat', 'rekenen', 'memory', 'penalty', 'huisdier', 'racen', 'koken', 'touwspringen', 'basket',
-  'puzzel', 'pompoen', 'bladeren', 'springen', 'ketting',
+  'puzzel', 'pompoen', 'bladeren', 'springen', 'ketting', 'schoen',
 ]
 
 async function naarScherm(page, pad) {

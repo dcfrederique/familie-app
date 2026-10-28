@@ -57,7 +57,7 @@ export function limietVoor(limieten: { kind_id: string | null; activiteit: strin
 }
 
 export type Activiteit = 'memory' | 'penalty_schieten' | 'penalty_keepen' | 'rekenen' | 'verhaal' | 'kleurplaat' | 'tekenen'
-  | 'racen' | 'basket' | 'koken' | 'touwspringen' | 'huisdier' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'springen' | 'zelf_gelezen' | 'schrijven'
+  | 'racen' | 'basket' | 'koken' | 'touwspringen' | 'huisdier' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'springen' | 'zelf_gelezen' | 'schrijven'
 
 /**
  * Sterren voor een afgewerkte activiteit (docs/spec.md, Activiteiten), nog vóór het dagplafond.
@@ -92,6 +92,7 @@ export function activiteitOmschrijving({ activiteit, inhoud }: { activiteit: Act
     case 'pompoen': return 'Pompoenen maken'
     case 'bladeren': return 'Bladeren sorteren'
     case 'ketting': return 'Herfstketting'
+    case 'schoen': return 'Schoen vullen'
     case 'springen': return inhoud.titel ? `Springland: ${inhoud.titel}` : 'Springland'
     default: return 'Tekenen'
   }

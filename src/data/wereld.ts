@@ -47,6 +47,8 @@ export const gebouwen: Gebouw[] = [
     spel: 'bladeren', nieuwSinds: '2026-10-26' },
   { id: 'ketting', naam: 'Eekhoornboom', x: 47.2 * U, y: 11.6 * U, w: 220, pad: 'ketting', welkom: 'Welkom bij de eekhoornboom!', telt_mee: true,
     spel: 'ketting', nieuwSinds: '2026-10-27' },
+  { id: 'schoen', naam: 'Schoorsteenhuisje', x: 41.8 * U, y: 11.6 * U, w: 220, pad: 'schoen', welkom: 'Welkom bij het schoorsteenhuisje!', telt_mee: true,
+    spel: 'schoen', nieuwSinds: '2026-10-28' },
   { id: 'bouw', naam: 'Bouwplaats', x: 52.7 * U, y: 21 * U, w: 150, pad: null, welkom: 'Hier komt later een nieuw gebouw. Wat zou het worden?', telt_mee: false },
 ]
 

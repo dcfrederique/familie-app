@@ -1,0 +1,65 @@
+/* Schoen vullen: het kaartje bovenaan, links de schaal met lekkers, rechts de schoen en onderaan Klaar. */
+.schoen { display: flex; flex-direction: column; align-items: center; gap: clamp(8px, 1.8vh, 18px); width: 100%; }
+.lekker-tekening { display: block; width: 100%; height: auto; }
+.schoen-teller { display: flex; gap: 6px; }
+.schoen-teller span { width: 14px; height: 14px; border-radius: 50%; background: var(--line); }
+.schoen-teller .af { background: var(--gold); }
+.schoen-teller .nu { background: var(--kid); }
+.schoen-kaartje {
+  display: flex; align-items: center; justify-content: center; gap: clamp(14px, 3vw, 36px); padding: 8px 24px;
+  min-width: 220px; border-radius: 24px; border: 3px solid var(--line); background: var(--card);
+}
+.schoen-kaartje.tip { animation: schoen-wip 0.7s ease-in-out infinite; border-color: var(--gold); }
+.schoen-eis { display: flex; align-items: center; gap: 10px; }
+.schoen-eis-prent { width: clamp(44px, 8vh, 72px); }
+.schoen-getal { font-size: clamp(40px, 8vh, 72px); line-height: 1; }
+.schoen-plus { font-size: clamp(32px, 6vh, 56px); font-weight: 800; color: var(--muted, currentColor); margin-right: 6px; }
+.schoen-stippen { display: flex; flex-wrap: wrap; gap: 5px; max-width: clamp(90px, 14vw, 150px); }
+.schoen-stippen i { width: 14px; height: 14px; border-radius: 50%; background: var(--kid); }
+.schoen-stippen i.vijf { margin-right: 8px; }
+.schoen-veld { display: flex; align-items: flex-end; justify-content: center; gap: clamp(20px, 6vw, 80px); width: 100%; }
+.schoen-schaal {
+  display: grid; grid-template-columns: repeat(2, clamp(76px, 15vh, 128px)); gap: clamp(10px, 2vh, 18px);
+  padding: 14px; border-radius: 28px; background: var(--card); border: 3px solid var(--line);
+}
+.schoen-lekker {
+  width: clamp(76px, 15vh, 128px); height: clamp(76px, 15vh, 128px); padding: 8px; border-radius: 22px;
+  border: 3px solid var(--line); background: var(--bg, transparent); box-shadow: 0 5px 0 var(--line);
+}
+.schoen-lekker:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 2px 0 var(--line); }
+.schoen-doos { position: relative; display: grid; justify-items: center; gap: 4px; width: clamp(200px, 30vw, 300px); }
+.schoen-prent { width: 100%; height: auto; display: block; }
+.schoen-inhoud { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; min-height: clamp(64px, 10vh, 88px); }
+.schoen-in {
+  position: relative; display: flex; align-items: center; width: clamp(64px, 10vh, 88px); height: clamp(64px, 10vh, 88px); padding: 6px;
+  border: 3px solid var(--line); border-radius: 20px; background: var(--card); animation: schoen-pop 0.25s ease-out;
+}
+.schoen-in b { position: absolute; right: -6px; bottom: -8px; min-width: 30px; padding: 0 6px; border-radius: 15px; background: var(--kid); color: #fff; font-size: 22px; line-height: 30px; text-align: center; }
+.schoen-melding {
+  position: absolute; left: 50%; top: 0; transform: translateX(-50%); display: flex; align-items: center; gap: 8px;
+  padding: 4px 16px; border-radius: 30px; color: #fff; font-weight: 800; font-size: 22px; white-space: nowrap;
+}
+.schoen-melding span { font-size: 36px; line-height: 1; }
+.schoen-melding.tevel { background: #D8452B; }
+.schoen-melding.teweinig { background: #2D6BD6; }
+.schoen-doos.wip .schoen-prent { animation: schoen-schud 0.4s ease-out; }
+.schoen-doos.danst .schoen-prent { animation: schoen-dans 0.5s ease-in-out 2; }
+.schoen-klaar {
+  width: clamp(72px, 11vh, 96px); height: clamp(72px, 11vh, 96px); padding: 14px; border: 0; border-radius: 50%;
+  background: #2E9A45; box-shadow: 0 6px 0 #1F6F31;
+}
+.schoen-klaar:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 3px 0 #1F6F31; }
+.schoen-klaar svg { width: 100%; height: 100%; display: block; }
+.schoen-eind { display: grid; justify-items: center; gap: 16px; }
+.schoen-prent-vol { display: grid; justify-items: center; gap: 6px; }
+.schoen-prent-vol .schoen-prent { width: clamp(180px, 28vh, 280px); }
+.schoen-vol { display: flex; gap: 10px; }
+.schoen-vol .lekker-tekening { width: clamp(40px, 7vh, 60px); animation: schoen-pop 0.4s ease-out; }
+@keyframes schoen-wip { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes schoen-pop { 0% { transform: scale(0.4); } 70% { transform: scale(1.15); } 100% { transform: scale(1); } }
+@keyframes schoen-schud { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-6deg); } 75% { transform: rotate(6deg); } }
+@keyframes schoen-dans { 0%, 100% { transform: translateY(0) rotate(0); } 30% { transform: translateY(-14px) rotate(-5deg); } 70% { transform: translateY(-14px) rotate(5deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .schoen-vol .lekker-tekening, .schoen-kaartje.tip, .schoen-in, .schoen-doos.wip .schoen-prent, .schoen-doos.danst .schoen-prent { animation: none; }
+  .schoen-kaartje.tip { outline: 4px solid var(--gold); }
+}

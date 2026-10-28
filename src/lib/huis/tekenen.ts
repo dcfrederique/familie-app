@@ -237,6 +237,13 @@ function herfstkrans(dx: number) {
   return s + `<circle cx="${dx - 14}" cy="${cy + 20}" r="4" fill="#C73A4B"/><circle cx="${dx - 8}" cy="${cy + 23}" r="4" fill="#C73A4B"/><circle cx="${dx + 12}" cy="${cy + 21}" r="4" fill="#C73A4B"/>`
 }
 
+// Een rood schoentje met een wortel op de deurmat.
+function schoentje(dx: number) {
+  const x = dx + 64, y = BASIS - 2
+  return `<path d="M${x - 2} ${y - 4}L${x + 22} ${y - 56}L${x + 29} ${y - 52}Z" fill="#F2994A"/><path d="M${x + 18} ${y - 58}Q${x + 22} ${y - 72} ${x + 26} ${y - 60}Q${x + 34} ${y - 68} ${x + 32} ${y - 54}Z" fill="#4F8A3C"/>`
+    + `<path d="M${x - 24} ${y - 28}h14v16q14 0 20 8v4h-34z" fill="#D8452B"/><rect x="${x - 24}" y="${y - 2}" width="34" height="4" rx="2" fill="#2B2B2B"/>`
+}
+
 // Een slinger van kleine lampionnen onder de dakrand, elk met een warm lichtje.
 function lampionnen(x0: number, x1: number, y: number) {
   const kleuren = ['#D8452B', '#F2B33D', '#2D6BD6', '#E46AA8'], n = Math.max(4, Math.round((x1 - x0) / 56))
@@ -283,6 +290,8 @@ export function tuinStuk(id: string): string {
     case 'paddenstoelen': return '<path d="M-52 -4V-24a6 6 0 0 1 12 0V-4Z" fill="#F4EBD8"/><path d="M-70 -24Q-46 -64 -22 -24Z" fill="#D8452B"/><circle cx="-58" cy="-34" r="3.5" fill="#fff"/><circle cx="-44" cy="-42" r="3.5" fill="#fff"/><circle cx="-34" cy="-31" r="3" fill="#fff"/><path d="M-8 0V-30a8 8 0 0 1 16 0V0Z" fill="#F4EBD8"/><path d="M-34 -30Q0 -86 34 -30Z" fill="#D8452B"/><circle cx="-14" cy="-46" r="4.5" fill="#fff"/><circle cx="4" cy="-58" r="4.5" fill="#fff"/><circle cx="16" cy="-42" r="4" fill="#fff"/><path d="M36 -2V-18a5 5 0 0 1 10 0V-2Z" fill="#F4EBD8"/><path d="M26 -18Q42 -46 58 -18Z" fill="#E8772E"/><circle cx="36" cy="-26" r="3" fill="#fff"/><circle cx="48" cy="-27" r="2.8" fill="#fff"/><path d="M-60 0Q-30 -8 0 0Q40 -8 64 0" fill="none" stroke="#4F8A3C" stroke-width="5" stroke-linecap="round"/>'
     case 'notenboom': return '<rect x="-9" y="-70" width="18" height="72" rx="5" fill="#7A4E2A"/><circle cx="0" cy="-104" r="46" fill="#5E9A3C"/><circle cx="-34" cy="-86" r="30" fill="#6FAE48"/><circle cx="34" cy="-88" r="30" fill="#4F8A3C"/><circle cx="-14" cy="-124" r="24" fill="#74B24C"/><g fill="#C9904A"><ellipse cx="-24" cy="-96" rx="6" ry="8"/><ellipse cx="20" cy="-112" rx="6" ry="8"/><ellipse cx="30" cy="-84" rx="6" ry="8"/><ellipse cx="-6" cy="-76" rx="6" ry="8"/></g><g fill="#7A4E2A"><path d="M-30 -102h12v5h-12zM14 -118h12v5h-12zM24 -90h12v5h-12zM-12 -82h12v5h-12z"/></g><ellipse cx="46" cy="-4" rx="9" ry="6" fill="#C9904A"/><ellipse cx="46" cy="-8" rx="9" ry="4" fill="#7A4E2A"/>'
     case 'egel': return '<ellipse cx="0" cy="-2" rx="38" ry="8" fill="#000" opacity=".08"/><path d="M-34 -4C-40 -34 -22 -52 4 -50C30 -50 42 -34 38 -4Z" fill="#8A5A33"/><path d="M-26 -30L-34 -36M-14 -42L-18 -52M0 -46L0 -56M14 -44L18 -54M26 -38L34 -46M32 -24L42 -28" stroke="#5A3A1C" stroke-width="4" stroke-linecap="round"/><path d="M-34 -4C-40 -18 -46 -14 -52 -10C-46 -4 -40 -2 -34 -4Z" fill="#E8C9A0"/><circle cx="-42" cy="-12" r="2.6" fill="#1C2433"/><circle cx="-52" cy="-10" r="3.2" fill="#1C2433"/><rect x="-22" y="-6" width="7" height="8" rx="3" fill="#E8C9A0"/><rect x="14" y="-6" width="7" height="8" rx="3" fill="#E8C9A0"/>'
+    case 'pakjes': return '<ellipse cx="0" cy="-2" rx="50" ry="8" fill="#000" opacity=".08"/><rect x="-40" y="-44" width="52" height="42" rx="3" fill="#3D7DD8"/><rect x="-18" y="-44" width="8" height="42" fill="#F4F6F9"/><rect x="-40" y="-28" width="52" height="8" fill="#F4F6F9"/><rect x="8" y="-34" width="38" height="32" rx="3" fill="#F2B33D"/><rect x="24" y="-34" width="7" height="32" fill="#D8452B"/><rect x="-22" y="-76" width="36" height="32" rx="3" fill="#D8452B"/><rect x="-7" y="-76" width="7" height="32" fill="#F4F6F9"/><path d="M-4 -76Q-18 -92 -12 -80ZM-4 -76Q10 -92 4 -80Z" fill="#F4F6F9" stroke="#F4F6F9" stroke-width="5" stroke-linejoin="round"/><path d="M0 -112l4 8l9 1l-7 6l2 9l-8 -5l-8 5l2 -9l-7 -6l9 -1z" fill="#F2B33D"/>'
+    case 'wortels': return '<ellipse cx="0" cy="-4" rx="62" ry="12" fill="#6E4A28"/><g>' + [-40, -14, 12, 38].map((x, i) => `<path d="M${x - 7} -6L${x} ${-22 - (i % 2) * 6}L${x + 7} -6Z" fill="#F2994A"/><path d="M${x - 8} ${-24 - (i % 2) * 6}Q${x - 6} -44 ${x - 1} ${-28 - (i % 2) * 6}Q${x} -48 ${x + 4} ${-28 - (i % 2) * 6}Q${x + 10} -40 ${x + 8} ${-24 - (i % 2) * 6}Z" fill="#4F8A3C"/>`).join('') + '</g><rect x="50" y="-40" width="5" height="40" fill="#8A5A33"/><rect x="38" y="-52" width="30" height="16" rx="3" fill="#F4EBD8"/><path d="M46 -44h14" stroke="#F2994A" stroke-width="3" stroke-linecap="round"/>'
     case 'dino': return `<rect x="-52" y="-22" width="104" height="22" rx="4" fill="#AEB9C6"/><g transform="translate(-52 -152) scale(2.6)">${DINO}</g>`
     default: return ''
   }
@@ -338,6 +347,7 @@ export function tekenHuis(h: Huis, o: TekenOpties): string {
   M.ramen.forEach((rij, f) => rij.forEach((wx) => g.push(raam(m.cx + wx, BASIS - f * VERDIEP - VERDIEP + 62, h, heeft('bloembakken')))))
   g.push(deur(dx, h))
   if (heeft('herfstkrans')) g.push(herfstkrans(dx))
+  if (heeft('schoentje')) g.push(schoentje(dx))
   if (heeft('lichtjes')) g.push(lichtjes(mx - 14, mx + m.w + 14, my + 4))
   if (heeft('lampionnen')) g.push(lampionnen(mx + 10, mx + m.w - 10, my + 2))
   if (heeft('vleermuisjes')) g.push(vleermuisjes(mx + 10, mx + m.w - 10, my))

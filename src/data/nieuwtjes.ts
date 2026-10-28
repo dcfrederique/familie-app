@@ -19,6 +19,22 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.56',
+    datum: '2026-10-28',
+    titel: 'Sinterklaas komt eraan: nieuw verhaal, kleurplaat, Schoen vullen en Pepernotenland',
+    tekst: 'De voorpret van Sinterklaas begint. Het verhaal en de kleurplaat zijn meteen te gebruiken (Avonturiers, en Kleurplaten: Schoen met pakjes). In het spelletje Schoen vullen tel je hoeveel lekkers er in de schoen moet: het kaartje toont het getal, het lekkers en stippen om mee te tellen (tikken, niet slepen), met drie niveaus tot 5, tot 10 en twee soorten samen tot 20. Het kost sterren in de winkel en ligt er pas als jullie het vrijgeven in Kinderen → Winkelaanbod, net als de zes nieuwe stukken. Wie het spelletje mag zien, ziet in het dorp ook het schoorsteenhuisje, eerst met een gouden rand en een slot tot het gekocht is. Zonnevallei is vol, dus Springland krijgt een nieuwe wereld.',
+    verhaal: 'Detective Daan en de verdwenen wortel (Avonturiers, 8 bladzijden)',
+    spel: { naam: 'Schoen vullen', prijs: 20 },
+    stukken: [
+      'Figuurtje: Feestmuts (25), Met cadeautje (20), Schaaltje pepernoten (15)',
+      'Mijn huis: Stapel pakjes (20), Wortelbed (15), Schoentje voor de deur (15)',
+      'Kleurplaat: Schoen met pakjes (gratis)',
+      'Springland: nieuwe wereld Pepernotenland met het level Het speculaaspad (open door het vorige uit te spelen)',
+      'De wereld: het schoorsteenhuisje naast de eekhoornboom',
+    ],
+    open: 'De voorleesopnames voor het nieuwe verhaal en de nieuwe zinnen komen met de volgende ronde van de stemworkflow. Schoen vullen en het schoorsteenhuisje zijn op een tablet nog niet bekeken.',
+  },
+  {
     versie: '0.55',
     datum: '2026-10-27',
     titel: 'Voorraad en recepten',

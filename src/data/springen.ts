@@ -46,6 +46,7 @@ export const levelsPerWereld = 6
 /** De werelden in volgorde op de landkaart. */
 export const springWerelden: SpringWereld[] = [
   { id: 'zonnevallei', naam: 'Zonnevallei', stijl: 'groen' },
+  { id: 'pepernotenland', naam: 'Pepernotenland', stijl: 'snoep' },
 ]
 
 /** Alle levels in speelvolgorde; nieuwe levels komen achteraan (bij de laatste wereld). */
@@ -151,6 +152,23 @@ export const springLevelLijst: SpringLevelInfo[] = [
       '  P   o o o     e                   o C o         B           H   ',
       '#########################  #######  ##############################',
       '#########################~~#######~~##############################',
+    ],
+  },
+  {
+    id: 'speculaaspad', wereld: 'pepernotenland', stijl: 'weide',
+    naam: 'Het speculaaspad', beestje: 'egel', fruit: 'aardbei',
+    kaart: [
+      '                                                                                                                            ',
+      '                                                                                                                            ',
+      '                                                                                                                            ',
+      '                                                                                    *****                                   ',
+      '                                                                                    =====                                   ',
+      '                                    o o o                                                                                   ',
+      '                                    =====        * * *                                                                      ',
+      '                   * * *                                                                        * * *                       ',
+      '  P   o o o                   ##        e                   C         e       ^                           o o o         H   ',
+      '####################  ############################   ###########################################   #########################',
+      '####################~~############################~~~###########################################~~~#########################',
     ],
   },
 ]

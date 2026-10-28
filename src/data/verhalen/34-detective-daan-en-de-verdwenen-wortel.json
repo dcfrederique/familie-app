@@ -1,0 +1,98 @@
+{
+  "nr": 34,
+  "titel": "Detective Daan en de verdwenen wortel",
+  "reeks": "avonturiers",
+  "leeftijd": 8,
+  "thema": "Sinterklaas, logisch denken en delen",
+  "bladzijden": [
+    {
+      "tekst": "Het is bijna Sinterklaas. Daan en zijn zus Noor staan in de tuin. Daan houdt een schoen, een tekening en een grote wortel vast. \"Voor het paard van de Sint,\" zegt hij. \"Paarden houden van wortels.\" Noor knikt ernstig. Ze vindt dat een goed plan. Ze zetten de schoen bij de achterdeur. Daan legt de tekening erin en de wortel ernaast. Noor strooit een paar kruimels speculaas op de mat, voor de Sint zelf. \"Nu maar gaan slapen,\" zegt Daan. Maar eerst kijkt hij nog even of het tuinhekje goed dicht is. Een goede detective let altijd op.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "daan",
+          "noor",
+          "schoen",
+          "wortel"
+        ]
+      }
+    },
+    {
+      "tekst": "In bed kan Daan niet slapen. Buiten schijnt de maan en het is heel stil. Hij hoort alleen de wind in de bomen. Daan telt schaapjes. Bij vijftig valt hij al bijna in slaap, en bij honderd slaapt hij echt, met een glimlach op zijn gezicht.",
+      "prent": {
+        "decor": "nacht",
+        "figuren": [
+          "daan",
+          "maan",
+          "ster"
+        ]
+      }
+    },
+    {
+      "tekst": "De volgende ochtend rennen Daan en Noor naar beneden. De schoen staat nog op zijn plek, maar de wortel is weg! In de schoen ligt een klein pakje met een strik. \"Een mysterie,\" zegt Daan. Hij pakt zijn notitieboekje. \"Wie heeft de wortel gepakt?\"",
+      "prent": {
+        "decor": "weide-ochtend",
+        "figuren": [
+          "daan",
+          "noor",
+          "schoen"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan kijkt goed naar de grond. \"Kijk, sporen!\" Het zijn grote, ronde afdrukken in het gras, veel groter dan van een hond. \"Dat is een paard,\" fluistert Noor. Ze volgen de sporen over het gras, tot aan het tuinhekje, en daar houden ze op. Bij het hekje liggen kruimels van speculaas. Daan telt ze: één, twee, drie, vier, vijf. Hij schrijft het op. \"Eerst eet iemand het koekje. Daarna eet het paard de wortel. En dan gaan ze samen verder.\" Hij kijkt trots naar zijn notitieboekje.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "daan",
+          "noor",
+          "sporen",
+          "kruimels"
+        ]
+      }
+    },
+    {
+      "tekst": "Opa komt naar buiten met zijn kop koffie. \"Wat is er aan de hand?\" Noor wijst naar de sporen. \"Iemand heeft onze wortel opgegeten!\" Opa lacht zachtjes. \"Misschien had iemand een lange nacht en veel honger,\" zegt hij. \"Dat kan ik me goed voorstellen.\"",
+      "prent": {
+        "decor": "weide",
+        "figuren": [
+          "daan",
+          "noor",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan denkt na. De Sint moet in één nacht naar heel veel huizen. Zijn paard moet over alle daken lopen, op en neer, en dat geeft honger. \"Dan is het raadsel opgelost,\" zegt Daan. \"Het paard heeft de wortel gegeten omdat hij moe was en dorst had. Dat is helemaal niet erg.\"",
+      "prent": {
+        "decor": "weide",
+        "figuren": [
+          "daan",
+          "paard"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan en Noor maken het kleine pakje open. Er zit een chocoladeletter D in en een chocoladeletter N. Daaronder ligt een kaartje met kriebelschrift: \"Dank voor de wortel. Hij was heerlijk.\" Noor draait het kaartje om. Op de achterkant staat een tekening van een paard met een grote lach.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "daan",
+          "noor",
+          "tekening"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Zaak gesloten,\" zegt Daan. Hij klapt zijn notitieboekje dicht. Noor breekt de chocoladeletters in tweeën en geeft Opa ook een stukje. Het smaakt lekker, en het voelt nog lekkerder. Zo hoort dat: wie iets krijgt, deelt het. En volgend jaar leggen ze zeker weer een wortel klaar.",
+      "prent": {
+        "decor": "weide-ochtend",
+        "figuren": [
+          "daan",
+          "noor",
+          "opa"
+        ]
+      }
+    }
+  ]
+}

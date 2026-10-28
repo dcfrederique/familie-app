@@ -38,6 +38,17 @@ export const gebouwTekening: Record<string, string> = {
     <circle cx="116" cy="196" r="22" fill="#BFE3FA" stroke="#fff" stroke-width="5"/><path d="M116 174V218M94 196H138" stroke="#fff" stroke-width="3"/>
     <g transform="translate(300 128)"><path d="M26 44C52 42 56 8 40 -4C50 14 40 30 24 30Z" fill="#B8662C"/><ellipse cx="14" cy="28" rx="15" ry="18" fill="#C97A3A"/><ellipse cx="14" cy="34" rx="8" ry="11" fill="#F5E6C8"/><circle cx="8" cy="4" r="11" fill="#C97A3A"/><path d="M1 -4L-1 -14L7 -8ZM15 -8L19 -17L19 -6Z" fill="#B8662C"/><circle cx="5" cy="4" r="2.4" fill="#1C2433"/><circle cx="1" cy="8" r="2" fill="#1C2433"/></g>
     <path d="M272 252H324L318 284Q317 286 314 286H282Q279 286 278 284Z" fill="#B9854F"/><rect x="268" y="246" width="60" height="9" rx="4.5" fill="#8A5E32"/><circle cx="284" cy="240" r="8" fill="#C73A4B"/><circle cx="300" cy="236" r="8" fill="#C73A4B"/><circle cx="314" cy="241" r="8" fill="#C73A4B"/>`,
+  schoen: `<ellipse cx="200" cy="288" rx="180" ry="11" fill="#000" opacity=".13"/>
+    <rect x="248" y="40" width="46" height="96" rx="4" fill="#B5543B"/><rect x="242" y="32" width="58" height="14" rx="4" fill="#8A3C28"/>
+    <path d="M262 26l4 8l9 1l-7 6l2 9l-8 -5l-8 5l2 -9l-7 -6l9 -1z" fill="#F2B33D"/><path d="M286 6l3 6l7 1l-5 5l1 7l-6 -4l-6 4l1 -7l-5 -5l7 -1z" fill="#FFE27A"/>
+    <rect x="70" y="140" width="260" height="146" rx="10" fill="#F4E1C1"/><path d="M70 150H330M70 180H330M70 210H330M70 240H330" stroke="#E4CB9F" stroke-width="3"/>
+    <path d="M44 146L200 40L356 146Z" fill="#C0402B"/><path d="M44 146L356 146L346 160L54 160Z" fill="#F4F6F9"/>
+    <circle cx="200" cy="108" r="16" fill="#BFE3FA" stroke="#fff" stroke-width="5"/><path d="M200 92V124M184 108H216" stroke="#fff" stroke-width="3"/>
+    <rect x="160" y="190" width="80" height="96" rx="38" fill="#7A4A2A"/><path d="M200 190V286" stroke="#5A3820" stroke-width="3"/><circle cx="186" cy="244" r="5" fill="#F2C230"/><circle cx="214" cy="244" r="5" fill="#F2C230"/>
+    <rect x="94" y="184" width="54" height="52" rx="8" fill="#BFE3FA" stroke="#fff" stroke-width="5"/><path d="M121 184V236M94 210H148" stroke="#fff" stroke-width="4"/>
+    <path d="M252 286L290 214L300 220L270 286Z" fill="#F2994A"/><path d="M284 212Q290 190 298 214Q312 200 304 222Z" fill="#4F8A3C"/>
+    <path d="M254 232h26v34q30 0 42 16v4h-68z" fill="#D8452B" transform="translate(-6 0)"/><rect x="242" y="282" width="82" height="8" rx="4" fill="#2B2B2B"/>
+    <rect x="330" y="246" width="40" height="40" rx="4" fill="#3D7DD8"/><rect x="346" y="246" width="8" height="40" fill="#F4F6F9"/><rect x="340" y="214" width="32" height="32" rx="4" fill="#F2B33D"/><rect x="352" y="214" width="8" height="32" fill="#D8452B"/>`,
   bouw: `<ellipse cx="200" cy="288" rx="190" ry="11" fill="#000" opacity=".13"/>
     <path d="M60 286l40-120h12" stroke="#F2C230" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M106 166H330l-30 14" stroke="#F2C230" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M300 180v56" stroke="#555" stroke-width="4"/><rect x="288" y="234" width="24" height="16" rx="3" fill="#D93A3A"/>
     <path d="M40 286q60-70 140-30q40 14 70 30z" fill="#D9BC6A"/>

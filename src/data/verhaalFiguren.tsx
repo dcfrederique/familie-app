@@ -659,6 +659,8 @@ export const figuren: Record<string, Figuur> = {
   vis: vast(28, () => <g><path d="M-24 0l4 -22h40l4 22z" fill="#C99A6B" /><path d="M-14 -20q8 -10 16 0q-8 8 -16 0zM2 -20l6 -5v10z" fill="#5DB7E8" /><path d="M0 -24q8 -10 16 0q-8 8 -16 0zM16 -24l6 -5v10z" fill="#9AA0A6" /></g>),
   planken: vast(28, () => <g>{[0, 1, 2, 3].map((i) => <rect key={i} x={-40 + i * 3} y={-7 - i * 7} width={80} height={6} fill={i % 2 ? '#C99A6B' : '#B07A45'} />)}</g>),
   tekening: vast(40, () => <g><rect x={-18} y={-40} width={36} height={30} fill="#fff" stroke="#E0E3E7" /><circle cx={-6} cy={-28} r={5} fill="#F7C531" /><path d="M-14 -14l10 -10 8 6 10 -10" stroke="#3FA34D" strokeWidth={2} fill="none" /><path d="M8 -32l2 4M12 -34l2 4" stroke="#E53935" /></g>),
+  schoen: vast(26, () => <g><path d="M-12 -26h14v14q14 0 20 8v4h-34z" fill="#D8452B" /><rect x={-12} y={-2} width={34} height={4} rx={2} fill="#2B2B2B" /></g>),
+  wortel: vast(30, () => <g><path d="M-5 -30l5 30l5 -30z" fill="#F2994A" transform="rotate(-20)" /><path d="M-9 -34q3 -10 7 -2q2 -9 7 -1q4 -6 5 2z" fill="#3FA34D" transform="rotate(-20)" /></g>),
   maanstorm: vast(80, () => <g fill="#9AA0A6" opacity={0.85}><circle cx={-30} cy={-30} r={26} /><circle cx={0} cy={-50} r={30} /><circle cx={30} cy={-34} r={24} /><path d="M-40 -14q40 -20 80 0" stroke="#6B7280" strokeWidth={4} fill="none" /></g>),
   meer: vast(30, () => <ellipse cx={0} cy={-12} rx={70} ry={14} fill="#5DB7E8" />),
   dorp: vast(70, () => <g transform="scale(0.6)"><g transform="translate(-60 0)"><Huis muur="#F4E1C1" dak="#C0502B" /></g><g transform="translate(60 0)"><Huis muur="#F2C57C" dak="#8E6CC9" /></g><g transform="translate(0 -10) scale(0.8)"><Huis muur="#E6EEF2" dak="#3D7DD8" /></g></g>),

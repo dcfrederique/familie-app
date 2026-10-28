@@ -111,6 +111,28 @@ export function startKettingNiveau(kind: Gebruiker, kinderen: Gebruiker[]): Kett
   return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
 }
 
+export type SchoenNiveau = 'makkelijk' | 'middel' | 'moeilijk'
+export type Lekkernij = 'pepernoot' | 'mandarijn' | 'chocolade' | 'speculaas'
+
+/** Het lekkers in de schaal van Schoen vullen; de tekening staat in src/schermen/Schoen.tsx. */
+export const lekkernijen: readonly Lekkernij[] = ['pepernoot', 'mandarijn', 'chocolade', 'speculaas']
+
+/** Hoeveel soorten er op het kaartje staan en tussen welke aantallen (per soort); bij twee soorten blijft het totaal onder `totaal`. */
+export const schoenNiveaus: Record<SchoenNiveau, { label: string; soorten: 1 | 2; min: number; max: number; totaal: number }> = {
+  makkelijk: { label: 'Makkelijk', soorten: 1, min: 1, max: 5, totaal: 5 },
+  middel: { label: 'Middel', soorten: 1, min: 1, max: 10, totaal: 10 },
+  moeilijk: { label: 'Moeilijk', soorten: 2, min: 2, max: 10, totaal: 20 },
+}
+
+export const schoenOpdrachtenPerRonde = 6
+
+/** Wie niet leest begint makkelijk, de oudste lezer moeilijk, andere lezers middel. */
+export function startSchoenNiveau(kind: Gebruiker, kinderen: Gebruiker[]): SchoenNiveau {
+  if (!kind.kan_lezen) return 'makkelijk'
+  const oudsteLezer = kinderen.filter((k) => k.kan_lezen).sort((a, b) => a.volgorde - b.volgorde)[0]
+  return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
+}
+
 /**
  * Startniveau als het kind nog niets koos: wie niet leest telt en speelt met 3 paren,
  * de oudste lezer krijgt Tot 100 en 8 paren, andere lezers Tot 20 en 6 paren.
@@ -121,7 +143,7 @@ export function startNiveaus(kind: Gebruiker, kinderen: Gebruiker[]): { memory: 
   return oudsteLezer?.id === kind.id ? { memory: 'groot', rekenen: 'tot100' } : { memory: 'middel', rekenen: 'tot20' }
 }
 
-export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'springen'
+export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'springen'
 
 export interface SpelInfo {
   sleutel: SpelSleutel
@@ -155,6 +177,8 @@ export const spelMenu: SpelInfo[] = [
     icoon: 'M12 21V9M12 9C7 9 4 6 4 3c5 0 8 2 8 6zM12 14c5 0 8-3 8-6c-5 0-8 2-8 6zM5 21h14' },
   { sleutel: 'ketting', naam: 'Herfstketting', uitleg: 'Maak de ketting af', prijs: 20,
     icoon: 'M4 6c0 9 4 13 8 13s8-4 8-13M5 8.5a1.6 1.6 0 1 0 0 .01M8 14a1.6 1.6 0 1 0 0 .01M12 18a1.6 1.6 0 1 0 0 .01M16 14a1.6 1.6 0 1 0 0 .01M19 8.5a1.6 1.6 0 1 0 0 .01' },
+  { sleutel: 'schoen', naam: 'Schoen vullen', uitleg: 'Doe er zoveel lekkers in als op het kaartje staat', prijs: 20,
+    icoon: 'M8 4h6v8c4 0 7 2 7 4.5V18H5V6a2 2 0 0 1 3-2zM5 21h16M10 8h4' },
   { sleutel: 'basket', naam: 'Basket', uitleg: 'Veeg de bal in de ring', prijs: 40,
     icoon: 'M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18zM3 12h18M12 3v18M5.6 5.6c3 3 3 9.8 0 12.8M18.4 5.6c-3 3-3 9.8 0 12.8' },
 ]
