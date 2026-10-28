@@ -244,6 +244,33 @@ function schoentje(dx: number) {
     + `<path d="M${x - 24} ${y - 28}h14v16q14 0 20 8v4h-34z" fill="#D8452B"/><rect x="${x - 24}" y="${y - 2}" width="34" height="4" rx="2" fill="#2B2B2B"/>`
 }
 
+// Een slinger van gele sterren onder de dakrand.
+function sterrenslinger(x0: number, x1: number, y: number) {
+  const n = Math.max(4, Math.round((x1 - x0) / 60))
+  let s = `<path d="M${x0} ${y}Q${(x0 + x1) / 2} ${y + 26} ${x1} ${y}" fill="none" stroke="#2B3240" stroke-width="2"/>`
+  for (let i = 0; i < n; i++) {
+    const t = (i + 0.5) / n, cx = x0 + (x1 - x0) * t, cy = y + 52 * t * (1 - t) + 14
+    s += `<path d="M${cx.toFixed(1)} ${(cy - 14).toFixed(1)}l4 9l10 1l-8 6l3 10l-9 -6l-9 6l3 -10l-8 -6l10 -1z" fill="${i % 2 ? '#F2B33D' : '#F2D24E'}" stroke="#C48A12" stroke-width="1.5" stroke-linejoin="round"/>`
+  }
+  return s
+}
+
+// Een grote ster midden op de deur.
+function kerstster(dx: number) {
+  const cy = BASIS - 62
+  return `<path d="M${dx} ${cy - 26}l8 18l20 2l-15 13l5 19l-18 -10l-18 10l5 -19l-15 -13l20 -2z" fill="#F2B33D" stroke="#C48A12" stroke-width="3" stroke-linejoin="round"/><circle cx="${dx}" cy="${cy}" r="5" fill="#fff" opacity=".6"/>`
+}
+
+// IJspegels die onder de dakrand hangen.
+function ijspegels(x0: number, x1: number, y: number) {
+  let s = ''
+  for (let x = x0 + 8, i = 0; x < x1 - 8; x += 22, i++) {
+    const l = 20 + (i % 3) * 12
+    s += `<path d="M${x - 6} ${y}H${x + 6}L${x} ${y + l}Z" fill="#CFE8FA" stroke="#9CC6E6" stroke-width="1.5" stroke-linejoin="round"/>`
+  }
+  return s
+}
+
 // Een slinger van kleine lampionnen onder de dakrand, elk met een warm lichtje.
 function lampionnen(x0: number, x1: number, y: number) {
   const kleuren = ['#D8452B', '#F2B33D', '#2D6BD6', '#E46AA8'], n = Math.max(4, Math.round((x1 - x0) / 56))
@@ -290,6 +317,12 @@ export function tuinStuk(id: string): string {
     case 'paddenstoelen': return '<path d="M-52 -4V-24a6 6 0 0 1 12 0V-4Z" fill="#F4EBD8"/><path d="M-70 -24Q-46 -64 -22 -24Z" fill="#D8452B"/><circle cx="-58" cy="-34" r="3.5" fill="#fff"/><circle cx="-44" cy="-42" r="3.5" fill="#fff"/><circle cx="-34" cy="-31" r="3" fill="#fff"/><path d="M-8 0V-30a8 8 0 0 1 16 0V0Z" fill="#F4EBD8"/><path d="M-34 -30Q0 -86 34 -30Z" fill="#D8452B"/><circle cx="-14" cy="-46" r="4.5" fill="#fff"/><circle cx="4" cy="-58" r="4.5" fill="#fff"/><circle cx="16" cy="-42" r="4" fill="#fff"/><path d="M36 -2V-18a5 5 0 0 1 10 0V-2Z" fill="#F4EBD8"/><path d="M26 -18Q42 -46 58 -18Z" fill="#E8772E"/><circle cx="36" cy="-26" r="3" fill="#fff"/><circle cx="48" cy="-27" r="2.8" fill="#fff"/><path d="M-60 0Q-30 -8 0 0Q40 -8 64 0" fill="none" stroke="#4F8A3C" stroke-width="5" stroke-linecap="round"/>'
     case 'notenboom': return '<rect x="-9" y="-70" width="18" height="72" rx="5" fill="#7A4E2A"/><circle cx="0" cy="-104" r="46" fill="#5E9A3C"/><circle cx="-34" cy="-86" r="30" fill="#6FAE48"/><circle cx="34" cy="-88" r="30" fill="#4F8A3C"/><circle cx="-14" cy="-124" r="24" fill="#74B24C"/><g fill="#C9904A"><ellipse cx="-24" cy="-96" rx="6" ry="8"/><ellipse cx="20" cy="-112" rx="6" ry="8"/><ellipse cx="30" cy="-84" rx="6" ry="8"/><ellipse cx="-6" cy="-76" rx="6" ry="8"/></g><g fill="#7A4E2A"><path d="M-30 -102h12v5h-12zM14 -118h12v5h-12zM24 -90h12v5h-12zM-12 -82h12v5h-12z"/></g><ellipse cx="46" cy="-4" rx="9" ry="6" fill="#C9904A"/><ellipse cx="46" cy="-8" rx="9" ry="4" fill="#7A4E2A"/>'
     case 'egel': return '<ellipse cx="0" cy="-2" rx="38" ry="8" fill="#000" opacity=".08"/><path d="M-34 -4C-40 -34 -22 -52 4 -50C30 -50 42 -34 38 -4Z" fill="#8A5A33"/><path d="M-26 -30L-34 -36M-14 -42L-18 -52M0 -46L0 -56M14 -44L18 -54M26 -38L34 -46M32 -24L42 -28" stroke="#5A3A1C" stroke-width="4" stroke-linecap="round"/><path d="M-34 -4C-40 -18 -46 -14 -52 -10C-46 -4 -40 -2 -34 -4Z" fill="#E8C9A0"/><circle cx="-42" cy="-12" r="2.6" fill="#1C2433"/><circle cx="-52" cy="-10" r="3.2" fill="#1C2433"/><rect x="-22" y="-6" width="7" height="8" rx="3" fill="#E8C9A0"/><rect x="14" y="-6" width="7" height="8" rx="3" fill="#E8C9A0"/>'
+    case 'hobbelpaard': return '<ellipse cx="0" cy="-2" rx="52" ry="8" fill="#000" opacity=".08"/><path d="M-46 -2Q-30 -16 -8 -10L8 -10Q30 -16 46 -2" fill="none" stroke="#8A5A33" stroke-width="9" stroke-linecap="round"/><path d="M-26 -40Q-30 -64 -8 -66L12 -62Q28 -78 30 -92L42 -88Q46 -70 34 -56L36 -40Q24 -26 -8 -28Q-22 -28 -26 -40Z" fill="#C08246"/><path d="M30 -92L24 -104L38 -96Z" fill="#8A5A33"/><path d="M-26 -40Q-40 -34 -42 -20" fill="none" stroke="#8A5A33" stroke-width="7" stroke-linecap="round"/><path d="M24 -88Q14 -80 18 -66" fill="none" stroke="#6E4A28" stroke-width="6" stroke-linecap="round"/><circle cx="36" cy="-82" r="2.5" fill="#1C2433"/><rect x="-6" y="-48" width="22" height="12" rx="5" fill="#D8452B"/>'
+    case 'peperkoekhuisje': return '<ellipse cx="0" cy="-2" rx="58" ry="8" fill="#000" opacity=".08"/><rect x="-44" y="-62" width="88" height="60" rx="3" fill="#A8693A"/><path d="M-54 -58L0 -104L54 -58Z" fill="#F4F6F9"/><path d="M-54 -58L0 -104L54 -58" fill="none" stroke="#D8452B" stroke-width="4" stroke-linejoin="round"/><path d="M-40 -58q8 12 16 0q8 12 16 0q8 12 16 0q8 12 16 0q8 12 16 0" fill="#F4F6F9"/><rect x="-12" y="-38" width="24" height="36" rx="10" fill="#6E4A28"/><rect x="-36" y="-48" width="18" height="16" rx="3" fill="#FFE27A"/><rect x="18" y="-48" width="18" height="16" rx="3" fill="#FFE27A"/><circle cx="-24" cy="-8" r="4" fill="#D8452B"/><circle cx="26" cy="-8" r="4" fill="#3D7DD8"/><circle cx="0" cy="-70" r="4.5" fill="#D8452B"/>'
+    case 'kerstboom': return '<ellipse cx="0" cy="-2" rx="44" ry="7" fill="#000" opacity=".08"/><rect x="-8" y="-24" width="16" height="22" fill="#7A4E2A"/><path d="M0 -150L36 -100H-36Z" fill="#3A9150"/><path d="M0 -122L46 -62H-46Z" fill="#2E7D3E"/><path d="M0 -92L58 -22H-58Z" fill="#26692F"/><path d="M0 -168l5 11l12 1l-9 8l3 12l-11 -7l-11 7l3 -12l-9 -8l12 -1z" fill="#F2B33D"/><circle cx="-18" cy="-86" r="5" fill="#D8452B"/><circle cx="16" cy="-98" r="5" fill="#F2B33D"/><circle cx="-4" cy="-60" r="5" fill="#3D7DD8"/><circle cx="26" cy="-46" r="5" fill="#D8452B"/><circle cx="-30" cy="-40" r="5" fill="#F2B33D"/><circle cx="2" cy="-124" r="4" fill="#3D7DD8"/>'
+    case 'rendier': return '<ellipse cx="0" cy="-2" rx="44" ry="7" fill="#000" opacity=".08"/><rect x="-26" y="-34" width="9" height="32" rx="4" fill="#8A5A33"/><rect x="-8" y="-34" width="9" height="32" rx="4" fill="#8A5A33"/><rect x="14" y="-34" width="9" height="32" rx="4" fill="#8A5A33"/><rect x="28" y="-34" width="9" height="32" rx="4" fill="#8A5A33"/><ellipse cx="2" cy="-48" rx="38" ry="22" fill="#A8693A"/><path d="M30 -56L44 -88Q52 -96 60 -86L58 -66Q50 -54 38 -50Z" fill="#A8693A"/><circle cx="56" cy="-78" r="2.8" fill="#1C2433"/><circle cx="62" cy="-72" r="4.5" fill="#D8452B"/><path d="M46 -92L40 -112M40 -112L30 -108M40 -112L48 -120M52 -94L58 -114M58 -114L68 -112M58 -114L52 -124" fill="none" stroke="#6E4A28" stroke-width="4" stroke-linecap="round"/><path d="M-36 -52Q-44 -50 -42 -42" fill="none" stroke="#F4EBD8" stroke-width="6" stroke-linecap="round"/>'
+    case 'sneeuwman': return '<ellipse cx="0" cy="-2" rx="48" ry="7" fill="#000" opacity=".08"/><circle cx="0" cy="-34" r="34" fill="#fff" stroke="#BFD3E8" stroke-width="3"/><circle cx="0" cy="-88" r="25" fill="#fff" stroke="#BFD3E8" stroke-width="3"/><rect x="-22" y="-124" width="44" height="9" rx="3" fill="#2B2B2B"/><rect x="-14" y="-146" width="28" height="24" fill="#2B2B2B"/><rect x="-14" y="-130" width="28" height="5" fill="#D8452B"/><path d="M2 -88L30 -82L2 -78Z" fill="#F2994A"/><circle cx="-9" cy="-95" r="3" fill="#2B2B2B"/><circle cx="9" cy="-95" r="3" fill="#2B2B2B"/><path d="M-22 -68Q0 -58 22 -68" fill="none" stroke="#2D6BD6" stroke-width="8" stroke-linecap="round"/><circle cx="0" cy="-42" r="3.5" fill="#2B2B2B"/><circle cx="0" cy="-28" r="3.5" fill="#2B2B2B"/><path d="M-32 -54L-56 -70M32 -54L56 -70" stroke="#6E4A28" stroke-width="4" stroke-linecap="round"/>'
+    case 'ijsbaantje': return '<ellipse cx="0" cy="-12" rx="76" ry="22" fill="#9CC6E6"/><ellipse cx="0" cy="-16" rx="68" ry="18" fill="#CFE8FA"/><path d="M-44 -18Q-14 -26 14 -20M-8 -10Q24 -18 46 -12" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".9"/><path d="M-20 -22Q0 -30 24 -24" fill="none" stroke="#9CC6E6" stroke-width="2.5" stroke-linecap="round"/><path d="M-70 -26L-70 -44M70 -26L70 -44" stroke="#6E4A28" stroke-width="5" stroke-linecap="round"/><path d="M-70 -42Q0 -62 70 -42" fill="none" stroke="#6E4A28" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round"/>'
     case 'pakjes': return '<ellipse cx="0" cy="-2" rx="50" ry="8" fill="#000" opacity=".08"/><rect x="-40" y="-44" width="52" height="42" rx="3" fill="#3D7DD8"/><rect x="-18" y="-44" width="8" height="42" fill="#F4F6F9"/><rect x="-40" y="-28" width="52" height="8" fill="#F4F6F9"/><rect x="8" y="-34" width="38" height="32" rx="3" fill="#F2B33D"/><rect x="24" y="-34" width="7" height="32" fill="#D8452B"/><rect x="-22" y="-76" width="36" height="32" rx="3" fill="#D8452B"/><rect x="-7" y="-76" width="7" height="32" fill="#F4F6F9"/><path d="M-4 -76Q-18 -92 -12 -80ZM-4 -76Q10 -92 4 -80Z" fill="#F4F6F9" stroke="#F4F6F9" stroke-width="5" stroke-linejoin="round"/><path d="M0 -112l4 8l9 1l-7 6l2 9l-8 -5l-8 5l2 -9l-7 -6l9 -1z" fill="#F2B33D"/>'
     case 'wortels': return '<ellipse cx="0" cy="-4" rx="62" ry="12" fill="#6E4A28"/><g>' + [-40, -14, 12, 38].map((x, i) => `<path d="M${x - 7} -6L${x} ${-22 - (i % 2) * 6}L${x + 7} -6Z" fill="#F2994A"/><path d="M${x - 8} ${-24 - (i % 2) * 6}Q${x - 6} -44 ${x - 1} ${-28 - (i % 2) * 6}Q${x} -48 ${x + 4} ${-28 - (i % 2) * 6}Q${x + 10} -40 ${x + 8} ${-24 - (i % 2) * 6}Z" fill="#4F8A3C"/>`).join('') + '</g><rect x="50" y="-40" width="5" height="40" fill="#8A5A33"/><rect x="38" y="-52" width="30" height="16" rx="3" fill="#F4EBD8"/><path d="M46 -44h14" stroke="#F2994A" stroke-width="3" stroke-linecap="round"/>'
     case 'dino': return `<rect x="-52" y="-22" width="104" height="22" rx="4" fill="#AEB9C6"/><g transform="translate(-52 -152) scale(2.6)">${DINO}</g>`
@@ -348,6 +381,9 @@ export function tekenHuis(h: Huis, o: TekenOpties): string {
   g.push(deur(dx, h))
   if (heeft('herfstkrans')) g.push(herfstkrans(dx))
   if (heeft('schoentje')) g.push(schoentje(dx))
+  if (heeft('kerstster')) g.push(kerstster(dx))
+  if (heeft('sterrenslinger')) g.push(sterrenslinger(mx + 10, mx + m.w - 10, my + 2))
+  if (heeft('ijspegels')) g.push(ijspegels(mx + 6, mx + m.w - 6, my + 2))
   if (heeft('lichtjes')) g.push(lichtjes(mx - 14, mx + m.w + 14, my + 4))
   if (heeft('lampionnen')) g.push(lampionnen(mx + 10, mx + m.w - 10, my + 2))
   if (heeft('vleermuisjes')) g.push(vleermuisjes(mx + 10, mx + m.w - 10, my))

@@ -133,6 +133,66 @@ export function startSchoenNiveau(kind: Gebruiker, kinderen: Gebruiker[]): Schoe
   return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
 }
 
+export type WegNiveau = 'makkelijk' | 'middel' | 'moeilijk'
+export type Voorwerp = 'pakje' | 'schoen' | 'wortel' | 'pepernoot' | 'mijter' | 'ster' | 'kaars' | 'sok'
+
+/** De voorwerpen van Wat is er weg?; de tekening staat in src/schermen/Weg.tsx. */
+export const voorwerpen: readonly Voorwerp[] = ['pakje', 'schoen', 'wortel', 'pepernoot', 'mijter', 'ster', 'kaars', 'sok']
+
+/** Hoeveel voorwerpen je ziet en hoe lang (ms) je mag kijken voor de doek erover gaat; het kind kiest uit alles wat er lag. */
+export const wegNiveaus: Record<WegNiveau, { label: string; aantal: number; kijktijd: number }> = {
+  makkelijk: { label: 'Makkelijk', aantal: 3, kijktijd: 4000 },
+  middel: { label: 'Middel', aantal: 4, kijktijd: 5000 },
+  moeilijk: { label: 'Moeilijk', aantal: 6, kijktijd: 7000 },
+}
+
+export const wegRondes = 6
+
+/** Wie niet leest begint makkelijk, de oudste lezer moeilijk, andere lezers middel. */
+export function startWegNiveau(kind: Gebruiker, kinderen: Gebruiker[]): WegNiveau {
+  if (!kind.kan_lezen) return 'makkelijk'
+  const oudsteLezer = kinderen.filter((k) => k.kan_lezen).sort((a, b) => a.volgorde - b.volgorde)[0]
+  return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
+}
+
+export type LichtjesNiveau = 'makkelijk' | 'middel' | 'moeilijk'
+export type LichtKleur = 'rood' | 'geel' | 'blauw' | 'groen'
+export const lichtKleuren: readonly LichtKleur[] = ['rood', 'geel', 'blauw', 'groen']
+
+/** Met hoeveel lichtjes de eerste ronde begint en uit hoeveel kleuren de reeks bestaat; elke ronde komt er één lichtje bij. */
+export const lichtjesNiveaus: Record<LichtjesNiveau, { label: string; start: number; kleuren: number }> = {
+  makkelijk: { label: 'Makkelijk', start: 2, kleuren: 2 },
+  middel: { label: 'Middel', start: 3, kleuren: 3 },
+  moeilijk: { label: 'Moeilijk', start: 3, kleuren: 4 },
+}
+
+export const lichtjesRondes = 6
+
+export function startLichtjesNiveau(kind: Gebruiker, kinderen: Gebruiker[]): LichtjesNiveau {
+  if (!kind.kan_lezen) return 'makkelijk'
+  const oudsteLezer = kinderen.filter((k) => k.kan_lezen).sort((a, b) => a.volgorde - b.volgorde)[0]
+  return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
+}
+
+export type SchaduwNiveau = 'makkelijk' | 'middel' | 'moeilijk'
+export type Winterding = 'muts' | 'sjaal' | 'laars' | 'wanten' | 'sneeuwman' | 'slee'
+export const winterdingen: readonly Winterding[] = ['muts', 'sjaal', 'laars', 'wanten', 'sneeuwman', 'slee']
+
+/** Uit hoeveel schaduwen het kind kiest. */
+export const schaduwNiveaus: Record<SchaduwNiveau, { label: string; keuzes: number }> = {
+  makkelijk: { label: 'Makkelijk', keuzes: 3 },
+  middel: { label: 'Middel', keuzes: 4 },
+  moeilijk: { label: 'Moeilijk', keuzes: 6 },
+}
+
+export const schaduwRondes = 6
+
+export function startSchaduwNiveau(kind: Gebruiker, kinderen: Gebruiker[]): SchaduwNiveau {
+  if (!kind.kan_lezen) return 'makkelijk'
+  const oudsteLezer = kinderen.filter((k) => k.kan_lezen).sort((a, b) => a.volgorde - b.volgorde)[0]
+  return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
+}
+
 /**
  * Startniveau als het kind nog niets koos: wie niet leest telt en speelt met 3 paren,
  * de oudste lezer krijgt Tot 100 en 8 paren, andere lezers Tot 20 en 6 paren.
@@ -143,7 +203,7 @@ export function startNiveaus(kind: Gebruiker, kinderen: Gebruiker[]): { memory: 
   return oudsteLezer?.id === kind.id ? { memory: 'groot', rekenen: 'tot100' } : { memory: 'middel', rekenen: 'tot20' }
 }
 
-export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'springen'
+export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'springen'
 
 export interface SpelInfo {
   sleutel: SpelSleutel
@@ -179,6 +239,12 @@ export const spelMenu: SpelInfo[] = [
     icoon: 'M4 6c0 9 4 13 8 13s8-4 8-13M5 8.5a1.6 1.6 0 1 0 0 .01M8 14a1.6 1.6 0 1 0 0 .01M12 18a1.6 1.6 0 1 0 0 .01M16 14a1.6 1.6 0 1 0 0 .01M19 8.5a1.6 1.6 0 1 0 0 .01' },
   { sleutel: 'schoen', naam: 'Schoen vullen', uitleg: 'Doe er zoveel lekkers in als op het kaartje staat', prijs: 20,
     icoon: 'M8 4h6v8c4 0 7 2 7 4.5V18H5V6a2 2 0 0 1 3-2zM5 21h16M10 8h4' },
+  { sleutel: 'weg', naam: 'Wat is er weg?', uitleg: 'Kijk goed en zoek wat er verdwenen is', prijs: 20,
+    icoon: 'M3 12s3.5-6 9-6s9 6 9 6s-3.5 6-9 6s-9-6-9-6zM12 9.5a2.5 2.5 0 1 0 0 5a2.5 2.5 0 0 0 0-5z' },
+  { sleutel: 'lichtjes', naam: 'Lichtjesboom', uitleg: 'Doe de lichtjes na in dezelfde volgorde', prijs: 20,
+    icoon: 'M12 3l6 8h-3l5 7H4l5-7H6zM12 18v3M8 8.5h.01M15 13h.01M10 15h.01' },
+  { sleutel: 'schaduw', naam: 'Wie is de schaduw?', uitleg: 'Zoek de schaduw die erbij hoort', prijs: 20,
+    icoon: 'M8 4a4 4 0 1 0 0 8a4 4 0 0 0 0-8zM3 20c0-3 2-5 5-5s5 2 5 5zM17 9a3 3 0 1 1 0 6a3 3 0 0 1 0-6zM14 20c0-2 1.5-3.5 3.5-3.5s3.5 1.5 3.5 3.5z' },
   { sleutel: 'basket', naam: 'Basket', uitleg: 'Veeg de bal in de ring', prijs: 40,
     icoon: 'M12 3a9 9 0 1 0 0 18a9 9 0 0 0 0-18zM3 12h18M12 3v18M5.6 5.6c3 3 3 9.8 0 12.8M18.4 5.6c-3 3-3 9.8 0 12.8' },
 ]

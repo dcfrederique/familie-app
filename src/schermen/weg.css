@@ -1,0 +1,55 @@
+/* Wat is er weg?: tafel met voorwerpen, doek erover, daaronder de keuzes. De rijen houden hun hoogte, zodat niets verspringt. */
+.weg { display: flex; flex-direction: column; align-items: center; gap: clamp(8px, 1.8vh, 18px); width: 100%; }
+.weg-tekening { display: block; width: 100%; height: auto; }
+.weg-teller { display: flex; gap: 6px; }
+.weg-teller span { width: 14px; height: 14px; border-radius: 50%; background: var(--line); }
+.weg-teller .af { background: var(--gold); }
+.weg-teller .nu { background: var(--kid); }
+.weg-tafel {
+  position: relative; display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: clamp(8px, 2vw, 22px);
+  width: min(92%, 760px); min-height: clamp(110px, 24vh, 190px); padding: 12px 18px; border-radius: 28px; overflow: hidden;
+  border: 3px solid var(--line); background: var(--card);
+}
+.weg-stuk { width: clamp(52px, min(11vh, 11vw), 96px); height: clamp(52px, min(11vh, 11vw), 96px); display: block; }
+.weg-stuk.leeg {
+  display: grid; place-items: center; border: 4px dashed var(--line); border-radius: 22px;
+  font-size: clamp(32px, 6vh, 56px); font-weight: 800; color: var(--kid);
+}
+.weg-stuk.terug { animation: weg-pop 0.5s ease-out; }
+.weg-doek {
+  position: absolute; inset: 0; border-radius: 24px; background: repeating-linear-gradient(45deg, #D8452B 0 18px, #E8624A 18px 36px);
+  animation: weg-doek 0.45s ease-out both;
+}
+.weg-balk { width: min(60%, 420px); height: 10px; border-radius: 5px; background: var(--line); overflow: hidden; }
+.weg-balk.leeg { background: transparent; }
+.weg-balk i { display: block; height: 100%; width: 100%; background: var(--kid); transform-origin: left; animation: weg-balk linear forwards; }
+.weg-keuzes { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(10px, 2vw, 20px); width: min(96%, 820px); min-height: clamp(76px, 15vh, 120px); }
+.weg-verstopt { visibility: hidden; }
+.weg-keuze {
+  width: clamp(72px, 15vh, 116px); height: clamp(72px, 15vh, 116px); padding: 8px; border-radius: 22px;
+  border: 3px solid var(--line); background: var(--card); box-shadow: 0 5px 0 var(--line);
+}
+.weg-keuze:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--line); }
+.weg-keuze.fout { border-color: #D8452B; animation: weg-schud 0.4s ease-out; }
+.weg-keuzes.tip .weg-keuze { animation: weg-wip 0.8s ease-in-out infinite; }
+.weg-keuzes.tip .weg-keuze:nth-child(2n) { animation-delay: 0.2s; }
+.weg-eind { display: grid; justify-items: center; gap: 16px; width: 100%; }
+.weg-tafel.eind .weg-stuk { animation: weg-pop 0.5s ease-out; }
+@keyframes weg-doek { from { transform: translateY(-100%); } to { transform: translateY(0); } }
+@keyframes weg-balk { from { transform: scaleX(1); } to { transform: scaleX(0); } }
+@keyframes weg-pop { 0% { transform: scale(0.5); } 70% { transform: scale(1.18); } 100% { transform: scale(1); } }
+@keyframes weg-schud { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+@keyframes weg-wip { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@media (prefers-reduced-motion: reduce) {
+  .weg-doek, .weg-stuk.terug, .weg-tafel.eind .weg-stuk, .weg-keuze.fout, .weg-keuzes.tip .weg-keuze { animation: none; }
+  .weg-balk i { animation-duration: 0.01ms !important; }
+  .weg-keuzes.tip .weg-keuze { outline: 4px solid var(--gold); }
+}
+
+/* Liggende gsm: kleinere tafel en keuzes, zodat alles zonder scrollen past. */
+@media (max-height: 500px) and (orientation: landscape) {
+  .weg-tafel { min-height: 84px; padding: 6px 14px; }
+  .weg-stuk { width: 48px; height: 48px; }
+  .weg-keuzes { min-height: 64px; }
+  .weg-keuze { width: 60px; height: 60px; padding: 5px; }
+}

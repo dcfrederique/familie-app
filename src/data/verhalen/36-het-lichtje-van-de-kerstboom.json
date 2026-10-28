@@ -1,0 +1,116 @@
+{
+  "nr": 36,
+  "titel": "Het lichtje van de kerstboom",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Kerstmis, samen helpen",
+  "bladzijden": [
+    {
+      "tekst": "Het is bijna Kerstmis. Overal in het bos ligt sneeuw. Lotte het konijn wil een kerstboom versieren in het midden van het bos. \"Dan kunnen alle dieren hem zien,\" zegt ze. Ze neemt een grote doos met lichtjes mee.",
+      "prent": {
+        "decor": "sneeuwbos",
+        "figuren": [
+          "konijn",
+          "boom"
+        ]
+      }
+    },
+    {
+      "tekst": "Lotte hangt de lichtjes in de boom, een voor een. Een rood lichtje, een geel lichtje, een blauw lichtje en een groen lichtje. Dan nog een keer, en nog een keer. Haar pootjes zijn koud, maar ze houdt vol.",
+      "prent": {
+        "decor": "sneeuwbos",
+        "figuren": [
+          "konijn",
+          "boom"
+        ]
+      }
+    },
+    {
+      "tekst": "Siep de eekhoorn springt van tak naar tak. \"Zal ik helpen?\" roept hij. Hij klimt helemaal bovenin en hangt de ster aan de top. De ster glinstert in de zon. Lotte klapt in haar handen: \"Prachtig!\"",
+      "prent": {
+        "decor": "sneeuwbos",
+        "figuren": [
+          "eekhoorn",
+          "konijn"
+        ]
+      }
+    },
+    {
+      "tekst": "Als het donker wordt, sluit Lotte de stekker aan. Klik! De boom licht op. Bijna alle lichtjes stralen: rood, geel, blauw en groen. Het bos kleurt zachtjes. Maar halverwege de boom blijft één lichtje donker.",
+      "prent": {
+        "decor": "bos-avond",
+        "figuren": [
+          "konijn",
+          "eekhoorn",
+          "boom"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Oei,\" zegt Lotte. \"Eén lichtje doet niet mee.\" Ze kijkt er lang naar. De boom is mooi, maar het donkere plekje valt op. Ze voelt een beetje verdriet, want ze wilde dat alles perfect was.",
+      "prent": {
+        "decor": "bos-avond",
+        "figuren": [
+          "konijn",
+          "boom"
+        ]
+      }
+    },
+    {
+      "tekst": "Bram de beer komt langs met een zaklamp. \"Zal ik helpen zoeken?\" vraagt hij. Siep komt ook. Drie vrienden staan voor de boom en kijken naar de lichtjes. \"Misschien zit het lichtje los,\" zegt Siep.",
+      "prent": {
+        "decor": "bos-avond",
+        "figuren": [
+          "beer",
+          "konijn",
+          "eekhoorn"
+        ]
+      }
+    },
+    {
+      "tekst": "Bram tilt Siep op zijn schouders. Siep draait het lichtje voorzichtig een kwartslag. Er gebeurt niets. Hij draait nog een beetje verder. Dan klinkt er een zacht klikje, en het lichtje springt aan! Het is een groen lichtje.",
+      "prent": {
+        "decor": "bos-avond",
+        "figuren": [
+          "beer",
+          "eekhoorn"
+        ]
+      }
+    },
+    {
+      "tekst": "Nu stralen alle lichtjes. De boom ziet er prachtig uit. Lotte lacht en een traantje van geluk rolt over haar wang. \"Dank jullie wel,\" fluistert ze. \"Alleen kon ik het niet.\"",
+      "prent": {
+        "decor": "bos-avond",
+        "figuren": [
+          "konijn",
+          "boom",
+          "sterren"
+        ]
+      }
+    },
+    {
+      "tekst": "Er begint zacht sneeuw te vallen. De vlokjes dwarrelen door het licht van de boom. De drie vrienden gaan dicht bij elkaar staan. Het is koud, maar het voelt warm. Siep houdt zijn staart rond Lotte.",
+      "prent": {
+        "decor": "sneeuwbos",
+        "figuren": [
+          "beer",
+          "konijn",
+          "eekhoorn",
+          "sterren"
+        ]
+      }
+    },
+    {
+      "tekst": "Elke avond komen de dieren naar de lichtjesboom kijken. Ze delen warme chocolademelk en luisteren naar het zachte knisperen van de sneeuw. Lotte weet nu: samen maak je de mooiste lichtjes. Fijne Kerst, allemaal!",
+      "prent": {
+        "decor": "sneeuwbos",
+        "figuren": [
+          "beer",
+          "konijn",
+          "eekhoorn",
+          "boom"
+        ]
+      }
+    }
+  ]
+}

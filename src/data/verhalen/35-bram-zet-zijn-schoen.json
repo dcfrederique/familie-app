@@ -1,0 +1,115 @@
+{
+  "nr": 35,
+  "titel": "Bram zet zijn schoen",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Sinterklaas, geven en delen",
+  "bladzijden": [
+    {
+      "tekst": "Het is bijna Sinterklaas. In het bos zijn alle dieren opgewonden. Bram de beer heeft zijn grote schoen gepoetst tot hij glimt. \"Vanavond zet ik hem klaar,\" zegt hij. Hij kan bijna niet wachten.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "beer",
+          "schoen"
+        ]
+      }
+    },
+    {
+      "tekst": "Lotte het konijn komt langs. \"Wat hoop jij te krijgen, Bram?\" vraagt ze. Bram denkt na. \"Ik weet het niet,\" zegt hij. \"Ik vind het zo leuk als iemand een cadeautje krijgt. Misschien wil ik ook iets geven.\"",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "beer",
+          "konijn"
+        ]
+      }
+    },
+    {
+      "tekst": "Bram gaat aan zijn tafeltje zitten. Hij pakt een groot blad en kleurpotloden. Hij tekent een paard met een lange manen en een grote lach. Zijn tong steekt een beetje uit van de moeite. Dat doet hij altijd als hij heel goed zijn best doet.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "beer",
+          "tekening"
+        ]
+      }
+    },
+    {
+      "tekst": "Siep de eekhoorn kijkt over zijn schouder mee. \"Wat mooi!\" zegt hij. \"Maar paarden hebben ook honger na een lange reis.\" Siep haalt de dikste wortel uit zijn voorraad. \"Hier, voor het paard van de Sint.\" Bram lacht: \"Dank je wel, Siep!\"",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "eekhoorn",
+          "beer",
+          "wortel"
+        ]
+      }
+    },
+    {
+      "tekst": "Die avond zet Bram zijn schoen bij de deur. Hij legt de tekening erin en de wortel ernaast. Hij kijkt nog één keer naar buiten, naar de sterren boven de bomen. Dan kruipt hij in bed, met een warm gevoel in zijn buik.",
+      "prent": {
+        "decor": "bos-avond",
+        "figuren": [
+          "beer",
+          "schoen",
+          "tekening",
+          "wortel"
+        ]
+      }
+    },
+    {
+      "tekst": "Bram droomt van een paard dat over de daken loopt. Hij hoort zachte hoeven in zijn droom: klik, klak, klik, klak. In het hele bos is het stil. Alle dieren slapen en wachten op de ochtend.",
+      "prent": {
+        "decor": "bos-avond",
+        "figuren": [
+          "beer"
+        ]
+      }
+    },
+    {
+      "tekst": "De volgende ochtend wipt Bram uit bed. De wortel is weg! In de schoen ligt een klein zakje met pepernoten en een kaartje: \"Dank voor je mooie tekening. Fijne Sinterklaas.\" Bram wordt helemaal rood van blijdschap.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "beer",
+          "schoen"
+        ]
+      }
+    },
+    {
+      "tekst": "Hij telt de pepernoten. Er zijn er twaalf. \"Twaalf is veel voor één beer,\" zegt hij zachtjes. Hij pakt zijn zakje en loopt naar buiten, waar Lotte en Siep net aankomen. Hun neuzen zijn rood van de frisse lucht.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "beer",
+          "konijn",
+          "eekhoorn"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Wie wil een pepernoot?\" vraagt Bram. Lotte neemt er vier, Siep ook. Bram houdt er vier voor zichzelf. Ze zitten samen op een boomstronk en knabbelen. Het ruikt naar kaneel en iedereen heeft rode wangen.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "beer",
+          "konijn",
+          "eekhoorn"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Dit is het mooiste cadeau,\" zegt Siep. \"Samen delen.\" Bram knikt. Hij heeft iets gekregen en iets gegeven, en dat voelt dubbel zo fijn. Volgend jaar maakt hij weer een tekening, en misschien nog een voor zijn vrienden.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "beer",
+          "konijn",
+          "eekhoorn",
+          "boom"
+        ]
+      }
+    }
+  ]
+}

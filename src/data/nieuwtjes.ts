@@ -19,6 +19,33 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.62',
+    datum: '2026-10-28',
+    titel: 'Winter: Wie is de schaduw?, de iglo en de sneeuwheuvel',
+    tekst: 'Het winterpakket staat klaar: het verhaal Pip en de sneeuwman, de kleurplaat Sneeuwman, het spelletje Wie is de schaduw? (tik de schaduw die bij het plaatje hoort, 3 niveaus), een iglo in De wereld met een gouden rand en een slot tot het gekocht is, en in Springland een nieuw level in Pepernotenland: De sneeuwheuvel. Het spelletje en de stukken zijn nog niet vrijgegeven: dat doen jullie in Kinderen → Winkelaanbod.',
+    verhaal: 'Pip en de sneeuwman (Avonturiers)',
+    spel: { naam: 'Wie is de schaduw?', prijs: 20 },
+    stukken: ['Figuurtje: Oorwarmers (15), Met sneeuwvlok (20), Sneeuwbal (15)', 'Mijn huis: Sneeuwman (25), IJsbaantje (35), IJspegels (20)'],
+  },
+  {
+    versie: '0.61',
+    datum: '2026-10-28',
+    titel: 'Kerstmis: Lichtjesboom, het kerstboomhuis en het kerstbos',
+    tekst: 'Het kerstpakket staat klaar: het verhaal Het lichtje van de kerstboom, de kleurplaat Kerstboom, het spelletje Lichtjesboom (kijk naar de lichtjes en doe ze na, elke ronde één erbij, 3 niveaus), een kerstboomhuis in De wereld met een gouden rand en een slot tot het gekocht is, en in Springland een pittig level in Pepernotenland: Het kerstbos (snellere egels en een paar gaten vlak na elkaar). Het spelletje en de stukken zijn nog niet vrijgegeven: dat doen jullie in Kinderen → Winkelaanbod.',
+    verhaal: 'Het lichtje van de kerstboom (Grote ogen)',
+    spel: { naam: 'Lichtjesboom', prijs: 20 },
+    stukken: ['Figuurtje: Kerstmuts (20), Met kerstboompje (20), Kerstbal (15)', 'Mijn huis: Kerstboom (30), Rendier (35), Kerstster op de deur (20)'],
+  },
+  {
+    versie: '0.60',
+    datum: '2026-10-28',
+    titel: 'Sinterklaas: Wat is er weg?, het pakjeshuis en de pakjesdaken',
+    tekst: 'Het Sinterklaaspakket staat klaar: het verhaal Bram zet zijn schoen, de kleurplaat Pepernoten, het spelletje Wat is er weg? (kijk goed naar de voorwerpen, een doek gaat erover en er verdwijnt er één, 3 niveaus), een pakjeshuis in De wereld met een gouden rand en een slot tot het gekocht is, en in Springland een nieuw level in Pepernotenland: De pakjesdaken. Het spelletje en de stukken zijn nog niet vrijgegeven: dat doen jullie in Kinderen → Winkelaanbod.',
+    verhaal: 'Bram zet zijn schoen (Grote ogen)',
+    spel: { naam: 'Wat is er weg?', prijs: 20 },
+    stukken: ['Figuurtje: Cadeaustrik (15), Met pepernoot (15), Zak met pakjes (20)', 'Mijn huis: Hobbelpaard (25), Peperkoekhuisje (30), Sterrenslinger (20)'],
+  },
+  {
     versie: '0.59',
     datum: '2026-10-28',
     titel: 'Geen menu meer bij lang drukken in Springland',

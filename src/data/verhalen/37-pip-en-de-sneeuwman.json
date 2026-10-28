@@ -1,0 +1,94 @@
+{
+  "nr": 37,
+  "titel": "Pip en de sneeuwman",
+  "reeks": "avonturiers",
+  "leeftijd": 8,
+  "thema": "Winter, durven en opnieuw proberen",
+  "bladzijden": [
+    {
+      "tekst": "Pip de pinguïn woont ver weg, waar het altijd sneeuwt. Maar vandaag is hij op bezoek in een park in België. Het is zijn eerste winter hier. Pip kijkt naar de witte velden. \"Dat ziet er bekend uit,\" zegt hij verbaasd.",
+      "prent": {
+        "decor": "sneeuwbos",
+        "figuren": [
+          "pip"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor en Daan komen aanrennen met een slee. \"Wil je met ons spelen?\" vraagt Daan. Pip knikt. Hij kan goed glijden op zijn buik. Samen suizen ze van de heuvel af. Het gaat zo snel dat de sneeuw in hun gezicht spat.",
+      "prent": {
+        "decor": "sneeuwbos",
+        "figuren": [
+          "noor",
+          "daan",
+          "pip"
+        ]
+      }
+    },
+    {
+      "tekst": "Beneden aan de heuvel rolt Noor een bal. \"We maken een sneeuwman!\" roept ze. Pip kijkt vol bewondering. Zoiets heeft hij nog nooit gemaakt. \"Ik help mee!\" zegt hij. Pip duwt de bal met zijn buik vooruit, tot hij zo groot is als een tafel.",
+      "prent": {
+        "decor": "sneeuwbos",
+        "figuren": [
+          "noor",
+          "daan",
+          "pip"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan rolt een tweede bal, kleiner dan de eerste. Samen tillen ze hem erbovenop. Daan vindt twee stenen voor de ogen. Noor haalt een wortel uit haar rugzak. Pip legt er zijn eigen sjaal omheen. \"Nu heeft hij het warm,\" zegt hij tevreden.",
+      "prent": {
+        "decor": "park",
+        "figuren": [
+          "daan",
+          "noor",
+          "pip"
+        ]
+      }
+    },
+    {
+      "tekst": "Het wordt avond. De zon zakt achter de bomen en alles kleurt roze. Pip kijkt naar de sneeuwman. Zijn wortelneus lijkt een beetje te zakken. \"Gaat hij weg?\" vraagt Pip bezorgd. Noor kijkt hem zacht aan.",
+      "prent": {
+        "decor": "park",
+        "figuren": [
+          "pip",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Sneeuwmannen smelten een beetje als het warmer wordt,\" zegt Daan. \"Maar dat is niet erg. Zo werkt sneeuw nu eenmaal.\" Pip denkt na. Hij wil de sneeuwman niet kwijt. Maar hij ziet ook dat Noor en Daan er niet bang voor zijn.",
+      "prent": {
+        "decor": "park",
+        "figuren": [
+          "noor",
+          "daan",
+          "pip"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Dan maken we morgen een nieuwe,\" zegt Pip. \"Een nog grotere, met een hoed.\" Noor en Daan klappen in hun handen. De sneeuwman lijkt te glimlachen onder zijn sjaal. Samen lopen ze naar huis, onder de eerste sterren.",
+      "prent": {
+        "decor": "park",
+        "figuren": [
+          "pip",
+          "noor",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "De volgende ochtend ligt er verse sneeuw. Pip staat als eerste buiten. Hij begint meteen aan een nieuwe bal. Een heel goed idee hoeft niet na één dag te stoppen. Dat heeft hij vandaag geleerd, en hij glijdt vrolijk op zijn buik de heuvel af.",
+      "prent": {
+        "decor": "sneeuwbos",
+        "figuren": [
+          "pip",
+          "noor",
+          "daan"
+        ]
+      }
+    }
+  ]
+}

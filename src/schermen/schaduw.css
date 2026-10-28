@@ -1,0 +1,40 @@
+/* Wie is de schaduw?: bovenaan het voorwerp in kleur, eronder zwarte schaduwen om uit te kiezen. */
+.schaduw { display: flex; flex-direction: column; align-items: center; gap: clamp(8px, 1.8vh, 18px); width: 100%; }
+.schaduw-tekening { display: block; width: 100%; height: auto; }
+.schaduw-teller { display: flex; gap: 6px; }
+.schaduw-teller span { width: 14px; height: 14px; border-radius: 50%; background: var(--line); }
+.schaduw-teller .af { background: var(--gold); }
+.schaduw-teller .nu { background: var(--kid); }
+.schaduw-doel {
+  width: clamp(110px, 24vh, 190px); height: clamp(110px, 24vh, 190px); padding: 12px; border-radius: 30px;
+  border: 3px solid var(--line); background: linear-gradient(#DCEBFA, #F4F9FE); animation: schaduw-pop 0.4s ease-out;
+}
+.schaduw-rij { display: flex; flex-wrap: wrap; justify-content: center; gap: clamp(10px, 2vw, 22px); width: min(96%, 860px); }
+.schaduw-vak {
+  width: clamp(76px, 15vh, 120px); height: clamp(76px, 15vh, 120px); padding: 10px; border-radius: 22px;
+  border: 3px solid var(--line); background: var(--card);
+}
+.schaduw-vak.klein { width: clamp(56px, 10vh, 84px); height: clamp(56px, 10vh, 84px); padding: 6px; border: 0; background: transparent; animation: schaduw-pop 0.5s ease-out; }
+.schaduw-vak.keuze { box-shadow: 0 5px 0 var(--line); }
+.schaduw-vak.keuze:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 2px 0 var(--line); }
+/* de schaduw: dezelfde tekening, helemaal zwart */
+.schaduw-vak.keuze .schaduw-tekening { filter: brightness(0) opacity(0.82); transition: filter 0.3s; }
+.schaduw-vak.juist { border-color: #2E9A45; }
+.schaduw-vak.juist .schaduw-tekening { filter: none; }
+.schaduw-vak.fout { border-color: #D8452B; animation: schaduw-schud 0.4s ease-out; }
+.schaduw-rij.tip .keuze { animation: schaduw-wip 0.8s ease-in-out infinite; }
+.schaduw-rij.tip .keuze:nth-child(2n) { animation-delay: 0.2s; }
+.schaduw-eind { display: grid; justify-items: center; gap: 16px; width: 100%; }
+@keyframes schaduw-pop { 0% { transform: scale(0.6); } 70% { transform: scale(1.08); } 100% { transform: scale(1); } }
+@keyframes schaduw-schud { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+@keyframes schaduw-wip { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@media (prefers-reduced-motion: reduce) {
+  .schaduw-doel, .schaduw-vak.klein, .schaduw-vak.fout, .schaduw-rij.tip .keuze { animation: none; }
+  .schaduw-rij.tip .keuze { outline: 4px solid var(--gold); }
+}
+
+/* Liggende gsm: kleiner voorwerp en kleinere schaduwen, zodat alles zonder scrollen past. */
+@media (max-height: 500px) and (orientation: landscape) {
+  .schaduw-doel { width: 92px; height: 92px; padding: 8px; }
+  .schaduw-vak { width: 64px; height: 64px; padding: 6px; }
+}

@@ -30,4 +30,5 @@ export const geluid = {
   oei: () => piep([330, 262]),
   draai: () => piep([700]),
   paar: () => piep([660, 880]),
+  toon: (frequentie: number) => piep([frequentie]),
 }
