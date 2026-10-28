@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import type { Boodschap, Categorie, Winkel } from './bron/types.ts'
-import { invoerVan, leesAantal, prijsUitInvoer, categorieVoor, eerdereNamen, leesBedrag, maandGrenzen, perWinkel, staatOpLijst, stelIngredientenVoor, uitgavenOverzicht, winkelVoor } from './boodschappen.ts'
+import { invoerVan, leesAantal, prijsUitInvoer, categorieVoor, eerdereNamen, leesBedrag, maandGrenzen, perWinkel, staatOpLijst, stelIngredientenVoor, uitgavenOverzicht, winkelVoor, schatLijst, schatPrijs } from './boodschappen.ts'
 
 const b = (id: string, naam: string, winkel_id: string | null, extra: Partial<Boodschap> = {}): Boodschap =>
   ({ id, naam, hoeveel: '', winkel_id, dag: null, gerecht: null, gekocht_op: null, categorie_id: null, prijs: null, eenheidsprijs: null, aantal: null, aangemaakt_op: `2026-10-2${id}T10:00:00Z`, ...extra })
@@ -131,5 +131,27 @@ describe('prijs per eenheid', () => {
   })
   it('invoerVan leest een bewaarde eenheidsprijs terug', () => {
     expect(invoerVan({ prijs: 3.87, eenheidsprijs: 1.29, aantal: 3 })).toEqual({ eenheid: true, prijs: '1,29', aantal: '3' })
+  })
+})
+
+describe('schatPrijs', () => {
+  const kocht = (o: Partial<Boodschap>): Boodschap => ({ id: Math.random().toString(), naam: 'melk', hoeveel: '', winkel_id: 'a', dag: null, gerecht: null, gekocht_op: '2026-10-01T10:00:00Z',
+    aangemaakt_op: '2026-10-01T09:00:00Z', categorie_id: null, prijs: 1.2, eenheidsprijs: null, aantal: null, ...o })
+  it('geeft niets zonder geschiedenis', () => {
+    expect(schatPrijs({ naam: 'brood', hoeveel: '', winkel_id: 'a' }, [kocht({})])).toBeNull()
+  })
+  it('kiest de laatste prijs, liefst uit dezelfde winkel', () => {
+    const h = [kocht({ prijs: 1, gekocht_op: '2026-10-02T10:00:00Z' }), kocht({ prijs: 1.5, winkel_id: 'b', gekocht_op: '2026-10-05T10:00:00Z' })]
+    expect(schatPrijs({ naam: 'Melk', hoeveel: '', winkel_id: 'a' }, h)).toEqual({ bedrag: 1, andereWinkel: false })
+    expect(schatPrijs({ naam: 'melk', hoeveel: '', winkel_id: 'c' }, h)).toEqual({ bedrag: 1.5, andereWinkel: true })
+  })
+  it('rekent eenheidsprijs × aantal uit hoeveel', () => {
+    const h = [kocht({ prijs: 3, eenheidsprijs: 1.5, aantal: 2 })]
+    expect(schatPrijs({ naam: 'melk', hoeveel: '4 pakken', winkel_id: 'a' }, h)?.bedrag).toBe(6)
+    expect(schatPrijs({ naam: 'melk', hoeveel: '', winkel_id: 'a' }, h)?.bedrag).toBe(3)
+  })
+  it('telt de lijst op en meldt artikels zonder prijs', () => {
+    const open = [kocht({ gekocht_op: null, prijs: null }), kocht({ naam: 'kaas', gekocht_op: null, prijs: null })]
+    expect(schatLijst(open, [kocht({})])).toEqual({ totaal: 1.2, geschat: 1, zonder: 1 })
   })
 })

@@ -331,6 +331,9 @@ a.vink-tekst { text-decoration: none; }
 .afreken-lijst input { text-align: right; font-variant-numeric: tabular-nums; min-width: 0; }
 .afreken-lijst input, .afreken-lijst select { min-height: 44px; border: 1px solid var(--line); padding: 0 8px; font: inherit; font-size: 15px; background: var(--surface); color: var(--ink); }
 .afreken-totaal { display: flex; justify-content: space-between; margin: 0; padding-top: 4px; font-size: 16px; }
+.prijs-schatting { font-style: italic; opacity: .75; }
+.verwacht { margin: 0 0 6px; font-size: 15px; }
+.verwacht small { opacity: .75; }
 .afreken-totaal b { font-variant-numeric: tabular-nums; }
 .uitgaven { padding: 0; }
 .uitgaven-totaal { display: flex; justify-content: space-between; align-items: baseline; margin: 0; padding: 14px 16px 8px; }

@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import type { Boodschap, Categorie, NieuweBoodschap, Winkel } from '../lib/bron/types.ts'
-import { categorieVoor, eerdereNamen, euro, invoerVan, leesBedrag, perWinkel, prijsUitInvoer, winkelVoor, type PrijsInvoer } from '../lib/boodschappen.ts'
+import { categorieVoor, eerdereNamen, euro, invoerVan, leesBedrag, perWinkel, prijsUitInvoer, schatLijst, schatPrijs, winkelVoor, type PrijsInvoer } from '../lib/boodschappen.ts'
 import { useGegevens } from '../lib/gegevens.ts'
 import { useSessie } from '../lib/sessie.tsx'
 import OuderKader from './OuderKader.tsx'
@@ -122,6 +122,7 @@ export default function Boodschappen() {
               {g.open.length}
             </span>
           </h2>
+          <Verwacht open={g.open} lijst={lijst} />
           <ul className="vink-lijst">
             {[...g.open, ...g.gekocht].map((b) => {
               const gekocht = Boolean(b.gekocht_op)
@@ -136,7 +137,7 @@ export default function Boodschappen() {
                   <button type="button" className="vink-tekst" onClick={() => setBewerk(b)}>
                     <b>{b.naam}</b>{uitleg && <small>{uitleg}</small>}
                   </button>
-                  {b.prijs !== null ? <span className="prijs">{euro(b.prijs)}</span> : <span />}
+                  {b.prijs !== null ? <span className="prijs">{euro(b.prijs)}</span> : <Schatting boodschap={b} lijst={lijst} />}
                 </li>
               )
             })}
@@ -146,6 +147,25 @@ export default function Boodschappen() {
       <p className="tip">Wat je afvinkt blijft nog een halve dag doorstreept staan; tik dan op Afrekenen om de prijzen in te vullen. De app onthoudt in welke winkel en categorie je iets koopt.
         {' '}<Link to="/ouder/uitgaven">Uitgaven</Link> · <Link to="/ouder/winkels">Winkels en categorieën beheren</Link></p>
     </OuderKader>
+  )
+}
+
+/** Verwachte prijs van een open artikel uit eerdere aankopen; "±" en schuin omdat het een schatting is. */
+function Schatting({ boodschap, lijst }: { boodschap: Boodschap; lijst: Boodschap[] }) {
+  if (boodschap.gekocht_op) return <span />
+  const s = schatPrijs(boodschap, lijst)
+  if (!s) return <span />
+  return <span className="prijs prijs-schatting" title={s.andereWinkel ? 'Schatting uit een andere winkel' : 'Schatting uit de vorige keer'}>± {euro(s.bedrag)}{s.andereWinkel ? '*' : ''}</span>
+}
+
+/** "Dit gaat ± zoveel kosten" per winkel, op basis van wat het vorige keer kostte. */
+function Verwacht({ open, lijst }: { open: Boodschap[]; lijst: Boodschap[] }) {
+  if (open.length === 0) return null
+  const s = schatLijst(open, lijst)
+  if (s.geschat === 0) return null
+  return (
+    <p className="verwacht">Verwacht ± <b>{euro(s.totaal)}</b>
+      {s.zonder > 0 && <small> · {s.zonder} {s.zonder === 1 ? 'artikel' : 'artikels'} zonder eerdere prijs</small>}</p>
   )
 }
 

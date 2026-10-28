@@ -41,3 +41,7 @@ Tests: `supabase/tests/boodschappen.test.sql`, `supabase/tests/uitgaven.test.sql
 ## Prijs per eenheid (27 oktober 2026, nieuwtje 0.50)
 
 Bij een artikel (bewerken en Afrekenen) kies je Totaal of Per eenheid. Per eenheid: prijs per stuk/kg/l plus aantal (komma mag, leeg = 1); de app berekent totaal = eenheidsprijs × aantal (op de cent) en bewaart dat in `prijs`, zodat Uitgaven ongewijzigd optelt. Kolommen `eenheidsprijs` en `aantal` (migratie 20261027000500) onthouden hoe het ingegeven werd. Logica: `prijsUitInvoer` in `src/lib/boodschappen.ts`.
+
+## Verwachte prijs (28 oktober 2026, nieuwtje 0.68)
+
+Open artikels tonen een schatting (`± €`, schuin) uit de laatste aankoop met prijs: liefst dezelfde winkel, anders een andere (met `*`). Was toen een eenheidsprijs ingegeven en staat in Hoeveel nu een aantal, dan eenheidsprijs × aantal. Boven elke winkel staat "Verwacht ± €" (som van de schattingen, artikels zonder eerdere prijs apart geteld). Alleen app-logica (`schatPrijs`, `schatLijst` in `src/lib/boodschappen.ts`), geen migratie; gebruikt de 60 dagen geschiedenis die de lijst al laadt.

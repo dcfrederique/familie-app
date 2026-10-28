@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.68',
+    datum: '2026-10-28',
+    titel: 'Verwachte prijs op de boodschappenlijst',
+    tekst: 'Bij Wij → Boodschappen staat bij elk artikel dat je al eens met prijs kocht een verwachte prijs (± €, uit de vorige keer, liefst in dezelfde winkel; een * betekent een andere winkel). Had je een prijs per eenheid ingevuld en zet je een aantal bij Hoeveel (bv. 2), dan rekent de app eenheidsprijs × aantal. Boven elke winkel staat "Verwacht ± €" voor de hele lijst; artikels zonder eerdere prijs tellen niet mee en worden apart geteld.',
+  },
+  {
     versie: '0.67',
     datum: '2026-10-28',
     titel: 'Chat-icoon op de kinderbalk',

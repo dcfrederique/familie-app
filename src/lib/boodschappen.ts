@@ -199,3 +199,42 @@ export function maandGrenzen(verschil: number, nu = new Date()): { van: string; 
   const tot = new Date(nu.getFullYear(), nu.getMonth() + verschil + 1, 1)
   return { van: van.toISOString(), tot: tot.toISOString(), label: van.toLocaleDateString('nl-BE', { month: 'long', year: 'numeric' }) }
 }
+
+export interface PrijsSchatting { bedrag: number; /** Prijs komt uit een andere winkel dan waar het nu op de lijst staat. */ andereWinkel: boolean }
+
+/** Het eerste getal van een hoeveelheid ("2 pakken", "1,5 kg"); null als er geen staat. */
+function aantalUit(hoeveel: string): number | null {
+  const m = hoeveel.trim().match(/^(\d{1,4}(?:[.,]\d{1,3})?)(?!\d)/)
+  const n = m ? Number(m[1].replace(',', '.')) : NaN
+  return n > 0 ? n : null
+}
+
+/**
+ * Verwachte prijs van een artikel dat nog gekocht moet worden, uit de laatste keer dat het met prijs gekocht werd:
+ * liefst in dezelfde winkel, anders in een andere. Is toen een prijs per eenheid ingegeven en staat er nu een
+ * aantal in "hoeveel", dan eenheidsprijs × aantal; anders het toenmalige totaal. Null als er geen geschiedenis is.
+ */
+export function schatPrijs(b: Pick<Boodschap, 'naam' | 'hoeveel' | 'winkel_id'>, geschiedenis: Boodschap[]): PrijsSchatting | null {
+  const s = sleutel(b.naam)
+  const eerdere = geschiedenis.filter((x) => x.gekocht_op && x.prijs !== null && sleutel(x.naam) === s)
+    .sort((x, y) => y.gekocht_op!.localeCompare(x.gekocht_op!))
+  const vorige = (b.winkel_id && eerdere.find((x) => x.winkel_id === b.winkel_id)) || eerdere[0]
+  if (!vorige) return null
+  const aantal = aantalUit(b.hoeveel)
+  const bedrag = vorige.eenheidsprijs !== null && aantal !== null
+    ? Math.round(vorige.eenheidsprijs * aantal * 100) / 100
+    : vorige.prijs!
+  return { bedrag, andereWinkel: Boolean(b.winkel_id) && vorige.winkel_id !== b.winkel_id }
+}
+
+export interface LijstSchatting { totaal: number; geschat: number; zonder: number }
+
+/** Verwacht totaal van de open artikels: wat een schatting heeft telt mee, de rest wordt geteld als "zonder prijs". */
+export function schatLijst(open: Boodschap[], geschiedenis: Boodschap[]): LijstSchatting {
+  let totaal = 0, geschat = 0
+  for (const b of open) {
+    const sch = schatPrijs(b, geschiedenis)
+    if (sch) { totaal += sch.bedrag; geschat++ }
+  }
+  return { totaal: Math.round(totaal * 100) / 100, geschat, zonder: open.length - geschat }
+}
