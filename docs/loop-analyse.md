@@ -1,6 +1,6 @@
 # Lopen: wat achter de Strava-betaalmuur zit en wat we zelf kunnen maken
 
-Plan (28 oktober 2026, op vraag van Frederique). Niets hiervan is gebouwd; kies later wat je wilt. Uitgangspunt: de lopen staan al in `loopsessies` (`docs/lopen.md`), met afstand, duur, dag, soort, gevoel en, via Strava, hoogte, hartslag en route. Wat Strava in het betaalde abonnement verkoopt is meestal rekenwerk op die gegevens, en dat kunnen we zelf, privé per ouder en gratis.
+Plan (28 oktober 2026, op vraag van Frederique). Niets hiervan is gebouwd; kies later wat je wilt. **Let op:** de Strava-koppeling is geschrapt (een API-app vraagt een abonnement). Gegevens die we van Strava zouden krijgen (hartslag, `best_efforts`, schoenen, route) komen er dus alleen via zelf invullen of een latere import van GPX/FIT-bestanden; ideeën die daarop leunen (2, 5, 6 met hartslag, 8, 9) zijn dan minder aantrekkelijk. Uitgangspunt: de lopen staan al in `loopsessies` (`docs/lopen.md`), met afstand, duur, dag, soort, gevoel en, via Strava, hoogte, hartslag en route. Wat Strava in het betaalde abonnement verkoopt is meestal rekenwerk op die gegevens, en dat kunnen we zelf, privé per ouder en gratis.
 
 Overzicht, van weinig werk en veel nut naar meer werk:
 
@@ -51,7 +51,7 @@ De voorwaarden voor de Strava-API zijn streng over wat je met de gegevens mag: z
 
 ## Voorstel voor een volgorde
 
-1. Eerst de Strava-koppeling aan de praat (`docs/strava.md`).
+1. Eerst beslissen hoe er meer gegevens binnenkomen (bv. import van GPX/FIT-bestanden).
 2. Doelen (1) en weekverslag (3): snel, veel zichtbaar nut.
 3. Records (2) en voorspelling (7).
 4. Belasting en vorm (6) met zones (5): het hoofdstuk dat het abonnement vervangt.

@@ -111,36 +111,6 @@ jobs:
           supabase secrets set --project-ref "$ref" VAPID_PUBLIC_KEY="$VAPID_PUBLIC_KEY" VAPID_PRIVATE_KEY="$VAPID_PRIVATE_KEY" MELDING_GEHEIM="$geheim"
           supabase functions deploy melding --project-ref "$ref" --no-verify-jwt
 
-  # De Edge Function "strava" uitrollen (docs/strava.md). Alleen op main, na de migraties. Zonder de Strava-secrets
-  # (STRAVA_CLIENT_ID, STRAVA_CLIENT_SECRET) of SUPABASE_ACCESS_TOKEN slaat de job zich over.
-  strava:
-    needs: [migraties]
-    runs-on: ubuntu-latest
-    timeout-minutes: 10
-    env:
-      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-      STRAVA_CLIENT_ID: ${{ secrets.STRAVA_CLIENT_ID }}
-      STRAVA_CLIENT_SECRET: ${{ secrets.STRAVA_CLIENT_SECRET }}
-      SUPABASE_URL: ${{ vars.VITE_SUPABASE_URL }}
-      KLAAR: ${{ github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && secrets.SUPABASE_ACCESS_TOKEN != '' && secrets.STRAVA_CLIENT_ID != '' && secrets.STRAVA_CLIENT_SECRET != '' && vars.VITE_SUPABASE_URL != '' }}
-    steps:
-      - if: env.KLAAR != 'true'
-        run: echo "::notice::Strava niet uitgerold (op main nodig; secrets STRAVA_CLIENT_ID, STRAVA_CLIENT_SECRET en SUPABASE_ACCESS_TOKEN, zie docs/strava.md)."
-      - if: env.KLAAR == 'true'
-        uses: actions/checkout@v5
-      - if: env.KLAAR == 'true'
-        uses: supabase/setup-cli@v1
-        with:
-          version: latest
-      - if: env.KLAAR == 'true'
-        run: |
-          ref=$(echo "$SUPABASE_URL" | sed -E 's#https://([^.]+)\..*#\1#')
-          # Het controlewoord voor de webhook leiden we af van het clientgeheim: niemand moet het onthouden.
-          verify=$(printf 'strava-webhook:%s' "$STRAVA_CLIENT_SECRET" | sha256sum | cut -c1-32)
-          echo "::add-mask::$verify"
-          supabase secrets set --project-ref "$ref" STRAVA_CLIENT_ID="$STRAVA_CLIENT_ID" STRAVA_CLIENT_SECRET="$STRAVA_CLIENT_SECRET" STRAVA_VERIFY_TOKEN="$verify"
-          supabase functions deploy strava --project-ref "$ref" --no-verify-jwt
-
   # Android-schil (docs/capacitor.md): bouwt een debug-APK die de gehoste site opent. Op main komt hij ook als
   # download bij de release "android-latest". Mislukt dit, dan blokkeert het het deployen niet.
   android:

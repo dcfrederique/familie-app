@@ -21,9 +21,9 @@ export interface Loopsessie {
   /** 1 (zwaar) tot 5 (top) */
   gevoel: number | null
   notitie: string | null
-  /** Waar de loop vandaan komt; een latere koppeling zet hier 'strava' of 'horloge'. */
+  /** Waar de loop vandaan komt; een latere bestandsimport kan hier 'strava' of 'horloge' zetten. */
   bron: LoopBron
-  /** Id bij de bron (bv. de Strava-activiteit), zodat een loop niet twee keer bewaard wordt. */
+  /** Id bij de bron (bv. uit een geïmporteerd bestand), zodat een loop niet twee keer bewaard wordt. */
   externe_id: string | null
 }
 

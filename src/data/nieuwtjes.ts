@@ -19,17 +19,10 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
-    versie: '0.64',
-    datum: '2026-10-28',
-    titel: 'Lopen koppelen met Strava (voorbereid)',
-    tekst: 'In Lopen staat nu een knop Koppel met Strava. Na de koppeling komen je lopen uit Strava vanzelf in de lijst, ook nieuwe lopen kort na het opslaan bij Strava, met hoogte, hartslag en route als Strava die heeft. Wat je zelf invulde blijft staan. De knop werkt pas als de Strava-app aangemaakt is en de gegevens in GitHub staan: de stappen staan in docs/strava.md.',
-    open: 'Strava-app aanmaken en Client ID + Client Secret als GitHub-secrets zetten (docs/strava.md).',
-  },
-  {
     versie: '0.63',
     datum: '2026-10-28',
     titel: 'Lopen bijhouden in het ouderdeel',
-    tekst: 'Onder Gezondheid → Lopen vul je zelf je lopen in: afstand, duur, dag, soort en hoe het ging. De app rekent het tempo uit en toont je week, de laatste 8 weken als staafjes en een lijst die je kunt aanpassen. Het is privé per ouder, zoals Gewicht. Een koppeling met Strava komt later; de database is er al op voorbereid.',
+    tekst: 'Onder Gezondheid → Lopen vul je zelf je lopen in: afstand, duur, dag, soort en hoe het ging. De app rekent het tempo uit en toont je week, de laatste 8 weken als staafjes en een lijst die je kunt aanpassen. Het is privé per ouder, zoals Gewicht.',
   },
   {
     versie: '0.62',

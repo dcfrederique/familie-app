@@ -449,11 +449,4 @@ export interface Bron {
   /** Voegt een loop toe, of past er een aan als `id` meegegeven is. */
   loopOpslaan(loop: LoopInvoer): Promise<void>
   loopVerwijderen(id: string): Promise<void>
-  /** Is jouw Strava gekoppeld, en wanneer werd er voor het laatst gesynchroniseerd (docs/strava.md). */
-  stravaStatus(): Promise<{ gekoppeld: boolean; laatste_sync: string | null }>
-  /** Adres bij Strava waar je toestemming geeft; daarna komt Strava terug naar Lopen. */
-  stravaKoppelen(): Promise<string>
-  /** Haalt nieuwe lopen uit Strava op; geeft het aantal terug. */
-  stravaSynchroniseren(): Promise<number>
-  stravaOntkoppelen(): Promise<void>
 }
