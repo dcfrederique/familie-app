@@ -163,7 +163,7 @@ function SpringScherm({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolea
         </div>
       </div>
 
-      <div className="spel-veld spring-veld">
+      <div className="spel-veld spring-veld" onContextMenu={(e) => e.preventDefault()}>
         <canvas ref={canvas} aria-label={besturing === 'vanzelf' ? 'Springland: tik om te springen' : 'Springland: pijltjes om te lopen, knop om te springen'} />
         {!klaar && (
           <div className="spring-knoppen">

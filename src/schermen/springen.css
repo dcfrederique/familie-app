@@ -26,7 +26,7 @@
 @media (prefers-reduced-motion: reduce) { .spring-poppetje.loopt image, .spring-plek.schudt { animation: none; } }
 
 /* Springland: speelveld */
-.spring-veld { user-select: none; -webkit-user-select: none; }
+.spring-veld, .spring-veld * { user-select: none; -webkit-user-select: none; -webkit-touch-callout: none; }
 .spring-knoppen {
   position: absolute; inset: auto 0 0 0; padding: 16px 20px; display: flex; justify-content: space-between; align-items: flex-end;
   pointer-events: none;

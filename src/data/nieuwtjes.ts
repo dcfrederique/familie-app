@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.59',
+    datum: '2026-10-28',
+    titel: 'Geen menu meer bij lang drukken in Springland',
+    tekst: 'Wie in Springland lang op de knoppen om te springen of naar links en rechts drukt, krijgt geen browsermenu meer over het scherm. De knoppen blijven gewoon doorlopen.',
+  },
+  {
     versie: '0.58',
     datum: '2026-10-28',
     titel: 'Schoen vullen en Tekenen passen beter op de tablet',
