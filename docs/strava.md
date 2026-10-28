@@ -21,7 +21,7 @@ Basis gebouwd op 28 oktober 2026 (op vraag van Frederique). Bouwt op `docs/lopen
 
 ## Wat Frederique doet (eenmalig)
 
-1. **Strava-app maken** op <https://www.strava.com/settings/api> (aangemeld als de ouder die de app maakt):
+1. **Strava-app maken** op <https://www.strava.com/settings/api>, aangemeld als de ouder die een Strava-abonnement heeft (zonder abonnement kan Strava geen app aanmaken). Daarna in dezelfde instellingen **opwaarderen naar 10 atleten**, zodat de andere ouder ook kan koppelen:
    - Application Name: bv. *Familie-app*; Category: *Training* of *Other*; Website: het adres van de app (`https://thankful-meadow-0d992b403.5.azurestaticapps.net`).
    - **Authorization Callback Domain**: enkel het domein van het Supabase-project, bv. `abcdefgh.supabase.co` (zonder `https://` en zonder pad).
    - Een icoon uploaden is verplicht (bv. het app-icoon).
@@ -30,14 +30,18 @@ Basis gebouwd op 28 oktober 2026 (op vraag van Frederique). Bouwt op `docs/lopen
 4. De volgende push op main rolt de functie uit (CI-job `strava`, slaat zichzelf over zolang de secrets ontbreken). Daarna is het een kwestie van op **Koppel met Strava** tikken.
 5. Optioneel: `APP_URL` als Edge Function-secret als de app ooit naar een ander adres verhuist (standaard het huidige Azure-adres).
 
-### Let op: beperking van nieuwe Strava-apps
+### Let op: abonnement en aantal atleten (Strava, nagekeken op 28 oktober 2026)
 
-Een nieuwe Strava-app staat volgens de documentatie in een soort "single player mode": alleen de maker van de app (één atleet) kan koppelen. Voor de tweede ouder moet je bij Strava om meer atleten vragen (formulier in de developer-documentatie; voor een gezinsapp wordt dat meestal toegestaan). Tot dan kan een partner nog altijd zelf lopen invullen. Controleer dit op de Strava-pagina bij het aanmaken, want Strava past dit beleid soms aan.
+Bron: <https://developers.strava.com/docs/getting-started/> en de aankondiging over de API-wijzigingen van 2026.
+- **Een Strava-abonnement is nodig om een API-app aan te maken** ("a Strava subscription is a prerequisite for creating an app"). Wie de app aanmaakt moet dus abonnee zijn; de andere ouder niet. Onduidelijk is wat er gebeurt als het abonnement later stopt (de community-vraag daarover had nog geen antwoord). Een maand nemen en opzeggen is dus een risico; vraag het zo nodig aan Strava (developers@strava.com).
+- **Een nieuwe app start met één atleet** (de maker). In de API-instellingen kun je **zonder beoordeling opwaarderen naar 10 atleten**. Voor twee ouders volstaat dus één Strava-app waar beide ouders aan koppelen; elke ouder meldt zich met het eigen Strava-account aan en ziet alleen de eigen lopen. Een eigen Strava-app per ouder is niet nodig.
+- Het abonnement van de maker verhoogt het aantal atleten niet.
+- Of een kleine app gegevens mag tonen buiten de atleet zelf is niet helemaal duidelijk; we tonen lopen daarom alleen aan de ouder zelf.
 
 ## Grenzen van de API
 
 - Tokens van Strava verlopen na 6 uur; de functie vernieuwt ze zelf (de refresh token wisselt dan mee).
-- Standaard limiet: 100 oproepen per 15 minuten en 1000 per dag voor de hele app, ruim genoeg voor twee ouders.
+- Limieten voor de hele app: 200 oproepen per 15 minuten en 2000 per dag (na het opwaarderen 400 en 4000), ruim genoeg voor twee ouders.
 - De webhook levert alleen een melding; de details halen we zelf op. Strava probeert een mislukte melding een paar keer opnieuw.
 - Strava verbiedt in de voorwaarden om hun gegevens aan anderen te tonen dan de atleet zelf: lopen blijven dus privé per ouder, zoals nu.
 
