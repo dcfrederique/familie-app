@@ -60,7 +60,6 @@ export const ouderMenu: MenuGroep[] = [
   ] },
   { naam: 'Gezondheid', sleutel: 'gezondheid', alleenOuderGsm: true, items: [
     { naam: 'Gewicht', icoon: 'gewicht', pad: '/ouder/gewicht' },
-    { naam: 'Mijn profiel', icoon: 'profiel', pad: '/ouder/profiel' },
     { naam: 'Lopen', icoon: 'lopen', pad: '/ouder/lopen' },
     { naam: 'Analyse', icoon: 'analyse', pad: '/ouder/lopen-analyse' },
     { naam: 'Loopschema', icoon: 'schema', pad: '/ouder/loopschema' },

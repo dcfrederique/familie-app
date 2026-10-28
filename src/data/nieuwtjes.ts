@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.66',
+    datum: '2026-10-28',
+    titel: 'Mijn instellingen via je avatar',
+    tekst: 'Bovenaan het menu staat nu een rondje met jouw figuurtje (in de stijl Onderbalk links in de balk). Tik erop voor Mijn instellingen: je figuurtje, je gegevens (lengte, gewicht, doel), meldingen en toestellen, pincode en de keuze van de menustijl. Mijn profiel staat daarom niet meer apart onder Gezondheid.',
+  },
+  {
     versie: '0.65',
     datum: '2026-10-28',
     titel: 'Menu herindeeld voor ouders en kinderen',

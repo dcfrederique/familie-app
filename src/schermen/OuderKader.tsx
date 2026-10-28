@@ -143,13 +143,13 @@ export default function OuderKader({ titel, wachtend, children }: { titel: strin
 }
 
 function Kader({ titel, wachtend, children }: { titel: string; wachtend?: number; children: ReactNode }) {
-  const { account, gebruikers, kinderen } = useSessie()
+  const { account, gebruikers, kinderen, status } = useSessie()
   const [menuOpen, setMenuOpen] = useState(false)
   const { pathname } = useLocation()
   const menuGegevens = useMenuGegevens()
   const teller = wachtend ?? menuGegevens?.wachtend ?? 0
   const opTablet = account?.soort === 'tablet'
-  const ik = gebruikers.find((g) => g.id === account?.ouder_id)
+  const ik = gebruikers.find((g) => g.id === account?.ouder_id) ?? (status === 'demo' ? gebruikers.find((g) => g.rol === 'ouder') : undefined)
   const stijl = useMenustijl()
   const groepen = zichtbaarMenu(opTablet)
   const snel = groepen.flatMap((g) => g.items).filter((i) => i.pad && snelPaden.includes(i.pad)).sort((x, y) => snelPaden.indexOf(x.pad!) - snelPaden.indexOf(y.pad!))
@@ -168,10 +168,16 @@ function Kader({ titel, wachtend, children }: { titel: string; wachtend?: number
   return (
     <div className={`ouder stijl-${stijl}${menuOpen ? ' menu-open' : ''}`}>
       <header className="ouder-balk">
-        <button type="button" className="balk-knop menu-knop" aria-label="Menu openen" aria-expanded={menuOpen}
-                aria-controls="ouder-menu" onClick={() => setMenuOpen(!menuOpen)}>
-          <Icoon naam="menu" />
-        </button>
+        {stijl === 'onderbalk' && ik && !opTablet ? (
+          <Link to="/ouder/mij" className="balk-knop balk-avatar" aria-label={`Mijn instellingen, ${ik.naam}`}>
+            <KindAvatar kind={ik} grootte={34} />
+          </Link>
+        ) : (
+          <button type="button" className="balk-knop menu-knop" aria-label="Menu openen" aria-expanded={menuOpen}
+                  aria-controls="ouder-menu" onClick={() => setMenuOpen(!menuOpen)}>
+            <Icoon naam="menu" />
+          </button>
+        )}
         <h1>{titel}</h1>
         <Link to="/ouder/goedkeuren" className="balk-knop" aria-label={`Goedkeuren, ${teller} wachten`}>
           <Icoon naam="bel" />
@@ -181,10 +187,17 @@ function Kader({ titel, wachtend, children }: { titel: string; wachtend?: number
 
       <div className="ouder-laag" onClick={() => setMenuOpen(false)} aria-hidden="true" />
       <aside className="ouder-menu" id="ouder-menu" aria-label="Menu">
-        <div className="menu-kop">
-          <span className="menu-naam">Ons gezin</span>
-          <small>{opTablet ? 'Ouderdeel op deze tablet' : ik ? `Aangemeld als ${ik.naam}` : 'Ouderdeel'}</small>
-        </div>
+        {ik && !opTablet ? (
+          <Link to="/ouder/mij" className="menu-kop menu-kop-mij" aria-label={`Mijn instellingen, ${ik.naam}`}>
+            <KindAvatar kind={ik} grootte={48} />
+            <span className="menu-kop-tekst"><span className="menu-naam">Ons gezin</span><small>Aangemeld als {ik.naam}</small></span>
+          </Link>
+        ) : (
+          <div className="menu-kop">
+            <span className="menu-naam">Ons gezin</span>
+            <small>{opTablet ? 'Ouderdeel op deze tablet' : 'Ouderdeel'}</small>
+          </div>
+        )}
         <nav className="menu-lijst" aria-label="Hoofdmenu">
           {stijl === 'snel' && (
             <div className="snel-rij">
