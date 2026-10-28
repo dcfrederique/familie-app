@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { leeftijd, vandaag } from '../lib/datum.ts'
 import { useGegevens } from '../lib/gegevens.ts'
 import { kgTekst, leesGetal } from '../lib/gewicht.ts'
+import { menustijlen, useMenustijl, zetMenustijl } from '../lib/menustijl.ts'
 import { useSessie } from '../lib/sessie.tsx'
 import { zonderGewichtMigratie } from './Gewicht.tsx'
 import OuderKader from './OuderKader.tsx'
@@ -96,6 +97,26 @@ export default function MijnProfiel() {
           <button type="button" className="knop knop-licht" onClick={() => naar('/ouder/gewicht')}>Annuleren</button>
         </div>
       </form>
+      <MenuKeuze />
     </OuderKader>
+  )
+}
+
+/** Hoe het menu van het ouderdeel eruitziet; per toestel bewaard (src/lib/menustijl.ts). */
+function MenuKeuze() {
+  const stijl = useMenustijl()
+  return (
+    <section className="kaart kaart-breed formulier" aria-labelledby="menustijl-titel">
+      <h2 id="menustijl-titel">Menu</h2>
+      <div className="stijl-keuzes" role="radiogroup" aria-label="Menustijl">
+        {menustijlen.map((m) => (
+          <button key={m.sleutel} type="button" role="radio" aria-checked={stijl === m.sleutel}
+                  className={`stijl-keuze${stijl === m.sleutel ? ' gekozen' : ''}`} onClick={() => zetMenustijl(m.sleutel)}>
+            <b>{m.naam}</b><span>{m.uitleg}</span>
+          </button>
+        ))}
+      </div>
+      <p className="tip">Geldt voor dit toestel. Op een pc blijft het menu links staan.</p>
+    </section>
   )
 }

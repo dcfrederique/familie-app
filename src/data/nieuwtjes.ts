@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.65',
+    datum: '2026-10-28',
+    titel: 'Menu herindeeld voor ouders en kinderen',
+    tekst: 'Kinderen: onderaan het startscherm staat nu een balk met Thuis, Taken, Spelen, Winkel en Ik. Spelen bevat de spelletjes, rekenen, verhalen, kleurplaten en schrijven (en Extra tijd vragen), Ik bevat Mijn figuurtje, Mijn huis, Mijn thema, Berichten en het slotje voor mama of papa. De kop is rustiger. Ouders: het menu is anders ingedeeld (Kinderen, Spelen en wereld, Huishouden, Gezondheid, Instellingen). Fitness is weg tot het bestaat, Testmelding staat nu als knop bij Toestellen en meldingen. In Mijn profiel kies je zelf de menustijl: Snel (snelknoppen en inklapbare groepen, standaard), Klassiek (lange lijst) of Onderbalk (tabs onderaan met overzichtspagina\'s). De keuze geldt per toestel.',
+  },
+  {
     versie: '0.64',
     datum: '2026-10-28',
     titel: 'Lopen: analyse en loopschema',

@@ -11,7 +11,7 @@ const GSM = [['Gsm liggend', 844, 390], ['Gsm groot liggend', 915, 412]]
 
 const KINDEREN = ['luca', 'yuna', 'feline']
 const SCHERMEN = [
-  '', 'wereld', 'taken', 'huis', 'figuurtje', 'thema', 'spelen', 'winkel', 'tijd', 'verhalen', 'verhaal/1', 'kleurplaten', 'tekenen',
+  '', 'wereld', 'taken', 'kiezen', 'ik', 'huis', 'figuurtje', 'thema', 'spelen', 'winkel', 'tijd', 'verhalen', 'verhaal/1', 'kleurplaten', 'tekenen',
   'schrijven', 'chat', 'rekenen', 'memory', 'penalty', 'huisdier', 'racen', 'koken', 'touwspringen', 'basket',
   'puzzel', 'pompoen', 'bladeren', 'springen', 'ketting', 'schoen', 'weg', 'lichtjes', 'schaduw',
 ]

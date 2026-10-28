@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import { meldingenAanzetten, meldingenUitzetten, meldingStatus, type MeldingStatus } from '../lib/meldingen.ts'
 import { supabase } from '../lib/supabase.ts'
@@ -95,6 +95,7 @@ function Meldingen({ tablet = false }: { tablet?: boolean }) {
           <button type="button" className={status === 'aan' ? 'knop knop-licht' : 'knop'} disabled={bezig} onClick={wissel}>
             {status === 'aan' ? 'Meldingen uitzetten' : 'Meldingen aanzetten'}
           </button>
+          {status === 'aan' && !tablet && <Link to="/ouder/testmelding" className="knop knop-licht">Testmelding sturen</Link>}
         </>
       )}
       {fout && <p className="fout" role="alert">{fout}</p>}

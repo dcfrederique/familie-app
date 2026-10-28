@@ -43,7 +43,7 @@ test('sterrenlus: taak indienen, ouder keurt goed met pincode, tijd aanvragen en
   await expect(page.getByRole('region', { name: 'Vandaag gevraagd' })).toBeVisible()
 
   // Naar het ouderdeel via de knop op het startscherm (pincode als die gevraagd wordt).
-  await naar(page, '/kind/luca')
+  await naar(page, '/kind/luca/ik')
   await page.getByRole('link', { name: 'Voor mama of papa' }).click()
   await pincodeAlsGevraagd(page)
   await naar(page, '/ouder/goedkeuren')

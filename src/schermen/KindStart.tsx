@@ -3,13 +3,12 @@ import { Link, Navigate, useParams } from 'react-router-dom'
 import { Banner } from '../data/banners.tsx'
 import { kleurKlasse, type Gebruiker } from '../data/gezin.ts'
 import { figuurtjeVan } from '../data/figuurtje.ts'
-import { huisVan } from '../data/huis.ts'
 import { cadeauStukken } from '../data/cadeau.ts'
 import { maaltijdPrentje } from '../data/maaltijden.ts'
 import { MaaltijdPrent } from '../data/maaltijdPrenten.tsx'
 import { Prentje } from '../data/prentjes.tsx'
-import { bannerVoorKleur, tegelsVoor, type ActiviteitTegel } from '../data/thema.ts'
-import type { Hoera, LogRegel, Maaltijd, Taak, Tijdverzoek } from '../lib/bron/types.ts'
+import { bannerVoorKleur } from '../data/thema.ts'
+import type { Hoera, LogRegel, Maaltijd, Taak } from '../lib/bron/types.ts'
 import { dagVan, vandaag } from '../lib/datum.ts'
 import { useGegevens } from '../lib/gegevens.ts'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
@@ -17,11 +16,11 @@ import { takenVoorKind, type TaakStatus } from '../lib/takenstatus.ts'
 import { gebruikStem, kanVoorlezen, leesVoor } from '../lib/voorlezen.ts'
 import DagelijksHoera from './DagelijksHoera.tsx'
 import Figuurtje, { hoofdUitsnede } from './Figuurtje.tsx'
-import HuisPrent from './HuisPrent.tsx'
-import { Ster, SterrenNaarWinkel, WinkelIcoon } from './onderdelen.tsx'
+import { Ster, SterrenNaarWinkel } from './onderdelen.tsx'
 import './schermen.css'
 import './chat.css'
 import Bladzijden from './Bladzijden.tsx'
+import KindBalk from './KindBalk.tsx'
 import WereldKnop from './WereldKnop.tsx'
 
 const TAAK_MAAT = { breed: 230, hoog: 240, gap: 14, maxHoog: 290 }
@@ -65,7 +64,7 @@ export default function KindStart({ deel = 'start' }: { deel?: 'start' | 'taken'
   return (
     <div className={`kind ${kleurKlasse(kind)}`}>
       {kind.kan_lezen
-        ? <StartLezer deel={deel} kind={kind} lijst={lijst} geladen={!!data} vrij={vrij} verzoeken={data?.verzoeken ?? []} eten={data?.eten} ongelezen={data?.ongelezen ?? 0} kies={kies} />
+        ? <StartLezer deel={deel} kind={kind} lijst={lijst} geladen={!!data} vrij={vrij} eten={data?.eten} ongelezen={data?.ongelezen ?? 0} kies={kies} />
         : <StartPrenten deel={deel} kind={kind} lijst={lijst} geladen={!!data} eten={data?.eten} ongelezen={data?.ongelezen ?? 0} kies={kies} />}
 
       {hoera && <DagelijksHoera kind={kind} hoera={hoera} sluit={() => setHoera(null)} />}
@@ -80,15 +79,13 @@ export default function KindStart({ deel = 'start' }: { deel?: 'start' | 'taken'
   )
 }
 
-function StartLezer({ deel, kind, lijst, geladen, vrij, verzoeken, eten, ongelezen, kies }: {
-  deel: 'start' | 'taken'; kind: Gebruiker; lijst: Lijst; geladen: boolean; vrij: number; verzoeken: Tijdverzoek[]; eten?: Maaltijd; ongelezen: number; kies: (t: Taak) => void
+function StartLezer({ deel, kind, lijst, geladen, vrij, eten, ongelezen, kies }: {
+  deel: 'start' | 'taken'; kind: Gebruiker; lijst: Lijst; geladen: boolean; vrij: number; eten?: Maaltijd; ongelezen: number; kies: (t: Taak) => void
 }) {
   const banner = kind.thema ? bannerVoorKleur[kind.thema] : null
   const gedaan = lijst.filter((t) => t.status === 'gedaan').length
   const nogTeDoen = lijst.filter((t) => t.status === 'te_doen').length
-  const wachtend = verzoeken.filter((v) => v.status === 'aangevraagd')
-  const terug = <Terug grootte={28} naar={deel === 'taken' ? `/kind/${kind.id}` : undefined} />
-  const avatar = <><Avatar kind={kind} /><HuisKnop kind={kind} /><ThemaKnop kind={kind} /></>
+  const avatar = <Avatar kind={kind} />
   const titel = <h1 className="kop-titel display">Hoi {kind.naam}!</h1>
 
   return (
@@ -98,7 +95,7 @@ function StartLezer({ deel, kind, lijst, geladen, vrij, verzoeken, eten, ongelez
           <Banner soort={banner} />
           <div className="banner-inhoud">
             <div className="kop">
-              {terug}{avatar}
+              {avatar}
               <div className="kop-tekst">
                 {titel}
                 {geladen && <p className="kop-sub">
@@ -111,7 +108,6 @@ function StartLezer({ deel, kind, lijst, geladen, vrij, verzoeken, eten, ongelez
               </div>
             </div>
             <div className="banner-rij">
-              <ChatKnop kind={kind} ongelezen={ongelezen} />
               <SterrenNaarWinkel kindId={kind.id} aantal={vrij} metWoord />
               {eten && <Vanavond eten={eten} />}
             </div>
@@ -119,18 +115,17 @@ function StartLezer({ deel, kind, lijst, geladen, vrij, verzoeken, eten, ongelez
         </header>
       ) : (
         <header className="kop">
-          {terug}{avatar}
+          {avatar}
           <div className="kop-tekst">
             {titel}
             {geladen && lijst.length > 0 && <p className="kop-sub">Al {gedaan} van de {lijst.length} taken gedaan vandaag</p>}
           </div>
           {eten && <Vanavond eten={eten} />}
-          <ChatKnop kind={kind} ongelezen={ongelezen} />
           <SterrenNaarWinkel kindId={kind.id} aantal={vrij} metWoord />
         </header>
       )}
 
-      <main className={`kind-start${deel === 'taken' ? ' taken-enkel' : ''}`}>
+      <main className="kind-start taken-enkel">
         {deel === 'start' ? (
           <section aria-label="De wereld"><WereldKnop kind={kind} /></section>
         ) : (
@@ -141,25 +136,8 @@ function StartLezer({ deel, kind, lijst, geladen, vrij, verzoeken, eten, ongelez
             {geladen && lijst.length === 0 && <p className="leeg">Vandaag geen taken. Lekker spelen!</p>}
           </section>
         )}
-
-        {deel === 'start' && <aside className="kind-zijkant" aria-labelledby="spelen-titel">
-          <h2 id="spelen-titel" className="sectie-titel display">{banner === 'race' ? 'Spelen en leren' : 'Spelen en maken'}</h2>
-          <div className="tegels">
-            <TakenTegel kind={kind} nog={nogTeDoen} geladen={geladen} />
-            {tegelsVoor(kind).map((t) => <Tegel key={t.sleutel} tegel={t} kindId={kind.id} />)}
-          </div>
-          {kind.vraagt_zelf_tijd && (
-            <>
-              <Link to={`/kind/${kind.id}/tijd`} className="extra-tijd-knop display">
-                <Klok grootte={34} /> Extra tijd vragen
-              </Link>
-              {wachtend.length > 0 && (
-                <p className="zijkant-melding">{wachtend.reduce((s, v) => s + v.minuten, 0)} minuten: wacht op mama of papa</p>
-              )}
-            </>
-          )}
-        </aside>}
       </main>
+      <KindBalk kind={kind} actief={deel === 'start' ? 'thuis' : 'taken'} nog={geladen ? nogTeDoen : undefined} ongelezen={ongelezen} />
     </div>
   )
 }
@@ -190,42 +168,6 @@ function TaakKaart({ taak, status, kies }: { taak: Taak; status: TaakStatus; kie
   )
 }
 
-const TAKEN_ICOON = 'M9 6h11M9 12h11M9 18h11M4 6l1 1l2-2M4 12l1 1l2-2M4 18l1 1l2-2'
-
-/** Mijn taken is een gewone navigatie naast de andere tegels, met het aantal taken dat nog moet. */
-function TakenTegel({ kind, nog, geladen, rond = false }: { kind: Gebruiker; nog: number; geladen: boolean; rond?: boolean }) {
-  const pad = `/kind/${kind.id}/taken`
-  const teller = geladen && <span className={`taken-teller${nog === 0 ? ' klaar' : ''}`} aria-hidden="true">{nog === 0 ? '✓' : nog}</span>
-  const label = geladen ? (nog === 0 ? 'Mijn taken, alles gedaan' : `Mijn taken, nog ${nog}`) : 'Mijn taken'
-  const icoon = <svg className="ic" viewBox="0 0 24 24" width={rond ? 80 : 38} height={rond ? 80 : 38} aria-hidden="true"><path d={TAKEN_ICOON} /></svg>
-  if (rond) {
-    return <Link to={pad} className="ronde-tegel tint-blauw wereld-taken-tegel" aria-label={label} onClick={() => leesVoor('Mijn taken')}>{icoon}{teller}</Link>
-  }
-  return (
-    <Link to={pad} className="tegel wereld-taken-tegel" aria-label={label}>
-      <span className="tegel-icoon tint-blauw">{icoon}</span>
-      <span className="tegel-naam display">Mijn taken</span>
-      <span className="tegel-uitleg">{geladen ? (nog === 0 ? 'Alles gedaan!' : `Nog ${nog} te doen`) : ' '}</span>
-      {teller}
-    </Link>
-  )
-}
-
-function Tegel({ tegel, kindId }: { tegel: ActiviteitTegel; kindId: string }) {
-  const inhoud = (
-    <>
-      <span className={`tegel-icoon tint-${tegel.kleur}`}>
-        <svg className="ic" viewBox="0 0 24 24" width="38" height="38" aria-hidden="true"><path d={tegel.icoon} /></svg>
-      </span>
-      <span className="tegel-naam display">{tegel.naam}</span>
-      <span className="tegel-uitleg">{tegel.pad ? tegel.uitleg : 'Binnenkort'}</span>
-    </>
-  )
-  return tegel.pad
-    ? <Link to={`/kind/${kindId}/${tegel.pad}`} className="tegel">{inhoud}</Link>
-    : <div className="tegel tegel-later" aria-disabled="true">{inhoud}</div>
-}
-
 /** Voor wie niet leest: grote prenten, voorleesknoppen en ronde knoppen zonder tekst. */
 function StartPrenten({ deel, kind, lijst, geladen, eten, ongelezen, kies }: {
   deel: 'start' | 'taken'; kind: Gebruiker; lijst: Lijst; geladen: boolean; eten?: Maaltijd; ongelezen: number; kies: (t: Taak) => void
@@ -237,8 +179,7 @@ function StartPrenten({ deel, kind, lijst, geladen, eten, ongelezen, kies }: {
     : `Hoi ${kind.naam}! Je hebt al ${gedaan} van de ${lijst.length} taakjes gedaan.`
 
   const banner = kind.thema ? bannerVoorKleur[kind.thema] : null
-  const terug = <Terug grootte={32} naar={deel === 'taken' ? `/kind/${kind.id}` : undefined} />
-  const avatar = <><Avatar kind={kind} /><HuisKnop kind={kind} /><ThemaKnop kind={kind} /></>
+  const avatar = <Avatar kind={kind} />
   const titel = <h1 className="kop-titel display">Hoi {kind.naam}!</h1>
   const voorlees = kanVoorlezen() && (
     <button type="button" className="rond" aria-label="Lees voor" onClick={() => leesVoor(begroeting)}>
@@ -246,12 +187,6 @@ function StartPrenten({ deel, kind, lijst, geladen, eten, ongelezen, kies }: {
     </button>
   )
   const vanavond = eten && <Vanavond eten={eten} rond />
-  const chat = <ChatKnop kind={kind} ongelezen={ongelezen} />
-  const winkel = (
-    <Link to={`/kind/${kind.id}/winkel`} className="rond" aria-label="Winkel" onClick={() => leesVoor('Winkel')}>
-      <WinkelIcoon grootte={34} />
-    </Link>
-  )
   const voortgang = geladen && lijst.length > 0 && (
     <span className="voortgang" role="img" aria-label={`Vandaag ${gedaan} van ${lijst.length} taken gedaan`}>
       {lijst.map(({ taak, status }) => (
@@ -265,13 +200,13 @@ function StartPrenten({ deel, kind, lijst, geladen, eten, ongelezen, kies }: {
         <header className={`banner banner-${banner} kop-groot`}>
           <Banner soort={banner} />
           <div className="banner-inhoud">
-            <div className="kop">{terug}{avatar}{titel}{voorlees}{winkel}{chat}{vanavond}</div>
+            <div className="kop">{avatar}{titel}{voorlees}{vanavond}</div>
             {voortgang}
           </div>
         </header>
       ) : (
         <header className="kop kop-groot">
-          {terug}{avatar}{titel}{voorlees}{winkel}{chat}{vanavond}
+          {avatar}{titel}{voorlees}{vanavond}
           <span style={{ flexGrow: 1 }} />
           {voortgang}
         </header>
@@ -299,15 +234,7 @@ function StartPrenten({ deel, kind, lijst, geladen, eten, ongelezen, kies }: {
           </div>
         )} />)}
 
-      {deel === 'start' && <nav className="ronde-tegels" aria-label="Spelen">
-        <TakenTegel kind={kind} nog={nogTeDoen} geladen={geladen} rond />
-        {tegelsVoor(kind).map((t) => {
-          const icoon = <svg className="ic" viewBox="0 0 24 24" width="80" height="80" aria-hidden="true"><path d={t.icoon} /></svg>
-          return t.pad
-            ? <Link key={t.sleutel} to={`/kind/${kind.id}/${t.pad}`} className={`ronde-tegel tint-${t.kleur}`} aria-label={t.naam}>{icoon}</Link>
-            : <span key={t.sleutel} className={`ronde-tegel tint-${t.kleur} tegel-later`} role="img" aria-label={`${t.naam}, binnenkort`}>{icoon}</span>
-        })}
-      </nav>}
+      <KindBalk kind={kind} actief={deel === 'start' ? 'thuis' : 'taken'} nog={geladen ? nogTeDoen : undefined} ongelezen={ongelezen} />
     </div>
   )
 }
@@ -376,18 +303,6 @@ function Vanavond({ eten, rond = false }: { eten: Maaltijd; rond?: boolean }) {
   )
 }
 
-/** Rond knopje naar de berichten voor mama en papa, met het aantal nieuwe antwoorden; alleen als een ouder de chat aanzette. */
-function ChatKnop({ kind, ongelezen }: { kind: Gebruiker; ongelezen: number }) {
-  if (!kind.chat_aan) return null
-  return (
-    <Link to={`/kind/${kind.id}/chat`} className="rond chat-knop" aria-label={ongelezen > 0 ? `Berichten, ${ongelezen} nieuw` : 'Berichten voor mama en papa'}
-          onClick={() => { if (!kind.kan_lezen) leesVoor('Berichten') }}>
-      <svg className="ic" viewBox="0 0 24 24" width="32" height="32" aria-hidden="true"><path d="M4 5h16v11H10l-5 4v-4H4z" /></svg>
-      {ongelezen > 0 && <span className="chat-bolletje" aria-hidden="true">{ongelezen}</span>}
-    </Link>
-  )
-}
-
 /** Het figuurtje in een rondje; tikken opent de kleerkast. */
 function Avatar({ kind }: { kind: Gebruiker }) {
   return (
@@ -400,59 +315,11 @@ function Avatar({ kind }: { kind: Gebruiker }) {
   )
 }
 
-/** Mijn huis in het klein, naast het figuurtje; tikken opent het huis. */
-function HuisKnop({ kind }: { kind: Gebruiker }) {
-  return (
-    <Link to={`/kind/${kind.id}/huis`} className="huis-knop" aria-label="Mijn huis"
-          onClick={() => { if (!kind.kan_lezen) leesVoor('Mijn huis') }}>
-      <HuisPrent huis={huisVan(kind)} kaal />
-    </Link>
-  )
-}
-
-/** Penseel naast het huis: het kind kiest zelf een ander thema (Mijn thema). */
-function ThemaKnop({ kind }: { kind: Gebruiker }) {
-  return (
-    <Link to={`/kind/${kind.id}/thema`} className="rond thema-knop" aria-label="Mijn thema"
-          onClick={() => { if (!kind.kan_lezen) leesVoor('Mijn thema') }}>
-      <svg className="ic" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true">
-        <path d="M12 3a9 9 0 1 0 0 18c1.5 0 2-1 2-2s-1-1.5-1-2.5S14 15 15 15h2a4 4 0 0 0 4-4c0-4.5-4-8-9-8zM7.5 11h.01M10 7.5h.01M15 8h.01" />
-      </svg>
-    </Link>
-  )
-}
-
 const Vinkje = ({ grootte }: { grootte: number }) => <svg className="ic" viewBox="0 0 24 24" width={grootte} height={grootte} aria-hidden="true"><path d="M5 12l5 5L20 7" /></svg>
 const Klok = ({ grootte }: { grootte: number }) => <svg className="ic" viewBox="0 0 24 24" width={grootte} height={grootte} aria-hidden="true"><path d="M12 21a9 9 0 1 0 0-18a9 9 0 0 0 0 18zM12 7v5l3 2" /></svg>
 const Zandloper = () => <svg className="ic" viewBox="0 0 24 24" width="44" height="44" aria-hidden="true"><path d="M7 3h10M7 21h10M8 3c0 5 8 5 8 9s-8 4-8 9M16 3c0 5-8 5-8 9s8 4 8 9" /></svg>
 const Luidspreker = ({ grootte = 28 }: { grootte?: number }) => <svg className="ic" viewBox="0 0 24 24" width={grootte} height={grootte} aria-hidden="true"><path d="M4 10h4l5-4v12l-5-4H4z" /><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11" /></svg>
 const Camera = ({ grootte }: { grootte: number }) => <svg className="ic" viewBox="0 0 24 24" width={grootte} height={grootte} aria-hidden="true"><path d="M4 8h3l2-3h6l2 3h3v11H4z" /><circle cx="12" cy="13" r="3.5" /></svg>
-
-/** Terug naar wie speelt er; op een tablet die bij dit kind hoort het slotje voor mama of papa. */
-function Terug({ grootte, naar }: { grootte: number; naar?: string }) {
-  const { perKind } = useSessie()
-  if (naar) {
-    return (
-      <Link to={naar} className="rond" aria-label="Terug naar het startscherm">
-        <svg className="ic" viewBox="0 0 24 24" width={grootte} height={grootte} aria-hidden="true"><path d="M15 18l-6-6l6-6" /></svg>
-      </Link>
-    )
-  }
-  if (perKind) {
-    return (
-      <Link to="/ouder" className="rond" aria-label="Voor mama of papa">
-        <svg className="ic" viewBox="0 0 24 24" width={grootte} height={grootte} aria-hidden="true">
-          <rect x="5" y="11" width="14" height="10" rx="2" /><path d="M8 11V7a4 4 0 0 1 8 0v4" />
-        </svg>
-      </Link>
-    )
-  }
-  return (
-    <Link to="/kinderen" className="rond" aria-label="Terug naar wie speelt er">
-      <svg className="ic" viewBox="0 0 24 24" width={grootte} height={grootte} aria-hidden="true"><path d="M15 18l-6-6l6-6" /></svg>
-    </Link>
-  )
-}
 
 const GEZIEN_SLEUTEL = (kindId: string) => `ouder-sterren-gezien-${kindId}`
 
