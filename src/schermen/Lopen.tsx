@@ -164,7 +164,7 @@ function LoopFormulier({ bewerk, schoenen, bewaar, stop }: { bewerk: Loopsessie 
           <input inputMode="decimal" autoComplete="off" placeholder="bv. 5,2" value={km} onChange={(e) => setKm(e.target.value)} />
         </label>
         <label className="veld"><span>Duur (u:mm:ss of min)</span>
-          <input inputMode="numeric" autoComplete="off" placeholder="bv. 27:30" value={duur} onChange={(e) => setDuur(e.target.value)} />
+          <input inputMode="text" autoComplete="off" placeholder="bv. 27:30" value={duur} onChange={(e) => setDuur(e.target.value)} />
         </label>
         <label className="veld"><span>Dag</span>
           <input type="date" value={dag} max={vandaag()} required onChange={(e) => setDag(e.target.value)} />
