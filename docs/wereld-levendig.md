@@ -39,3 +39,14 @@ Elke nacht zet de bouwroutine één stuk stad erbij uit de backlog hieronder (bo
 - [ ] Speeltuin 2 bij de vijver (nog een glijbaan en klimrek)
 - [ ] Fontein op het plein
 - [ ] Sporthal naast het voetbalveld
+
+## Gebieden volbouwen (nachtroutine, volgorde van de prompt)
+
+- [x] Bos (28 oktober 2026): bomen in groepjes, 14 paddenstoelen, een bank, open plek voor een huis; `bosDecor()` in `src/lib/wereld/gebieden.ts`
+- [ ] Berg
+- [ ] Platteland
+- [ ] Meer
+- [ ] Strand
+- [ ] Sportpark
+- [ ] Stadje
+- [ ] Dorp (extra decor)

@@ -59,6 +59,8 @@ export const gebouwTekening: Record<string, string> = {
 
 /** Dingen op straat die (nog) niet in de huiscatalogus staan; viewBox -100 -220 200 240. */
 export const straatTekening: Record<string, string | ((kleur: string) => string)> = {
+  // paddenstoel: rode hoed met witte stippen (eigen ontwerp)
+  paddenstoel: `<rect x="-14" y="-60" width="28" height="60" rx="10" fill="#F4EBD8" stroke="#C9B995" stroke-width="3"/><path d="M-62 -52Q-60 -130 0 -132Q60 -130 62 -52Q0 -38 -62 -52Z" fill="#D8452B" stroke="#A82F1B" stroke-width="3"/><circle cx="-28" cy="-92" r="9" fill="#FFF"/><circle cx="16" cy="-108" r="8" fill="#FFF"/><circle cx="34" cy="-80" r="7" fill="#FFF"/>`,
   // fruitboom met een volle kruin in lichtere en donkerdere groentinten; `kleur` is de vrucht (appel of sinaasappel) of 'kaal'
   boom: (kleur) => {
     const vrucht = kleur === 'kaal' ? '' : [[-44, -112], [-12, -150], [30, -128], [52, -96], [-60, -86], [8, -100], [-26, -82], [40, -66]]

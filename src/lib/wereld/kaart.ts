@@ -58,7 +58,7 @@ export interface Ding { id: string; x: number; y: number; voet: [number, number]
 
 export const VOET: Record<string, [number, number]> = {
   boom: [24, 10], schommel: [86, 20], glijbaan: [110, 22], zandbak: [86, 22], wip: [110, 16], doel: [84, 14],
-  bank: [66, 16], lantaarn: [12, 8], brievenbus: [14, 8], naambord: [16, 8], poortbord: [16, 8],
+  paddenstoel: [30, 12], bank: [66, 16], lantaarn: [12, 8], brievenbus: [14, 8], naambord: [16, 8], poortbord: [16, 8],
 }
 
 /** Klein, herhaalbaar toeval (geen Math.random, zodat de wereld elke keer hetzelfde is). */

@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.57',
+    datum: '2026-10-28',
+    titel: 'Het Bos is gevuld',
+    tekst: 'Het Bos (ten noorden-westen van de Berg) is niet meer leeg: bomen in groepjes, rode paddenstoelen en een bankje, met een open plek in het midden voor een huis. Ouders kunnen alles verplaatsen of weghalen in Wij → Kaart bewerken, en de paddenstoel staat nu ook bij Decor. Elke nacht komt er een stuk bij in een volgend gebied.',
+  },
+  {
     versie: '0.56',
     datum: '2026-10-28',
     titel: 'Sinterklaas komt eraan: nieuw verhaal, kleurplaat, Schoen vullen en Pepernotenland',
