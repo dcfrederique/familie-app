@@ -445,3 +445,59 @@ a.vink-tekst { text-decoration: none; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 a.knop { display: inline-flex; align-items: center; justify-content: center; text-decoration: none; }
 .loop-pad { fill: none; }
+
+
+/* Menustijlen (28 oktober 2026): Snel (snelknoppen + inklapbare groepen), Klassiek, Onderbalk */
+.snel-rij { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 12px 14px 8px; }
+.snel-knop {
+  position: relative; min-height: 72px; padding: 10px 12px; display: flex; flex-direction: column; justify-content: space-between; gap: 6px;
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink); text-decoration: none; font-size: 14px; font-weight: 600;
+}
+.snel-knop:hover { background: var(--menu-hover); }
+.snel-knop .item-teller { position: absolute; top: 8px; right: 8px; background: var(--gold); }
+.groep-knop { width: calc(100% - 40px); min-height: 44px; margin: 0 20px; padding: 0; border: 0; background: transparent; cursor: pointer; font-family: inherit; }
+.groep-telling { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; letter-spacing: 0; }
+.pijl { width: 8px; height: 8px; border-right: 2px solid currentColor; border-bottom: 2px solid currentColor; transform: rotate(45deg) translate(-2px, -2px); transition: transform .15s; }
+.pijl.omhoog { transform: rotate(-135deg) translate(-2px, -2px); }
+@media (prefers-reduced-motion: reduce) { .pijl { transition: none; } }
+.stijl-snel .menu-groep + .menu-groep { margin-top: 0; padding-top: 0; }
+
+/* Onderbalk: tabs onderaan (gsm); de hamburger verdwijnt, op een pc blijft de zijbalk */
+.ouder-tabs {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 4; display: grid; grid-auto-flow: column; grid-auto-columns: 1fr;
+  background: var(--surface); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+.ouder-tab {
+  position: relative; min-height: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px;
+  color: var(--muted); text-decoration: none; font-size: 12px; font-weight: 400; border-top: 3px solid transparent;
+}
+.ouder-tab.active { color: var(--accent); font-weight: 600; border-top-color: var(--accent); }
+.ouder-tab .item-teller { position: absolute; top: 6px; left: calc(50% + 8px); }
+.stijl-onderbalk .ouder-inhoud { padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
+.stijl-onderbalk .menu-knop { visibility: hidden; }
+.oh-raster { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.oh-tegel {
+  position: relative; min-height: 96px; padding: 14px 12px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px;
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink); text-decoration: none; font-size: 15px; font-weight: 600;
+}
+.oh-tegel .item-teller { position: absolute; top: 10px; right: 10px; }
+.oh-kinderen { padding: 4px 0; }
+.oh-blok { display: grid; gap: 6px; }
+.oh-kop { margin: 8px 0 0; font-size: 11px; font-weight: 600; letter-spacing: .09em; text-transform: uppercase; color: var(--muted); }
+.oh-lijst { border: 1px solid var(--line); background: var(--surface); }
+.oh-lijst .menu-item + .menu-item { border-top: 1px solid var(--line); }
+@media (min-width: 1024px) {
+  .ouder-tabs { display: none; }
+  .stijl-onderbalk .menu-knop { visibility: visible; }
+  .stijl-onderbalk .ouder-inhoud { padding-bottom: 32px; }
+  .oh-raster { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+}
+
+/* Mijn profiel → Menu: de drie stijlen als keuzes */
+.stijl-keuzes { display: grid; gap: 8px; }
+.stijl-keuze {
+  min-height: 56px; padding: 10px 14px; display: grid; gap: 2px; text-align: left; font: inherit; color: var(--ink);
+  border: 1px solid var(--line); background: var(--surface); cursor: pointer;
+}
+.stijl-keuze span { color: var(--muted); font-size: 13px; }
+.stijl-keuze.gekozen { border-color: var(--accent); background: var(--accent-tint); box-shadow: inset 3px 0 var(--accent); }

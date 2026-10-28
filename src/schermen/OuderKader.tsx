@@ -2,7 +2,8 @@ import { useEffect, useState, type FormEvent, type ReactNode } from 'react'
 import { Link, NavLink, useLocation } from 'react-router-dom'
 import { figuurtjeVan } from '../data/figuurtje.ts'
 import { kleurKlasse, type Gebruiker } from '../data/gezin.ts'
-import { ouderMenu, type MenuIcoon } from '../data/ouderMenu.ts'
+import { ouderMenu, snelPaden, type MenuGroep, type MenuIcoon, type MenuItem } from '../data/ouderMenu.ts'
+import { useMenustijl } from '../lib/menustijl.ts'
 import { vandaag } from '../lib/datum.ts'
 import { useGegevens } from '../lib/gegevens.ts'
 import { teDoenVandaag } from '../lib/onzetaken.ts'
@@ -65,12 +66,12 @@ const iconen: Record<MenuIcoon | 'menu' | 'bel' | 'terug', ReactNode> = {
   winkels: <path d="M4 9.5L5.5 4h13L20 9.5M4 9.5a2.7 2.7 0 0 0 5.3 0 2.7 2.7 0 0 0 5.4 0 2.7 2.7 0 0 0 5.3 0M5.5 12v8h13v-8M10 20v-5h4v5" />,
 }
 
-function Icoon({ naam }: { naam: keyof typeof iconen }) {
+export function Icoon({ naam }: { naam: keyof typeof iconen }) {
   return <svg className="ic" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">{iconen[naam]}</svg>
 }
 
 /** Wat het menu toont: aantal dingen dat op goedkeuring wacht, je taken voor vandaag en het vrije saldo per kind. */
-function useMenuGegevens() {
+export function useMenuGegevens() {
   const { bron, account, status, gebruikers } = useSessie()
   // Onze taken bestaan alleen op de gsm van een ouder; zonder migratie gewoon geen teller.
   const opGsm = status === 'demo' || account?.soort === 'ouder'
@@ -84,6 +85,42 @@ function useMenuGegevens() {
              nieuwAanbod: aanbod?.nieuw.length ?? 0, chat: chat.reduce((n, o) => n + o.ongelezen, 0) }
   } : null, [bron, opGsm, ik])
   return data ?? null
+}
+
+export type MenuGegevens = NonNullable<ReturnType<typeof useMenuGegevens>>
+
+/** Het getal bij een menu-item (goedkeuren, nieuw aanbod, ongelezen chat, onze taken); 0 = geen. */
+export function itemTeller(item: MenuItem, wachtend: number, g: MenuGegevens | null): number {
+  if (item.teller === 'goedkeuren') return wachtend
+  if (item.teller === 'aanbod') return g?.nieuwAanbod ?? 0
+  if (item.teller === 'chat') return g?.chat ?? 0
+  if (item.teller === 'onzetaken') return g?.onzeTaken ?? 0
+  return 0
+}
+
+/** Wat een ouder op dit toestel ziet: op de tablet van een kind alleen wat niet `alleenOuderGsm` is. */
+export function zichtbaarMenu(opTablet: boolean): MenuGroep[] {
+  return ouderMenu
+    .filter((g) => !(opTablet && g.alleenOuderGsm))
+    .map((g) => ({ ...g, items: g.items.filter((i) => !(opTablet && i.alleenOuderGsm)) }))
+    .filter((g) => g.items.length > 0)
+}
+
+/** Tabs van de onderbalk: elk een overzicht van een of meer groepen. */
+export const ouderTabs = [
+  { naam: 'Vandaag', icoon: 'vandaag' as MenuIcoon, pad: '/ouder', groepen: [''] },
+  { naam: 'Kinderen', icoon: 'kinderen' as MenuIcoon, pad: '/ouder/groep/kinderen', groepen: ['kinderen'] },
+  { naam: 'Gezin', icoon: 'boodschappen' as MenuIcoon, pad: '/ouder/groep/huishouden', groepen: ['huishouden'] },
+  { naam: 'Meer', icoon: 'menu' as const, pad: '/ouder/meer', groepen: ['spelen', 'gezondheid', 'instellingen'] },
+]
+
+/** Bij welke tab een pad hoort (voor de actieve tab en de open groep in het menu). */
+export function groepVanPad(pathname: string): string {
+  if (pathname === '/ouder/meer') return 'instellingen'
+  const hub = pathname.match(/^\/ouder\/groep\/(\w+)$/)
+  if (hub) return hub[1]
+  for (const g of ouderMenu) if (g.items.some((i) => i.pad === pathname)) return g.sleutel ?? ''
+  return ''
 }
 
 /** Hoofd van het figuurtje van een kind, in een rondje. */
@@ -113,6 +150,12 @@ function Kader({ titel, wachtend, children }: { titel: string; wachtend?: number
   const teller = wachtend ?? menuGegevens?.wachtend ?? 0
   const opTablet = account?.soort === 'tablet'
   const ik = gebruikers.find((g) => g.id === account?.ouder_id)
+  const stijl = useMenustijl()
+  const groepen = zichtbaarMenu(opTablet)
+  const snel = groepen.flatMap((g) => g.items).filter((i) => i.pad && snelPaden.includes(i.pad)).sort((x, y) => snelPaden.indexOf(x.pad!) - snelPaden.indexOf(y.pad!))
+  // Stijl Snel: één groep open, standaard die van het huidige scherm (tikken op een andere groep klapt de vorige dicht).
+  const [openGroep, setOpenGroep] = useState<string | null>(() => groepVanPad(pathname))
+  useEffect(() => { setOpenGroep(groepVanPad(pathname)) }, [pathname])
 
   useEffect(() => { setMenuOpen(false) }, [pathname])
   useEffect(() => {
@@ -123,7 +166,7 @@ function Kader({ titel, wachtend, children }: { titel: string; wachtend?: number
   }, [menuOpen])
 
   return (
-    <div className={`ouder${menuOpen ? ' menu-open' : ''}`}>
+    <div className={`ouder stijl-${stijl}${menuOpen ? ' menu-open' : ''}`}>
       <header className="ouder-balk">
         <button type="button" className="balk-knop menu-knop" aria-label="Menu openen" aria-expanded={menuOpen}
                 aria-controls="ouder-menu" onClick={() => setMenuOpen(!menuOpen)}>
@@ -143,38 +186,44 @@ function Kader({ titel, wachtend, children }: { titel: string; wachtend?: number
           <small>{opTablet ? 'Ouderdeel op deze tablet' : ik ? `Aangemeld als ${ik.naam}` : 'Ouderdeel'}</small>
         </div>
         <nav className="menu-lijst" aria-label="Hoofdmenu">
-          {ouderMenu.filter((g) => !(opTablet && g.alleenOuderGsm)).map((groep, i) => (
-            <div key={groep.naam ?? i} className="menu-groep">
-              {groep.naam && (
-                <p className="groep-naam"><span>{groep.naam}</span>{groep.later && <span className="later-label">{groep.later}</span>}</p>
-              )}
-              {groep.items.filter((item) => !(opTablet && item.alleenOuderGsm)).map((item) => item.pad ? (
-                <NavLink key={item.naam} to={item.pad} end className="menu-item">
-                  <Icoon naam={item.icoon} /><span>{item.naam}</span>
-                  {item.teller === 'goedkeuren' && teller > 0 && <span className="item-teller">{teller}</span>}
-                  {item.teller === 'aanbod' && (menuGegevens?.nieuwAanbod ?? 0) > 0 && (
-                    <span className="item-teller item-teller-taken" aria-label={`${menuGegevens!.nieuwAanbod} nieuw`}>{menuGegevens!.nieuwAanbod}</span>
-                  )}
-                  {item.teller === 'chat' && (menuGegevens?.chat ?? 0) > 0 && (
-                    <span className="item-teller item-teller-taken" aria-label={`${menuGegevens!.chat} ongelezen`}>{menuGegevens!.chat}</span>
-                  )}
-                  {item.teller === 'onzetaken' && (menuGegevens?.onzeTaken ?? 0) > 0 && (
-                    <span className="item-teller item-teller-taken" aria-label={`${menuGegevens!.onzeTaken} te doen`}>{menuGegevens!.onzeTaken}</span>
-                  )}
-                </NavLink>
-              ) : (
-                <span key={item.naam} className="menu-item is-later" aria-disabled="true">
-                  <Icoon naam={item.icoon} /><span>{item.naam}</span>
-                </span>
-              ))}
-              {groep.metKinderen && kinderen.map((kind) => (
-                <Link key={kind.id} to={`/ouder/kinderen#kind-${kind.id}`} className="menu-item menu-kind">
-                  <KindAvatar kind={kind} /><span>{kind.naam}</span>
-                  {menuGegevens && <span className="item-sterren">{menuGegevens.saldi[kind.id]?.vrij ?? 0} sterren</span>}
-                </Link>
-              ))}
+          {stijl === 'snel' && (
+            <div className="snel-rij">
+              {snel.map((item) => {
+                const n = itemTeller(item, teller, menuGegevens)
+                return (
+                  <Link key={item.pad} to={item.pad!} className="snel-knop">
+                    <Icoon naam={item.icoon} /><span>{item.naam.replace(' met de kinderen', '')}</span>
+                    {n > 0 && <span className="item-teller">{n}</span>}
+                  </Link>
+                )
+              })}
             </div>
-          ))}
+          )}
+          {groepen.map((groep, i) => {
+            const accordeon = stijl === 'snel' && !!groep.naam
+            const open = !accordeon || groep.sleutel === openGroep
+            const lijst = stijl === 'snel' && !groep.naam ? groep.items.filter((it) => it.pad === '/ouder') : groep.items
+            return (
+              <div key={groep.naam ?? i} className="menu-groep">
+                {groep.naam && (accordeon ? (
+                  <button type="button" className="groep-naam groep-knop" aria-expanded={open}
+                          onClick={() => setOpenGroep(open ? null : groep.sleutel ?? null)}>
+                    <span>{groep.naam}</span>
+                    <span className="groep-telling">{!open && groep.items.length}<span className={`pijl${open ? ' omhoog' : ''}`} aria-hidden="true" /></span>
+                  </button>
+                ) : <p className="groep-naam"><span>{groep.naam}</span></p>)}
+                {open && lijst.map((item) => (
+                  <MenuRegel key={item.naam} item={item} teller={itemTeller(item, teller, menuGegevens)} />
+                ))}
+                {open && groep.metKinderen && kinderen.map((kind) => (
+                  <Link key={kind.id} to={`/ouder/kinderen#kind-${kind.id}`} className="menu-item menu-kind">
+                    <KindAvatar kind={kind} /><span>{kind.naam}</span>
+                    {menuGegevens && <span className="item-sterren">{menuGegevens.saldi[kind.id]?.vrij ?? 0} sterren</span>}
+                  </Link>
+                ))}
+              </div>
+            )
+          })}
         </nav>
         <div className="menu-voet">
           <Link to="/kinderen" className="menu-item" onClick={vergrendel}><Icoon naam="terug" /><span>Naar de kinderen</span></Link>
@@ -182,8 +231,40 @@ function Kader({ titel, wachtend, children }: { titel: string; wachtend?: number
       </aside>
 
       <main className="ouder-inhoud">{children}</main>
+
+      {stijl === 'onderbalk' && (
+        <nav className="ouder-tabs" aria-label="Tabs">
+          {tabsVoor(opTablet).map((tab) => (
+            <NavLink key={tab.naam} to={tab.pad} end className={() => `ouder-tab${tab.groepen.includes(groepVanPad(pathname)) ? ' active' : ''}`}>
+              <Icoon naam={tab.icoon} /><span>{tab.naam}</span>
+              {tab.naam === 'Vandaag' && teller > 0 && <span className="item-teller">{teller}</span>}
+            </NavLink>
+          ))}
+        </nav>
+      )}
     </div>
   )
+}
+
+/** Eén regel van het menu, met zijn teller. Items zonder pad (komt later) staan grijs. */
+function MenuRegel({ item, teller }: { item: MenuItem; teller: number }) {
+  if (!item.pad) {
+    return <span className="menu-item is-later" aria-disabled="true"><Icoon naam={item.icoon} /><span>{item.naam}</span></span>
+  }
+  return (
+    <NavLink to={item.pad} end className="menu-item">
+      <Icoon naam={item.icoon} /><span>{item.naam}</span>
+      {teller > 0 && (item.teller === 'goedkeuren'
+        ? <span className="item-teller">{teller}</span>
+        : <span className="item-teller item-teller-taken" aria-label={`${teller} ${item.teller === 'chat' ? 'ongelezen' : item.teller === 'aanbod' ? 'nieuw' : 'te doen'}`}>{teller}</span>)}
+    </NavLink>
+  )
+}
+
+/** Tabs die op dit toestel iets te tonen hebben (op de tablet van een kind is er geen Gezin). */
+function tabsVoor(opTablet: boolean) {
+  const zichtbaar = new Set(zichtbaarMenu(opTablet).map((g) => g.sleutel ?? ''))
+  return ouderTabs.filter((t) => t.groepen.some((g) => zichtbaar.has(g)))
 }
 
 function Pincode({ onOpen }: { onOpen: () => void }) {

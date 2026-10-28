@@ -1,0 +1,37 @@
+/* De onderbalk van een kind (KindBalk.tsx): vijf grote vakken, minstens 64 px hoog. */
+.kind-balk {
+  flex: none; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; padding: 6px;
+  background: var(--surface); border-radius: 28px; box-shadow: 0 6px 0 var(--shade); width: 100%;
+}
+.balk-deel {
+  position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0;
+  min-height: 72px; padding: 6px 4px; border-radius: 22px; color: var(--ink); text-decoration: none; font-weight: 800;
+}
+.balk-deel.actief { background: var(--kid-tint); color: var(--kid); }
+.balk-icoon { display: grid; place-items: center; line-height: 0; }
+.balk-icoon svg { width: 36px; height: 36px; }
+.balk-naam { font-size: 18px; line-height: 1.1; }
+.balk-teller {
+  position: absolute; top: 4px; right: calc(50% - 38px); min-width: 24px; height: 24px; padding: 0 6px; border-radius: 12px;
+  background: var(--kid); color: #fff; font-size: 15px; font-weight: 800; display: grid; place-items: center;
+}
+/* Wie niet leest: alleen prenten, dus iets groter */
+.kind-balk:not(:has(.balk-naam)) .balk-deel { min-height: 84px; }
+.kind-balk:not(:has(.balk-naam)) .balk-icoon svg { width: 48px; height: 48px; }
+.kind-balk:not(:has(.balk-naam)) .balk-teller { right: calc(50% - 44px); }
+
+@media (min-width: 961px) and (min-height: 560px) {
+  .kind-scherm > .kind-balk, .kind-vol > .kind-balk { max-width: 1130px; align-self: center; }
+}
+@media (max-height: 640px) {
+  .balk-deel { min-height: 64px; }
+  .kind-balk:not(:has(.balk-naam)) .balk-deel { min-height: 68px; }
+}
+
+/* Tablet staand: het startscherm en Mijn taken vullen ook de hoogte, met de onderbalk onderaan */
+@media (min-width: 600px) and (min-height: 560px) and (orientation: portrait) {
+  .kind-scherm { height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)); }
+  .kind-scherm .kind-start { flex: 1; min-height: 0; }
+  .kind-scherm .kind-start > section { display: flex; flex-direction: column; min-height: 0; height: 100%; }
+  .kind-scherm .taken-raster { flex: 1; min-height: 0; }
+}
