@@ -474,7 +474,6 @@ a.knop { display: inline-flex; align-items: center; justify-content: center; tex
 .ouder-tab.active { color: var(--accent); font-weight: 600; border-top-color: var(--accent); }
 .ouder-tab .item-teller { position: absolute; top: 6px; left: calc(50% + 8px); }
 .stijl-onderbalk .ouder-inhoud { padding-bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
-.stijl-onderbalk .menu-knop { visibility: hidden; }
 .oh-raster { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
 .oh-tegel {
   position: relative; min-height: 96px; padding: 14px 12px; display: flex; flex-direction: column; justify-content: space-between; gap: 8px;
@@ -488,7 +487,6 @@ a.knop { display: inline-flex; align-items: center; justify-content: center; tex
 .oh-lijst .menu-item + .menu-item { border-top: 1px solid var(--line); }
 @media (min-width: 1024px) {
   .ouder-tabs { display: none; }
-  .stijl-onderbalk .menu-knop { visibility: visible; }
   .stijl-onderbalk .ouder-inhoud { padding-bottom: 32px; }
   .oh-raster { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
 }
@@ -501,3 +499,13 @@ a.knop { display: inline-flex; align-items: center; justify-content: center; tex
 }
 .stijl-keuze span { color: var(--muted); font-size: 13px; }
 .stijl-keuze.gekozen { border-color: var(--accent); background: var(--accent-tint); box-shadow: inset 3px 0 var(--accent); }
+
+/* Avatarbol met mijn instellingen: bovenaan het menu en (stijl Onderbalk) in de balk */
+.ouder .menu-kop-mij { background: var(--bar); display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--bar-ink); min-height: 72px; }
+.ouder .menu-kop-mij:hover { background: color-mix(in srgb, var(--bar) 88%, white); }
+.menu-kop-tekst { display: grid; gap: 1px; }
+.balk-avatar .avatar-mini { border: 2px solid var(--bar-muted); }
+.mij-kop { display: flex; align-items: center; gap: 16px; }
+.mij-kop h2 { margin: 0; }
+.mij-lijst { border: 1px solid var(--line); background: var(--surface); }
+.mij-lijst .menu-item + .menu-item { border-top: 1px solid var(--line); }

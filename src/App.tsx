@@ -7,6 +7,7 @@ import ExtraTijd from './schermen/ExtraTijd.tsx'
 import Goedkeuren from './schermen/Goedkeuren.tsx'
 import GezinInstellen from './schermen/GezinInstellen.tsx'
 import KinderenBeheer from './schermen/KinderenBeheer.tsx'
+import MijnInstellingen from './schermen/MijnInstellingen.tsx'
 import { OuderGroep, OuderMeer } from './schermen/OuderHub.tsx'
 import { KindIk, KindSpelen } from './schermen/KindHubs.tsx'
 import KindStart from './schermen/KindStart.tsx'
@@ -125,6 +126,7 @@ export default function App() {
       </Route>
       <Route path="/ouder" element={<OuderStart />} />
       <Route path="/ouder/groep/:sleutel" element={<OuderGroep />} />
+      <Route path="/ouder/mij" element={<MijnInstellingen />} />
       <Route path="/ouder/meer" element={<OuderMeer />} />
       <Route path="/ouder/goedkeuren" element={<Goedkeuren />} />
       <Route path="/ouder/taken" element={<TakenBeheer />} />
