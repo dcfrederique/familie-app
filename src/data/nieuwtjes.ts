@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.67',
+    datum: '2026-10-28',
+    titel: 'Chat-icoon op de kinderbalk',
+    tekst: 'Heeft een ouder de chat voor een kind aangezet, dan staat er op de balk onderaan een apart chat-icoontje met een bolletje voor nieuwe berichten. De tegel Berichten onder Ik is daarvoor weggehaald.',
+  },
+  {
     versie: '0.66',
     datum: '2026-10-28',
     titel: 'Mijn instellingen via je avatar',

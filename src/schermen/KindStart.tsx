@@ -48,12 +48,12 @@ export default function KindStart({ deel = 'start' }: { deel?: 'start' | 'taken'
 
   const { data, ververs } = useGegevens(bron && kind ? async () => {
     const zestigDagenTerug = dagVan(new Date(Date.now() - 60 * 86400_000))
-    const [taken, inzendingen, saldi, verzoeken, menu, chat, log] = await Promise.all([
+    const [taken, inzendingen, saldi, verzoeken, menu, log] = await Promise.all([
       bron.taken(), bron.inzendingenVanaf(zestigDagenTerug), bron.saldi(), bron.verzoeken(vandaag()),
-      bron.weekmenu(vandaag(), vandaag()), kind.chat_aan ? bron.chatOverzicht().catch(() => []) : [], bron.log(kind.id),
+      bron.weekmenu(vandaag(), vandaag()), bron.log(kind.id),
     ])
     return { taken, inzendingen, saldo: saldi[kind.id], verzoeken: verzoeken.filter((v) => v.kind_id === kind.id), eten: menu[0],
-             ongelezen: chat.find((o) => o.kind_id === kind.id)?.ongelezen ?? 0, ouderLog: log.filter((l) => l.bron === 'ouder') }
+             ouderLog: log.filter((l) => l.bron === 'ouder') }
   } : null, [bron, kind?.id, kind?.chat_aan])
 
   if (!kind) return <Navigate to="/kinderen" replace />
@@ -64,8 +64,8 @@ export default function KindStart({ deel = 'start' }: { deel?: 'start' | 'taken'
   return (
     <div className={`kind ${kleurKlasse(kind)}`}>
       {kind.kan_lezen
-        ? <StartLezer deel={deel} kind={kind} lijst={lijst} geladen={!!data} vrij={vrij} eten={data?.eten} ongelezen={data?.ongelezen ?? 0} kies={kies} />
-        : <StartPrenten deel={deel} kind={kind} lijst={lijst} geladen={!!data} eten={data?.eten} ongelezen={data?.ongelezen ?? 0} kies={kies} />}
+        ? <StartLezer deel={deel} kind={kind} lijst={lijst} geladen={!!data} vrij={vrij} eten={data?.eten} kies={kies} />
+        : <StartPrenten deel={deel} kind={kind} lijst={lijst} geladen={!!data} eten={data?.eten} kies={kies} />}
 
       {hoera && <DagelijksHoera kind={kind} hoera={hoera} sluit={() => setHoera(null)} />}
 
@@ -79,8 +79,8 @@ export default function KindStart({ deel = 'start' }: { deel?: 'start' | 'taken'
   )
 }
 
-function StartLezer({ deel, kind, lijst, geladen, vrij, eten, ongelezen, kies }: {
-  deel: 'start' | 'taken'; kind: Gebruiker; lijst: Lijst; geladen: boolean; vrij: number; eten?: Maaltijd; ongelezen: number; kies: (t: Taak) => void
+function StartLezer({ deel, kind, lijst, geladen, vrij, eten, kies }: {
+  deel: 'start' | 'taken'; kind: Gebruiker; lijst: Lijst; geladen: boolean; vrij: number; eten?: Maaltijd; kies: (t: Taak) => void
 }) {
   const banner = kind.thema ? bannerVoorKleur[kind.thema] : null
   const gedaan = lijst.filter((t) => t.status === 'gedaan').length
@@ -137,7 +137,7 @@ function StartLezer({ deel, kind, lijst, geladen, vrij, eten, ongelezen, kies }:
           </section>
         )}
       </main>
-      <KindBalk kind={kind} actief={deel === 'start' ? 'thuis' : 'taken'} nog={geladen ? nogTeDoen : undefined} ongelezen={ongelezen} />
+      <KindBalk kind={kind} actief={deel === 'start' ? 'thuis' : 'taken'} nog={geladen ? nogTeDoen : undefined} />
     </div>
   )
 }
@@ -169,8 +169,8 @@ function TaakKaart({ taak, status, kies }: { taak: Taak; status: TaakStatus; kie
 }
 
 /** Voor wie niet leest: grote prenten, voorleesknoppen en ronde knoppen zonder tekst. */
-function StartPrenten({ deel, kind, lijst, geladen, eten, ongelezen, kies }: {
-  deel: 'start' | 'taken'; kind: Gebruiker; lijst: Lijst; geladen: boolean; eten?: Maaltijd; ongelezen: number; kies: (t: Taak) => void
+function StartPrenten({ deel, kind, lijst, geladen, eten, kies }: {
+  deel: 'start' | 'taken'; kind: Gebruiker; lijst: Lijst; geladen: boolean; eten?: Maaltijd; kies: (t: Taak) => void
 }) {
   const nogTeDoen = lijst.filter((t) => t.status === 'te_doen').length
   const gedaan = lijst.filter((t) => t.status === 'gedaan').length
@@ -234,7 +234,7 @@ function StartPrenten({ deel, kind, lijst, geladen, eten, ongelezen, kies }: {
           </div>
         )} />)}
 
-      <KindBalk kind={kind} actief={deel === 'start' ? 'thuis' : 'taken'} nog={geladen ? nogTeDoen : undefined} ongelezen={ongelezen} />
+      <KindBalk kind={kind} actief={deel === 'start' ? 'thuis' : 'taken'} nog={geladen ? nogTeDoen : undefined} />
     </div>
   )
 }

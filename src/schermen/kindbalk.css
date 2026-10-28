@@ -1,6 +1,6 @@
 /* De onderbalk van een kind (KindBalk.tsx): vijf grote vakken, minstens 64 px hoog. */
 .kind-balk {
-  flex: none; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; padding: 6px;
+  flex: none; display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 6px; padding: 6px;
   background: var(--surface); border-radius: 28px; box-shadow: 0 6px 0 var(--shade); width: 100%;
 }
 .balk-deel {
