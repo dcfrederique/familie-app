@@ -57,3 +57,23 @@
 .thema-race .teken-palet { row-gap: 16px; padding-top: 6px; }
 /* De kop met een thema heeft een marge bovenaan; zonder flow-root schuift die de pagina 20px te ver en moet je scrollen. */
 .kind:has(.tekenen, .teken-klaar, .kleuren) { display: flow-root; }
+
+/* Lage liggende tablets: het gereedschap iets kleiner, zodat het naast het blad past zonder scrollen. */
+@media (orientation: landscape) and (max-height: 760px) and (min-height: 521px) {
+  .teken-gereedschap { gap: 8px; padding: 10px; }
+  .teken-knop { width: 50px; height: 50px; }
+  .teken-palet { grid-template-columns: repeat(4, 46px); gap: 8px; }
+  .teken-gereedschap .kleur-knop, .thema-race .teken-gereedschap .kleur-knop { width: 46px; height: 46px; }
+  .thema-race .teken-palet { row-gap: 8px; padding-top: 0; }
+  .teken-gereedschap .kleur-acties .rond.groot { width: 56px; height: 56px; }
+  .teken-gereedschap .groot-knop { min-height: 56px; }
+}
+/* Staand: het gereedschap onder het blad in twee kolommen (knoppen links, kleuren rechts), zodat het blad groot blijft. */
+@media (orientation: portrait) and (min-width: 600px) {
+  .teken-gereedschap { display: grid; grid-template-columns: auto auto; grid-template-areas: "gereed palet" "dikte palet" "acties acties"; justify-content: center; column-gap: 24px; }
+  .teken-gereedschap > .teken-rij:nth-child(1) { grid-area: gereed; }
+  .teken-gereedschap > .teken-rij:nth-child(2) { grid-area: dikte; }
+  .teken-gereedschap > .teken-palet { grid-area: palet; grid-template-columns: repeat(6, 44px); align-content: center; }
+  @media (max-width: 700px) { .teken-gereedschap > .teken-palet { grid-template-columns: repeat(5, 44px); } }
+  .teken-gereedschap > .teken-acties { grid-area: acties; }
+}

@@ -72,7 +72,12 @@ function Tekenen({ kind }: { kind: Gebruiker }) {
     if (!el || typeof ResizeObserver === 'undefined') return
     function meet() {
       if (!el) return
-      const hoog = window.innerHeight - el.getBoundingClientRect().top - window.scrollY - 28
+      // Staat het gereedschap onder het blad (staand), dan houden we er plaats voor vrij.
+      const tekenen = el.parentElement
+      const gereedschap = tekenen?.querySelector<HTMLElement>('.teken-gereedschap')
+      const gestapeld = !!tekenen && getComputedStyle(tekenen).gridTemplateColumns.trim().split(/\s+/).length === 1
+      const onder = gestapeld && gereedschap ? gereedschap.offsetHeight + 20 : 0
+      const hoog = window.innerHeight - el.getBoundingClientRect().top - window.scrollY - 36 - onder
       setBladBreed(hoog < 320 ? null : Math.floor(Math.min(el.clientWidth, (hoog * BREED) / HOOG)))
     }
     meet()

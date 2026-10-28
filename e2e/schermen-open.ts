@@ -1,7 +1,7 @@
 // Kinderschermen die nog niet passen zonder scrollen, als 'kind scherm BxH' (gsm liggend inbegrepen).
 // Bijgehouden door de nachtelijke schermcontrole (CLAUDE.md): wat past, gaat eruit; de test zegt het zelf.
 // Bijwerken: OPEN_OPNEMEN=1 npx playwright test e2e/schermen.spec.ts && node scripts/open-bijwerken.cjs <verslag>.
-// Stand: ideeen/2026-10-27-schermen.md.
+// Stand: ideeen/2026-10-28-schermen.md.
 export const OPEN = new Set<string>([
   "feline basket 844x390",
   "feline basket 915x412",
@@ -51,12 +51,8 @@ export const OPEN = new Set<string>([
   "feline taken 820x1180",
   "feline taken 844x390",
   "feline taken 915x412",
-  "feline tekenen 1024x600",
-  "feline tekenen 1143x686",
-  "feline tekenen 768x1024",
   "feline tekenen 844x390",
   "feline tekenen 915x412",
-  "feline tekenen 962x601",
   "feline thema 844x390",
   "feline thema 915x412",
   "feline touwspringen 844x390",
@@ -116,13 +112,8 @@ export const OPEN = new Set<string>([
   "luca taken 800x1280",
   "luca taken 844x390",
   "luca taken 915x412",
-  "luca tekenen 1024x600",
-  "luca tekenen 1143x686",
-  "luca tekenen 768x1024",
-  "luca tekenen 810x1080",
   "luca tekenen 844x390",
   "luca tekenen 915x412",
-  "luca tekenen 962x601",
   "luca thema 1024x600",
   "luca thema 600x1024",
   "luca thema 601x962",
@@ -186,13 +177,8 @@ export const OPEN = new Set<string>([
   "yuna taken 810x1080",
   "yuna taken 844x390",
   "yuna taken 915x412",
-  "yuna tekenen 1024x600",
-  "yuna tekenen 1143x686",
-  "yuna tekenen 601x962",
-  "yuna tekenen 768x1024",
   "yuna tekenen 844x390",
   "yuna tekenen 915x412",
-  "yuna tekenen 962x601",
   "yuna thema 1024x600",
   "yuna thema 600x1024",
   "yuna thema 601x962",

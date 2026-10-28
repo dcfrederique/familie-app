@@ -63,3 +63,47 @@
   .schoen-vol .lekker-tekening, .schoen-kaartje.tip, .schoen-in, .schoen-doos.wip .schoen-prent, .schoen-doos.danst .schoen-prent { animation: none; }
   .schoen-kaartje.tip { outline: 4px solid var(--gold); }
 }
+
+/* Liggend (tablet en gsm): Klaar staat rechts naast de schoen, wat in de schoen zit staat óp de schoen, zodat het
+   scherm niet groeit tijdens het spel en niets scrollt. */
+@media (orientation: landscape) and (min-width: 600px) {
+  .schoen {
+    display: grid; grid-template-columns: 1fr auto 1fr; justify-items: center; align-items: center;
+    grid-template-areas: "chips chips chips" "teller teller teller" "kaartje kaartje kaartje" ". veld klaar";
+    row-gap: clamp(6px, 1.6dvh, 18px);
+  }
+  .schoen > .chips { grid-area: chips; }
+  .schoen > .schoen-teller { grid-area: teller; }
+  .schoen > .schoen-kaartje { grid-area: kaartje; }
+  .schoen > .schoen-veld { grid-area: veld; align-items: center; }
+  .schoen > .schoen-klaar { grid-area: klaar; justify-self: start; margin-left: clamp(16px, 4vw, 56px); }
+  .schoen > .schoen-eind { grid-column: 1 / -1; grid-row: 2 / 5; }
+  .schoen-kaartje { padding-block: clamp(2px, 0.8dvh, 8px); }
+  .schoen-getal { font-size: clamp(32px, 8dvh, 72px); }
+  .schoen-eis-prent { width: clamp(36px, 8dvh, 72px); }
+  .schoen-schaal { grid-template-columns: repeat(2, clamp(56px, 14dvh, 128px)); gap: clamp(8px, 1.6dvh, 18px); padding: clamp(8px, 1.4dvh, 14px); }
+  .schoen-lekker { width: clamp(56px, 14dvh, 128px); height: clamp(56px, 14dvh, 128px); }
+  .schoen-doos { width: clamp(180px, min(34vw, 46dvh), 340px); }
+  .schoen-inhoud { position: absolute; left: 4%; right: 18%; top: 34%; z-index: 1; min-height: 0; gap: 6px; }
+  .schoen-in { width: clamp(48px, 9dvh, 76px); height: clamp(48px, 9dvh, 76px); background: #FFF8EE; border-color: #FFFFFF; box-shadow: 0 3px 0 rgba(0,0,0,.18); }
+  .schoen-klaar { width: clamp(64px, 12dvh, 96px); height: clamp(64px, 12dvh, 96px); }
+  .schoen-prent-vol .schoen-prent { width: clamp(150px, 28dvh, 280px); }
+}
+@media (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .schoen { row-gap: 4px; }
+  .schoen-kaartje { padding-block: 0; border-width: 2px; }
+  .schoen-getal { font-size: 30px; }
+  .schoen-eis-prent { width: 32px; }
+  .schoen-stippen i { width: 11px; height: 11px; }
+  .schoen-schaal { grid-template-columns: repeat(2, 50px); gap: 8px; padding: 8px; }
+  .schoen-lekker { width: 50px; height: 50px; padding: 5px; border-radius: 16px; }
+}
+
+/* Detail: een zachte schaduw onder de schoen en een fonkelend sterretje als het goed is. */
+.schoen-doos::after { content: ''; position: absolute; left: 10%; right: 6%; bottom: -6px; height: 12px; border-radius: 50%; background: var(--shade); opacity: .5; z-index: -1; }
+.schoen-doos.danst::before {
+  content: '✨'; position: absolute; top: -8%; right: 6%; font-size: clamp(28px, 5dvh, 44px); z-index: 2;
+  animation: schoen-fonkel 0.5s ease-in-out 2 alternate;
+}
+@keyframes schoen-fonkel { from { transform: scale(.6) rotate(-10deg); opacity: .4; } to { transform: scale(1.15) rotate(10deg); opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .schoen-doos.danst::before { animation: none; } }

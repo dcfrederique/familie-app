@@ -253,3 +253,9 @@
 .was-bad::after { animation-delay: -3.5s; left: 6%; }
 @keyframes belletjes { 0% { transform: translateY(0); opacity: 0; } 15% { opacity: .9; } 85% { opacity: .7; } 100% { transform: translateY(-110%); opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { .was-bad::before, .was-bad::after { animation: none; opacity: 0; } }
+
+/* Gsm liggend: de niveauknoppen zoals op de tablet, alleen lager. */
+@media (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .chips { padding: 3px; }
+  .chip { min-height: 44px; padding: 0 14px; font-size: 15px; }
+}

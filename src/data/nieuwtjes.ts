@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.58',
+    datum: '2026-10-28',
+    titel: 'Schoen vullen en Tekenen passen beter op de tablet',
+    tekst: 'Schoen vullen past nu zonder scrollen op elke tablet, liggend en staand, en ook op een liggende gsm: de schoen staat groter in het midden en het lekkers erin is beter te zien. Bij een juist gevulde schoen fonkelt er een sterretje. Zelf tekenen past nu ook op lage en staande tablets: staand staan de knoppen en kleuren in twee kolommen onder het blad.',
+  },
+  {
     versie: '0.57',
     datum: '2026-10-28',
     titel: 'Het Bos is gevuld',

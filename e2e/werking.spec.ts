@@ -61,10 +61,16 @@ test('winkel: iets kopen met sterren', async ({ page }) => {
   await naar(page, '/kind/luca/winkel')
   const koop = page.locator('button.winkel-kaart').first()
   await expect(koop).toBeVisible()
-  const naam = (await koop.getAttribute('aria-label'))!.replace(/, kost .*/, '')
+  const label = (await koop.getAttribute('aria-label'))!
+  const naam = label.replace(/, kost .*/, '')
+  const prijs = Number(label.match(/kost (\d+)/)![1])
+  const saldo = async () => Number((await page.locator('main').innerText()).match(/(\d+)\s*sterren/)![1])
+  const voor = await saldo()
   await koop.click()
   await page.getByRole('button', { name: 'Kopen' }).click()
-  await expect(page.getByRole('link', { name: `${naam}, van jou` }).or(page.getByRole('dialog'))).toBeVisible()
+  // Wat van jou is, schuift achteraan (soms naar een volgende bladzijde): de koopknop is weg, of er komt een hoera.
+  await expect(page.getByRole('button', { name: `${naam}, kost`, exact: false })).toHaveCount(0)
+  await expect.poll(saldo).toBe(voor - prijs)
 })
 
 test('Mijn huis en Mijn figuurtje: verrassing en bewaren', async ({ page }) => {
