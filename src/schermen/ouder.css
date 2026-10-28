@@ -391,3 +391,25 @@ a.vink-tekst { text-decoration: none; }
 .recept-rij svg { fill: none; stroke: var(--muted); stroke-width: 2; flex: none; }
 .recept-rij.is-nieuw span { color: var(--accent); font-size: 13px; font-weight: 500; white-space: nowrap; }
 .recept-rijen input { min-width: 0; }
+
+/* Lopen (docs/lopen.md): formulier, weekbalken en lijst */
+.loop-toevoegen { display: grid; gap: 12px; }
+.loop-velden { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+@media (min-width: 600px) { .loop-velden { grid-template-columns: repeat(4, 1fr); } }
+.loop-velden input, .loop-velden select { min-width: 0; width: 100%; }
+.ouder .loop-gevoel { padding: 0; gap: 0; border: 1px solid var(--line); flex-wrap: nowrap; }
+.ouder .loop-gevoel button { flex: 1; min-height: 48px; padding: 0 4px; font-size: 14px; }
+.ouder .loop-gevoel button[aria-pressed="true"] { background: var(--accent); color: var(--on-solid); }
+.loop-acties { display: flex; gap: 8px; flex-wrap: wrap; }
+.loop-weken { display: grid; grid-template-columns: repeat(8, 1fr); gap: 6px; height: 150px; align-items: end; }
+.loop-week { display: grid; grid-template-rows: 16px 1fr 16px; height: 100%; justify-items: center; align-items: end; min-width: 0; }
+.loop-week span { width: 100%; background: var(--line); align-self: end; }
+.loop-week.is-nu span { background: var(--accent); }
+.loop-week small { font-size: 11px; color: var(--muted); font-variant-numeric: tabular-nums; white-space: nowrap; overflow: hidden; }
+.loop-lijst { list-style: none; margin: 0; padding: 0; }
+.loop-rij { display: grid; gap: 4px; padding: 12px; border-bottom: 1px solid var(--line); }
+.loop-rij:last-child { border-bottom: 0; }
+.loop-hoofd { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.loop-hoofd b { font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.loop-hoofd span, .loop-rij small { color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
+.loop-notitie { margin: 0; font-size: 14px; }

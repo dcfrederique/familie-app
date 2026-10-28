@@ -56,7 +56,7 @@ export const ouderMenu: MenuGroep[] = [
     { naam: 'Gewicht', icoon: 'gewicht', pad: '/ouder/gewicht' },
     { naam: 'Mijn profiel', icoon: 'profiel', pad: '/ouder/profiel' },
     { naam: 'Fitness', icoon: 'fitness' },
-    { naam: 'Loopschema', icoon: 'lopen' },
+    { naam: 'Lopen', icoon: 'lopen', pad: '/ouder/lopen' },
   ] },
   { naam: 'Instellingen', items: [
     { naam: 'Toestellen en meldingen', icoon: 'toestellen', pad: '/ouder/toestellen' },

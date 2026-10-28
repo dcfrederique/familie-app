@@ -11,6 +11,7 @@ import { maakWeergave, standaardWeergave, type WereldWeergave } from '../wereld/
 import { leesOpgeslagen, leegOpgeslagen, type Opgeslagen as WereldKaart } from '../wereld/gebieden.ts'
 import { activiteitOmschrijving, activiteitSterren, blokKeuzes, limietVoor, regels as standaardRegels } from '../regels.ts'
 import type { Weging } from '../gewicht.ts'
+import type { Loopsessie } from '../lopen.ts'
 import type { ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, GezondheidProfiel, Inzending, LogRegel, Maaltijd, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Spelregels, Taak, Tijdverzoek, VoorraadArtikel, VoorraadLogRegel, Recept, Winkel } from './types.ts'
 
 const DEMO_PIN = '1234'
@@ -36,6 +37,7 @@ interface Toestand {
   categorieen: Categorie[]
   profiel: GezondheidProfiel | null
   wegingen: Weging[]
+  loopsessies: Loopsessie[]
   regels: Spelregels
   wereldWeergave: WereldWeergave
   wereldKaart: WereldKaart
@@ -128,6 +130,15 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
       id: `we-${i + 1}`,
       dag: dagVan(new Date(Date.now() - (105 - i * 7) * 86400_000)),
       gewicht_kg: Math.round((71.8 - i * 0.22 + (i % 3 === 1 ? 0.4 : 0)) * 10) / 10,
+    })),
+    // Een paar weken lopen, zodat Lopen meteen een overzicht toont.
+    loopsessies: Array.from({ length: 10 }, (_, i): Loopsessie => ({
+      id: `lo-${i + 1}`,
+      dag: dagVan(new Date(Date.now() - (30 - i * 3) * 86400_000)),
+      afstand_m: [5000, 6200, 5000, 8000, 5500, 6000, 5000, 10000, 5200, 6500][i],
+      duur_s: [1650, 2050, 1600, 2700, 1750, 1900, 1560, 3300, 1600, 2000][i],
+      soort: i % 4 === 3 ? 'lang' : 'rustig', gevoel: i % 3 === 0 ? 4 : 3, notitie: i === 7 ? 'Eerste 10 km!' : null,
+      bron: 'manueel', externe_id: null,
     })),
     wereldWeergave: { ...standaardWeergave },
     wereldKaart: leegOpgeslagen(),
@@ -225,6 +236,7 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
     async categorieen() { return t.categorieen.slice().sort((a, b) => a.volgorde - b.volgorde || a.naam.localeCompare(b.naam)).map((c) => ({ ...c })) },
     async gekochteBoodschappen(van, tot) { return t.boodschappen.filter((b) => b.gekocht_op && b.gekocht_op >= van && b.gekocht_op < tot).map((b) => ({ ...b })) },
     async gezondheidProfiel() { return t.profiel && { ...t.profiel } },
+    async loopsessies() { return t.loopsessies.map((l) => ({ ...l })) },
     async wegingen() { return t.wegingen.slice().sort((a, b) => a.dag.localeCompare(b.dag)).map((w) => ({ ...w })) },
     async aankopen() { return Object.fromEntries(Object.entries(t.aankopen).map(([k, v]) => [k, [...v]])) },
     async dagelijksHoera(kindId) {
@@ -596,5 +608,11 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       else t.wegingen.push({ id: id(), dag, gewicht_kg: kg })
     },
     async wegingVerwijderen(wegingId) { t.wegingen = t.wegingen.filter((w) => w.id !== wegingId) },
+    async loopOpslaan({ id: loopId, ...rij }) {
+      const oud = loopId ? t.loopsessies.find((l) => l.id === loopId) : undefined
+      if (oud) Object.assign(oud, rij)
+      else t.loopsessies.push({ id: id(), ...rij, bron: 'manueel', externe_id: null })
+    },
+    async loopVerwijderen(loopId) { t.loopsessies = t.loopsessies.filter((l) => l.id !== loopId) },
   }
 }

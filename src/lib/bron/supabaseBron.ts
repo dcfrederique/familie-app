@@ -1,5 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Aanbod } from '../../data/aanbod.ts'
+import type { Loopsessie } from '../lopen.ts'
 import { maakWeergave, type WereldWeergave } from '../wereld/weergave.ts'
 import { leesOpgeslagen, type Opgeslagen as WereldKaart } from '../wereld/gebieden.ts'
 import type { ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, ChatOverzicht, GezondheidProfiel, SpraakToken, Inzending, LogRegel, Maaltijd, NieuweNotitie, NieuweOuderTaak, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Saldo, Spelregels, Taak, Tijdverzoek, Winkel, VoorraadArtikel, VoorraadLogRegel, VoorraadOverzicht } from './types.ts'
@@ -217,6 +218,12 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
       const { data, error } = await sb.from('gezondheid_profielen').select('geboortedatum, lengte_cm, doelgewicht_kg').maybeSingle()
       fout(error)
       return data && { ...data, lengte_cm: getal(data.lengte_cm), doelgewicht_kg: getal(data.doelgewicht_kg) } as GezondheidProfiel
+    },
+    async loopsessies() {
+      const { data, error } = await sb.from('loopsessies')
+        .select('id, dag, afstand_m, duur_s, soort, gevoel, notitie, bron, externe_id').order('dag').limit(5000)
+      fout(error)
+      return (data ?? []) as Loopsessie[]
     },
     async wegingen() {
       const { data, error } = await sb.from('wegingen').select('id, dag, gewicht_kg').order('dag').limit(5000)
@@ -512,6 +519,18 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
     },
     async wegingVerwijderen(id) {
       fout((await sb.from('wegingen').delete().eq('id', id)).error)
+    },
+    async loopOpslaan({ id: loopId, ...rij }) {
+      if (loopId) {
+        fout((await sb.from('loopsessies').update(rij).eq('id', loopId)).error)
+        return
+      }
+      const { data: ik, error } = await sb.rpc('mijn_ouder')
+      fout(error)
+      fout((await sb.from('loopsessies').insert({ ...rij, gezin_id: gezinId, eigenaar: ik })).error)
+    },
+    async loopVerwijderen(id) {
+      fout((await sb.from('loopsessies').delete().eq('id', id)).error)
     },
   }
 }

@@ -34,6 +34,7 @@ Vanaf 1024 px breed staat het menu vast links als zijbalk (288 px), de balk toon
 | | **Boodschappen** | komt later | Gedeelde lijst. |
 | | **Notities** | komt later | Losse notities en lijstjes. |
 | Gezondheid | **Gewicht** | bestaat (`docs/gewicht.md`) | Per ouder, privé; met Mijn profiel. |
+| | **Lopen** | bestaat (`docs/lopen.md`) | Lopen zelf invoeren; Strava later. Het opbouwschema komt nog later. |
 | | **Fitness** | komt nog later | Trainingen bijhouden. |
 | | **Loopschema** | komt nog later | Opbouwschema, bijvoorbeeld 0 naar 5 km. |
 | Instellingen | **Toestellen en meldingen** | bestaat | Koppelcode, tablets, meldingen aanzetten. |
