@@ -28,6 +28,16 @@ const VOORRAAD_KOLOMMEN = 'id, naam, eenheid, aantal, minimum, aankoop_aantal, p
 const BOODSCHAP_KOLOMMEN = 'id, naam, hoeveel, winkel_id, dag, gerecht, gekocht_op, aangemaakt_op, categorie_id, prijs, eenheidsprijs, aantal'
 
 export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
+  /** Roept de Edge Function "strava" aan; haalt de boodschap uit een foutantwoord van de functie. */
+  async function stravaActie(actie: string): Promise<Record<string, unknown>> {
+    const { data, error } = await sb.functions.invoke('strava', { body: { actie } })
+    if (error) {
+      const antwoord = (error as { context?: Response }).context
+      const tekst = antwoord && typeof antwoord.json === 'function' ? (await antwoord.json().catch(() => null))?.fout : null
+      throw new Error(tekst ?? error.message)
+    }
+    return (data ?? {}) as Record<string, unknown>
+  }
   return {
     async taken() {
       const { data, error } = await sb.from('taken')
@@ -529,6 +539,15 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
       fout(error)
       fout((await sb.from('loopsessies').insert({ ...rij, gezin_id: gezinId, eigenaar: ik })).error)
     },
+    async stravaStatus() {
+      const { data, error } = await sb.rpc('strava_status')
+      fout(error)
+      const rij = (data as { gekoppeld: boolean; laatste_sync: string | null }[] | null)?.[0]
+      return { gekoppeld: rij?.gekoppeld ?? false, laatste_sync: rij?.laatste_sync ?? null }
+    },
+    async stravaKoppelen() { return (await stravaActie('start')).url as string },
+    async stravaSynchroniseren() { return (await stravaActie('sync')).aantal as number },
+    async stravaOntkoppelen() { await stravaActie('ontkoppel') },
     async loopVerwijderen(id) {
       fout((await sb.from('loopsessies').delete().eq('id', id)).error)
     },

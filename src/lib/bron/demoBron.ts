@@ -613,6 +613,10 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       if (oud) Object.assign(oud, rij)
       else t.loopsessies.push({ id: id(), ...rij, bron: 'manueel', externe_id: null })
     },
+    async stravaStatus() { return { gekoppeld: false, laatste_sync: null } },
+    async stravaKoppelen(): Promise<string> { throw new Error('Strava koppelen werkt niet in de demo') },
+    async stravaSynchroniseren(): Promise<number> { throw new Error('Strava werkt niet in de demo') },
+    async stravaOntkoppelen() {},
     async loopVerwijderen(loopId) { t.loopsessies = t.loopsessies.filter((l) => l.id !== loopId) },
   }
 }

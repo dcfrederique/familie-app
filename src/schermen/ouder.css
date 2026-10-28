@@ -413,3 +413,4 @@ a.vink-tekst { text-decoration: none; }
 .loop-hoofd b { font-size: 18px; font-weight: 600; font-variant-numeric: tabular-nums; }
 .loop-hoofd span, .loop-rij small { color: var(--muted); font-size: 14px; font-variant-numeric: tabular-nums; }
 .loop-notitie { margin: 0; font-size: 14px; }
+.strava-kaart { display: grid; gap: 10px; }

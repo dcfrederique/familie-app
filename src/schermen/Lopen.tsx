@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { vandaag } from '../lib/datum.ts'
 import { useGegevens } from '../lib/gegevens.ts'
 import { duurTekst, gevoelNaam, kmTekst, leesDuur, leesKm, nieuwsteEerst, snelste, soortNaam, tempoTekst, weekStart, weekTotalen, type LoopInvoer, type LoopSoort, type Loopsessie } from '../lib/lopen.ts'
@@ -12,6 +13,14 @@ function zonderLopenMigratie(fout: string): string {
     : fout
 }
 
+const stravaUitkomst: Record<string, string> = {
+  gekoppeld: 'Gekoppeld met Strava. Je lopen worden opgehaald.',
+  geweigerd: 'Je gaf geen toestemming bij Strava, dus er is niets gekoppeld.',
+  'te-weinig-rechten': 'Vink bij Strava aan dat de app je activiteiten mag bekijken, anders kunnen we je lopen niet ophalen.',
+  'al-gekoppeld': 'Dit Strava-account is al aan iemand anders gekoppeld.',
+  mislukt: 'Koppelen met Strava mislukte. Probeer het nog eens.',
+}
+
 const datumKort = (dag: string) => new Date(`${dag}T12:00`).toLocaleDateString('nl-BE', { weekday: 'short', day: 'numeric', month: 'short' })
 const dagMaand = (dag: string) => new Date(`${dag}T12:00`).toLocaleDateString('nl-BE', { day: 'numeric', month: 'short' })
 
@@ -19,7 +28,14 @@ const dagMaand = (dag: string) => new Date(`${dag}T12:00`).toLocaleDateString('n
 export default function Lopen() {
   const { bron, account, status } = useSessie()
   const opGsm = status === 'demo' || account?.soort === 'ouder'
-  const { data, fout, ververs } = useGegevens(bron && opGsm ? () => bron.loopsessies() : null, [bron, opGsm])
+  const { data: gegevens, fout, ververs } = useGegevens(bron && opGsm
+    ? async () => { const [lopen, strava] = await Promise.all([bron.loopsessies(), bron.stravaStatus().catch(() => null)]); return { lopen, strava } }
+    : null, [bron, opGsm])
+  const data = gegevens?.lopen
+  const strava = gegevens?.strava ?? null
+  const [params, setParams] = useSearchParams()
+  const [bezig, setBezig] = useState(false)
+  const [stravaTekst, setStravaTekst] = useState('')
   const [melding, setMelding] = useState('')
   const [alles, setAlles] = useState(false)
   const [bewerk, setBewerk] = useState<Loopsessie | null>(null)
@@ -41,6 +57,19 @@ export default function Lopen() {
     } catch (e) {
       setMelding(zonderLopenMigratie((e as Error).message))
       return false
+    }
+  }
+
+  /** Zoals `doe`, maar geeft het resultaat terug (null bij een fout, die verschijnt als melding). */
+  async function doeMetAantal<T>(actie: () => Promise<T>): Promise<T | null> {
+    try {
+      const uitkomst = await actie()
+      setMelding('')
+      await ververs()
+      return uitkomst
+    } catch (e) {
+      setMelding(zonderLopenMigratie((e as Error).message))
+      return null
     }
   }
 
@@ -124,9 +153,36 @@ export default function Lopen() {
         </section>
       )}
 
-      <section className="kaart is-later-kaart" aria-disabled="true">
-        <h2>Strava <span className="later-label">komt later</span></h2>
-        <p>Later kunnen je lopen vanzelf uit Strava komen, zodat je ze niet meer zelf moet invullen.</p>
+      <section className="kaart kaart-breed strava-kaart">
+        <h2>Strava</h2>
+        {params.get('strava') && (
+          <p className={params.get('strava') === 'gekoppeld' ? 'tip' : 'fout'} role="status">
+            {stravaUitkomst[params.get('strava')!] ?? 'Koppelen met Strava mislukte.'}
+            {' '}<button type="button" className="knop knop-klein knop-licht" onClick={() => setParams({}, { replace: true })}>Sluiten</button>
+          </p>
+        )}
+        {strava?.gekoppeld ? (
+          <>
+            <p>Gekoppeld. Nieuwe lopen uit Strava komen vanzelf in je lijst.
+              {strava.laatste_sync && ` Laatst bijgewerkt op ${new Date(strava.laatste_sync).toLocaleString('nl-BE', { day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' })}.`}</p>
+            <div className="loop-acties">
+              <button type="button" className="knop knop-licht" disabled={bezig}
+                      onClick={async () => { setBezig(true); const n = await doeMetAantal(() => bron!.stravaSynchroniseren()); setBezig(false); if (n !== null) setStravaTekst(`${n} ${n === 1 ? 'loop' : 'lopen'} nagekeken.`) }}>
+                Nu synchroniseren
+              </button>
+              <button type="button" className="knop knop-licht" disabled={bezig} onClick={() => doe(() => bron!.stravaOntkoppelen())}>Ontkoppelen</button>
+            </div>
+            {stravaTekst && <p className="tip">{stravaTekst}</p>}
+          </>
+        ) : (
+          <>
+            <p>Koppel je Strava-account, dan komen je lopen vanzelf in deze lijst. Wat je zelf invulde, blijft staan.</p>
+            <button type="button" className="knop knop-primair" disabled={bezig || status === 'demo'}
+                    onClick={async () => { setBezig(true); const adres = await doeMetAantal(() => bron!.stravaKoppelen()); setBezig(false); if (adres) window.location.href = adres }}>
+              Koppel met Strava
+            </button>
+          </>
+        )}
       </section>
 
       <p className="tip kaart-breed">Alleen jij ziet je lopen. Je partner en de tablets van de kinderen niet.</p>
