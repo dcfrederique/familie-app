@@ -222,6 +222,23 @@ export const springLevelLijst: SpringLevelInfo[] = [
       '##############~~########################################################################################~~~#######################',
     ],
   },
+  {
+    id: 'lampionnenbrug', wereld: 'pepernotenland', stijl: 'bos',
+    naam: 'De lampionnenbrug', beestje: 'vogel', fruit: 'appel', snelheid: 1.4,
+    kaart: [
+      '                                                                                                                                  ',
+      '                                                                                                                                  ',
+      '                                                                                                                                  ',
+      '                                                                                                                                  ',
+      '                                            * *                                         * * *                                     ',
+      '          * * *                                             *  * * o o                                    * *                     ',
+      '                                                                  ====     o o                                                    ',
+      '                                      o    o    o                         ====                      o          ##                 ',
+      '  P   o o     e           C  e o     ==   ==   ==       o o o ^       C          e   o o  e    o              ####    o o     H   ',
+      '######################  ##########                  ######################    ######################  ############################',
+      '######################~~##########~~~~~~~~~~~~~~~~~~######################~~~~######################~~############################',
+    ],
+  },
 ]
 
 export const springLevels: Record<SpringLevel, SpringLevelInfo> = Object.fromEntries(springLevelLijst.map((l) => [l.id, l]))

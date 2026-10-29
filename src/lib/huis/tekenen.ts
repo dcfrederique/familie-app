@@ -244,6 +244,17 @@ function schoentje(dx: number) {
     + `<path d="M${x - 24} ${y - 28}h14v16q14 0 20 8v4h-34z" fill="#D8452B"/><rect x="${x - 24}" y="${y - 2}" width="34" height="4" rx="2" fill="#2B2B2B"/>`
 }
 
+// Een slinger van driehoekige feestvlaggetjes onder de dakrand.
+function feestvlaggetjes(x0: number, x1: number, y: number) {
+  const kleuren = ['#F2994A', '#7A4FC0', '#F2D24E', '#4FA35B'], n = Math.max(6, Math.round((x1 - x0) / 34))
+  let s = `<path d="M${x0} ${y}Q${(x0 + x1) / 2} ${y + 22} ${x1} ${y}" fill="none" stroke="#2B3240" stroke-width="2"/>`
+  for (let i = 0; i < n; i++) {
+    const t = (i + 0.5) / n, cx = x0 + (x1 - x0) * t, cy = y + 44 * t * (1 - t) + 1
+    s += `<path d="M${(cx - 11).toFixed(1)} ${cy.toFixed(1)}H${(cx + 11).toFixed(1)}L${cx.toFixed(1)} ${(cy + 26).toFixed(1)}Z" fill="${kleuren[i % 4]}"/>`
+  }
+  return s
+}
+
 // Een slinger van gele sterren onder de dakrand.
 function sterrenslinger(x0: number, x1: number, y: number) {
   const n = Math.max(4, Math.round((x1 - x0) / 60))
@@ -323,6 +334,8 @@ export function tuinStuk(id: string): string {
     case 'rendier': return '<ellipse cx="0" cy="-2" rx="44" ry="7" fill="#000" opacity=".08"/><rect x="-26" y="-34" width="9" height="32" rx="4" fill="#8A5A33"/><rect x="-8" y="-34" width="9" height="32" rx="4" fill="#8A5A33"/><rect x="14" y="-34" width="9" height="32" rx="4" fill="#8A5A33"/><rect x="28" y="-34" width="9" height="32" rx="4" fill="#8A5A33"/><ellipse cx="2" cy="-48" rx="38" ry="22" fill="#A8693A"/><path d="M30 -56L44 -88Q52 -96 60 -86L58 -66Q50 -54 38 -50Z" fill="#A8693A"/><circle cx="56" cy="-78" r="2.8" fill="#1C2433"/><circle cx="62" cy="-72" r="4.5" fill="#D8452B"/><path d="M46 -92L40 -112M40 -112L30 -108M40 -112L48 -120M52 -94L58 -114M58 -114L68 -112M58 -114L52 -124" fill="none" stroke="#6E4A28" stroke-width="4" stroke-linecap="round"/><path d="M-36 -52Q-44 -50 -42 -42" fill="none" stroke="#F4EBD8" stroke-width="6" stroke-linecap="round"/>'
     case 'sneeuwman': return '<ellipse cx="0" cy="-2" rx="48" ry="7" fill="#000" opacity=".08"/><circle cx="0" cy="-34" r="34" fill="#fff" stroke="#BFD3E8" stroke-width="3"/><circle cx="0" cy="-88" r="25" fill="#fff" stroke="#BFD3E8" stroke-width="3"/><rect x="-22" y="-124" width="44" height="9" rx="3" fill="#2B2B2B"/><rect x="-14" y="-146" width="28" height="24" fill="#2B2B2B"/><rect x="-14" y="-130" width="28" height="5" fill="#D8452B"/><path d="M2 -88L30 -82L2 -78Z" fill="#F2994A"/><circle cx="-9" cy="-95" r="3" fill="#2B2B2B"/><circle cx="9" cy="-95" r="3" fill="#2B2B2B"/><path d="M-22 -68Q0 -58 22 -68" fill="none" stroke="#2D6BD6" stroke-width="8" stroke-linecap="round"/><circle cx="0" cy="-42" r="3.5" fill="#2B2B2B"/><circle cx="0" cy="-28" r="3.5" fill="#2B2B2B"/><path d="M-32 -54L-56 -70M32 -54L56 -70" stroke="#6E4A28" stroke-width="4" stroke-linecap="round"/>'
     case 'ijsbaantje': return '<ellipse cx="0" cy="-12" rx="76" ry="22" fill="#9CC6E6"/><ellipse cx="0" cy="-16" rx="68" ry="18" fill="#CFE8FA"/><path d="M-44 -18Q-14 -26 14 -20M-8 -10Q24 -18 46 -12" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" opacity=".9"/><path d="M-20 -22Q0 -30 24 -24" fill="none" stroke="#9CC6E6" stroke-width="2.5" stroke-linecap="round"/><path d="M-70 -26L-70 -44M70 -26L70 -44" stroke="#6E4A28" stroke-width="5" stroke-linecap="round"/><path d="M-70 -42Q0 -62 70 -42" fill="none" stroke="#6E4A28" stroke-width="3" stroke-dasharray="2 8" stroke-linecap="round"/>'
+    case 'spookje': return '<ellipse cx="0" cy="-2" rx="34" ry="6" fill="#000" opacity=".08"/><path d="M-30 -8V-60Q-30 -102 0 -102Q30 -102 30 -60V-8Q22 -20 15 -8Q8 -20 0 -8Q-8 -20 -15 -8Q-22 -20 -30 -8Z" fill="#fff" stroke="#D5DCE6" stroke-width="3"/><circle cx="-11" cy="-66" r="6" fill="#1C2433"/><circle cx="11" cy="-66" r="6" fill="#1C2433"/><path d="M-9 -48Q0 -40 9 -48" fill="none" stroke="#1C2433" stroke-width="3.5" stroke-linecap="round"/><circle cx="-20" cy="-54" r="4.5" fill="#F2A7A0" opacity=".6"/><circle cx="20" cy="-54" r="4.5" fill="#F2A7A0" opacity=".6"/><path d="M-4 -98L0 -92L4 -98L0 -102Z" fill="#D8452B"/><path d="M-8 -96L-14 -104L-2 -100ZM8 -96L14 -104L2 -100Z" fill="#D8452B"/>'
+    case 'verkleedkist': return '<ellipse cx="0" cy="-2" rx="50" ry="7" fill="#000" opacity=".08"/><path d="M-30 -48L-22 -92L-10 -48Z" fill="#7A4FC0"/><path d="M6 -48L10 -80L16 -64L24 -84L28 -48Z" fill="#F2B33D"/><path d="M-14 -50Q-2 -62 12 -50Z" fill="#D8452B"/><rect x="-44" y="-48" width="88" height="46" rx="5" fill="#A8693A"/><rect x="-44" y="-48" width="88" height="12" rx="4" fill="#8A5A33"/><path d="M-44 -26H44" stroke="#6E4A28" stroke-width="3"/><rect x="-8" y="-34" width="16" height="14" rx="3" fill="#F2B33D"/><circle cx="0" cy="-27" r="3" fill="#8A5A33"/>'
     case 'pakjes': return '<ellipse cx="0" cy="-2" rx="50" ry="8" fill="#000" opacity=".08"/><rect x="-40" y="-44" width="52" height="42" rx="3" fill="#3D7DD8"/><rect x="-18" y="-44" width="8" height="42" fill="#F4F6F9"/><rect x="-40" y="-28" width="52" height="8" fill="#F4F6F9"/><rect x="8" y="-34" width="38" height="32" rx="3" fill="#F2B33D"/><rect x="24" y="-34" width="7" height="32" fill="#D8452B"/><rect x="-22" y="-76" width="36" height="32" rx="3" fill="#D8452B"/><rect x="-7" y="-76" width="7" height="32" fill="#F4F6F9"/><path d="M-4 -76Q-18 -92 -12 -80ZM-4 -76Q10 -92 4 -80Z" fill="#F4F6F9" stroke="#F4F6F9" stroke-width="5" stroke-linejoin="round"/><path d="M0 -112l4 8l9 1l-7 6l2 9l-8 -5l-8 5l2 -9l-7 -6l9 -1z" fill="#F2B33D"/>'
     case 'wortels': return '<ellipse cx="0" cy="-4" rx="62" ry="12" fill="#6E4A28"/><g>' + [-40, -14, 12, 38].map((x, i) => `<path d="M${x - 7} -6L${x} ${-22 - (i % 2) * 6}L${x + 7} -6Z" fill="#F2994A"/><path d="M${x - 8} ${-24 - (i % 2) * 6}Q${x - 6} -44 ${x - 1} ${-28 - (i % 2) * 6}Q${x} -48 ${x + 4} ${-28 - (i % 2) * 6}Q${x + 10} -40 ${x + 8} ${-24 - (i % 2) * 6}Z" fill="#4F8A3C"/>`).join('') + '</g><rect x="50" y="-40" width="5" height="40" fill="#8A5A33"/><rect x="38" y="-52" width="30" height="16" rx="3" fill="#F4EBD8"/><path d="M46 -44h14" stroke="#F2994A" stroke-width="3" stroke-linecap="round"/>'
     case 'dino': return `<rect x="-52" y="-22" width="104" height="22" rx="4" fill="#AEB9C6"/><g transform="translate(-52 -152) scale(2.6)">${DINO}</g>`
@@ -383,6 +396,7 @@ export function tekenHuis(h: Huis, o: TekenOpties): string {
   if (heeft('schoentje')) g.push(schoentje(dx))
   if (heeft('kerstster')) g.push(kerstster(dx))
   if (heeft('sterrenslinger')) g.push(sterrenslinger(mx + 10, mx + m.w - 10, my + 2))
+  if (heeft('feestvlaggetjes')) g.push(feestvlaggetjes(mx + 6, mx + m.w - 6, my + 2))
   if (heeft('ijspegels')) g.push(ijspegels(mx + 6, mx + m.w - 6, my + 2))
   if (heeft('lichtjes')) g.push(lichtjes(mx - 14, mx + m.w + 14, my + 4))
   if (heeft('lampionnen')) g.push(lampionnen(mx + 10, mx + m.w - 10, my + 2))

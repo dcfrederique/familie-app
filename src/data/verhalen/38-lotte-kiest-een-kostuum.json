@@ -1,0 +1,99 @@
+{
+  "nr": 38,
+  "titel": "Lotte kiest een kostuum",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Halloween, samen iets maken",
+  "bladzijden": [
+    {
+      "tekst": "Het is bijna Halloween. Lotte het konijn staat in de tuin en kijkt naar de grote oranje pompoen. Vanavond is er een verkleedfeestje bij Bram de beer. Alle vrienden komen verkleed. \"Maar ik weet nog niet wat ik wil zijn,\" zucht Lotte.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "konijn",
+          "pompoen"
+        ]
+      }
+    },
+    {
+      "tekst": "Siep de eekhoorn komt aangerend. Hij draagt een puntmuts vol sterren en een lange blauwe mantel. \"Ik ben een tovenaar!\" roept hij. Hij zwaait met zijn toverstaf. Er gebeurt niets, maar Siep lacht toch. Lotte lacht mee. Zij heeft nog helemaal niets.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "eekhoorn",
+          "konijn"
+        ]
+      }
+    },
+    {
+      "tekst": "Lotte gaat naar huis en zoekt in haar kist met oude spulletjes. Ze vindt een rood lintje, een gele zakdoek en een stukje zilverpapier. Ze legt alles op het bed. \"Wat kan ik hiermee?\" vraagt ze zich af. Dat is zeker geen kostuum, denkt ze.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "konijn",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan klopt het iemand aan. Het is Bram. Hij draagt een groot wit laken met twee gaatjes voor zijn ogen. \"Boe!\" zegt hij heel zachtjes. \"Ik ben een lief spookje.\" Lotte klapt in haar handen. Dan laat ze haar rode lintje, de gele zakdoek en het zilverpapier zien.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "beer",
+          "konijn",
+          "lampion"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Wacht eens even,\" zegt Bram. \"Samen maken we er iets moois van.\" Siep vouwt het zilverpapier tot een glimmend kroontje. Bram knoopt het rode lintje om Lottes nek, als een cape. En de gele zakdoek wordt een stralend zonnetje op haar buik.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "konijn",
+          "beer",
+          "eekhoorn"
+        ]
+      }
+    },
+    {
+      "tekst": "Lotte zet het kroontje op haar hoofd en draait rond. De cape zwiert achter haar aan. \"Ik ben de koningin van de herfst!\" roept ze. Siep buigt diep. \"Ja, majesteit.\" Bram moet zo hard lachen dat zijn laken bijna van zijn hoofd valt.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "konijn",
+          "eekhoorn",
+          "beer",
+          "ster"
+        ]
+      }
+    },
+    {
+      "tekst": "'s Avonds hangen er lampionnen in de boomhut van Bram en staan er pompoenen met een lachend gezicht op de trap. Er komen een draakje, een piraat en een kleine heks binnen. Iedereen vindt het kostuum van Lotte prachtig. Er zijn warme koekjes en chocomelk voor iedereen.",
+      "prent": {
+        "decor": "bos-avond",
+        "figuren": [
+          "konijn",
+          "beer",
+          "eekhoorn",
+          "lampion",
+          "pompoen"
+        ]
+      }
+    },
+    {
+      "tekst": "Als de maan opkomt, dansen alle vrienden in een grote kring. Lotte draagt haar kroontje, haar cape en haar zonnetje. Ze denkt: het mooiste kostuum maak je samen met vrienden. Dan geeft Bram haar nog een koekje, en ze eten het op onder de sterren.",
+      "prent": {
+        "decor": "nacht",
+        "figuren": [
+          "konijn",
+          "beer",
+          "eekhoorn",
+          "maan",
+          "sterren"
+        ]
+      }
+    }
+  ]
+}

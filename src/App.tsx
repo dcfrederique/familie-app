@@ -20,6 +20,7 @@ import Bladeren from './schermen/Bladeren.tsx'
 import Ketting from './schermen/Ketting.tsx'
 import Schoen from './schermen/Schoen.tsx'
 import Weg from './schermen/Weg.tsx'
+import Verkleed from './schermen/Verkleed.tsx'
 import Lichtjes from './schermen/Lichtjes.tsx'
 import Schaduw from './schermen/Schaduw.tsx'
 import Springen, { OuderSpringland } from './schermen/Springen.tsx'
@@ -111,6 +112,7 @@ export default function App() {
         <Route path="ketting" element={<Ketting />} />
         <Route path="schoen" element={<Schoen />} />
         <Route path="weg" element={<Weg />} />
+        <Route path="verkleed" element={<Verkleed />} />
         <Route path="lichtjes" element={<Lichtjes />} />
         <Route path="schaduw" element={<Schaduw />} />
         <Route path="springen" element={<Springen />} />

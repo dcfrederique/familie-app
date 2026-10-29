@@ -155,6 +155,44 @@ export function startWegNiveau(kind: Gebruiker, kinderen: Gebruiker[]): WegNivea
   return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
 }
 
+export type VerkleedNiveau = 'makkelijk' | 'middel' | 'moeilijk'
+export type VerkleedRij = 'hoed' | 'mantel' | 'voorwerp'
+export type Hoed = 'puntmuts' | 'piratenhoed' | 'helm' | 'kroon' | 'tovenaarshoed'
+export type Mantel = 'paars' | 'rood' | 'blauw' | 'geel' | 'groen'
+export type Attribuut = 'bezem' | 'zwaard' | 'schild' | 'scepter' | 'toverstaf'
+
+export interface Kostuum {
+  sleutel: string
+  hoed: Hoed
+  mantel: Mantel
+  voorwerp: Attribuut
+}
+
+/** De kostuums van Verkleedkist: elk deel hoort bij precies één kostuum; de tekeningen staan in src/schermen/Verkleed.tsx. */
+export const kostuums: readonly Kostuum[] = [
+  { sleutel: 'heks', hoed: 'puntmuts', mantel: 'paars', voorwerp: 'bezem' },
+  { sleutel: 'piraat', hoed: 'piratenhoed', mantel: 'rood', voorwerp: 'zwaard' },
+  { sleutel: 'ridder', hoed: 'helm', mantel: 'blauw', voorwerp: 'schild' },
+  { sleutel: 'koningin', hoed: 'kroon', mantel: 'geel', voorwerp: 'scepter' },
+  { sleutel: 'tovenaar', hoed: 'tovenaarshoed', mantel: 'groen', voorwerp: 'toverstaf' },
+]
+
+/** Welke rijen je invult, hoeveel keuzes elke rij heeft en of het voorbeeld na `verberg` ms verdwijnt (0 = blijft staan). */
+export const verkleedNiveaus: Record<VerkleedNiveau, { label: string; rijen: VerkleedRij[]; keuzes: number; verberg: number }> = {
+  makkelijk: { label: 'Makkelijk', rijen: ['hoed', 'mantel'], keuzes: 3, verberg: 0 },
+  middel: { label: 'Middel', rijen: ['hoed', 'mantel', 'voorwerp'], keuzes: 3, verberg: 0 },
+  moeilijk: { label: 'Moeilijk', rijen: ['hoed', 'mantel', 'voorwerp'], keuzes: 4, verberg: 6000 },
+}
+
+export const verkleedRondes = 6
+
+/** Wie niet leest begint makkelijk, de oudste lezer moeilijk, andere lezers middel. */
+export function startVerkleedNiveau(kind: Gebruiker, kinderen: Gebruiker[]): VerkleedNiveau {
+  if (!kind.kan_lezen) return 'makkelijk'
+  const oudsteLezer = kinderen.filter((k) => k.kan_lezen).sort((a, b) => a.volgorde - b.volgorde)[0]
+  return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
+}
+
 export type LichtjesNiveau = 'makkelijk' | 'middel' | 'moeilijk'
 export type LichtKleur = 'rood' | 'geel' | 'blauw' | 'groen'
 export const lichtKleuren: readonly LichtKleur[] = ['rood', 'geel', 'blauw', 'groen']
@@ -203,7 +241,7 @@ export function startNiveaus(kind: Gebruiker, kinderen: Gebruiker[]): { memory: 
   return oudsteLezer?.id === kind.id ? { memory: 'groot', rekenen: 'tot100' } : { memory: 'middel', rekenen: 'tot20' }
 }
 
-export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'springen'
+export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'springen'
 
 export interface SpelInfo {
   sleutel: SpelSleutel
@@ -241,6 +279,8 @@ export const spelMenu: SpelInfo[] = [
     icoon: 'M8 4h6v8c4 0 7 2 7 4.5V18H5V6a2 2 0 0 1 3-2zM5 21h16M10 8h4' },
   { sleutel: 'weg', naam: 'Wat is er weg?', uitleg: 'Kijk goed en zoek wat er verdwenen is', prijs: 20,
     icoon: 'M3 12s3.5-6 9-6s9 6 9 6s-3.5 6-9 6s-9-6-9-6zM12 9.5a2.5 2.5 0 1 0 0 5a2.5 2.5 0 0 0 0-5z' },
+  { sleutel: 'verkleed', naam: 'Verkleedkist', uitleg: 'Kleed het poppetje aan zoals op het kaartje', prijs: 20,
+    icoon: 'M12 3l7 9H5zM6 12l-2 8h16l-2-8M9 16h6' },
   { sleutel: 'lichtjes', naam: 'Lichtjesboom', uitleg: 'Doe de lichtjes na in dezelfde volgorde', prijs: 20,
     icoon: 'M12 3l6 8h-3l5 7H4l5-7H6zM12 18v3M8 8.5h.01M15 13h.01M10 15h.01' },
   { sleutel: 'schaduw', naam: 'Wie is de schaduw?', uitleg: 'Zoek de schaduw die erbij hoort', prijs: 20,

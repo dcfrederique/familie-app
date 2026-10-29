@@ -75,6 +75,16 @@ export const gebouwTekening: Record<string, string> = {
     <path d="M340 286H398V268Q398 246 372 246Q346 246 340 268Z" fill="#F4F9FE" stroke="#BFD3E8" stroke-width="4"/>
     <rect x="22" y="196" width="8" height="90" fill="#6E4A28"/><rect x="12" y="178" width="28" height="26" rx="5" fill="#FFE27A" stroke="#6E4A28" stroke-width="4"/>
     <circle cx="200" cy="110" r="5" fill="#D8452B"/><path d="M60 130l8 -8M70 140l-8 -8M66 124V138M60 131H74" stroke="#fff" stroke-width="3" stroke-linecap="round"/>`,
+  verkleed: `<ellipse cx="200" cy="288" rx="170" ry="11" fill="#000" opacity=".13"/>
+    <path d="M60 286Q60 150 200 70Q340 150 340 286Z" fill="#7A4FC0"/>
+    <path d="M200 70Q130 150 120 286H150Q160 170 200 70ZM200 70Q270 150 280 286H250Q240 170 200 70Z" fill="#F2994A"/>
+    <path d="M60 286Q60 252 90 252Q120 252 120 286ZM280 286Q280 252 310 252Q340 252 340 286Z" fill="#5B3A93"/>
+    <path d="M200 70V30" stroke="#6E4A28" stroke-width="5" stroke-linecap="round"/><path d="M200 30L246 40L200 54Z" fill="#D8452B"/>
+    <path d="M158 286Q158 200 200 190Q242 200 242 286Z" fill="#2B1E45"/><path d="M174 286Q174 214 200 206Q226 214 226 286Z" fill="#FFE27A" opacity=".85"/>
+    <path d="M70 120Q135 150 200 118Q265 150 330 120" fill="none" stroke="#2B3240" stroke-width="2"/>
+    <path d="M86 126H110L98 150ZM130 134H154L142 158ZM250 134H274L262 158ZM290 126H314L302 150Z" fill="#F2D24E"/>
+    <rect x="34" y="226" width="6" height="60" fill="#6E4A28"/><path d="M20 226Q37 190 54 226Z" fill="#3B2A5B"/><rect x="14" y="224" width="46" height="6" rx="3" fill="#2B1E45"/>
+    <path d="M352 286V236H386V286Z" fill="#A8693A"/><path d="M352 236H386" stroke="#8A5A33" stroke-width="5"/><path d="M360 236L364 212L370 226L376 208L380 236Z" fill="#F2B33D"/>`,
   bouw: `<ellipse cx="200" cy="288" rx="190" ry="11" fill="#000" opacity=".13"/>
     <path d="M60 286l40-120h12" stroke="#F2C230" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M106 166H330l-30 14" stroke="#F2C230" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M300 180v56" stroke="#555" stroke-width="4"/><rect x="288" y="234" width="24" height="16" rx="3" fill="#D93A3A"/>
     <path d="M40 286q60-70 140-30q40 14 70 30z" fill="#D9BC6A"/>

@@ -1,0 +1,72 @@
+/* Verkleedkist: links het voorbeeldkaartje, in het midden het poppetje dat je aankleedt, rechts de kist met drie rijen keuzes en Klaar. */
+.verkleed { display: flex; flex-direction: column; align-items: center; gap: clamp(8px, 1.8dvh, 18px); width: 100%; }
+.verkleed-poppetje { display: block; width: auto; height: 100%; }
+.verkleed-deel { display: block; width: 100%; height: 100%; }
+.verkleed-teller { display: flex; gap: 6px; }
+.verkleed-teller span { width: 14px; height: 14px; border-radius: 50%; background: var(--line); }
+.verkleed-teller .af { background: var(--gold); }
+.verkleed-teller .nu { background: var(--kid); }
+.verkleed-veld {
+  display: flex; align-items: center; justify-content: center; gap: clamp(12px, 2.6vw, 44px);
+  height: clamp(200px, min(44dvh, 28vw), 420px);
+}
+.verkleed-kaartje {
+  position: relative; height: 100%; aspect-ratio: 2 / 3; padding: 10px; border-radius: 24px; border: 3px solid var(--line); background: var(--card);
+  display: grid; place-items: center;
+}
+.verkleed-kaartje.tip { animation: verkleed-wip 0.7s ease-in-out infinite; border-color: var(--gold); }
+.verkleed-kaartje .verkleed-poppetje { height: 100%; }
+.verkleed-vraag { font-size: clamp(56px, 14dvh, 120px); color: var(--kid); }
+.verkleed-oog {
+  position: absolute; right: -10px; bottom: -10px; width: 64px; height: 64px; padding: 14px; border: 0; border-radius: 50%;
+  background: var(--kid); box-shadow: 0 5px 0 rgba(0, 0, 0, 0.25);
+}
+.verkleed-oog svg { width: 100%; height: 100%; display: block; }
+.verkleed-pop { height: 100%; aspect-ratio: 2 / 3; display: grid; place-items: center; }
+.verkleed-pop .verkleed-poppetje { height: 100%; }
+.verkleed-pop.wip .verkleed-poppetje { animation: verkleed-schud 0.4s ease-out; }
+.verkleed-pop.danst .verkleed-poppetje { animation: verkleed-dans 0.6s ease-in-out 2; }
+.verkleed-kist {
+  display: flex; flex-direction: column; justify-content: center; gap: clamp(8px, 1.6dvh, 16px); height: 100%;
+  padding: 10px 14px; border-radius: 28px; background: var(--card); border: 3px solid var(--line);
+}
+.verkleed-keuzes { display: flex; gap: clamp(8px, 1.4vw, 14px); }
+.verkleed-keuze {
+  width: clamp(64px, min(12dvh, 7vw), 100px); height: clamp(64px, min(12dvh, 7vw), 100px); padding: 6px; border-radius: 20px;
+  border: 3px solid var(--line); background: var(--bg, transparent); box-shadow: 0 5px 0 var(--line);
+}
+.verkleed-keuze:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 2px 0 var(--line); }
+.verkleed-keuze.aan { border-color: var(--kid); box-shadow: 0 5px 0 var(--kid); }
+.verkleed-keuze.fout { border-color: #D8452B; box-shadow: 0 5px 0 #D8452B; animation: verkleed-schud 0.4s ease-out; }
+.verkleed-klaar {
+  width: clamp(72px, 12dvh, 96px); height: clamp(72px, 12dvh, 96px); padding: 14px; border: 0; border-radius: 50%;
+  background: #2E9A45; box-shadow: 0 6px 0 #1F6F31;
+}
+.verkleed-klaar:active:not(:disabled) { transform: translateY(3px); box-shadow: 0 3px 0 #1F6F31; }
+.verkleed-klaar svg { width: 100%; height: 100%; display: block; }
+.verkleed-eind { display: grid; justify-items: center; gap: 16px; }
+.verkleed-rij-feest { display: flex; gap: clamp(4px, 1vw, 14px); height: clamp(110px, 24dvh, 220px); }
+.verkleed-rij-feest .verkleed-poppetje { animation: verkleed-dans 0.8s ease-in-out infinite; }
+.verkleed-rij-feest .verkleed-poppetje:nth-child(2n) { animation-delay: 0.25s; }
+/* Staand: voorbeeld en poppetje naast elkaar, daaronder de kist en Klaar. */
+@media (orientation: portrait) {
+  .verkleed-veld { height: auto; flex-wrap: wrap; align-content: center; }
+  .verkleed-kaartje, .verkleed-pop { height: clamp(170px, 30dvh, 300px); }
+  .verkleed-kist { height: auto; }
+  .verkleed-keuze { width: clamp(64px, 14vw, 100px); height: clamp(64px, 14vw, 100px); }
+}
+@keyframes verkleed-wip { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+@keyframes verkleed-schud { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-8px); } 75% { transform: translateX(8px); } }
+@keyframes verkleed-dans { 0%, 100% { transform: translateY(0) rotate(0); } 30% { transform: translateY(-12px) rotate(-4deg); } 70% { transform: translateY(-12px) rotate(4deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .verkleed-kaartje.tip, .verkleed-pop.wip .verkleed-poppetje, .verkleed-pop.danst .verkleed-poppetje, .verkleed-keuze.fout, .verkleed-rij-feest .verkleed-poppetje { animation: none; }
+  .verkleed-kaartje.tip { outline: 4px solid var(--gold); }
+}
+/* Liggende gsm: alles kleiner, de kist blijft naast het poppetje. */
+@media (max-height: 500px) and (orientation: landscape) {
+  .verkleed-veld { height: 46dvh; gap: 12px; }
+  .verkleed-keuze { width: 46px; height: 46px; padding: 4px; }
+  .verkleed-klaar { width: 52px; height: 52px; padding: 10px; }
+  .verkleed-oog { width: 44px; height: 44px; padding: 10px; right: -6px; bottom: -6px; }
+  .verkleed-kist { padding: 6px 8px; gap: 6px; }
+}

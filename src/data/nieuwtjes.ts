@@ -19,6 +19,15 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.69',
+    datum: '2026-10-29',
+    titel: 'Halloween: Verkleedkist, de verkleedtent en de lampionnenbrug',
+    tekst: 'Het verkleedpakket voor Halloween staat klaar: het verhaal Lotte kiest een kostuum, de kleurplaat Verkleedfeestje (beide meteen te spelen), het spelletje Verkleedkist (kleed het poppetje aan zoals op het kaartje: hoed, mantel en voorwerp; 3 niveaus, op moeilijk verdwijnt het voorbeeld na een tijdje), een verkleedtent in De wereld met een gouden rand en een slot tot het gekocht is, en in Springland een pittig level in Pepernotenland: De lampionnenbrug (smalle plankjes over het water en snellere vogels). Het spelletje en de zes stukken zijn nog niet vrijgegeven: dat doen jullie in Kinderen → Winkelaanbod.',
+    verhaal: 'Lotte kiest een kostuum (Grote ogen)',
+    spel: { naam: 'Verkleedkist', prijs: 20 },
+    stukken: ['Figuurtje: Piratenhoed (20), Met vleermuis (20), Heksenbezem (20)', 'Mijn huis: Lief spookje (25), Verkleedkist (30), Feestvlaggetjes (15)'],
+  },
+  {
     versie: '0.68',
     datum: '2026-10-28',
     titel: 'Verwachte prijs op de boodschappenlijst',
