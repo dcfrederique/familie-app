@@ -34,6 +34,12 @@ export const nieuwtjes: Nieuwtje[] = [
     stukken: ['Figuurtje: Regenhoedje (15), Met paddenstoel (20), Zaklamp (15)', 'Mijn huis: Dekentent (30), Regenton (20), Windwijzer (20)'],
   },
   {
+    versie: '0.75',
+    datum: '2026-10-30',
+    titel: 'Lopen verhuisd naar Trackd',
+    tekst: 'Lopen, Analyse en Loopschema onder Gezondheid zijn uit de familie-app gehaald. Trackd houdt je lopen voortaan lokaal op je toestel bij. De lopen die in de familie-app stonden zijn verwijderd.',
+  },
+  {
     versie: '0.72',
     datum: '2026-10-29',
     titel: 'Lopen uit Trackd ontvangen',

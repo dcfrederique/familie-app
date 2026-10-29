@@ -34,9 +34,7 @@ Vanaf 1024 px breed staat het menu vast links als zijbalk (288 px), de balk toon
 | | **Boodschappen** | komt later | Gedeelde lijst. |
 | | **Notities** | komt later | Losse notities en lijstjes. |
 | Gezondheid | **Gewicht** | bestaat (`docs/gewicht.md`) | Per ouder, privé; met Mijn profiel. |
-| | **Lopen** | bestaat (`docs/lopen.md`) | Lopen zelf invoeren (Strava-koppeling geschrapt, zie `docs/lopen.md`). Het opbouwschema komt nog later. |
 | | **Fitness** | komt nog later | Trainingen bijhouden. |
-| | **Loopschema** | komt nog later | Opbouwschema, bijvoorbeeld 0 naar 5 km. |
 | Instellingen | **Toestellen en meldingen** | bestaat | Koppelcode, tablets, meldingen aanzetten. |
 | | **Pincode** | bestaat (nu op Vandaag) | Pincode instellen of wijzigen. |
 
@@ -79,7 +77,6 @@ Alles hieronder is alleen voor de ouders. De tabletaccounts van de kinderen moge
 - **Privé per ouder** als standaard. Je partner ziet het enkel als je dat aanzet.
 - Gewicht: een meting per dag, grafiek van 30 en 90 dagen, optioneel een doel.
 - Fitness: training met soort, duur en een korte notitie; weekoverzicht.
-- Loopschema: uitgewerkt plan in `docs/loopschema.md` (looptracking met Capacitor, "light Strava" voor de ouders). Oorspronkelijk idee: een opbouwschema in weken (bijvoorbeeld 3 keer per week, afwisselend lopen en wandelen). Vandaag-scherm toont de volgende training. Afvinken na het lopen.
 - Tabellen `wegingen` en `gezondheid_profielen` (gebouwd, privé zonder delen), later `trainingen`, `loopschema`.
 
 ### Vandaag als familie-assistent

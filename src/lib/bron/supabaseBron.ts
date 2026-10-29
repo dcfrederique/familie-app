@@ -1,8 +1,5 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Aanbod } from '../../data/aanbod.ts'
-import type { Loopsessie } from '../lopen.ts'
-import type { DoelSoort, LoopDoel, LoopSchoen } from '../loopanalyse.ts'
-import type { Schema } from '../loopschema.ts'
 import { maakWeergave, type WereldWeergave } from '../wereld/weergave.ts'
 import { leesOpgeslagen, type Opgeslagen as WereldKaart } from '../wereld/gebieden.ts'
 import type { ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, ChatOverzicht, GezondheidProfiel, SpraakToken, Inzending, LogRegel, Maaltijd, NieuweNotitie, NieuweOuderTaak, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Saldo, Spelregels, Taak, Tijdverzoek, Winkel, VoorraadArtikel, VoorraadLogRegel, VoorraadOverzicht } from './types.ts'
@@ -220,12 +217,6 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
       const { data, error } = await sb.from('gezondheid_profielen').select('geboortedatum, lengte_cm, doelgewicht_kg').maybeSingle()
       fout(error)
       return data && { ...data, lengte_cm: getal(data.lengte_cm), doelgewicht_kg: getal(data.doelgewicht_kg) } as GezondheidProfiel
-    },
-    async loopsessies() {
-      const { data, error } = await sb.from('loopsessies')
-        .select('id, dag, afstand_m, duur_s, soort, gevoel, notitie, bron, externe_id, schoen_id').order('dag').limit(5000)
-      fout(error)
-      return (data ?? []) as Loopsessie[]
     },
     async wegingen() {
       const { data, error } = await sb.from('wegingen').select('id, dag, gewicht_kg').order('dag').limit(5000)
@@ -521,63 +512,6 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
     },
     async wegingVerwijderen(id) {
       fout((await sb.from('wegingen').delete().eq('id', id)).error)
-    },
-    async loopOpslaan({ id: loopId, ...rij }) {
-      if (loopId) {
-        fout((await sb.from('loopsessies').update(rij).eq('id', loopId)).error)
-        return
-      }
-      const { data: ik, error } = await sb.rpc('mijn_ouder')
-      fout(error)
-      fout((await sb.from('loopsessies').insert({ ...rij, gezin_id: gezinId, eigenaar: ik })).error)
-    },
-    async loopVerwijderen(id) {
-      fout((await sb.from('loopsessies').delete().eq('id', id)).error)
-    },
-    async loopdoelen() {
-      const { data, error } = await sb.from('loopdoelen').select('id, soort, waarde')
-      fout(error)
-      return (data ?? []).map((d) => ({ ...d, waarde: Number(d.waarde) })) as LoopDoel[]
-    },
-    async loopDoelZetten(soort: DoelSoort, waarde) {
-      if (waarde === null) {
-        fout((await sb.from('loopdoelen').delete().eq('soort', soort)).error)
-        return
-      }
-      const { data: ik, error } = await sb.rpc('mijn_ouder')
-      fout(error)
-      fout((await sb.from('loopdoelen').upsert({ gezin_id: gezinId, eigenaar: ik, soort, waarde }, { onConflict: 'eigenaar,soort' })).error)
-    },
-    async loopschoenen() {
-      const { data, error } = await sb.from('loopschoenen').select('id, naam, start_km, max_km, actief').order('aangemaakt_op')
-      fout(error)
-      return (data ?? []) as LoopSchoen[]
-    },
-    async loopSchoenOpslaan({ id: schoenId, ...rij }) {
-      if (schoenId) {
-        fout((await sb.from('loopschoenen').update(rij).eq('id', schoenId)).error)
-        return
-      }
-      const { data: ik, error } = await sb.rpc('mijn_ouder')
-      fout(error)
-      fout((await sb.from('loopschoenen').insert({ ...rij, gezin_id: gezinId, eigenaar: ik })).error)
-    },
-    async loopSchoenVerwijderen(id) {
-      fout((await sb.from('loopschoenen').delete().eq('id', id)).error)
-    },
-    async loopschema() {
-      const { data, error } = await sb.from('loopschemas').select('doel_km, per_week, start_dag, start_km').maybeSingle()
-      fout(error)
-      return data && { doel_km: Number(data.doel_km), per_week: data.per_week, start_dag: data.start_dag, start_km: Number(data.start_km) } as Schema
-    },
-    async loopschemaZetten(schema) {
-      const { data: ik, error } = await sb.rpc('mijn_ouder')
-      fout(error)
-      if (!schema) {
-        fout((await sb.from('loopschemas').delete().eq('ouder_id', ik)).error)
-        return
-      }
-      fout((await sb.from('loopschemas').upsert({ ...schema, ouder_id: ik, gezin_id: gezinId }, { onConflict: 'ouder_id' })).error)
     },
   }
 }

@@ -7,9 +7,6 @@ import type { Activiteit } from '../regels.ts'
 import type { WereldWeergave } from '../wereld/weergave.ts'
 import type { Opgeslagen as WereldKaart } from '../wereld/gebieden.ts'
 import type { Weging } from '../gewicht.ts'
-import type { LoopInvoer, Loopsessie } from '../lopen.ts'
-import type { DoelSoort, LoopDoel, LoopSchoen } from '../loopanalyse.ts'
-import type { Schema } from '../loopschema.ts'
 import type { StemKeuze } from '../stem.ts'
 
 export type Herhaling = 'eenmalig' | 'elke_dag' | 'schooldagen' | 'tweewekelijks' | 'om_de_n_dagen'
@@ -359,8 +356,6 @@ export interface Bron {
   gezondheidProfiel(): Promise<GezondheidProfiel | null>
   /** Al je eigen wegingen, van oud naar nieuw. */
   wegingen(): Promise<Weging[]>
-  /** Je eigen lopen (Gezondheid → Lopen, docs/lopen.md), privé. */
-  loopsessies(): Promise<Loopsessie[]>
 
   taakIndienen(kindId: string, taakId: string, foto: Blob | null): Promise<void>
   tijdAanvragen(kindId: string, minuten: number): Promise<void>
@@ -448,19 +443,4 @@ export interface Bron {
   /** Bewaart de weging van een dag; een tweede weging op dezelfde dag vervangt de eerste. */
   wegingOpslaan(dag: string, kg: number): Promise<void>
   wegingVerwijderen(id: string): Promise<void>
-  /** Voegt een loop toe, of past er een aan als `id` meegegeven is. */
-  loopOpslaan(loop: LoopInvoer): Promise<void>
-  loopVerwijderen(id: string): Promise<void>
-  /** Je doelen voor lopen (docs/loop-analyse.md), privé. */
-  loopdoelen(): Promise<LoopDoel[]>
-  /** Zet of vervangt het doel van een soort; `null` haalt het weg. */
-  loopDoelZetten(soort: DoelSoort, waarde: number | null): Promise<void>
-  loopschoenen(): Promise<LoopSchoen[]>
-  /** Voegt een schoen toe, of past er een aan als `id` meegegeven is. */
-  loopSchoenOpslaan(schoen: Omit<LoopSchoen, 'id'> & { id?: string }): Promise<void>
-  loopSchoenVerwijderen(id: string): Promise<void>
-  /** Je loopschema, of null als je er geen hebt. */
-  loopschema(): Promise<Schema | null>
-  /** Bewaart je loopschema (vervangt het vorige); `null` stopt het schema. */
-  loopschemaZetten(schema: Schema | null): Promise<void>
 }

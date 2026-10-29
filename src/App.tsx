@@ -54,9 +54,6 @@ import Voorraad from './schermen/Voorraad.tsx'
 import Recepten from './schermen/Recepten.tsx'
 import Uitgaven from './schermen/Uitgaven.tsx'
 import Gewicht from './schermen/Gewicht.tsx'
-import Lopen from './schermen/Lopen.tsx'
-import LoopAnalyse from './schermen/LoopAnalyse.tsx'
-import Loopschema from './schermen/Loopschema.tsx'
 import MijnProfiel from './schermen/MijnProfiel.tsx'
 import Touwspringen from './schermen/Touwspringen.tsx'
 import MijnThema from './schermen/MijnThema.tsx'
@@ -157,9 +154,6 @@ export default function App() {
       <Route path="/ouder/recepten" element={<Recepten />} />
       <Route path="/ouder/uitgaven" element={<Uitgaven />} />
       <Route path="/ouder/gewicht" element={<Gewicht />} />
-      <Route path="/ouder/lopen" element={<Lopen />} />
-      <Route path="/ouder/lopen-analyse" element={<LoopAnalyse />} />
-      <Route path="/ouder/loopschema" element={<Loopschema />} />
       <Route path="/ouder/profiel" element={<MijnProfiel />} />
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
