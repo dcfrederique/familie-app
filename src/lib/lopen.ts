@@ -3,7 +3,7 @@ import { dagVan } from './datum.ts'
 // Rekenwerk voor Gezondheid → Lopen (docs/lopen.md): tempo, duur lezen en schrijven, weektotalen.
 
 export type LoopSoort = 'rustig' | 'tempo' | 'interval' | 'lang' | 'wedstrijd'
-export type LoopBron = 'manueel' | 'strava' | 'horloge'
+export type LoopBron = 'manueel' | 'strava' | 'horloge' | 'android'
 
 export const soortNaam: Record<LoopSoort, string> = {
   rustig: 'Rustig', tempo: 'Tempo', interval: 'Interval', lang: 'Lange duurloop', wedstrijd: 'Wedstrijd',

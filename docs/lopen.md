@@ -31,8 +31,12 @@ Rekenwerk (tempo, duur lezen, weektotalen) in `src/lib/lopen.ts`, met tests.
 ## Kolommen voor een latere import
 
 De tabel heeft kolommen die de app nog niet invult, zodat een import uit een bestand (GPX of FIT van een horloge, of de export van Strava) later zonder ombouw kan:
-- `bron`: `manueel` (nu), later `horloge` of `strava` voor een geïmporteerd bestand.
+- `bron`: `manueel`, `horloge` of `strava` (geïmporteerd bestand) of `android` (de Android-app Trackd, zie onder).
 - `externe_id`: id van de activiteit bij de bron. `unique (eigenaar, bron, externe_id)` voorkomt dubbele imports.
-- `hoogte_m`, `hartslag_gem` en `route` (encoded polyline); de app toont ze nog niet.
+- `hoogte_m`, `hartslag_gem` en `route` (encoded polyline); de app toont ze nog niet. `route` is een encoded polyline (Google-formaat, precisie 5).
 
 Een rechtstreekse Strava-koppeling is onderzocht en geschrapt: de API vraagt een Strava-abonnement om een app aan te maken.
+
+## Trackd (Android)
+
+De Android-app Trackd stuurt lopen rechtstreeks naar `loopsessies` met bron `android` en `externe_id` = UUID van de loop. Ze voegt in met `on_conflict=eigenaar,bron,externe_id` en `resolution=ignore-duplicates`, zonder eigenaar of gezin: de kolomstandaarden (`mijn_ouder()`, `mijn_gezin()`) vullen die in voor de ingelogde ouder; rechten en RLS blijven zoals ze waren. Migratie `20261029000200_loopsessies_android.sql`. In het Lopen-scherm staat zo'n loop als "via Trackd".

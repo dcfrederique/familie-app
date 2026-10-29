@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.72',
+    datum: '2026-10-29',
+    titel: 'Lopen uit Trackd ontvangen',
+    tekst: 'De Android-app Trackd kan lopen nu rechtstreeks naar Lopen sturen. Ze staan er met \'via Trackd\' bij, dubbele lopen worden genegeerd en de route komt mee als polyline.',
+  },
+  {
     versie: '0.71',
     datum: '2026-10-29',
     titel: 'Alle kinderschermen passen op elke tablet',

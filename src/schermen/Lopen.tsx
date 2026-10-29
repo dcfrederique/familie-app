@@ -111,7 +111,7 @@ export default function Lopen() {
                 </div>
                 <small>
                   {datumKort(l.dag)}{l.soort !== 'rustig' && ` · ${soortNaam[l.soort]}`}{l.gevoel && ` · ${gevoelNaam[l.gevoel]}`}
-                  {l.bron !== 'manueel' && ` · via ${l.bron === 'strava' ? 'Strava' : 'horloge'}`}
+                  {l.bron !== 'manueel' && ` · via ${l.bron === 'strava' ? 'Strava' : l.bron === 'android' ? 'Trackd' : 'horloge'}`}
                 </small>
                 {l.notitie && <p className="loop-notitie">{l.notitie}</p>}
                 <div className="loop-acties">
