@@ -136,3 +136,28 @@
 .mijn-thema .welkom-titel { color: var(--ink); }
 .mijn-thema-voorlees { position: absolute; top: 4px; right: clamp(16px, 3vw, 32px); z-index: 1; }
 .mijn-thema .prenten .thema-prent, .mijn-thema .thema-prent { height: 150px; }
+
+/* Mijn thema op een tablet: de kaarten vullen de hoogte (liggend 4 naast elkaar, staand 2), zonder scrollen. */
+@media (min-width: 600px) and (min-height: 560px) {
+  .kind-vol .mijn-thema { flex: 1; min-height: 0; display: flex; flex-direction: column; padding-bottom: 8px; }
+  .mijn-thema .welkom-themas { flex: 1; min-height: 0; gap: clamp(8px, 1.6dvh, 16px); }
+  .mijn-thema .welkom-titel { margin: 0; font-size: clamp(26px, 4dvh, 34px); }
+  .mijn-thema .thema-keuzes { flex: 1; min-height: 0; grid-auto-rows: minmax(0, 1fr); gap: clamp(10px, 1.8dvh, 18px); }
+  .mijn-thema .thema-keuze { grid-template-rows: minmax(0, 1fr) auto; min-height: 0; gap: 6px; padding: 8px 8px 10px; }
+  .mijn-thema .thema-keuze:not(:has(.thema-naam)) { grid-template-rows: minmax(0, 1fr); padding-bottom: 8px; }
+  .mijn-thema .prenten .thema-prent, .mijn-thema .thema-prent { height: 100%; min-height: 0; max-height: 220px; }
+  .mijn-thema .thema-naam { font-size: clamp(18px, 2.6dvh, 24px); }
+  .mijn-thema .thema-keuze-vink { width: 44px; height: 44px; top: -8px; right: -8px; }
+}
+@media (min-width: 600px) and (min-height: 560px) and (orientation: portrait) {
+  .mijn-thema .thema-keuzes { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* Detail: over het gekozen thema glijdt één keer een glans. */
+.mijn-thema .thema-keuze[aria-pressed="true"] .thema-prent::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none; z-index: 2;
+  background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / .55) 48%, transparent 66%);
+  transform: translateX(-120%); animation: thema-glans 1.1s .15s ease-out forwards;
+}
+@keyframes thema-glans { to { transform: translateX(120%); } }
+@media (prefers-reduced-motion: reduce) { .mijn-thema .thema-keuze[aria-pressed="true"] .thema-prent::after { animation: none; display: none; } }

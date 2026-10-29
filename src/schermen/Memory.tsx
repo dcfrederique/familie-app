@@ -64,7 +64,7 @@ function MemorySpelBord({ kind }: { kind: Gebruiker }) {
                kies={(nv) => { setNiveau(nv); niveauBewaren(kind.id, 'memory', nv); opnieuw(nv) }} />
         <div className="memory-raster" style={{
           gridTemplateColumns: `repeat(${n.kolommen}, minmax(0, 1fr))`,
-          maxWidth: `min(100%, calc((100dvh - 260px) * ${n.kolommen} / ${rijen}), ${n.kolommen * 170}px)`,
+          maxWidth: `min(100%, calc((100dvh - var(--mem-rand, 260px)) * ${n.kolommen} / ${rijen}), ${n.kolommen * 170}px)`,
         }}>
           {spel.kaarten.map((p, i) => {
             const open = spel.open.includes(i) || spel.gevonden.includes(i)

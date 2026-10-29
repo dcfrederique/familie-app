@@ -6,17 +6,17 @@
 .licht-teller .nu { background: var(--kid); }
 .licht-veld { position: relative; height: clamp(150px, 46dvh, 440px); aspect-ratio: 200 / 240; }
 .licht-boom { display: block; width: 100%; height: 100%; }
-.licht {
+.licht-lamp {
   position: absolute; width: clamp(64px, 11vh, 92px); height: clamp(64px, 11vh, 92px); padding: 0; transform: translate(-50%, -50%);
   border-radius: 50%; border: 4px solid #fff; background: var(--lk); filter: brightness(0.55) saturate(0.85); transition: filter 0.15s, box-shadow 0.15s;
 }
-.licht.tik { filter: brightness(0.8); }
-.licht.aan { filter: none; box-shadow: 0 0 0 8px color-mix(in srgb, var(--lk) 35%, transparent), 0 0 34px 10px var(--lk); }
-.licht:disabled { cursor: default; }
-.licht.tik:active { transform: translate(-50%, -50%) scale(0.92); }
+.licht-lamp.tik { filter: brightness(0.8); }
+.licht-lamp.aan { filter: none; box-shadow: 0 0 0 8px color-mix(in srgb, var(--lk) 35%, transparent), 0 0 34px 10px var(--lk); }
+.licht-lamp:disabled { cursor: default; }
+.licht-lamp.tik:active { transform: translate(-50%, -50%) scale(0.92); }
 .licht-veld.blij .licht-boom { animation: licht-hup 0.5s ease-out; }
-.licht-veld.feest .licht { animation: licht-knip 0.9s ease-in-out infinite; }
-.licht-veld.feest .licht:nth-of-type(2n) { animation-delay: 0.3s; }
+.licht-veld.feest .licht-lamp { animation: licht-knip 0.9s ease-in-out infinite; }
+.licht-veld.feest .licht-lamp:nth-of-type(2n) { animation-delay: 0.3s; }
 .licht-stippen { display: flex; gap: 8px; min-height: 18px; }
 .licht-stippen i { width: 16px; height: 16px; border-radius: 50%; background: var(--line); }
 .licht-stippen i.goed { background: #2E9A45; }
@@ -24,12 +24,12 @@
 /* Liggende gsm: de boom wordt kleiner en de stippen vallen weg, zodat alles zonder scrollen past. */
 @media (max-height: 500px) and (orientation: landscape) {
   .licht-veld { height: 40dvh; }
-  .licht { width: 48px; height: 48px; }
+  .licht-lamp { width: 48px; height: 48px; }
   .licht-stippen { display: none; }
 }
 @keyframes licht-hup { 0%, 100% { transform: scale(1); } 40% { transform: scale(1.06) rotate(-2deg); } }
 @keyframes licht-knip { 0%, 100% { filter: none; } 50% { filter: brightness(1.3); } }
 @media (prefers-reduced-motion: reduce) {
-  .licht-veld.blij .licht-boom, .licht-veld.feest .licht { animation: none; }
-  .licht { transition: none; }
+  .licht-veld.blij .licht-boom, .licht-veld.feest .licht-lamp { animation: none; }
+  .licht-lamp { transition: none; }
 }

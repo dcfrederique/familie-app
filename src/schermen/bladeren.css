@@ -28,3 +28,11 @@
 @keyframes blad-terug { 0% { transform: translateX(-14px) rotate(-6deg); } 50% { transform: translateX(10px) rotate(5deg); } 100% { transform: none; } }
 @keyframes blad-wip { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 @media (prefers-reduced-motion: reduce) { .blad-aan-de-beurt, .blad-aan-de-beurt.terug:not(.sleept), .blad-mandje.tip { animation: none; } .blad-mandje.tip { outline: 4px solid var(--gold); border-radius: 18px; } }
+
+/* Lage liggende tablet: blad en mandjes krimpen mee met de hoogte, zodat de mandjes niet onder de rand vallen. */
+@media (min-width: 600px) and (min-height: 560px) and (orientation: landscape) and (max-height: 760px) {
+  .bladeren { gap: clamp(6px, 1.4dvh, 14px); }
+  .blad-veld { min-height: clamp(120px, 24dvh, 260px); }
+  .blad-aan-de-beurt { width: clamp(110px, 22dvh, 220px); }
+  .blad-mandje { width: clamp(120px, min(22vw, 26dvh), 190px); }
+}

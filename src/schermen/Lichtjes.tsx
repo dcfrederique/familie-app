@@ -107,7 +107,7 @@ function LichtjesScherm({ kind }: { kind: Gebruiker }) {
         <BoomPrent />
         {spel.kleuren.map((k) => (
           <button key={k} type="button" aria-label={kleurNaam[k]} disabled={fase !== 'jij' || af}
-                  className={`licht${aan === k || af ? ' aan' : ''}${fase === 'jij' && !af ? ' tik' : ''}`}
+                  className={`licht-lamp${aan === k || af ? ' aan' : ''}${fase === 'jij' && !af ? ' tik' : ''}`}
                   style={{ left: `${plek[k].x}%`, top: `${plek[k].y}%`, ['--lk' as string]: kleurCode[k] }}
                   onClick={() => tikLicht(k)} />
         ))}

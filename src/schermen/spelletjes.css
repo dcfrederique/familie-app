@@ -259,3 +259,62 @@
   .chips { padding: 3px; }
   .chip { min-height: 44px; padding: 0 14px; font-size: 15px; }
 }
+
+/* Memory op een staande tablet: de tellers en de knop in één rij onder het bord, en het bord laat er plaats voor. */
+@media (min-width: 600px) and (min-height: 560px) and (orientation: portrait) {
+  .memory { --mem-rand: 400px; gap: 16px; }
+  .memory-zijkant { flex: 1 1 100%; max-width: none; flex-direction: row; flex-wrap: wrap; align-items: stretch; justify-content: center; gap: 12px; }
+  .memory-zijkant .stat { flex: 1 1 0; min-width: 0; padding: 10px 16px; }
+  .memory-zijkant .stat .getal { font-size: 34px; }
+  .memory-zijkant .hoera { flex: 1 1 100%; padding: 12px 18px; font-size: 22px; }
+  .memory-zijkant .groot-knop { flex: 1 1 0; min-width: 0; min-height: 64px; }
+}
+
+/* Rekenen op een lage liggende tablet: de toetsen en keuzes krimpen mee met de hoogte, zodat het klavier zonder scrollen past. */
+@media (min-width: 600px) and (min-height: 560px) and (orientation: landscape) {
+  .reken-veld { gap: clamp(14px, 2.4dvh, 24px); }
+  .klavier { gap: clamp(8px, 1.6dvh, 14px); }
+  .toets { height: clamp(62px, calc((100dvh - 300px) / 4 - 10px), 100px); }
+  .keuzes { gap: clamp(10px, 1.8dvh, 16px); }
+  .keuze { height: clamp(70px, calc((100dvh - 330px) / 3), 110px); }
+}
+@media (min-width: 600px) and (min-height: 560px) and (orientation: landscape) and (max-height: 760px) {
+  .reken .reken-kaart { gap: clamp(8px, 2dvh, 22px); padding-block: clamp(12px, 2.4dvh, 36px); }
+  .reken .ballen { grid-template-columns: repeat(5, clamp(40px, 7dvh, 56px)); gap: clamp(8px, 1.6dvh, 14px); }
+  .reken .ballen span { width: clamp(40px, 7dvh, 56px); height: clamp(40px, 7dvh, 56px); }
+  .reken .terugkoppeling { min-height: 28px; }
+}
+/* Rekenen op een staande tablet: de keuzes (voor wie niet leest) naast elkaar onder de kaart. */
+@media (min-width: 600px) and (min-height: 560px) and (orientation: portrait) {
+  .reken .keuzes { flex: 1 1 100%; max-width: none; flex-direction: row; }
+  .reken .keuze { flex: 1 1 0; min-width: 0; height: clamp(88px, 10dvh, 120px); }
+}
+
+/* Gsm liggend: de canvas-spelletjes (Racen, Basket, Touwspringen, Penalty's) vullen net als op de tablet de vrije hoogte. */
+@media (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .kind-vol > .kind-inhoud > .penalty { flex: 1; min-height: 0; gap: 6px; }
+  .kind-vol .penalty > .spel-veld, .kind-vol .penalty > .penalty-veld { flex: 1; height: auto; min-height: 0; border-radius: 20px; }
+  .kind-vol .penalty-einde { padding: 12px 20px; gap: 8px; }
+  .kind-vol .penalty-einde .klaar-uitleg { font-size: 17px; }
+  .kind-vol .penalty-einde .groot-knop { min-height: 52px; }
+  .kind-vol .spel-boven, .kind-vol .penalty-keuzes { flex-wrap: nowrap; gap: 8px; }
+  .kind-vol .penalty-keuzes .bolletjes { flex-wrap: nowrap; gap: 5px; }
+  .kind-vol .penalty-keuzes .bolletjes span { width: 14px; height: 14px; }
+  .kind-vol .spel-score, .kind-vol .penalty-score { font-size: 26px; white-space: nowrap; }
+  .kind-vol .spel-score small, .kind-vol .penalty-score small { font-size: 15px; }
+}
+
+/* Memory op een liggende gsm: het bord zo groot als de hoogte toelaat, de tellers compacter ernaast. */
+@media (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .memory { --mem-rand: 190px; gap: 16px; flex-wrap: nowrap; }
+  .memory-bord { gap: 10px; }
+  .memory-raster { gap: 8px; }
+  .mkaart-kant { border-radius: 14px; }
+  .memory-zijkant { flex: 0 0 240px; gap: 8px; }
+  .memory-zijkant .stat { padding: 8px 14px; border-radius: 20px; }
+  .memory-zijkant .stat div:first-child { font-size: 14px; }
+  .memory-zijkant .stat .getal { font-size: 30px; }
+  .memory-zijkant .stat .getal small { font-size: 17px; }
+  .memory-zijkant .hoera { padding: 10px 14px; font-size: 17px; border-radius: 20px; }
+  .memory-zijkant .groot-knop { min-height: 52px; font-size: 18px; }
+}

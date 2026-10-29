@@ -21,6 +21,15 @@
 .bladzijden.naast .blader-stippen i { width: 10px; height: 10px; }
 .bladzijden.naast .blader-stippen i.nu { width: 26px; }
 
+/* Liggende gsm: dezelfde volle opmaak, zodat spelletjes met SpelKader vol ook daar precies het scherm vullen. */
+@media (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .kind.kind-vol { height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
+  .kind-vol > header { flex: none; }
+  .kind-vol > .kind-inhoud { flex: 1; min-height: 0; width: 100%; display: flex; flex-direction: column; padding-bottom: 8px; }
+  .kind-vol .verhalen { flex: 1; min-height: 0; }
+  .kind-vol.thema-tuin > .kind-inhoud { padding-bottom: 16px; }
+}
+
 /* Subschermen vullen op tablet en pc precies het scherm; het raster deelt de vrije hoogte op. */
 @media (min-width: 600px) and (min-height: 560px) {
   .kind.kind-vol { height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }

@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.71',
+    datum: '2026-10-29',
+    titel: 'Alle kinderschermen passen op elke tablet',
+    tekst: 'Geen enkel kinderscherm scrolt nog op een tablet, liggend of staand. Deze keer kwamen Mijn thema (de kaarten vullen het scherm, met een glans over het gekozen thema), Memory staand (tellers onder het bord), Rekenen, Verhalen lezen, Schrijven, Bladeren sorteren en Pompoenen maken aan de beurt. Op een liggende gsm passen nu ook Racen, Basket, Touwspringen, Penalty\'s en Memory. De knoppen Wissen en Stoppen stonden sinds de Lichtjesboom soms scheef; dat is hersteld.',
+  },
+  {
     versie: '0.70',
     datum: '2026-10-29',
     titel: 'De Berg is gevuld',

@@ -46,7 +46,7 @@
   .pompoen > .pompoen-eind { grid-column: 1 / -1; grid-row: 2 / 4; }
   .pompoen .pompoen-rij { flex-wrap: nowrap; }
   .pompoen .pompoen-knop { width: clamp(76px, 12dvh, 116px); height: clamp(64px, 10dvh, 92px); }
-  .pompoen-groot { width: clamp(170px, min(46dvh, 28vw), 380px); }
+  .pompoen-groot { width: clamp(170px, min(46dvh, 28vw, calc(20dvh + 180px)), 380px); }
   .pompoen-kaartje .pompoen-tekening.klein { width: clamp(90px, 18dvh, 170px); }
   .pompoen-eind .pompoen-tekening { width: clamp(150px, 28dvh, 280px); }
 }

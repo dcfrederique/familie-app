@@ -45,7 +45,7 @@ path.inkt-goed, path.inkt-fout { fill: none; }
   .schrijf-prent { width: clamp(80px, 13dvh, 108px); height: clamp(80px, 13dvh, 108px); }
   .schrijf-prent svg { width: 78%; height: 78%; }
   .schrijf-blad { height: clamp(150px, calc(100dvh - 390px), 340px); max-width: calc(100% - 2 * clamp(110px, 16dvh, 140px)); }
-  .schrijf-blad.vrij { height: clamp(140px, calc(100dvh - 400px), 280px); }
+  .schrijf-blad.vrij { height: clamp(130px, calc(100dvh - 450px), 280px); }
   .schrijf .klaar-uitleg { margin: 0; }
   .schrijf .groot-knop { min-height: clamp(56px, 8dvh, 72px); }
   .schrijf-uitslag .schrijf-procent { font-size: clamp(36px, 6dvh, 64px); }
