@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.70',
+    datum: '2026-10-29',
+    titel: 'De Berg is gevuld',
+    tekst: 'De Berg (ten noorden van het dorp) is niet meer leeg: dennen en rotsblokken in de hoeken, met de wegen naar het dorp, het bos en het platteland vrij. Ouders kunnen alles verplaatsen of weghalen in Wij → Kaart bewerken; Den en Rots staan nu ook bij Decor. Elke nacht komt er een stuk bij in een volgend gebied.',
+  },
+  {
     versie: '0.69',
     datum: '2026-10-29',
     titel: 'Halloween: Verkleedkist, de verkleedtent en de lampionnenbrug',

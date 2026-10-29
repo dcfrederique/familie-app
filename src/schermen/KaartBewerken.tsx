@@ -232,7 +232,7 @@ function Bewerker({ begin }: { begin: Opgeslagen }) {
           <button key={b.id} type="button" className={`kb-tegel${isPlaats('gebouw', b.id) ? ' sel' : ''}`} onClick={() => kies({ k: 'plaats', soort: 'gebouw', ref: b.id })}><b>🏠</b><span>{b.naam}</span></button>
         ))}
         {tab === 'decor' && DECOR.map((d) => (
-          <button key={d} type="button" className={`kb-tegel${isPlaats('ding', d) ? ' sel' : ''}`} onClick={() => kies({ k: 'plaats', soort: 'ding', ref: d })}><b>{d === 'boom' ? '🌳' : d === 'bank' ? '🪑' : d === 'lantaarn' ? '💡' : d === 'doel' ? '🥅' : d === 'paddenstoel' ? '🍄' : '🛝'}</b><span>{DECOR_NAAM[d]}</span></button>
+          <button key={d} type="button" className={`kb-tegel${isPlaats('ding', d) ? ' sel' : ''}`} onClick={() => kies({ k: 'plaats', soort: 'ding', ref: d })}><b>{d === 'boom' ? '🌳' : d === 'bank' ? '🪑' : d === 'lantaarn' ? '💡' : d === 'doel' ? '🥅' : d === 'paddenstoel' ? '🍄' : d === 'den' ? '🌲' : d === 'rots' ? '🪨' : '🛝'}</b><span>{DECOR_NAAM[d]}</span></button>
         ))}
         {tab === 'paden' && (
           <>

@@ -38,9 +38,9 @@ export type ItemSoort = 'huis' | 'gebouw' | 'ding' | 'pad'
 export interface Item { id: string; soort: ItemSoort; ref: string; gebied: GebiedId; x: number; y: number }
 
 /** Wat een ouder erbij kan zetten (naast de huizen, gebouwen en paden). */
-export const DECOR = ['boom', 'bank', 'lantaarn', 'schommel', 'glijbaan', 'wip', 'zandbak', 'doel', 'paddenstoel'] as const
+export const DECOR = ['boom', 'bank', 'lantaarn', 'schommel', 'glijbaan', 'wip', 'zandbak', 'doel', 'paddenstoel', 'den', 'rots'] as const
 export const DECOR_NAAM: Record<(typeof DECOR)[number], string> = {
-  boom: 'Boom', bank: 'Bank', lantaarn: 'Lantaarn', schommel: 'Schommel', glijbaan: 'Glijbaan', wip: 'Wip', zandbak: 'Zandbak', doel: 'Doel', paddenstoel: 'Paddenstoel',
+  boom: 'Boom', bank: 'Bank', lantaarn: 'Lantaarn', schommel: 'Schommel', glijbaan: 'Glijbaan', wip: 'Wip', zandbak: 'Zandbak', doel: 'Doel', paddenstoel: 'Paddenstoel', den: 'Den', rots: 'Rots',
 }
 
 /** Zo veel dingen (zonder paden) kunnen ouders per gebied erbij zetten, en zo veel paden in totaal. */
@@ -117,6 +117,28 @@ function bosDecor(): Item[] {
   return uit
 }
 
+/**
+ * De berg (nacht van 29 oktober 2026): dennen en rotsblokken in de hoeken, met het kruispunt van de drie poortwegen vrij
+ * (zuid naar het dorp, west naar het bos, oost naar het platteland). Id's `ding:<soort>:berg:<n>`, nooit hernoemen.
+ */
+function bergDecor(): Item[] {
+  const uit: Item[] = []
+  const op = (ref: string, n: number, x: number, y: number) => uit.push({ id: `ding:${ref}:berg:${n}`, soort: 'ding', ref, gebied: 'berg', x, y })
+  const vrij = (x: number, y: number) => !(y > 9.4 && y < 16) && !(x > 24.5 && x < 31 && y > 8) // de wegen en hun rand
+  let n = 0
+  for (let gy = 0; gy < 6; gy++) for (let gx = 0; gx < 13; gx++) {
+    n++
+    if (toeval(gx, gy, 191) < 0.35) continue
+    const x = 3.8 + gx * 3.7 + toeval(gx, gy, 192) * 1.6, y = 5.4 + gy * 3.5 + toeval(gx, gy, 193) * 1.4
+    if (x < 51 && y < 24 && vrij(x, y)) op('den', n, Math.round(x * 4) / 4, Math.round(y * 4) / 4)
+  }
+  for (let i = 1; i <= 22; i++) {
+    const x = 4 + toeval(i, 194) * 46, y = 5.5 + toeval(i, 195) * 18.5
+    if (vrij(x, y)) op('rots', i, Math.round(x * 4) / 4, Math.round(y * 4) / 4)
+  }
+  return uit
+}
+
 /** Alles wat er standaard staat voor deze kinderen: het dorp zoals het is, de andere gebieden leeg op de wegen na. */
 export function standaardItems(kinderIds: readonly string[]): Item[] {
   const bewoners = kinderIds.slice(0, MAX_HUIZEN)
@@ -131,7 +153,7 @@ export function standaardItems(kinderIds: readonly string[]): Item[] {
   for (const g of GEBIEDEN) if (g.id !== 'dorp') paden.push(...poortPaden(g.id, g.poorten))
   // een pad kan twee keer voorkomen (de weg naar het noorden kruist een stoepje): één per tegel
   const uniek = [...new Map(paden.map((i) => [i.id, i])).values()]
-  return [...huizen, ...gebouwItems, ...dorpDecor(), ...bosDecor(), ...uniek]
+  return [...huizen, ...gebouwItems, ...dorpDecor(), ...bosDecor(), ...bergDecor(), ...uniek]
 }
 
 /** Wat er nu staat: de standaardplekken, met de verplaatsingen en verwijderingen van de ouders, en wat zij erbij zetten. */

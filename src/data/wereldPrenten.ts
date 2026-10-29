@@ -95,6 +95,10 @@ export const gebouwTekening: Record<string, string> = {
 
 /** Dingen op straat die (nog) niet in de huiscatalogus staan; viewBox -100 -220 200 240. */
 export const straatTekening: Record<string, string | ((kleur: string) => string)> = {
+  // den: donkergroene boom in drie lagen (eigen ontwerp)
+  den: `<rect x="-9" y="-30" width="18" height="30" rx="4" fill="#6E4224"/><path d="M-62 -30L0 -100L62 -30Z" fill="#2F7D4A" stroke="#1F5A33" stroke-width="3" stroke-linejoin="round"/><path d="M-50 -70L0 -128L50 -70Z" fill="#3A9159" stroke="#1F5A33" stroke-width="3" stroke-linejoin="round"/><path d="M-36 -108L0 -162L36 -108Z" fill="#47A56A" stroke="#1F5A33" stroke-width="3" stroke-linejoin="round"/>`,
+  // rots: grijze rotsblokken met een lichte kant
+  rots: `<path d="M-64 0Q-70 -40 -34 -62Q0 -80 38 -58Q70 -36 64 0Z" fill="#8E97A3" stroke="#5E6672" stroke-width="3" stroke-linejoin="round"/><path d="M-34 -62Q0 -80 38 -58Q10 -52 -8 -30Q-28 -40 -34 -62Z" fill="#B7BEC8"/><path d="M-20 0L-4 -26L14 0Z" fill="#7A838F"/>`,
   // paddenstoel: rode hoed met witte stippen (eigen ontwerp)
   paddenstoel: `<rect x="-14" y="-60" width="28" height="60" rx="10" fill="#F4EBD8" stroke="#C9B995" stroke-width="3"/><path d="M-62 -52Q-60 -130 0 -132Q60 -130 62 -52Q0 -38 -62 -52Z" fill="#D8452B" stroke="#A82F1B" stroke-width="3"/><circle cx="-28" cy="-92" r="9" fill="#FFF"/><circle cx="16" cy="-108" r="8" fill="#FFF"/><circle cx="34" cy="-80" r="7" fill="#FFF"/>`,
   // fruitboom met een volle kruin in lichtere en donkerdere groentinten; `kleur` is de vrucht (appel of sinaasappel) of 'kaal'
