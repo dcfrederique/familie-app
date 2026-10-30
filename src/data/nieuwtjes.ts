@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.76',
+    datum: '2026-10-30',
+    titel: 'Het Platteland is gevuld',
+    tekst: 'Het Platteland (ten oosten van de Berg) is niet meer leeg: een weide met hekken, hooibalen en een paar bomen, met de wegen naar de Berg en het Meer vrij. Ouders kunnen alles verplaatsen of weghalen in Wij → Kaart bewerken; Hooibaal en Hek staan nu ook bij Decor. Elke nacht komt er een stuk bij in een volgend gebied.',
+  },
+  {
     versie: '0.75',
     datum: '2026-10-30',
     titel: 'Lopen verhuisd naar Trackd',

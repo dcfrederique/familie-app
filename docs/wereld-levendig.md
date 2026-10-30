@@ -44,7 +44,7 @@ Elke nacht zet de bouwroutine één stuk stad erbij uit de backlog hieronder (bo
 
 - [x] Bos (28 oktober 2026): bomen in groepjes, 14 paddenstoelen, een bank, open plek voor een huis; `bosDecor()` in `src/lib/wereld/gebieden.ts`
 - [x] Berg (29 oktober 2026): dennen en rotsblokken, `bergDecor()` in `src/lib/wereld/gebieden.ts`
-- [ ] Platteland
+- [x] Platteland (30 oktober 2026): weide met hekken, hooibalen en bomen, `plattelandDecor()` in `src/lib/wereld/gebieden.ts`
 - [ ] Meer
 - [ ] Strand
 - [ ] Sportpark

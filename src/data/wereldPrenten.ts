@@ -106,6 +106,10 @@ export const gebouwTekening: Record<string, string> = {
 
 /** Dingen op straat die (nog) niet in de huiscatalogus staan; viewBox -100 -220 200 240. */
 export const straatTekening: Record<string, string | ((kleur: string) => string)> = {
+  // hooibaal: ronde baal met touwtjes
+  hooibaal: `<ellipse cx="0" cy="-34" rx="52" ry="36" fill="#E3B84A" stroke="#B88A24" stroke-width="3"/><ellipse cx="-30" cy="-34" rx="14" ry="30" fill="#F1D071" stroke="#B88A24" stroke-width="3"/><path d="M-12 -62V-8M10 -63V-6M30 -58V-12" stroke="#B88A24" stroke-width="3" stroke-linecap="round"/>`,
+  // hek: een stuk houten weidehek van twee palen en twee latten (breedte 96 eenheden = twee tegels)
+  hek: `<rect x="-90" y="-64" width="180" height="12" rx="5" fill="#C08850" stroke="#8A5A33" stroke-width="3"/><rect x="-90" y="-36" width="180" height="12" rx="5" fill="#C08850" stroke="#8A5A33" stroke-width="3"/><rect x="-86" y="-84" width="16" height="84" rx="5" fill="#A8703F" stroke="#6E4224" stroke-width="3"/><rect x="70" y="-84" width="16" height="84" rx="5" fill="#A8703F" stroke="#6E4224" stroke-width="3"/>`,
   // den: donkergroene boom in drie lagen (eigen ontwerp)
   den: `<rect x="-9" y="-30" width="18" height="30" rx="4" fill="#6E4224"/><path d="M-62 -30L0 -100L62 -30Z" fill="#2F7D4A" stroke="#1F5A33" stroke-width="3" stroke-linejoin="round"/><path d="M-50 -70L0 -128L50 -70Z" fill="#3A9159" stroke="#1F5A33" stroke-width="3" stroke-linejoin="round"/><path d="M-36 -108L0 -162L36 -108Z" fill="#47A56A" stroke="#1F5A33" stroke-width="3" stroke-linejoin="round"/>`,
   // rots: grijze rotsblokken met een lichte kant
