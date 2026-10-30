@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.77',
+    datum: '2026-10-30',
+    titel: 'De moeilijkste stand is een pak moeilijker',
+    tekst: 'Luca vond de moeilijke stand te simpel. Nu is de moeilijkste stand van de spelletjes veel pittiger: Memory 10 paren, Herfstketting met langere en lastigere patronen, Schoen vullen met grotere aantallen, Wat is er weg? met 8 voorwerpen en korter kijken, Verkleedkist met 5 keuzes en een voorbeeld dat sneller verdwijnt, een groter Doolhof met 6 nootjes, Lichtjesboom die met 5 lichtjes begint, Koken (Chef) met een volle kast en korter kaartje, en Pro bij Penalty\'s en Basket, Turbo bij Racen en Snel bij Touwspringen. Bij Rekenen kunnen Tafels ook delingen (42 ÷ 6) en Tot 1000 ook twee getallen van drie cijfers (468 + 275). De makkelijke en middelste standen blijven zoals ze waren.',
+  },
+  {
     versie: '0.76',
     datum: '2026-10-30',
     titel: 'Het Platteland is gevuld',

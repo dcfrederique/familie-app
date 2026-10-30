@@ -10,7 +10,7 @@ export const touwNiveaus: Record<TouwNiveau, {
 }> = {
   traag: { label: 'Traag', start: 2.4, max: 4.2, erbij: 0.08 },
   normaal: { label: 'Normaal', start: 3.2, max: 5.4, erbij: 0.1 },
-  snel: { label: 'Snel', start: 4.2, max: 6.6, erbij: 0.12 },
+  snel: { label: 'Snel', start: 5, max: 7.6, erbij: 0.16 },
 }
 
 export const LEVENS = 3

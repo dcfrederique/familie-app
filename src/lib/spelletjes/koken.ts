@@ -12,7 +12,7 @@ export const kookNiveaus: Record<KookNiveau, {
 }> = {
   klein: { label: 'Klein', aantal: 3, kast: 6, verbergNa: null },
   groot: { label: 'Groot', aantal: 5, kast: 8, verbergNa: null },
-  chef: { label: 'Chef', aantal: 5, kast: 10, verbergNa: 5 },
+  chef: { label: 'Chef', aantal: 5, kast: 12, verbergNa: 3 },
 }
 
 /** Hoeveel keer rond roeren. */

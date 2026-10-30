@@ -15,7 +15,7 @@ export const raceNiveaus: Record<RaceNiveau, {
 }> = {
   rustig: { label: 'Rustig', start: 0.45, max: 0.8, opbouw: 0.008, tussen: 0.8 },
   snel: { label: 'Snel', start: 0.6, max: 1.1, opbouw: 0.012, tussen: 0.65 },
-  turbo: { label: 'Turbo', start: 0.8, max: 1.45, opbouw: 0.016, tussen: 0.55 },
+  turbo: { label: 'Turbo', start: 0.95, max: 1.75, opbouw: 0.022, tussen: 0.5 },
 }
 
 export const BANEN = 3

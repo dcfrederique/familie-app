@@ -20,6 +20,8 @@ export function maakSom(niveau: RekenNiveau, rnd: Willekeur = Math.random): Som 
   }
   if (niveau === 'tafels') {
     const a = r(1, 10), b = r(2, 10)
+    // Een deel van de vragen is een deling uit de tafel (42 ÷ 6): omgekeerd denken is lastiger.
+    if (rnd() < 0.4) return { vraag: `${a * b} ÷ ${b}`, antwoord: a }
     return { vraag: `${b} × ${a}`, antwoord: a * b }
   }
   if (niveau === 'tot1000') return somTot1000(r, rnd)
@@ -40,7 +42,14 @@ export function maakSom(niveau: RekenNiveau, rnd: Willekeur = Math.random): Som 
  * of hele tientallen, of twee tientallen-getallen (340 + 270). Nooit boven 1000 of onder 0.
  */
 function somTot1000(r: (a: number, b: number) => number, rnd: Willekeur): Som {
-  const soort = r(0, 2)
+  const soort = r(0, 3)
+  // Soort 3: twee getallen van drie cijfers, met onthouden of lenen (468 + 275).
+  if (soort === 3) {
+    const a = r(101, 899), b = r(101, 899)
+    if (rnd() < 0.5 && a + b <= 1000) return { vraag: `${a} + ${b}`, antwoord: a + b }
+    const [g, k] = a >= b ? [a, b] : [b, a]
+    return { vraag: `${g} − ${k}`, antwoord: g - k }
+  }
   const a = soort === 2 ? r(10, 99) * 10 : r(100, 999)
   const stap = soort === 0 ? 100 : 10
   const maxStappen = soort === 2 ? 99 : 9

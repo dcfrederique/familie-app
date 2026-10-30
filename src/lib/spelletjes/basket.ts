@@ -12,7 +12,7 @@ export const basketNiveaus: Record<BasketNiveau, {
 }> = {
   makkelijk: { label: 'Makkelijk', zwaai: 0, tempo: 0, hulp: 1.2 },
   normaal: { label: 'Normaal', zwaai: 0.08, tempo: 1.1, hulp: 0.3 },
-  pro: { label: 'Pro', zwaai: 0.13, tempo: 1.9, hulp: 0 },
+  pro: { label: 'Pro', zwaai: 0.2, tempo: 2.6, hulp: 0 },
 }
 
 export const BREED = 1.6

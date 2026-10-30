@@ -18,8 +18,8 @@ export const penaltyNiveaus: Record<PenaltyNiveau, {
                vlucht: 1.15, hoek: 0.3, mis: 0.15, slim: 0, aarzel: 0.3 },
   normaal: { label: 'Normaal', reactie: 0.22, fout: 0.4, verkeerd: 0.15, snelheid: 2.8, sprong: 2.0,
              vlucht: 0.9, hoek: 0.55, mis: 0.1, slim: 0.4, aarzel: 0.7 },
-  pro: { label: 'Pro', reactie: 0.12, fout: 0.18, verkeerd: 0.05, snelheid: 3.6, sprong: 2.6,
-         vlucht: 0.7, hoek: 0.8, mis: 0.05, slim: 0.7, aarzel: 1.1 },
+  pro: { label: 'Pro', reactie: 0.07, fout: 0.08, verkeerd: 0.02, snelheid: 4.4, sprong: 3.2,
+         vlucht: 0.55, hoek: 0.92, mis: 0.02, slim: 0.9, aarzel: 1.5 },
 }
 
 export interface Punt { x: number; y: number; t: number }

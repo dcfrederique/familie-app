@@ -19,7 +19,7 @@ describe('koken', () => {
     for (const i of b.nodig) expect(b.kast).toContain(i)
     // geen andere ingrediënten van hetzelfde recept als afleiding
     expect(b.kast).not.toContain('champignon')
-    expect(nieuweBestelling(recepten.soep.ingredienten, alle, 'chef').kast).toHaveLength(10)
+    expect(nieuweBestelling(recepten.soep.ingredienten, alle, 'chef').kast).toHaveLength(12)
   })
 
   it('juist, fout, al gedaan en klaar', () => {

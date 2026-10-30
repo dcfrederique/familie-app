@@ -12,18 +12,18 @@ describe('sommen', () => {
         expect(som.antwoord).toBeLessThanOrEqual(max)
         if (niveau !== 'tellen') {
           const [a, teken, b] = som.vraag.split(' ')
-          const uitkomst = teken === '+' ? +a + +b : teken === '−' ? +a - +b : +a * +b
+          const uitkomst = teken === '+' ? +a + +b : teken === '−' ? +a - +b : teken === '÷' ? +a / +b : +a * +b
           expect(uitkomst).toBe(som.antwoord)
         }
       }
     })
   }
 
-  it('tot1000: echte getallen van drie cijfers met honderdtallen of tientallen', () => {
+  it('tot1000: echte getallen van drie cijfers, met hele tientallen of twee getallen van drie cijfers', () => {
     for (let i = 0; i < 500; i++) {
       const [a, , b] = maakSom('tot1000').vraag.split(' ').map(Number)
       expect(a).toBeGreaterThanOrEqual(100)
-      expect(b % 10).toBe(0)
+      expect(b % 10 === 0 || b >= 100).toBe(true)
     }
   })
 

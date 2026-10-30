@@ -8,7 +8,7 @@ export type RekenNiveau = 'tellen' | 'tot10' | 'tot20' | 'tot100' | 'tot1000' | 
 export const memoryNiveaus: Record<MemoryNiveau, { label: string; paren: number; kolommen: number }> = {
   klein: { label: '3 paren', paren: 3, kolommen: 3 },
   middel: { label: '6 paren', paren: 6, kolommen: 4 },
-  groot: { label: '8 paren', paren: 8, kolommen: 4 },
+  groot: { label: '10 paren', paren: 10, kolommen: 5 },
 }
 
 /** Tellen en Tot 10 met 3 antwoordknoppen (wie nog niet leest), de rest met een cijferklavier. */
@@ -33,6 +33,8 @@ export const memoryPrenten: [string, string, string][] = [
   ['Appel', '#E0672E', 'M12 7c-3-2-8-1-8 5c0 5 3 9 6 9c1 0 1.5-.5 2-.5s1 .5 2 .5c3 0 6-4 6-9c0-6-5-7-8-5zM12 7c0-2 1-4 3-4'],
   ['Boot', '#1D9AA8', 'M3 15h18l-3 5H6zM12 4v11M12 4l6 8h-6'],
   ['Ballon', '#D6458E', 'M12 3a5 6 0 1 0 0 12a5 6 0 0 0 0-12zM12 15l-1 2h2zM12 17c0 2 1 3 0 4'],
+  ['Maan', '#C9A227', 'M15 3a9 9 0 1 0 6 13A7 7 0 0 1 15 3z'],
+  ['Boom', '#1F8A4C', 'M12 3l6 8h-3l5 7H4l5-7H6zM12 18v3'],
 ]
 
 export type PompoenNiveau = 'makkelijk' | 'middel' | 'moeilijk'
@@ -99,7 +101,7 @@ export const kettingKralen: readonly Kraal[] = ['bes', 'blad', 'eikel', 'paddens
 export const kettingNiveaus: Record<KettingNiveau, { label: string; patronen: readonly string[]; lengte: number; lege: number; keuzes: number }> = {
   makkelijk: { label: 'Makkelijk', patronen: ['AB'], lengte: 6, lege: 1, keuzes: 3 },
   middel: { label: 'Middel', patronen: ['ABC', 'AAB'], lengte: 9, lege: 2, keuzes: 4 },
-  moeilijk: { label: 'Moeilijk', patronen: ['ABBC', 'ABAC'], lengte: 10, lege: 3, keuzes: 4 },
+  moeilijk: { label: 'Moeilijk', patronen: ['ABBC', 'ABAC', 'ABCB', 'AABC'], lengte: 12, lege: 4, keuzes: 4 },
 }
 
 export const kettingenPerRonde = 6
@@ -121,7 +123,7 @@ export const lekkernijen: readonly Lekkernij[] = ['pepernoot', 'mandarijn', 'cho
 export const schoenNiveaus: Record<SchoenNiveau, { label: string; soorten: 1 | 2; min: number; max: number; totaal: number }> = {
   makkelijk: { label: 'Makkelijk', soorten: 1, min: 1, max: 5, totaal: 5 },
   middel: { label: 'Middel', soorten: 1, min: 1, max: 10, totaal: 10 },
-  moeilijk: { label: 'Moeilijk', soorten: 2, min: 2, max: 10, totaal: 20 },
+  moeilijk: { label: 'Moeilijk', soorten: 2, min: 3, max: 12, totaal: 22 },
 }
 
 export const schoenOpdrachtenPerRonde = 6
@@ -143,7 +145,7 @@ export const voorwerpen: readonly Voorwerp[] = ['pakje', 'schoen', 'wortel', 'pe
 export const wegNiveaus: Record<WegNiveau, { label: string; aantal: number; kijktijd: number }> = {
   makkelijk: { label: 'Makkelijk', aantal: 3, kijktijd: 4000 },
   middel: { label: 'Middel', aantal: 4, kijktijd: 5000 },
-  moeilijk: { label: 'Moeilijk', aantal: 6, kijktijd: 7000 },
+  moeilijk: { label: 'Moeilijk', aantal: 8, kijktijd: 4000 },
 }
 
 export const wegRondes = 6
@@ -181,7 +183,7 @@ export const kostuums: readonly Kostuum[] = [
 export const verkleedNiveaus: Record<VerkleedNiveau, { label: string; rijen: VerkleedRij[]; keuzes: number; verberg: number }> = {
   makkelijk: { label: 'Makkelijk', rijen: ['hoed', 'mantel'], keuzes: 3, verberg: 0 },
   middel: { label: 'Middel', rijen: ['hoed', 'mantel', 'voorwerp'], keuzes: 3, verberg: 0 },
-  moeilijk: { label: 'Moeilijk', rijen: ['hoed', 'mantel', 'voorwerp'], keuzes: 4, verberg: 6000 },
+  moeilijk: { label: 'Moeilijk', rijen: ['hoed', 'mantel', 'voorwerp'], keuzes: 5, verberg: 3000 },
 }
 
 export const verkleedRondes = 6
@@ -199,7 +201,7 @@ export type DoolhofNiveau = 'makkelijk' | 'middel' | 'moeilijk'
 export const doolhofNiveaus: Record<DoolhofNiveau, { label: string; breed: number; hoog: number; open: number; noten: number; alleNoten: boolean }> = {
   makkelijk: { label: 'Makkelijk', breed: 5, hoog: 4, open: 4, noten: 2, alleNoten: false },
   middel: { label: 'Middel', breed: 7, hoog: 5, open: 3, noten: 3, alleNoten: false },
-  moeilijk: { label: 'Moeilijk', breed: 9, hoog: 6, open: 2, noten: 4, alleNoten: true },
+  moeilijk: { label: 'Moeilijk', breed: 11, hoog: 7, open: 1, noten: 6, alleNoten: true },
 }
 
 export const doolhofRondes = 4
@@ -219,7 +221,7 @@ export const lichtKleuren: readonly LichtKleur[] = ['rood', 'geel', 'blauw', 'gr
 export const lichtjesNiveaus: Record<LichtjesNiveau, { label: string; start: number; kleuren: number }> = {
   makkelijk: { label: 'Makkelijk', start: 2, kleuren: 2 },
   middel: { label: 'Middel', start: 3, kleuren: 3 },
-  moeilijk: { label: 'Moeilijk', start: 3, kleuren: 4 },
+  moeilijk: { label: 'Moeilijk', start: 5, kleuren: 4 },
 }
 
 export const lichtjesRondes = 6
