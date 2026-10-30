@@ -137,8 +137,8 @@
 .mijn-thema-voorlees { position: absolute; top: 4px; right: clamp(16px, 3vw, 32px); z-index: 1; }
 .mijn-thema .prenten .thema-prent, .mijn-thema .thema-prent { height: 150px; }
 
-/* Mijn thema op een tablet: de kaarten vullen de hoogte (liggend 4 naast elkaar, staand 2), zonder scrollen. */
-@media (min-width: 600px) and (min-height: 560px) {
+/* Mijn thema op een tablet en een liggende gsm: de kaarten vullen de hoogte (liggend 4 naast elkaar, staand 2), zonder scrollen. */
+@media (min-width: 600px) and (min-height: 560px), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
   .kind-vol .mijn-thema { flex: 1; min-height: 0; display: flex; flex-direction: column; padding-bottom: 8px; }
   .mijn-thema .welkom-themas { flex: 1; min-height: 0; gap: clamp(8px, 1.6dvh, 16px); }
   .mijn-thema .welkom-titel { margin: 0; font-size: clamp(26px, 4dvh, 34px); }
@@ -161,3 +161,15 @@
 }
 @keyframes thema-glans { to { transform: translateX(120%); } }
 @media (prefers-reduced-motion: reduce) { .mijn-thema .thema-keuze[aria-pressed="true"] .thema-prent::after { animation: none; display: none; } }
+
+/* Liggende gsm: vier kaarten naast elkaar zoals op de tablet, alleen kleiner. */
+@media (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .mijn-thema { padding-top: 4px; }
+  .mijn-thema .welkom-titel { font-size: 20px; }
+  .mijn-thema .thema-keuzes { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+  .mijn-thema .thema-keuze { border-radius: 20px; padding: 6px 6px 8px; gap: 4px; }
+  .mijn-thema .thema-prent { border-radius: 14px; }
+  .mijn-thema .thema-naam { font-size: 15px; }
+  .mijn-thema .thema-keuze-vink { width: 34px; height: 34px; top: -6px; right: -6px; }
+  .mijn-thema-voorlees.rond { width: 44px; height: 44px; }
+}

@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.74',
+    datum: '2026-10-30',
+    titel: 'Meer schermen passen op een liggende gsm',
+    tekst: 'Op een liggende gsm passen nu ook Mijn thema (vier kaarten naast elkaar), Bladeren sorteren, Verhalen lezen (prent links, tekst rechts) en Rekenen (klavier of keuzes naast de som), in dezelfde opmaak als op de tablet, alleen kleiner. In het Doolhof van de eekhoorn dwarrelen herfstblaadjes langs de kant.',
+  },
+  {
     versie: '0.73',
     datum: '2026-10-30',
     titel: 'Herfstvakantie: Doolhof van de eekhoorn, de heggendoolhof en de pepernotenbaas',

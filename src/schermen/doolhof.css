@@ -42,3 +42,18 @@
   .doolhof-teller { flex-wrap: wrap; justify-content: center; max-width: 50px; }
   .doolhof-noten svg { width: 22px; height: 24px; }
 }
+
+/* Detail: twee herfstblaadjes dwarrelen langs de zijkanten van het doolhof naar beneden (niet bij minder beweging). */
+.doolhof { position: relative; }
+.doolhof::before, .doolhof::after {
+  content: '🍂'; position: absolute; top: 18%; font-size: clamp(20px, 3.4dvh, 32px); pointer-events: none; opacity: 0;
+  animation: doolhof-blad 9s ease-in-out infinite;
+}
+.doolhof::before { left: 4%; }
+.doolhof::after { content: '🍁'; right: 4%; animation-delay: -4.5s; }
+@keyframes doolhof-blad {
+  0% { transform: translate(0, 0) rotate(0); opacity: 0; } 10% { opacity: .9; }
+  50% { transform: translate(18px, 22dvh) rotate(120deg); } 90% { opacity: .8; }
+  100% { transform: translate(-10px, 48dvh) rotate(260deg); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .doolhof::before, .doolhof::after { animation: none; display: none; } }

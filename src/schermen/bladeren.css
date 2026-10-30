@@ -36,3 +36,11 @@
   .blad-aan-de-beurt { width: clamp(110px, 22dvh, 220px); }
   .blad-mandje { width: clamp(120px, min(22vw, 26dvh), 190px); }
 }
+
+/* Liggende gsm: dezelfde opmaak als op de tablet, alleen kleiner. */
+@media (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .bladeren { gap: 4px; }
+  .blad-veld { min-height: 0; height: 24dvh; }
+  .blad-aan-de-beurt { width: 24dvh; }
+  .blad-mandje { width: clamp(100px, 30dvh, 150px); min-width: 0; min-height: 0; }
+}

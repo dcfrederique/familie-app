@@ -61,3 +61,18 @@
   .lezer-teller { gap: 6px; }
   .lezer-teller span { width: 12px; height: 12px; }
 }
+
+/* Liggende gsm: prent links en tekst rechts zoals op de tablet, alleen kleiner. */
+@media (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .lezer { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 12px; height: calc(100dvh - 120px); }
+  .lezer-prent { border-radius: 18px; }
+  .lezer-prent .verhaal-prent { max-height: calc(100dvh - 130px); }
+  .lezer-tekst { gap: 8px; padding: 12px 16px; border-radius: 18px; min-height: 0; overflow: hidden; }
+  .lezer-zinnen, .lezer-zinnen.reeks-grote-ogen { font-size: 17px; line-height: 1.4; }
+  .lezer-zinnen.reeks-kleine-oortjes { font-size: 20px; line-height: 1.35; }
+  .lezer-balk { gap: 6px; }
+  .lezer-balk .rond.groot { width: 48px; height: 48px; }
+  .lezer-balk .groot-knop { min-width: 100px; min-height: 48px; }
+  .lezer-teller { gap: 4px; }
+  .lezer-teller span { width: 10px; height: 10px; }
+}
