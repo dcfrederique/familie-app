@@ -19,6 +19,15 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.73',
+    datum: '2026-10-30',
+    titel: 'Herfstvakantie: Doolhof van de eekhoorn, de heggendoolhof en de pepernotenbaas',
+    tekst: 'Het regendagpakket staat klaar: het verhaal Opa bouwt een doolhof en de kleurplaat Regendag (beide meteen te spelen), het spelletje Doolhof van de eekhoorn (sleep de eekhoorn met je vinger door het doolhof naar zijn boom en pak onderweg nootjes; 3 niveaus, op moeilijk moet je alle nootjes hebben), een heggendoolhof in De wereld met een gouden rand en een slot tot het gekocht is, en in Springland de baas van Pepernotenland: de Pepernotenbaas (een reuzenpepernoot die na drie hups, of twee bij Vanzelf lopen, verslagen is). Daarmee is Pepernotenland vol; de volgende nacht begint een nieuwe wereld. Het spelletje en de zes stukken zijn nog niet vrijgegeven: dat doen jullie in Kinderen → Winkelaanbod.',
+    verhaal: 'Opa bouwt een doolhof (Grote ogen)',
+    spel: { naam: 'Doolhof van de eekhoorn', prijs: 20 },
+    stukken: ['Figuurtje: Regenhoedje (15), Met paddenstoel (20), Zaklamp (15)', 'Mijn huis: Dekentent (30), Regenton (20), Windwijzer (20)'],
+  },
+  {
     versie: '0.72',
     datum: '2026-10-29',
     titel: 'Lopen uit Trackd ontvangen',

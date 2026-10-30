@@ -181,11 +181,22 @@ export default function SpringKaart({ figuur, lezer, af, best, alles, plek, mete
               <ellipse cy="0" rx="70" ry="56" fill="transparent" />
               <g transform="scale(1.15)"><LevelLand stijl={p.level.stijl} /></g>
               {p.level.baas && (
-                // De baas van de wereld: een grote pompoen op het eilandje.
+                // De baas van de wereld: een grote pompoen of pepernoot op het eilandje.
                 <g transform="translate(0 -26)" className="k-dobber">
-                  <ellipse cx="-14" cy="0" rx="17" ry="20" fill="#F08A24" /><ellipse cx="14" cy="0" rx="17" ry="20" fill="#F08A24" />
-                  <ellipse cx="0" cy="0" rx="15" ry="21" fill="#F6A33B" />
-                  <rect x="-3" y="-30" width="6" height="12" rx="3" fill="#5E8C3A" />
+                  {p.level.baas.soort === 'pepernoot' ? (
+                    <>
+                      <ellipse cx="-14" cy="0" rx="17" ry="20" fill="#A8693A" /><ellipse cx="14" cy="0" rx="17" ry="20" fill="#8A5A33" />
+                      <ellipse cx="0" cy="0" rx="15" ry="21" fill="#C08246" />
+                      <path d="M-10-22l10-18l10 18z" fill="#D8452B" /><rect x="-1.5" y="-36" width="3" height="10" fill="#F2B33D" />
+                      <path d="M-24 8h10M14 8h10M-6-14h12" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" opacity=".85" />
+                    </>
+                  ) : (
+                    <>
+                      <ellipse cx="-14" cy="0" rx="17" ry="20" fill="#F08A24" /><ellipse cx="14" cy="0" rx="17" ry="20" fill="#F08A24" />
+                      <ellipse cx="0" cy="0" rx="15" ry="21" fill="#F6A33B" />
+                      <rect x="-3" y="-30" width="6" height="12" rx="3" fill="#5E8C3A" />
+                    </>
+                  )}
                   <path d="M-12-6l7 3M12-6l-7 3" stroke="#6B3A12" strokeWidth="3" strokeLinecap="round" />
                   <circle cx="-8" cy="-1" r="3" fill="#6B3A12" /><circle cx="8" cy="-1" r="3" fill="#6B3A12" />
                   <path d="M-8 9q8 6 16 0" fill="none" stroke="#6B3A12" strokeWidth="3" strokeLinecap="round" />

@@ -1,0 +1,98 @@
+{
+  "nr": 39,
+  "titel": "Opa bouwt een doolhof",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Herfstvakantie, samen spelen en helpen",
+  "bladzijden": [
+    {
+      "tekst": "Het is herfstvakantie, maar het regent al de hele dag. Daan en Noor staan bij het raam en kijken naar de druppels. \"Wat nu?\" zucht Noor. Buiten spelen kan niet. Daan houdt zijn knuffeleekhoorn stevig vast. Zelfs de eekhoorn kijkt een beetje verdrietig.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "daan",
+          "noor",
+          "regen"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan komt Opa de kamer in met een grote stapel dekens en kussens. \"Weten jullie wat we gaan doen?\" vraagt hij. \"We bouwen een doolhof!\" Daan en Noor springen op. Een doolhof in de living, dat hebben ze nog nooit gedaan.",
+      "prent": {
+        "decor": "grijs",
+        "figuren": [
+          "daan",
+          "noor",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "Opa legt de kussens in lange rijen op de grond. Daan sleept de dekens aan. Noor schuift de stoelen opzij. Langzaam ontstaan er gangetjes, bochten en een smal paadje. Aan het einde zet Opa een grote doos neer.",
+      "prent": {
+        "decor": "grijs",
+        "figuren": [
+          "opa",
+          "daan",
+          "noor",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor zet de eekhoorn aan het begin. \"Hij heeft honger,\" zegt ze. \"Zijn nootjes liggen verstopt in het doolhof.\" Ze legt drie nootjes langs de weg. Eén bij de eerste bocht, één in het smalle paadje en één vlak voor de doos.",
+      "prent": {
+        "decor": "grijs",
+        "figuren": [
+          "noor",
+          "eekhoorn",
+          "noot"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan neemt de eekhoorn bij zijn pootje en loopt door het doolhof. Rechtdoor, links, rechts. Bij de eerste bocht botst de eekhoorn tegen een kussen. \"Hier kan je niet door,\" lacht Daan. \"Dan gaan we een andere kant op.\"",
+      "prent": {
+        "decor": "grijs",
+        "figuren": [
+          "daan",
+          "eekhoorn"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor wil ook eens proberen. Ze loopt een gangetje in, maar dat is een doodlopend stukje. Opa lacht vriendelijk. \"Soms moet je een eindje teruglopen,\" zegt hij. \"Dan vind je vanzelf de goede weg.\" Noor kijkt rond en ziet een open plekje.",
+      "prent": {
+        "decor": "grijs",
+        "figuren": [
+          "daan",
+          "noor",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "Eindelijk komt de eekhoorn bij de grote doos. Onderweg hebben ze alle drie de nootjes opgeraapt. In de doos zit een warme, zachte deken. \"Voor de eekhoorn om in te slapen,\" zegt Opa. Daan en Noor juichen.",
+      "prent": {
+        "decor": "grijs",
+        "figuren": [
+          "eekhoorn",
+          "noot",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "De regen tikt nog altijd tegen het raam, maar nu horen ze het bijna niet meer. Ze drinken warme chocomelk onder de dekens, met de eekhoorn tussen hen in. \"Een regendag kan ook heel fijn zijn,\" zegt Daan. En Opa knikt tevreden.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "daan",
+          "noor",
+          "opa",
+          "regen"
+        ]
+      }
+    }
+  ]
+}

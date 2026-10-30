@@ -62,7 +62,7 @@ Van opzij raken kost nog altijd een hartje. De baas heeft zijn eigen regels (zie
   zelfs op blijven kaatsen) en rolt daarna iets sneller. 3 hups (`BAAS_NODIG`: 2 bij Vanzelf lopen) en hij is
   verslagen. Van opzij raken kost een hartje en de baas draait om. De bolletjes naast de hartjes tellen af.
 - Geen schrik: de baas is boos-lief getekend, er is geen geweld, hij wordt gewoon duizelig en "poef" weg.
-- De eerste baas is de **pompoenbaas** (Zonnevallei, stijl bos). Een nieuwe baas = een nieuw `soort`: tekening in
+- De eerste baas is de **pompoenbaas** (Zonnevallei, stijl bos). De tweede is de **pepernotenbaas** (Pepernotenland, stijl weide, `soort: 'pepernoot'`: drie bruine koekjes met glazuurstreepjes en een rood mijtertje). Een nieuwe baas = een nieuw `soort`: tekening in
   `tekenBaas` (`springenVeld.ts`) en op het eilandje van de kaart (`SpringKaart.tsx`).
 - Robotje: `springen.test.ts` laat het robotje ook de baas verslaan (hij hupt als de baas aan komt rollen).
 

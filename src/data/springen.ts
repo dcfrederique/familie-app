@@ -34,7 +34,7 @@ export interface SpringLevelInfo {
   beestje: 'slak' | 'egel' | 'vogel'
   fruit: 'appel' | 'aardbei' | 'kers'
   /** Een baas op het einde van de wereld (het laatste level): de kaart is dan een kleine arena met B. */
-  baas?: { soort: 'pompoen'; naam: string }
+  baas?: { soort: 'pompoen' | 'pepernoot'; naam: string }
   /** Hoe snel de beestjes wandelen, 1 = gewoon. Een pittig level mag er een tikje sneller zijn (tot 1.6). */
   snelheid?: number
   kaart: readonly string[]
@@ -237,6 +237,24 @@ export const springLevelLijst: SpringLevelInfo[] = [
       '  P   o o     e           C  e o     ==   ==   ==       o o o ^       C          e   o o  e    o              ####    o o     H   ',
       '######################  ##########                  ######################    ######################  ############################',
       '######################~~##########~~~~~~~~~~~~~~~~~~######################~~~~######################~~############################',
+    ],
+  },
+  {
+    id: 'pepernotenbaas', wereld: 'pepernotenland', stijl: 'weide',
+    naam: 'De pepernotenbaas', beestje: 'slak', fruit: 'kers',
+    baas: { soort: 'pepernoot', naam: 'Pepernotenbaas' },
+    kaart: [
+      '                                                                  ',
+      '                                                                  ',
+      '                                                                  ',
+      '                                                                  ',
+      '                  ***                                  ***        ',
+      '                                              *****               ',
+      '        **             ****                                       ',
+      '                       ====                                       ',
+      '  P   o o o       e                 o C o         B           H   ',
+      '############################  ######  ############################',
+      '############################~~######~~############################',
     ],
   },
 ]

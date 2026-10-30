@@ -92,6 +92,7 @@ export const categorieen: CategorieInfo[] = [
       { id: 'kerstmuts', naam: 'Kerstmuts', prijs: 20, prenten: true },
       { id: 'oorwarmers', naam: 'Oorwarmers', prijs: 15, prenten: true },
       { id: 'piratenhoed', naam: 'Piratenhoed', prijs: 20, prenten: true },
+      { id: 'regenhoed', naam: 'Regenhoedje', prijs: 15, prenten: true },
     ] },
   { id: 'shirt', naam: 'Shirt', uitsnede: '24 100 152 128', prenten: true, kleur: { veld: 'shirtKleur', palet: kledingKleuren },
     icoon: 'M8 4l-5 3l2 4l3-1v10h8V10l3 1l2-4l-5-3a4 4 0 0 1-8 0z',
@@ -108,6 +109,7 @@ export const categorieen: CategorieInfo[] = [
       { id: 'kerstboom', naam: 'Met kerstboompje', prijs: 20, prenten: true },
       { id: 'sneeuwvlok', naam: 'Met sneeuwvlok', prijs: 20, prenten: true },
       { id: 'vleermuis', naam: 'Met vleermuis', prijs: 20, prenten: true },
+      { id: 'paddenstoel', naam: 'Met paddenstoel', prijs: 20, prenten: true },
     ] },
   { id: 'broek', naam: 'Broek', uitsnede: '30 186 140 104', prenten: true, kleur: { veld: 'broekKleur', palet: kledingKleuren },
     icoon: 'M7 3h10l1 18h-4l-2-11l-2 11H6z',
@@ -135,6 +137,7 @@ export const categorieen: CategorieInfo[] = [
       { id: 'kerstbal', naam: 'Kerstbal', prijs: 15, prenten: true },
       { id: 'sneeuwbal', naam: 'Sneeuwbal', prijs: 15, prenten: true },
       { id: 'bezem', naam: 'Heksenbezem', prijs: 20, prenten: true },
+      { id: 'zaklamp', naam: 'Zaklamp', prijs: 15, prenten: true },
     ] },
 ]
 

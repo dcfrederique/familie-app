@@ -193,6 +193,24 @@ export function startVerkleedNiveau(kind: Gebruiker, kinderen: Gebruiker[]): Ver
   return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
 }
 
+export type DoolhofNiveau = 'makkelijk' | 'middel' | 'moeilijk'
+
+/** Grootte van het doolhof, hoeveel muren er extra openen (tweede route), hoeveel nootjes er liggen en of de boom pas opengaat met alle nootjes. */
+export const doolhofNiveaus: Record<DoolhofNiveau, { label: string; breed: number; hoog: number; open: number; noten: number; alleNoten: boolean }> = {
+  makkelijk: { label: 'Makkelijk', breed: 5, hoog: 4, open: 4, noten: 2, alleNoten: false },
+  middel: { label: 'Middel', breed: 7, hoog: 5, open: 3, noten: 3, alleNoten: false },
+  moeilijk: { label: 'Moeilijk', breed: 9, hoog: 6, open: 2, noten: 4, alleNoten: true },
+}
+
+export const doolhofRondes = 4
+
+/** Wie niet leest begint makkelijk, de oudste lezer moeilijk, andere lezers middel. */
+export function startDoolhofNiveau(kind: Gebruiker, kinderen: Gebruiker[]): DoolhofNiveau {
+  if (!kind.kan_lezen) return 'makkelijk'
+  const oudsteLezer = kinderen.filter((k) => k.kan_lezen).sort((a, b) => a.volgorde - b.volgorde)[0]
+  return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
+}
+
 export type LichtjesNiveau = 'makkelijk' | 'middel' | 'moeilijk'
 export type LichtKleur = 'rood' | 'geel' | 'blauw' | 'groen'
 export const lichtKleuren: readonly LichtKleur[] = ['rood', 'geel', 'blauw', 'groen']
@@ -241,7 +259,7 @@ export function startNiveaus(kind: Gebruiker, kinderen: Gebruiker[]): { memory: 
   return oudsteLezer?.id === kind.id ? { memory: 'groot', rekenen: 'tot100' } : { memory: 'middel', rekenen: 'tot20' }
 }
 
-export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'springen'
+export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'springen'
 
 export interface SpelInfo {
   sleutel: SpelSleutel
@@ -281,6 +299,8 @@ export const spelMenu: SpelInfo[] = [
     icoon: 'M3 12s3.5-6 9-6s9 6 9 6s-3.5 6-9 6s-9-6-9-6zM12 9.5a2.5 2.5 0 1 0 0 5a2.5 2.5 0 0 0 0-5z' },
   { sleutel: 'verkleed', naam: 'Verkleedkist', uitleg: 'Kleed het poppetje aan zoals op het kaartje', prijs: 20,
     icoon: 'M12 3l7 9H5zM6 12l-2 8h16l-2-8M9 16h6' },
+  { sleutel: 'doolhof', naam: 'Doolhof van de eekhoorn', uitleg: 'Leid de eekhoorn door het doolhof naar zijn boom', prijs: 20,
+    icoon: 'M4 4h16v16H4zM4 9h8M12 9v6M8 15h8M16 4v6M8 4v2' },
   { sleutel: 'lichtjes', naam: 'Lichtjesboom', uitleg: 'Doe de lichtjes na in dezelfde volgorde', prijs: 20,
     icoon: 'M12 3l6 8h-3l5 7H4l5-7H6zM12 18v3M8 8.5h.01M15 13h.01M10 15h.01' },
   { sleutel: 'schaduw', naam: 'Wie is de schaduw?', uitleg: 'Zoek de schaduw die erbij hoort', prijs: 20,

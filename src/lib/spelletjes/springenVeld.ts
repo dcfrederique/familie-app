@@ -442,7 +442,7 @@ export class SpringVeld {
     ctx.fillRect(x - T * 0.55, y - T * 0.55, T * 1.3, T * 0.14)
   }
 
-  /** De pompoenbaas: groot, boos-lief, duizelig met sterretjes na een hup, en een zwaaiende steel. */
+  /** De baas (pompoen of pepernoot): groot, boos-lief, duizelig met sterretjes na een hup, en een zwaaiende steel. */
   private tekenBaas(b: Baas, T: number) {
     const { ctx } = this
     const w = BAAS_BREED * T, h = BAAS_HOOG * T
@@ -454,12 +454,26 @@ export class SpringVeld {
     ctx.scale(1, plat)
     ctx.fillStyle = 'rgba(0,0,0,.15)'
     ctx.beginPath(); ctx.ellipse(0, 0, w * 0.5, T * 0.1, 0, 0, Math.PI * 2); ctx.fill()
-    for (const [dx, kleur] of [[-0.26, '#EE8222'], [0.26, '#EE8222'], [0, '#F6A33B']] as const) {
+    const pepernoot = springLevels[this.spel.level].baas?.soort === 'pepernoot'
+    // Pompoen: drie oranje bollen met een groene steel. Pepernoot: drie bruine koekjes met glazuurstreepjes en een rood mijtertje.
+    for (const [dx, kleur] of (pepernoot ? [[-0.26, '#A8693A'], [0.26, '#8A5A33'], [0, '#C08246']] : [[-0.26, '#EE8222'], [0.26, '#EE8222'], [0, '#F6A33B']]) as [number, string][]) {
       ctx.fillStyle = kleur
       ctx.beginPath(); ctx.ellipse(dx * w, -h * 0.48, w * (dx ? 0.3 : 0.27), h * 0.48, 0, 0, Math.PI * 2); ctx.fill()
     }
-    ctx.fillStyle = '#5E8C3A'
-    ctx.beginPath(); ctx.roundRect(-w * 0.06, -h * 1.12, w * 0.12, h * 0.2, w * 0.05); ctx.fill()
+    if (pepernoot) {
+      ctx.strokeStyle = 'rgba(255,255,255,.85)'; ctx.lineWidth = T * 0.07; ctx.lineCap = 'round'
+      for (const [x0, y0] of [[-0.34, 0.3], [-0.26, 0.5], [0.3, 0.3], [0.2, 0.5], [0.04, 0.12]] as const) {
+        ctx.beginPath(); ctx.moveTo(x0 * w - T * 0.14, -h * y0); ctx.lineTo(x0 * w + T * 0.14, -h * y0); ctx.stroke()
+      }
+      ctx.fillStyle = '#D8452B'
+      ctx.beginPath(); ctx.moveTo(-w * 0.14, -h * 0.98); ctx.lineTo(0, -h * 1.3); ctx.lineTo(w * 0.14, -h * 0.98); ctx.closePath(); ctx.fill()
+      ctx.fillStyle = '#F2B33D'
+      ctx.fillRect(-w * 0.015, -h * 1.22, w * 0.03, h * 0.16); ctx.fillRect(-w * 0.06, -h * 1.17, w * 0.12, h * 0.03)
+    } else {
+      ctx.fillStyle = '#5E8C3A'
+      ctx.beginPath(); ctx.roundRect(-w * 0.06, -h * 1.12, w * 0.12, h * 0.2, w * 0.05); ctx.fill()
+    }
+    ctx.lineWidth = T * 0.12
     // Gezicht: wenkbrauwen schuin (stoer), maar grote lieve ogen; duizelig = kruisjes en een scheve mond.
     ctx.strokeStyle = '#6B3A12'; ctx.lineWidth = T * 0.12; ctx.lineCap = 'round'
     if (b.duizel > 0) {

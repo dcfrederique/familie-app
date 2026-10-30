@@ -37,6 +37,8 @@ export const zin = {
   verkleedUitleg: 'Kijk naar het kaartje. Kleed het poppetje aan zoals daar. Tik daarna op het vinkje.',
   verkleedKlaar: 'Wat een mooi feest! Alle kostuums zijn af.',
   verkleedFout: 'Bijna! Kijk nog eens naar het kaartje.',
+  doolhofUitleg: 'Sleep de eekhoorn met je vinger door het doolhof. Breng hem naar zijn boom!',
+  doolhofKlaar: 'Wat knap! De eekhoorn is bij zijn boom.',
   lichtjesUitleg: 'Kijk naar de lichtjes. Doe ze daarna na, in dezelfde volgorde.',
   lichtjesKlaar: 'Hoera! De hele boom straalt.',
   lichtjesNa: 'Nu jij!',

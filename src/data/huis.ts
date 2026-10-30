@@ -77,13 +77,14 @@ export const huisCategorieen: HuisCategorieInfo[] = [
       s('pakjes', 'Stapel pakjes', 20), s('wortels', 'Wortelbed', 15),
       s('hobbelpaard', 'Hobbelpaard', 25), s('peperkoekhuisje', 'Peperkoekhuisje', 30), s('kerstboom', 'Kerstboom', 30),
       s('rendier', 'Rendier', 35), s('sneeuwman', 'Sneeuwman', 25), s('ijsbaantje', 'IJsbaantje', 35),
-      s('spookje', 'Lief spookje', 25), s('verkleedkist', 'Verkleedkist', 30)] },
+      s('spookje', 'Lief spookje', 25), s('verkleedkist', 'Verkleedkist', 30),
+      s('speeltent', 'Dekentent', 30), s('regenton', 'Regenton', 20)] },
   { id: 'huisextra', veld: 'extra', naam: 'Extra', prenten: true, meer: 6,
     icoon: 'M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M18 6l-2.5 2.5M8.5 15.5L6 18',
     stukken: [s('schoorsteen', 'Schoorsteen', 0, true), s('bloembakken', 'Bloembakken', 0, true), s('hek', 'Hekje', 10, true),
       s('brievenbus', 'Brievenbus', 10, true), s('vlag', 'Vlag', 20, true), s('lichtjes', 'Lichtjes', 30, true), s('vleermuisjes', 'Papieren vleermuisjes', 20), s('lampionnen', 'Lampionnenslinger', 25), s('herfstkrans', 'Herfstkrans', 20), s('schoentje', 'Schoentje voor de deur', 15),
       s('sterrenslinger', 'Sterrenslinger', 20), s('kerstster', 'Kerstster op de deur', 20), s('ijspegels', 'IJspegels', 20),
-      s('feestvlaggetjes', 'Feestvlaggetjes', 15)] },
+      s('feestvlaggetjes', 'Feestvlaggetjes', 15), s('windwijzer', 'Windwijzer', 20)] },
 ]
 
 export const huisCategorie = (id: HuisCategorie) => huisCategorieen.find((c) => c.id === id)!

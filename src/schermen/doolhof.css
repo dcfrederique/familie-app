@@ -1,0 +1,44 @@
+/* Doolhof van de eekhoorn: de tekening schaalt mee met de hoogte, zodat er niets scrolt; slepen met één vinger. */
+.doolhof { display: flex; flex-direction: column; align-items: center; gap: clamp(8px, 1.6dvh, 16px); width: 100%; }
+.doolhof-balk { display: flex; align-items: center; gap: 24px; }
+.doolhof-teller { display: flex; gap: 6px; }
+.doolhof-teller span { width: 14px; height: 14px; border-radius: 50%; background: var(--line); }
+.doolhof-teller .af { background: var(--gold); }
+.doolhof-teller .nu { background: var(--kid); }
+.doolhof-noten { display: flex; gap: 6px; min-height: 32px; }
+.doolhof-noten svg { width: 28px; height: 30px; opacity: 0.35; transition: opacity 0.2s, transform 0.2s; }
+.doolhof-noten svg.pak { opacity: 1; transform: scale(1.15); }
+.doolhof-noten.schud { animation: doolhof-schud 0.4s ease-out; }
+.doolhof-veld {
+  display: block; height: clamp(200px, min(56dvh, calc(100dvh - 300px)), 520px); width: auto; max-width: 94%; touch-action: none; user-select: none; -webkit-user-select: none;
+  border-radius: 14px; cursor: pointer;
+}
+.doolhof-grond { fill: #F1E2B8; stroke: #C9B27A; stroke-width: 3; }
+.doolhof-haag line, .doolhof-haag rect { stroke: #3F8F4A; stroke-width: 9; stroke-linecap: round; }
+.doolhof-haag { pointer-events: none; }
+.doolhof-eek { transition: transform 0.14s ease-out; pointer-events: none; }
+.doolhof-eek.danst { animation: doolhof-dans 0.5s ease-in-out 3; }
+.doolhof-boom, .doolhof-noot { pointer-events: none; }
+.doolhof-boom.open { animation: doolhof-wip 1.4s ease-in-out infinite; }
+.doolhof-spoor { fill: var(--gold); opacity: 0.9; animation: doolhof-puls 0.9s ease-in-out infinite; pointer-events: none; }
+.doolhof-eind { display: grid; justify-items: center; gap: 16px; }
+.doolhof-feest { width: clamp(180px, 40dvh, 360px); height: auto; }
+@keyframes doolhof-schud { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-6px); } 75% { transform: translateX(6px); } }
+@keyframes doolhof-dans { 0%, 100% { translate: 0 0; } 50% { translate: 0 -10px; } }
+@keyframes doolhof-wip { 0%, 100% { opacity: 1; } 50% { opacity: 0.75; } }
+@keyframes doolhof-puls { 0%, 100% { r: 7; } 50% { r: 11; } }
+@media (prefers-reduced-motion: reduce) {
+  .doolhof-eek { transition: none; }
+  .doolhof-eek.danst, .doolhof-boom.open, .doolhof-spoor, .doolhof-noten.schud { animation: none; }
+}
+/* Liggende gsm: de teller en de nootjes staan naast het doolhof in plaats van erboven, zodat het doolhof zoveel mogelijk hoogte krijgt. */
+@media (max-height: 500px) and (orientation: landscape) {
+  .doolhof { display: grid; grid-template-columns: auto auto; grid-template-areas: "chips chips" "veld balk"; justify-content: center; align-items: center; column-gap: 16px; row-gap: 6px; }
+  .doolhof > .chips { grid-area: chips; justify-self: center; }
+  .doolhof > .doolhof-balk { grid-area: balk; flex-direction: column; gap: 10px; }
+  .doolhof > .doolhof-veld { grid-area: veld; height: 52dvh; max-width: none; }
+  .doolhof > .doolhof-eind { grid-column: 1 / -1; }
+  .doolhof-noten { flex-wrap: wrap; justify-content: center; max-width: 60px; }
+  .doolhof-teller { flex-wrap: wrap; justify-content: center; max-width: 50px; }
+  .doolhof-noten svg { width: 22px; height: 24px; }
+}
