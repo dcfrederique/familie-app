@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.75',
+    datum: '2026-10-30',
+    titel: 'Lopen verhuisd naar Trackd',
+    tekst: 'Lopen, Analyse en Loopschema onder Gezondheid zijn uit de familie-app gehaald. Trackd houdt je lopen voortaan lokaal op je toestel bij. De lopen die in de familie-app stonden zijn verwijderd.',
+  },
+  {
     versie: '0.74',
     datum: '2026-10-30',
     titel: 'Meer schermen passen op een liggende gsm',
@@ -32,12 +38,6 @@ export const nieuwtjes: Nieuwtje[] = [
     verhaal: 'Opa bouwt een doolhof (Grote ogen)',
     spel: { naam: 'Doolhof van de eekhoorn', prijs: 20 },
     stukken: ['Figuurtje: Regenhoedje (15), Met paddenstoel (20), Zaklamp (15)', 'Mijn huis: Dekentent (30), Regenton (20), Windwijzer (20)'],
-  },
-  {
-    versie: '0.75',
-    datum: '2026-10-30',
-    titel: 'Lopen verhuisd naar Trackd',
-    tekst: 'Lopen, Analyse en Loopschema onder Gezondheid zijn uit de familie-app gehaald. Trackd houdt je lopen voortaan lokaal op je toestel bij. De lopen die in de familie-app stonden zijn verwijderd.',
   },
   {
     versie: '0.72',
