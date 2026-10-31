@@ -116,6 +116,10 @@ export const gebouwTekening: Record<string, string> = {
 
 /** Dingen op straat die (nog) niet in de huiscatalogus staan; viewBox -100 -220 200 240. */
 export const straatTekening: Record<string, string | ((kleur: string) => string)> = {
+  // plas: een stuk meer (wordt 3 keer vergroot getekend en overlapt zijn buren); alleen water, zonder rand
+  plas: `<ellipse cx="0" cy="-75" rx="100" ry="75" fill="#4FB3E8"/><ellipse cx="-8" cy="-84" rx="78" ry="54" fill="#5DC0F2"/><path d="M-60 -92q14-8 28 0M10 -70q14-8 28 0M-30 -52q12-7 24 0M30 -100q10-6 20 0" stroke="#A6DEF8" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="42" cy="-60" rx="13" ry="8" fill="#3F9E58"/><ellipse cx="-50" cy="-48" rx="11" ry="7" fill="#3F9E58"/><circle cx="44" cy="-63" r="4" fill="#FF8FB8"/>`,
+  // riet: drie stengels met een bruine pluim
+  riet: `<path d="M-14 0Q-18 -50 -22 -96M0 0Q0 -60 2 -120M14 0Q18 -46 24 -88" stroke="#5E8A3A" stroke-width="7" fill="none" stroke-linecap="round"/><rect x="-27" y="-112" width="10" height="28" rx="5" fill="#8A5A33"/><rect x="-3" y="-140" width="10" height="32" rx="5" fill="#8A5A33"/><rect x="20" y="-104" width="10" height="26" rx="5" fill="#8A5A33"/>`,
   // hooibaal: ronde baal met touwtjes
   hooibaal: `<ellipse cx="0" cy="-34" rx="52" ry="36" fill="#E3B84A" stroke="#B88A24" stroke-width="3"/><ellipse cx="-30" cy="-34" rx="14" ry="30" fill="#F1D071" stroke="#B88A24" stroke-width="3"/><path d="M-12 -62V-8M10 -63V-6M30 -58V-12" stroke="#B88A24" stroke-width="3" stroke-linecap="round"/>`,
   // hek: een stuk houten weidehek van twee palen en twee latten (breedte 96 eenheden = twee tegels)

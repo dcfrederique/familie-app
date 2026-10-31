@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.79',
+    datum: '2026-10-31',
+    titel: 'Het Meer is gevuld',
+    tekst: 'Het Meer (ten oosten van het dorp) is niet meer leeg: een groot meer met riet langs de oever, een bank en een paar bomen, met de wegen naar het dorp, het platteland en het stadje vrij. Ouders kunnen alles verplaatsen of weghalen in Wij → Kaart bewerken; Riet staat nu ook bij Decor. Elke nacht komt er een stuk bij in een volgend gebied.',
+  },
+  {
     versie: '0.78',
     datum: '2026-10-31',
     titel: 'Winterslaap: Slaap lekker, Bram, de egel in zijn bedje en een nieuwe wereld',

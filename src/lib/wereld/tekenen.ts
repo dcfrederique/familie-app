@@ -40,7 +40,7 @@ export const HUB_MAAT = 76
 
 /** Waar de armen in de tekening van het figuurtje zitten (tekeneenheden): lijf = alles behalve de armen. */
 
-const GROOT: Record<string, number> = { boom: 1.25, glijbaan: 1.25 }
+const GROOT: Record<string, number> = { boom: 1.25, glijbaan: 1.25, plas: 3 }
 const ITEM = 90
 
 const wasmaker = () => document.createElement('canvas')
@@ -481,11 +481,13 @@ export class Tekenaar {
     }
     const { im, s } = this.ding(d)
     g.save()
-    g.fillStyle = 'rgba(0,0,0,.14)'
-    g.beginPath()
-    if (d.id === 'boom') g.ellipse(d.x + 10, d.y + 2, 40, 13, 0, 0, 7) // de kruin werpt een brede schaduw
-    else g.ellipse(d.x, d.y, Math.max(10, d.voet[0] * 0.52), Math.max(4, d.voet[1] * 0.32), 0, 0, 7)
-    g.fill()
+    if (d.id !== 'plas') { // water werpt geen schaduw
+      g.fillStyle = 'rgba(0,0,0,.14)'
+      g.beginPath()
+      if (d.id === 'boom') g.ellipse(d.x + 10, d.y + 2, 40, 13, 0, 0, 7) // de kruin werpt een brede schaduw
+      else g.ellipse(d.x, d.y, Math.max(10, d.voet[0] * 0.52), Math.max(4, d.voet[1] * 0.32), 0, 0, 7)
+      g.fill()
+    }
     if (this.klaar(im)) g.drawImage(im, d.x - s / 2, d.y - s * 0.9, s, s)
     g.restore()
   }
