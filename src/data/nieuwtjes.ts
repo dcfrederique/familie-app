@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.81',
+    datum: '2026-10-31',
+    titel: 'Weekmenu met ontbijt, middag en vieruurtje, eigen recepten en deelrecepten',
+    tekst: 'Onder Wij → Weekmenu zet je bij "Momenten en standaardmaaltijden" ontbijt, middag en vieruurtje aan (de avond blijft de warme maaltijd die de kinderen zien) en stel je een standaardmaaltijd in, bv. elke ochtend boterhammen (een vaste weekdag wint van elke dag). Met het boekje naast een maaltijd kies je een eigen recept: wat je met de voorraad nu kunt koken staat bovenaan, bij de andere zie je wat er ontbreekt. Afboeken blijft met een tik onder Voorraad, nu per moment (het vieruurtje rekent met eigen aantal eters, standaard 4). Recepten kunnen deelrecepten bevatten, zoals bolognaisesaus uit de diepvries: is er nog een portie, dan gaat die af; is de saus op, dan maakt de app ze vers (de ingrediënten gaan af) of zet ze op de lijst. Zelf een deelrecept koken (Recepten → Nu gekookt) zet de porties in de voorraad. Het tekort voor de week houdt met alles rekening.',
+  },
+  {
     versie: '0.80',
     datum: '2026-10-31',
     titel: 'Moeilijke spelletjes passen weer op het scherm, en meer op de gsm',

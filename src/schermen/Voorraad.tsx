@@ -6,8 +6,8 @@ import { dagVan } from '../lib/datum.ts'
 import { useGegevens } from '../lib/gegevens.ts'
 import { useSessie } from '../lib/sessie.tsx'
 import {
-  aantalTekst, EENHEDEN, hoeveelheidTekst, houdbaarheid, isBijnaOp, leesHoeveelheid, nogAfTeBoeken, opLijst, PLAATSEN, stapVoor,
-  tekortVoorWeek, verbruik, zoekt,
+  aantalTekst, EENHEDEN, etersVoor, hoeveelheidTekst, houdbaarheid, isBijnaOp, leesHoeveelheid, metStandaard, momentNaam, nogAfTeBoeken, opLijst, PLAATSEN, stapVoor,
+  tekortVoorWeek, verbruikMetDelen, zoekt,
 } from '../lib/voorraad.ts'
 import { useBoodschappen } from './Boodschappen.tsx'
 import OuderKader from './OuderKader.tsx'
@@ -29,8 +29,9 @@ export function useVoorraad() {
   const van = dagVan(new Date(nu.getTime() - 7 * 86400_000))
   const tot = dagVan(new Date(nu.getTime() + 7 * 86400_000))
   const g = useGegevens(bron && basis.opGsm ? async () => {
-    const [voorraad, menu] = await Promise.all([bron.voorraad(), bron.weekmenu(van, tot)])
-    return { voorraad, menu }
+    const [voorraad, menu, inst] = await Promise.all([bron.voorraad(), bron.weekmenu(van, tot), bron.weekmenuInstellingen()])
+    // De standaardmaaltijden (bv. elke ochtend boterhammen) tellen mee als er niets anders staat, maar enkel van gisteren af (geen week oude vragen).
+    return { voorraad, menu: metStandaard(menu, inst.standaard, inst.momenten, dagVan(new Date(nu.getTime() - 86400_000)), tot), inst }
   } : null, [bron, basis.opGsm, van])
   return { ...g, basis, opGsm: basis.opGsm }
 }
@@ -68,6 +69,7 @@ export default function Voorraad() {
   const artikelen = data?.voorraad.artikelen ?? []
   const recepten = data?.voorraad.recepten ?? []
   const eters = data?.voorraad.eters ?? 6
+  const etersVieruurtje = data?.voorraad.etersVieruurtje ?? 4
   const gekookt = data?.voorraad.gekookt ?? []
   const menu = data?.menu ?? []
   const vandaag = dagVan(new Date())
@@ -88,7 +90,7 @@ export default function Voorraad() {
   }
 
   const vragen = nogAfTeBoeken(menu, recepten, gekookt, vandaag)
-  const tekort = tekortVoorWeek(menu, recepten, artikelen, gekookt, eters, vandaag).filter((t) => !opLijst(t.artikel.naam, lijst))
+  const tekort = tekortVoorWeek(menu, recepten, artikelen, gekookt, eters, vandaag, etersVieruurtje).filter((t) => !opLijst(t.artikel.naam, lijst))
   const bijnaOp = artikelen.filter((a) => isBijnaOp(a) && !opLijst(a.naam, lijst))
   const verlopen = artikelen.filter((a) => houdbaarheid(a, vandaag))
   const gezien = artikelen.filter((a) => zoekt(a, zoek))
@@ -102,19 +104,22 @@ export default function Voorraad() {
       {fout && <p className="fout" role="alert">{zonderVoorraadMigratie(fout)}</p>}
       {melding && <p className="fout" role="alert">{melding}</p>}
 
-      {vragen.map((v) => (
-        <section key={v.dag} className="kaart kaart-breed voorraad-kook" aria-label={`Gekookt op ${dagTekst(v.dag)}?`}>
-          <h2>{v.dag === vandaag ? 'Vandaag' : dagTekst(v.dag)}: {v.gerecht}</h2>
-          <p className="tip">Gekookt? Dan gaat er van de voorraad af (voor {eters} eters): {verbruik(v.recept, eters).map((i) => {
-            const a = naam(i.artikel_id)
-            return a ? `${aantalTekst(i.hoeveelheid)} ${a.eenheid} ${a.naam.toLocaleLowerCase('nl-BE')}` : ''
-          }).filter(Boolean).join(', ')}.</p>
-          <div className="knoppen">
-            <button type="button" className="knop knop-primair" onClick={() => doe(async () => { await bron!.voorraadGekookt(v.dag, false) })}>Gekookt, boek af</button>
-            <button type="button" className="knop knop-licht" onClick={() => doe(async () => { await bron!.voorraadGekookt(v.dag, true) })}>Niet gekookt</button>
-          </div>
-        </section>
-      ))}
+      {vragen.map((v) => {
+        const mensen = etersVoor(v.moment, eters, etersVieruurtje)
+        return (
+          <section key={`${v.dag}:${v.moment}`} className="kaart kaart-breed voorraad-kook" aria-label={`Gekookt op ${dagTekst(v.dag)}, ${momentNaam(v.moment).toLowerCase()}?`}>
+            <h2>{v.dag === vandaag ? 'Vandaag' : dagTekst(v.dag)}{v.moment === 'avond' ? '' : ` · ${momentNaam(v.moment).toLowerCase()}`}: {v.gerecht}</h2>
+            <p className="tip">{v.moment === 'avond' || v.moment === 'middag' ? 'Gekookt?' : 'Gegeten?'} Dan gaat er van de voorraad af (voor {mensen} eters): {verbruikMetDelen(v.recept, mensen, recepten, artikelen).map((i) => {
+              const a = naam(i.artikel_id)
+              return a ? `${aantalTekst(i.hoeveelheid)} ${a.eenheid} ${a.naam.toLocaleLowerCase('nl-BE')}` : ''
+            }).filter(Boolean).join(', ')}.</p>
+            <div className="knoppen">
+              <button type="button" className="knop knop-primair" onClick={() => doe(async () => { await bron!.voorraadGekookt(v.dag, v.moment, false) })}>{v.moment === 'ontbijt' || v.moment === 'vieruurtje' ? 'Gegeten, boek af' : 'Gekookt, boek af'}</button>
+              <button type="button" className="knop knop-licht" onClick={() => doe(async () => { await bron!.voorraadGekookt(v.dag, v.moment, true) })}>{v.moment === 'ontbijt' || v.moment === 'vieruurtje' ? 'Niet gegeten' : 'Niet gekookt'}</button>
+            </div>
+          </section>
+        )
+      })}
 
       {(bijnaOp.length > 0 || tekort.length > 0) && (
         <section className="kaart lijst-kaart kaart-breed" aria-label="Bijna op">
@@ -193,6 +198,11 @@ export default function Voorraad() {
       <section className="kaart kaart-breed voorraad-instelling">
         <label className="veld"><span>We koken voor</span>
           <select value={eters} onChange={(e) => doe(() => bron!.voorraadEters(Number(e.target.value)))}>
+            {Array.from({ length: 12 }, (_, i) => i + 1).map((n) => <option key={n} value={n}>{n} {n === 1 ? 'persoon' : 'personen'}</option>)}
+          </select>
+        </label>
+        <label className="veld"><span>Het vieruurtje is voor</span>
+          <select value={etersVieruurtje} onChange={(e) => doe(() => bron!.voorraadEters(eters, Number(e.target.value)))}>
             {Array.from({ length: 12 }, (_, i) => i + 1).map((n) => <option key={n} value={n}>{n} {n === 1 ? 'persoon' : 'personen'}</option>)}
           </select>
         </label>

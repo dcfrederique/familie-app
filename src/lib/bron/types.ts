@@ -127,9 +127,13 @@ export interface Welkom {
 /** Antwoord van de Edge Function spraak-token: een token, of resterend 0 als de leestijd van vandaag op is. */
 export type SpraakToken = { token: string; regio: string; resterend: number } | { resterend: 0 }
 
-/** De warme maaltijd van één dag in het weekmenu (docs/weekmenu.md). */
+/** De momenten van een dag in het weekmenu; de avond is de warme maaltijd die de kinderen zien (docs/weekmenu.md). */
+export type Moment = 'ontbijt' | 'middag' | 'avond' | 'vieruurtje'
+
+/** Een maaltijd van één dag in het weekmenu (docs/weekmenu.md). */
 export interface Maaltijd {
   dag: string
+  moment: Moment
   gerecht: string
   /** Gekozen prentje; null = de app raadt het uit het gerecht. */
   prentje: string | null
@@ -238,7 +242,15 @@ export interface Recept {
   naam: string
   personen: number
   ingredienten: { artikel_id: string; hoeveelheid: number }[]
+  /** Deelrecepten die dit recept gebruikt (bv. bolognaisesaus); `porties` voor `personen` personen. */
+  delen: ReceptDeel[]
+  /** Is dit zelf een deelrecept: het voorraadartikel (bv. "Bolognaisesaus" in de diepvries) dat het maakt, en hoeveel porties één keer koken geeft. */
+  artikel_id: string | null
+  opbrengst: number
 }
+
+/** Een deelrecept in een recept: wat er gebeurt als er geen portie meer in de voorraad is: vers maken of op de lijst zetten. */
+export interface ReceptDeel { deel_id: string; porties: number; als_op: 'maken' | 'lijst' }
 
 /** Een recept bewaren; ingrediënten staan op naam, een onbekend artikel wordt aangemaakt (aantal 0). */
 export interface NieuwRecept {
@@ -246,6 +258,9 @@ export interface NieuwRecept {
   naam: string
   personen: number
   ingredienten: { naam: string; eenheid: string; hoeveelheid: number }[]
+  delen?: ReceptDeel[]
+  /** Maak er een deelrecept van: het maakt een voorraadartikel (op naam, eenheid portie) aan met `opbrengst` porties per keer koken. */
+  deelrecept?: { artikelNaam: string; plaats: string; opbrengst: number } | null
 }
 
 export interface VoorraadLogRegel {
@@ -263,9 +278,21 @@ export interface VoorraadOverzicht {
   recepten: Recept[]
   /** Voor hoeveel mensen er gekookt wordt. */
   eters: number
-  /** Weekmenu-dagen van de laatste weken die al afgeboekt of overgeslagen zijn. */
+  /** Het vieruurtje is voor minder eters (de kinderen en Maxim). */
+  etersVieruurtje: number
+  /** Weekmenu-momenten van de laatste weken die al afgeboekt of overgeslagen zijn, als 'JJJJ-MM-DD:moment'. */
   gekookt: string[]
 }
+
+/** Welke momenten het weekmenu toont en de vaste maaltijden (bv. elke ochtend boterhammen). */
+export interface WeekmenuInstellingen {
+  /** Altijd inclusief 'avond'. */
+  momenten: Moment[]
+  standaard: Standaardmaaltijd[]
+}
+
+/** weekdag: 0 = elke dag, 1 tot 7 = maandag tot zondag; een vaste weekdag wint van elke dag. */
+export interface Standaardmaaltijd { moment: Exclude<Moment, 'avond'>; weekdag: number; gerecht: string }
 
 /** Profiel van een ouder voor Gezondheid → Gewicht (docs/gewicht.md); privé. */
 export interface GezondheidProfiel {
@@ -436,9 +463,14 @@ export interface Bron {
   voorraadBijstellen(id: string, waarde: number, absoluut: boolean): Promise<void>
   receptOpslaan(recept: NieuwRecept): Promise<void>
   receptVerwijderen(id: string): Promise<void>
-  /** Een weekmenu-dag is gekookt (de ingrediënten gaan van de voorraad) of overgeslagen (er gaat niets af). Geeft het aantal afgeboekte artikels. */
-  voorraadGekookt(dag: string, overslaan: boolean): Promise<number>
-  voorraadEters(eters: number): Promise<void>
+  /** Een moment van een weekmenu-dag is gekookt (de ingrediënten gaan van de voorraad) of overgeslagen (er gaat niets af). Geeft het aantal afgeboekte artikels. */
+  voorraadGekookt(dag: string, moment: Moment, overslaan: boolean): Promise<number>
+  /** Een deelrecept is gekookt: de ingrediënten gaan af, de porties komen in de voorraad. */
+  deelreceptGekookt(receptId: string): Promise<void>
+  voorraadEters(eters: number, etersVieruurtje?: number): Promise<void>
+  /** Momenten en standaardmaaltijden; zonder migratie 20261031000200 alleen de avond. */
+  weekmenuInstellingen(): Promise<WeekmenuInstellingen>
+  weekmenuInstellingenOpslaan(i: WeekmenuInstellingen): Promise<void>
   gezondheidProfielOpslaan(profiel: GezondheidProfiel): Promise<void>
   /** Bewaart de weging van een dag; een tweede weging op dezelfde dag vervangt de eerste. */
   wegingOpslaan(dag: string, kg: number): Promise<void>

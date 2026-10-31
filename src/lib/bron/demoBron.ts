@@ -11,7 +11,8 @@ import { maakWeergave, standaardWeergave, type WereldWeergave } from '../wereld/
 import { leesOpgeslagen, leegOpgeslagen, type Opgeslagen as WereldKaart } from '../wereld/gebieden.ts'
 import { activiteitOmschrijving, activiteitSterren, blokKeuzes, limietVoor, regels as standaardRegels } from '../regels.ts'
 import type { Weging } from '../gewicht.ts'
-import type { ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, GezondheidProfiel, Inzending, LogRegel, Maaltijd, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Spelregels, Taak, Tijdverzoek, VoorraadArtikel, VoorraadLogRegel, Recept, Winkel } from './types.ts'
+import { etersVoor, kookSleutel, standaardVoor, verbruikMetDelen } from '../voorraad.ts'
+import type { WeekmenuInstellingen, ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, GezondheidProfiel, Inzending, LogRegel, Maaltijd, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Spelregels, Taak, Tijdverzoek, VoorraadArtikel, VoorraadLogRegel, Recept, Winkel } from './types.ts'
 
 const DEMO_PIN = '1234'
 const WELKOM = 'Welkom! Je eerste sterren'
@@ -43,7 +44,9 @@ interface Toestand {
   voorraad: VoorraadArtikel[]
   recepten: Recept[]
   eters: number
+  etersVieruurtje: number
   gekookt: string[]
+  weekmenuInst: WeekmenuInstellingen
   voorraadLog: VoorraadLogRegel[]
 }
 
@@ -78,18 +81,27 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
     nieuwVrij: ['pompoen', 'basket'],
     hoeraDag: {},
     // Vandaag al iets op het menu, zodat het startscherm van de kinderen het meteen toont.
-    weekmenu: [{ dag: dagVan(new Date()), gerecht: 'Spaghetti bolognese', prentje: null }],
+    weekmenu: [{ dag: dagVan(new Date()), moment: 'avond', gerecht: 'Spaghetti bolognese', prentje: null }],
     // Een kleine voorraad en één recept, zodat Voorraad en Recepten niet leeg openen.
     voorraad: ([
       ['va-1', 'Cola', 'fles', 4, 3, 6, 'Kelder', 'ca-7', 'wi-3'], ['va-2', 'Water', 'fles', 12, 6, 6, 'Kelder', 'ca-7', 'wi-1'],
       ['va-3', 'Melk', 'l', 3, 2, 6, 'Koelkast', 'ca-3', 'wi-1'], ['va-4', 'Gehakt', 'kg', 0.5, null, 1, 'Diepvries', 'ca-2', 'wi-1'],
       ['va-5', 'Pasta', 'pak', 3, 1, 1, 'Kast', 'ca-5', 'wi-1'], ['va-6', 'Tomatensaus', 'pot', 2, 1, 1, 'Kast', 'ca-5', 'wi-1'],
+      ['va-7', 'Bolognaisesaus', 'portie', 2, null, 1, 'Diepvries', 'ca-5', 'wi-1'], ['va-8', 'Brood', 'stuk', 8, 2, 1, 'Kast', 'ca-1', 'wi-1'],
     ] as [string, string, string, number, number | null, number, string, string, string][]).map(([id, naam, eenheid, aantal, minimum, aankoop_aantal, plaats, categorie_id, winkel_id]): VoorraadArtikel =>
       ({ id, naam, eenheid, aantal, minimum, aankoop_aantal, plaats, categorie_id, winkel_id, houdbaar_tot: null })),
-    recepten: [{ id: 're-1', naam: 'Spaghetti bolognese', personen: 4, ingredienten: [
-      { artikel_id: 'va-4', hoeveelheid: 0.4 }, { artikel_id: 'va-5', hoeveelheid: 1 }, { artikel_id: 'va-6', hoeveelheid: 1 }] }],
+    recepten: [
+      { id: 're-1', naam: 'Spaghetti bolognese', personen: 4, ingredienten: [
+        { artikel_id: 'va-4', hoeveelheid: 0.4 }, { artikel_id: 'va-5', hoeveelheid: 1 }, { artikel_id: 'va-6', hoeveelheid: 1 }], delen: [], artikel_id: null, opbrengst: 1 },
+      // Een deelrecept: vier porties saus voor de diepvries, en een gerecht dat er een portie van gebruikt.
+      { id: 're-2', naam: 'Bolognaisesaus', personen: 4, ingredienten: [{ artikel_id: 'va-4', hoeveelheid: 0.4 }, { artikel_id: 'va-6', hoeveelheid: 1 }], delen: [], artikel_id: 'va-7', opbrengst: 4 },
+      { id: 're-3', naam: 'Lasagne', personen: 6, ingredienten: [{ artikel_id: 'va-5', hoeveelheid: 1 }], delen: [{ deel_id: 're-2', porties: 1, als_op: 'maken' }], artikel_id: null, opbrengst: 1 },
+      { id: 're-4', naam: 'Boterhammen', personen: 2, ingredienten: [{ artikel_id: 'va-8', hoeveelheid: 2 }], delen: [], artikel_id: null, opbrengst: 1 },
+    ],
     eters: 6,
+    etersVieruurtje: 4,
     gekookt: [],
+    weekmenuInst: { momenten: ['avond'], standaard: [] },
     voorraadLog: [],
     // Een paar voorbeelden zodat Onze taken en Notities niet leeg openen.
     ouderTaken: [
@@ -423,9 +435,9 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       const s = bezitSleutel(soort, sleutel)
       t.aanbod.verborgen[kindId] = (t.aanbod.verborgen[kindId] ?? []).filter((x) => x !== s).concat(zichtbaar ? [] : [s])
     },
-    async maaltijdOpslaan({ dag, gerecht, prentje }) {
-      t.weekmenu = t.weekmenu.filter((m) => m.dag !== dag)
-      if (gerecht.trim()) t.weekmenu.push({ dag, gerecht: gerecht.trim(), prentje })
+    async maaltijdOpslaan({ dag, moment, gerecht, prentje }) {
+      t.weekmenu = t.weekmenu.filter((m) => !(m.dag === dag && m.moment === moment))
+      if (gerecht.trim()) t.weekmenu.push({ dag, moment, gerecht: gerecht.trim(), prentje })
     },
     async ouderTaakOpslaan({ id: taakId, titel, datum, wie, herhaling, herhaal_dagen }) {
       const taak = { titel, datum, wie, herhaling, herhaal_dagen: herhaling === 'om_de_n_dagen' ? herhaal_dagen : null }
@@ -528,7 +540,7 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
     },
     async boodschapVerwijderen(boodschapId) { t.boodschappen = t.boodschappen.filter((x) => x.id !== boodschapId) },
     async voorraad() {
-      return { artikelen: t.voorraad.map((a) => ({ ...a })), recepten: t.recepten.map((r) => ({ ...r, ingredienten: r.ingredienten.map((i) => ({ ...i })) })), eters: t.eters, gekookt: [...t.gekookt] }
+      return { artikelen: t.voorraad.map((a) => ({ ...a })), recepten: t.recepten.map((r) => ({ ...r, ingredienten: r.ingredienten.map((i) => ({ ...i })), delen: r.delen.map((d) => ({ ...d })) })), eters: t.eters, etersVieruurtje: t.etersVieruurtje, gekookt: [...t.gekookt] }
     },
     async voorraadLog(limiet = 40) { return t.voorraadLog.slice(0, limiet).map((r) => ({ ...r })) },
     async voorraadArtikelOpslaan({ id: artikelId, aantal, ...rest }) {
@@ -540,13 +552,13 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
     },
     async voorraadArtikelVerwijderen(artikelId) {
       t.voorraad = t.voorraad.filter((a) => a.id !== artikelId)
-      for (const r of t.recepten) r.ingredienten = r.ingredienten.filter((i) => i.artikel_id !== artikelId)
+      for (const r of t.recepten) { r.ingredienten = r.ingredienten.filter((i) => i.artikel_id !== artikelId); if (r.artikel_id === artikelId) r.artikel_id = null }
     },
     async voorraadBijstellen(artikelId, waarde, absoluut) {
       const a = t.voorraad.find((x) => x.id === artikelId)
       if (a) voorraadWijzig(a, waarde, absoluut, absoluut ? 'telling' : 'handmatig', null)
     },
-    async receptOpslaan({ id: receptId, naam, personen, ingredienten }) {
+    async receptOpslaan({ id: receptId, naam, personen, ingredienten, delen, deelrecept }) {
       const ingr: Recept['ingredienten'] = []
       for (const i of ingredienten) {
         let a = artikelVoor(i.naam)
@@ -555,29 +567,59 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
         if (bestaand) bestaand.hoeveelheid += i.hoeveelheid
         else ingr.push({ artikel_id: a.id, hoeveelheid: i.hoeveelheid })
       }
+      let artikelId: string | null = null
+      if (deelrecept) {
+        let a = artikelVoor(deelrecept.artikelNaam)
+        if (!a) { a = { id: id(), naam: deelrecept.artikelNaam.trim(), eenheid: 'portie', aantal: 0, minimum: null, aankoop_aantal: 1, plaats: deelrecept.plaats, categorie_id: null, winkel_id: null, houdbaar_tot: null }; t.voorraad.push(a) }
+        else a.plaats = deelrecept.plaats
+        artikelId = a.id
+      }
+      const rest = { naam: naam.trim(), personen, ingredienten: ingr, delen: (delen ?? []).map((d) => ({ ...d })), artikel_id: artikelId, opbrengst: deelrecept?.opbrengst ?? 1 }
       const oud = t.recepten.find((r) => r.id === receptId)
-      if (oud) Object.assign(oud, { naam: naam.trim(), personen, ingredienten: ingr })
-      else t.recepten.push({ id: id(), naam: naam.trim(), personen, ingredienten: ingr })
+      if (oud) Object.assign(oud, rest)
+      else t.recepten.push({ id: id(), ...rest })
     },
-    async receptVerwijderen(receptId) { t.recepten = t.recepten.filter((r) => r.id !== receptId) },
-    async voorraadGekookt(dag, overslaan) {
-      const maaltijd = t.weekmenu.find((m) => m.dag === dag)
-      if (!maaltijd) throw new Error('Er staat niets op het weekmenu voor die dag')
-      if (t.gekookt.includes(dag)) throw new Error('Die dag is al afgeboekt')
+    async receptVerwijderen(receptId) {
+      t.recepten = t.recepten.filter((r) => r.id !== receptId)
+      for (const r of t.recepten) r.delen = r.delen.filter((d) => d.deel_id !== receptId)
+    },
+    async voorraadGekookt(dag, moment, overslaan) {
+      let gerecht = t.weekmenu.find((m) => m.dag === dag && m.moment === moment)?.gerecht ?? null
+      if (!gerecht && moment !== 'avond') gerecht = standaardVoor(t.weekmenuInst.standaard, dag, moment)
+      if (!gerecht) throw new Error('Er staat niets op het weekmenu voor die dag')
+      if (t.gekookt.includes(kookSleutel(dag, moment))) throw new Error('Die dag is al afgeboekt')
       let teller = 0
       if (!overslaan) {
-        const recept = t.recepten.find((r) => r.naam.trim().toLowerCase() === maaltijd.gerecht.trim().toLowerCase())
-        if (!recept) throw new Error(`Er is geen recept voor ${maaltijd.gerecht}`)
-        for (const i of recept.ingredienten) {
-          const a = t.voorraad.find((x) => x.id === i.artikel_id)
-          if (a) voorraadWijzig(a, -Math.round(i.hoeveelheid * t.eters / recept.personen * 1000) / 1000, false, 'recept', maaltijd.gerecht)
+        const recept = t.recepten.find((r) => r.naam.trim().toLowerCase() === gerecht.trim().toLowerCase())
+        if (!recept) throw new Error(`Er is geen recept voor ${gerecht}`)
+        const eters = etersVoor(moment, t.eters, t.etersVieruurtje)
+        for (const v of verbruikMetDelen(recept, eters, t.recepten, t.voorraad)) {
+          const a = t.voorraad.find((x) => x.id === v.artikel_id)
+          if (a) voorraadWijzig(a, -v.hoeveelheid, false, 'recept', gerecht)
           teller++
         }
+        // Een deelrecept op "lijst" zonder voorraad: het artikel komt op de boodschappenlijst.
+        for (const d of recept.delen) {
+          const deel = t.recepten.find((r) => r.id === d.deel_id)
+          const a = deel?.artikel_id ? t.voorraad.find((x) => x.id === deel.artikel_id) : undefined
+          if (a && d.als_op === 'lijst' && a.aantal < d.porties * eters / recept.personen && !t.boodschappen.some((b) => !b.gekocht_op && b.naam.trim().toLowerCase() === a.naam.trim().toLowerCase())) {
+            t.boodschappen.push({ id: id(), naam: a.naam, hoeveel: '', winkel_id: a.winkel_id, categorie_id: a.categorie_id, dag: null, gerecht: null, gekocht_op: null, prijs: null, eenheidsprijs: null, aantal: null } as Boodschap)
+          }
+        }
       }
-      t.gekookt.push(dag)
+      t.gekookt.push(kookSleutel(dag, moment))
       return teller
     },
-    async voorraadEters(eters) { t.eters = eters },
+    async deelreceptGekookt(receptId) {
+      const r = t.recepten.find((x) => x.id === receptId)
+      const a = r?.artikel_id ? t.voorraad.find((x) => x.id === r.artikel_id) : undefined
+      if (!r || !a) throw new Error('Dit recept is geen deelrecept')
+      for (const i of r.ingredienten) { const x = t.voorraad.find((v) => v.id === i.artikel_id); if (x) voorraadWijzig(x, -i.hoeveelheid, false, 'recept', `gekookt: ${r.naam}`) }
+      voorraadWijzig(a, r.opbrengst, false, 'recept', `gekookt: ${r.naam}`)
+    },
+    async voorraadEters(eters, etersVieruurtje) { t.eters = eters; if (etersVieruurtje) t.etersVieruurtje = etersVieruurtje },
+    async weekmenuInstellingen() { return { momenten: [...t.weekmenuInst.momenten], standaard: t.weekmenuInst.standaard.map((x) => ({ ...x })) } },
+    async weekmenuInstellingenOpslaan(i) { t.weekmenuInst = { momenten: [...i.momenten], standaard: i.standaard.map((x) => ({ ...x })) } },
     async categorieOpslaan({ id: categorieId, naam, volgorde }) {
       const dubbel = t.categorieen.find((c) => c.id !== categorieId && c.naam.trim().toLowerCase() === naam.trim().toLowerCase())
       if (dubbel) throw new Error(`${dubbel.naam} staat al in de lijst`)
