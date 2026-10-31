@@ -39,6 +39,8 @@ export const zin = {
   verkleedFout: 'Bijna! Kijk nog eens naar het kaartje.',
   doolhofUitleg: 'Sleep de eekhoorn met je vinger door het doolhof. Breng hem naar zijn boom!',
   doolhofKlaar: 'Wat knap! De eekhoorn is bij zijn boom.',
+  winterslaapUitleg: 'Tik op een dier om het te laten slapen. Pas op: de buurdieren worden dan misschien wakker! Stop alle dieren in bed.',
+  winterslaapKlaar: 'Welterusten! Alle dieren slapen.',
   lichtjesUitleg: 'Kijk naar de lichtjes. Doe ze daarna na, in dezelfde volgorde.',
   lichtjesKlaar: 'Hoera! De hele boom straalt.',
   lichtjesNa: 'Nu jij!',

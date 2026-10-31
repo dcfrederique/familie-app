@@ -1,0 +1,96 @@
+{
+  "nr": 40,
+  "titel": "Slaap lekker, Bram",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Winterslaap, vriendschap en zorgen voor elkaar",
+  "bladzijden": [
+    {
+      "tekst": "Het is een koude ochtend in november. Siep de eekhoorn springt van tak naar tak. Zijn nootjes zijn al verstopt, dus hij heeft tijd om te spelen. Onder de grote boom zit Bram de beer. Hij geeuwt en geeuwt, wel tien keer na elkaar.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "beer",
+          "eekhoorn",
+          "boom"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Ik ben zo slaperig, Siep,\" zegt Bram. Siep lacht. \"Het is bijna winter. Dan gaan beren slapen tot de lente.\" Bram kijkt op. \"Maar dan zie ik jullie niet meer!\" Hij trekt een lang gezicht en zijn grote oren zakken naar beneden.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "beer",
+          "eekhoorn"
+        ]
+      }
+    },
+    {
+      "tekst": "Lotte het konijn komt aangehuppeld. \"Wat is er met Bram?\" Siep fluistert het in haar oor. Lotte denkt even na. \"Weet je wat?\" zegt ze. \"Wij maken het zachtste bed van het hele bos. Dan slaap je heerlijk en dromen wij van de lente.\"",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "konijn",
+          "eekhoorn",
+          "beer"
+        ]
+      }
+    },
+    {
+      "tekst": "Het werk begint. Siep sleept een berg bladeren aan, rood en geel en bruin. Lotte zoekt zacht mos tussen de struiken. Ze leggen alles in het holletje onder de grote boom. Bram kijkt toe en zijn oren gaan al wat omhoog.",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "eekhoorn",
+          "konijn",
+          "struik"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Probeer maar eens,\" zegt Lotte. Bram kruipt in het bed. Het kriebelt een beetje, dus Siep legt er nog een laagje mos bovenop. Lotte stopt een nootje onder zijn kussen. \"Voor als je wakker wordt,\" zegt ze. \"Dan heb je meteen iets lekkers.\"",
+      "prent": {
+        "decor": "bos",
+        "figuren": [
+          "beer",
+          "konijn",
+          "noot"
+        ]
+      }
+    },
+    {
+      "tekst": "Het wordt donker en de eerste sterren komen aan de hemel. Bram ligt warm onder zijn deken van bladeren. \"Wie zingt er nu een liedje voor mij?\" vraagt hij zacht. Siep en Lotte gaan naast hem zitten en zingen een heel stil slaapliedje.",
+      "prent": {
+        "decor": "bos-avond",
+        "figuren": [
+          "beer",
+          "eekhoorn",
+          "konijn"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan valt de eerste sneeuwvlok. Heel zacht, op Brams neus. Hij lacht slaperig. \"Tot de lente, vrienden,\" mompelt hij. Zijn ogen vallen dicht en zijn buik gaat rustig op en neer. Siep en Lotte fluisteren: \"Slaap lekker, Bram.\"",
+      "prent": {
+        "decor": "sneeuwbos",
+        "figuren": [
+          "beer",
+          "eekhoorn",
+          "konijn"
+        ]
+      }
+    },
+    {
+      "tekst": "Siep en Lotte lopen samen naar huis, door de zachte witte sneeuw. De winter is lang, maar de lente komt altijd. \"Dan gaan we hem wakker kietelen,\" zegt Lotte. \"En dan zingen we weer,\" zegt Siep. Boven hen twinkelen de sterren, alsof ze ook zachtjes meezingen.",
+      "prent": {
+        "decor": "sneeuwbos",
+        "figuren": [
+          "eekhoorn",
+          "konijn",
+          "sterren"
+        ]
+      }
+    }
+  ]
+}

@@ -213,6 +213,27 @@ export function startDoolhofNiveau(kind: Gebruiker, kinderen: Gebruiker[]): Dool
   return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
 }
 
+export type WinterslaapNiveau = 'makkelijk' | 'middel' | 'moeilijk'
+
+/**
+ * Raster van bedjes, of een tik ook de buren wisselt (kriebel), en per ronde hoeveel tikken de kortste oplossing minstens
+ * (en hoogstens) vraagt. `extra` is de ruimte boven de kortste oplossing in de tikkenlimiet (alleen op moeilijk, anders geen limiet).
+ */
+export const winterslaapNiveaus: Record<WinterslaapNiveau, { label: string; breed: number; hoog: number; kriebel: boolean; min: readonly number[]; ruimte: number; extra: number | null; hints: boolean }> = {
+  makkelijk: { label: 'Makkelijk', breed: 3, hoog: 2, kriebel: false, min: [2, 2, 3, 3], ruimte: 0, extra: null, hints: true },
+  middel: { label: 'Middel', breed: 3, hoog: 3, kriebel: true, min: [2, 2, 3, 3], ruimte: 1, extra: null, hints: true },
+  moeilijk: { label: 'Moeilijk', breed: 5, hoog: 5, kriebel: true, min: [4, 6, 8, 10], ruimte: 2, extra: 2, hints: false },
+}
+
+export const winterslaapRondes = 4
+
+/** Wie niet leest begint makkelijk, de oudste lezer moeilijk, andere lezers middel. */
+export function startWinterslaapNiveau(kind: Gebruiker, kinderen: Gebruiker[]): WinterslaapNiveau {
+  if (!kind.kan_lezen) return 'makkelijk'
+  const oudsteLezer = kinderen.filter((k) => k.kan_lezen).sort((a, b) => a.volgorde - b.volgorde)[0]
+  return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
+}
+
 export type LichtjesNiveau = 'makkelijk' | 'middel' | 'moeilijk'
 export type LichtKleur = 'rood' | 'geel' | 'blauw' | 'groen'
 export const lichtKleuren: readonly LichtKleur[] = ['rood', 'geel', 'blauw', 'groen']
@@ -261,7 +282,7 @@ export function startNiveaus(kind: Gebruiker, kinderen: Gebruiker[]): { memory: 
   return oudsteLezer?.id === kind.id ? { memory: 'groot', rekenen: 'tot100' } : { memory: 'middel', rekenen: 'tot20' }
 }
 
-export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'springen'
+export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'springen'
 
 export interface SpelInfo {
   sleutel: SpelSleutel
@@ -303,6 +324,8 @@ export const spelMenu: SpelInfo[] = [
     icoon: 'M12 3l7 9H5zM6 12l-2 8h16l-2-8M9 16h6' },
   { sleutel: 'doolhof', naam: 'Doolhof van de eekhoorn', uitleg: 'Leid de eekhoorn door het doolhof naar zijn boom', prijs: 20,
     icoon: 'M4 4h16v16H4zM4 9h8M12 9v6M8 15h8M16 4v6M8 4v2' },
+  { sleutel: 'winterslaap', naam: 'Winterslaap', uitleg: 'Stop alle dieren in bed', prijs: 25,
+    icoon: 'M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5zM15 5h.01M18 8h.01' },
   { sleutel: 'lichtjes', naam: 'Lichtjesboom', uitleg: 'Doe de lichtjes na in dezelfde volgorde', prijs: 20,
     icoon: 'M12 3l6 8h-3l5 7H4l5-7H6zM12 18v3M8 8.5h.01M15 13h.01M10 15h.01' },
   { sleutel: 'schaduw', naam: 'Wie is de schaduw?', uitleg: 'Zoek de schaduw die erbij hoort', prijs: 20,

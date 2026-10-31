@@ -19,6 +19,15 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.78',
+    datum: '2026-10-31',
+    titel: 'Winterslaap: Slaap lekker, Bram, de egel in zijn bedje en een nieuwe wereld',
+    tekst: 'Het winterslaappakket staat klaar: het verhaal Slaap lekker, Bram en de kleurplaat Egel in zijn bedje (beide meteen te spelen), het spelletje Winterslaap (stop alle dieren in bed, maar een tik kriebelt ook de buren wakker; makkelijk 3 × 2 zonder kriebel, middel 3 × 3, en moeilijk een echt breinbrekend 5 × 5-raster waar je met een beperkt aantal tikken alles moet laten slapen, zonder hints: bedoeld voor Luca), een winterhol in De wereld met een gouden rand en een slot tot het gekocht is, en in Springland een nieuwe derde wereld, Winterbergen, met het eerste level Het slaapbos. Het spelletje (25 sterren) en de zes nieuwe stukken zijn nog niet vrijgegeven: dat doen jullie in Kinderen → Winkelaanbod.',
+    verhaal: 'Slaap lekker, Bram (Grote ogen)',
+    spel: { naam: 'Winterslaap', prijs: 25 },
+    stukken: ['Figuurtje: Slaapmuts (15), Met maantje (20), Knuffelbeer (20)', 'Mijn huis: Berenhol (30), Voedertafel (20), Maanlampje (15)'],
+  },
+  {
     versie: '0.77',
     datum: '2026-10-30',
     titel: 'De moeilijkste stand is een pak moeilijker',

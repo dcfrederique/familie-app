@@ -96,6 +96,16 @@ export const gebouwTekening: Record<string, string> = {
     <path d="M178 46h8M190 34h8M202 46h8M214 34h8" stroke="#3F8F4A" stroke-width="4" stroke-linecap="round"/>
     <g transform="translate(70 112)"><path d="M26 44C52 42 56 8 40 -4C50 14 40 30 24 30Z" fill="#B8662C"/><ellipse cx="14" cy="28" rx="15" ry="18" fill="#C97A3A"/><ellipse cx="14" cy="34" rx="8" ry="11" fill="#F5E6C8"/><circle cx="8" cy="4" r="11" fill="#C97A3A"/><path d="M1 -4L-1 -14L7 -8ZM15 -8L19 -17L19 -6Z" fill="#B8662C"/><circle cx="5" cy="4" r="2.4" fill="#1C2433"/></g>
     <path d="M60 280q4-10 14-10M330 276q-2-12 10-14M20 270l8-8l8 8l-8 8z" fill="#D8452B" stroke="#D8452B" stroke-width="3" stroke-linejoin="round"/>`,
+  winterslaap: `<ellipse cx="200" cy="288" rx="185" ry="11" fill="#000" opacity=".13"/>
+    <path d="M30 288Q24 150 110 92Q200 36 290 92Q376 150 370 288Z" fill="#8B93A1"/>
+    <path d="M70 140Q200 28 330 140Q300 118 270 132Q240 110 200 126Q160 108 130 132Q100 118 70 140Z" fill="#F4F6F9"/>
+    <path d="M120 288V214Q120 164 200 164Q280 164 280 214V288Z" fill="#3A2F3F"/>
+    <ellipse cx="200" cy="268" rx="62" ry="20" fill="#B98A4E"/><ellipse cx="200" cy="262" rx="52" ry="14" fill="#D6AD6F"/>
+    <ellipse cx="204" cy="248" rx="38" ry="22" fill="#9C6B45"/><circle cx="170" cy="240" r="18" fill="#9C6B45"/><circle cx="160" cy="224" r="7" fill="#9C6B45"/><circle cx="180" cy="224" r="7" fill="#9C6B45"/>
+    <ellipse cx="164" cy="246" rx="9" ry="6.5" fill="#E2C39B"/><circle cx="162" cy="243" r="2.6" fill="#3A2418"/><path d="M162 234q4 3 8 0" fill="none" stroke="#1C2433" stroke-width="3" stroke-linecap="round"/>
+    <path d="M232 192h20l-20 20h20M262 164h14l-14 14h14" fill="none" stroke="#9EB9EF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+    <rect x="296" y="236" width="8" height="52" fill="#6E4A28"/><rect x="278" y="214" width="44" height="26" rx="5" fill="#F4E1C1" stroke="#6E4A28" stroke-width="4"/><path d="M288 228h24" stroke="#6A5BD1" stroke-width="4" stroke-linecap="round"/>
+    <path d="M60 270q0-14 14-14M330 280q4-12 16-12" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".8"/>`,
   bouw: `<ellipse cx="200" cy="288" rx="190" ry="11" fill="#000" opacity=".13"/>
     <path d="M60 286l40-120h12" stroke="#F2C230" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M106 166H330l-30 14" stroke="#F2C230" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M300 180v56" stroke="#555" stroke-width="4"/><rect x="288" y="234" width="24" height="16" rx="3" fill="#D93A3A"/>
     <path d="M40 286q60-70 140-30q40 14 70 30z" fill="#D9BC6A"/>

@@ -47,6 +47,7 @@ export const levelsPerWereld = 6
 export const springWerelden: SpringWereld[] = [
   { id: 'zonnevallei', naam: 'Zonnevallei', stijl: 'groen' },
   { id: 'pepernotenland', naam: 'Pepernotenland', stijl: 'snoep' },
+  { id: 'winterbergen', naam: 'Winterbergen', stijl: 'sneeuw' },
 ]
 
 /** Alle levels in speelvolgorde; nieuwe levels komen achteraan (bij de laatste wereld). */
@@ -255,6 +256,23 @@ export const springLevelLijst: SpringLevelInfo[] = [
       '  P   o o o       e                 o C o         B           H   ',
       '############################  ######  ############################',
       '############################~~######~~############################',
+    ],
+  },
+  {
+    id: 'slaapbos', wereld: 'winterbergen', stijl: 'bos',
+    naam: 'Het slaapbos', beestje: 'egel', fruit: 'aardbei',
+    kaart: [
+      '                                                                                                                ',
+      '                                                                                                                ',
+      '                                                                                                                ',
+      '                                                                      * * *                                     ',
+      '                                               ****                                                             ',
+      '                                               ====                                                             ',
+      '            * * *                                                                                   * * * *     ',
+      '                        o o o                                     ##     o        o               ##            ',
+      '  P   o o o                 e     ##  o o   ^       o C o         ##      e         e         ##  ##    o o H   ',
+      '##################  ########################################   #################################################',
+      '##################~~########################################~~~#################################################',
     ],
   },
 ]
