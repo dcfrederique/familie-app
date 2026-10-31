@@ -52,7 +52,7 @@ export default function KindStart({ deel = 'start' }: { deel?: 'start' | 'taken'
       bron.taken(), bron.inzendingenVanaf(zestigDagenTerug), bron.saldi(), bron.verzoeken(vandaag()),
       bron.weekmenu(vandaag(), vandaag()), bron.log(kind.id),
     ])
-    return { taken, inzendingen, saldo: saldi[kind.id], verzoeken: verzoeken.filter((v) => v.kind_id === kind.id), eten: menu[0],
+    return { taken, inzendingen, saldo: saldi[kind.id], verzoeken: verzoeken.filter((v) => v.kind_id === kind.id), eten: menu.find((m) => m.moment === 'avond'),
              ouderLog: log.filter((l) => l.bron === 'ouder') }
   } : null, [bron, kind?.id, kind?.chat_aan])
 

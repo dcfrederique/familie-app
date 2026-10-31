@@ -24,3 +24,13 @@ Vraag van Frederique (27 oktober 2026): de voorraad registreren (hoeveel drank e
 ## Het gezin
 
 Wij zijn met 6: twee ouders, Luca, Yuna, Feline en **Maxim** (anderhalf jaar). Maxim heeft geen account en telt niet mee in de app (sterren, taken, tablets), maar eet wel mee. Daarom rekent de voorraad standaard met 6 eters (migratie 20261027000800); in Voorraad kan het aantal aangepast worden.
+
+
+## Deelrecepten (31 oktober 2026)
+
+Een recept kan een **deelrecept** zijn (bv. bolognaisesaus voor de diepvries): het maakt een voorraadartikel in porties (`recepten.artikel_id`, `opbrengst` = porties per keer koken). Een ander recept gebruikt er een aantal porties van (`recept_delen`, porties voor het aantal personen van dat recept).
+
+- Bij het afboeken (`recept_afboeken`): is er genoeg van het deelartikel, dan gaan de porties af. Anders, per deel in te stellen: **vers maken** (de ingrediënten van het deelrecept gaan af, naar rato van de porties) of **op de lijst** (het artikel komt op de boodschappenlijst, niets gaat af).
+- Zelf koken: Recepten → het deelrecept → "Nu gekookt" (`deelrecept_gekookt`): de ingrediënten gaan af, de porties komen in de voorraad.
+- Eén niveau diep: een deelrecept in een deelrecept telt niet mee.
+- Het tekort voor de week (`tekortVoorWeek`, `verbruikMetDelen` in `src/lib/voorraad.ts`) rekent met de deelrecepten en met het vieruurtje voor minder eters.

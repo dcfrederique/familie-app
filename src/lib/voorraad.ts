@@ -1,4 +1,4 @@
-import type { Boodschap, Maaltijd, Recept, VoorraadArtikel } from './bron/types.ts'
+import type { Boodschap, Maaltijd, Moment, Recept, Standaardmaaltijd, VoorraadArtikel } from './bron/types.ts'
 
 const sleutel = (tekst: string) => tekst.trim().toLocaleLowerCase('nl-BE')
 
@@ -48,35 +48,110 @@ export function houdbaarheid(a: VoorraadArtikel, vandaag: string): Houdbaarheid 
 /** Staat dit artikel al open op de boodschappenlijst? */
 export const opLijst = (naam: string, lijst: Boodschap[]) => lijst.some((b) => !b.gekocht_op && sleutel(b.naam) === sleutel(naam))
 
-export interface KookVraag { dag: string; gerecht: string; recept: Recept }
+export const MOMENTEN: { moment: Moment; naam: string; tijd: string }[] = [
+  { moment: 'ontbijt', naam: 'Ontbijt', tijd: '±07:30' },
+  { moment: 'middag', naam: 'Middag', tijd: '±12:00' },
+  { moment: 'avond', naam: 'Avond', tijd: '±18:00' },
+  { moment: 'vieruurtje', naam: 'Vieruurtje', tijd: '±16:00' },
+]
+export const momentNaam = (m: Moment) => MOMENTEN.find((x) => x.moment === m)!.naam
 
-/** De dagen tot en met vandaag met een recept die nog niet afgeboekt of overgeslagen zijn, oudste eerst. */
+/** Sleutel van een afgeboekt moment, zoals de overzichten ze geven. */
+export const kookSleutel = (dag: string, moment: Moment) => `${dag}:${moment}`
+
+/** Maandag = 1 tot zondag = 7 voor een datum 'JJJJ-MM-DD'. */
+export function weekdagVan(dag: string): number {
+  const d = new Date(`${dag}T12:00`).getDay()
+  return d === 0 ? 7 : d
+}
+
+/** De standaardmaaltijd voor een moment op een dag: een vaste weekdag wint van "elke dag". */
+export function standaardVoor(standaard: Standaardmaaltijd[], dag: string, moment: Moment): string | null {
+  const wd = weekdagVan(dag)
+  return (standaard.find((s) => s.moment === moment && s.weekdag === wd) ?? standaard.find((s) => s.moment === moment && s.weekdag === 0))?.gerecht ?? null
+}
+
+/** Het weekmenu met de standaardmaaltijden erbij: een moment zonder eigen maaltijd krijgt de standaard (de avond nooit). */
+export function metStandaard(menu: Maaltijd[], standaard: Standaardmaaltijd[], momenten: Moment[], van: string, tot: string): Maaltijd[] {
+  const uit = [...menu]
+  for (let d = new Date(`${van}T12:00`); d.toLocaleDateString('sv-SE') <= tot; d.setDate(d.getDate() + 1)) {
+    const dag = d.toLocaleDateString('sv-SE')
+    for (const moment of momenten) {
+      if (moment === 'avond' || menu.some((m) => m.dag === dag && m.moment === moment)) continue
+      const gerecht = standaardVoor(standaard, dag, moment)
+      if (gerecht) uit.push({ dag, moment, gerecht, prentje: null })
+    }
+  }
+  return uit.sort((a, b) => a.dag.localeCompare(b.dag) || MOMENTEN.findIndex((x) => x.moment === a.moment) - MOMENTEN.findIndex((x) => x.moment === b.moment))
+}
+
+export interface KookVraag { dag: string; moment: Moment; gerecht: string; recept: Recept }
+
+/** De momenten tot en met vandaag met een recept die nog niet afgeboekt of overgeslagen zijn, oudste eerst. */
 export function nogAfTeBoeken(menu: Maaltijd[], recepten: Recept[], gekookt: string[], vandaag: string): KookVraag[] {
   return menu
-    .filter((m) => m.dag <= vandaag && !gekookt.includes(m.dag))
-    .sort((a, b) => a.dag.localeCompare(b.dag))
-    .flatMap((m) => { const recept = receptVoor(m.gerecht, recepten); return recept ? [{ dag: m.dag, gerecht: m.gerecht, recept }] : [] })
+    .filter((m) => m.dag <= vandaag && !gekookt.includes(kookSleutel(m.dag, m.moment)))
+    .flatMap((m) => { const recept = receptVoor(m.gerecht, recepten); return recept ? [{ dag: m.dag, moment: m.moment, gerecht: m.gerecht, recept }] : [] })
 }
 
 export interface Tekort { artikel: VoorraadArtikel; nodig: number; tekort: number }
 
+/** Voor hoeveel eters een moment is: het vieruurtje voor de kinderen, de rest voor het hele gezin. */
+export const etersVoor = (moment: Moment, eters: number, etersVieruurtje: number) => (moment === 'vieruurtje' ? etersVieruurtje : eters)
+
+export interface Verbruik { artikel_id: string; hoeveelheid: number }
+
 /**
- * Wat er voor de komende gerechten met een recept te weinig in huis is: de ingrediënten van alle dagen vanaf vandaag
- * bij elkaar, min wat er ligt. Afgeboekte dagen tellen niet meer mee (die zitten al van de voorraad af).
+ * Wat een recept van de voorraad vraagt voor `eters` mensen, met de deelrecepten erbij: een deelrecept met genoeg porties
+ * in de voorraad vraagt één artikel (de porties), anders gaan zijn ingrediënten af (vers maken) of komt het artikel op de lijst.
+ * `gebruikt` houdt bij hoeveel porties van elk deelartikel al in dezelfde berekening opgingen.
  */
-export function tekortVoorWeek(menu: Maaltijd[], recepten: Recept[], artikelen: VoorraadArtikel[], gekookt: string[], eters: number, vandaag: string): Tekort[] {
+export function verbruikMetDelen(recept: Recept, eters: number, recepten: Recept[], artikelen: VoorraadArtikel[], gebruikt = new Map<string, number>()): Verbruik[] {
+  const factor = eters / recept.personen
+  const uit: Verbruik[] = verbruik(recept, eters)
+  for (const d of recept.delen) {
+    const deel = recepten.find((r) => r.id === d.deel_id)
+    if (!deel) continue
+    const nodig = Math.round(d.porties * factor * 1000) / 1000
+    const a = deel.artikel_id ? artikelen.find((x) => x.id === deel.artikel_id) : undefined
+    const al = a ? gebruikt.get(a.id) ?? 0 : 0
+    if (a && a.aantal - al >= nodig) {
+      gebruikt.set(a.id, al + nodig)
+      uit.push({ artikel_id: a.id, hoeveelheid: nodig })
+    } else if (a && d.als_op === 'lijst') {
+      uit.push({ artikel_id: a.id, hoeveelheid: nodig })
+    } else {
+      for (const i of deel.ingredienten) uit.push({ artikel_id: i.artikel_id, hoeveelheid: Math.round(i.hoeveelheid * nodig / deel.opbrengst * 1000) / 1000 })
+    }
+  }
+  return uit
+}
+
+/**
+ * Wat er voor de komende maaltijden met een recept te weinig in huis is: alles vanaf vandaag bij elkaar, min wat er ligt.
+ * Afgeboekte momenten tellen niet meer mee (die zitten al van de voorraad af). Deelrecepten tellen mee (zie verbruikMetDelen).
+ */
+export function tekortVoorWeek(menu: Maaltijd[], recepten: Recept[], artikelen: VoorraadArtikel[], gekookt: string[], eters: number, vandaag: string, etersVieruurtje = 4): Tekort[] {
   const nodig = new Map<string, number>()
+  const gebruikt = new Map<string, number>()
   for (const m of menu) {
-    if (m.dag < vandaag || gekookt.includes(m.dag)) continue
+    if (m.dag < vandaag || gekookt.includes(kookSleutel(m.dag, m.moment))) continue
     const recept = receptVoor(m.gerecht, recepten)
     if (!recept) continue
-    for (const v of verbruik(recept, eters)) nodig.set(v.artikel_id, (nodig.get(v.artikel_id) ?? 0) + v.hoeveelheid)
+    for (const v of verbruikMetDelen(recept, etersVoor(m.moment, eters, etersVieruurtje), recepten, artikelen, gebruikt)) nodig.set(v.artikel_id, (nodig.get(v.artikel_id) ?? 0) + v.hoeveelheid)
   }
   return artikelen.flatMap((artikel) => {
     const n = nodig.get(artikel.id)
     const tekort = n === undefined ? 0 : Math.round((n - artikel.aantal) * 1000) / 1000
     return tekort > 0 ? [{ artikel, nodig: n!, tekort }] : []
   }).sort((a, b) => a.artikel.naam.localeCompare(b.artikel.naam, 'nl-BE'))
+}
+
+/** Welke artikelen er te weinig van zijn om dit recept nu te koken (met de deelrecepten erbij); leeg = alles in huis. */
+export function ontbreekt(recept: Recept, eters: number, recepten: Recept[], artikelen: VoorraadArtikel[]): VoorraadArtikel[] {
+  const nodig = new Map<string, number>()
+  for (const v of verbruikMetDelen(recept, eters, recepten, artikelen)) nodig.set(v.artikel_id, (nodig.get(v.artikel_id) ?? 0) + v.hoeveelheid)
+  return artikelen.filter((a) => (nodig.get(a.id) ?? 0) > a.aantal)
 }
 
 /** Gerechten uit het weekmenu zonder recept, zonder dubbels, voor de snelle "Recept maken"-knop. */

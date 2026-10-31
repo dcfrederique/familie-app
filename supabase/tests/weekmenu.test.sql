@@ -39,7 +39,7 @@ select public.koppelen(:'code');
 select pg_temp.als('00000000-0000-0000-0000-000000000601', false);
 insert into public.weekmenu (gezin_id, dag, gerecht) values (:'gezin', '2026-10-24', 'Spaghetti');
 insert into public.weekmenu (gezin_id, dag, gerecht, prentje) values (:'gezin', '2026-10-24', 'Frietjes met vis', 'vis')
-  on conflict (gezin_id, dag) do update set gerecht = excluded.gerecht, prentje = excluded.prentje;
+  on conflict (gezin_id, dag, moment) do update set gerecht = excluded.gerecht, prentje = excluded.prentje;
 select pg_temp.gelijk((select gerecht from public.weekmenu where dag = '2026-10-24'), 'Frietjes met vis', 'aangepast');
 select pg_temp.fout(format('insert into public.weekmenu (gezin_id, dag, gerecht) values (%L, %L, %L)', :'gezin', '2026-10-25', '  '), 'check');
 select pg_temp.fout(format('insert into public.weekmenu (gezin_id, dag, gerecht, prentje) values (%L, %L, %L, %L)', :'gezin', '2026-10-25', 'Soep', 'X;'), 'check');
