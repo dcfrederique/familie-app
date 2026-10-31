@@ -103,6 +103,8 @@ Dit gebeurt in twee fases: eerst uitdenken (ontwerp), daarna coderen (bouw).
 - Positief en warm; geen enge, gewelddadige of verdrietige inhoud
 - Verhalen: 300 tot 600 woorden, met een duidelijk begin, midden en einde
 - Spelletjes: eenvoudig, speelbaar op een tablet, zonder lezen speelbaar voor de jongste
+- Niveaus: makkelijk en middel blijven eenvoudig (Feline en Yuna); de stand **moeilijk** moet een pak moeilijker zijn
+  (Luca van 8 vindt de spelletjes te simpel, Frederique 30 oktober 2026): grotere velden, meer stukken, vooruit denken, minder hints
 - Verhalen zijn meteen beschikbaar. Elk nieuw spelletje en elke nieuwe unlockable
   (stukken voor het figuurtje of Mijn huis) is te koop met sterren in de winkel:
   geef het een `prijs` in de data (zie `src/data/spelletjes.ts`, `src/data/huis.ts`, `docs/winkel.md`) en een rij in
