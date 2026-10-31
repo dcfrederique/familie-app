@@ -39,7 +39,7 @@ path.inkt-goed, path.inkt-fout { fill: none; }
 .schrijf .reken-kaart { gap: 14px; }
 
 /* Liggende tablet: het prentje staat links naast het blad, en het blad krimpt mee met de hoogte, zodat er niets scrollt. */
-@media (min-width: 600px) and (min-height: 560px) and (orientation: landscape) {
+@media (min-width: 600px) and (min-height: 560px) and (orientation: landscape), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
   .schrijf .reken-kaart { flex: 0 0 auto; position: relative; gap: clamp(8px, 1.6dvh, 14px); padding-block: clamp(14px, 2.4dvh, 28px); }
   .schrijf .reken-kaart > .schrijf-rij, .schrijf .reken-kaart > .schrijf-prent { position: absolute; left: clamp(16px, 3vw, 36px); top: 50%; transform: translateY(-50%); flex-direction: column; gap: 14px; }
   .schrijf-prent { width: clamp(80px, 13dvh, 108px); height: clamp(80px, 13dvh, 108px); }
@@ -49,4 +49,21 @@ path.inkt-goed, path.inkt-fout { fill: none; }
   .schrijf .klaar-uitleg { margin: 0; }
   .schrijf .groot-knop { min-height: clamp(56px, 8dvh, 72px); }
   .schrijf-uitslag .schrijf-procent { font-size: clamp(36px, 6dvh, 64px); }
+}
+
+/* Liggende gsm: dezelfde opmaak als op de liggende tablet (prentje links naast het blad), alleen kleiner. */
+@media (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .schrijf .reken-kaart { gap: 4px; padding: 6px 14px; border-radius: 22px; }
+  .schrijf-prent { width: 64px; height: 64px; border-radius: 18px; }
+  .schrijf-blad { height: calc(100dvh - 250px); min-height: 110px; border-radius: 16px; max-width: calc(100% - 160px); }
+  .schrijf-blad.vrij { height: calc(100dvh - 268px); min-height: 90px; }
+  /* De vaste uitleg boven Wissen en Klaar valt weg op de gsm (de voorleesknop zegt hem), zodat het blad groter blijft. */
+  .schrijf .schrijf-hulp:has(+ .knoppen-rij) { display: none; }
+  .schrijf .knoppen-rij .groot-knop { min-height: 44px; }
+  .schrijf .klaar-uitleg { font-size: 16px; }
+  .schrijf .groot-knop { min-height: 46px; font-size: 18px; }
+  .schrijf .bolletjes span { width: 12px; height: 12px; }
+  .schrijf-uitslag .schrijf-procent { font-size: 34px; }
+  .schrijf-deel { font-size: 15px; }
+  .schrijf-uitslag .groot-knop { min-height: 46px; }
 }

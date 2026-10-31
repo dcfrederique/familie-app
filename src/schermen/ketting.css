@@ -33,3 +33,6 @@
   .ketting-rij .kraal.leeg.nu, .ketting-rij .kraal.leeg.vol, .ketting-rij.oei, .ketting-keuze.tip { animation: none; }
   .ketting-keuze.tip { outline: 4px solid var(--gold); }
 }
+
+/* Lange kettingen (Moeilijk, 12 kralen): de kralen krimpen mee met de breedte, zodat de ketting nooit opzij uitsteekt. */
+.ketting-rij { --kraal: clamp(30px, min(8.5vw, 11vh, calc((100vw - 110px) / (var(--n, 8) * 1.12 + 0.6))), 84px); }

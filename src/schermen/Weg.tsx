@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import type { Gebruiker } from '../data/gezin.ts'
 import { startWegNiveau, voorwerpen, wegNiveaus, wegRondes, type Voorwerp, type WegNiveau } from '../data/spelletjes.ts'
 import { zin } from '../data/zinnen.ts'
@@ -152,7 +152,7 @@ function WegScherm({ kind }: { kind: Gebruiker }) {
           <div className="weg-teller" aria-label={`Ronde ${spel.ronde + 1} van ${wegRondes}`}>
             {Array.from({ length: wegRondes }, (_, i) => <span key={i} className={i < spel.ronde ? 'af' : i === spel.ronde ? 'nu' : ''} />)}
           </div>
-          <div className="weg-tafel" role="group" aria-label="Op tafel">
+          <div className="weg-tafel" role="group" aria-label="Op tafel" style={{ '--n': ronde.getoond.length } as CSSProperties}>
             {(fase === 'kijken' || fase === 'doek' || fase === 'goed' ? ronde.getoond : overgebleven(ronde)).map((v) => (
               <span key={v} className={`weg-stuk${fase === 'goed' && v === ronde.weg ? ' terug' : ''}`}><VoorwerpTekening soort={v} /></span>
             ))}
@@ -162,7 +162,8 @@ function WegScherm({ kind }: { kind: Gebruiker }) {
           {fase === 'kijken' ? (
             <div className="weg-balk" aria-hidden="true"><i key={`${spel.ronde}-${niveau}`} style={{ animationDuration: `${wegNiveaus[niveau].kijktijd}ms` }} /></div>
           ) : <div className="weg-balk leeg" aria-hidden="true" />}
-          <div className={`weg-keuzes${fase === 'kiezen' ? '' : ' weg-verstopt'}${tip ? ' tip' : ''}`} role="group" aria-label="Wat is er weg?">
+          <div className={`weg-keuzes${fase === 'kiezen' ? '' : ' weg-verstopt'}${tip ? ' tip' : ''}`} role="group" aria-label="Wat is er weg?"
+               style={{ '--n': ronde.getoond.length } as CSSProperties}>
             {ronde.getoond.map((v) => (
               <button key={v} type="button" className={`weg-keuze${fout === v ? ' fout' : ''}`} aria-label={naam[v]} onClick={() => tikKeuze(v)}
                       tabIndex={fase === 'kiezen' ? 0 : -1}>

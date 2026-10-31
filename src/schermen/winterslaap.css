@@ -66,3 +66,15 @@
   .slaap > .slaap-veld { height: 52dvh; }
   .slaap-knop { min-height: 44px; min-width: 44px; font-size: 14px; }
 }
+
+/* Detail: links dwarrelt een sneeuwvlokje naar beneden, als tegenhanger van het maantje (niet bij minder beweging). */
+.slaap::after {
+  content: '❄️'; position: absolute; top: 4%; left: 5%; font-size: clamp(18px, 3.2dvh, 32px); pointer-events: none; opacity: 0;
+  animation: slaap-vlok 8s ease-in-out infinite;
+}
+@keyframes slaap-vlok {
+  0% { transform: translate(0, 0) rotate(0); opacity: 0; } 15% { opacity: .85; }
+  50% { transform: translate(14px, 20dvh) rotate(90deg); } 85% { opacity: .7; }
+  100% { transform: translate(-8px, 42dvh) rotate(180deg); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .slaap::after { animation: none; opacity: .7; } }

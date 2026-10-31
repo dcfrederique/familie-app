@@ -70,3 +70,8 @@
   .verkleed-oog { width: 44px; height: 44px; padding: 10px; right: -6px; bottom: -6px; }
   .verkleed-kist { padding: 6px 8px; gap: 6px; }
 }
+/* Staand met vijf keuzes per rij (Moeilijk): iets kleinere prenten en keuzes, zodat niets scrolt. */
+@media (orientation: portrait) {
+  .verkleed-kaartje, .verkleed-pop { height: clamp(160px, 25dvh, 300px); }
+  .verkleed-keuze { width: clamp(60px, min(13vw, 9dvh), 100px); height: clamp(60px, min(13vw, 9dvh), 100px); }
+}

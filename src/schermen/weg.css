@@ -53,3 +53,13 @@
   .weg-keuzes { min-height: 64px; }
   .weg-keuze { width: 60px; height: 60px; padding: 5px; }
 }
+
+/* Veel voorwerpen (Moeilijk, 8 stuks): tafel en keuzes blijven op één rij en krimpen mee met de breedte. */
+.weg-tafel { flex-wrap: nowrap; gap: clamp(8px, 1.6vw, 16px); }
+.weg-tafel .weg-stuk { flex: none; width: clamp(40px, min(11vh, 11vw, calc((min(92vw, 760px) - 48px - (var(--n, 6) - 1) * 16px) / var(--n, 6))), 96px); height: auto; aspect-ratio: 1; }
+.weg-keuzes { flex-wrap: nowrap; gap: clamp(8px, 1.4vw, 14px); }
+.weg-keuze { flex: none; width: clamp(48px, min(15vh, calc((min(96vw, 820px) - (var(--n, 6) - 1) * 14px) / var(--n, 6))), 116px); height: auto; aspect-ratio: 1; }
+@media (max-height: 500px) and (orientation: landscape) {
+  .weg-tafel .weg-stuk { width: clamp(36px, min(12dvh, calc((min(92vw, 760px) - 48px - (var(--n, 6) - 1) * 16px) / var(--n, 6))), 48px); }
+  .weg-keuze { width: clamp(44px, min(16dvh, calc((min(96vw, 820px) - (var(--n, 6) - 1) * 14px) / var(--n, 6))), 60px); }
+}

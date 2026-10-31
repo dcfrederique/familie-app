@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type CSSProperties } from 'react'
 import type { Gebruiker } from '../data/gezin.ts'
 import { kettingenPerRonde, kettingNiveaus, startKettingNiveau, type KettingNiveau, type Kraal } from '../data/spelletjes.ts'
 import { zin } from '../data/zinnen.ts'
@@ -129,7 +129,8 @@ function KettingScherm({ kind }: { kind: Gebruiker }) {
           <div className="ketting-teller" aria-label={`Ketting ${spel.ronde + 1} van ${kettingenPerRonde}`}>
             {Array.from({ length: kettingenPerRonde }, (_, i) => <span key={i} className={i < spel.ronde ? 'af' : i === spel.ronde ? 'nu' : ''} />)}
           </div>
-          <div key={`${spel.ronde}-${oei}`} className={`ketting-rij${oei ? ' oei' : ''}`} role="img" aria-label="De ketting">
+          <div key={`${spel.ronde}-${oei}`} className={`ketting-rij${oei ? ' oei' : ''}`} role="img" aria-label="De ketting"
+               style={{ '--n': zichtbaar(ketting).length + ketting.lege } as CSSProperties}>
             {zichtbaar(ketting).map((k, i) => <span key={i} className="kraal"><KraalTekening kraal={k} /></span>)}
             {Array.from({ length: ketting.lege }, (_, i) => {
               const vol = i < spel.plek

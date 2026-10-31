@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.80',
+    datum: '2026-10-31',
+    titel: 'Moeilijke spelletjes passen weer op het scherm, en meer op de gsm',
+    tekst: 'Sinds de moeilijkste stand moeilijker werd, staken bij Wat is er weg?, Herfstketting en Verkleedkist de voorwerpen soms buiten het scherm. Nu krimpen ze mee met hoeveel er zijn, zodat alles op één rij blijft. Op een liggende gsm passen nu ook Schrijven en Pompoenen maken. In Winterslaap dwarrelt een sneeuwvlokje naar beneden.',
+  },
+  {
     versie: '0.79',
     datum: '2026-10-31',
     titel: 'Het Meer is gevuld',

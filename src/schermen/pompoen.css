@@ -33,7 +33,7 @@
 @media (prefers-reduced-motion: reduce) { .pompoen-groot.schudt, .pompoen-mini.nieuw { animation: none; } }
 
 /* Liggende tablet: de pompoen links, de keuzes en het lichtje rechts, zodat alles zonder scrollen past. */
-@media (min-width: 600px) and (min-height: 560px) and (orientation: landscape) {
+@media (min-width: 600px) and (min-height: 560px) and (orientation: landscape), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
   .pompoen {
     display: grid; grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto 1fr auto;
     grid-template-areas: "chips chips" "bord keuzes" "bord licht"; column-gap: clamp(16px, 3vw, 40px); row-gap: clamp(8px, 1.6dvh, 18px);
@@ -49,4 +49,15 @@
   .pompoen-groot { width: clamp(170px, min(46dvh, 28vw, calc(20dvh + 180px)), 380px); }
   .pompoen-kaartje .pompoen-tekening.klein { width: clamp(90px, 18dvh, 170px); }
   .pompoen-eind .pompoen-tekening { width: clamp(150px, 28dvh, 280px); }
+}
+
+/* Liggende gsm: pompoen links, keuzes en lichtje rechts zoals op de tablet, alleen kleiner. */
+@media (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .pompoen { row-gap: 6px; }
+  .pompoen .pompoen-knop { width: 58px; height: 46px; border-radius: 14px; }
+  .pompoen > .pompoen-keuzes { gap: 6px; }
+  .pompoen-groot { width: clamp(130px, 40dvh, 200px); }
+  .pompoen-kaartje .pompoen-tekening.klein { width: clamp(60px, 16dvh, 90px); }
+  .pompoen-eind .pompoen-tekening { width: clamp(110px, 30dvh, 160px); }
+  .pompoen-licht { min-height: 46px; }
 }

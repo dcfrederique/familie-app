@@ -1,7 +1,7 @@
 // Kinderschermen die nog niet passen zonder scrollen, als 'kind scherm BxH' (gsm liggend inbegrepen).
 // Bijgehouden door de nachtelijke schermcontrole (CLAUDE.md): wat past, gaat eruit; de test zegt het zelf.
 // Bijwerken: OPEN_OPNEMEN=1 npx playwright test e2e/schermen.spec.ts && node scripts/open-bijwerken.cjs <verslag>.
-// Stand: ideeen/2026-10-30-schermen.md.
+// Stand: ideeen/2026-10-31-schermen.md.
 export const OPEN = new Set<string>([
   "feline figuurtje 844x390",
   "feline figuurtje 915x412",
@@ -9,12 +9,8 @@ export const OPEN = new Set<string>([
   "feline huis 915x412",
   "feline kleurplaten 844x390",
   "feline kleurplaten 915x412",
-  "feline pompoen 844x390",
-  "feline pompoen 915x412",
   "feline puzzel 844x390",
   "feline puzzel 915x412",
-  "feline schrijven 844x390",
-  "feline schrijven 915x412",
   "feline spelen 844x390",
   "feline spelen 915x412",
   "feline start 844x390",
@@ -33,12 +29,8 @@ export const OPEN = new Set<string>([
   "luca huis 915x412",
   "luca kleurplaten 844x390",
   "luca kleurplaten 915x412",
-  "luca pompoen 844x390",
-  "luca pompoen 915x412",
   "luca puzzel 844x390",
   "luca puzzel 915x412",
-  "luca schrijven 844x390",
-  "luca schrijven 915x412",
   "luca spelen 844x390",
   "luca spelen 915x412",
   "luca start 844x390",
@@ -57,12 +49,8 @@ export const OPEN = new Set<string>([
   "yuna huis 915x412",
   "yuna kleurplaten 844x390",
   "yuna kleurplaten 915x412",
-  "yuna pompoen 844x390",
-  "yuna pompoen 915x412",
   "yuna puzzel 844x390",
   "yuna puzzel 915x412",
-  "yuna schrijven 844x390",
-  "yuna schrijven 915x412",
   "yuna spelen 844x390",
   "yuna spelen 915x412",
   "yuna start 844x390",
