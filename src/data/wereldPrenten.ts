@@ -126,6 +126,12 @@ export const gebouwTekening: Record<string, string> = {
 
 /** Dingen op straat die (nog) niet in de huiscatalogus staan; viewBox -100 -220 200 240. */
 export const straatTekening: Record<string, string | ((kleur: string) => string)> = {
+  // parasol: rood-witte strandparasol met een handdoek
+  parasol: `<ellipse cx="6" cy="-4" rx="46" ry="10" fill="#F4D35E" stroke="#C9A93A" stroke-width="3"/><rect x="-3" y="-120" width="6" height="120" rx="3" fill="#8A5A33"/><path d="M-78 -112Q0 -176 78 -112Z" fill="#D8452B" stroke="#A82F1B" stroke-width="3" stroke-linejoin="round"/><path d="M-52 -138L-26 -112M0 -153V-112M52 -138L26 -112" stroke="#FFF" stroke-width="12"/>`,
+  // boot: kleine roeiboot op het zand
+  boot: `<path d="M-90 -40H90Q74 -4 40 -4H-40Q-74 -4 -90 -40Z" fill="#2D6BD6" stroke="#1B4A9C" stroke-width="3" stroke-linejoin="round"/><path d="M-82 -52H82L90 -40H-90Z" fill="#F4F6F9" stroke="#B8C2CC" stroke-width="3" stroke-linejoin="round"/><rect x="-6" y="-110" width="12" height="60" rx="3" fill="#8A5A33"/><path d="M6 -108L56 -60H6Z" fill="#FFF" stroke="#B8C2CC" stroke-width="3" stroke-linejoin="round"/>`,
+  // steiger: houten plankier met paaltjes
+  steiger: `<rect x="-90" y="-26" width="180" height="26" rx="4" fill="#C08850" stroke="#8A5A33" stroke-width="3"/><path d="M-60 -26V0M-30 -26V0M0 -26V0M30 -26V0M60 -26V0" stroke="#8A5A33" stroke-width="3"/><rect x="-92" y="-52" width="12" height="30" rx="4" fill="#6E4224"/><rect x="80" y="-52" width="12" height="30" rx="4" fill="#6E4224"/>`,
   // plas: een stuk meer (wordt 3 keer vergroot getekend en overlapt zijn buren); alleen water, zonder rand
   plas: `<ellipse cx="0" cy="-75" rx="100" ry="75" fill="#4FB3E8"/><ellipse cx="-8" cy="-84" rx="78" ry="54" fill="#5DC0F2"/><path d="M-60 -92q14-8 28 0M10 -70q14-8 28 0M-30 -52q12-7 24 0M30 -100q10-6 20 0" stroke="#A6DEF8" stroke-width="5" fill="none" stroke-linecap="round"/><ellipse cx="42" cy="-60" rx="13" ry="8" fill="#3F9E58"/><ellipse cx="-50" cy="-48" rx="11" ry="7" fill="#3F9E58"/><circle cx="44" cy="-63" r="4" fill="#FF8FB8"/>`,
   // riet: drie stengels met een bruine pluim

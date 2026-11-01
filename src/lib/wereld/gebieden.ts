@@ -38,9 +38,9 @@ export type ItemSoort = 'huis' | 'gebouw' | 'ding' | 'pad'
 export interface Item { id: string; soort: ItemSoort; ref: string; gebied: GebiedId; x: number; y: number }
 
 /** Wat een ouder erbij kan zetten (naast de huizen, gebouwen en paden). */
-export const DECOR = ['boom', 'bank', 'lantaarn', 'schommel', 'glijbaan', 'wip', 'zandbak', 'doel', 'paddenstoel', 'den', 'rots', 'hooibaal', 'hek', 'riet'] as const
+export const DECOR = ['boom', 'bank', 'lantaarn', 'schommel', 'glijbaan', 'wip', 'zandbak', 'doel', 'paddenstoel', 'den', 'rots', 'hooibaal', 'hek', 'riet', 'parasol', 'boot', 'steiger'] as const
 export const DECOR_NAAM: Record<(typeof DECOR)[number], string> = {
-  boom: 'Boom', bank: 'Bank', lantaarn: 'Lantaarn', schommel: 'Schommel', glijbaan: 'Glijbaan', wip: 'Wip', zandbak: 'Zandbak', doel: 'Doel', paddenstoel: 'Paddenstoel', den: 'Den', rots: 'Rots', hooibaal: 'Hooibaal', hek: 'Hek', riet: 'Riet',
+  boom: 'Boom', bank: 'Bank', lantaarn: 'Lantaarn', schommel: 'Schommel', glijbaan: 'Glijbaan', wip: 'Wip', zandbak: 'Zandbak', doel: 'Doel', paddenstoel: 'Paddenstoel', den: 'Den', rots: 'Rots', hooibaal: 'Hooibaal', hek: 'Hek', riet: 'Riet', parasol: 'Parasol', boot: 'Boot', steiger: 'Steiger',
 }
 
 /** Zo veel dingen (zonder paden) kunnen ouders per gebied erbij zetten, en zo veel paden in totaal. */
@@ -175,6 +175,25 @@ function meerDecor(): Item[] {
   return uit
 }
 
+/**
+ * Het strand (nacht van 1 november 2026): de zee langs de noordkant (stukken `plas`), een steiger en gestrande bootjes aan de
+ * kust en parasols op het zand, met de weg van de westpoort naar de oostpoort vrij. Id's `ding:<soort>:strand:<n>`.
+ */
+function strandDecor(): Item[] {
+  const uit: Item[] = []
+  const op = (ref: string, n: number, x: number, y: number) => uit.push({ id: `ding:${ref}:strand:${n}`, soort: 'ding', ref, gebied: 'strand', x, y })
+  let n = 0
+  for (let x = 4; x <= 52; x += 4.5) op('plas', ++n, Math.round(x * 4) / 4, 8.2)
+  n = 0
+  for (const x of [20, 22, 36, 38.2]) op('steiger', ++n, x, 9.9)
+  n = 0
+  for (const [x, y] of [[12, 10], [46.5, 10], [29, 10]]) op('boot', ++n, x, y)
+  n = 0
+  for (const [x, y] of [[7, 18], [13.5, 20.5], [21.5, 18], [33, 19.5], [40.5, 21], [47.5, 18], [51.5, 21.5], [27, 22]]) op('parasol', ++n, x, y)
+  op('bank', 1, 17, 16.4)
+  return uit
+}
+
 /** Alles wat er standaard staat voor deze kinderen: het dorp zoals het is, de andere gebieden leeg op de wegen na. */
 export function standaardItems(kinderIds: readonly string[]): Item[] {
   const bewoners = kinderIds.slice(0, MAX_HUIZEN)
@@ -189,7 +208,7 @@ export function standaardItems(kinderIds: readonly string[]): Item[] {
   for (const g of GEBIEDEN) if (g.id !== 'dorp') paden.push(...poortPaden(g.id, g.poorten))
   // een pad kan twee keer voorkomen (de weg naar het noorden kruist een stoepje): één per tegel
   const uniek = [...new Map(paden.map((i) => [i.id, i])).values()]
-  return [...huizen, ...gebouwItems, ...dorpDecor(), ...bosDecor(), ...bergDecor(), ...plattelandDecor(), ...meerDecor(), ...uniek]
+  return [...huizen, ...gebouwItems, ...dorpDecor(), ...bosDecor(), ...bergDecor(), ...plattelandDecor(), ...meerDecor(), ...strandDecor(), ...uniek]
 }
 
 /** Wat er nu staat: de standaardplekken, met de verplaatsingen en verwijderingen van de ouders, en wat zij erbij zetten. */

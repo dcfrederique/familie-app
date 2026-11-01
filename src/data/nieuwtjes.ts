@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.83',
+    datum: '2026-11-01',
+    titel: 'Het Strand is gevuld',
+    tekst: 'Het Strand en de haven (onder het Stadje) is niet meer leeg: de zee langs de noordkant, een steiger, gestrande bootjes en parasols op het zand, met de weg naar het Stadje en het Sportpark vrij. Ouders kunnen alles verplaatsen of weghalen in Wij → Kaart bewerken; Parasol, Boot en Steiger staan nu ook bij Decor. Elke nacht komt er een stuk bij in een volgend gebied.',
+  },
+  {
     versie: '0.82',
     datum: '2026-11-01',
     titel: 'Kastanjes vangen, ganzen op de vijver en De bevroren beek',
