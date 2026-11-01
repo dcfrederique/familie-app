@@ -21,17 +21,8 @@
 .bladzijden.naast .blader-stippen i { width: 10px; height: 10px; }
 .bladzijden.naast .blader-stippen i.nu { width: 26px; }
 
-/* Liggende gsm: dezelfde volle opmaak, zodat spelletjes met SpelKader vol ook daar precies het scherm vullen. */
-@media (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
-  .kind.kind-vol { height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
-  .kind-vol > header { flex: none; }
-  .kind-vol > .kind-inhoud { flex: 1; min-height: 0; width: 100%; display: flex; flex-direction: column; padding-bottom: 8px; }
-  .kind-vol .verhalen { flex: 1; min-height: 0; }
-  .kind-vol.thema-tuin > .kind-inhoud { padding-bottom: 16px; }
-}
-
-/* Subschermen vullen op tablet en pc precies het scherm; het raster deelt de vrije hoogte op. */
-@media (min-width: 600px) and (min-height: 560px) {
+/* Subschermen vullen op tablet, pc en liggende gsm precies het scherm; het raster deelt de vrije hoogte op. */
+@media (min-width: 600px) and (min-height: 560px), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
   .kind.kind-vol { height: 100dvh; display: flex; flex-direction: column; overflow: hidden; }
   .kind-vol > header { flex: none; }
   .kind-vol > .kind-inhoud { flex: 1; min-height: 0; width: 100%; display: flex; flex-direction: column; padding-bottom: 20px; }
@@ -45,4 +36,27 @@
   .bladzijden.vast > .taken-raster { overflow: visible; align-content: start; }
   .kind-scherm > .bladzijden.vast { flex: 0 1 560px; }
   .kind-start > section > .bladzijden.vast { flex: 1; }
+}
+
+/* Liggende gsm: dezelfde volle opmaak als op de tablet, met kleinere marges en bladerknoppen. */
+@media (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .kind-vol > .kind-inhoud { padding-bottom: 8px; }
+  .kind-vol.thema-tuin > .kind-inhoud { padding-bottom: 16px; }
+  .bladzijden { gap: 6px; }
+  .blader { gap: 14px; }
+  .blader-knop { width: 48px; height: 48px; }
+  .bladzijden.naast .blader-knop { width: 44px; height: 44px; }
+  .blader-stippen i { width: 10px; height: 10px; }
+  .blader-stippen i.nu { width: 24px; }
+}
+/* Liggende gsm: de kaarten (verhalen, kleurplaten, puzzels, winkel) volgen de hoogte van hun vak; de prent krimpt mee. */
+@media (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .bladzijden.vast > .blad > .verhaal-kaart { height: 100%; min-height: 0; }
+  .bladzijden.vast > .blad > .verhaal-kaart > svg:first-child, .bladzijden.vast > .blad > .verhaal-kaart .verhaal-prent,
+  .bladzijden.vast > .blad > .verhaal-kaart .kleurplaat { flex: 1 1 0; min-height: 0; height: auto; aspect-ratio: auto; }
+  .bladzijden.vast > .blad > .verhaal-kaart .verhaal-kaart-titel { min-height: 0; padding: 6px 10px 8px; font-size: 14px; }
+  .bladzijden.vast > .verhaal-raster, .bladzijden.vast > .kleur-raster { padding-top: 4px; }
+  .kind-vol .winkel { flex: 1; min-height: 0; }
+  .bladzijden.vast > .winkel-raster { align-content: start; padding: 2px 0 6px; }
+  .bladzijden.vast > .winkel-raster .winkel-kaart { min-height: 0; height: 100%; padding-block: 6px; gap: 4px; border-radius: 20px; }
 }

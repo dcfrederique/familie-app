@@ -22,3 +22,6 @@
 @media (prefers-reduced-motion: reduce) {
   .kast-wiebel, .kast-pijl { animation: none; }
 }
+
+/* Detail: een zacht herfstzonnetje in de lucht van het veld. */
+.kast-veld { background: radial-gradient(circle at 86% 34%, #FFD66B 0 34px, rgb(255 214 107 / .45) 36px, rgb(255 214 107 / 0) 110px), linear-gradient(#FFE9B8, #FFF6DE 65%); }

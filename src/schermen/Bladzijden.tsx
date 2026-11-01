@@ -3,10 +3,10 @@ import './bladzijden.css'
 
 // Raster dat op tablet en pc nooit scrollt: wat niet past, komt op een volgende bladzijde met pijlen.
 // Het raster meet zijn eigen plaats en kiest zoveel kolommen en rijen als er vakken van de minimummaat in passen.
-// Op een smal of laag scherm (gsm) blijft het een gewone lijst die scrollt (of `perBlad` per bladzijde).
+// Op een staande gsm blijft het een gewone lijst die scrollt (of `perBlad` per bladzijde).
 
-// Ook tablets staand (vanaf 600 px breed): daar mag een kind evenmin moeten scrollen.
-const GROOT = '(min-width: 600px) and (min-height: 560px)'
+// Ook tablets staand (vanaf 600 px breed) en een liggende gsm: daar mag een kind evenmin moeten scrollen.
+const GROOT = '(min-width: 600px) and (min-height: 560px), (orientation: landscape) and (max-height: 520px) and (min-width: 640px)'
 
 export interface Vakmaat {
   /** Kleinste breedte en hoogte van een vak, in px. */

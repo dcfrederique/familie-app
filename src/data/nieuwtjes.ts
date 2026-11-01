@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.84',
+    datum: '2026-11-01',
+    titel: 'Bijna alles past nu op een liggende gsm',
+    tekst: 'Op een liggende gsm zien het startscherm, Mijn taken, Spelen, Verhalen, Kleurplaten, Puzzels en de Winkel er nu uit zoals op de tablet: een lage kop, alles op één scherm en bladeren met pijlen in plaats van scrollen. Taken staan voor wie leest op één rij met Klaar! ernaast. Alleen het figuurtje, Mijn huis en Zelf tekenen scrollen op de gsm nog. In Kastanjes vangen schijnt een herfstzonnetje.',
+  },
+  {
     versie: '0.83',
     datum: '2026-11-01',
     titel: 'Het Strand is gevuld',

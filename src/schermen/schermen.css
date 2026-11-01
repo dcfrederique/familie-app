@@ -377,3 +377,63 @@ a.sterren-pil { text-decoration: none; }
   .balk .rond { width: 48px; height: 48px; }
   .balk-titel { font-size: 24px; }
 }
+
+/* Liggende gsm: het startscherm en Mijn taken vullen het scherm zoals op de tablet (kop, taken op bladzijden, onderbalk),
+   alleen kleiner. De taakkaarten schakelen vanzelf naar hun compacte vorm (container queries hierboven). */
+@media (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .kind-scherm {
+    height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+    padding: 8px 16px; gap: 8px; justify-content: center;
+  }
+  .kind-scherm .banner { height: clamp(96px, 28dvh, 120px); border-radius: 22px; }
+  .kind-scherm .banner-inhoud { top: 8px; gap: 6px; }
+  .kind-scherm .kop-groot .avatar { width: 44px; height: 44px; }
+  .kind-scherm .banner .voortgang { min-height: 44px; }
+  .kind-start { flex: 1; min-height: 0; gap: 12px; align-items: stretch; }
+  .kind-start > section { display: flex; flex-direction: column; min-height: 0; height: 100%; }
+  .kind-start .sectie-titel { margin: 0 0 4px; font-size: 18px; }
+  .taken-raster { flex: 1; min-height: 0; gap: 10px; }
+  .taak-kaart { min-height: 0; container-type: size; border-radius: 20px; }
+}
+@media (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  /* Kop: naam en sterren naast elkaar op één rij, zodat de kop laag blijft. */
+  .kind-scherm .banner { height: 76px; }
+  .kind-scherm .banner-inhoud { top: 50%; transform: translateY(-50%); left: 14px; right: 14px; flex-direction: row; align-items: center; gap: 12px; }
+  .kind-scherm .banner .kop { gap: 10px; flex: none; }
+  .kind-scherm .banner .kop-titel, .kind-scherm .kop-groot .kop-titel { font-size: 24px; }
+  .kind-scherm .banner .kop-sub { font-size: 13px; }
+  .kind-scherm .banner-rij { flex-wrap: nowrap; gap: 8px; }
+  .kind-scherm .sterren-pil, .kind-scherm .vanavond { height: 44px; padding: 0 14px 0 10px; border-radius: 22px; }
+  .kind-scherm .sterren-pil b { font-size: 22px; }
+  .kind-scherm .sterren-pil span { font-size: 14px; }
+  .kind-scherm .vanavond { max-width: 220px; font-size: 14px; }
+  .kind-scherm .wereld-groot { min-height: 0; border-radius: 22px; }
+  .wereld-groot-naam { left: 12px; bottom: 10px; padding: 4px 14px 6px; border-width: 3px; font-size: 22px; }
+  .wereld-groot-ga { right: 12px; bottom: 10px; width: 52px; height: 52px; }
+  .kind-start > section[aria-label="De wereld"] { display: flex; flex-direction: column; min-height: 0; }
+}
+/* Heel lage taakkaart (liggende gsm): voorlezen, titel en Klaar! op één rij. */
+@container (max-height: 129px) {
+  .taak-inhoud { grid-template-columns: 48px minmax(0, 1fr) minmax(110px, 40%); grid-template-rows: minmax(0, 1fr); grid-template-areas: "lees titel actie"; padding: 8px 10px; }
+  .taak-inhoud .taak-badge { grid-area: titel; align-self: start; justify-self: start; transform: none; height: 22px; font-size: 13px; }
+  .taak-inhoud .taak-titel { font-size: 16px; align-self: end; line-height: 1.15; }
+  .taak-inhoud .voorlees-knop { width: 44px; height: 44px; }
+  .taak-inhoud .taak-klaar { min-height: 48px; font-size: 17px; padding: 0 10px; }
+  .taak-inhoud:not(:has(.voorlees-knop)) { grid-template-columns: minmax(0, 1fr) minmax(110px, 40%); grid-template-areas: "titel actie"; }
+  .taak-inhoud:not(:has(.voorlees-knop)) .taak-klaar, .taak-inhoud:not(:has(.voorlees-knop)) .taak-status { grid-column: auto; }
+}
+@media (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .wereld-midden { flex: 1 1 0; }
+  .taak-inhoud:has(.voorlees-knop) { grid-template-columns: 48px minmax(0, 1fr) minmax(96px, 34%); }
+  /* Wie niet leest: de prentkaarten vullen de hoogte tussen kop en onderbalk, prent en vinkje krimpen mee. */
+  .prent-raster, .prent-raster.veel { flex: 1 1 0; min-height: 0; grid-template-rows: minmax(0, 1fr); gap: 10px; }
+  .prent-kaart, .met-banner .prent-kaart { min-height: 0; padding: 8px; gap: 4px; border-radius: 20px; container-type: size; }
+  .prent-kaart .voorlees-knop { width: 40px; height: 40px; top: 6px; right: 6px; }
+  .prent-kaart .taak-prent, .met-banner .prent-kaart .taak-prent, .prent-raster.veel .taak-prent {
+    width: clamp(40px, calc(100cqh - 120px), 96px); height: auto; aspect-ratio: 1; margin-top: 0;
+  }
+  .prent-kaart .taak-prent svg { width: 56%; height: 56%; }
+  .prent-kaart .taak-titel { font-size: 14px; line-height: 1.1; }
+  .prent-kaart .rond-groot { width: 48px; height: 48px; flex: none; }
+  .prent-kaart .rond-groot svg { width: 26px; height: 26px; }
+}
