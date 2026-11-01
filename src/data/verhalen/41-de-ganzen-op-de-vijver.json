@@ -1,0 +1,88 @@
+{
+  "nr": 41,
+  "titel": "De ganzen op de vijver",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Herfst, de trekvogels en vriendelijk zijn voor gasten",
+  "bladzijden": [
+    {
+      "tekst": "Het is een frisse herfstochtend. Eddie de eend zwemt rondjes op de vijver. Kiki de kikker zit op een groot blad en rilt een beetje. \"Brr,\" zegt hij. \"Het wordt echt koud.\" Eddie knikt en trekt zijn veertjes dicht.",
+      "prent": {
+        "decor": "vijver",
+        "figuren": [
+          "eend",
+          "kikker"
+        ]
+      }
+    },
+    {
+      "tekst": "Plots hoort Eddie een vreemd geluid. Hoog in de lucht vliegt een lange rij vogels, in de vorm van een grote V. \"Het zijn ganzen,\" roept Kiki. \"Ze vliegen naar het warme zuiden voor de winter!\" Eddie kijkt met open snaveltje omhoog.",
+      "prent": {
+        "decor": "lucht",
+        "figuren": [
+          "eend*3",
+          "wolk"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Wat een lange reis,\" zegt Eddie. \"Zouden ze niet moe worden?\" Kiki haalt zijn schouders op. Dan ziet Eddie dat de V kleiner wordt. De ganzen vliegen rondjes boven de vijver. Ze willen landen!",
+      "prent": {
+        "decor": "vijver",
+        "figuren": [
+          "eend",
+          "kikker"
+        ]
+      }
+    },
+    {
+      "tekst": "Plons, plons, plons. Een voor een glijden de ganzen over het water. Ze zijn stil en moe, en hun veren zijn nat van de mist. Eddie zwemt voorzichtig naar hen toe. \"Welkom op mijn vijver,\" zegt hij. \"Gaat het wel?\"",
+      "prent": {
+        "decor": "vijver",
+        "figuren": [
+          "eend:zwemt*4"
+        ]
+      }
+    },
+    {
+      "tekst": "\"We moeten even rusten,\" zucht de oudste gans. \"Maar we hebben honger.\" Eddie denkt na. Dan hoort hij Lotte het konijn roepen vanaf de weide. Zij heeft een mandje vol kastanjes en zaadjes bij zich. \"Voor jullie!\" lacht ze.",
+      "prent": {
+        "decor": "weide",
+        "figuren": [
+          "eend",
+          "konijn"
+        ]
+      }
+    },
+    {
+      "tekst": "Samen delen ze het eten. De ganzen knabbelen en krijgen weer kleur op hun snavel. Kiki maakt een grapje en alle ganzen lachen luid. Eddie voelt zich warm worden, al is het buiten koud.",
+      "prent": {
+        "decor": "vijver",
+        "figuren": [
+          "eend*3",
+          "konijn"
+        ]
+      }
+    },
+    {
+      "tekst": "Na een lange nacht slapen is de zon er weer. De ganzen strekken hun vleugels. \"Dank je wel, Eddie,\" zegt de oudste gans. \"Wij komen in de lente terug, dat beloven we.\" Een voor een stijgen ze op, in een mooie V.",
+      "prent": {
+        "decor": "lucht",
+        "figuren": [
+          "eend*3"
+        ]
+      }
+    },
+    {
+      "tekst": "Eddie, Kiki en Lotte kijken de ganzen na tot ze helemaal klein zijn. \"Ze komen terug,\" zegt Lotte zacht. \"En dan staat de vijver weer klaar.\" Eddie glimlacht. Hij zwemt nog een rondje, met een warm gevoel in zijn buik.",
+      "prent": {
+        "decor": "vijver",
+        "figuren": [
+          "eend",
+          "kikker",
+          "konijn"
+        ]
+      }
+    }
+  ]
+}

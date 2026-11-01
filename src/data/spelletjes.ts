@@ -234,6 +234,33 @@ export function startWinterslaapNiveau(kind: Gebruiker, kinderen: Gebruiker[]): 
   return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
 }
 
+export type KastanjesNiveau = 'makkelijk' | 'middel' | 'moeilijk'
+
+/**
+ * Kastanjes vangen. Per ronde: hoeveel kastanjes vallen (`aantal`), hoe lang een val duurt in seconden (`val`),
+ * welk deel van de vallers een paddenstoel is (`padden`), hoeveel er tegelijk in de lucht zijn (`tegelijk`) en of het
+ * mandje op 3 vaste plekken staat (`banen`) of vrij sleept. `eis` is het deel kastanjes dat gevangen moet zijn en `maxPadden`
+ * het aantal paddenstoelen dat hoogstens in het mandje mag vallen: een ronde die dat niet haalt begint opnieuw (zonder straf).
+ * `wind` geeft de eerste ronde (vanaf 0) waarin windvlagen het mandje opzij duwen.
+ */
+export const kastanjesNiveaus: Record<KastanjesNiveau, {
+  label: string; banen: boolean; aantal: readonly number[]; val: readonly number[]; padden: number; tegelijk: number
+  eis: number | null; maxPadden: number | null; wind: number | null; hints: boolean
+}> = {
+  makkelijk: { label: 'Makkelijk', banen: true, aantal: [6, 6, 6, 6], val: [3, 3, 3, 3], padden: 0, tegelijk: 1, eis: null, maxPadden: null, wind: null, hints: true },
+  middel: { label: 'Middel', banen: false, aantal: [10, 10, 10, 10], val: [2.4, 2.4, 2.4, 2.4], padden: 0.2, tegelijk: 2, eis: null, maxPadden: null, wind: null, hints: true },
+  moeilijk: { label: 'Moeilijk', banen: false, aantal: [18, 18, 18, 18], val: [1.8, 1.5, 1.25, 1], padden: 1 / 3, tegelijk: 4, eis: 0.8, maxPadden: 2, wind: 2, hints: false },
+}
+
+export const kastanjesRondes = 4
+
+/** Wie niet leest begint makkelijk, de oudste lezer moeilijk, andere lezers middel. */
+export function startKastanjesNiveau(kind: Gebruiker, kinderen: Gebruiker[]): KastanjesNiveau {
+  if (!kind.kan_lezen) return 'makkelijk'
+  const oudsteLezer = kinderen.filter((k) => k.kan_lezen).sort((a, b) => a.volgorde - b.volgorde)[0]
+  return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
+}
+
 export type LichtjesNiveau = 'makkelijk' | 'middel' | 'moeilijk'
 export type LichtKleur = 'rood' | 'geel' | 'blauw' | 'groen'
 export const lichtKleuren: readonly LichtKleur[] = ['rood', 'geel', 'blauw', 'groen']
@@ -282,7 +309,7 @@ export function startNiveaus(kind: Gebruiker, kinderen: Gebruiker[]): { memory: 
   return oudsteLezer?.id === kind.id ? { memory: 'groot', rekenen: 'tot100' } : { memory: 'middel', rekenen: 'tot20' }
 }
 
-export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'springen'
+export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'springen'
 
 export interface SpelInfo {
   sleutel: SpelSleutel
@@ -326,6 +353,8 @@ export const spelMenu: SpelInfo[] = [
     icoon: 'M4 4h16v16H4zM4 9h8M12 9v6M8 15h8M16 4v6M8 4v2' },
   { sleutel: 'winterslaap', naam: 'Winterslaap', uitleg: 'Stop alle dieren in bed', prijs: 25,
     icoon: 'M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5zM15 5h.01M18 8h.01' },
+  { sleutel: 'kastanjes', naam: 'Kastanjes vangen', uitleg: 'Vang de kastanjes in je mandje', prijs: 25,
+    icoon: 'M5 13h14l-2 7H7zM8 13V10M12 13V8M16 13v-3M9 4h.01M14 3h.01M12 6h.01' },
   { sleutel: 'lichtjes', naam: 'Lichtjesboom', uitleg: 'Doe de lichtjes na in dezelfde volgorde', prijs: 20,
     icoon: 'M12 3l6 8h-3l5 7H4l5-7H6zM12 18v3M8 8.5h.01M15 13h.01M10 15h.01' },
   { sleutel: 'schaduw', naam: 'Wie is de schaduw?', uitleg: 'Zoek de schaduw die erbij hoort', prijs: 20,

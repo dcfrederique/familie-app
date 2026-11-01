@@ -23,6 +23,7 @@ import Weg from './schermen/Weg.tsx'
 import Verkleed from './schermen/Verkleed.tsx'
 import Doolhof from './schermen/Doolhof.tsx'
 import Winterslaap from './schermen/Winterslaap.tsx'
+import Kastanjes from './schermen/Kastanjes.tsx'
 import Lichtjes from './schermen/Lichtjes.tsx'
 import Schaduw from './schermen/Schaduw.tsx'
 import Springen, { OuderSpringland } from './schermen/Springen.tsx'
@@ -114,6 +115,7 @@ export default function App() {
         <Route path="verkleed" element={<Verkleed />} />
         <Route path="doolhof" element={<Doolhof />} />
         <Route path="winterslaap" element={<Winterslaap />} />
+        <Route path="kastanjes" element={<Kastanjes />} />
         <Route path="lichtjes" element={<Lichtjes />} />
         <Route path="schaduw" element={<Schaduw />} />
         <Route path="springen" element={<Springen />} />

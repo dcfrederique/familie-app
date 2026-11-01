@@ -106,6 +106,16 @@ export const gebouwTekening: Record<string, string> = {
     <path d="M232 192h20l-20 20h20M262 164h14l-14 14h14" fill="none" stroke="#9EB9EF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
     <rect x="296" y="236" width="8" height="52" fill="#6E4A28"/><rect x="278" y="214" width="44" height="26" rx="5" fill="#F4E1C1" stroke="#6E4A28" stroke-width="4"/><path d="M288 228h24" stroke="#6A5BD1" stroke-width="4" stroke-linecap="round"/>
     <path d="M60 270q0-14 14-14M330 280q4-12 16-12" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".8"/>`,
+  kastanjes: `<ellipse cx="200" cy="288" rx="180" ry="11" fill="#000" opacity=".13"/>
+    <path d="M184 288Q190 220 186 170L214 170Q210 220 216 288Z" fill="#7A4E2B"/>
+    <path d="M200 200Q160 190 140 170M200 190Q240 176 262 156" fill="none" stroke="#7A4E2B" stroke-width="9" stroke-linecap="round"/>
+    <circle cx="200" cy="110" r="76" fill="#E0892B"/><circle cx="140" cy="134" r="50" fill="#F0A93A"/><circle cx="262" cy="130" r="54" fill="#D9741F"/><circle cx="200" cy="72" r="46" fill="#F2C04B"/>
+    <g fill="#8A5A2B"><circle cx="150" cy="150" r="13"/><circle cx="232" cy="120" r="13"/><circle cx="196" cy="96" r="12"/><circle cx="270" cy="156" r="12"/></g>
+    <g stroke="#5C3A1B" stroke-width="3" stroke-linecap="round"><path d="M150 134v-6M138 150h-6M162 150h6M232 104v-6M220 120h-6M244 120h6M196 81v-6M184 96h-6M208 96h6M270 141v-6M258 156h-6M282 156h6"/></g>
+    <ellipse cx="124" cy="274" rx="13" ry="10" fill="#7B3F1E"/><ellipse cx="124" cy="270" rx="6" ry="4" fill="#B5703A"/><ellipse cx="96" cy="282" rx="11" ry="8" fill="#8B4A24"/>
+    <path d="M250 276h72l-8 16h-56z" fill="#B98A4E" stroke="#6E4A28" stroke-width="3"/><path d="M256 276Q286 252 316 276" fill="none" stroke="#6E4A28" stroke-width="5" stroke-linecap="round"/>
+    <circle cx="272" cy="274" r="8" fill="#8B4A24"/><circle cx="292" cy="272" r="8" fill="#7B3F1E"/><circle cx="308" cy="276" r="7" fill="#8B4A24"/>
+    <path d="M60 252l10-8l10 8l-10 8zM340 240l8-6l8 6l-8 6z" fill="#D8452B"/>`,
   bouw: `<ellipse cx="200" cy="288" rx="190" ry="11" fill="#000" opacity=".13"/>
     <path d="M60 286l40-120h12" stroke="#F2C230" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M106 166H330l-30 14" stroke="#F2C230" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M300 180v56" stroke="#555" stroke-width="4"/><rect x="288" y="234" width="24" height="16" rx="3" fill="#D93A3A"/>
     <path d="M40 286q60-70 140-30q40 14 70 30z" fill="#D9BC6A"/>

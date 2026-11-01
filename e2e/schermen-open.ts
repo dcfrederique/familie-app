@@ -35,7 +35,6 @@ export const OPEN = new Set<string>([
   "luca spelen 915x412",
   "luca start 844x390",
   "luca start 915x412",
-  "luca taken 844x390",
   "luca taken 915x412",
   "luca tekenen 844x390",
   "luca tekenen 915x412",

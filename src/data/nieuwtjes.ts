@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.82',
+    datum: '2026-11-01',
+    titel: 'Kastanjes vangen, ganzen op de vijver en De bevroren beek',
+    tekst: 'Nieuw verhaal "De ganzen op de vijver" en een nieuwe kleurplaat "Ganzen in de lucht" (meteen te lezen en in te kleuren). Het spelletje Kastanjes vangen kost 25 sterren in de winkel: sleep het mandje onder de vallende kastanjes en laat de paddenstoelen vallen. Makkelijk blijft rustig voor de kleintjes; de moeilijke stand is een echte uitdaging met meer kastanjes tegelijk, sneller vallen en wind. Het gebouw Kastanjeboom staat links onderaan in De wereld (gouden rand tot 15 november, slot tot gekocht). Springland heeft in Winterbergen een tweede level, De bevroren beek (licht pittig, ook met Vanzelf lopen te halen).',
+    verhaal: 'De ganzen op de vijver',
+    spel: { naam: 'Kastanjes vangen', prijs: 25 },
+    stukken: ['Figuurtje: Veerhoed (15), Met gansje (20), Mandje met kastanjes (15)', 'Mijn huis: Kastanjeboom (35), Eendenvijver (30), Kastanjeslinger (20)'],
+    open: 'Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.',
+  },
+  {
     versie: '0.81',
     datum: '2026-10-31',
     titel: 'Weekmenu met ontbijt, middag en vieruurtje, eigen recepten en deelrecepten',
