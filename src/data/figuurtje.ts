@@ -95,6 +95,7 @@ export const categorieen: CategorieInfo[] = [
       { id: 'regenhoed', naam: 'Regenhoedje', prijs: 15, prenten: true },
       { id: 'slaapmuts', naam: 'Slaapmuts', prijs: 15, prenten: true },
       { id: 'veerhoed', naam: 'Hoed met veer', prijs: 15, prenten: true },
+      { id: 'matrozenhoed', naam: 'Matrozenhoed', prijs: 15, prenten: true },
     ] },
   { id: 'shirt', naam: 'Shirt', uitsnede: '24 100 152 128', prenten: true, kleur: { veld: 'shirtKleur', palet: kledingKleuren },
     icoon: 'M8 4l-5 3l2 4l3-1v10h8V10l3 1l2-4l-5-3a4 4 0 0 1-8 0z',
@@ -114,6 +115,7 @@ export const categorieen: CategorieInfo[] = [
       { id: 'paddenstoel', naam: 'Met paddenstoel', prijs: 20, prenten: true },
       { id: 'pyjama', naam: 'Met maantje', prijs: 20, prenten: true },
       { id: 'ganzenshirt', naam: 'Met gansje', prijs: 20, prenten: true },
+      { id: 'anker', naam: 'Met anker', prijs: 20, prenten: true },
     ] },
   { id: 'broek', naam: 'Broek', uitsnede: '30 186 140 104', prenten: true, kleur: { veld: 'broekKleur', palet: kledingKleuren },
     icoon: 'M7 3h10l1 18h-4l-2-11l-2 11H6z',
@@ -144,6 +146,7 @@ export const categorieen: CategorieInfo[] = [
       { id: 'zaklamp', naam: 'Zaklamp', prijs: 15, prenten: true },
       { id: 'knuffelbeer', naam: 'Knuffelbeer', prijs: 20, prenten: true },
       { id: 'kastanjemand', naam: 'Mandje met kastanjes', prijs: 15, prenten: true },
+      { id: 'wuifvlag', naam: 'Wuifvlaggetje', prijs: 15, prenten: true },
     ] },
 ]
 

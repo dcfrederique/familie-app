@@ -1,0 +1,94 @@
+{
+  "nr": 42,
+  "titel": "Wachten op de stoomboot",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Sinterklaas, wachten, samen delen en een nieuwe vriend",
+  "bladzijden": [
+    {
+      "tekst": "Vandaag komt de stoomboot van Sinterklaas aan! Noor trekt haar warmste jas aan. In haar hand heeft ze een tekening voor de Sint. Opa pakt zijn sjaal. \"Kom, we gaan naar de kade,\" zegt hij. \"Anders zien we niets.\"",
+      "prent": {
+        "decor": "dorp",
+        "figuren": [
+          "noor",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "Aan de kade staan al heel veel mensen. Noor staat op haar tippen, maar ze ziet alleen jassen en mutsen. \"Ik zie de boot niet,\" zucht ze. Tijs de hond snuffelt aan haar laarsjes en kijkt even bezorgd naar haar op.",
+      "prent": {
+        "decor": "kust",
+        "figuren": [
+          "noor",
+          "opa",
+          "hond"
+        ]
+      }
+    },
+    {
+      "tekst": "Naast haar staat een jongen die ze niet kent. Hij heet Milan en is net verhuisd. Hij houdt een tekening vast, maar zijn handen zijn koud. \"Ik ken hier niemand,\" zegt Milan zacht. Noor glimlacht. \"Nu ken je mij.\"",
+      "prent": {
+        "decor": "kust",
+        "figuren": [
+          "noor",
+          "jongen"
+        ]
+      }
+    },
+    {
+      "tekst": "Plots waait er een rukwind over de kade. Fffft! De tekening van Milan vliegt weg, hoog boven de hoofden. Milan wil huilen. \"Wacht,\" zegt Noor. \"Tijs kan goed zoeken!\"",
+      "prent": {
+        "decor": "kust",
+        "figuren": [
+          "noor",
+          "jongen",
+          "wolk"
+        ]
+      }
+    },
+    {
+      "tekst": "Tijs rent tussen de benen door, snuffelt en blaft één keer. Hij heeft het papier gevonden, onder een bank! Voorzichtig draagt hij het terug, een beetje nat maar helemaal heel. \"Dank je wel, Tijs,\" lacht Milan. Zijn wangen worden rood van blijdschap.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "hond",
+          "noor",
+          "jongen"
+        ]
+      }
+    },
+    {
+      "tekst": "Opa heeft alles gezien. \"Kom hier, jullie twee,\" zegt hij. Hij tilt Noor op zijn linkerschouder en Milan op zijn rechter. Nu zien ze over alle hoofden heen. Ver weg, op het water, zien ze een kleine stip met een rookpluimpje.",
+      "prent": {
+        "decor": "kust",
+        "figuren": [
+          "opa",
+          "noor",
+          "jongen"
+        ]
+      }
+    },
+    {
+      "tekst": "\"De stoomboot!\" roepen ze samen. Toet, toet, klinkt het over het water. De boot komt dichterbij, met vlaggetjes langs de rand en veel mensen die zwaaien. Noor en Milan zwaaien terug met hun tekeningen, zo hoog als ze kunnen.",
+      "prent": {
+        "decor": "zee",
+        "figuren": [
+          "wolk",
+          "zon"
+        ]
+      }
+    },
+    {
+      "tekst": "Op het dek staat Sinterklaas met zijn mijter en lange baard. Hij zwaait en lijkt recht naar hen te kijken. Noor en Milan lachen. \"Zullen we morgen samen spelen?\" vraagt Noor. \"Ja!\" zegt Milan. Opa knipoogt. Het was een heel mooie dag.",
+      "prent": {
+        "decor": "kust",
+        "figuren": [
+          "noor",
+          "jongen",
+          "opa"
+        ]
+      }
+    }
+  ]
+}

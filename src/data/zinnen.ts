@@ -40,6 +40,8 @@ export const zin = {
   doolhofUitleg: 'Sleep de eekhoorn met je vinger door het doolhof. Breng hem naar zijn boom!',
   doolhofKlaar: 'Wat knap! De eekhoorn is bij zijn boom.',
   winterslaapUitleg: 'Tik op een dier om het te laten slapen. Pas op: de buurdieren worden dan misschien wakker! Stop alle dieren in bed.',
+  pakjesUitleg: 'Duw de pakjes met het hulpje op de matten. Je kunt alleen duwen, niet trekken!',
+  pakjesKlaar: 'Alle pakjes liggen klaar voor de Sint!',
   winterslaapKlaar: 'Welterusten! Alle dieren slapen.',
   kastanjesUitleg: 'Sleep het mandje onder de vallende kastanjes. Pas op voor de rode paddenstoelen: die zijn niet voor jou!',
   kastanjesKlaar: 'Wat een mooie oogst! Het mandje zit vol kastanjes.',

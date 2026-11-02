@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.85',
+    datum: '2026-11-02',
+    titel: 'Pakjes schuiven, Wachten op de stoomboot en Het sneeuwdorp',
+    tekst: 'Nieuw verhaal "Wachten op de stoomboot" (Sinterklaas komt aan) en nieuwe kleurplaat "Stoomboot aan de kade", meteen te lezen en in te kleuren. Het spelletje Pakjes schuiven kost 25 sterren in de winkel: duw met het hulpje de pakjes op de matten (duwen, niet trekken). Makkelijk heeft één pakje en een pijltje voor de kleintjes; de moeilijke stand is een echte puzzel met vier pakjes, muren, geen hulp, maar drie keer Terug en pluimen voor weinig duwen en snel. Het Pakjesmagazijn staat in De wereld (gouden rand tot 16 november, slot tot gekocht). Springland heeft in Winterbergen een derde level, Het sneeuwdorp (zacht, met slakken en een springveer).',
+    verhaal: 'Wachten op de stoomboot',
+    spel: { naam: 'Pakjes schuiven', prijs: 25 },
+    stukken: ['Figuurtje: Matrozenhoed (15), Met anker (20), Wuifvlaggetje (15)', 'Mijn huis: Stoomboot (35), Vuurtorentje (30), Reddingsboei (15)'],
+    open: 'Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.',
+  },
+  {
     versie: '0.84',
     datum: '2026-11-01',
     titel: 'Bijna alles past nu op een liggende gsm',

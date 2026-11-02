@@ -1,0 +1,68 @@
+/* Pakjes schuiven: het bord schaalt mee met de hoogte (geen scrollen), de pijltjes staan ernaast (staand eronder). */
+.pakjes { display: flex; flex-direction: column; align-items: center; gap: clamp(8px, 1.6dvh, 16px); width: 100%; position: relative; }
+.pakjes-speel { display: flex; align-items: center; justify-content: center; gap: clamp(16px, 4vw, 48px); width: 100%; }
+.pakjes-midden { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 1.2dvh, 12px); min-width: 0; }
+.pakjes-balk { display: flex; align-items: center; gap: 20px; min-height: 32px; }
+.pakjes-teller { display: flex; gap: 6px; }
+.pakjes-teller span { width: 14px; height: 14px; border-radius: 50%; background: var(--line); }
+.pakjes-teller .af { background: var(--gold); }
+.pakjes-teller .nu { background: var(--kid); }
+.pakjes-stand { display: flex; gap: 4px; font-size: 24px; line-height: 1; }
+.pakjes-stand span { opacity: 0.3; filter: grayscale(1); transition: opacity 0.2s, transform 0.2s; }
+.pakjes-stand .aan { opacity: 1; filter: none; transform: scale(1.15); }
+.pakjes-klok { font-weight: 700; font-variant-numeric: tabular-nums; min-width: 4ch; }
+.pakjes-veld {
+  display: block; height: clamp(200px, min(54dvh, calc(100dvh - 320px)), 520px); width: auto; max-width: 100%; touch-action: none;
+  user-select: none; -webkit-user-select: none; border-radius: 14px; cursor: pointer;
+}
+.pakjes-veld.schud { animation: pakjes-schud 0.25s ease-out; }
+.pakjes-grond { fill: #EAF2FA; stroke: #B5CBE0; stroke-width: 3; }
+.pakjes-pakje, .pakjes-hulp { transition: transform 0.14s ease-out; pointer-events: none; }
+.pakjes-pakje.gloed { filter: drop-shadow(0 0 5px #F2C230); }
+.pakjes-mat { pointer-events: none; }
+.pakjes-mat.gloed { animation: pakjes-gloed 1.4s ease-in-out infinite; }
+.pakjes-hulp.danst { animation: pakjes-dans 0.45s ease-in-out 3; }
+.pakjes-tip { stroke: var(--gold); stroke-width: 7; stroke-dasharray: 3 12; stroke-linecap: round; opacity: 0.95; pointer-events: none; animation: pakjes-pijl 0.8s linear infinite; }
+.pakjes-vast { text-align: center; font-weight: 700; font-size: clamp(14px, 2dvh, 18px); color: var(--ink); }
+.pakjes-bediening { display: grid; gap: clamp(10px, 2dvh, 20px); justify-items: center; }
+.pakjes-kruis {
+  display: grid; grid-template-columns: repeat(3, 72px); grid-template-rows: repeat(2, 72px); gap: 8px;
+  grid-template-areas: ". boven ." "links onder rechts";
+}
+.pakjes-pijl { width: 72px; min-height: 72px; padding: 0; display: grid; place-items: center; }
+.pakjes-pijl svg { width: 34px; height: 34px; }
+.pakjes-pijl.boven { grid-area: boven; } .pakjes-pijl.links { grid-area: links; } .pakjes-pijl.rechts { grid-area: rechts; } .pakjes-pijl.onder { grid-area: onder; }
+.pakjes-acties { display: grid; gap: 8px; }
+.pakjes-actie { min-height: 64px; font-size: 18px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+.pakjes-eind { display: grid; justify-items: center; gap: 16px; }
+.pakjes-feest { width: clamp(200px, 40dvh, 380px); height: auto; }
+.pakjes-pluimen { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; max-width: 360px; font-size: 28px; color: var(--line); }
+.pakjes-pluimen .aan { color: var(--gold); }
+@keyframes pakjes-schud { 0%, 100% { transform: translateX(0); } 30% { transform: translateX(-4px); } 70% { transform: translateX(4px); } }
+@keyframes pakjes-dans { 0%, 100% { translate: 0 0; } 50% { translate: 0 -8px; } }
+@keyframes pakjes-gloed { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+@keyframes pakjes-pijl { to { stroke-dashoffset: -15; } }
+@media (prefers-reduced-motion: reduce) {
+  .pakjes-pakje, .pakjes-hulp { transition: none; }
+  .pakjes-veld.schud, .pakjes-mat.gloed, .pakjes-hulp.danst, .pakjes-tip { animation: none; }
+}
+/* Staand: de pijltjes onder het bord. */
+@media (orientation: portrait) {
+  .pakjes-speel { flex-direction: column; }
+  .pakjes-bediening { grid-auto-flow: column; align-items: center; gap: 24px; }
+  .pakjes-veld { height: clamp(200px, 42dvh, 520px); max-width: 94%; }
+}
+/* Liggende gsm: kleinere pijltjes en knoppen, het bord krijgt de hoogte. */
+@media (max-height: 500px) and (orientation: landscape) {
+  .pakjes { gap: 4px; }
+  .pakjes-speel { gap: 16px; }
+  .pakjes-veld { height: 40dvh; }
+  .pakjes-balk { min-height: 22px; }
+  .pakjes-teller span { width: 10px; height: 10px; }
+  .pakjes-kruis { grid-template-columns: repeat(3, 48px); grid-template-rows: repeat(2, 48px); gap: 6px; }
+  .pakjes-pijl { width: 48px; min-height: 48px; }
+  .pakjes-pijl svg { width: 24px; height: 24px; }
+  .pakjes-actie { min-height: 44px; font-size: 15px; }
+  .pakjes-acties { grid-auto-flow: column; }
+  .pakjes-stand { font-size: 18px; }
+}
