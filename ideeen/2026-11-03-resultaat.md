@@ -6,3 +6,4 @@
 - **Stukken** (niet vrijgegeven): sterrenmuts, muzieknoot-shirt, liedjesboekje, lantaarnpaal, bankje met lampion, lampje bij de deur; migratie `20261103000100_stippen.sql`.
 - **Springland**: Het ijsmeer (vierde level van Winterbergen, pittig), het robotje speelt het uit in beide besturingen.
 - **Wereld**: Lampionnenatelier op (16; 21,5) met gouden rand ((32; 21,5), (58; 21), (28,5; 21) en (13; 21,5) vielen af).
+- **Nieuwtje** 0.87.
