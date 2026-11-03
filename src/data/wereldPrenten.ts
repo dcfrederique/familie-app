@@ -137,6 +137,10 @@ export const gebouwTekening: Record<string, string> = {
 
 /** Dingen op straat die (nog) niet in de huiscatalogus staan; viewBox -100 -220 200 240. */
 export const straatTekening: Record<string, string | ((kleur: string) => string)> = {
+  // voetbalveld: staand veld met gras in banen en witte lijnen (wordt 5 keer vergroot getekend, ligt op de grond)
+  voetbalveld: `<rect x="-60" y="-175" width="120" height="170" rx="6" fill="#6FC25C"/><path d="M-60 -175h120v21h-120zM-60 -133h120v21h-120zM-60 -91h120v21h-120zM-60 -49h120v21h-120z" fill="#84CC72"/><rect x="-56" y="-171" width="112" height="162" fill="none" stroke="#FFF" stroke-width="2.5"/><path d="M-56 -90h112" stroke="#FFF" stroke-width="2.5"/><circle cx="0" cy="-90" r="16" fill="none" stroke="#FFF" stroke-width="2.5"/><rect x="-26" y="-171" width="52" height="20" fill="none" stroke="#FFF" stroke-width="2.5"/><rect x="-26" y="-29" width="52" height="20" fill="none" stroke="#FFF" stroke-width="2.5"/>`,
+  // basketbalpaal: paal met bord en ring
+  basketpaal: `<rect x="-4" y="-130" width="8" height="130" rx="3" fill="#6B7480"/><rect x="-30" y="-176" width="60" height="44" rx="4" fill="#FFF" stroke="#8A93A0" stroke-width="3"/><rect x="-14" y="-160" width="28" height="20" fill="none" stroke="#D8452B" stroke-width="3"/><ellipse cx="0" cy="-122" rx="16" ry="5" fill="none" stroke="#E8772E" stroke-width="5"/>`,
   // parasol: rood-witte strandparasol met een handdoek
   parasol: `<ellipse cx="6" cy="-4" rx="46" ry="10" fill="#F4D35E" stroke="#C9A93A" stroke-width="3"/><rect x="-3" y="-120" width="6" height="120" rx="3" fill="#8A5A33"/><path d="M-78 -112Q0 -176 78 -112Z" fill="#D8452B" stroke="#A82F1B" stroke-width="3" stroke-linejoin="round"/><path d="M-52 -138L-26 -112M0 -153V-112M52 -138L26 -112" stroke="#FFF" stroke-width="12"/>`,
   // boot: kleine roeiboot op het zand

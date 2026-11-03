@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.86',
+    datum: '2026-11-03',
+    titel: 'Het Sportpark is gevuld',
+    tekst: 'Het Sportpark (links van het Strand) is niet meer leeg: een voetbalveld met twee doelen, twee basketbalpalen, banken langs de lijn, lantaarns en bomen, met de weg vanaf de poort vrij. Ouders kunnen alles verplaatsen of weghalen in Wij → Kaart bewerken; de Basketpaal staat nu ook bij Decor. Elke nacht komt er een stuk bij in een volgend gebied.',
+  },
+  {
     versie: '0.85',
     datum: '2026-11-02',
     titel: 'Pakjes schuiven, Wachten op de stoomboot en Het sneeuwdorp',

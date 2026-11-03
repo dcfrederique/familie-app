@@ -38,9 +38,9 @@ export type ItemSoort = 'huis' | 'gebouw' | 'ding' | 'pad'
 export interface Item { id: string; soort: ItemSoort; ref: string; gebied: GebiedId; x: number; y: number }
 
 /** Wat een ouder erbij kan zetten (naast de huizen, gebouwen en paden). */
-export const DECOR = ['boom', 'bank', 'lantaarn', 'schommel', 'glijbaan', 'wip', 'zandbak', 'doel', 'paddenstoel', 'den', 'rots', 'hooibaal', 'hek', 'riet', 'parasol', 'boot', 'steiger'] as const
+export const DECOR = ['boom', 'bank', 'lantaarn', 'schommel', 'glijbaan', 'wip', 'zandbak', 'doel', 'paddenstoel', 'den', 'rots', 'hooibaal', 'hek', 'riet', 'parasol', 'boot', 'steiger', 'basketpaal'] as const
 export const DECOR_NAAM: Record<(typeof DECOR)[number], string> = {
-  boom: 'Boom', bank: 'Bank', lantaarn: 'Lantaarn', schommel: 'Schommel', glijbaan: 'Glijbaan', wip: 'Wip', zandbak: 'Zandbak', doel: 'Doel', paddenstoel: 'Paddenstoel', den: 'Den', rots: 'Rots', hooibaal: 'Hooibaal', hek: 'Hek', riet: 'Riet', parasol: 'Parasol', boot: 'Boot', steiger: 'Steiger',
+  boom: 'Boom', bank: 'Bank', lantaarn: 'Lantaarn', schommel: 'Schommel', glijbaan: 'Glijbaan', wip: 'Wip', zandbak: 'Zandbak', doel: 'Doel', paddenstoel: 'Paddenstoel', den: 'Den', rots: 'Rots', hooibaal: 'Hooibaal', hek: 'Hek', riet: 'Riet', parasol: 'Parasol', boot: 'Boot', steiger: 'Steiger', basketpaal: 'Basketpaal',
 }
 
 /** Zo veel dingen (zonder paden) kunnen ouders per gebied erbij zetten, en zo veel paden in totaal. */
@@ -194,6 +194,26 @@ function strandDecor(): Item[] {
   return uit
 }
 
+/**
+ * Het sportpark (nacht van 3 november 2026): een voetbalveld met twee doelen, twee basketbalpalen, banken langs de lijn,
+ * lantaarns en bomen, met de weg van de oostpoort naar het midden vrij. Id's `ding:<soort>:sport:<n>`, nooit hernoemen.
+ * Het veld (`voetbalveld`) ligt op de grond: je loopt erover en het wordt altijd eerst getekend.
+ */
+function sportDecor(): Item[] {
+  const uit: Item[] = []
+  const op = (ref: string, n: number, x: number, y: number) => uit.push({ id: `ding:${ref}:sport:${n}`, soort: 'ding', ref, gebied: 'sport', x, y })
+  op('voetbalveld', 1, 40, 24)
+  op('doel', 1, 40, 17.2); op('doel', 2, 40, 23.4)
+  op('basketpaal', 1, 12, 18); op('basketpaal', 2, 12, 22.5)
+  let n = 0
+  for (const [x, y] of [[35.2, 19], [35.2, 21.5], [44.8, 19], [44.8, 21.5], [20, 17], [20, 23]]) op('bank', ++n, x, y)
+  n = 0
+  for (const [x, y] of [[35, 16.4], [45, 16.4], [35, 24], [45, 24], [28, 16.4]]) op('lantaarn', ++n, x, y)
+  n = 0
+  for (const [x, y] of [[5, 7], [12, 8], [19, 6.5], [26, 9], [33, 6], [40, 7.5], [48, 6.5], [6, 15], [5, 22], [50, 19], [51, 22.5], [18, 13]]) op('boom', ++n, x, y)
+  return uit
+}
+
 /** Alles wat er standaard staat voor deze kinderen: het dorp zoals het is, de andere gebieden leeg op de wegen na. */
 export function standaardItems(kinderIds: readonly string[]): Item[] {
   const bewoners = kinderIds.slice(0, MAX_HUIZEN)
@@ -208,7 +228,7 @@ export function standaardItems(kinderIds: readonly string[]): Item[] {
   for (const g of GEBIEDEN) if (g.id !== 'dorp') paden.push(...poortPaden(g.id, g.poorten))
   // een pad kan twee keer voorkomen (de weg naar het noorden kruist een stoepje): één per tegel
   const uniek = [...new Map(paden.map((i) => [i.id, i])).values()]
-  return [...huizen, ...gebouwItems, ...dorpDecor(), ...bosDecor(), ...bergDecor(), ...plattelandDecor(), ...meerDecor(), ...strandDecor(), ...uniek]
+  return [...huizen, ...gebouwItems, ...dorpDecor(), ...bosDecor(), ...bergDecor(), ...plattelandDecor(), ...meerDecor(), ...strandDecor(), ...sportDecor(), ...uniek]
 }
 
 /** Wat er nu staat: de standaardplekken, met de verplaatsingen en verwijderingen van de ouders, en wat zij erbij zetten. */

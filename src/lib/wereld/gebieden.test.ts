@@ -51,7 +51,7 @@ describe('de standaardplekken', () => {
     expect(items.filter((i) => i.soort === 'huis').map((i) => i.gebied)).toEqual(['dorp', 'dorp', 'dorp'])
     expect(items.filter((i) => i.soort === 'gebouw').length).toBe(gebouwen.length)
     // het bos is als eerste volgebouwd (docs/wereld-levendig.md); de andere gebieden blijven leeg op de wegen na
-    for (const g of GEBIEDEN.filter((x) => x.id !== 'dorp' && x.id !== 'bos' && x.id !== 'berg' && x.id !== 'platteland' && x.id !== 'meer' && x.id !== 'strand')) expect(items.filter((i) => i.gebied === g.id && i.soort !== 'pad')).toEqual([])
+    for (const g of GEBIEDEN.filter((x) => x.id !== 'dorp' && x.id !== 'bos' && x.id !== 'berg' && x.id !== 'platteland' && x.id !== 'meer' && x.id !== 'strand' && x.id !== 'sport')) expect(items.filter((i) => i.gebied === g.id && i.soort !== 'pad')).toEqual([])
   })
   it('hebben unieke id\'s', () => {
     const ids = standaardItems(kids).map((i) => i.id)
@@ -125,6 +125,21 @@ describe('het strand', () => {
   })
 })
 
+describe('het sportpark', () => {
+  it('heeft een voetbalveld met twee doelen, basketbalpalen en banken en laat de weg vrij', () => {
+    const sp = standaardItems(kids).filter((i) => i.gebied === 'sport' && i.soort === 'ding')
+    expect(sp.filter((i) => i.ref === 'voetbalveld').length).toBe(1)
+    expect(sp.filter((i) => i.ref === 'doel').length).toBe(2)
+    expect(sp.filter((i) => i.ref === 'basketpaal').length).toBe(2)
+    const { kaart } = maakGebiedKaart('sport', effectieveItems(kids), leden, kleur, gebouwen)
+    const tegels = maakTegels(kaart)
+    const poort = POORT_TEGELS.o[0]
+    expect(tegels.kan(40, 20)).toBe(true) // over het veld lopen kan
+    expect(tegels.pad(poort[0], poort[1], 40, 20)).not.toBeNull()
+    expect(tegels.pad(poort[0], poort[1], 14, 20)).not.toBeNull()
+  })
+})
+
 describe('aanpassen door de ouders', () => {
   it('verplaatst een huis naar een ander gebied en onthoudt het alleen als verschil', () => {
     const o = verplaats(leegOpgeslagen(), kids, 'huis:luca', 'bos', 10.5, 10.4)
@@ -165,16 +180,16 @@ describe('aanpassen door de ouders', () => {
     const winkel = items.find((i) => i.id === 'gebouw:winkel')!
     const huis = items.find((i) => i.id === 'huis:luca')!
     expect(kanHier({ ...huis, x: winkel.x, y: winkel.y }, items)).toBe(false)
-    expect(kanHier({ ...huis, gebied: 'sport', x: 20.5, y: 10.4 }, items)).toBe(true)
-    expect(kanHier({ ...huis, gebied: 'sport', x: 0.5, y: 10.4 }, items)).toBe(false)
-    expect(kanHier({ ...huis, gebied: 'sport', x: 52.5, y: 12.4 }, items)).toBe(false)
+    expect(kanHier({ ...huis, gebied: 'stadje', x: 20.5, y: 10.4 }, items)).toBe(true)
+    expect(kanHier({ ...huis, gebied: 'stadje', x: 0.5, y: 10.4 }, items)).toBe(false)
+    expect(kanHier({ ...huis, gebied: 'stadje', x: 52.5, y: 12.4 }, items)).toBe(false)
   })
   it('rekent met de echte maat van een huis (in beeldpunten) bij het neerzetten', () => {
     const items = effectieveItems(kids)
     const maat = { huis: (ref: string, x: number, y: number) => huisRechthoek({ id: ref, model: 'huisje', deurX: x, deurY: y }) }
     const luca = items.find((i) => i.id === 'huis:luca')!
-    expect(kanHier({ ...luca, gebied: 'sport', x: 20.5, y: 10.4 }, items, maat)).toBe(true)
-    expect(kanHier({ ...luca, gebied: 'sport', x: 53.5, y: 10.4 }, items, maat)).toBe(false)
+    expect(kanHier({ ...luca, gebied: 'stadje', x: 20.5, y: 10.4 }, items, maat)).toBe(true)
+    expect(kanHier({ ...luca, gebied: 'stadje', x: 53.5, y: 10.4 }, items, maat)).toBe(false)
   })
   it('leest alleen geldige gegevens uit de database', () => {
     const o = leesOpgeslagen({ plek: { 'huis:luca': { g: 'bos', x: 3, y: 4 }, x: { g: 'nergens', x: 1, y: 1 }, y: null }, nieuw: [{ id: 'a', soort: 'ding', ref: 'boom', gebied: 'bos', x: 1, y: 2 }, { id: 'b', soort: 'ding', ref: 'kasteel', gebied: 'bos', x: 1, y: 2 }, { id: 'c', soort: 'pad', gebied: 'meer', x: 1.2, y: 3 }] })

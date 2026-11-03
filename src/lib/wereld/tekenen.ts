@@ -40,7 +40,7 @@ export const HUB_MAAT = 76
 
 /** Waar de armen in de tekening van het figuurtje zitten (tekeneenheden): lijf = alles behalve de armen. */
 
-const GROOT: Record<string, number> = { boom: 1.25, glijbaan: 1.25, plas: 3 }
+const GROOT: Record<string, number> = { boom: 1.25, glijbaan: 1.25, plas: 3, voetbalveld: 5 }
 const ITEM = 90
 
 const wasmaker = () => document.createElement('canvas')
@@ -286,7 +286,7 @@ export class Tekenaar {
     const lijst: { y: number; d: () => void }[] = []
     for (const d of kaart.dingen) {
       if (!overzicht && (d.x < camX - 200 || d.x > camX + VW + 200 || d.y < camY - 100 || d.y > camY + VH + 400)) continue
-      lijst.push({ y: d.y, d: () => this.tekenDing(d) })
+      lijst.push({ y: d.id === 'voetbalveld' ? -1e9 : d.y, d: () => this.tekenDing(d) }) // het veld ligt op de grond: eerst
     }
     for (const b of opties.gebouwen) {
       lijst.push({ y: b.y, d: () => {
@@ -481,7 +481,7 @@ export class Tekenaar {
     }
     const { im, s } = this.ding(d)
     g.save()
-    if (d.id !== 'plas') { // water werpt geen schaduw
+    if (d.id !== 'plas' && d.id !== 'voetbalveld') { // water en een veld werpen geen schaduw
       g.fillStyle = 'rgba(0,0,0,.14)'
       g.beginPath()
       if (d.id === 'boom') g.ellipse(d.x + 10, d.y + 2, 40, 13, 0, 0, 7) // de kruin werpt een brede schaduw
