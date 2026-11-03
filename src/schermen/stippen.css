@@ -9,8 +9,19 @@
 .stippen-fouten .weg { color: var(--line); }
 .stippen-klok { font-weight: 700; font-variant-numeric: tabular-nums; min-width: 4ch; }
 .stippen-melding { font-weight: 700; color: #B3261E; font-size: clamp(14px, 2dvh, 18px); }
-.stippen-veld { display: block; height: clamp(220px, min(60dvh, calc(100dvh - 330px)), 620px); width: auto; max-width: 96%; aspect-ratio: 1; touch-action: manipulation; user-select: none; -webkit-user-select: none; border-radius: 14px; }
-.stippen-nacht { fill: #1F2A55; }
+.stippen-veld { display: block; height: clamp(220px, min(60dvh, calc(100dvh - 300px)), 640px); width: auto; max-width: 96%; aspect-ratio: 1; touch-action: manipulation; user-select: none; -webkit-user-select: none; border-radius: 14px; }
+.stippen-nacht { fill: transparent; }
+/* Detail: een nachtlucht met kleine sterretjes achter de lichtpuntjes. */
+.stippen-veld {
+  background:
+    radial-gradient(circle at 12% 18%, rgba(255, 243, 196, .55) 0 2px, transparent 3px),
+    radial-gradient(circle at 84% 12%, rgba(255, 243, 196, .45) 0 1.6px, transparent 2.6px),
+    radial-gradient(circle at 70% 82%, rgba(255, 243, 196, .4) 0 2px, transparent 3px),
+    radial-gradient(circle at 26% 74%, rgba(255, 243, 196, .35) 0 1.6px, transparent 2.6px),
+    radial-gradient(circle at 50% 46%, rgba(255, 243, 196, .25) 0 1.6px, transparent 2.6px),
+    radial-gradient(circle at 92% 58%, rgba(255, 243, 196, .4) 0 1.6px, transparent 2.6px),
+    radial-gradient(120% 90% at 50% 0, #2B3A72, #1F2A55 60%);
+}
 .stippen-lijn { fill: none; stroke: #FFD84D; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
 .stippen-vulling { fill: #FFD84D; opacity: 0; pointer-events: none; }
 .stippen-veld.licht .stippen-vulling { animation: stippen-aan 1.2s ease-out forwards; }

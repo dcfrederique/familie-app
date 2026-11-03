@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.89',
+    datum: '2026-11-03',
+    titel: 'Lampion tekenen: sterrenhemel',
+    tekst: 'Bij Lampion tekenen staan nu kleine sterretjes in de nachtlucht achter de lichtpuntjes. Het spel past op alle tablets en op de gsm liggend.',
+  },
+  {
     versie: '0.88',
     datum: '2026-11-03',
     titel: 'Alle kinderschermen passen nu ook op een liggende gsm',
