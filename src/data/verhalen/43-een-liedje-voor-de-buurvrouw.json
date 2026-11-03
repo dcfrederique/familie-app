@@ -1,0 +1,92 @@
+{
+  "nr": 43,
+  "titel": "Een liedje voor de buurvrouw",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Sint-Maarten, durven zingen en samen doen",
+  "bladzijden": [
+    {
+      "tekst": "Het is Sint-Maarten. Noor houdt haar lampion in beide handen. Het kaarsje is een lichtje op batterij en het straalt zachtgeel. Haar vriend Jules heeft een blauwe lampion met sterren. \"Vanavond zingen we aan de deuren,\" zegt Jules. Noor knikt, maar haar buik voelt wiebelig.",
+      "prent": {
+        "decor": "dorp",
+        "figuren": [
+          "noor",
+          "jongen"
+        ]
+      }
+    },
+    {
+      "tekst": "Ze lopen door de straat met de andere kinderen. Overal schijnen lampionnen als kleine sterren. Tijs de hond loopt mee aan zijn riempje. Bij het eerste huis zingen de grote kinderen hard en vrolijk. De buurman geeft hen een mandarijn en lacht.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "noor",
+          "jongen",
+          "hond"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan wijst Jules naar het huisje met de groene deur. \"Daar woont mevrouw Els,\" zegt hij. \"Zij is een beetje alleen. Zullen wij daar zingen?\" Noor kijkt naar de deur. Haar stem lijkt klein te worden. \"Ik durf niet,\" fluistert ze.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "noor",
+          "jongen"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Ik zing met je mee,\" zegt Jules. \"En we zingen zacht, dan hoort niemand dat het mis gaat.\" Noor haalt diep adem. Ze tikt op de deur, tok tok. Haar lampion gloeit warm in haar handen.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "noor",
+          "jongen"
+        ]
+      }
+    },
+    {
+      "tekst": "De deur gaat open. Mevrouw Els staat daar in haar zachte sjaal. \"Ooh, wat een mooie lampionnen,\" zegt ze. Noor wil terugrennen, maar Jules begint al te neuriën. Zijn stem trilt een beetje.",
+      "prent": {
+        "decor": "huis",
+        "figuren": [
+          "buurvrouw"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor zingt mee, eerst heel zacht, dan wat luider: \"Sint-Maarten, Sint-Maarten, de koeien hebben staarten.\" Mevrouw Els klapt in haar handen. Tijs kwispelt. Bij de laatste zin zingt Noor zelfs heel hard, en het voelt fijn.",
+      "prent": {
+        "decor": "huis",
+        "figuren": [
+          "noor",
+          "jongen",
+          "buurvrouw"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Wat een mooi liedje,\" zegt mevrouw Els. \"Ik wacht elk jaar op kinderen, maar niemand durft aan mijn deur.\" Ze geeft hen een zak vol koekjes en een zachte appel. Ook Tijs krijgt een hondenkoekje.",
+      "prent": {
+        "decor": "huis",
+        "figuren": [
+          "buurvrouw",
+          "noor",
+          "hond"
+        ]
+      }
+    },
+    {
+      "tekst": "Buiten deelt Noor de koekjes uit aan alle kinderen. \"Dat was het mooiste huis van allemaal,\" zegt ze. Jules lacht. \"Zingen is minder eng als je het samen doet.\" Noor kijkt naar haar lampion. Ze voelt zich helemaal niet meer wiebelig.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "noor",
+          "jongen",
+          "hond"
+        ]
+      }
+    }
+  ]
+}

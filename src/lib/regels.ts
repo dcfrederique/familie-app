@@ -57,7 +57,7 @@ export function limietVoor(limieten: { kind_id: string | null; activiteit: strin
 }
 
 export type Activiteit = 'memory' | 'penalty_schieten' | 'penalty_keepen' | 'rekenen' | 'verhaal' | 'kleurplaat' | 'tekenen'
-  | 'racen' | 'basket' | 'koken' | 'touwspringen' | 'huisdier' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'springen' | 'zelf_gelezen' | 'schrijven'
+  | 'racen' | 'basket' | 'koken' | 'touwspringen' | 'huisdier' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'springen' | 'zelf_gelezen' | 'schrijven'
 
 /**
  * Sterren voor een afgewerkte activiteit (docs/spec.md, Activiteiten), nog vóór het dagplafond.
@@ -99,6 +99,7 @@ export function activiteitOmschrijving({ activiteit, inhoud }: { activiteit: Act
     case 'winterslaap': return 'Winterslaap'
     case 'kastanjes': return 'Kastanjes vangen'
     case 'pakjesschuiven': return 'Pakjes schuiven'
+    case 'stippen': return 'Lampion tekenen'
     case 'lichtjes': return 'Lichtjesboom'
     case 'schaduw': return 'Wie is de schaduw?'
     case 'springen': return inhoud.titel ? `Springland: ${inhoud.titel}` : 'Springland'

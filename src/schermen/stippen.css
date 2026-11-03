@@ -1,0 +1,48 @@
+/* Lampion tekenen: het bord is een vierkant dat meeschaalt met de hoogte, zodat er niets scrolt. */
+.stippen { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 1.4dvh, 14px); width: 100%; position: relative; }
+.stippen-balk { display: flex; align-items: center; gap: 24px; min-height: 32px; }
+.stippen-teller { display: flex; gap: 6px; }
+.stippen-teller span { width: 14px; height: 14px; border-radius: 50%; background: var(--line); }
+.stippen-teller .af { background: var(--gold); }
+.stippen-teller .nu { background: var(--kid); }
+.stippen-fouten { display: flex; gap: 4px; font-size: 26px; line-height: 1; color: #E5484D; }
+.stippen-fouten .weg { color: var(--line); }
+.stippen-klok { font-weight: 700; font-variant-numeric: tabular-nums; min-width: 4ch; }
+.stippen-melding { font-weight: 700; color: #B3261E; font-size: clamp(14px, 2dvh, 18px); }
+.stippen-veld { display: block; height: clamp(220px, min(60dvh, calc(100dvh - 330px)), 620px); width: auto; max-width: 96%; aspect-ratio: 1; touch-action: manipulation; user-select: none; -webkit-user-select: none; border-radius: 14px; }
+.stippen-nacht { fill: #1F2A55; }
+.stippen-lijn { fill: none; stroke: #FFD84D; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; pointer-events: none; }
+.stippen-vulling { fill: #FFD84D; opacity: 0; pointer-events: none; }
+.stippen-veld.licht .stippen-vulling { animation: stippen-aan 1.2s ease-out forwards; }
+.stippen-stip { cursor: pointer; }
+.stippen-raak { fill: transparent; }
+.stippen-streep { stroke: rgba(255, 243, 196, 0.45); stroke-width: 0.5; pointer-events: none; }
+.stippen-label { fill: rgba(31, 42, 85, 0.85); }
+.stippen-bol { fill: #FFF3C4; stroke: #F2C230; stroke-width: 1; transition: fill 0.2s; }
+.stippen-stip.gedaan .stippen-bol { fill: #FFD84D; stroke: #fff; }
+.stippen-cijfer { fill: #3A2A00; font-weight: 800; pointer-events: none; font-family: inherit; }
+.stippen-som { fill: #FFF3C4; font-weight: 700; pointer-events: none; font-family: inherit; paint-order: stroke; stroke: none; }
+.stippen-stip.gedaan .stippen-som { fill: #FFD84D; }
+.stippen-stip.puls .stippen-bol { animation: stippen-puls 0.9s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+.stippen-stip.schud { animation: stippen-schud 0.35s ease-out; }
+.stippen-eind { display: grid; justify-items: center; gap: 16px; }
+.stippen-feest { width: clamp(200px, 40dvh, 380px); height: auto; }
+.stippen-pluimen { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; max-width: 360px; font-size: 28px; color: var(--line); }
+.stippen-pluimen .aan { color: var(--gold); }
+@keyframes stippen-aan { to { opacity: 0.75; } }
+@keyframes stippen-puls { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.35); } }
+@keyframes stippen-schud { 0%, 100% { transform: translateX(0); } 30% { transform: translateX(-1.5px); } 70% { transform: translateX(1.5px); } }
+@media (prefers-reduced-motion: reduce) {
+  .stippen-veld.licht .stippen-vulling { animation: none; opacity: 0.75; }
+  .stippen-stip.puls .stippen-bol, .stippen-stip.schud { animation: none; }
+  .stippen-stip.puls .stippen-bol { stroke: #E5484D; stroke-width: 2; }
+}
+/* Liggende gsm: het bord krijgt de hoogte, de balk is compacter. */
+@media (max-height: 500px) and (orientation: landscape) {
+  .stippen { gap: 2px; }
+  .stippen-balk { min-height: 22px; gap: 14px; }
+  .stippen-teller span { width: 10px; height: 10px; }
+  .stippen-fouten { font-size: 18px; }
+  .stippen-veld { height: 48dvh; }
+}
+@media (orientation: portrait) { .stippen-veld { height: auto; width: min(94%, 62dvh); } }

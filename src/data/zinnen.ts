@@ -42,6 +42,8 @@ export const zin = {
   winterslaapUitleg: 'Tik op een dier om het te laten slapen. Pas op: de buurdieren worden dan misschien wakker! Stop alle dieren in bed.',
   pakjesUitleg: 'Duw de pakjes met het hulpje op de matten. Je kunt alleen duwen, niet trekken!',
   pakjesKlaar: 'Alle pakjes liggen klaar voor de Sint!',
+  stippenUitleg: 'Tik de lichtpuntjes aan, van klein naar groot. Dan gaat de lampion branden!',
+  stippenKlaar: 'Kijk, de lampion straalt!',
   winterslaapKlaar: 'Welterusten! Alle dieren slapen.',
   kastanjesUitleg: 'Sleep het mandje onder de vallende kastanjes. Pas op voor de rode paddenstoelen: die zijn niet voor jou!',
   kastanjesKlaar: 'Wat een mooie oogst! Het mandje zit vol kastanjes.',

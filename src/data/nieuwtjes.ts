@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.87',
+    datum: '2026-11-03',
+    titel: 'Lampion tekenen, Een liedje voor de buurvrouw en Het ijsmeer',
+    tekst: 'Nieuw verhaal "Een liedje voor de buurvrouw" (Sint-Maarten) en nieuwe kleurplaat "Lampionnenstoet", meteen te lezen en in te kleuren. Het spelletje Lampion tekenen kost 20 sterren in de winkel: tik de lichtpuntjes van klein naar groot en de lampion gaat branden. Makkelijk heeft cijfers 1 tot 7 met een pulserend volgend puntje voor de kleintjes; middel een rij tot 20; de moeilijke stand is een echte rekenuitdaging: de puntjes zijn sommen (plus, min, tafels, delingen, later tot 1000) in 4 rondes van 12 tot 24 puntjes, zonder hulp, met drie levens per ronde en pluimen voor weinig fouten en snel. Het Lampionnenatelier staat in De wereld (gouden rand tot 17 november, slot tot gekocht). Springland heeft in Winterbergen een vierde level, Het ijsmeer (pittig, met egels en een gat van 4 vakjes).',
+    verhaal: 'Een liedje voor de buurvrouw',
+    spel: { naam: 'Lampion tekenen', prijs: 20 },
+    stukken: ['Figuurtje: Sterrenmuts (15), Met muzieknoot (20), Liedjesboekje (15)', 'Mijn huis: Lantaarnpaal (25), Bankje met lampion (20), Lampje bij de deur (15)'],
+    open: 'Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.',
+  },
+  {
     versie: '0.86',
     datum: '2026-11-03',
     titel: 'Het Sportpark is gevuld',

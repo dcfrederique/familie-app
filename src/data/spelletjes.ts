@@ -2,6 +2,7 @@
 import { bezitSleutel, prijsVoor, type Bezit } from './figuurtje.ts'
 import type { Gebruiker } from './gezin.ts'
 import type { PakjesNiveau } from './pakjesschuiven.ts'
+import type { StippenNiveau } from './stippen.ts'
 
 export type MemoryNiveau = 'klein' | 'middel' | 'groot'
 export type RekenNiveau = 'tellen' | 'tot10' | 'tot20' | 'tot100' | 'tot1000' | 'tafels'
@@ -234,6 +235,28 @@ export function startPakjesNiveau(kind: Gebruiker, kinderen: Gebruiker[]): Pakje
   return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
 }
 
+/**
+ * Lampion tekenen. `aantal`: puntjes per ronde; `hulp`: 'altijd' = het volgende puntje pulst, 'stil' = pas na 6 seconden stilte, 'geen';
+ * `som`: de puntjes zijn sommen (het kind rekent uit en tikt van klein naar groot); `maxFouten`: fouten per ronde voor het opnieuw begint
+ * (null = geen limiet); `pluimen`: strenge score met pluimen; `seconden`: tijd voor de snelheidspluim.
+ */
+export const stippenNiveaus: Record<StippenNiveau, {
+  label: string; aantal: readonly number[]; hulp: 'altijd' | 'stil' | 'geen'; som: boolean; maxFouten: number | null; pluimen: boolean; seconden: number
+}> = {
+  makkelijk: { label: 'Makkelijk', aantal: [5, 6, 6, 7], hulp: 'altijd', som: false, maxFouten: null, pluimen: false, seconden: 0 },
+  middel: { label: 'Middel', aantal: [8, 10, 12, 14], hulp: 'stil', som: false, maxFouten: null, pluimen: false, seconden: 0 },
+  moeilijk: { label: 'Moeilijk', aantal: [12, 16, 20, 24], hulp: 'geen', som: true, maxFouten: 3, pluimen: true, seconden: 60 },
+}
+
+export const stippenRondes = 4
+
+/** Wie niet leest begint makkelijk, de oudste lezer moeilijk, andere lezers middel. */
+export function startStippenNiveau(kind: Gebruiker, kinderen: Gebruiker[]): StippenNiveau {
+  if (!kind.kan_lezen) return 'makkelijk'
+  const oudsteLezer = kinderen.filter((k) => k.kan_lezen).sort((a, b) => a.volgorde - b.volgorde)[0]
+  return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
+}
+
 export type WinterslaapNiveau = 'makkelijk' | 'middel' | 'moeilijk'
 
 /**
@@ -330,7 +353,7 @@ export function startNiveaus(kind: Gebruiker, kinderen: Gebruiker[]): { memory: 
   return oudsteLezer?.id === kind.id ? { memory: 'groot', rekenen: 'tot100' } : { memory: 'middel', rekenen: 'tot20' }
 }
 
-export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'springen'
+export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'springen'
 
 export interface SpelInfo {
   sleutel: SpelSleutel
@@ -378,6 +401,8 @@ export const spelMenu: SpelInfo[] = [
     icoon: 'M5 13h14l-2 7H7zM8 13V10M12 13V8M16 13v-3M9 4h.01M14 3h.01M12 6h.01' },
   { sleutel: 'pakjesschuiven', naam: 'Pakjes schuiven', uitleg: 'Duw alle pakjes op een mat', prijs: 25,
     icoon: 'M4 9h16v11H4zM12 9v11M4 13h16M12 9C9 9 8 5 10 5s2 4 2 4zM12 9c3 0 4-4 2-4s-2 4-2 4z' },
+  { sleutel: 'stippen', naam: 'Lampion tekenen', uitleg: 'Tik de lichtpuntjes in de goede volgorde', prijs: 20,
+    icoon: 'M6 18h.01M9 8h.01M16 6h.01M19 15h.01M12 12h.01M6 18L9 8L16 6L19 15L12 12' },
   { sleutel: 'lichtjes', naam: 'Lichtjesboom', uitleg: 'Doe de lichtjes na in dezelfde volgorde', prijs: 20,
     icoon: 'M12 3l6 8h-3l5 7H4l5-7H6zM12 18v3M8 8.5h.01M15 13h.01M10 15h.01' },
   { sleutel: 'schaduw', naam: 'Wie is de schaduw?', uitleg: 'Zoek de schaduw die erbij hoort', prijs: 20,
