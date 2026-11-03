@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.88',
+    datum: '2026-11-03',
+    titel: 'Alle kinderschermen passen nu ook op een liggende gsm',
+    tekst: 'Mijn figuurtje, Mijn huis en Zelf tekenen passen nu zonder scrollen op een liggende gsm, met dezelfde opmaak als op de tablet, alleen kleiner. Daarmee past elk kinderscherm op de tablets (liggend en staand) en op de gsm liggend. Bij Zelf tekenen wipt het gekozen potlood even op. Vanaf nu kijkt de nachtelijke schermcontrole alleen nog de nieuwe schermen na.',
+  },
+  {
     versie: '0.87',
     datum: '2026-11-03',
     titel: 'Lampion tekenen, Een liedje voor de buurvrouw en Het ijsmeer',

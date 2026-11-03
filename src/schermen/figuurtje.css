@@ -91,7 +91,7 @@
 
 /* Tablet (liggend en staand) en pc: kleerkast en Mijn huis vullen precies het scherm, zonder scrollen.
    De keuzes bladeren (Bladzijden meet hoeveel er passen), het podium krimpt mee met de hoogte. */
-@media (min-width: 600px) and (min-height: 560px) {
+@media (min-width: 600px) and (min-height: 560px), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
   .kleerkast {
     height: calc(100dvh - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
     padding-block: clamp(12px, 2.4dvh, 24px); gap: clamp(12px, 2dvh, 20px); overflow: hidden;
@@ -124,4 +124,38 @@
   .kleerkast .kleerkast-inhoud, .kleerkast.huisbouw .kleerkast-inhoud { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 2fr) minmax(0, 3fr); }
   .kleerkast { padding-inline: 20px; }
   .kleerkast.prenten .kast-tabs { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+}
+
+/* Gsm liggend: dezelfde opmaak als de tablet liggend (podium links, kast rechts), alleen kleiner.
+   De tabs staan op één rij, kleuren en knoppen worden lager, de keuzes bladeren in wat overblijft. */
+@media (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .kleerkast { padding: 4px 16px 8px; gap: 6px; }
+  .kleerkast .thema-kop { height: 64px; margin: 4px auto 0; }
+  .kleerkast .kop { min-height: 52px; }
+  .kleerkast .kleerkast-inhoud { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 12px; }
+  .kleerkast.huisbouw .kleerkast-inhoud { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .podium, .huis-podium { border-radius: 22px; }
+  .podium::before { bottom: 12px; height: 28px; }
+  .podium-figuur, .thema-race .podium-figuur, .thema-kasteel .podium-figuur { height: calc(100% - 24px); margin-bottom: 14px; }
+  .podium-tip { left: 8px; right: 8px; top: 8px; padding: 6px 10px; font-size: 14px; border-radius: 14px; }
+  .huis-naar-kast { width: 44px; height: 44px; right: 8px; top: 8px; }
+  .kast { gap: 6px; }
+  .kast-tabs, .prenten .kast-tabs, .huisbouw .kast-tabs, .huisbouw.prenten .kast-tabs, .kleerkast.prenten .kast-tabs { grid-template-columns: none; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 5px; }
+  .kast-tab, .prenten .kast-tab { min-height: 50px; padding: 0 1px; border-radius: 14px; gap: 1px; font-size: 10.5px; letter-spacing: -.01em; overflow: hidden; }
+  .kast-tab > span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .kast-tab svg { width: 22px; height: 22px; }
+  .prenten .kast-tab svg { width: 30px; height: 30px; }
+  .thema-race .kast-tab, .thema-race .huisbouw .kast-tab { font-size: 10px; letter-spacing: 0; outline-width: 2px; border-width: 2px; }
+  .thema-tuin .kast-tab { width: min(100%, 50px); }
+  .huis-hint { margin: 0; font-size: 13px; }
+  .kast-vak > .bladzijden, .huis-keuzes > .bladzijden { gap: 6px; }
+  .kast .blader-knop { width: 44px; height: 44px; }
+  .kast-keuzes { padding: 6px; gap: 8px; border-radius: 18px; }
+  .kast-naam { font-size: 11px; }
+  .prijs-label { top: 4px; left: 4px; height: 24px; font-size: 13px; padding: 0 6px 0 4px; }
+  .slotje { top: 4px; right: 4px; width: 24px; height: 24px; }
+  .kast-kleuren { padding: 5px 10px; gap: 6px; border-radius: 18px; }
+  .kast-kleur { flex-basis: 36px; min-width: 30px; border-width: 3px; }
+  .kast-actie, .prenten .kast-actie { min-height: 46px; border-radius: 23px; font-size: 15px; box-shadow: 0 3px 0 var(--shade); }
+  .kast-actie svg { width: 24px; height: 24px; }
 }

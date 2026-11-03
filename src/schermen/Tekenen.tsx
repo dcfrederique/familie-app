@@ -78,7 +78,7 @@ function Tekenen({ kind }: { kind: Gebruiker }) {
       const gestapeld = !!tekenen && getComputedStyle(tekenen).gridTemplateColumns.trim().split(/\s+/).length === 1
       const onder = gestapeld && gereedschap ? gereedschap.offsetHeight + 20 : 0
       const hoog = window.innerHeight - el.getBoundingClientRect().top - window.scrollY - 36 - onder
-      setBladBreed(hoog < 320 ? null : Math.floor(Math.min(el.clientWidth, (hoog * BREED) / HOOG)))
+      setBladBreed(hoog < 180 ? null : Math.floor(Math.min(el.clientWidth, (hoog * BREED) / HOOG)))
     }
     meet()
     const ro = new ResizeObserver(meet)
