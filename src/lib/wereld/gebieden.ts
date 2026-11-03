@@ -38,9 +38,9 @@ export type ItemSoort = 'huis' | 'gebouw' | 'ding' | 'pad'
 export interface Item { id: string; soort: ItemSoort; ref: string; gebied: GebiedId; x: number; y: number }
 
 /** Wat een ouder erbij kan zetten (naast de huizen, gebouwen en paden). */
-export const DECOR = ['boom', 'bank', 'lantaarn', 'schommel', 'glijbaan', 'wip', 'zandbak', 'doel', 'paddenstoel', 'den', 'rots', 'hooibaal', 'hek', 'riet', 'parasol', 'boot', 'steiger', 'basketpaal'] as const
+export const DECOR = ['boom', 'bank', 'lantaarn', 'schommel', 'glijbaan', 'wip', 'zandbak', 'doel', 'paddenstoel', 'den', 'rots', 'hooibaal', 'hek', 'riet', 'parasol', 'boot', 'steiger', 'basketpaal', 'fontein', 'auto'] as const
 export const DECOR_NAAM: Record<(typeof DECOR)[number], string> = {
-  boom: 'Boom', bank: 'Bank', lantaarn: 'Lantaarn', schommel: 'Schommel', glijbaan: 'Glijbaan', wip: 'Wip', zandbak: 'Zandbak', doel: 'Doel', paddenstoel: 'Paddenstoel', den: 'Den', rots: 'Rots', hooibaal: 'Hooibaal', hek: 'Hek', riet: 'Riet', parasol: 'Parasol', boot: 'Boot', steiger: 'Steiger', basketpaal: 'Basketpaal',
+  boom: 'Boom', bank: 'Bank', lantaarn: 'Lantaarn', schommel: 'Schommel', glijbaan: 'Glijbaan', wip: 'Wip', zandbak: 'Zandbak', doel: 'Doel', paddenstoel: 'Paddenstoel', den: 'Den', rots: 'Rots', hooibaal: 'Hooibaal', hek: 'Hek', riet: 'Riet', parasol: 'Parasol', boot: 'Boot', steiger: 'Steiger', basketpaal: 'Basketpaal', fontein: 'Fontein', auto: 'Auto',
 }
 
 /** Zo veel dingen (zonder paden) kunnen ouders per gebied erbij zetten, en zo veel paden in totaal. */
@@ -214,6 +214,33 @@ function sportDecor(): Item[] {
   return uit
 }
 
+/**
+ * Het stadje (nacht van 4 november 2026): een straat naar het oosten met stadshuizen (drie kleuren) aan beide kanten, een plein met
+ * een fontein, geparkeerde auto's, lantaarns, banken en een parkje met bomen in het westen. Geen autowegen: de straat is grind.
+ * Id's `ding:<soort>:stadje:<n>` en `pad:stadje:<x>:<y>`, nooit hernoemen. Het stuk x 17 tot 24, y 5 tot 11 blijft open
+ * (daar passen een huis en de tests voor Kaart bewerken).
+ */
+function stadjeDecor(): Item[] {
+  const uit: Item[] = []
+  const op = (ref: string, n: number, x: number, y: number) => uit.push({ id: `ding:${ref}:stadje:${n}`, soort: 'ding', ref, gebied: 'stadje', x, y })
+  // de straat naar het oosten (rijen 12 en 13) en het plein (8 × 4 tegels onder de straat)
+  for (let tx = 29; tx <= 50; tx++) for (const ty of [12, 13]) uit.push(pad('stadje', tx, ty))
+  for (let tx = 36; tx < 44; tx++) for (let ty = 14; ty < 18; ty++) uit.push(pad('stadje', tx, ty))
+  const huizen = ['stadshuis', 'stadshuis2', 'stadshuis3']
+  let n = 0
+  for (let i = 0; i < 5; i++) { op(huizen[i % 3], ++n, 32 + i * 4.6, 10.2); op(huizen[(i + 1) % 3], ++n, 31 + i * 5, 23) }
+  op('fontein', 1, 40, 16.6)
+  n = 0
+  for (const [x, y] of [[33, 19], [45, 19], [49, 19]]) op('auto', ++n, x, y)
+  n = 0
+  for (const [x, y] of [[30.2, 11.6], [35, 11.6], [44.5, 11.6], [49.5, 11.6], [34.5, 14.6], [45.5, 14.6], [6, 11.6], [12, 11.6]]) op('lantaarn', ++n, x, y)
+  n = 0
+  for (const [x, y] of [[38, 14.3], [42, 14.3], [9, 18.5], [19, 18.5]]) op('bank', ++n, x, y)
+  n = 0
+  for (const [x, y] of [[4, 6], [8, 7.5], [13, 6.2], [14, 9.8], [5, 15.4], [10, 16.6], [15, 15.6], [21, 15.4], [5, 21], [11, 22], [17, 21], [23, 22.5], [27.5, 20]]) op('boom', ++n, x, y)
+  return uit
+}
+
 /** Alles wat er standaard staat voor deze kinderen: het dorp zoals het is, de andere gebieden leeg op de wegen na. */
 export function standaardItems(kinderIds: readonly string[]): Item[] {
   const bewoners = kinderIds.slice(0, MAX_HUIZEN)
@@ -228,7 +255,7 @@ export function standaardItems(kinderIds: readonly string[]): Item[] {
   for (const g of GEBIEDEN) if (g.id !== 'dorp') paden.push(...poortPaden(g.id, g.poorten))
   // een pad kan twee keer voorkomen (de weg naar het noorden kruist een stoepje): één per tegel
   const uniek = [...new Map(paden.map((i) => [i.id, i])).values()]
-  return [...huizen, ...gebouwItems, ...dorpDecor(), ...bosDecor(), ...bergDecor(), ...plattelandDecor(), ...meerDecor(), ...strandDecor(), ...sportDecor(), ...uniek]
+  return [...huizen, ...gebouwItems, ...dorpDecor(), ...bosDecor(), ...bergDecor(), ...plattelandDecor(), ...meerDecor(), ...strandDecor(), ...sportDecor(), ...stadjeDecor(), ...uniek]
 }
 
 /** Wat er nu staat: de standaardplekken, met de verplaatsingen en verwijderingen van de ouders, en wat zij erbij zetten. */

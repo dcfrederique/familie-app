@@ -48,5 +48,5 @@ Elke nacht zet de bouwroutine één stuk stad erbij uit de backlog hieronder (bo
 - [x] Meer (31 oktober 2026): groot meer van vijf `plas`-stukken, riet, bank en bomen, `meerDecor()` in `src/lib/wereld/gebieden.ts`
 - [x] Strand (1 november 2026): zee van `plas`-stukken, steigers, bootjes en parasols, `strandDecor()` in `src/lib/wereld/gebieden.ts`
 - [x] Sportpark (3 november 2026): voetbalveld, doelen, basketbalpalen, banken, lantaarns en bomen, `sportDecor()` in `src/lib/wereld/gebieden.ts`
-- [ ] Stadje
+- [x] Stadje (3 november 2026): grindstraat, stadshuizen, plein met fontein, auto's, parkje, `stadjeDecor()` in `src/lib/wereld/gebieden.ts`
 - [ ] Dorp (extra decor)

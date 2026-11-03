@@ -40,7 +40,7 @@ export const HUB_MAAT = 76
 
 /** Waar de armen in de tekening van het figuurtje zitten (tekeneenheden): lijf = alles behalve de armen. */
 
-const GROOT: Record<string, number> = { boom: 1.25, glijbaan: 1.25, plas: 3, voetbalveld: 5 }
+const GROOT: Record<string, number> = { boom: 1.25, glijbaan: 1.25, plas: 3, voetbalveld: 5, stadshuis: 2.2, stadshuis2: 2.2, stadshuis3: 2.2, fontein: 1.4, auto: 1.1 }
 const ITEM = 90
 
 const wasmaker = () => document.createElement('canvas')

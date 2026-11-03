@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.90',
+    datum: '2026-11-03',
+    titel: 'Het Stadje is gevuld',
+    tekst: 'Het Stadje (onder het Meer) is niet meer leeg: een grindstraat met tien stadshuizen in drie kleuren, een plein met fontein, geparkeerde auto\'s, lantaarns, banken en een parkje met bomen. Ouders kunnen alles verplaatsen of weghalen in Wij → Kaart bewerken; Fontein en Auto staan nu ook bij Decor. De volgende nacht volgt extra decor in het Dorp.',
+  },
+  {
     versie: '0.89',
     datum: '2026-11-03',
     titel: 'Lampion tekenen: sterrenhemel',

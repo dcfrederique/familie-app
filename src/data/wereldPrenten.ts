@@ -148,7 +148,16 @@ export const gebouwTekening: Record<string, string> = {
 }
 
 /** Dingen op straat die (nog) niet in de huiscatalogus staan; viewBox -100 -220 200 240. */
+/** Een stadshuis: smalle gevel met trapgevel, deur, twee ramen en een schoorsteen; muur- en dakkleur verschillen per huis. */
+const stadshuis = (muur: string, dak: string, deur: string) => `<rect x="-86" y="-118" width="172" height="118" fill="${muur}" stroke="#00000022" stroke-width="3"/><path d="M-96 -118L-70 -150H70L96 -118Z" fill="${dak}" stroke="#00000033" stroke-width="3" stroke-linejoin="round"/><path d="M-50 -150L-30 -172H30L50 -150Z" fill="${dak}" stroke="#00000033" stroke-width="3" stroke-linejoin="round"/><rect x="40" y="-176" width="16" height="26" fill="#8A5A33"/><rect x="-16" y="-62" width="32" height="62" rx="4" fill="${deur}"/><circle cx="8" cy="-30" r="3" fill="#FFE9A0"/><rect x="-70" y="-98" width="34" height="34" rx="3" fill="#BFE3FA" stroke="#FFF" stroke-width="5"/><rect x="36" y="-98" width="34" height="34" rx="3" fill="#BFE3FA" stroke="#FFF" stroke-width="5"/><rect x="-70" y="-50" width="34" height="30" rx="3" fill="#BFE3FA" stroke="#FFF" stroke-width="5"/><rect x="36" y="-50" width="34" height="30" rx="3" fill="#BFE3FA" stroke="#FFF" stroke-width="5"/>`
 export const straatTekening: Record<string, string | ((kleur: string) => string)> = {
+  stadshuis: stadshuis('#F2D9A8', '#C8452F', '#2D6BD6'),
+  stadshuis2: stadshuis('#E8B7A0', '#4A6FA5', '#1F7A4A'),
+  stadshuis3: stadshuis('#CFE3D2', '#8A5A33', '#C2337A'),
+  // fontein: ronde stenen bak met water en een straal
+  fontein: `<ellipse cx="0" cy="-14" rx="78" ry="28" fill="#B8C2CC" stroke="#8A93A0" stroke-width="3"/><ellipse cx="0" cy="-18" rx="64" ry="20" fill="#5DC0F2"/><rect x="-8" y="-70" width="16" height="52" rx="6" fill="#B8C2CC" stroke="#8A93A0" stroke-width="3"/><path d="M0 -74Q-26 -96 -34 -54M0 -74Q26 -96 34 -54M0 -74V-100" stroke="#A6DEF8" stroke-width="5" fill="none" stroke-linecap="round"/>`,
+  // auto: geparkeerd autootje van opzij (eigen ontwerp)
+  auto: `<ellipse cx="0" cy="-2" rx="84" ry="8" fill="#00000022"/><path d="M-84 -14V-40Q-84 -50 -72 -52L-46 -56L-30 -80H30L52 -56L76 -50Q84 -48 84 -38V-14Z" fill="#D8452B" stroke="#A82F1B" stroke-width="3" stroke-linejoin="round"/><path d="M-26 -74L-40 -56H-4V-74ZM4 -74V-56H44L28 -74Z" fill="#BFE3FA"/><circle cx="-48" cy="-14" r="16" fill="#2B2420"/><circle cx="48" cy="-14" r="16" fill="#2B2420"/><circle cx="-48" cy="-14" r="7" fill="#B8C2CC"/><circle cx="48" cy="-14" r="7" fill="#B8C2CC"/>`,
   // voetbalveld: staand veld met gras in banen en witte lijnen (wordt 5 keer vergroot getekend, ligt op de grond)
   voetbalveld: `<rect x="-60" y="-175" width="120" height="170" rx="6" fill="#6FC25C"/><path d="M-60 -175h120v21h-120zM-60 -133h120v21h-120zM-60 -91h120v21h-120zM-60 -49h120v21h-120z" fill="#84CC72"/><rect x="-56" y="-171" width="112" height="162" fill="none" stroke="#FFF" stroke-width="2.5"/><path d="M-56 -90h112" stroke="#FFF" stroke-width="2.5"/><circle cx="0" cy="-90" r="16" fill="none" stroke="#FFF" stroke-width="2.5"/><rect x="-26" y="-171" width="52" height="20" fill="none" stroke="#FFF" stroke-width="2.5"/><rect x="-26" y="-29" width="52" height="20" fill="none" stroke="#FFF" stroke-width="2.5"/>`,
   // basketbalpaal: paal met bord en ring

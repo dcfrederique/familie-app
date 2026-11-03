@@ -51,7 +51,7 @@ describe('de standaardplekken', () => {
     expect(items.filter((i) => i.soort === 'huis').map((i) => i.gebied)).toEqual(['dorp', 'dorp', 'dorp'])
     expect(items.filter((i) => i.soort === 'gebouw').length).toBe(gebouwen.length)
     // het bos is als eerste volgebouwd (docs/wereld-levendig.md); de andere gebieden blijven leeg op de wegen na
-    for (const g of GEBIEDEN.filter((x) => x.id !== 'dorp' && x.id !== 'bos' && x.id !== 'berg' && x.id !== 'platteland' && x.id !== 'meer' && x.id !== 'strand' && x.id !== 'sport')) expect(items.filter((i) => i.gebied === g.id && i.soort !== 'pad')).toEqual([])
+    for (const g of GEBIEDEN.filter((x) => x.id !== 'dorp' && x.id !== 'bos' && x.id !== 'berg' && x.id !== 'platteland' && x.id !== 'meer' && x.id !== 'strand' && x.id !== 'sport' && x.id !== 'stadje')) expect(items.filter((i) => i.gebied === g.id && i.soort !== 'pad')).toEqual([])
   })
   it('hebben unieke id\'s', () => {
     const ids = standaardItems(kids).map((i) => i.id)
@@ -137,6 +137,21 @@ describe('het sportpark', () => {
     expect(tegels.kan(40, 20)).toBe(true) // over het veld lopen kan
     expect(tegels.pad(poort[0], poort[1], 40, 20)).not.toBeNull()
     expect(tegels.pad(poort[0], poort[1], 14, 20)).not.toBeNull()
+  })
+})
+
+describe('het stadje', () => {
+  it('heeft huizen, een plein met fontein en auto\'s en alles blijft bereikbaar', () => {
+    const st = standaardItems(kids).filter((i) => i.gebied === 'stadje')
+    expect(st.filter((i) => i.ref.startsWith('stadshuis')).length).toBe(10)
+    expect(st.filter((i) => i.ref === 'fontein').length).toBe(1)
+    expect(st.filter((i) => i.ref === 'auto').length).toBe(3)
+    const { kaart } = maakGebiedKaart('stadje', effectieveItems(kids), leden, kleur, gebouwen)
+    const tegels = maakTegels(kaart)
+    const poorten = GEBIEDEN.find((g) => g.id === 'stadje')!.poorten.map((p) => POORT_TEGELS[p.zijde][0])
+    for (const a of poorten) for (const b of poorten) expect(tegels.pad(a[0], a[1], b[0], b[1])).not.toBeNull()
+    expect(tegels.pad(poorten[0][0], poorten[0][1], 40, 15)).not.toBeNull() // naar het plein
+    expect(tegels.pad(poorten[0][0], poorten[0][1], 10, 20)).not.toBeNull() // naar het parkje
   })
 })
 
