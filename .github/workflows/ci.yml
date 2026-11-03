@@ -108,8 +108,8 @@ jobs:
             | psql "$SUPABASE_DB_URL" -X -q -v ON_ERROR_STOP=1 -v url="$SUPABASE_URL/functions/v1/melding"
           geheim=$(psql "$SUPABASE_DB_URL" -X -tA -c "select geheim from public.melding_instellingen")
           echo "::add-mask::$geheim"
-          supabase secrets set --project-ref "$ref" VAPID_PUBLIC_KEY="$VAPID_PUBLIC_KEY" VAPID_PRIVATE_KEY="$VAPID_PRIVATE_KEY" MELDING_GEHEIM="$geheim"
-          supabase functions deploy melding --project-ref "$ref" --no-verify-jwt
+          supabase secrets set --yes --project-ref "$ref" VAPID_PUBLIC_KEY="$VAPID_PUBLIC_KEY" VAPID_PRIVATE_KEY="$VAPID_PRIVATE_KEY" MELDING_GEHEIM="$geheim"
+          supabase functions deploy melding --yes --project-ref "$ref" --no-verify-jwt
 
   # Android-schil (docs/capacitor.md): bouwt een debug-APK die de gehoste site opent. Op main komt hij ook als
   # download bij de release "android-latest". Mislukt dit, dan blokkeert het het deployen niet.
