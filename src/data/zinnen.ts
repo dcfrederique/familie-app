@@ -44,6 +44,8 @@ export const zin = {
   pakjesKlaar: 'Alle pakjes liggen klaar voor de Sint!',
   stippenUitleg: 'Tik de lichtpuntjes aan, van klein naar groot. Dan gaat de lampion branden!',
   stippenKlaar: 'Kijk, de lampion straalt!',
+  inpakUitleg: 'Leg alle stukjes op het papier, tot er geen gaatjes meer zijn. Draai het stukje als het niet past!',
+  inpakKlaar: 'Wat een mooi pakje! Het papier is helemaal vol.',
   winterslaapKlaar: 'Welterusten! Alle dieren slapen.',
   kastanjesUitleg: 'Sleep het mandje onder de vallende kastanjes. Pas op voor de rode paddenstoelen: die zijn niet voor jou!',
   kastanjesKlaar: 'Wat een mooie oogst! Het mandje zit vol kastanjes.',

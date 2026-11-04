@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.91',
+    datum: '2026-11-04',
+    titel: 'Inpakpuzzel, Het patchworkpakje en Het wolkenpad',
+    tekst: 'Nieuw verhaal "Het patchworkpakje" (Sinterklaas) en nieuwe kleurplaat "Pakjes inpakken", meteen te lezen en in te kleuren. Het spelletje Inpakpuzzel kost 25 sterren in de winkel: vul het inpakpapier met stukjes die precies passen. Makkelijk heeft kleine vellen met stukjes die al goed liggen en een lichtje op de plek; middel heeft stukjes die je moet draaien; de moeilijke stand is een echte denkpuzzel van 25 tot 42 vakjes met 6 tot 9 stukjes die je moet draaien en spiegelen, zonder hulp, met een klokje en pluimen voor weinig misleggen en snel. Het Inpakhuis staat in De wereld (gouden rand tot 18 november, slot tot gekocht). Springland heeft in Winterbergen een vijfde level, Het wolkenpad (zacht, met vogels); daarna volgt de baas.',
+    verhaal: 'Het patchworkpakje',
+    spel: { naam: 'Inpakpuzzel', prijs: 25 },
+    stukken: ['Figuurtje: Lappenmuts (15), Met lapjes (20), Rol inpakpapier (15)', 'Mijn huis: Pakjeskar (30), Lappenkleed (20), Strik op de deur (20)'],
+    open: 'Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.',
+  },
+  {
     versie: '0.90',
     datum: '2026-11-03',
     titel: 'Het Stadje is gevuld',

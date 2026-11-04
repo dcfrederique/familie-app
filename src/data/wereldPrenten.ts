@@ -139,6 +139,19 @@ export const gebouwTekening: Record<string, string> = {
     <path d="M318 170V180" stroke="#8A5A33" stroke-width="3"/><path d="M318 180l5.6 11.4 12.6 1.8-9.1 8.9 2.1 12.5-11.2-5.9-11.2 5.9 2.1-12.5-9.1-8.9 12.6-1.8Z" fill="#64B5F6"/></g>
     <rect x="262" y="250" width="86" height="8" rx="3" fill="#8A5A33"/><rect x="270" y="258" width="8" height="30" fill="#6E4A28"/><rect x="332" y="258" width="8" height="30" fill="#6E4A28"/><rect x="284" y="238" width="34" height="12" rx="2" fill="#F4F6F9"/><circle cx="332" cy="244" r="6" fill="#FFD84D"/>
     <path d="M40 120l5-5l5 5l-5 5zM358 110l5-5l5 5l-5 5z" fill="#FFD84D" opacity=".9"/>`,
+  inpakken: `<ellipse cx="200" cy="288" rx="185" ry="11" fill="#000" opacity=".13"/>
+    <rect x="56" y="150" width="288" height="138" rx="6" fill="#C98E4E"/>
+    <path d="M56 288V150M104 288V150M152 288V150M200 288V150M248 288V150M296 288V150M344 288V150" stroke="#9C6B2E" stroke-width="3"/>
+    <path d="M36 158L196 70Q204 64 214 70L364 158Z" fill="#C62828"/><path d="M48 154L204 80L352 154Q300 140 252 150Q204 136 156 150Q104 140 48 154Z" fill="#F4F6F9"/>
+    <path d="M204 70L168 50Q160 66 184 74ZM204 70L240 50Q248 66 224 74Z" fill="#E53935" stroke="#B71C1C" stroke-width="3"/><circle cx="204" cy="70" r="9" fill="#EF5350" stroke="#B71C1C" stroke-width="3"/>
+    <rect x="160" y="204" width="80" height="84" rx="4" fill="#6E4A28"/><circle cx="226" cy="250" r="4" fill="#F2C230"/>
+    <rect x="72" y="176" width="62" height="52" rx="4" fill="#FFE9A8" stroke="#6E4A28" stroke-width="5"/><path d="M103 176V228M72 202H134" stroke="#6E4A28" stroke-width="3"/>
+    <path d="M122 214Q132 236 124 258Q118 268 128 276" fill="none" stroke="#E53935" stroke-width="5" stroke-linecap="round"/>
+    <rect x="262" y="246" width="86" height="8" rx="3" fill="#8A5A33"/><rect x="270" y="254" width="8" height="34" fill="#6E4A28"/><rect x="332" y="254" width="8" height="34" fill="#6E4A28"/>
+    <rect x="270" y="212" width="30" height="34" fill="#2F80C9"/><path d="M285 212V246M270 229H300" stroke="#FFD84D" stroke-width="3"/>
+    <rect x="304" y="226" width="24" height="20" fill="#43A047"/><path d="M316 226V246" stroke="#fff" stroke-width="3"/>
+    <rect x="330" y="232" width="14" height="14" rx="2" fill="#FFD84D"/>
+    <path d="M40 124l5-5l5 5l-5 5zM358 118l5-5l5 5l-5 5z" fill="#FFD84D" opacity=".9"/>`,
   bouw: `<ellipse cx="200" cy="288" rx="190" ry="11" fill="#000" opacity=".13"/>
     <path d="M60 286l40-120h12" stroke="#F2C230" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M106 166H330l-30 14" stroke="#F2C230" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M300 180v56" stroke="#555" stroke-width="4"/><rect x="288" y="234" width="24" height="16" rx="3" fill="#D93A3A"/>
     <path d="M40 286q60-70 140-30q40 14 70 30z" fill="#D9BC6A"/>

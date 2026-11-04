@@ -1,0 +1,61 @@
+/* Inpakpuzzel: het papier schaalt mee met de hoogte (geen scrollen); de stukjes liggen ernaast, op een staand toestel eronder. */
+.inpak { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 1.4dvh, 14px); width: 100%; position: relative; }
+.inpak-balk { display: flex; align-items: center; gap: 24px; min-height: 28px; }
+.inpak-teller { display: flex; gap: 6px; }
+.inpak-teller span { width: 14px; height: 14px; border-radius: 50%; background: var(--line); }
+.inpak-teller .af { background: var(--gold); }
+.inpak-teller .nu { background: var(--kid); }
+.inpak-klok { font-weight: 700; font-variant-numeric: tabular-nums; min-width: 4ch; }
+.inpak-speel { display: flex; align-items: center; justify-content: center; gap: clamp(14px, 3vw, 40px); width: 100%; }
+.inpak-papier { display: block; height: clamp(200px, min(58dvh, calc(100dvh - 300px)), 560px); width: auto; max-width: 56vw; touch-action: none; user-select: none; -webkit-user-select: none; border-radius: 14px; }
+.inpak-leeg { fill: #F6EBD3; stroke: #D9C79E; stroke-width: 3; }
+.inpak-vak { fill: #FFFDF6; stroke: #E6D8B4; stroke-width: 1.5; }
+.inpak-gat { fill: #3A3F52; }
+.inpak-gelegd { touch-action: none; }
+.inpak-licht { fill: rgba(242, 195, 48, 0.35); stroke: #F2B33D; stroke-width: 2; pointer-events: none; animation: inpak-puls 1.2s ease-in-out infinite; }
+.inpak-spook { fill: rgba(63, 155, 90, 0.4); stroke: #3F9B5A; stroke-width: 2; pointer-events: none; }
+.inpak-strik { fill: none; stroke: #D8452B; stroke-width: 8; stroke-linecap: round; }
+.inpak-papier.klaar .inpak-vak { fill: #FFF3C4; }
+.inpak-zij { display: flex; flex-direction: column; align-items: center; gap: 12px; max-width: 40vw; min-width: 0; }
+.inpak-bak { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; align-content: flex-start; min-height: 80px; max-width: 360px; touch-action: none; }
+.inpak-stukknop { min-width: 64px; min-height: 64px; padding: 6px; display: grid; place-items: center; border: 3px solid transparent; border-radius: 14px; background: rgba(255, 255, 255, 0.55); cursor: grab; touch-action: none; }
+.inpak-stukknop.gekozen { border-color: var(--gold); background: #fff; box-shadow: 0 0 0 3px rgba(242, 195, 48, 0.4); }
+.inpak-stukknop svg { display: block; pointer-events: none; }
+.inpak-leegbak { font-size: 48px; }
+.inpak-knoppen { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.inpak-actie { min-height: 64px; min-width: 64px; font-size: 17px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 0 14px; }
+.inpak-sleep { position: fixed; z-index: 50; pointer-events: none; opacity: 0.92; filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.3)); }
+.inpak-eind { display: grid; justify-items: center; gap: 16px; }
+.inpak-feest { width: clamp(200px, 40dvh, 380px); height: auto; }
+.inpak-pluimen { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; max-width: 360px; font-size: 28px; color: var(--line); }
+.inpak-pluimen .aan { color: var(--gold); }
+@keyframes inpak-puls { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .inpak-licht { animation: none; } }
+/* Staand: de stukjes onder het papier. */
+@media (orientation: portrait) {
+  .inpak-speel { flex-direction: column; }
+  .inpak-papier { height: auto; width: min(78vw, 40dvh); max-width: none; }
+  .inpak-zij { max-width: 94vw; }
+  .inpak-bak { max-width: 94vw; }
+}
+/* Lage liggende tablet (7 inch): bredere bak zodat de stukjes in minder rijen liggen. */
+@media (orientation: landscape) and (min-height: 501px) and (max-height: 700px) {
+  .inpak-bak { max-width: 480px; gap: 4px; }
+  .inpak-stukknop { min-width: 56px; min-height: 56px; padding: 2px; }
+  .inpak-stukknop svg { zoom: 0.8; }
+  .inpak-zij { gap: 6px; }
+  .inpak-papier { height: clamp(200px, calc(100dvh - 330px), 560px); }
+}
+/* Liggende gsm: kleiner papier en kleinere stukjes en knoppen. */
+@media (max-height: 500px) and (orientation: landscape) {
+  .inpak { gap: 2px; }
+  .inpak-balk { min-height: 20px; }
+  .inpak-teller span { width: 10px; height: 10px; }
+  .inpak-papier { height: 40dvh; }
+  .inpak-stukknop { min-width: 40px; min-height: 40px; padding: 2px; }
+  .inpak-stukknop svg { zoom: 0.6; }
+  .inpak-actie { min-height: 44px; font-size: 14px; padding: 0 10px; }
+  .inpak-zij { gap: 4px; }
+  .inpak-knoppen { gap: 4px; }
+  .inpak-bak { gap: 4px; max-width: 300px; }
+}

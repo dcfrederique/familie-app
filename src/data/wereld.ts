@@ -67,6 +67,8 @@ export const gebouwen: Gebouw[] = [
     spel: 'pakjesschuiven', nieuwSinds: '2026-11-02' },
   { id: 'stippen', naam: 'Lampionnenatelier', x: 16 * U, y: 21.5 * U, w: 220, pad: 'stippen', welkom: 'Welkom in het lampionnenatelier!', telt_mee: true,
     spel: 'stippen', nieuwSinds: '2026-11-03' },
+  { id: 'inpakken', naam: 'Inpakhuis', x: 9 * U, y: 21.5 * U, w: 220, pad: 'inpakken', welkom: 'Welkom in het inpakhuis!', telt_mee: true,
+    spel: 'inpakken', nieuwSinds: '2026-11-04' },
   { id: 'bouw', naam: 'Bouwplaats', x: 52.7 * U, y: 21 * U, w: 150, pad: null, welkom: 'Hier komt later een nieuw gebouw. Wat zou het worden?', telt_mee: false },
 ]
 

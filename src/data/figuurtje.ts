@@ -97,6 +97,7 @@ export const categorieen: CategorieInfo[] = [
       { id: 'veerhoed', naam: 'Hoed met veer', prijs: 15, prenten: true },
       { id: 'matrozenhoed', naam: 'Matrozenhoed', prijs: 15, prenten: true },
       { id: 'sterrenmuts', naam: 'Sterrenmuts', prijs: 15, prenten: true },
+      { id: 'lappenmuts', naam: 'Lappenmuts', prijs: 15, prenten: true },
     ] },
   { id: 'shirt', naam: 'Shirt', uitsnede: '24 100 152 128', prenten: true, kleur: { veld: 'shirtKleur', palet: kledingKleuren },
     icoon: 'M8 4l-5 3l2 4l3-1v10h8V10l3 1l2-4l-5-3a4 4 0 0 1-8 0z',
@@ -118,6 +119,7 @@ export const categorieen: CategorieInfo[] = [
       { id: 'ganzenshirt', naam: 'Met gansje', prijs: 20, prenten: true },
       { id: 'anker', naam: 'Met anker', prijs: 20, prenten: true },
       { id: 'muzieknoot', naam: 'Met muzieknoot', prijs: 20, prenten: true },
+      { id: 'lappenshirt', naam: 'Met lapjes', prijs: 20, prenten: true },
     ] },
   { id: 'broek', naam: 'Broek', uitsnede: '30 186 140 104', prenten: true, kleur: { veld: 'broekKleur', palet: kledingKleuren },
     icoon: 'M7 3h10l1 18h-4l-2-11l-2 11H6z',
@@ -150,6 +152,7 @@ export const categorieen: CategorieInfo[] = [
       { id: 'kastanjemand', naam: 'Mandje met kastanjes', prijs: 15, prenten: true },
       { id: 'wuifvlag', naam: 'Wuifvlaggetje', prijs: 15, prenten: true },
       { id: 'liedboekje', naam: 'Liedjesboekje', prijs: 15, prenten: true },
+      { id: 'inpakrol', naam: 'Rol inpakpapier', prijs: 15, prenten: true },
     ] },
 ]
 

@@ -1,0 +1,88 @@
+{
+  "nr": 44,
+  "titel": "Het patchworkpakje",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Sinterklaas, inpakken, creatief zijn en elkaar helpen",
+  "bladzijden": [
+    {
+      "tekst": "Het is bijna Sinterklaas. Daan heeft een cadeautje gemaakt voor zijn kleine zusje: een zelfgemaakte beker van klei. Nu wil hij het inpakken. Hij pakt het inpakpapier van de plank, maar de rol is bijna leeg. Er zit nog maar een klein stukje aan.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan legt het stukje om de beker. Het papier is veel te klein! Hij probeert het te schuiven en te trekken, maar de beker blijft half bloot. \"Oh nee,\" zucht hij. \"Nu kan ik het niet verrassen.\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan komt Noor binnen met Tijs de hond. \"Wat is er?\" vraagt ze. Daan laat de beker zien. \"Mijn papier is op,\" zegt hij. Noor kijkt rond en glimlacht. \"Ik heb een idee. Wacht even!\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor haalt een doos vol restjes papier uit de kast. Er zitten stukjes rood, groen, blauw en geel in. Sommige zijn vierkant, andere hebben rare hoeken. Tijs snuffelt aan de doos en niest. \"Wat gaan we daarmee doen?\" vraagt Daan.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "hond"
+        ]
+      }
+    },
+    {
+      "tekst": "\"We maken er een puzzel van,\" zegt Noor. Ze leggen de stukjes op tafel. Een rood stukje past naast een groen stukje. Een geel stukje past in de hoek. Soms moeten ze een stukje draaien of omdraaien, en dan klikt het precies. Daan lacht.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "daan",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "Samen plakken ze de stukjes aan elkaar. Het is een vrolijk lappendeken van papier, met alle kleuren door elkaar. Daan wikkelt de beker erin. Nu zit hij helemaal verpakt, zonder één gaatje. \"Het ziet er mooier uit dan gewoon papier,\" zegt hij verbaasd.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "daan",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "Nog één ding ontbreekt: een strik. Daan zoekt in de lade en vindt een stukje rood lint. Hij knoopt het om het pakje. Tijs kwispelt en probeert aan het lint te trekken. \"Nee, jongen, dat is voor Sinterklaas!\" lacht Daan.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "hond"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan zet het pakje onder de tafel. \"Bedankt, Noor,\" zegt hij. \"Zonder jouw idee had ik niets.\" Noor haalt haar schouders op. \"Samen puzzelen is leuker dan alleen.\" Tijs gaat ernaast liggen, alsof hij het pakje bewaakt.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "noor",
+          "hond"
+        ]
+      }
+    }
+  ]
+}
