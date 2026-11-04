@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.94',
+    datum: '2026-11-04',
+    titel: 'Dagelijks cadeau blijft staan na een update',
+    tekst: 'Laadt de app zichzelf opnieuw na een nieuwe versie terwijl het hoera met het cadeautje nog open staat, dan komt dezelfde melding gewoon terug tot het kind op Super! tikt. Het cadeau gaat dus niet meer verloren.',
+  },
+  {
     versie: '0.93',
     datum: '2026-11-04',
     titel: 'Het Dorp krijgt extra decor',

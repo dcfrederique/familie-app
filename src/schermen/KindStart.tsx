@@ -14,6 +14,7 @@ import { useGegevens } from '../lib/gegevens.ts'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import { takenVoorKind, type TaakStatus } from '../lib/takenstatus.ts'
 import { gebruikStem, kanVoorlezen, leesVoor } from '../lib/voorlezen.ts'
+import { bewaarHoera, bewaardeHoera, wisHoera } from '../lib/hoeraBewaard.ts'
 import DagelijksHoera from './DagelijksHoera.tsx'
 import Figuurtje, { hoofdUitsnede } from './Figuurtje.tsx'
 import { Ster, SterrenNaarWinkel } from './onderdelen.tsx'
@@ -42,8 +43,11 @@ export default function KindStart({ deel = 'start' }: { deel?: 'start' | 'taken'
   useEffect(() => {
     if (!bron || !kind || !kind.id || hoeraGevraagd.current === kind.id) return
     hoeraGevraagd.current = kind.id
+    // Nog niet weggetikt vóór de app zichzelf vernieuwde? Dan tonen we dezelfde melding opnieuw.
+    const bewaard = bewaardeHoera(kind.id)
+    if (bewaard) { setHoera(bewaard); return }
     bron.dagelijksHoera(kind.id, cadeauStukken(kind.kan_lezen).map((c) => `${c.soort}:${c.sleutel}`))
-      .then(setHoera).catch(() => {})
+      .then((h) => { if (h) bewaarHoera(kind.id, h); setHoera(h) }).catch(() => {})
   }, [bron, kind])
 
   const { data, ververs } = useGegevens(bron && kind ? async () => {
@@ -67,7 +71,7 @@ export default function KindStart({ deel = 'start' }: { deel?: 'start' | 'taken'
         ? <StartLezer deel={deel} kind={kind} lijst={lijst} geladen={!!data} vrij={vrij} eten={data?.eten} kies={kies} />
         : <StartPrenten deel={deel} kind={kind} lijst={lijst} geladen={!!data} eten={data?.eten} kies={kies} />}
 
-      {hoera && <DagelijksHoera kind={kind} hoera={hoera} sluit={() => setHoera(null)} />}
+      {hoera && <DagelijksHoera kind={kind} hoera={hoera} sluit={() => { wisHoera(kind.id); setHoera(null) }} />}
 
       {data && <OuderSterrenMelding kindId={kind.id} regels={data.ouderLog} />}
 
