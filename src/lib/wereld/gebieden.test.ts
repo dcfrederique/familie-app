@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { U, gebouwen } from '../../data/wereld.ts'
 import {
-  GEBIEDEN, aankomstNa, effectieveItems, haalWeg, herstelGebied, kanHier, leesOpgeslagen, leegOpgeslagen, maakGebiedKaart, padRechthoeken, poortOp, standaardItems, verplaats, zetErbij,
+  GEBIEDEN, aankomstNa, effectieveItems, haalWeg, herstelGebied, kanHier, leesOpgeslagen, leegOpgeslagen, maakGebiedKaart, padRechthoeken, poortOp, poortZone, standaardItems, verplaats, zetErbij,
   type GebiedId, type Item,
 } from './gebieden.ts'
 import { POORT_TEGELS, huisRechthoek, maakTegels, nieuweTegelStand } from './kaart.ts'
@@ -233,5 +233,15 @@ describe('paden en poorten', () => {
     const tegels = maakTegels(berg.kaart)
     expect(tegels.pad(27, 23, 3, 12)).not.toBeNull()
     expect(nieuweTegelStand().prog).toBe(0)
+  })
+})
+
+describe('dorp extra decor', () => {
+  it('heeft unieke id\'s en staat niet op een poortzone', () => {
+    const items = standaardItems(['a', 'b', 'c'])
+    expect(new Set(items.map((i) => i.id)).size).toBe(items.length)
+    const extra = items.filter((i) => i.id.startsWith('ding:') && i.id.includes(':dorp:'))
+    expect(extra.length).toBe(8)
+    for (const i of extra) for (const [a, b, c, d] of poortZone('dorp')) expect(i.x * U >= a && i.x * U <= c && i.y * U >= b && i.y * U <= d).toBe(false)
   })
 })

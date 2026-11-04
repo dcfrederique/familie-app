@@ -94,6 +94,22 @@ function dorpDecor(): Item[] {
 }
 
 /**
+ * Het dorp, extra decor (nacht van 4 november 2026): lantaarns langs de dorpsstraat, een fontein en twee bankjes.
+ * Id's `ding:<soort>:dorp:<n>` (botsen niet met `dorpDecor`), nooit hernoemen.
+ */
+function dorpExtra(): Item[] {
+  const lijst: [string, number, number][] = [
+    ['lantaarn', 8.5, 11.8], ['lantaarn', 19.8, 11.8], ['lantaarn', 31.5, 11.8], ['lantaarn', 43.5, 11.8], ['lantaarn', 51.5, 11.8],
+    ['fontein', 42.5, 15.4], ['bank', 17.5, 14.9], ['bank', 48.5, 14.9],
+  ]
+  const teller: Record<string, number> = {}
+  return lijst.map(([ref, x, y]) => {
+    teller[ref] = (teller[ref] ?? 0) + 1
+    return { id: `ding:${ref}:dorp:${teller[ref]}`, soort: 'ding' as const, ref, gebied: 'dorp' as const, x, y }
+  })
+}
+
+/**
  * Het bos (nacht van 28 oktober 2026): bomen in groepjes, paddenstoelen en een bankje, met de paden van de oostpoort vrij.
  * Vaste plekken uit `toeval`, id's `ding:<soort>:bos:<n>` (nooit hernoemen; er mogen er later bij komen, niet tussenin).
  */
@@ -255,7 +271,7 @@ export function standaardItems(kinderIds: readonly string[]): Item[] {
   for (const g of GEBIEDEN) if (g.id !== 'dorp') paden.push(...poortPaden(g.id, g.poorten))
   // een pad kan twee keer voorkomen (de weg naar het noorden kruist een stoepje): één per tegel
   const uniek = [...new Map(paden.map((i) => [i.id, i])).values()]
-  return [...huizen, ...gebouwItems, ...dorpDecor(), ...bosDecor(), ...bergDecor(), ...plattelandDecor(), ...meerDecor(), ...strandDecor(), ...sportDecor(), ...stadjeDecor(), ...uniek]
+  return [...huizen, ...gebouwItems, ...dorpDecor(), ...dorpExtra(), ...bosDecor(), ...bergDecor(), ...plattelandDecor(), ...meerDecor(), ...strandDecor(), ...sportDecor(), ...stadjeDecor(), ...uniek]
 }
 
 /** Wat er nu staat: de standaardplekken, met de verplaatsingen en verwijderingen van de ouders, en wat zij erbij zetten. */

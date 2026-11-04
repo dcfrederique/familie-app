@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.93',
+    datum: '2026-11-04',
+    titel: 'Het Dorp krijgt extra decor',
+    tekst: 'Het Dorp is een beetje voller: lantaarns langs de dorpsstraat, een fontein en twee bankjes. Ouders kunnen alles verplaatsen of weghalen in Wij → Kaart bewerken. Daarmee zijn alle acht gebieden gevuld.',
+  },
+  {
     versie: '0.92',
     datum: '2026-11-04',
     titel: 'Inpakpuzzel: het gekozen stukje wiebelt',
