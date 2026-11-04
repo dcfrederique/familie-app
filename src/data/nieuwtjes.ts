@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.92',
+    datum: '2026-11-04',
+    titel: 'Inpakpuzzel: het gekozen stukje wiebelt',
+    tekst: 'Bij de Inpakpuzzel wiebelt het stukje dat je kiest nu zachtjes, zodat de kinderen zien wat ze vasthouden. De Inpakpuzzel, De wereld en Springland passen op alle tablets en op de gsm liggend.',
+  },
+  {
     versie: '0.91',
     datum: '2026-11-04',
     titel: 'Inpakpuzzel, Het patchworkpakje en Het wolkenpad',

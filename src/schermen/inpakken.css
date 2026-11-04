@@ -59,3 +59,9 @@
   .inpak-knoppen { gap: 4px; }
   .inpak-bak { gap: 4px; max-width: 300px; }
 }
+/* Detail: het gekozen stukje wiebelt zachtjes, zodat het kind ziet wat het vasthoudt; een knop veert in bij een tik. */
+.inpak-stukknop:active { transform: scale(.94); }
+@media (prefers-reduced-motion: no-preference) {
+  .inpak-stukknop.gekozen svg { animation: inpak-wiebel 1.6s ease-in-out infinite; }
+}
+@keyframes inpak-wiebel { 0%, 100% { transform: rotate(0); } 25% { transform: rotate(-5deg); } 75% { transform: rotate(5deg); } }
