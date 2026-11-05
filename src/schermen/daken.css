@@ -66,3 +66,9 @@
   .daak-uitleg ul { font-size: 13px; gap: 4px; }
   .daak-tellen { font-size: 20px; }
 }
+/* Detail: het stalletje (einde) gloeit zachtjes, zodat de kleintjes zien waar het paard naartoe moet. */
+@media (prefers-reduced-motion: no-preference) {
+  .daak-dak.einde { animation: daak-stal-gloed 2.4s ease-in-out infinite; }
+  .daak-bord.klaar .daak-dak.einde { animation: none; }
+}
+@keyframes daak-stal-gloed { 0%, 100% { fill: #FFE9A8; stroke-width: 2; } 50% { fill: #FFF3C4; stroke-width: 4; } }

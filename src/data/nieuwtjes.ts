@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.96',
+    datum: '2026-11-05',
+    titel: 'Paard op het dak: het stalletje gloeit',
+    tekst: 'Bij Paard op het dak gloeit het stalletje nu zachtjes, zodat de kleintjes zien waar het paard naartoe moet. Het spel, het startscherm, Springland en De wereld passen op alle tablets en op de gsm liggend.',
+  },
+  {
     versie: '0.95',
     datum: '2026-11-05',
     titel: 'Paard op het dak, Een wortel voor het paard en de sneeuwbaas',
