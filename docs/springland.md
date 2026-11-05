@@ -9,7 +9,7 @@ Platformspel van opzij waarin het kind met zijn eigen figuurtje loopt en springt
 - Na het openen van Springland staat het kind op de landkaart, van bovenaf gezien (zoals een oude
   platformgame-wereldkaart). Elke wereld is een eigen stuk land (bordje met de naam, eigen kleur en versiering);
   tussen twee werelden loopt een riviertje met een bruggetje. Na de laatste wereld ligt mist met een vraagteken:
-  daar komen nieuwe werelden. De werelden nu: Zonnevallei (groen), Pepernotenland (snoep) en Winterbergen (sneeuw, begonnen 31 oktober 2026 met Het slaapbos; tweede level De bevroren beek op 1 november, derde level Het sneeuwdorp op 2 november, vierde level Het ijsmeer op 3 november, vijfde en laatste gewone level Het wolkenpad op 4 november (zacht, met vogels); de baas van Winterbergen volgt als zesde plekje).
+  daar komen nieuwe werelden. De werelden nu: Zonnevallei (groen), Pepernotenland (snoep) en Winterbergen (sneeuw, begonnen 31 oktober 2026 met Het slaapbos; tweede level De bevroren beek op 1 november, derde level Het sneeuwdorp op 2 november, vierde level Het ijsmeer op 3 november, vijfde en laatste gewone level Het wolkenpad op 4 november (zacht, met vogels); de **sneeuwbaas** op 5 november als zesde plekje: Winterbergen is nu vol en de volgende nacht begint een nieuwe wereld).
 - De kaart is aangekleed en beweegt een beetje (bomen wiegen, de molen draait, schaduwen van wolken drijven over,
   vlinders, meeuwen of sneeuwvlokjes); met "minder beweging" op het toestel staat alles stil. Tekeningen in
   `src/schermen/SpringKaartPrent.tsx`, plaatsing (nooit op het pad, elke keer dezelfde) in `aankleding()`.
@@ -62,7 +62,7 @@ Van opzij raken kost nog altijd een hartje. De baas heeft zijn eigen regels (zie
   zelfs op blijven kaatsen) en rolt daarna iets sneller. 3 hups (`BAAS_NODIG`: 2 bij Vanzelf lopen) en hij is
   verslagen. Van opzij raken kost een hartje en de baas draait om. De bolletjes naast de hartjes tellen af.
 - Geen schrik: de baas is boos-lief getekend, er is geen geweld, hij wordt gewoon duizelig en "poef" weg.
-- De eerste baas is de **pompoenbaas** (Zonnevallei, stijl bos). De tweede is de **pepernotenbaas** (Pepernotenland, stijl weide, `soort: 'pepernoot'`: drie bruine koekjes met glazuurstreepjes en een rood mijtertje). Een nieuwe baas = een nieuw `soort`: tekening in
+- De eerste baas is de **pompoenbaas** (Zonnevallei, stijl bos). De derde is de **sneeuwbaas** (Winterbergen, stijl sneeuw, `soort: 'sneeuw'`: drie sneeuwballen met een blauwe muts, rode sjaal en wortelneus). De tweede is de **pepernotenbaas** (Pepernotenland, stijl weide, `soort: 'pepernoot'`: drie bruine koekjes met glazuurstreepjes en een rood mijtertje). Een nieuwe baas = een nieuw `soort`: tekening in
   `tekenBaas` (`springenVeld.ts`) en op het eilandje van de kaart (`SpringKaart.tsx`).
 - Robotje: `springen.test.ts` laat het robotje ook de baas verslaan (hij hupt als de baas aan komt rollen).
 

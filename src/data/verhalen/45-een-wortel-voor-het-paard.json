@@ -1,0 +1,89 @@
+{
+  "nr": 45,
+  "titel": "Een wortel voor het paard",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Sinterklaas, het paard verwennen en delen",
+  "bladzijden": [
+    {
+      "tekst": "Het is bijna Sinterklaas. Noor zit met opa in de tuin. \"Het paard van de Sint loopt straks over alle daken,\" zegt opa. \"Dat is hard werken!\" Noor denkt na. \"Dan heeft het paard vast honger,\" zegt ze. \"Ik zet een wortel klaar.\"",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "noor",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor zoekt de grootste wortel in de groentekist. Hij is lang en oranje, met nog een groen pluimpje. Ze legt hem in een mandje. \"Maar wat als het paard dorst heeft?\" vraagt ze. Ze loopt naar binnen om een bakje water te halen.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "In de gang staat Tijs de hond bij zijn eigen bakje. Hij kijkt naar het mandje met de wortel en kwispelt. \"Nee, die is niet voor jou,\" lacht Noor. \"Jij krijgt straks je eigen koekje.\" Tijs zucht en gaat voor de deur liggen.",
+      "prent": {
+        "decor": "huis",
+        "figuren": [
+          "noor",
+          "hond"
+        ]
+      }
+    },
+    {
+      "tekst": "Die avond zet Noor het mandje en het bakje op het terras. Opa legt er een handje hooi naast. Noor kijkt omhoog naar de sterren. \"Zou het paard ons zien?\" fluistert ze. \"Misschien wel,\" zegt opa. \"Paarden hebben goede ogen.\"",
+      "prent": {
+        "decor": "nacht",
+        "figuren": [
+          "noor",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor ligt in bed, maar ze kan niet slapen. Ze denkt aan de lange wandeling van het paard over de daken. Eén dak, dan nog een, dan nog een. \"Wat als het er eentje vergeet?\" mompelt ze. Dan sluit ze haar ogen en slaapt ze in.",
+      "prent": {
+        "decor": "huis",
+        "figuren": [
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "De volgende ochtend rent Noor naar het terras. Het mandje is leeg! Het bakje ook. Op het hooi ligt een klein pepernootje. Opa komt naast haar staan. \"Zie je wel,\" zegt hij zacht. \"Het paard heeft het gehad.\" Tijs snuffelt aan het hooi en niest.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "noor",
+          "opa",
+          "hond"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor kijkt omhoog naar het dak. Is dat een hoefafdruk in de sneeuw op de rand? Ze lacht. Ze weet het zeker. Het paard heeft elk dak bezocht, en ook dat van haar. Ze heeft niets vergeten, en het paard ook niet.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "noor",
+          "paard"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor deelt het pepernootje met opa en met Tijs, elk een stukje. \"Dank je wel, paard,\" zegt ze luid naar de lucht. Opa legt zijn arm om haar schouder. \"Als je lief bent voor een ander, komt er altijd iets terug,\" zegt hij. Noor knikt. Ze weet precies wat ze morgen weer klaarzet.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "noor",
+          "opa",
+          "hond"
+        ]
+      }
+    }
+  ]
+}

@@ -4,6 +4,7 @@ import type { Gebruiker } from './gezin.ts'
 import type { PakjesNiveau } from './pakjesschuiven.ts'
 import type { StippenNiveau } from './stippen.ts'
 import type { InpakNiveau } from './inpakken.ts'
+import type { DakNiveau } from './daken.ts'
 
 export type MemoryNiveau = 'klein' | 'middel' | 'groot'
 export type RekenNiveau = 'tellen' | 'tot10' | 'tot20' | 'tot100' | 'tot1000' | 'tafels'
@@ -273,6 +274,27 @@ export const inpakNiveaus: Record<InpakNiveau, {
 
 export const inpakRondes = 4
 
+/**
+ * Paard op het dak. `licht`: de daken waar het paard heen mag lichten op; `terug`: de knop Terug; `pluimen`: strenge score;
+ * `misstappen`: hoeveel keer een stuk van de lijn weg mag voor de pluim wegvalt; `seconden`: tijd voor de snelheidspluim.
+ */
+export const dakenNiveaus: Record<DakNiveau, {
+  label: string; licht: boolean; terug: boolean; pluimen: boolean; misstappen: number; seconden: number
+}> = {
+  makkelijk: { label: 'Makkelijk', licht: true, terug: true, pluimen: false, misstappen: 0, seconden: 0 },
+  middel: { label: 'Middel', licht: false, terug: true, pluimen: false, misstappen: 0, seconden: 0 },
+  moeilijk: { label: 'Moeilijk', licht: false, terug: false, pluimen: true, misstappen: 3, seconden: 150 },
+}
+
+export const dakenRondes = 4
+
+/** Wie niet leest begint makkelijk, de oudste lezer moeilijk, andere lezers middel. */
+export function startDakenNiveau(kind: Gebruiker, kinderen: Gebruiker[]): DakNiveau {
+  if (!kind.kan_lezen) return 'makkelijk'
+  const oudsteLezer = kinderen.filter((k) => k.kan_lezen).sort((a, b) => a.volgorde - b.volgorde)[0]
+  return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
+}
+
 /** Wie niet leest begint makkelijk, de oudste lezer moeilijk, andere lezers middel. */
 export function startInpakNiveau(kind: Gebruiker, kinderen: Gebruiker[]): InpakNiveau {
   if (!kind.kan_lezen) return 'makkelijk'
@@ -376,7 +398,7 @@ export function startNiveaus(kind: Gebruiker, kinderen: Gebruiker[]): { memory: 
   return oudsteLezer?.id === kind.id ? { memory: 'groot', rekenen: 'tot100' } : { memory: 'middel', rekenen: 'tot20' }
 }
 
-export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'springen'
+export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'springen'
 
 export interface SpelInfo {
   sleutel: SpelSleutel
@@ -426,6 +448,8 @@ export const spelMenu: SpelInfo[] = [
     icoon: 'M4 9h16v11H4zM12 9v11M4 13h16M12 9C9 9 8 5 10 5s2 4 2 4zM12 9c3 0 4-4 2-4s-2 4-2 4z' },
   { sleutel: 'stippen', naam: 'Lampion tekenen', uitleg: 'Tik de lichtpuntjes in de goede volgorde', prijs: 20,
     icoon: 'M6 18h.01M9 8h.01M16 6h.01M19 15h.01M12 12h.01M6 18L9 8L16 6L19 15L12 12' },
+  { sleutel: 'daken', naam: 'Paard op het dak', uitleg: 'Loop over alle daken, elk dak één keer', prijs: 25,
+    icoon: 'M3 20V11l5-5 5 5v9M13 20v-6l4-4 4 4v6M3 20h18' },
   { sleutel: 'inpakken', naam: 'Inpakpuzzel', uitleg: 'Vul het inpakpapier met de stukjes', prijs: 25,
     icoon: 'M4 4h8v8H4zM12 12h8v8h-8zM12 4h8v8M4 12v8h8' },
   { sleutel: 'lichtjes', naam: 'Lichtjesboom', uitleg: 'Doe de lichtjes na in dezelfde volgorde', prijs: 20,

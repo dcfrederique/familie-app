@@ -454,9 +454,10 @@ export class SpringVeld {
     ctx.scale(1, plat)
     ctx.fillStyle = 'rgba(0,0,0,.15)'
     ctx.beginPath(); ctx.ellipse(0, 0, w * 0.5, T * 0.1, 0, 0, Math.PI * 2); ctx.fill()
-    const pepernoot = springLevels[this.spel.level].baas?.soort === 'pepernoot'
+    const soort = springLevels[this.spel.level].baas?.soort
+    const pepernoot = soort === 'pepernoot', sneeuw = soort === 'sneeuw'
     // Pompoen: drie oranje bollen met een groene steel. Pepernoot: drie bruine koekjes met glazuurstreepjes en een rood mijtertje.
-    for (const [dx, kleur] of (pepernoot ? [[-0.26, '#A8693A'], [0.26, '#8A5A33'], [0, '#C08246']] : [[-0.26, '#EE8222'], [0.26, '#EE8222'], [0, '#F6A33B']]) as [number, string][]) {
+    for (const [dx, kleur] of (sneeuw ? [[-0.26, '#DCEAF6'], [0.26, '#C9DDEE'], [0, '#F4F9FD']] : pepernoot ? [[-0.26, '#A8693A'], [0.26, '#8A5A33'], [0, '#C08246']] : [[-0.26, '#EE8222'], [0.26, '#EE8222'], [0, '#F6A33B']]) as [number, string][]) {
       ctx.fillStyle = kleur
       ctx.beginPath(); ctx.ellipse(dx * w, -h * 0.48, w * (dx ? 0.3 : 0.27), h * 0.48, 0, 0, Math.PI * 2); ctx.fill()
     }
@@ -469,6 +470,18 @@ export class SpringVeld {
       ctx.beginPath(); ctx.moveTo(-w * 0.14, -h * 0.98); ctx.lineTo(0, -h * 1.3); ctx.lineTo(w * 0.14, -h * 0.98); ctx.closePath(); ctx.fill()
       ctx.fillStyle = '#F2B33D'
       ctx.fillRect(-w * 0.015, -h * 1.22, w * 0.03, h * 0.16); ctx.fillRect(-w * 0.06, -h * 1.17, w * 0.12, h * 0.03)
+    } else if (sneeuw) {
+      // Blauwe gebreide muts met pompon, rode sjaal en een wortelneus.
+      ctx.fillStyle = '#2F6FC0'
+      ctx.beginPath(); ctx.moveTo(-w * 0.2, -h * 0.97); ctx.quadraticCurveTo(0, -h * 1.45, w * 0.2, -h * 0.97); ctx.closePath(); ctx.fill()
+      ctx.fillStyle = '#FFFFFF'
+      ctx.fillRect(-w * 0.21, -h * 1.0, w * 0.42, h * 0.07)
+      ctx.beginPath(); ctx.arc(0, -h * 1.38, T * 0.16, 0, Math.PI * 2); ctx.fill()
+      ctx.fillStyle = '#D8452B'
+      ctx.beginPath(); ctx.roundRect(-w * 0.46, -h * 0.4, w * 0.92, h * 0.1, h * 0.05); ctx.fill()
+      ctx.fillRect(w * 0.22, -h * 0.34, w * 0.08, h * 0.3)
+      ctx.fillStyle = '#F08A24'
+      ctx.beginPath(); ctx.moveTo(b.richting * T * 0.05, -h * 0.53); ctx.lineTo(b.richting * T * 0.5, -h * 0.47); ctx.lineTo(b.richting * T * 0.05, -h * 0.43); ctx.closePath(); ctx.fill()
     } else {
       ctx.fillStyle = '#5E8C3A'
       ctx.beginPath(); ctx.roundRect(-w * 0.06, -h * 1.12, w * 0.12, h * 0.2, w * 0.05); ctx.fill()

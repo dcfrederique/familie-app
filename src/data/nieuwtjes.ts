@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.95',
+    datum: '2026-11-05',
+    titel: 'Paard op het dak, Een wortel voor het paard en de sneeuwbaas',
+    tekst: 'Nieuw verhaal "Een wortel voor het paard" (Sinterklaas) en nieuwe kleurplaat "Paard op het dak", meteen te lezen en in te kleuren. Het spelletje Paard op het dak kost 25 sterren in de winkel: trek met je vinger een lijn over alle daken, elk dak één keer. Makkelijk heeft kleine rasters waar de volgende daken oplichten; middel heeft grotere rasters met gaten; de moeilijke stand is een echte denkpuzzel van 32 tot 54 daken met gaten, genummerde schoorstenen die je op volgorde moet bezoeken, ijsdaken waar je rechtdoor moet en een vast eindstalletje, zonder hulp of Terug-knop, met een klokje en pluimen voor weinig misstappen en snel. De Dakenstal staat in De wereld (gouden rand tot 19 november, slot tot gekocht). Springland heeft in Winterbergen nu de baas: de sneeuwbaas (3 hups, 2 bij Vanzelf lopen). Daarmee is Winterbergen vol.',
+    verhaal: 'Een wortel voor het paard',
+    spel: { naam: 'Paard op het dak', prijs: 25 },
+    stukken: ['Figuurtje: Veulenmuts (15), Met hoefijzer (20), Wortel voor het paard (15)', 'Mijn huis: Hooiberg (25), Drinkbak (20), Pakje op het dak (20)'],
+    open: 'Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.',
+  },
+  {
     versie: '0.94',
     datum: '2026-11-04',
     titel: 'Dagelijks cadeau blijft staan na een update',
@@ -242,7 +252,7 @@ export const nieuwtjes: Nieuwtje[] = [
     tekst: 'Het winterpakket staat klaar: het verhaal Pip en de sneeuwman, de kleurplaat Sneeuwman, het spelletje Wie is de schaduw? (tik de schaduw die bij het plaatje hoort, 3 niveaus), een iglo in De wereld met een gouden rand en een slot tot het gekocht is, en in Springland een nieuw level in Pepernotenland: De sneeuwheuvel. Het spelletje en de stukken zijn nog niet vrijgegeven: dat doen jullie in Kinderen → Winkelaanbod.',
     verhaal: 'Pip en de sneeuwman (Avonturiers)',
     spel: { naam: 'Wie is de schaduw?', prijs: 20 },
-    stukken: ['Figuurtje: Oorwarmers (15), Met sneeuwvlok (20), Sneeuwbal (15)', 'Mijn huis: Sneeuwman (25), IJsbaantje (35), IJspegels (20)'],
+    stukken: ['Figuurtje: Veulenmuts (15), Met sneeuwvlok (20), Sneeuwbal (15)', 'Mijn huis: Sneeuwman (25), IJsbaantje (35), IJspegels (20)'],
   },
   {
     versie: '0.61',
