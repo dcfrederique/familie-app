@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.97',
+    datum: '2026-11-06',
+    titel: 'Eerlijk delen, De sjaal voor twee en de wereld Zonnestrand',
+    tekst: 'Nieuw verhaal "De sjaal voor twee" (Sint-Maarten) en nieuwe kleurplaat "Samen in één sjaal", meteen te lezen en in te kleuren. Het spelletje Eerlijk delen kost 25 sterren in de winkel: verdeel het lekkers zo dat elk mandje evenveel heeft. Makkelijk zijn het koekjes zonder getallen (tik en het koekje gaat naar het mandje met het minste); middel heeft snoepjes met getallen, de som onder elk mandje en het doel bovenaan; de moeilijke stand is echt rekenen tot 100: 3 tot 5 mandjes met stukjes van 3 tot 45, zonder zichtbare sommen en zonder doel, een mandje houdt maximaal 4 stukjes en je moet zelf Controleer drukken (een foute controle telt als misstap), met klokje en pluimen voor weinig misstappen en snel. Het Deelhuisje staat in De wereld (gouden rand tot 20 november, slot tot gekocht). Springland heeft een nieuwe wereld: Zonnestrand, met als eerste level Het strandpad (zacht, met slakken).',
+    verhaal: 'De sjaal voor twee',
+    spel: { naam: 'Eerlijk delen', prijs: 25 },
+    stukken: ['Figuurtje: Muts met sjaal (15), Met sjaaltje (20), Zakje mandarijnen (15)', 'Mijn huis: Soepketel (30), Lampionnenboom (30), Sjaal om het hek (15)'],
+    open: 'Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.',
+  },
+  {
     versie: '0.96',
     datum: '2026-11-05',
     titel: 'Paard op het dak: het stalletje gloeit',

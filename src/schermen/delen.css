@@ -1,0 +1,67 @@
+/* Eerlijk delen: de mandjes bovenaan, het lekkers eronder; alles schaalt mee met de hoogte (geen scrollen). */
+.deel { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 1.4dvh, 14px); width: 100%; position: relative; }
+.deel-balk { display: flex; align-items: center; gap: 24px; min-height: 28px; font-weight: 700; }
+.deel-teller { display: flex; gap: 6px; }
+.deel-teller span { width: 14px; height: 14px; border-radius: 50%; background: var(--line); }
+.deel-teller .af { background: var(--gold); }
+.deel-teller .nu { background: var(--kid); }
+.deel-doel b { font-size: 1.3em; }
+.deel-klok { font-variant-numeric: tabular-nums; min-width: 4ch; }
+.deel-mandjes { display: flex; justify-content: center; gap: clamp(8px, 2vw, 24px); width: 100%; }
+.deel-mandje { position: relative; display: grid; grid-template-rows: auto 1fr auto; justify-items: center; width: clamp(110px, 17vw, 190px); height: clamp(150px, 30dvh, 250px); padding: 4px 6px 0; border-radius: 16px; background: rgba(255, 255, 255, 0.5); transition: transform 0.15s; }
+.deel-mandje.klaar { background: #FFF3C4; }
+.deel-mandje.wiebel { animation: deel-schud 0.3s; }
+.deel-kind { width: clamp(40px, 7dvh, 64px); height: auto; }
+.deel-inhoud { display: flex; flex-wrap: wrap; align-content: flex-end; justify-content: center; gap: 2px; width: 100%; padding-bottom: 14px; z-index: 1; }
+.deel-in { display: grid; place-items: center; padding: 0; border: 0; background: transparent; cursor: pointer; min-width: 40px; min-height: 40px; }
+.deel-in .deel-lekker { width: clamp(36px, 6dvh, 52px); height: auto; }
+.deel-rand { position: absolute; left: 4%; right: 4%; bottom: 20px; height: 26%; border-radius: 4px 4px 22px 22px; background: linear-gradient(#C98E4E, #A8693A); opacity: 0.35; pointer-events: none; }
+.deel-som { font-size: clamp(20px, 3.4dvh, 30px); font-weight: 800; font-variant-numeric: tabular-nums; min-height: 1.3em; z-index: 1; }
+.deel-som.goed { color: #2E7D32; }
+.deel-onder { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 1.2dvh, 12px); width: 100%; }
+.deel-hoop { display: flex; flex-wrap: wrap; justify-content: center; align-content: flex-start; gap: 6px; min-height: 72px; max-width: min(92vw, 820px); touch-action: none; }
+.deel-stuk { display: grid; place-items: center; min-width: 64px; min-height: 64px; padding: 4px; border: 3px solid transparent; border-radius: 16px; background: rgba(255, 255, 255, 0.6); cursor: grab; touch-action: none; }
+.deel-stuk.gekozen { border-color: var(--gold); background: #fff; box-shadow: 0 0 0 3px rgba(242, 195, 48, 0.4); }
+.deel-lekker { display: block; width: 52px; height: 52px; pointer-events: none; }
+.deel-getal { fill: #fff; font-weight: 800; font-size: 20px; font-family: 'Baloo 2', Nunito, sans-serif; paint-order: stroke; stroke: rgba(0, 0, 0, 0.35); stroke-width: 2px; }
+.deel-leeg { font-size: 48px; }
+.deel-knoppen { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.deel-actie { min-height: 64px; min-width: 64px; font-size: 17px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 0 14px; }
+.deel-melding { font-weight: 800; font-size: 18px; color: #B3261E; }
+.deel-sleep { position: fixed; z-index: 50; pointer-events: none; transform: translate(-50%, -50%); opacity: 0.92; filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.3)); }
+.deel-sleep .deel-lekker { width: 60px; height: 60px; }
+.deel-eind { display: grid; justify-items: center; gap: 16px; }
+.deel-feest { width: clamp(200px, 40dvh, 380px); height: auto; }
+.deel-pluimen { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; max-width: 360px; font-size: 28px; color: var(--line); }
+.deel-pluimen .aan { color: var(--gold); }
+@keyframes deel-schud { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-4px); } 75% { transform: translateX(4px); } }
+@media (prefers-reduced-motion: reduce) { .deel-mandje.wiebel { animation: none; } .deel-mandje { transition: none; } }
+/* Staand: smallere mandjes, het lekkers eronder. */
+@media (orientation: portrait) {
+  .deel-mandje { width: clamp(90px, 17vw, 150px); height: clamp(150px, 24dvh, 230px); }
+  .deel-in .deel-lekker { width: clamp(30px, 4.5dvh, 44px); }
+}
+/* Lage liggende tablet (7 inch). */
+@media (orientation: landscape) and (min-height: 501px) and (max-height: 700px) {
+  .deel-mandje { height: clamp(140px, 27dvh, 200px); }
+  .deel-stuk { min-width: 56px; min-height: 56px; padding: 2px; }
+  .deel-stuk .deel-lekker { width: 46px; height: 46px; }
+}
+/* Liggende gsm: kleiner. */
+@media (max-height: 500px) and (orientation: landscape) {
+  .deel { gap: 2px; }
+  .deel-balk { min-height: 20px; }
+  .deel-teller span { width: 10px; height: 10px; }
+  .deel-mandje { height: 23dvh; width: clamp(90px, 14vw, 130px); padding-top: 0; }
+  .deel-kind { width: 28px; }
+  .deel-inhoud { padding-bottom: 6px; }
+  .deel-in { min-width: 30px; min-height: 30px; }
+  .deel-in .deel-lekker { width: 30px; }
+  .deel-stuk { min-width: 44px; min-height: 44px; padding: 1px; }
+  .deel-stuk .deel-lekker { width: 36px; height: 36px; }
+  .deel-hoop { min-height: 44px; gap: 2px; max-width: 94vw; }
+  .deel-onder { gap: 2px; }
+  .deel-actie { min-height: 44px; font-size: 14px; padding: 0 10px; }
+  .deel-som { font-size: 16px; min-height: 1.1em; }
+  .deel-melding { font-size: 14px; }
+}

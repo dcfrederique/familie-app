@@ -163,6 +163,16 @@ export const gebouwTekening: Record<string, string> = {
     <ellipse cx="96" cy="266" rx="30" ry="22" fill="#E8C14A"/><path d="M76 262L84 250M96 258L100 246M112 264L120 254" stroke="#C89A2A" stroke-width="3" stroke-linecap="round"/>
     <rect x="266" y="256" width="60" height="18" rx="4" fill="#8A5A33"/><path d="M278 256L292 238L298 242L286 258Z" fill="#E8772E"/><path d="M292 240l-3 -8M296 242l8 -6" stroke="#5E8A33" stroke-width="3" stroke-linecap="round"/>
     <path d="M36 128l5-5l5 5l-5 5zM362 118l5-5l5 5l-5 5z" fill="#FFD84D" opacity=".9"/>`,
+  delen: `<ellipse cx="200" cy="288" rx="185" ry="11" fill="#000" opacity=".13"/>
+    <rect x="62" y="150" width="276" height="138" rx="6" fill="#C98E4E"/>
+    <path d="M62 288V150M108 288V150M154 288V150M200 288V150M246 288V150M292 288V150M338 288V150" stroke="#9C6B2E" stroke-width="3"/>
+    <path d="M40 158L196 72Q204 66 214 72L360 158Z" fill="#F2C530"/><path d="M52 154L204 82L348 154Q300 140 252 150Q204 136 156 150Q104 140 52 154Z" fill="#FFF3C4"/>
+    <rect x="160" y="204" width="80" height="84" rx="4" fill="#6E4A28"/><circle cx="226" cy="250" r="4" fill="#F2C230"/>
+    <rect x="76" y="176" width="66" height="54" rx="4" fill="#FFE9A8" stroke="#6E4A28" stroke-width="5"/><path d="M109 176V230M76 203H142" stroke="#6E4A28" stroke-width="3"/>
+    <path d="M86 226Q90 212 96 226ZM112 226Q118 208 126 226Z" fill="#A8693A"/>
+    <path d="M252 190H322" stroke="#8A5A33" stroke-width="4"/><rect x="262" y="196" width="50" height="28" rx="3" fill="#fff" stroke="#8A5A33" stroke-width="3"/><path d="M272 206H302M272 214H302" stroke="#2F80C9" stroke-width="4" stroke-linecap="round"/>
+    <path d="M256 276Q300 262 346 276L340 288H262Z" fill="#E53935"/><circle cx="276" cy="268" r="9" fill="#F08A24"/><circle cx="296" cy="264" r="9" fill="#F5A03A"/><circle cx="316" cy="268" r="9" fill="#F08A24"/><circle cx="334" cy="272" r="7" fill="#E8C14A"/>
+    <path d="M40 124l5-5l5 5l-5 5zM362 118l5-5l5 5l-5 5z" fill="#FFD84D" opacity=".9"/>`,
   bouw: `<ellipse cx="200" cy="288" rx="190" ry="11" fill="#000" opacity=".13"/>
     <path d="M60 286l40-120h12" stroke="#F2C230" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M106 166H330l-30 14" stroke="#F2C230" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M300 180v56" stroke="#555" stroke-width="4"/><rect x="288" y="234" width="24" height="16" rx="3" fill="#D93A3A"/>
     <path d="M40 286q60-70 140-30q40 14 70 30z" fill="#D9BC6A"/>

@@ -45,6 +45,8 @@ export const zin = {
   stippenUitleg: 'Tik de lichtpuntjes aan, van klein naar groot. Dan gaat de lampion branden!',
   stippenKlaar: 'Kijk, de lampion straalt!',
   inpakUitleg: 'Leg alle stukjes op het papier, tot er geen gaatjes meer zijn. Draai het stukje als het niet past!',
+  delenUitleg: 'Geef elk kind evenveel. Tik op een koekje, dan tik je op een mandje.',
+  delenKlaar: 'Iedereen heeft evenveel gekregen!',
   dakenUitleg: 'Trek een lijn over alle daken. Elk dak maar één keer!',
   dakenKlaar: 'Het paard is over alle daken gelopen!',
   inpakKlaar: 'Wat een mooi pakje! Het papier is helemaal vol.',

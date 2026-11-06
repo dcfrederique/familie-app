@@ -28,6 +28,7 @@ import Pakjesschuiven from './schermen/Pakjesschuiven.tsx'
 import Stippen from './schermen/Stippen.tsx'
 import Inpakken from './schermen/Inpakken.tsx'
 import Daken from './schermen/Daken.tsx'
+import Delen from './schermen/Delen.tsx'
 import Lichtjes from './schermen/Lichtjes.tsx'
 import Schaduw from './schermen/Schaduw.tsx'
 import Springen, { OuderSpringland } from './schermen/Springen.tsx'
@@ -124,6 +125,7 @@ export default function App() {
         <Route path="stippen" element={<Stippen />} />
         <Route path="inpakken" element={<Inpakken />} />
         <Route path="daken" element={<Daken />} />
+        <Route path="delen" element={<Delen />} />
         <Route path="lichtjes" element={<Lichtjes />} />
         <Route path="schaduw" element={<Schaduw />} />
         <Route path="springen" element={<Springen />} />

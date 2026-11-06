@@ -48,6 +48,7 @@ export const springWerelden: SpringWereld[] = [
   { id: 'zonnevallei', naam: 'Zonnevallei', stijl: 'groen' },
   { id: 'pepernotenland', naam: 'Pepernotenland', stijl: 'snoep' },
   { id: 'winterbergen', naam: 'Winterbergen', stijl: 'sneeuw' },
+  { id: 'zonnestrand', naam: 'Zonnestrand', stijl: 'zand' },
 ]
 
 /** Alle levels in speelvolgorde; nieuwe levels komen achteraan (bij de laatste wereld). */
@@ -359,6 +360,23 @@ export const springLevelLijst: SpringLevelInfo[] = [
       '  P o o o     e           o o ##    o C o   e         B         H ',
       '####################  ############################################',
       '####################~~############################################',
+    ],
+  },
+  {
+    id: 'strandpad', wereld: 'zonnestrand', stijl: 'strand',
+    naam: 'Het strandpad', beestje: 'slak', fruit: 'appel', snelheid: 1.1,
+    kaart: [
+      '                                                                                                    ',
+      '                                                                                                    ',
+      '                                               * *                                                  ',
+      '                                               ===                                                  ',
+      '                                                                                                    ',
+      '             *                                                                                      ',
+      '           * * *              * *                            *                          * * *       ',
+      '                                                           *   *                                    ',
+      '  P o o o             e       ##      o C o       e               o o   e     o C o           o H   ',
+      '############  ##############################################   #####################################',
+      '############~~##############################################~~~#####################################',
     ],
   },
 ]

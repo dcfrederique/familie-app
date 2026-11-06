@@ -9,7 +9,7 @@ Platformspel van opzij waarin het kind met zijn eigen figuurtje loopt en springt
 - Na het openen van Springland staat het kind op de landkaart, van bovenaf gezien (zoals een oude
   platformgame-wereldkaart). Elke wereld is een eigen stuk land (bordje met de naam, eigen kleur en versiering);
   tussen twee werelden loopt een riviertje met een bruggetje. Na de laatste wereld ligt mist met een vraagteken:
-  daar komen nieuwe werelden. De werelden nu: Zonnevallei (groen), Pepernotenland (snoep) en Winterbergen (sneeuw, begonnen 31 oktober 2026 met Het slaapbos; tweede level De bevroren beek op 1 november, derde level Het sneeuwdorp op 2 november, vierde level Het ijsmeer op 3 november, vijfde en laatste gewone level Het wolkenpad op 4 november (zacht, met vogels); de **sneeuwbaas** op 5 november als zesde plekje: Winterbergen is nu vol en de volgende nacht begint een nieuwe wereld).
+  daar komen nieuwe werelden. De werelden nu: Zonnevallei (groen), Pepernotenland (snoep) en Winterbergen (sneeuw, begonnen 31 oktober 2026 met Het slaapbos; tweede level De bevroren beek op 1 november, derde level Het sneeuwdorp op 2 november, vierde level Het ijsmeer op 3 november, vijfde en laatste gewone level Het wolkenpad op 4 november (zacht, met vogels); de **sneeuwbaas** op 5 november als zesde plekje: Winterbergen is vol). De vierde wereld is Zonnestrand (zand, begonnen 6 november met Het strandpad, een zacht level met slakken).
 - De kaart is aangekleed en beweegt een beetje (bomen wiegen, de molen draait, schaduwen van wolken drijven over,
   vlinders, meeuwen of sneeuwvlokjes); met "minder beweging" op het toestel staat alles stil. Tekeningen in
   `src/schermen/SpringKaartPrent.tsx`, plaatsing (nooit op het pad, elke keer dezelfde) in `aankleding()`.

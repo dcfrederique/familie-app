@@ -1,0 +1,92 @@
+{
+  "nr": 46,
+  "titel": "De sjaal voor twee",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Sint-Maarten, delen met wie het koud heeft",
+  "bladzijden": [
+    {
+      "tekst": "Het is Sint-Maarten en het is koud buiten. Noor heeft haar lange gele sjaal om. Haar vriend Jules heeft zijn lampion in zijn hand. \"Kom, we gaan het stoetje volgen,\" zegt hij. De sterren staan al aan de hemel.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "noor",
+          "jongen"
+        ]
+      }
+    },
+    {
+      "tekst": "Er lopen veel kinderen met lampionnen door de straat. Tijs de hond loopt voorop. Het is een lange rij met lichtjes, rood en blauw en geel. Noor voelt haar neus koud worden, maar haar sjaal is lekker warm.",
+      "prent": {
+        "decor": "dorp",
+        "figuren": [
+          "noor",
+          "jongen",
+          "hond"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan ziet Noor een klein meisje langs de kant staan. Ze heeft een mooie lampion, maar geen sjaal. Haar schouders zijn opgetrokken en haar neusje is rood. \"Brr,\" zegt ze zacht.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "meisje"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor kijkt naar haar sjaal. Hij is wel heel lang. \"Weet je wat?\" zegt Noor. \"Mijn sjaal is groot genoeg voor twee.\" Ze maakt hem los en houdt het ene eind omhoog. Het meisje kijkt haar verrast aan.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "noor",
+          "meisje"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor wikkelt de sjaal om haar eigen hals en dan om de hals van het meisje. Nu staan ze dicht naast elkaar, met één sjaal om hen allebei. \"Zo is het warm,\" lacht het meisje. \"Ik ben Fien.\" \"Ik ben Noor,\" zegt Noor.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "noor",
+          "meisje"
+        ]
+      }
+    },
+    {
+      "tekst": "Jules en Tijs komen terug. \"Wat grappig, jullie lopen als een heel lange rups,\" zegt Jules. Fien giechelt. Samen schuifelen ze verder, met één sjaal en twee lampionnen. Tijs loopt kwispelend naast hen.",
+      "prent": {
+        "decor": "dorp",
+        "figuren": [
+          "noor",
+          "meisje",
+          "jongen",
+          "hond"
+        ]
+      }
+    },
+    {
+      "tekst": "Bij het huis met de groene deur staat de buurvrouw met een mand mandarijnen. Ze geeft er één aan Noor en één aan Fien. \"Eén voor jou en één voor jou,\" zegt ze. \"Eerlijk verdeeld.\" Noor en Fien delen ze nog een keer: elk de helft van elk.",
+      "prent": {
+        "decor": "dorp",
+        "figuren": [
+          "noor",
+          "meisje",
+          "buurvrouw"
+        ]
+      }
+    },
+    {
+      "tekst": "Op het einde van de stoet zwaait Fien naar haar mama. \"Bedankt voor de sjaal,\" zegt ze. Noor schudt haar hoofd. \"We hebben hem samen gedragen,\" zegt ze. Het wordt een warme avond, ondanks de kou. Noor heeft nu een nieuwe vriendin.",
+      "prent": {
+        "decor": "nacht",
+        "figuren": [
+          "noor",
+          "meisje"
+        ]
+      }
+    }
+  ]
+}
