@@ -1,0 +1,60 @@
+/* Vier op een rij: het blauwe bord in het midden, jij links, de eekhoorn rechts. Een kolom is één grote knop. */
+.vr { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 1.4dvh, 14px); width: 100%; }
+.vr-spel { display: flex; align-items: center; justify-content: center; gap: clamp(12px, 3vw, 40px); width: 100%; }
+.vr-zij { display: flex; flex-direction: column; align-items: center; gap: 10px; min-width: 90px; font-weight: 700; }
+.vr-ik { display: block; width: 52px; height: 52px; }
+.vr-wie { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.vr-stand { display: flex; gap: 6px; }
+.vr-stand span { width: 16px; height: 16px; border-radius: 50%; }
+.vr-stand .mij { background: #B9773A; }
+.vr-stand .hij { background: #F08A24; }
+.vr-stand .gelijk { background: #B0BEC5; }
+.vr-bord {
+  --gat: min(calc((100dvh - 250px) / var(--rij)), calc((100vw - 330px) / var(--kol)), 96px);
+  display: flex; gap: 0; padding: 8px; border-radius: 18px; background: #2F5FA8; box-shadow: inset 0 -6px 0 rgba(0, 0, 0, 0.2);
+}
+.vr-bord.wacht { cursor: wait; }
+.vr-kolom { display: flex; flex-direction: column; padding: 0; border: 0; border-radius: 12px; background: transparent; cursor: pointer; }
+.vr-kolom:disabled { cursor: default; }
+.vr-kolom.help { background: rgba(255, 216, 77, 0.35); }
+.vr-gat { display: grid; place-items: center; width: var(--gat); height: var(--gat); position: relative; }
+.vr-gat::before { content: ''; position: absolute; inset: 10%; border-radius: 50%; background: #DCEAF7; box-shadow: inset 0 3px 0 rgba(0, 0, 0, 0.18); }
+.vr-in { position: relative; z-index: 1; display: grid; place-items: center; width: 84%; height: 84%; }
+.vr-stuk { width: 100%; height: 100%; }
+.vr-gat.rij .vr-in { filter: drop-shadow(0 0 6px #FFD84D); }
+.vr-gat.rij::after { content: ''; position: absolute; inset: 4%; border-radius: 50%; border: 4px solid #FFD84D; z-index: 2; }
+.vr-eekhoorn { width: clamp(70px, 12dvh, 110px); height: auto; }
+.vr-uitslag { font-size: 40px; }
+@media (prefers-reduced-motion: no-preference) {
+  .vr-in.val { animation: vr-val 0.28s cubic-bezier(.5, 0, 1, 1); }
+  .vr-eekhoorn.denkt { animation: vr-denk 0.6s ease-in-out infinite alternate; }
+}
+@keyframes vr-val { from { transform: translateY(calc(var(--val) * -1 * var(--gat))); } to { transform: none; } }
+@keyframes vr-denk { from { transform: rotate(-4deg); } to { transform: rotate(4deg); } }
+@media (orientation: portrait) {
+  .vr-spel { flex-wrap: wrap; }
+  .vr-bord { order: 3; --gat: min(calc((100dvh - 420px) / var(--rij)), calc((100vw - 50px) / var(--kol)), 110px); }
+  .vr-zij { flex-direction: row; }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .vr { gap: 2px; }
+  .vr-bord { --gat: min(calc((100dvh - 175px) / var(--rij)), calc((100vw - 280px) / var(--kol)), 70px); padding: 4px; }
+  .vr-zij { gap: 4px; min-width: 70px; }
+  .vr-eekhoorn { width: 60px; }
+  .vr-uitslag { font-size: 28px; }
+}
+
+/* Volle opmaak (tablet, liggende gsm): het bord krijgt precies de vrije plaats (cq-eenheden); staand staan de spelers erboven. */
+@media (min-width: 600px) and (min-height: 560px), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .vr { flex: 1; min-height: 0; }
+  .vr-spel { flex: 1; min-height: 0; display: grid; grid-template-columns: auto 1fr auto; align-items: center; }
+  .vr-plek { align-self: stretch; min-width: 0; min-height: 0; container-type: size; display: grid; place-items: center; }
+  .vr-plek .vr-bord { --gat: min(calc((100cqh - 16px) / var(--rij)), calc((100cqw - 16px) / var(--kol)), 100px); }
+}
+@media (min-width: 600px) and (min-height: 560px) and (orientation: portrait) {
+  .vr-spel { grid-template-columns: 1fr 1fr; grid-template-rows: auto 1fr; }
+  .vr-zij.mij { grid-column: 1; grid-row: 1; }
+  .vr-zij.hij { grid-column: 2; grid-row: 1; }
+  .vr-plek { grid-column: 1 / 3; grid-row: 2; order: 0; }
+  .vr-plek .vr-bord { order: 0; }
+}

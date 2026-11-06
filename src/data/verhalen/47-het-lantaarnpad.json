@@ -1,0 +1,96 @@
+{
+  "nr": 47,
+  "titel": "Het lantaarnpad",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Sint-Maarten, samen lichtjes maken in de tuin",
+  "bladzijden": [
+    {
+      "tekst": "Het is bijna Sint-Maarten. Noor en opa zitten aan de keukentafel. Ze maken lantaarns van glazen potjes en gekleurd papier. Rood, geel, blauw en groen. \"We maken er tien,\" zegt opa. \"Voor een lantaarnpad in de tuin.\"",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "noor",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "Als het donker wordt, zet Noor de lantaarns op een rij. Van het tuinpoortje tot aan de grote boom. In elk potje zit een klein lichtje. Opa tikt op de knopjes. Klik, klik, klik. Eén voor één gaan ze aan. Het pad slingert als een lange, gekleurde slang door het gras. \"Het is net een rij sterretjes,\" zegt Noor zacht.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "noor",
+          "opa",
+          "lantaarn*3"
+        ]
+      }
+    },
+    {
+      "tekst": "Maar dan waait er een koude wind door de tuin. Het papier ritselt en twee lantaarns vallen om. Hun lichtje gaat uit. \"O nee,\" zegt Noor. \"Nu is het pad niet meer heel.\"",
+      "prent": {
+        "decor": "bos-avond",
+        "figuren": [
+          "noor",
+          "lantaarn"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Dat lossen we op,\" zegt opa. \"Eerst zetten we ze vast.\" Noor haalt steentjes uit de zandbak. Ze legt er drie rond elk potje. Dat is een heel werk, want het zijn er tien. Opa houdt de zaklamp vast, zodat ze goed kan zien. Dan zet hij het lichtje weer aan. Nu staan ze stevig, ook als het waait.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "noor",
+          "opa",
+          "steen"
+        ]
+      }
+    },
+    {
+      "tekst": "Over de schutting kijkt een eekhoorntje nieuwsgierig mee. En bij de struik zit een konijn met grote ogen. \"Kijk,\" fluistert Noor. \"Zij vinden ons pad ook mooi.\"",
+      "prent": {
+        "decor": "bos-avond",
+        "figuren": [
+          "eekhoorn",
+          "konijn"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan gaat de bel. Het zijn Daan en zijn mama, met hun lampionnen. \"We zagen de lichtjes van op de straat,\" zegt Daan. \"Mogen we over het lantaarnpad lopen?\" \"Natuurlijk,\" lacht Noor.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "daan",
+          "noor",
+          "lampion"
+        ]
+      }
+    },
+    {
+      "tekst": "Ze lopen samen van het poortje tot aan de boom. Bij elke lantaarn zingen ze een stukje van het Sint-Maartenliedje. Opa zingt het hardst, maar ook het valst. Iedereen moet lachen.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "noor",
+          "daan",
+          "opa",
+          "lantaarn*2"
+        ]
+      }
+    },
+    {
+      "tekst": "Bij de grote boom deelt opa warme appeltjes uit de oven. \"Sint-Maarten deelde zijn mantel,\" zegt hij. \"En wij delen ons pad en onze appels.\" Noor kijkt naar de rij lichtjes. Ze branden allemaal, tot het allerlaatste lantaarntje.",
+      "prent": {
+        "decor": "nacht",
+        "figuren": [
+          "noor",
+          "daan",
+          "opa",
+          "sterren"
+        ]
+      }
+    }
+  ]
+}

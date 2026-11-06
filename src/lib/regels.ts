@@ -57,7 +57,7 @@ export function limietVoor(limieten: { kind_id: string | null; activiteit: strin
 }
 
 export type Activiteit = 'memory' | 'penalty_schieten' | 'penalty_keepen' | 'rekenen' | 'verhaal' | 'kleurplaat' | 'tekenen'
-  | 'racen' | 'basket' | 'koken' | 'touwspringen' | 'huisdier' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'springen' | 'zelf_gelezen' | 'schrijven'
+  | 'racen' | 'basket' | 'koken' | 'touwspringen' | 'huisdier' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'springen' | 'zelf_gelezen' | 'schrijven'
 
 /**
  * Sterren voor een afgewerkte activiteit (docs/spec.md, Activiteiten), nog vóór het dagplafond.
@@ -103,6 +103,11 @@ export function activiteitOmschrijving({ activiteit, inhoud }: { activiteit: Act
     case 'inpakken': return 'Inpakpuzzel'
     case 'daken': return 'Paard op het dak'
     case 'delen': return 'Eerlijk delen'
+    case 'lantaarns': return 'Lantaarns aansteken'
+    case 'kistslot': return 'Het kleurenslot'
+    case 'buizen': return 'Chocomelkbuizen'
+    case 'verschillen': return 'Zoek de verschillen'
+    case 'vieropeenrij': return 'Vier op een rij'
     case 'lichtjes': return 'Lichtjesboom'
     case 'schaduw': return 'Wie is de schaduw?'
     case 'springen': return inhoud.titel ? `Springland: ${inhoud.titel}` : 'Springland'

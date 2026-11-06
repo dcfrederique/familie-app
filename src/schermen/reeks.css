@@ -1,0 +1,19 @@
+/* Gedeeld door de spelletjes van de reeks van 6 november 2026. */
+.rk-teller { display: flex; gap: 6px; }
+.rk-teller span { width: 14px; height: 14px; border-radius: 50%; background: var(--line); }
+.rk-teller .af { background: var(--gold); }
+.rk-teller .nu { background: var(--kid); }
+.rk-klok { font-weight: 700; font-variant-numeric: tabular-nums; min-width: 4ch; }
+.rk-pluimen { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; max-width: 380px; font-size: 28px; color: var(--line); }
+.rk-pluimen .aan { color: var(--gold); }
+.rk-eind { display: grid; justify-items: center; gap: 16px; }
+.rk-eind svg { width: clamp(180px, 34dvh, 340px); height: auto; }
+.rk-knop { min-height: 64px; min-width: 64px; font-size: 17px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 0 14px; }
+@media (max-height: 500px) and (orientation: landscape) {
+  .rk-teller span { width: 10px; height: 10px; }
+  .rk-knop { min-height: 44px; min-width: 44px; font-size: 14px; padding: 0 10px; }
+  .rk-eind { gap: 6px; }
+  .rk-eind svg { width: clamp(120px, 30dvh, 200px); }
+  .rk-pluimen { font-size: 20px; }
+}
+.rk-knop { flex: none; }

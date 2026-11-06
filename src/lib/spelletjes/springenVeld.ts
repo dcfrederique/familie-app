@@ -455,9 +455,9 @@ export class SpringVeld {
     ctx.fillStyle = 'rgba(0,0,0,.15)'
     ctx.beginPath(); ctx.ellipse(0, 0, w * 0.5, T * 0.1, 0, 0, Math.PI * 2); ctx.fill()
     const soort = springLevels[this.spel.level].baas?.soort
-    const pepernoot = soort === 'pepernoot', sneeuw = soort === 'sneeuw'
+    const pepernoot = soort === 'pepernoot', sneeuw = soort === 'sneeuw', krab = soort === 'krab'
     // Pompoen: drie oranje bollen met een groene steel. Pepernoot: drie bruine koekjes met glazuurstreepjes en een rood mijtertje.
-    for (const [dx, kleur] of (sneeuw ? [[-0.26, '#DCEAF6'], [0.26, '#C9DDEE'], [0, '#F4F9FD']] : pepernoot ? [[-0.26, '#A8693A'], [0.26, '#8A5A33'], [0, '#C08246']] : [[-0.26, '#EE8222'], [0.26, '#EE8222'], [0, '#F6A33B']]) as [number, string][]) {
+    for (const [dx, kleur] of (krab ? [[-0.26, '#D9452E'], [0.26, '#D9452E'], [0, '#EE6248']] : sneeuw ? [[-0.26, '#DCEAF6'], [0.26, '#C9DDEE'], [0, '#F4F9FD']] : pepernoot ? [[-0.26, '#A8693A'], [0.26, '#8A5A33'], [0, '#C08246']] : [[-0.26, '#EE8222'], [0.26, '#EE8222'], [0, '#F6A33B']]) as [number, string][]) {
       ctx.fillStyle = kleur
       ctx.beginPath(); ctx.ellipse(dx * w, -h * 0.48, w * (dx ? 0.3 : 0.27), h * 0.48, 0, 0, Math.PI * 2); ctx.fill()
     }
@@ -470,6 +470,22 @@ export class SpringVeld {
       ctx.beginPath(); ctx.moveTo(-w * 0.14, -h * 0.98); ctx.lineTo(0, -h * 1.3); ctx.lineTo(w * 0.14, -h * 0.98); ctx.closePath(); ctx.fill()
       ctx.fillStyle = '#F2B33D'
       ctx.fillRect(-w * 0.015, -h * 1.22, w * 0.03, h * 0.16); ctx.fillRect(-w * 0.06, -h * 1.17, w * 0.12, h * 0.03)
+    } else if (krab) {
+      // Krab: twee grote scharen die op en neer klappen, pootjes opzij en een zonnehoedje van stro.
+      const klap = Math.sin(this.spel.klok * 9) * T * 0.08
+      ctx.strokeStyle = '#B8321F'; ctx.lineWidth = T * 0.09; ctx.lineCap = 'round'
+      for (const z of [-1, 1]) {
+        for (const hy of [0.12, 0.26]) { ctx.beginPath(); ctx.moveTo(z * w * 0.4, -h * hy); ctx.lineTo(z * w * 0.62, -h * (hy - 0.12)); ctx.stroke() }
+        ctx.fillStyle = '#D9452E'
+        ctx.beginPath(); ctx.ellipse(z * w * 0.62, -h * 0.7 + klap * z, T * 0.34, T * 0.26, z * 0.4, 0, Math.PI * 2); ctx.fill()
+        ctx.fillStyle = '#F7E3B5'
+        ctx.beginPath(); ctx.moveTo(z * w * 0.62, -h * 0.7 + klap * z); ctx.lineTo(z * (w * 0.62 + T * 0.36), -h * 0.78 + klap * z); ctx.lineTo(z * (w * 0.62 + T * 0.36), -h * 0.64 + klap * z); ctx.closePath(); ctx.fill()
+      }
+      ctx.fillStyle = '#E8C14A'
+      ctx.beginPath(); ctx.ellipse(0, -h * 0.98, w * 0.3, h * 0.06, 0, 0, Math.PI * 2); ctx.fill()
+      ctx.beginPath(); ctx.ellipse(0, -h * 1.06, w * 0.15, h * 0.1, 0, Math.PI, 0); ctx.fill()
+      ctx.fillStyle = '#2F80C9'
+      ctx.fillRect(-w * 0.15, -h * 1.03, w * 0.3, h * 0.03)
     } else if (sneeuw) {
       // Blauwe gebreide muts met pompon, rode sjaal en een wortelneus.
       ctx.fillStyle = '#2F6FC0'

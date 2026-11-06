@@ -1,0 +1,40 @@
+/* Chocomelkbuizen: de ketel links, de buizen in een raster, de bekers rechts. Vakjes schalen mee (geen scrollen). */
+.bz { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 1.4dvh, 14px); width: 100%; }
+.bz-spel { display: flex; align-items: center; justify-content: center; gap: clamp(12px, 3vw, 36px); width: 100%; }
+.bz-veld {
+  --vak: min(calc((100dvh - 250px) / var(--rij)), calc((100vw - 250px) / var(--kol)), 110px);
+  display: grid; grid-template-columns: repeat(var(--kol), var(--vak)); grid-auto-rows: var(--vak); gap: 0;
+  padding: 8px; border-radius: 18px; background: #EFE3D3;
+}
+.bz-vak { display: grid; place-items: center; padding: 0; border: 0; border-radius: 0; background: #F8F1E7; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06); cursor: pointer; }
+.bz-vak.leeg { background: #EFE3D3; cursor: default; }
+.bz-svg { width: 100%; height: 100%; pointer-events: none; transition: transform 0.12s; }
+.bz-rand { display: grid; place-items: center; }
+.bz-ketel, .bz-beker { width: 100%; height: 100%; }
+.bz-zij { display: flex; flex-direction: column; align-items: center; gap: 12px; font-weight: 700; }
+.bz-tel b { font-size: 1.3em; }
+@media (prefers-reduced-motion: no-preference) {
+  .bz-vak:active .bz-svg { transform: rotate(20deg); }
+  .bz-beker.vol .bz-damp { animation: bz-damp 1.4s ease-in-out infinite alternate; }
+  .bz-veld.feest .bz-beker.vol { animation: bz-hup .5s cubic-bezier(.3, 1.6, .5, 1); }
+}
+@keyframes bz-damp { from { opacity: 0.3; transform: translateY(2px); } to { opacity: 1; transform: translateY(-3px); } }
+@keyframes bz-hup { 40% { transform: translateY(-8px); } }
+@media (orientation: portrait) {
+  .bz-spel { flex-direction: column; }
+  .bz-zij { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+  .bz-veld { --vak: min(calc((100dvh - 380px) / var(--rij)), calc((100vw - 50px) / var(--kol)), 120px); }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .bz { gap: 2px; }
+  .bz-veld { --vak: min(calc((100dvh - 175px) / var(--rij)), calc((100vw - 200px) / var(--kol)), 80px); padding: 4px; }
+  .bz-zij { gap: 6px; }
+}
+
+/* Volle opmaak (tablet, liggende gsm): het raster krijgt precies de vrije plaats (cq-eenheden). */
+@media (min-width: 600px) and (min-height: 560px), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .bz { flex: 1; min-height: 0; }
+  .bz-spel { flex: 1; min-height: 0; }
+  .bz-plek { flex: 1; align-self: stretch; min-width: 0; min-height: 0; container-type: size; display: grid; place-items: center; }
+  .bz-plek .bz-veld { --vak: min(calc((100cqh - 16px) / var(--rij)), calc((100cqw - 16px) / var(--kol)), 110px); }
+}

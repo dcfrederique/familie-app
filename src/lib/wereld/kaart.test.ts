@@ -1,12 +1,14 @@
 import { describe, expect, it } from 'vitest'
 import { spelMenu } from '../../data/spelletjes.ts'
 import { activiteitTegels } from '../../data/thema.ts'
-import { U, gebouwen } from '../../data/wereld.ts'
+import { U, gebouwen as alleGebouwen } from '../../data/wereld.ts'
 import {
   GROND_Y, TEGEL_DRAAI, TEGEL_STAP, deurVan, maakKaart, maakTegels, nieuweTegelStand, opDeurmat, richtingVan, stap, tegelMidden, tegelStap, voorHuisdeur,
   type HuisPlek, type Loper, type TegelStand,
 } from './kaart.ts'
 
+// Deze kaart is het dorp: de gebouwen in andere gebieden test gebieden.test.ts.
+const gebouwen = alleGebouwen.filter((b) => (b.gebied ?? 'dorp') === 'dorp')
 const huizen: HuisPlek[] = [0, 1, 2].map((i) => ({ id: `kind${i}`, model: 'verdieping', deurX: deurVan(i), naam: `Kind ${i}` }))
 const kaart = maakKaart(huizen, () => '#2D6BD6')
 const start = { x: huizen[0].deurX, y: GROND_Y + 70 }

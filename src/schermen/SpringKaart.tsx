@@ -183,7 +183,14 @@ export default function SpringKaart({ figuur, lezer, af, best, alles, plek, mete
               {p.level.baas && (
                 // De baas van de wereld: een grote pompoen of pepernoot op het eilandje.
                 <g transform="translate(0 -26)" className="k-dobber">
-                  {p.level.baas.soort === 'sneeuw' ? (
+                  {p.level.baas.soort === 'krab' ? (
+                    <>
+                      <ellipse cx="-14" cy="0" rx="17" ry="18" fill="#D9452E" /><ellipse cx="14" cy="0" rx="17" ry="18" fill="#D9452E" />
+                      <ellipse cx="0" cy="0" rx="15" ry="19" fill="#EE6248" />
+                      <ellipse cx="-30" cy="-12" rx="8" ry="6" fill="#D9452E" /><ellipse cx="30" cy="-12" rx="8" ry="6" fill="#D9452E" />
+                      <ellipse cx="0" cy="-19" rx="13" ry="3" fill="#E8C14A" /><path d="M-7-19A7 6 0 0 1 7-19z" fill="#E8C14A" />
+                    </>
+                  ) : p.level.baas.soort === 'sneeuw' ? (
                     <>
                       <ellipse cx="-14" cy="0" rx="17" ry="20" fill="#DCEAF6" /><ellipse cx="14" cy="0" rx="17" ry="20" fill="#C9DDEE" />
                       <ellipse cx="0" cy="0" rx="15" ry="21" fill="#F4F9FD" />

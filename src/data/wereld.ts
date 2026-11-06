@@ -26,6 +26,8 @@ export interface Gebouw {
   telt_mee: boolean
   /** Het spelletje dat in dit gebouw woont: het gebouw volgt de winkel (vrijgave, aankoop). Zonder: altijd te zien. */
   spel?: SpelSleutel
+  /** In welk gebied het gebouw standaard staat (docs/wereld-dorp.md); zonder: het dorp. */
+  gebied?: 'dorp' | 'meer'
   /** Sinds wanneer (YYYY-MM-DD) het gebouw nieuw is; de eerste NIEUW_DAGEN dagen krijgt het een gouden rand. */
   nieuwSinds?: string
 }
@@ -73,6 +75,17 @@ export const gebouwen: Gebouw[] = [
     spel: 'daken', nieuwSinds: '2026-11-05' },
   { id: 'delen', naam: 'Deelhuisje', x: 36.5 * U, y: 11.6 * U, w: 220, pad: 'delen', welkom: 'Welkom in het deelhuisje!', telt_mee: true,
     spel: 'delen', nieuwSinds: '2026-11-06' },
+  // Het dorp is vol: de reeks van 6 november 2026 staat langs de weg van het dorp naar het meer, in het gebied Meer.
+  { id: 'lantaarns', naam: 'Lantaarnhuisje', x: 6.8 * U, y: 11.6 * U, w: 200, pad: 'lantaarns', welkom: 'Welkom in het lantaarnhuisje!', telt_mee: true,
+    spel: 'lantaarns', nieuwSinds: '2026-11-06', gebied: 'meer' },
+  { id: 'kistslot', naam: 'Schatkamer', x: 11.3 * U, y: 11.6 * U, w: 200, pad: 'kistslot', welkom: 'Welkom in de schatkamer!', telt_mee: true,
+    spel: 'kistslot', nieuwSinds: '2026-11-06', gebied: 'meer' },
+  { id: 'buizen', naam: 'Chocomelkhuis', x: 15.8 * U, y: 11.6 * U, w: 200, pad: 'buizen', welkom: 'Welkom in het chocomelkhuis!', telt_mee: true,
+    spel: 'buizen', nieuwSinds: '2026-11-06', gebied: 'meer' },
+  { id: 'verschillen', naam: 'Speurdershuis', x: 20.3 * U, y: 11.6 * U, w: 200, pad: 'verschillen', welkom: 'Welkom in het speurdershuis!', telt_mee: true,
+    spel: 'verschillen', nieuwSinds: '2026-11-06', gebied: 'meer' },
+  { id: 'vieropeenrij', naam: 'Spelletjesboom', x: 24.8 * U, y: 11.6 * U, w: 200, pad: 'vieropeenrij', welkom: 'Welkom bij de spelletjesboom van de eekhoorn!', telt_mee: true,
+    spel: 'vieropeenrij', nieuwSinds: '2026-11-06', gebied: 'meer' },
   { id: 'bouw', naam: 'Bouwplaats', x: 52.7 * U, y: 21 * U, w: 150, pad: null, welkom: 'Hier komt later een nieuw gebouw. Wat zou het worden?', telt_mee: false },
 ]
 

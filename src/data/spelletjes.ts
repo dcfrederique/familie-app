@@ -421,7 +421,7 @@ export function startNiveaus(kind: Gebruiker, kinderen: Gebruiker[]): { memory: 
   return oudsteLezer?.id === kind.id ? { memory: 'groot', rekenen: 'tot100' } : { memory: 'middel', rekenen: 'tot20' }
 }
 
-export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'springen'
+export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'springen'
 
 export interface SpelInfo {
   sleutel: SpelSleutel
@@ -471,6 +471,16 @@ export const spelMenu: SpelInfo[] = [
     icoon: 'M4 9h16v11H4zM12 9v11M4 13h16M12 9C9 9 8 5 10 5s2 4 2 4zM12 9c3 0 4-4 2-4s-2 4-2 4z' },
   { sleutel: 'stippen', naam: 'Lampion tekenen', uitleg: 'Tik de lichtpuntjes in de goede volgorde', prijs: 20,
     icoon: 'M6 18h.01M9 8h.01M16 6h.01M19 15h.01M12 12h.01M6 18L9 8L16 6L19 15L12 12' },
+  { sleutel: 'vieropeenrij', naam: 'Vier op een rij', uitleg: 'Speel tegen de eekhoorn: wie heeft er eerst vier op een rij?', prijs: 30,
+    icoon: 'M3 5h18v15H3zM7.5 9.5h.01M12 9.5h.01M16.5 9.5h.01M7.5 14.5h.01M12 14.5h.01M16.5 14.5h.01' },
+  { sleutel: 'verschillen', naam: 'Zoek de verschillen', uitleg: 'Wat is er anders op de tweede prent?', prijs: 25,
+    icoon: 'M3 5h8v14H3zM13 5h8v14h-8zM17 9l2 2' },
+  { sleutel: 'buizen', naam: 'Chocomelkbuizen', uitleg: 'Draai de buizen tot de chocomelk in de beker loopt', prijs: 25,
+    icoon: 'M3 8h7v8h6M16 12v4h5M5 18h4l-.5 3h-3z' },
+  { sleutel: 'kistslot', naam: 'Het kleurenslot', uitleg: 'Raad de kleuren van het slot op de kist van de Sint', prijs: 25,
+    icoon: 'M4 11h16v9H4zM4 11q0-6 8-6t8 6M10 13h4v4h-4z' },
+  { sleutel: 'lantaarns', naam: 'Lantaarns aansteken', uitleg: 'Laat alle lantaarns branden', prijs: 25,
+    icoon: 'M12 2v3M8 6h8l1 13H7zM12 6v13M7.5 12h9' },
   { sleutel: 'delen', naam: 'Eerlijk delen', uitleg: 'Geef iedereen evenveel', prijs: 25,
     icoon: 'M5 10h14l-1.5 9h-11zM8 10a4 4 0 0 1 8 0M12 3v3' },
   { sleutel: 'daken', naam: 'Paard op het dak', uitleg: 'Loop over alle daken, elk dak één keer', prijs: 25,

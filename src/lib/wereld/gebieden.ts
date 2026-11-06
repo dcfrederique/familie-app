@@ -261,11 +261,11 @@ function stadjeDecor(): Item[] {
 export function standaardItems(kinderIds: readonly string[]): Item[] {
   const bewoners = kinderIds.slice(0, MAX_HUIZEN)
   const huizen: Item[] = bewoners.map((id, i) => ({ id: `huis:${id}`, soort: 'huis', ref: id, gebied: 'dorp', x: deurVan(i) / U, y: GROND_Y / U }))
-  const gebouwItems: Item[] = gebouwen.map((b) => ({ id: `gebouw:${b.id}`, soort: 'gebouw', ref: b.id, gebied: 'dorp', x: b.x / U, y: b.y / U }))
+  const gebouwItems: Item[] = gebouwen.map((b) => ({ id: `gebouw:${b.id}`, soort: 'gebouw', ref: b.id, gebied: b.gebied ?? 'dorp', x: b.x / U, y: b.y / U }))
   const dorpsHuizenPlek: HuisPlek[] = bewoners.map((id, i) => ({ id, model: 'huisje', deurX: deurVan(i) }))
   const dorp = gebiedVan('dorp')
   const paden = [
-    ...rechthoekenNaarPaden('dorp', dorpsWegen(dorpsHuizenPlek, gebouwen)),
+    ...rechthoekenNaarPaden('dorp', dorpsWegen(dorpsHuizenPlek, gebouwen.filter((b) => (b.gebied ?? 'dorp') === 'dorp'))),
     ...poortPaden('dorp', dorp.poorten.filter((p) => p.zijde === 'n')),
   ]
   for (const g of GEBIEDEN) if (g.id !== 'dorp') paden.push(...poortPaden(g.id, g.poorten))

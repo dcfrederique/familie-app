@@ -1,0 +1,99 @@
+{
+  "nr": 48,
+  "titel": "De kist met het kleurenslot",
+  "reeks": "avonturiers",
+  "leeftijd": 8,
+  "thema": "Sinterklaas, een raadsel oplossen met goed nadenken",
+  "bladzijden": [
+    {
+      "tekst": "Op een grijze zaterdag zoekt Daan de kerstballen op de zolder. Achter de oude kast vindt hij iets wat hij nog nooit zag: een houten kist met gouden hoeken. Op het deksel zit geen sleutelgat, maar een slot met vier ronde knopjes. Elk knopje kan je laten draaien: rood, geel, blauw, groen, paars of oranje. Er hangt een briefje aan met een rood lint.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "kast",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor komt de trap op gestommeld. Daan leest het briefje hardop voor. \"Wie deze kist open wil doen, moet de juiste kleuren zoeken. Vier knopjes, vier kleuren. Na elke poging zegt het slot iets terug. Een tik voor elke kleur op de goede plek. Een zachte zoem voor elke kleur die er wel in zit, maar op een andere plek. Groetjes, de hulpjes van de Sint.\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "noor",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Gewoon proberen,\" zegt Noor. Ze draait de knopjes op rood, rood, rood en rood. Het slot zegt één keer tik. \"Dus er zit één rode bij,\" zegt Daan langzaam. \"Maar we weten niet waar.\" Hij pakt een potlood en een blad papier. \"Laten we alles opschrijven. Anders vergeten we wat we al weten.\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "noor",
+          "boek"
+        ]
+      }
+    },
+    {
+      "tekst": "Ze proberen geel, geel, blauw en blauw. Het slot zoemt twee keer en tikt nul keer. \"Er zit een gele en een blauwe in,\" zegt Noor, \"maar niet op die plekken.\" Daan knikt. Zo gaat het verder. Elke keer schrijven ze op wat het slot zegt. Elke keer wordt het lijstje van wat nog kan een beetje korter.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "noor",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Na vijf pogingen staart Daan naar het blad. \"Kijk,\" zegt hij. \"De rode kan niet vooraan, want toen hoorden we geen tik. Hij kan ook niet op de derde plek. Dus staat hij op twee of op vier.\" Noor wijst. \"En als de blauwe niet links mag en niet rechts...\" Ze kijken elkaar aan. \"Dan staat de blauwe op drie!\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "noor",
+          "tekening"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan draait de knopjes heel voorzichtig: geel, rood, blauw, groen. Tik. Tik. Tik. Tik. Vier tikken op een rij. Dan klinkt er een zachte klik, en het deksel springt een klein beetje open. \"We hebben het!\" roept Noor zo hard dat Tijs de hond beneden begint te blaffen.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "noor",
+          "doos:open"
+        ]
+      }
+    },
+    {
+      "tekst": "In de kist liggen twee zakjes pepernoten, een chocoladeletter voor elk en een klein boekje. Op het boekje staat: \"Raadsels voor slimme speurders.\" Onderaan nog een briefje. \"Goed gedaan! Wie zo goed nadenkt, mag vanavond zijn schoen zetten. Vergeet de wortel voor het paard niet.\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "noor",
+          "koek",
+          "boek"
+        ]
+      }
+    },
+    {
+      "tekst": "Die avond zetten Noor en Daan hun schoen bij de verwarming. Er zit een wortel in en een tekening van de kist met het kleurenslot. \"Denk je dat de Sint weet dat we het zelf hebben opgelost?\" vraagt Noor. Daan grijnst. \"Hij weet alles. Maar ik schrijf het er toch maar bij.\"",
+      "prent": {
+        "decor": "huis",
+        "figuren": [
+          "daan",
+          "noor",
+          "schoen",
+          "wortel"
+        ]
+      }
+    }
+  ]
+}

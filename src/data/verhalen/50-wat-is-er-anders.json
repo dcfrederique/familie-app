@@ -1,0 +1,53 @@
+{
+  "nr": 50,
+  "titel": "Wat is er anders?",
+  "reeks": "kleine-oortjes",
+  "leeftijd": 4,
+  "thema": "Sinterklaas, de ochtend na het schoen zetten",
+  "bladzijden": [
+    {
+      "tekst": "Gisteravond zette Pip haar schoen bij de kachel. Er zat een wortel in voor het paard. En een tekening van een ster. Dan ging Pip slapen. Heel stil, met haar knuffel dicht tegen zich aan. Haar oogjes vielen vanzelf dicht.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "schoen",
+          "wortel"
+        ]
+      }
+    },
+    {
+      "tekst": "De volgende ochtend loopt Pip op haar tenen naar beneden. Ze kijkt naar de schoen. Hmm. Er is iets anders. Waar is de wortel? Weg! Het paard heeft hem opgegeten. Knabbel, knabbel. Pip moet giechelen.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "schoen"
+        ]
+      }
+    },
+    {
+      "tekst": "Ze kijkt nog beter. Wat ligt daar naast de schoen? Een pakje met een rood lint! En in de schoen liggen pepernoten, één, twee, drie, vier, vijf. En de tekening van de ster? Die is ook weg. \"De Sint heeft hem meegenomen,\" fluistert Pip.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "schoen",
+          "doos",
+          "koek"
+        ]
+      }
+    },
+    {
+      "tekst": "Pip maakt het pakje open. Er zit een klein konijntje van stof in, met lange oren. \"Dag konijntje,\" zegt Pip. Ze zet het naast haar knuffel. Nu zijn ze met twee. En Pip deelt de pepernoten, eentje voor mama, eentje voor papa en drie voor haar.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "konijn",
+          "koek"
+        ]
+      }
+    }
+  ]
+}

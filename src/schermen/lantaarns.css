@@ -1,0 +1,38 @@
+/* Lantaarns aansteken: het veld links (of boven, staand), de knoppen ernaast. De vakjes schalen mee met de hoogte. */
+.lt { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 1.4dvh, 14px); width: 100%; }
+.lt-spel { display: flex; align-items: center; justify-content: center; gap: clamp(12px, 3vw, 36px); width: 100%; }
+.lt-veld {
+  --vak: min(calc((100dvh - 250px) / var(--rij)), calc((100vw - 260px) / var(--kol)), 150px);
+  display: grid; grid-template-columns: repeat(var(--kol), var(--vak)); grid-auto-rows: var(--vak); gap: 6px;
+  padding: 10px; border-radius: 20px; background: linear-gradient(#1F2A55, #3B4A7A);
+}
+.lt-vak { display: grid; place-items: center; padding: 0; border: 0; border-radius: 14px; background: rgba(255, 255, 255, 0.06); cursor: pointer; min-width: 44px; min-height: 44px; }
+.lt-vak.aan { background: rgba(255, 226, 122, 0.16); }
+.lt-vak.tip { box-shadow: 0 0 0 4px var(--gold); animation: lt-tip 1s ease-in-out infinite alternate; }
+.lt-svg { width: 82%; height: 82%; pointer-events: none; }
+.lt-veld.feest .lt-vak { background: rgba(255, 226, 122, 0.3); }
+.lt-zij { display: flex; flex-direction: column; align-items: center; gap: 12px; font-weight: 700; }
+.lt-tikken b { font-size: 1.3em; }
+@keyframes lt-tip { from { transform: scale(1); } to { transform: scale(1.06); } }
+@media (prefers-reduced-motion: reduce) { .lt-vak.tip { animation: none; } }
+@media (prefers-reduced-motion: no-preference) { .lt-veld.feest .lt-svg { animation: lt-zwaai .6s ease-in-out 2 alternate; transform-origin: 50% 0; } }
+@keyframes lt-zwaai { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
+@media (orientation: portrait) {
+  .lt-spel { flex-direction: column; }
+  .lt-zij { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+  .lt-veld { --vak: min(calc((100dvh - 380px) / var(--rij)), calc((100vw - 60px) / var(--kol)), 170px); }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .lt { gap: 2px; }
+  .lt-veld { --vak: min(calc((100dvh - 175px) / var(--rij)), calc((100vw - 220px) / var(--kol)), 90px); gap: 3px; padding: 5px; }
+  .lt-vak { min-width: 0; min-height: 0; }
+  .lt-zij { gap: 6px; }
+}
+
+/* Volle opmaak (tablet, liggende gsm): het veld krijgt precies de vrije plaats; de vakjes rekenen met die maat (cq-eenheden). */
+@media (min-width: 600px) and (min-height: 560px), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .lt { flex: 1; min-height: 0; }
+  .lt-spel { flex: 1; min-height: 0; }
+  .lt-plek { flex: 1; align-self: stretch; min-width: 0; min-height: 0; container-type: size; display: grid; place-items: center; }
+  .lt-plek .lt-veld { --vak: min(calc((100cqh - 20px - (var(--rij) - 1) * 6px) / var(--rij)), calc((100cqw - 20px - (var(--kol) - 1) * 6px) / var(--kol)), 150px); }
+}

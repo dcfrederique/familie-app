@@ -1,0 +1,95 @@
+{
+  "nr": 51,
+  "titel": "Storm buiten, spelletjes binnen",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Herfststorm, vooruit leren denken bij een spel",
+  "bladzijden": [
+    {
+      "tekst": "Het stormt. De wind huilt om het huis en de regen tikt tegen het raam. De bomen in de tuin buigen heen en weer. \"Vandaag gaan we niet naar het bos,\" zegt opa. Noor zucht. Ze had zich er zo op verheugd.",
+      "prent": {
+        "decor": "storm",
+        "figuren": [
+          "noor",
+          "opa",
+          "regen"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Maar,\" zegt opa, \"ik weet een spel.\" Hij haalt een oud bord met gaatjes uit de kast. \"Vier op een rij. Jij speelt met pepernoten, ik met stukjes mandarijn. Wie er eerst vier op een rij heeft, wint. Rechtop, opzij of schuin.\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "opa",
+          "kast"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor laat haar eerste pepernoot in het midden vallen. Plok. Opa legt zijn mandarijn ernaast. Noor legt nog een pepernoot, en nog een. Drie op een rij! Nog één... Maar opa legt zijn mandarijn er net voor. \"Hé!\" roept Noor.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "opa",
+          "koek"
+        ]
+      }
+    },
+    {
+      "tekst": "Ze spelen nog eens. En nog eens. Opa wint telkens. \"Hoe doe je dat toch?\" vraagt Noor. \"Ik kijk niet alleen naar mijn eigen rij,\" zegt opa. \"Ik kijk ook naar die van jou. En ik denk: als ik hier leg, waar legt Noor dan?\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "Buiten op de vensterbank zit een eekhoorn. Hij is doorweekt en houdt een nootje vast. Hij kijkt naar binnen, naar het bord. \"Hij kijkt mee,\" lacht Noor. \"Misschien wil hij ook leren hoe opa het doet.\"",
+      "prent": {
+        "decor": "storm",
+        "figuren": [
+          "eekhoorn",
+          "noot"
+        ]
+      }
+    },
+    {
+      "tekst": "Het volgende spel denkt Noor heel goed na. Waar wil opa leggen? Ze legt haar pepernoot daar, net op tijd. Dan maakt ze stilletjes een rij schuin omhoog. Opa ziet het niet. Plok. \"Vier op een rij!\" roept Noor.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "opa",
+          "koek"
+        ]
+      }
+    },
+    {
+      "tekst": "Opa klapt in zijn handen. \"Die zag ik niet aankomen,\" zegt hij trots. \"Jij hebt vooruit gedacht.\" Noor glimt. Ze eten samen de pepernoten en de mandarijn op. Want na een spel mag je je stukken opeten. Dat is de regel van opa.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "Als het bord leeg is, is de storm ook stil geworden. Er schijnt een waterig zonnetje en boven de tuin staat een regenboog. De eekhoorn springt weg met zijn nootje. \"Morgen gaan we naar het bos,\" zegt opa. \"Maar eerst nog één spelletje,\" zegt Noor.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "noor",
+          "opa",
+          "regenboog",
+          "eekhoorn"
+        ]
+      }
+    }
+  ]
+}

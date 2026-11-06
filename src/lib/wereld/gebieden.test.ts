@@ -112,6 +112,24 @@ describe('het meer', () => {
   })
 })
 
+describe('de spelletjes aan het meer', () => {
+  it('staan langs de weg van het dorp, vrij van elkaar, met een bereikbare deur', () => {
+    const items = effectieveItems(kids)
+    const hier = gebouwen.filter((b) => b.gebied === 'meer')
+    expect(hier.length).toBeGreaterThanOrEqual(5)
+    const { kaart, gebouwen: lijst } = maakGebiedKaart('meer', items, leden, kleur, gebouwen)
+    expect(lijst.map((b) => b.id).sort()).toEqual(hier.map((b) => b.id).sort())
+    const tegels = maakTegels(kaart)
+    const [wx, wy] = POORT_TEGELS.w[0]
+    for (const b of hier) {
+      const item = items.find((i) => i.id === `gebouw:${b.id}`)!
+      expect(kanHier(item, items), b.naam).toBe(true)
+      expect(kaart.vrij(b.x, b.y + 16), b.naam).toBe(true)
+      expect(tegels.pad(wx, wy, Math.floor(b.x / U), Math.floor((b.y + 24) / U)), b.naam).not.toBeNull()
+    }
+  })
+})
+
 describe('het strand', () => {
   it('heeft zee, steiger, bootjes en parasols en laat de weg vrij', () => {
     const st = standaardItems(kids).filter((i) => i.gebied === 'strand' && i.soort === 'ding')

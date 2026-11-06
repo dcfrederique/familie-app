@@ -34,7 +34,7 @@ export interface SpringLevelInfo {
   beestje: 'slak' | 'egel' | 'vogel'
   fruit: 'appel' | 'aardbei' | 'kers'
   /** Een baas op het einde van de wereld (het laatste level): de kaart is dan een kleine arena met B. */
-  baas?: { soort: 'pompoen' | 'pepernoot' | 'sneeuw'; naam: string }
+  baas?: { soort: 'pompoen' | 'pepernoot' | 'sneeuw' | 'krab'; naam: string }
   /** Hoe snel de beestjes wandelen, 1 = gewoon. Een pittig level mag er een tikje sneller zijn (tot 1.6). */
   snelheid?: number
   kaart: readonly string[]
@@ -377,6 +377,92 @@ export const springLevelLijst: SpringLevelInfo[] = [
       '  P o o o             e       ##      o C o       e               o o   e     o C o           o H   ',
       '############  ##############################################   #####################################',
       '############~~##############################################~~~#####################################',
+    ],
+  },
+  {
+    id: 'schelpenbaai', wereld: 'zonnestrand', stijl: 'strand',
+    naam: 'De schelpenbaai', beestje: 'vogel', fruit: 'kers', snelheid: 1.1,
+    kaart: [
+      '                                                                                                        ',
+      '                                                                                                        ',
+      '                          * * *                                                                         ',
+      '                          =====                                                                         ',
+      '                                                    * * *                                               ',
+      '            * *                                                         * *            * * *            ',
+      '                                     o o                                ===                             ',
+      '                                    ####                                                                ',
+      '  P o o o          e               ######  o C o        e          o o          e     o o C   o  H      ',
+      '#########################   ######################################   ###################################',
+      '#########################~~~######################################~~~###################################',
+    ],
+  },
+  {
+    id: 'duinen', wereld: 'zonnestrand', stijl: 'strand',
+    naam: 'De hoge duinen', beestje: 'egel', fruit: 'appel', snelheid: 1.4,
+    kaart: [
+      '                                                                                                              ',
+      '                                                                                                              ',
+      '                                     * *                                                                      ',
+      '                                                                              * * *                           ',
+      '                              * *       * *                                                                   ',
+      '                                                                                                              ',
+      '                                                                                                              ',
+      '                            ####         ####                             ####               ####             ',
+      '  P o o o  e              ####   o C o   ####               e    ^ o o  ####        o C o  ####    e   o o H  ',
+      '##################  ###############################   ##########################  ############################',
+      '##################~~###############################~~~##########################~~############################',
+    ],
+  },
+  {
+    id: 'pier', wereld: 'zonnestrand', stijl: 'strand',
+    naam: 'De lange pier', beestje: 'slak', fruit: 'aardbei', snelheid: 1.0,
+    kaart: [
+      '                                                                                                                ',
+      '                                                                                                                ',
+      '                                                                                                                ',
+      '                                                                              * * *                             ',
+      '                                                                              =====                             ',
+      '          * *       * *    * *                        * *                                       * *             ',
+      '                                                                                                                ',
+      '                                                                                                                ',
+      '  P o o o        o      o            o C o    e          o           o o    e        o C o         o       o H  ',
+      '##############   ####   ####   ##################   ####   #############################   ####   ##############',
+      '##############~~~####~~~####~~~##################~~~####~~~#############################~~~####~~~##############',
+    ],
+  },
+  {
+    id: 'vuurtorenpad', wereld: 'zonnestrand', stijl: 'strand',
+    naam: 'Het vuurtorenpad', beestje: 'vogel', fruit: 'kers', snelheid: 1.4,
+    kaart: [
+      '                                                                                                                    ',
+      '                                                                                                                    ',
+      '                                            * *                                       * * *                         ',
+      '                                            ===                                       =====                         ',
+      '                                                                                                                    ',
+      '                        * * *                         * * *            * *                           * * *          ',
+      '                                                                     ###                                            ',
+      '                                                                     ###                                 ##         ',
+      '  P o o o e               o o  e           o C o       e    o o     ####       e          o C o   e  o o ##   o  H  ',
+      '################  ####################   ########  #######################  #######   ##############################',
+      '################~~####################~~~########~~#######################~~#######~~~##############################',
+    ],
+  },
+  {
+    id: 'krabbaas', wereld: 'zonnestrand', stijl: 'strand',
+    naam: 'De krabbaas', beestje: 'vogel', fruit: 'kers', snelheid: 1.2,
+    baas: { soort: 'krab', naam: 'Krabbaas' },
+    kaart: [
+      '                                                                  ',
+      '                                                                  ',
+      '                                                                  ',
+      '                  * *                                             ',
+      '                  ===                           * * *             ',
+      '                                                                  ',
+      '        * *              * *                                      ',
+      '                                  * * *                           ',
+      '  P   o o o       e                 o C o           B         H   ',
+      '############################  ######  ############################',
+      '############################~~######~~############################',
     ],
   },
 ]

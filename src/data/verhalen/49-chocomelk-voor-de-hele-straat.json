@@ -1,0 +1,96 @@
+{
+  "nr": 49,
+  "titel": "Chocomelk voor de hele straat",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "De eerste vorst, warm maken voor de buren",
+  "bladzijden": [
+    {
+      "tekst": "Als Noor wakker wordt, is alles buiten wit. Niet van sneeuw, maar van rijp. Het gras glinstert en de auto's hebben een laagje ijs. \"De eerste vorst,\" zegt opa. \"Dan maak ik altijd warme chocomelk.\"",
+      "prent": {
+        "decor": "sneeuwbos",
+        "figuren": [
+          "noor",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "In de keuken pakt opa de grootste pot die ze hebben. Melk erin, en blokjes chocolade. Noor mag op een krukje staan en roeren. Rondjes, rondjes, rondjes. Langzaam wordt de witte melk bruin. Het ruikt heerlijk. \"Dat is wel heel veel chocomelk,\" zegt Noor. Opa knipoogt. \"Dat is ook de bedoeling.\"",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "noor",
+          "opa",
+          "beker"
+        ]
+      }
+    },
+    {
+      "tekst": "Door het raam ziet Noor de buurvrouw. Ze krabt het ijs van haar autoruit. Haar vingers zijn rood van de kou en ze blaast er steeds op. Verderop staat Daan te wachten op de bus. Hij springt van het ene been op het andere.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "buurvrouw",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Opa,\" zegt Noor. \"Iedereen heeft het koud.\" \"Precies,\" zegt opa. Hij giet de chocomelk in een grote thermoskan. Noor zet bekers in een mandje. Ze trekken hun jas, muts en wanten aan en gaan naar buiten.",
+      "prent": {
+        "decor": "huis",
+        "figuren": [
+          "noor",
+          "opa",
+          "beker*2"
+        ]
+      }
+    },
+    {
+      "tekst": "De buurvrouw kijkt verbaasd als Noor haar een beker geeft. Ze houdt hem met twee handen vast. \"O, wat is die warm,\" zucht ze. \"Mijn vingers worden weer wakker.\" Ze helpt meteen met het mandje dragen.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "noor",
+          "buurvrouw",
+          "beker"
+        ]
+      }
+    },
+    {
+      "tekst": "Bij de bushalte krijgt Daan ook een beker. En de postbode, die net voorbij fietst. En een mama met een kinderwagen. Al snel staat er een groepje mensen bij Noor en opa. Ze praten en lachen, en uit elke beker komt een wolkje damp.",
+      "prent": {
+        "decor": "dorp",
+        "figuren": [
+          "daan",
+          "noor",
+          "opa",
+          "buurvrouw",
+          "beker"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan is de thermoskan leeg. \"Oei,\" zegt Noor. \"Er is niets meer voor jou, opa.\" Opa schudt zijn hoofd. \"Ik heb al het lekkerste gehad,\" zegt hij. \"Al die blije gezichten.\"",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "noor",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "Maar als ze thuiskomen, staat er een beker op de keukentafel. Met een briefje: \"Voor de chocomelkopa. Van de buurvrouw.\" Opa lacht en drinkt hem langzaam op. Noor kruipt naast hem. Buiten smelt de rijp in de zon.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "noor",
+          "opa",
+          "beker"
+        ]
+      }
+    }
+  ]
+}
