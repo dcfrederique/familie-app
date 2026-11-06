@@ -65,3 +65,8 @@
   .deel-som { font-size: 16px; min-height: 1.1em; }
   .deel-melding { font-size: 14px; }
 }
+/* Detail: als alles eerlijk verdeeld is, maken de mandjes een vrolijk sprongetje. */
+@media (prefers-reduced-motion: no-preference) {
+  .deel-mandje.klaar { animation: deel-hoera .5s cubic-bezier(.3, 1.6, .5, 1); }
+}
+@keyframes deel-hoera { 0% { transform: translateY(0) scale(1); } 40% { transform: translateY(-8px) scale(1.04); } 100% { transform: none; } }

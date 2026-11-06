@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.98',
+    datum: '2026-11-06',
+    titel: 'Eerlijk delen: de mandjes springen van blijdschap',
+    tekst: 'Bij Eerlijk delen maken de mandjes een vrolijk sprongetje als alles eerlijk verdeeld is. Het spel, Springland met de wereld Zonnestrand en De wereld passen op alle tablets en op de gsm liggend.',
+  },
+  {
     versie: '0.97',
     datum: '2026-11-06',
     titel: 'Eerlijk delen, De sjaal voor twee en de wereld Zonnestrand',
