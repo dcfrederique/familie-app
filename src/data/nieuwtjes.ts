@@ -19,11 +19,17 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
-    versie: '0.109',
+    versie: '0.110',
     datum: '2026-11-07',
     titel: 'Mijn huisdier',
-    tekst: 'Elk kind kan een huisdier krijgen: een ei kiezen (dinootje, hondje, katje of konijntje) en een naam geven. Het groeit van ei naar baby, kind en groot door goedgekeurde taken: elke taak is een pootje (standaard 3, 8 en 15). Het kind verzorgt het met sterren van het vrije saldo: eten 2, wassen 1, knuffelen is gratis, hoogstens 6 sterren per dag. Het wordt nooit ziek of verdrietig, het heeft hoogstens honger. Zet het per kind aan en pas de regels aan bij Huisdier in het ouderdeel (Kinderen); het kind vindt het bij Ik en op het startscherm.',
+    tekst: 'Elk kind kan een huisdier krijgen: een ei kiezen (uit 12 diertjes, zoals leeuw, olifant, aap, uil, dinootje, hondje of eenhoorn) en een naam geven. Het groeit van ei naar baby, kind en groot door goedgekeurde taken: elke taak is een pootje (standaard 3, 8 en 15). Het kind verzorgt het met sterren van het vrije saldo: eten 2, wassen 1, knuffelen is gratis, hoogstens 6 sterren per dag. Het wordt nooit ziek of verdrietig, het heeft hoogstens honger. Zet het per kind aan en pas de regels aan bij Huisdier in het ouderdeel (Kinderen); het kind vindt het bij Ik en op het startscherm.',
     open: 'Nog geen pushmelding als het huisdier honger heeft en nog geen kleertjes of mandjes in de winkel; het spelletje Huisdier wassen blijft apart.',
+  },
+  {
+    versie: '0.109',
+    datum: '2026-11-07',
+    titel: 'Zes nieuwe thema\'s voor de kinderen',
+    tekst: 'Bij Mijn thema (en in het welkomstpad, of door een ouder bij Kinderen) zijn er zes thema\'s bij: Ruimte-avontuur, Onderwaterwereld, Dierenvriendjes, Wolkenland, Snoepbakkerij en Dierenkliniek. Elk thema heeft een eigen banner, kleuren (licht en donker), tegels, voortgang, slot en feest. Nieuwe thema\'s komen voortaan als één rij data (src/data/dataThemas.ts, docs/thema-nieuw.md).',
   },
   {
     versie: '0.108',

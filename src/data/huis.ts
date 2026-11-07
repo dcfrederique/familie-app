@@ -3,6 +3,7 @@
 // server controleert); huis.test.ts houdt de twee gelijk. Kopen, prijs voor wie niet leest en "alles vrij" werken zoals
 // bij het figuurtje.
 import { bezitSleutel, prijsVoor, type Bezit, type Stuk } from './figuurtje.ts'
+import { dataThemas } from './dataThemas.ts'
 import type { Gebruiker, Kleur } from './gezin.ts'
 
 export const dakKleuren = {
@@ -106,7 +107,7 @@ export const zichtbareHuisStukken = (c: HuisCategorieInfo, kanLezen: boolean) =>
 export const isHuisStukVrij = (cat: HuisCategorie, stuk: Stuk, v: Bezit) =>
   prijsVoor(stuk, v) === 0 || v.eigen.has(bezitSleutel(cat, stuk.id))
 
-const themaDeur: Record<Kleur, keyof typeof deurKleuren> = { blauw: 'blauw', oranje: 'oranje', groen: 'groen', paars: 'paars', roze: 'roze', lila: 'paars', gras: 'groen' }
+const themaDeur = { blauw: 'blauw', oranje: 'oranje', groen: 'groen', paars: 'paars', roze: 'roze', lila: 'paars', gras: 'groen', ...Object.fromEntries(dataThemas.map((t) => [t.sleutel, t.shirt])) as Record<string, keyof typeof deurKleuren> } as Record<Kleur, keyof typeof deurKleuren>
 
 /** Startpunt voor wie nog niets bouwde: een hutje met de deur in de kleur van het thema. */
 export function basisHuis(thema: Kleur | null): Huis {

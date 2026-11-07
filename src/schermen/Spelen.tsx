@@ -17,6 +17,7 @@ import { zin } from '../data/zinnen.ts'
 import Bladzijden from './Bladzijden.tsx'
 
 // Hoogte gedeeld door breedte van een tegel per thema (kasteel: wimpel erboven, tuin: paddenstoel met steel).
+import { dataThemaVan } from '../data/dataThemas.ts'
 const VERHOUDING = { race: 1, kasteel: 1.3, tuin: 1.2, voetbal: 1 }
 
 const SLOT = 'M7 11V8a5 5 0 0 1 10 0v3M5 11h14v10H5zM12 15v2'
@@ -75,7 +76,7 @@ function SpelMenu({ kind }: { kind: Gebruiker }) {
       {data && spellen.some((s) => !spelIsVrij(s, v)) && (
         <p className="spel-saldo" aria-live="polite"><SterrenPil aantal={vrij} metWoord={kind.kan_lezen} /></p>
       )}
-      <Bladzijden items={spellen} maat={{ breed: 170, hoog: 190, gap: 24, verhouding: thema ? VERHOUDING[thema] : 1 }} className="spel-menu" label="Meer spelletjes" toon={(s) => {
+      <Bladzijden items={spellen} maat={{ breed: 170, hoog: 190, gap: 24, verhouding: thema ? (VERHOUDING as Record<string, number>)[thema] ?? dataThemaVan(thema)?.verhouding ?? 1 : 1 }} className="spel-menu" label="Meer spelletjes" toon={(s) => {
           const i = spellen.indexOf(s)
           const prijs = spelPrijs(s, v)
           // Zolang de aankopen niet geladen zijn, staat wat iets kost nog op slot.

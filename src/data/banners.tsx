@@ -1,5 +1,6 @@
 // Eigen prenten voor de banner bovenaan het startscherm. Vlakke vormen, geen merken of personages.
 import { voetbalBanner } from './themaPrenten.ts'
+import { dataThemaPrent, dataThemaVan } from './dataThemas.ts'
 
 /** Nachtelijke racebaan met raceauto nr. 8, een vulkaan en een dino. */
 export function RaceBanner() {
@@ -134,6 +135,8 @@ export function VoetbalBanner() {
 }
 
 /** De banner bij een thema. */
-export function Banner({ soort }: { soort: 'race' | 'kasteel' | 'tuin' | 'voetbal' }) {
+export function Banner({ soort }: { soort: 'race' | 'kasteel' | 'tuin' | 'voetbal' | (string & {}) }) {
+  const dt = dataThemaVan(soort)
+  if (dt) return <svg className="banner-prent" viewBox="0 0 1000 190" preserveAspectRatio="xMaxYMax slice" aria-hidden="true" dangerouslySetInnerHTML={{ __html: dataThemaPrent(dt) }} />
   return soort === 'race' ? <RaceBanner /> : soort === 'kasteel' ? <KasteelBanner /> : soort === 'voetbal' ? <VoetbalBanner /> : <TuinBanner />
 }

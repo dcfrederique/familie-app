@@ -484,3 +484,13 @@
   .thema-kop-titel, .thema-kop.laag .thema-kop-titel { font-size: 22px; }
   .thema-kop-sub { font-size: 14px; }
 }
+
+/* ── Datathema's (src/data/dataThemas.ts): gedeelde vormen; kleuren komen uit de data ── */
+.thema-dslot { position: absolute; inset: 0; display: grid; place-items: center; border-radius: inherit; background: color-mix(in srgb, var(--surface) 55%, transparent); }
+.thema-dslot svg { width: 56%; height: 56%; }
+.thema-dv { position: relative; width: 70%; height: 20px; border-radius: 10px; background: var(--tn-spoor, var(--soft)); flex-shrink: 0; }
+.thema-dv::before { content: ""; position: absolute; left: 10px; right: 24px; top: 50%; border-top: 2px dashed var(--kid); }
+.thema-dv-mover { position: absolute; top: -8px; width: 34px; height: 34px; transform: translateX(-50%); }
+.thema-dv-doel { position: absolute; right: 0; top: -9px; width: 34px; height: 34px; }
+.thema-dv svg { display: block; width: 100%; height: 100%; }
+.thema-dnieuw { position: absolute; top: -16px; right: -8px; width: 48px; height: 48px; animation: thema-stuiter 1.2s ease-in-out infinite; }

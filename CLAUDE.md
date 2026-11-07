@@ -52,6 +52,7 @@ Wij zijn met 6: twee ouders, Luca, Yuna, Feline en **Maxim** (anderhalf jaar). M
 - `docs/tablet-per-kind.md`: tablet vastzetten op één kind en het welkomstpad (figuurtje, verjaardag, thema, welkomstbonus).
 - `prototypes/thema-subschermen.html`: mockup van het kinderthema (race, kasteel, tuin; voetbal kwam er later bij) in de subschermen; zit in de app via `src/data/themaPrenten.ts`, `src/schermen/ThemaDelen.tsx` en `src/schermen/thema-schermen.css`.
 - `docs/weekmenu.md`: weekmenu met de warme maaltijd per dag (ouderdeel Wij → Weekmenu), de kinderen zien die van vandaag op hun startscherm; sinds 31 oktober 2026 ook ontbijt, middag en vieruurtje, standaardmaaltijden en een receptkiezer (afboeken blijft met een tik, deelrecepten in `docs/voorraad.md`).
+- `docs/thema-nieuw.md`: zes kinderthema's die volledig uit data bestaan (`src/data/dataThemas.ts`: ruimte, zee, dier, wolk, bak, kliniek) en hoe je er een toevoegt; kleuren, prent, tegels, voortgang, slot en feest uit één rij.
 - `docs/ouderdeel.md` en `prototypes/ouderdeel.html`: plan en mockup van het ouderdeel als beheertoepassing met hamburgermenu, en latere onderdelen (onze taken, boodschappen, notities, gezondheid). Fase 1 (menu, zijbalk op pc, IBM Plex Sans, rechte hoeken), Onze taken, Notities, Boodschappen en Gewicht zitten in de app (alleen voor ouder-accounts, RLS); Fitness nog niet. Lopen, Analyse en Loopschema zijn op 29 oktober 2026 weggehaald: Trackd houdt dat lokaal bij.
 - `docs/gewicht.md`: Gezondheid → Gewicht en Mijn profiel (wegingen, BMI, grafiek met doel), privé per ouder.
 - `docs/springland.md`: Springland, het platformspel met het eigen figuurtje: landkaart met werelden, hartjes en vlaggetjes, de baas op het einde van elke wereld, levels vrijspelen, en hoe je een level of wereld toevoegt (ook de nachtelijke bouw; levels mogen soms moeilijk zijn).
@@ -143,6 +144,16 @@ Dit gebeurt in twee fases: eerst uitdenken (ontwerp), daarna coderen (bouw).
   voor een kind is daar niet te zien (ook niet als gebouw of bouwplaats), tot ze het vrijgeven in Winkelaanbod. Zet geen
   gebouw op een plek die al bezet is. Later zet Frederique een aparte routine in die de bestaande spelletjes ook in de wereld
   plaatst (bv. Springland als springkasteel-gebied waar het in dat werelddeel verdergaat); die doet de nacht nu niet.
+
+## Wekelijks: drie nieuwe kinderthema's (Frederique, 7 november 2026)
+Elke **zaterdag** (`TZ=Europe/Brussels date +%u` = 6) maakt de nacht erbij **drie nieuwe thema's**, één met de smaak van
+elk kind (Luca 8, Yuna 6, Feline 4). Eerste keer: zaterdag 14 november 2026. Een thema is één rij in `src/data/dataThemas.ts` plus de
+sleutel in `Kleur` (`gezin.ts`), `Banner` en `bannerVoorKleur` (`thema.ts`) en een migratie die de sleutels toevoegt aan
+`welkom_afronden` en `thema_kiezen`; alles staat in `docs/thema-nieuw.md` (volg het, schrijf geen eigen css). Kies geen thema dat al bestaat
+(race, kasteel, tuin, voetbal, ruimte, zee, dier, wolk, bak, kliniek), geen beschermde personages of merken. Een thema is geen winkelitem
+en heeft geen vrijgave: kinderen kiezen het zelf bij Mijn thema, ouders bij Kinderen. Ontwerpfase: de drie thema's in het plan (naam,
+sleutel, kleuren licht en donker, schets van de prent). Bouwfase: bouwen, controleren op tablet (1194 × 834) en lage gsm liggend
+(844 × 390), licht en donker, zonder scrollen, en een nieuwtje met het volgende versienummer (kan hetzelfde nieuwtje van de nacht zijn).
 
 ## Seizoenen en feesten
 Laat verhalen (en waar het past ook spelletjes, bv. andere prenten, kleuren of voorwerpen) aansluiten

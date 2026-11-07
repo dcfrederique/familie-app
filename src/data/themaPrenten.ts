@@ -1,6 +1,7 @@
 // Kopprenten van de subschermen per thema (prototypes/thema-subschermen.html). Vlakke eigen vormen, geen merken.
 // Elke prent is SVG-inhoud voor viewBox 0 0 1000 190; links blijft vrij voor de terugknop en de titel.
 import type { Banner, ThemaScherm } from './thema.ts'
+import { dataThemaPrent, dataThemaVan } from './dataThemas.ts'
 
 type Thema = NonNullable<Banner>
 
@@ -134,7 +135,7 @@ const voetbalBasis = () => `<rect width="1000" height="190" fill="#CFEAFF"/>${wo
   <rect y="116" width="1000" height="74" fill="#4FAE55"/>${Array.from({ length: 9 }, (_, i) => `<rect x="${i * 120}" y="116" width="60" height="74" fill="#46A04C"/>`).join('')}
   <path d="M0 124H1000" stroke="#fff" stroke-width="3" opacity=".9"/>`
 
-const prenten: Record<Thema, Record<Exclude<ThemaScherm, 'huis'>, () => string>> = {
+const prenten: Record<'race' | 'kasteel' | 'tuin' | 'voetbal', Record<Exclude<ThemaScherm, 'huis'>, () => string>> = {
   race: {
     spelen: () => raceBasis() + vulkaan(640, 158, 0.95) + dino(820, 150, 0.85) + vlag(905, 30, 0.8) + stoplicht(470, 120) + `<g class="thema-rij">${auto(0, 160, 0.75)}</g>`,
     verhalen: () => raceBasis() + '<circle cx="590" cy="58" r="26" fill="#F6E7B4"/>' + vulkaan(800, 158, 1.2) + dino(600, 150, 0.75) +
@@ -202,8 +203,10 @@ export const voetbalBanner = () => voetbalBasis() + doel(900, 170, 1) + hoekvlag
 const cache = new Map<string, string>()
 /** SVG-inhoud van de kopprent; berekend bij het eerste gebruik. */
 export function kopPrent(thema: Thema, scherm: ThemaScherm): string {
+  const dt = dataThemaVan(thema)
+  if (dt) return dataThemaPrent(dt)
   const sleutel = `${thema}/${scherm}`
   // Mijn huis leent de prent van Spelletjes: de pitstop, het kasteel, het paddenstoelendorp, het oefenveld.
-  if (!cache.has(sleutel)) cache.set(sleutel, prenten[thema][scherm === 'huis' ? 'spelen' : scherm]())
+  if (!cache.has(sleutel)) cache.set(sleutel, prenten[thema as 'race' | 'kasteel' | 'tuin' | 'voetbal'][scherm === 'huis' ? 'spelen' : scherm]())
   return cache.get(sleutel)!
 }
