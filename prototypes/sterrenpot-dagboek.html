@@ -377,6 +377,38 @@ function ouderDagboekInstellen() {
     </section>`)
 }
 
+
+/* ───────── Gezinspot (Samen) ───────── */
+const SAMEN = { naam: 'Dagje Plopsaland met ons zessen', totaal: 300, bij: { luca: 80, yuna: 60, feline: 50 }, kleur: { luca: '#4A86F0', yuna: '#C2337A', feline: '#8A3FC0' }, max: 100 }
+function samenScherm(kid) {
+  const k = KINDEREN[kid], d = POT[kid]
+  const nu = Object.values(SAMEN.bij).reduce((a, b) => a + b, 0), rest = SAMEN.totaal - nu
+  const tabs = `<div class="samen-tabs"><span class="samen-tab">${ic(P.pot, 26)}${k.leest ? 'Mijn pot' : ''}</span><span class="samen-tab aan">${ic('M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM16 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM2 20c0-3 3-5 6-5s6 2 6 5M12 15c1-.7 2-1 4-1 3 0 6 2 6 6', 26)}${k.leest ? 'Samen' : ''}</span></div>`
+  const bijdragen = Object.entries(SAMEN.bij).map(([n, v]) => `<div class="bijdrage${n === kid ? ' ik' : ''}"><span class="bij-av" style="background:${SAMEN.kleur[n]}">${KINDEREN[n].naam[0]}</span><div class="bij-balk"><i style="width:${(v / SAMEN.max) * 100}%;background:${SAMEN.kleur[n]}"></i></div>${k.leest ? `<b class="display">${v}</b>` : `<span class="bij-ster">${STER(26)}</span>`}</div>`).join('')
+  const kopHtml = kop(k, 'spelen', 'Sterrenpot', k.leest ? { luca: 'Samen naar de finish', yuna: 'De schatkamer van ons allemaal', feline: '' }[kid] : '', `<span class="mijlpaal pil-kop">${STER(24)}<b class="display">${d.vrij}</b>${k.leest ? '<small>vrij</small>' : ''}</span>`)
+  const rechts = `
+    <div class="pot-kaart doel"><span class="doel-prent">${DOEL.pretpark.svg}</span><div>${k.leest ? `<div class="pot-klein">Doel van het hele gezin</div><div class="display pot-doelnaam">${SAMEN.naam}</div>` : ''}</div>${k.leest ? '' : `<span class="rond klein-r" style="margin-left:auto">${ic(P.geluid, 26)}</span>`}</div>
+    <div class="pot-kaart">${k.leest ? `<div class="display pot-groot">Nog ${rest} sterren</div><div class="pot-klein">${nu} van ${SAMEN.totaal} in de gezinspot</div>` : ''}<div class="pot-balk"><i style="width:${nu / SAMEN.totaal * 100}%"></i></div>${bijdragen}</div>
+    <div class="pot-kaart acties">${k.leest ? `<div class="pot-klein">Doe sterren in de gezinspot (terughalen kan niet) <span class="vrij">${STER(18)} ${d.vrij} vrij</span></div>` : ''}<div class="pot-rij">${(k.leest ? [5, 10, 20] : [5]).map((x) => `<span class="pot-knop plus${k.leest ? '' : ' f'}">${ic(P.plus, 30)}${k.leest ? x : STER(40)}</span>`).join('')}</div></div>`
+  return frame(kid, 'spelen', kopHtml, `${tabs}<div class="pot-raster samen"><div class="pot-links">${pot(nu, SAMEN.totaal, { sticker: 'pretpark', breed: 330 })}</div><div class="pot-rechts">${rechts}</div></div>`, 'winkel')
+}
+function ouderGezinspot() {
+  return OUDER('Kinderen en tijd', `
+    <section class="o-kaart">
+      <div class="o-sectie">Gezinspot (voor alle kinderen)</div>
+      <label class="o-rij"><input type="checkbox" checked> <span>Gezinspot aan</span></label>
+      <div class="o-label">Doel</div><input class="o-input" value="Dagje Plopsaland met ons zessen">
+      <div class="o-prenten">${['pretpark', 'ijs', 'bios'].map((s) => `<span class="o-prent${s === 'pretpark' ? ' aan' : ''}">${DOEL[s].svg}<small>${DOEL[s].naam}</small></span>`).join('')}</div>
+      <div class="o-twee"><div><div class="o-label">Aantal sterren</div><input class="o-input" value="300"></div><div><div class="o-label">Maximum per kind</div><input class="o-input" value="100"></div></div>
+      <label class="o-rij"><input type="checkbox"> <span>Kinderen mogen sterren terughalen</span></label>
+      <label class="o-rij"><input type="checkbox" checked> <span>Feline mag meespelen (sterretjes tellen als 5)</span></label>
+      <div class="o-sectie">Wie gaf er al wat? (190 van 300)</div>
+      ${Object.entries(SAMEN.bij).map(([n, v]) => `<div class="o-kind-rij">${avatar({ luca: '#E3EDFC', yuna: '#FCE4F0', feline: '#EFE4FA' }[n], KINDEREN[n].naam[0])}<b>${KINDEREN[n].naam}</b>${oSter(v)}</div>`).join('')}
+      <div class="o-actie"><span class="o-knop vol">Bewaren</span></div>
+      <p class="o-hint">Is de gezinspot vol, dan krijg je een melding en tik je op Gedaan: de sterren worden bij elk kind afgeschreven met de reden "Gezinspot".</p>
+    </section>`)
+}
+
 /* ───────── Scènes en overzicht ───────── */
 const SCENES = {
   'pot-luca': [1194, 834, () => potScherm('luca')],
@@ -384,6 +416,10 @@ const SCENES = {
   'pot-feline': [1194, 834, () => potScherm('feline')],
   'pot-vol-luca': [1194, 834, () => potScherm('luca', { vol: true })],
   'pot-vol-feline': [1194, 834, () => potScherm('feline', { vol: true })],
+  'samen-luca': [1194, 834, () => samenScherm('luca')],
+  'samen-yuna': [1194, 834, () => samenScherm('yuna')],
+  'samen-feline': [1194, 834, () => samenScherm('feline')],
+  'samen-ouder': [390, 1000, ouderGezinspot],
   'pot-start-luca': [1194, 834, startLuca],
   'pot-winkel-luca': [1194, 834, winkelDialoog],
   'pot-ouder-instellen': [390, 940, ouderPotInstellen],
@@ -514,6 +550,19 @@ style.textContent = `
 .klaar-titel { font-size: 52px; } .klaar-sub { font-size: 22px; color: var(--muted); }
 .klaar-mijn-dagen { display: flex; gap: 14px; margin-top: 12px; background: var(--surface); padding: 10px 22px; border-radius: 28px; box-shadow: 0 6px 0 var(--shade); } .klaar-mijn-dagen span { display: grid; justify-items: center; font-weight: 800; }
 .mock-hub { flex: 1; } .nieuw-label { position: absolute; top: 12px; right: 16px; background: #F2B33D; color: #3A2A00; border-radius: 14px; padding: 2px 12px; font-size: 17px; }
+
+
+.samen-tabs { flex: none; display: flex; gap: 10px; justify-content: center; }
+.samen-tab { min-height: 56px; min-width: 120px; padding: 0 24px; border-radius: 28px; background: var(--surface); color: var(--muted); display: inline-flex; align-items: center; justify-content: center; gap: 10px; font: 800 20px 'Baloo 2'; box-shadow: 0 4px 0 var(--shade); }
+.samen-tab.aan { background: var(--kid); color: var(--on-solid); }
+.thema-race .samen-tab.aan { background: #4A86F0; color: #fff; }
+.pot-raster.samen { grid-template-columns: 340px 1fr; }
+.samen .pot-kaart { padding: 10px 20px; gap: 6px; } .samen .pot-groot { font-size: 34px; } .samen .pot-rechts { gap: 10px; } .samen .pot-knop { min-height: 60px; } .samen .doel-prent { width: 56px; height: 56px; } .samen .pot-doelnaam { font-size: 26px; } .samen .pot-klein { font-size: 15px; } .samen .pot-kaart.doel { padding: 8px 20px; }
+.bijdrage { display: grid; grid-template-columns: 36px 1fr 56px; gap: 12px; align-items: center; }
+.bij-av { width: 36px; height: 36px; border-radius: 50%; color: #fff; display: grid; place-items: center; font: 800 18px 'Baloo 2'; }
+.bijdrage.ik .bij-av { box-shadow: 0 0 0 4px var(--surface), 0 0 0 7px var(--kid); }
+.bij-balk { height: 20px; border-radius: 10px; background: var(--soft); overflow: hidden; } .bij-balk i { display: block; height: 100%; border-radius: 10px; }
+.bijdrage b { font-size: 24px; text-align: right; }
 
 /* ouder (gsm) */
 .gsm { width: 390px; min-height: 100%; background: var(--bg); font-family: var(--f-ouder); color: var(--ink); font-weight: 400; }

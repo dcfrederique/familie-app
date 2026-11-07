@@ -61,6 +61,19 @@ hem vollopen. Is hij vol, dan is er een feestje, en een ouder regelt het echte d
 4. Feline kan alles zonder lezen: prenten, sterretjes tellen, voorleesknop.
 5. Licht en donker, drie thema's, knoppen minstens 64 px.
 
+### Gezinspot "Samen" (toegevoegd op vraag van Frederique, 7 november 2026)
+Naast de eigen pot komt één gezinspot met een doel voor het hele gezin ("Dagje Plopsaland met ons zessen, 300 sterren"). Mockups:
+`samen-luca`, `samen-yuna`, `samen-feline`, `samen-ouder` (projectmap `schermen/sterrenpot/samen-*`).
+- Het potscherm krijgt twee tabs: **Mijn pot** en **Samen**. Samen toont de grote pot, de voortgang en per kind een gekleurde balk met
+  wat het gaf (Feline ziet balken en sterretjes, geen getallen).
+- Storten gaat van het vrije saldo van het kind naar de gezinspot (`+5 / +10 / +20`; Feline een `+⭐` van 5). Terughalen kan niet
+  (voorstel), en er is een **maximum per kind** (voorstel een derde van het doel) zodat één kind niet alles betaalt.
+- Ouder: blok "Gezinspot" onder Kinderen en tijd met doel, prentje, aantal, maximum per kind, "terughalen toelaten" en overzicht van wie
+  wat gaf. Vol = melding en **Gedaan**, waarna de sterren bij elk kind worden afgeschreven (puntenlog, bron `pot`, reden "Gezinspot").
+- Server: tabel `gezinspot` (één rij per gezin) en `gezinspot_bijdragen` (kind, aantal); functies `gezinspot_storten` (kind) en
+  `gezinspot_afronden` (ouder). Gestorte sterren tellen niet mee voor het vrije saldo, het dagplafond en het spaarmaximum.
+- Open: terughalen ja of nee, het maximum per kind, en of een kind een eigen pot én de gezinspot tegelijk mag vullen (voorstel: ja).
+
 ---
 
 ## 2. Dagboek ("Mijn dag"): hoe voel ik me vandaag
