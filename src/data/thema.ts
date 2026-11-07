@@ -1,12 +1,13 @@
 // Hoe het startscherm van een kind eruitziet (docs/ontwerp.md en het schermontwerp). Content als data.
 import type { Gebruiker } from './gezin.ts'
+import { dataThemas } from './dataThemas.ts'
 
 /**
  * 'race': donkere banner met raceauto nr. 8, dino en vulkaan (dino's en auto's).
  * 'kasteel': roze prinsessenkasteel met regenboog. 'tuin': lila feeëntuin met bloemen en vlinders.
  * 'voetbal': grasgroen voetbalveld met doel, bal, hoekvlag en stadionlampen.
  */
-export type Banner = 'race' | 'kasteel' | 'tuin' | 'voetbal' | null
+export type Banner = 'race' | 'kasteel' | 'tuin' | 'voetbal' | 'ruimte' | 'zee' | 'dier' | 'wolk' | 'bak' | 'kliniek' | null
 
 /** Thema per kleur; een ouder kiest het per kind bij Kinderen. */
 export const bannerVoorKleur: Record<NonNullable<Gebruiker['thema']>, Banner> = {
@@ -17,6 +18,7 @@ export const bannerVoorKleur: Record<NonNullable<Gebruiker['thema']>, Banner> = 
   roze: 'kasteel',
   lila: 'tuin',
   gras: 'voetbal',
+  ruimte: 'ruimte', zee: 'zee', dier: 'dier', wolk: 'wolk', bak: 'bak', kliniek: 'kliniek',
 }
 
 /** Keuzes voor de ouder (Kinderen) en het kind zelf (welkomstpad, Mijn thema), in volgorde. */
@@ -25,6 +27,7 @@ export const themaKeuzes: { kleur: NonNullable<Gebruiker['thema']>; naam: string
   { kleur: 'roze', naam: 'Prinsessenkasteel' },
   { kleur: 'lila', naam: 'Feeëntuin' },
   { kleur: 'gras', naam: 'Voetbal' },
+  ...dataThemas.map((t) => ({ kleur: t.sleutel as NonNullable<Gebruiker['thema']>, naam: t.naam })),
   { kleur: 'oranje', naam: 'Oranje' },
   { kleur: 'groen', naam: 'Groen' },
   { kleur: 'paars', naam: 'Paars' },
@@ -69,9 +72,10 @@ export const themaVan = (kind: Pick<Gebruiker, 'thema'>): Banner => (kind.thema 
 export type ThemaScherm = 'spelen' | 'verhalen' | 'kleurplaten' | 'figuurtje' | 'huis' | 'spel'
 
 /** Ondertitel onder de schermtitel, per thema (alleen voor wie leest). */
-export const themaOndertitels: Record<NonNullable<Banner>, Record<ThemaScherm, string>> = {
+export const themaOndertitels: Record<string, Record<ThemaScherm, string>> = {
   race: { spelen: 'De pitstop', verhalen: 'Lezen bij de vulkaan', kleurplaten: 'De spuitgarage', figuurtje: 'Op het podium', huis: 'Mijn garage', spel: '' },
   kasteel: { spelen: 'De speelzaal', verhalen: 'De koninklijke bieb', kleurplaten: 'De schilderszaal', figuurtje: 'Spiegeltje aan de wand', huis: 'Mijn eigen kasteeltje', spel: '' },
   tuin: { spelen: 'Het paddenstoelendorp', verhalen: 'De verhalenboom', kleurplaten: 'De waslijn', figuurtje: 'De feeënkring', huis: 'Mijn feeënhuisje', spel: '' },
   voetbal: { spelen: 'Het oefenveld', verhalen: 'Lezen in de dug-out', kleurplaten: 'Het tactiekbord', figuurtje: 'Speler van de match', huis: 'Mijn clubhuis', spel: '' },
+  ...Object.fromEntries(dataThemas.map((t) => [t.sleutel, { ...t.ondertitels, spel: '' }])),
 }

@@ -1,6 +1,7 @@
 // Catalogus van het figuurtje: alle stukken, kleuren en wat ze kosten in de winkel (docs/winkel.md).
 // De prijzen staan ook in supabase/migrations/20261024000500_sterren_kopen.sql (de server controleert);
 // figuurtje.test.ts houdt de twee gelijk.
+import { dataThemas } from './dataThemas.ts'
 import type { Gebruiker, Kleur } from './gezin.ts'
 
 export const huidKleuren = {
@@ -207,7 +208,7 @@ export function zichtbareStukken(c: CategorieInfo, kanLezen: boolean): Stuk[] {
   return c.stukken.filter((s) => kanLezen || s.prenten)
 }
 
-const themaShirt: Record<Kleur, KledingKleur> = { blauw: 'blauw', oranje: 'oranje', groen: 'groen', paars: 'paars', roze: 'roze', lila: 'paars', gras: 'groen' }
+const themaShirt = { blauw: 'blauw', oranje: 'oranje', groen: 'groen', paars: 'paars', roze: 'roze', lila: 'paars', gras: 'groen', ...Object.fromEntries(dataThemas.map((t) => [t.sleutel, t.shirt])) as Record<string, KledingKleur> } as Record<Kleur, KledingKleur>
 
 /** Basisfiguurtje voor wie er nog geen maakte: shirt in de kleur van het thema. */
 export function basisFiguurtje(thema: Kleur | null): Figuurtje {

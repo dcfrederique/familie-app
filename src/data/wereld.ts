@@ -2,6 +2,7 @@
 // Content als data: een nieuw gebouw is een rij hier plus een tekening in wereldPrenten.ts.
 import { inAanbod, metPrijs, type Aanbod } from './aanbod.ts'
 import { bezitSleutel } from './figuurtje.ts'
+import { dataThemas } from './dataThemas.ts'
 import type { Kleur } from './gezin.ts'
 import { spelIsVrij, spelMenu, type SpelSleutel } from './spelletjes.ts'
 
@@ -92,9 +93,10 @@ export const gebouwen: Gebouw[] = [
 ]
 
 /** Kleur van het naambordje en de brievenbus per thema. */
-export const kidKleur: Record<Kleur, string> = {
+export const kidKleur = {
   blauw: '#2D6BD6', oranje: '#C2541A', groen: '#1F7A4A', paars: '#6A5BD1', roze: '#C2337A', lila: '#8A3FC0', gras: '#1E8A3C',
-}
+  ...Object.fromEntries(dataThemas.map((t) => [t.sleutel, t.kidKleur])) as Record<string, string>,
+} as Record<Kleur, string>
 
 /** Hoe breed (links, rechts, deur) een huis in tekeneenheden is; zie src/lib/huis/tekenen.ts. */
 export const HUIS_MAAT: Record<string, [number, number, number]> = {

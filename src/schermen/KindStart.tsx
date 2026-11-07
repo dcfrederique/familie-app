@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { dataThemaVan } from '../data/dataThemas.ts'
 import { Link, Navigate, useParams } from 'react-router-dom'
 import { Banner } from '../data/banners.tsx'
 import { kleurKlasse, type Gebruiker } from '../data/gezin.ts'
@@ -106,6 +107,8 @@ function StartLezer({ deel, kind, lijst, geladen, vrij, eten, kies }: {
                 {geladen && <p className="kop-sub">
                   {banner === 'race'
                     ? (nogTeDoen === 0 ? 'Alles gedaan, finish!' : `Nog ${nogTeDoen} ${nogTeDoen === 1 ? 'taak' : 'taken'} tot de finish`)
+                    : dataThemaVan(banner)
+                      ? (nogTeDoen === 0 ? dataThemaVan(banner)!.klaarTekst : dataThemaVan(banner)!.nogTeDoen(nogTeDoen))
                     : banner === 'voetbal'
                       ? (nogTeDoen === 0 ? 'Alles gedaan, goal!' : `Nog ${nogTeDoen} ${nogTeDoen === 1 ? 'taak' : 'taken'} tot de goal`)
                       : `Al ${gedaan} van de ${lijst.length} taken gedaan vandaag`}

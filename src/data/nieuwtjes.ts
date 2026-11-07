@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.109',
+    datum: '2026-11-07',
+    titel: 'Zes nieuwe thema\'s voor de kinderen',
+    tekst: 'Bij Mijn thema (en in het welkomstpad, of door een ouder bij Kinderen) zijn er zes thema\'s bij: Ruimte-avontuur, Onderwaterwereld, Dierenvriendjes, Wolkenland, Snoepbakkerij en Dierenkliniek. Elk thema heeft een eigen banner, kleuren (licht en donker), tegels, voortgang, slot en feest. Nieuwe thema\'s komen voortaan als één rij data (src/data/dataThemas.ts, docs/thema-nieuw.md).',
+  },
+  {
     versie: '0.108',
     datum: '2026-11-07',
     titel: 'Dagboek: Mijn dag',

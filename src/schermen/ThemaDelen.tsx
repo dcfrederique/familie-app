@@ -1,7 +1,16 @@
 import { createContext, useContext, type ReactNode } from 'react'
 import { themaOndertitels, type Banner, type ThemaScherm } from '../data/thema.ts'
 import { auto, bal, beker, bloem, geblokt, glinster, hart, kroon, kopPrent, vlinder } from '../data/themaPrenten.ts'
+import { dataThemaCss, dataThemaVan } from '../data/dataThemas.ts'
 import './thema-schermen.css'
+
+// Tokens en vormen van de datathema's (src/data/dataThemas.ts) komen één keer in de pagina.
+if (typeof document !== 'undefined' && !document.getElementById('datathema-stijl')) {
+  const stijl = document.createElement('style')
+  stijl.id = 'datathema-stijl'
+  stijl.textContent = dataThemaCss()
+  document.head.append(stijl)
+}
 
 // Bouwstenen die per thema anders getekend worden (prototypes/thema-subschermen.html):
 // kopprent, slot, voortgang, 'nieuw', 'klaar' en het feest. Zonder thema tekenen ze niets.
@@ -39,6 +48,8 @@ export function ThemaKop({ thema, scherm, titel, lezer, links, rechts }: {
 
 /** Teken in een tegel die nog op slot zit: rolluik en stoplicht, kasteeldeur, een doelnet of een slapend huisje. */
 export function ThemaSlot({ thema }: { thema: Thema }) {
+  const dt = dataThemaVan(thema)
+  if (dt) return <span className="thema-dslot" aria-hidden="true">{svg('-24 -24 48 48', dt.slot)}</span>
   if (thema === 'race') return (
     <>
       <span className="thema-rolluik" aria-hidden="true" />
@@ -62,6 +73,14 @@ export function ThemaSlot({ thema }: { thema: Thema }) {
 /** Hoe ver het kind al is: een auto op weg naar de finish, een regenboog die volloopt, een bal op weg naar het doel, of vijf bloemetjes. */
 export function ThemaVoortgang({ thema, deel, label }: { thema: Thema; deel: number; label: string }) {
   const d = Math.max(0, Math.min(1, deel))
+  const dt = dataThemaVan(thema)
+  if (dt && dt.voortgang !== 'regenboog') return (
+    <span className="thema-dv" role="img" aria-label={label}>
+      <span className="thema-dv-mover" style={{ left: `${6 + d * 72}%` }}>{svg('-22 -22 44 44', dt.voortgang.mover)}</span>
+      <span className="thema-dv-doel">{svg('-22 -22 44 44', dt.voortgang.doel)}</span>
+    </span>
+  )
+  if (dt) return <span className="thema-regenboog" role="img" aria-label={label}><i style={{ width: `${Math.round(d * 100)}%` }} /></span>
   if (thema === 'race') return (
     <span className="thema-weg" role="img" aria-label={label}>
       <span className="thema-weg-auto" style={{ left: `${6 + d * 72}%` }}>{svg('-80 -60 160 80', auto(0, 0, 1))}</span>
@@ -90,6 +109,8 @@ export function ThemaVoortgang({ thema, deel, label }: { thema: Thema; deel: num
 
 /** Wat net vrijkwam: een NIEUW-bordje, een kroontje, een bal of een vlinder. */
 export function ThemaNieuw({ thema }: { thema: Thema }) {
+  const dt = dataThemaVan(thema)
+  if (dt) return <span className="thema-nieuw thema-dnieuw">{svg('-24 -24 48 48', dt.nieuw)}</span>
   if (thema === 'race') return <span className="thema-nieuw race display">NIEUW</span>
   if (thema === 'kasteel') return <span className="thema-nieuw">{svg('-50 -56 100 60', kroon(0, 0, 1))}</span>
   if (thema === 'voetbal') return <span className="thema-nieuw voetbal">{svg('-22 -22 44 44', bal(0, 0, 1))}</span>
@@ -98,6 +119,8 @@ export function ThemaNieuw({ thema }: { thema: Thema }) {
 
 /** Klaar of gelezen: een geblokte vlag, een kroontje, een beker of een vlinder. */
 export function ThemaVink({ thema }: { thema: Thema }) {
+  const dt = dataThemaVan(thema)
+  if (dt) return <span className="thema-vink">{svg('-24 -24 48 48', dt.vink)}</span>
   if (thema === 'race') return <span className="thema-vink race">{svg('0 0 40 40', `<rect x="2" y="2" width="3" height="36" fill="#C9D3DE"/>${geblokt(5, 2, 30, 20, 5)}`)}</span>
   if (thema === 'kasteel') return <span className="thema-vink kasteel">{svg('-50 -56 100 60', kroon(0, 0, 1))}</span>
   if (thema === 'voetbal') return <span className="thema-vink voetbal">{svg('-50 -74 100 88', beker(0, 0, 1))}</span>
@@ -116,7 +139,11 @@ export function ThemaFeest() {
         const stijl = { left: `${(i * 29) % 100}%`, animationDuration: `${duur}s`, animationDelay: `${-((i * 0.37) % duur)}s` }
         const maat = 14 + (i % 3) * 7
         let vorm: ReactNode
-        if (thema === 'race') vorm = i % 3 === 0
+        const dt = dataThemaVan(thema)
+        if (dt) vorm = i % 3 === 0
+          ? <span style={{ width: maat * 1.6, height: maat * 1.6 }}>{svg('-22 -22 44 44', dt.feest[(i / 3 | 0) % dt.feest.length])}</span>
+          : <span style={{ width: maat, height: maat / 2, background: dt.confetti[i % dt.confetti.length] }} />
+        else         if (thema === 'race') vorm = i % 3 === 0
           ? <span style={{ width: maat, height: maat }}>{svg('0 0 10 10', geblokt(0, 0, 10, 10, 2))}</span>
           : <span style={{ width: maat, height: maat / 2, background: ['#F2B33D', '#E23B3B', '#FFFFFF', '#2D6BD6'][i % 4] }} />
         else if (thema === 'kasteel') vorm = <span style={{ width: maat * 1.4, height: maat * 1.2 }}>{i % 2

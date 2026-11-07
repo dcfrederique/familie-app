@@ -94,6 +94,8 @@ select pg_temp.gelijk((select bron from public.puntenlog where kind_id = :'mila'
 -- Het kind kiest later zelf een ander thema (voetbal), alleen voor zichzelf.
 select public.thema_kiezen(:'mila', 'gras');
 select pg_temp.gelijk((select thema from public.gebruikers where id = :'mila'), 'gras', 'voetbalthema gekozen');
+select public.thema_kiezen(:'mila', 'dier');
+select pg_temp.gelijk((select thema from public.gebruikers where id = :'mila'), 'dier', 'dierenthema gekozen');
 select pg_temp.fout(format('select public.thema_kiezen(%L, %L)', :'mila', 'regenboog'), 'onbekend thema');
 select pg_temp.fout(format('select public.thema_kiezen(%L, %L)', :'lowie', 'gras'), 'hoort bij een ander kind');
 -- De tablet mag de verjaardag niet rechtstreeks aanpassen.
