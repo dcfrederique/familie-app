@@ -9,7 +9,7 @@
 .deel-klok { font-variant-numeric: tabular-nums; min-width: 4ch; }
 .deel-mandjes { display: flex; justify-content: center; gap: clamp(8px, 2vw, 24px); width: 100%; }
 .deel-mandje { position: relative; display: grid; grid-template-rows: auto 1fr auto; justify-items: center; width: clamp(110px, 17vw, 190px); height: clamp(150px, 30dvh, 250px); padding: 4px 6px 0; border-radius: 16px; background: rgba(255, 255, 255, 0.5); transition: transform 0.15s; }
-.deel-mandje.klaar { background: #FFF3C4; }
+.deel-mandje.klaar { background: #FFF3C4; color: #3A2A00; }
 .deel-mandje.wiebel { animation: deel-schud 0.3s; }
 .deel-kind { width: clamp(40px, 7dvh, 64px); height: auto; }
 .deel-inhoud { display: flex; flex-wrap: wrap; align-content: flex-end; justify-content: center; gap: 2px; width: 100%; padding-bottom: 14px; z-index: 1; }
@@ -52,8 +52,8 @@
   .deel { gap: 2px; }
   .deel-balk { min-height: 20px; }
   .deel-teller span { width: 10px; height: 10px; }
-  .deel-mandje { height: 23dvh; width: clamp(90px, 14vw, 130px); padding-top: 0; }
-  .deel-kind { width: 28px; }
+  .deel-mandje { height: 23dvh; width: clamp(120px, 18vw, 170px); padding-top: 0; }
+  .deel-kind { width: 40px; margin-bottom: -6px; }
   .deel-inhoud { padding-bottom: 6px; }
   .deel-in { min-width: 30px; min-height: 30px; }
   .deel-in .deel-lekker { width: 30px; }

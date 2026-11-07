@@ -36,3 +36,11 @@
   .lt-plek { flex: 1; align-self: stretch; min-width: 0; min-height: 0; container-type: size; display: grid; place-items: center; }
   .lt-plek .lt-veld { --vak: min(calc((100cqh - 20px - (var(--rij) - 1) * 6px) / var(--rij)), calc((100cqw - 20px - (var(--kol) - 1) * 6px) / var(--kol)), 150px); }
 }
+/* Detail: een brandende lantaarn flakkert heel zacht, als een echt vlammetje. */
+@media (prefers-reduced-motion: no-preference) {
+  .lt-vak.aan .lt-svg { animation: lt-flakker 2.6s ease-in-out infinite; }
+  .lt-vak.aan:nth-child(3n) .lt-svg { animation-delay: -.9s; }
+  .lt-vak.aan:nth-child(3n + 1) .lt-svg { animation-delay: -1.7s; }
+  .lt-veld.feest .lt-vak.aan .lt-svg { animation: lt-zwaai .6s ease-in-out 2 alternate; }
+}
+@keyframes lt-flakker { 0%, 100% { filter: brightness(1); } 45% { filter: brightness(1.12) drop-shadow(0 0 6px rgba(255, 210, 90, .55)); } 70% { filter: brightness(.96); } }

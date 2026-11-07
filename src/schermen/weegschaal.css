@@ -21,7 +21,7 @@
 .weeg-knop-gew { position: relative; display: grid; place-items: center; min-width: 64px; min-height: 64px; padding: 2px 4px; border: 3px solid transparent; border-radius: 16px; background: rgba(255, 255, 255, 0.6); cursor: pointer; touch-action: manipulation; }
 .weeg-knop-gew:disabled { opacity: 0.35; cursor: default; }
 .weeg-knop-gew svg { width: 40px; height: 44px; display: block; }
-.weeg-over { position: absolute; right: 2px; bottom: 0; font-size: 13px; font-weight: 800; background: #fff; border-radius: 8px; padding: 0 4px; }
+.weeg-over { position: absolute; right: 2px; bottom: 0; font-size: 13px; font-weight: 800; background: #fff; color: #1F2A55; border-radius: 8px; padding: 0 4px; }
 .weeg-knoppen { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
 .weeg-actie { min-height: 64px; min-width: 64px; font-size: 17px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 0 14px; }
 .weeg-melding { min-height: 1.4em; font-weight: 800; font-size: 18px; color: #B3261E; }

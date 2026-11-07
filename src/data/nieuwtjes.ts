@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.105',
+    datum: '2026-11-07',
+    titel: 'Weegschaal, Lantaarns en Eerlijk delen bijgewerkt',
+    tekst: 'Bij Weegschaal is het aantal gewichtjes nu ook in het donkere (race)thema te lezen. Bij Lantaarns aansteken flakkeren de brandende lantaarns zachtjes. Bij Eerlijk delen zijn de mandjes op de liggende gsm breder, en het getal blijft leesbaar als een mandje klaar is. De zes nieuwe spelletjes passen op alle tablets en op de gsm liggend.',
+  },
+  {
     versie: '0.104',
     datum: '2026-11-07',
     titel: 'Weegschaal, De weegschaal van de bakker en Wolkenrijk',
