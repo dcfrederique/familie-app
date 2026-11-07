@@ -144,6 +144,16 @@ Dit gebeurt in twee fases: eerst uitdenken (ontwerp), daarna coderen (bouw).
   gebouw op een plek die al bezet is. Later zet Frederique een aparte routine in die de bestaande spelletjes ook in de wereld
   plaatst (bv. Springland als springkasteel-gebied waar het in dat werelddeel verdergaat); die doet de nacht nu niet.
 
+## Wekelijks: drie nieuwe kinderthema's (Frederique, 7 november 2026)
+Elke **zaterdag** (`TZ=Europe/Brussels date +%u` = 6) maakt de nacht erbij **drie nieuwe thema's**, één met de smaak van
+elk kind (Luca 8, Yuna 6, Feline 4). Eerste keer: zaterdag 14 november 2026. Een thema is één rij in `src/data/dataThemas.ts` plus de
+sleutel in `Kleur` (`gezin.ts`), `Banner` en `bannerVoorKleur` (`thema.ts`) en een migratie die de sleutels toevoegt aan
+`welkom_afronden` en `thema_kiezen`; alles staat in `docs/thema-nieuw.md` (volg het, schrijf geen eigen css). Kies geen thema dat al bestaat
+(race, kasteel, tuin, voetbal, ruimte, zee, dier, wolk, bak, kliniek), geen beschermde personages of merken. Een thema is geen winkelitem
+en heeft geen vrijgave: kinderen kiezen het zelf bij Mijn thema, ouders bij Kinderen. Ontwerpfase: de drie thema's in het plan (naam,
+sleutel, kleuren licht en donker, schets van de prent). Bouwfase: bouwen, controleren op tablet (1194 × 834) en lage gsm liggend
+(844 × 390), licht en donker, zonder scrollen, en een nieuwtje met het volgende versienummer (kan hetzelfde nieuwtje van de nacht zijn).
+
 ## Seizoenen en feesten
 Laat verhalen (en waar het past ook spelletjes, bv. andere prenten, kleuren of voorwerpen) aansluiten
 bij wat er in het echte leven in België komt. Kijk naar de datum van vandaag en kies het feest of
