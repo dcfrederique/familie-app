@@ -58,7 +58,7 @@ export default function DagelijksHoera({ kind, hoera, sluit }: { kind: Gebruiker
           {spellen.length > 0 && (
             <section className="hoera-kaart" aria-label="Nieuw in de winkel">
               {lezer && <h3 className="display">Nieuw in de winkel!</h3>}
-              <ul className="hoera-spellen">
+              <ul className={`hoera-spellen${spellen.length > 6 ? ' veel' : ''}`}>
                 {spellen.map((s) => (
                   <li key={s.sleutel}>
                     <span className="hoera-spel-prent">

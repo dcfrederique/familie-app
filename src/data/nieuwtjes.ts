@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.106',
+    datum: '2026-11-07',
+    titel: 'Dagelijks hoera past op elk scherm',
+    tekst: 'Kwam er veel nieuw in de winkel, dan viel de hoera-melding buiten het scherm en konden de kinderen niet meer verder. Nu blijft het venster binnen het scherm: bij veel nieuwe spelletjes worden de tegels kleiner en scrolt de lijst in het venster, en de knoppen (Meteen aandoen en Super!) staan altijd in beeld.',
+  },
+  {
     versie: '0.105',
     datum: '2026-11-07',
     titel: 'Weegschaal, Lantaarns en Eerlijk delen bijgewerkt',
