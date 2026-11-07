@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.104',
+    datum: '2026-11-07',
+    titel: 'Weegschaal, De weegschaal van de bakker en Wolkenrijk',
+    tekst: 'Nieuw verhaal "De weegschaal van de bakker" (Sinterklaas, pepernoten wegen) en nieuwe kleurplaat "De weegschaal". Het spelletje Weegschaal kost 25 sterren: leg gewichtjes rechts tot de weegschaal recht staat. Makkelijk: tel pepernoten (2 tot 5) en leg evenveel gewichtjes van 1, de weegschaal kantelt meteen mee. Middel: pakjes met een getal, gewichtjes van 1, 2, 5 en 10, de som staat onder elke schaal. Moeilijk: pakjes zonder getal (ster, hart, maan, bloem, blad) waarvan je het gewicht afleidt uit kleine balansplaatjes, totalen tot 100 en gewichtjes tot 50; de weegschaal kantelt pas als je op Weeg tikt, een foute weging telt als misstap, met klokje en pluimen. Het weeghuisje staat aan het meer (gouden rand tot 21 november, slot tot gekocht). Springland: nieuwe wereld Wolkenrijk (hemel, wolken en regenbogen) met het level De wolkentrap.',
+    verhaal: 'De weegschaal van de bakker',
+    spel: { naam: 'Weegschaal', prijs: 25 },
+    stukken: ['Figuurtje: Bakmuts (15), Bakschort (20), Weegschaaltje (15)', 'Mijn huis: Meelzakken (20), Weegschaal in de tuin (30), Bakkersbord (20)'],
+    open: 'Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.',
+  },
+  {
     versie: '0.103',
     datum: '2026-11-06',
     titel: 'Vier op een rij, Storm buiten, spelletjes binnen en de krabbaas',

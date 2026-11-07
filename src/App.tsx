@@ -29,6 +29,7 @@ import Stippen from './schermen/Stippen.tsx'
 import Inpakken from './schermen/Inpakken.tsx'
 import Daken from './schermen/Daken.tsx'
 import Delen from './schermen/Delen.tsx'
+import Weegschaal from './schermen/Weegschaal.tsx'
 import Lantaarns from './schermen/Lantaarns.tsx'
 import Kistslot from './schermen/Kistslot.tsx'
 import Buizen from './schermen/Buizen.tsx'
@@ -131,6 +132,7 @@ export default function App() {
         <Route path="inpakken" element={<Inpakken />} />
         <Route path="daken" element={<Daken />} />
         <Route path="delen" element={<Delen />} />
+        <Route path="weegschaal" element={<Weegschaal />} />
         <Route path="lantaarns" element={<Lantaarns />} />
         <Route path="kistslot" element={<Kistslot />} />
         <Route path="buizen" element={<Buizen />} />

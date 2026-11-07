@@ -1,0 +1,92 @@
+{
+  "nr": 52,
+  "titel": "De weegschaal van de bakker",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Sinterklaas, eerlijk delen en de bakker",
+  "bladzijden": [
+    {
+      "tekst": "Het is bijna Sinterklaas. In de bakkerij ruikt het naar speculaas en pepernoten. Daan en Noor staan aan de toonbank. \"Vandaag mogen jullie helpen,\" zegt de bakker. \"Elk zakje pepernoten moet precies even zwaar zijn.\"",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "bakker",
+          "daan",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "De bakker zet een grote weegschaal op de toonbank. Hij heeft twee schalen, links en rechts. \"Als de schalen even hoog staan, is alles eerlijk,\" zegt hij. Daan kijkt met grote ogen naar de schaal. Hij mag de eerste pepernoten opscheppen.",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "bakker",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan legt een handvol pepernoten in de linkerschaal. De schaal zakt naar beneden. De rechterschaal wipt omhoog. \"Oei,\" zegt Daan. \"Links is veel te zwaar.\"",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor zoekt een gewicht van de bakker. Ze zet het in de rechterschaal. De schaal beweegt een beetje. Nog een gewicht erbij. Dan nog een. \"Wacht even,\" zegt de bakker met een glimlach. \"Kijk eens goed naar de schaal.\" De pepernoten ruiken zo lekker dat Noor ervan moet glimlachen.",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "noor",
+          "bakker"
+        ]
+      }
+    },
+    {
+      "tekst": "De schalen wiegen heen en weer. Dan blijven ze stil staan, precies even hoog. \"Het klopt!\" roept Noor. Daan springt van blijdschap omhoog. \"Eerlijk verdeeld!\" zegt hij. Hij vindt dat een prachtig woord.",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "daan",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan wil nog één pepernoot extra in zijn eigen zakje stoppen. Hij kijkt even naar Noor. Maar Tijs de hond zit ernaast en kijkt hem aan met zijn grote ogen. \"Hm,\" zegt Daan zacht. \"Ik zet hem terug.\"",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "daan",
+          "noor",
+          "hond"
+        ]
+      }
+    },
+    {
+      "tekst": "Ze wegen nog zeven zakjes. Elk zakje is precies even zwaar. De bakker knoopt ze dicht met een rood lintje. \"Jullie zijn echte helpers,\" zegt hij. \"Een zakje voor elk kind in de straat.\" Daan en Noor knikken trots en vegen het meel van hun handen.",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "bakker",
+          "daan",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan en Noor dragen de zakjes door de straat. Tijs loopt kwispelend mee. Bij elke deur krijgt een kind een zakje, en elk zakje is even zwaar. \"Eerlijk is het mooiste,\" zegt Noor. Daan knikt. Daarna krijgt Tijs ook een kleine pepernoot.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "daan",
+          "noor",
+          "hond"
+        ]
+      }
+    }
+  ]
+}

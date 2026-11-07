@@ -21,6 +21,7 @@ const wereldKleur: Record<WereldStijl, { pad: string; rand: string }> = {
   zand: { pad: '#FFF3D6', rand: '#E2C389' },
   sneeuw: { pad: '#C9D8E8', rand: '#A9BDD2' },
   snoep: { pad: '#FFF4FA', rand: '#F3A8CB' },
+  hemel: { pad: '#FFFFFF', rand: '#BFE0F5' },
 }
 
 /** Klein prentje van de stijl van een level, voor in het plekje en op de knop Volgend level. */

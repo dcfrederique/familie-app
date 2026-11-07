@@ -1,0 +1,65 @@
+/* Weegschaal: de balans bovenaan, de gewichtjes eronder; alles schaalt mee met de hoogte (geen scrollen). */
+.weeg { display: flex; flex-direction: column; align-items: center; gap: clamp(4px, 1dvh, 10px); width: 100%; }
+.weeg-balk-bovenaan { display: flex; align-items: center; gap: 24px; min-height: 24px; font-weight: 700; }
+.weeg-teller { display: flex; gap: 6px; }
+.weeg-teller span { width: 14px; height: 14px; border-radius: 50%; background: var(--line); }
+.weeg-teller .af { background: var(--gold); }
+.weeg-teller .nu { background: var(--kid); }
+.weeg-klok { font-variant-numeric: tabular-nums; min-width: 4ch; }
+.weeg-svg { height: clamp(170px, 38dvh, 400px); width: auto; max-width: 96vw; overflow: visible; }
+.weeg-balk, .weeg-pan { transition: transform 0.7s cubic-bezier(.3, 1.4, .5, 1); }
+.weeg-lig { cursor: pointer; }
+.weeg-pakgetal { fill: #fff; font-weight: 800; font-family: 'Baloo 2', Nunito, sans-serif; }
+.weeg-gewgetal { fill: #fff; font-weight: 800; font-family: 'Baloo 2', Nunito, sans-serif; paint-order: stroke; stroke: rgba(0, 0, 0, 0.4); stroke-width: 1.5px; }
+.weeg-som { font-size: 22px; font-weight: 800; fill: currentColor; font-variant-numeric: tabular-nums; }
+.weeg-relaties { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px 14px; max-width: min(96vw, 900px); }
+.weeg-rel { display: inline-flex; align-items: center; gap: 2px; padding: 2px 8px; border-radius: 12px; background: rgba(255, 255, 255, 0.55); }
+.weeg-mini { width: clamp(24px, 4dvh, 36px); height: clamp(24px, 4dvh, 36px); display: block; }
+.weeg-is { font-weight: 800; font-size: 20px; padding: 0 2px; }
+.weeg-onder { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px 20px; }
+.weeg-bak { display: flex; gap: 6px; flex-wrap: wrap; justify-content: center; }
+.weeg-knop-gew { position: relative; display: grid; place-items: center; min-width: 64px; min-height: 64px; padding: 2px 4px; border: 3px solid transparent; border-radius: 16px; background: rgba(255, 255, 255, 0.6); cursor: pointer; touch-action: manipulation; }
+.weeg-knop-gew:disabled { opacity: 0.35; cursor: default; }
+.weeg-knop-gew svg { width: 40px; height: 44px; display: block; }
+.weeg-over { position: absolute; right: 2px; bottom: 0; font-size: 13px; font-weight: 800; background: #fff; border-radius: 8px; padding: 0 4px; }
+.weeg-knoppen { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.weeg-actie { min-height: 64px; min-width: 64px; font-size: 17px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 0 14px; }
+.weeg-melding { min-height: 1.4em; font-weight: 800; font-size: 18px; color: #B3261E; }
+.weeg-eind { display: grid; justify-items: center; gap: 16px; }
+.weeg-feest { width: clamp(200px, 40dvh, 380px); height: auto; }
+.weeg-pluimen { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; max-width: 360px; font-size: 28px; color: var(--line); }
+.weeg-pluimen .aan { color: var(--gold); }
+@media (prefers-reduced-motion: reduce) { .weeg-balk, .weeg-pan { transition: none; } }
+/* Staand: de balans iets hoger, de rest eronder. */
+@media (orientation: portrait) {
+  .weeg-svg { height: clamp(170px, 30dvh, 380px); }
+}
+/* Lage liggende tablet (7 inch). */
+@media (orientation: landscape) and (min-height: 501px) and (max-height: 700px) {
+  .weeg-svg { height: clamp(140px, 30dvh, 240px); }
+  .weeg-knop-gew { min-width: 56px; min-height: 56px; }
+  .weeg-knop-gew svg { width: 34px; height: 38px; }
+  .weeg-actie { min-height: 56px; }
+}
+/* Liggende gsm: kleiner. */
+@media (max-height: 500px) and (orientation: landscape) {
+  .weeg { gap: 2px; }
+  .weeg-balk-bovenaan { min-height: 16px; }
+  .weeg-teller span { width: 10px; height: 10px; }
+  .weeg-svg { height: 26dvh; }
+  .weeg-mini { width: 22px; height: 22px; }
+  .weeg-is { font-size: 14px; }
+  .weeg-rel { padding: 0 4px; }
+  .weeg-relaties { gap: 2px 8px; }
+  .weeg-knop-gew { min-width: 44px; min-height: 44px; padding: 0 2px; }
+  .weeg-knop-gew svg { width: 28px; height: 30px; }
+  .weeg-over { font-size: 11px; }
+  .weeg-actie { min-height: 44px; font-size: 14px; padding: 0 10px; }
+  .weeg-melding { font-size: 14px; min-height: 1.1em; }
+  .weeg-onder { gap: 4px 12px; }
+}
+/* Detail: bij een gehaalde weging hupt de hele weegschaal even. */
+@media (prefers-reduced-motion: no-preference) {
+  .weeg-svg.klaar { animation: weeg-hoera .5s cubic-bezier(.3, 1.6, .5, 1); }
+}
+@keyframes weeg-hoera { 0% { transform: translateY(0) scale(1); } 40% { transform: translateY(-8px) scale(1.04); } 100% { transform: none; } }

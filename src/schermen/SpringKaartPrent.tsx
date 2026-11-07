@@ -31,6 +31,16 @@ export function Grond({ w }: { w: KaartWereld }) {
               stroke="#FFFFFF" strokeWidth="4" fill="none" className="k-golfjes" />
       </g>
     )
+    case 'hemel': return (
+      <g>
+        <rect x={x} y="0" width={b} height={H} fill="#CFE9FA" />
+        {vlekken('#E3F3FC', 9)}
+        {vlekken('#FFFFFF', 7)}
+        {Array.from({ length: Math.floor(b / 70) }, (_, i) => (
+          <path key={i} d={`M${x + 30 + i * 70} ${50 + ((i * 83) % (H - 100))}h28`} stroke="#FFFFFF" strokeWidth="5" strokeLinecap="round" opacity=".8" />
+        ))}
+      </g>
+    )
     case 'sneeuw': return (
       <g>
         <rect x={x} y="0" width={b} height={H} fill="#E8F1FA" />
@@ -263,6 +273,25 @@ export function Versiersel({ v }: { v: Versiersel }) {
       <path d="M-34-40a34 26 0 0 1 68 0" stroke="#E53935" strokeWidth="10" fill="none" />
       <path d="M-34-40a34 26 0 0 1 68 0" stroke="#FFFFFF" strokeWidth="10" fill="none" strokeDasharray="10 10" />
     </>} />
+    case 'wolkenhuis': return <Stuk v={v} kind={<>
+      <ellipse cx="0" cy="22" rx="60" ry="10" fill="rgba(0,0,0,.08)" />
+      <g fill="#FFFFFF"><ellipse cx="0" cy="10" rx="54" ry="22" /><ellipse cx="-30" cy="0" rx="26" ry="20" /><ellipse cx="28" cy="-2" rx="28" ry="22" /></g>
+      <rect x="-16" y="-26" width="32" height="26" fill="#FFE9A8" /><path d="M-22-26L0-46L22-26Z" fill="#E8772E" />
+      <rect x="-5" y="-14" width="10" height="14" rx="5" fill="#8A5A33" /><rect x="8" y="-20" width="6" height="6" fill="#5DB7E8" />
+    </>} />
+    case 'regenboog': return <Stuk v={v} kind={<>
+      {['#E53935', '#FB8C00', '#FDD835', '#43A047', '#1E88E5', '#8E24AA'].map((c, i) => <path key={c} d={`M${-58 + i * 6} 20a${58 - i * 6} ${58 - i * 6} 0 0 1 ${116 - i * 12} 0`} fill="none" stroke={c} strokeWidth="6" opacity=".85" />)}
+      <g fill="#FFFFFF"><ellipse cx="-60" cy="22" rx="20" ry="11" /><ellipse cx="60" cy="22" rx="20" ry="11" /></g>
+    </>} />
+    case 'zonnepoort': return <Stuk v={v} kind={<>
+      {[-34, 34].map((px) => <g key={px}><rect x={px - 6} y="-34" width="12" height="70" rx="6" fill="#FFFFFF" stroke="#BFE0F5" strokeWidth="2" /></g>)}
+      <circle cx="0" cy="-48" r="18" fill="#FFD84D" className="k-glinster" style={d} />
+      {Array.from({ length: 8 }, (_, i) => <rect key={i} x="-2" y="-76" width="4" height="9" rx="2" fill="#FFD84D" transform={`rotate(${i * 45} 0 -48)`} />)}
+    </>} />
+    case 'wolkje': return <Stuk v={v} kind={<g className="k-wieg" style={d} fill="#FFFFFF"><ellipse cx="0" cy="0" rx="22" ry="10" /><ellipse cx="-10" cy="-6" rx="11" ry="9" /><ellipse cx="9" cy="-8" rx="13" ry="11" /></g>} />
+    case 'sterretje': return <Stuk v={v} kind={<path className="k-glinster" style={d} d="M0-10l3 7l7 1l-5 5l1 7l-6-4l-6 4l1-7l-5-5l7-1z" fill="#FFE27A" />} />
+    case 'zonnetje': return <Stuk v={v} kind={<g className="k-glinster" style={d}><circle r="9" fill="#FFD84D" />{Array.from({ length: 8 }, (_, i) => <rect key={i} x="-1.5" y="-17" width="3" height="6" rx="1.5" fill="#FFD84D" transform={`rotate(${i * 45})`} />)}</g>} />
+    case 'veer': return <Stuk v={v} kind={<path d="M-4 8Q-16-8 2-16Q14-14 6 4Q2 8-4 8ZM-4 8L-10 16" fill="#FFFFFF" stroke="#BFE0F5" strokeWidth="2" />} />
     default: return null
   }
 }

@@ -139,13 +139,14 @@ export interface Versiersel { soort: string; groot: boolean; x: number; y: numbe
 
 const groot: Record<string, string[]> = {
   groen: ['molen', 'vijver', 'huisjes'], zand: ['zandkasteel', 'oase', 'vuurtoren'],
-  sneeuw: ['sneeuwman', 'ijsvijver', 'iglo'], snoep: ['taarthuis', 'snoepvijver', 'zuurstokpoort'],
+  sneeuw: ['sneeuwman', 'ijsvijver', 'iglo'], snoep: ['taarthuis', 'snoepvijver', 'zuurstokpoort'], hemel: ['wolkenhuis', 'regenboog', 'zonnepoort'],
 }
 const klein: Record<string, string[]> = {
   groen: ['boom', 'boom', 'boom', 'struik', 'bloemen', 'bloemen', 'steen', 'paddenstoel'],
   zand: ['palm', 'palm', 'schelp', 'krab', 'steen', 'cactus', 'struik'],
   sneeuw: ['den', 'den', 'den', 'steen', 'sneeuwhoop', 'struik'],
   snoep: ['lolly', 'lolly', 'snoepje', 'cupcake', 'snoepje', 'struik'],
+  hemel: ['wolkje', 'wolkje', 'wolkje', 'sterretje', 'zonnetje', 'veer'],
 }
 
 /** Vaste willekeur per wereld (zelfde kaart bij elk bezoek). */

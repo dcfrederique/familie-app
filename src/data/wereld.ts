@@ -86,6 +86,8 @@ export const gebouwen: Gebouw[] = [
     spel: 'verschillen', nieuwSinds: '2026-11-06', gebied: 'meer' },
   { id: 'vieropeenrij', naam: 'Spelletjesboom', x: 24.8 * U, y: 11.6 * U, w: 200, pad: 'vieropeenrij', welkom: 'Welkom bij de spelletjesboom van de eekhoorn!', telt_mee: true,
     spel: 'vieropeenrij', nieuwSinds: '2026-11-06', gebied: 'meer' },
+  { id: 'weegschaal', naam: 'Weeghuisje', x: 6.8 * U, y: 18 * U, w: 200, pad: 'weegschaal', welkom: 'Welkom in het weeghuisje!', telt_mee: true,
+    spel: 'weegschaal', nieuwSinds: '2026-11-07', gebied: 'meer' },
   { id: 'bouw', naam: 'Bouwplaats', x: 52.7 * U, y: 21 * U, w: 150, pad: null, welkom: 'Hier komt later een nieuw gebouw. Wat zou het worden?', telt_mee: false },
 ]
 
