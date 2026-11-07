@@ -19,6 +19,13 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.107',
+    datum: '2026-11-07',
+    titel: 'Sterrenpot en gezinspot',
+    tekst: 'Een kind kan sparen voor een doel dat jij kiest, bv. Plopsaland met papa. Zet het bij Kinderen en tijd: een eigen pot per kind en bovenaan een gezinspot voor alle kinderen samen, met prentje, aantal sterren en een maximum per kind. De kinderen doen sterren in de glazen pot (chip naast hun sterren en in de winkel, scherm Sterrenpot met een tab Samen). Sterren in een pot zijn niet vrij: ze kunnen er niets mee kopen of als tijd vragen. Alleen jij haalt sterren uit een pot. Is de pot vol, dan zie je het op Vandaag en tik je op Gedaan: dan worden de sterren afgeschreven (puntenlog, bron pot). Feline ziet sterretjes in rijtjes van vijf en hoort alles voorgelezen.',
+    open: 'Nog geen pushmelding als een pot vol is: je ziet het bij Vandaag.',
+  },
+  {
     versie: '0.106',
     datum: '2026-11-07',
     titel: 'Dagelijks hoera past op elk scherm',

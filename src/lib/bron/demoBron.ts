@@ -12,7 +12,7 @@ import { leesOpgeslagen, leegOpgeslagen, type Opgeslagen as WereldKaart } from '
 import { activiteitOmschrijving, activiteitSterren, blokKeuzes, limietVoor, regels as standaardRegels } from '../regels.ts'
 import type { Weging } from '../gewicht.ts'
 import { etersVoor, kookSleutel, standaardVoor, verbruikMetDelen } from '../voorraad.ts'
-import type { WeekmenuInstellingen, ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, GezondheidProfiel, Inzending, LogRegel, Maaltijd, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Spelregels, Taak, Tijdverzoek, VoorraadArtikel, VoorraadLogRegel, Recept, Winkel } from './types.ts'
+import type { WeekmenuInstellingen, ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, GezondheidProfiel, Inzending, LogRegel, Maaltijd, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Spelregels, Potten, Taak, Tijdverzoek, VoorraadArtikel, VoorraadLogRegel, Recept, Winkel } from './types.ts'
 
 const DEMO_PIN = '1234'
 const WELKOM = 'Welkom! Je eerste sterren'
@@ -24,6 +24,7 @@ interface Toestand {
   activiteiten: ActiviteitRegel[]
   log: LogRegel[]
   aankopen: Record<string, string[]>
+  potten: Potten
   aanbod: Aanbod
   /** Spelletjes die de ouders net vrijgaven en kinderen nog niet hoorden; per kind de laatste dag van het hoera. */
   nieuwVrij: string[]
@@ -76,6 +77,7 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
     // Wat startsaldo, zodat Extra tijd vragen meteen te proberen is.
     log: kinderen.map((k, i) => ({ id: i + 1, kind_id: k.id, delta: 40, reden: 'Startsaldo (demo)', tijdstip: nu })),
     aankopen: {},
+    potten: { eigen: {}, gezin: null },
     aanbod: { dicht: [], nieuw: [], verborgen: {}, prijzen: {} },
     // Twee spelletjes net vrijgegeven, zodat het dagelijkse hoera meteen te zien is.
     nieuwVrij: ['pompoen', 'basket'],
@@ -194,8 +196,11 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
   }
 
   const saldo = (kind: string) => t.log.filter((l) => l.kind_id === kind).reduce((s, l) => s + l.delta, 0)
-  const gereserveerd = (kind: string) =>
+  const tijdGereserveerd = (kind: string) =>
     t.verzoeken.filter((v) => v.kind_id === kind && v.status === 'aangevraagd').reduce((s, v) => s + v.sterren, 0)
+  const inPot = (kind: string) => (t.potten.eigen[kind]?.in_pot ?? 0) + (t.potten.gezin?.bijdragen[kind] ?? 0)
+  /** Niet vrij: gereserveerd voor tijd, plus wat in een pot zit (docs/sterrenpot-dagboek.md). */
+  const gereserveerd = (kind: string) => tijdGereserveerd(kind) + inPot(kind)
   const extraVandaag = (kind: string) => t.verzoeken
     .filter((v) => v.kind_id === kind && v.dag === dagVan(new Date()) && (v.status === 'aangevraagd' || v.status === 'toegekend'))
     .reduce((s, v) => s + v.minuten, 0)
@@ -211,8 +216,8 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
     async openVerzoeken() { return t.verzoeken.filter((v) => v.status === 'aangevraagd') },
     async saldi() {
       return Object.fromEntries(kinderen.map((k) => {
-        const s = saldo(k.id); const g = gereserveerd(k.id)
-        return [k.id, { saldo: s, gereserveerd: g, vrij: s - g }]
+        const s = saldo(k.id)
+        return [k.id, { saldo: s, gereserveerd: tijdGereserveerd(k.id), vrij: s - gereserveerd(k.id), in_pot: inPot(k.id) }]
       }))
     },
     async log(kind) { return t.log.filter((l) => l.kind_id === kind).slice().reverse() },
@@ -292,6 +297,74 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       const bij = Math.max(0, Math.min(sterren, t.regels.max_saldo - saldo(kind)))
       if (bij > 0) boek(kind, bij, activiteitOmschrijving(a))
       return bij
+    },
+    async potten() { return structuredClone(t.potten) },
+    async potStorten(kindId, aantal) {
+      const p = t.potten.eigen[kindId]
+      if (!p?.aan) throw new Error('geen pot ingesteld')
+      if (aantal < 1 || aantal > 1000) throw new Error('aantal sterren ongeldig')
+      if (p.in_pot + aantal > p.doel) throw new Error('past niet meer in de pot')
+      if (saldo(kindId) - gereserveerd(kindId) < aantal) throw new Error('niet genoeg vrije sterren')
+      p.in_pot += aantal
+    },
+    async gezinspotStorten(kindId, aantal) {
+      const g = t.potten.gezin
+      if (!g?.aan) throw new Error('geen gezinspot ingesteld')
+      if (aantal < 1 || aantal > 1000) throw new Error('aantal sterren ongeldig')
+      const totaal = Object.values(g.bijdragen).reduce((a, b) => a + b, 0)
+      if (totaal + aantal > g.doel) throw new Error('past niet meer in de pot')
+      if ((g.bijdragen[kindId] ?? 0) + aantal > g.max_per_kind) throw new Error('meer dan het maximum per kind')
+      if (saldo(kindId) - gereserveerd(kindId) < aantal) throw new Error('niet genoeg vrije sterren')
+      g.bijdragen[kindId] = (g.bijdragen[kindId] ?? 0) + aantal
+    },
+    async potInstellen(kindId, i, pin): Promise<OuderUitkomst> {
+      if (!pinOk(pin)) return 'pincode_fout'
+      if (i.aan && !i.naam.trim()) throw new Error('geef de pot een doel')
+      const p = (t.potten.eigen[kindId] ??= { kind_id: kindId, aan: false, naam: '', prent: 'cadeau', doel: 50, in_pot: 0 })
+      if (!i.aan) p.in_pot = 0
+      Object.assign(p, { aan: i.aan, naam: i.naam.trim().slice(0, 60), prent: i.prent, doel: i.doel })
+      p.in_pot = Math.min(p.in_pot, p.doel)
+      return 'ingesteld'
+    },
+    async potHalen(kindId, aantal, pin): Promise<OuderUitkomst> {
+      if (!pinOk(pin)) return 'pincode_fout'
+      const p = t.potten.eigen[kindId]
+      if (!p || aantal < 1 || aantal > p.in_pot) throw new Error('aantal sterren ongeldig')
+      p.in_pot -= aantal
+      return 'gehaald'
+    },
+    async potAfronden(kindId, pin): Promise<OuderUitkomst> {
+      if (!pinOk(pin)) return 'pincode_fout'
+      const p = t.potten.eigen[kindId]
+      if (!p?.aan) throw new Error('geen pot ingesteld')
+      if (p.in_pot < p.doel) throw new Error('de pot is nog niet vol')
+      boek(kindId, -p.in_pot, `Sterrenpot: ${p.naam}`, 'pot')
+      p.in_pot = 0; p.aan = false
+      return 'afgerond'
+    },
+    async gezinspotInstellen(i, pin): Promise<OuderUitkomst> {
+      if (!pinOk(pin)) return 'pincode_fout'
+      if (i.aan && !i.naam.trim()) throw new Error('geef de pot een doel')
+      const g = (t.potten.gezin ??= { aan: false, naam: '', prent: 'pretpark', doel: 300, max_per_kind: 100, bijdragen: {} })
+      if (!i.aan) g.bijdragen = {}
+      Object.assign(g, { aan: i.aan, naam: i.naam.trim().slice(0, 60), prent: i.prent, doel: i.doel, max_per_kind: i.max_per_kind })
+      return 'ingesteld'
+    },
+    async gezinspotHalen(kindId, aantal, pin): Promise<OuderUitkomst> {
+      if (!pinOk(pin)) return 'pincode_fout'
+      const g = t.potten.gezin
+      if (!g || aantal < 1 || aantal > (g.bijdragen[kindId] ?? 0)) throw new Error('aantal sterren ongeldig')
+      g.bijdragen[kindId] -= aantal
+      return 'gehaald'
+    },
+    async gezinspotAfronden(pin): Promise<OuderUitkomst> {
+      if (!pinOk(pin)) return 'pincode_fout'
+      const g = t.potten.gezin
+      if (!g?.aan) throw new Error('geen gezinspot ingesteld')
+      if (Object.values(g.bijdragen).reduce((a, b) => a + b, 0) < g.doel) throw new Error('de gezinspot is nog niet vol')
+      for (const [k, n] of Object.entries(g.bijdragen)) if (n > 0) boek(k, -n, `Gezinspot: ${g.naam}`, 'pot')
+      g.bijdragen = {}; g.aan = false
+      return 'afgerond'
     },
     async kopen(kindId, soort, sleutel, naam) {
       const k = kinderen.find((x) => x.id === kindId)

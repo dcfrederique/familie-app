@@ -16,6 +16,7 @@ import Figuurtje from './Figuurtje.tsx'
 import { HuisKeuzePrent } from './HuisPrent.tsx'
 import Bladzijden from './Bladzijden.tsx'
 import KoopVraag from './KoopVraag.tsx'
+import PotChip from './PotChip.tsx'
 import { Ster, SterrenPil } from './onderdelen.tsx'
 import SpelKader from './SpelKader.tsx'
 import './winkel.css'
@@ -122,7 +123,7 @@ function WinkelInhoud({ kind }: { kind: Gebruiker }) {
           {tab('figuurtje', 'Figuurtje', 'M12 7a3 3 0 1 0 0-.01M6 21v-3a6 6 0 0 1 12 0v3')}
           {tab('huis', 'Mijn huis', 'M3 11l9-7l9 7M5 9.5V20h14V9.5M10 20v-6h4v6')}
         </div>
-        <SterrenPil aantal={vrij} metWoord={lezer} />
+        <div className="winkel-pillen"><PotChip kind={kind} /><SterrenPil aantal={vrij} metWoord={lezer} /></div>
       </div>
 
       {lijst.length === 0 && <p className="leeg">{lezer ? 'Hier ligt nu niets. Kijk later nog eens!' : ''}</p>}

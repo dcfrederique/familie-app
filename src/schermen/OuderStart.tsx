@@ -9,6 +9,7 @@ import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import { supabase } from '../lib/supabase.ts'
 import { MijnTaken } from './OnzeTaken.tsx'
 import OuderKader, { KindAvatar } from './OuderKader.tsx'
+import { PotVolKaarten } from './PotBeheer.tsx'
 
 // Vandaag: wat op jou wacht en per kind sterren, taken en extra tijd.
 export default function OuderStart() {
@@ -43,6 +44,7 @@ export default function OuderStart() {
           <p>Goedkeuringen en tijdverzoeken verschijnen hier.</p>
         </section>
       ))}
+      <PotVolKaarten />
       <MijnTaken />
       {data && kinderen.map((kind) => {
         const lijst = takenVoorKind(data.taken, kind.id, data.inzendingen, new Date())
@@ -61,6 +63,7 @@ export default function OuderStart() {
               <div><dt>Taken</dt><dd>{gedaan} / {lijst.length}</dd></div>
               <div><dt>Extra tijd</dt><dd>{extra} / {data.regels.dagplafond_minuten} min</dd></div>
               <div><dt>Gereserveerd</dt><dd>{saldo?.gereserveerd ?? 0}</dd></div>
+              {(saldo?.in_pot ?? 0) > 0 && <div><dt>In de pot</dt><dd>{saldo?.in_pot}</dd></div>}
             </dl>
           </section>
         )

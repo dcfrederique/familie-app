@@ -23,6 +23,7 @@ import './chat.css'
 import Bladzijden from './Bladzijden.tsx'
 import KindBalk from './KindBalk.tsx'
 import WereldKnop from './WereldKnop.tsx'
+import PotChip from './PotChip.tsx'
 
 const TAAK_MAAT = { breed: 230, hoog: 240, gap: 14, maxHoog: 290 }
 
@@ -113,6 +114,7 @@ function StartLezer({ deel, kind, lijst, geladen, vrij, eten, kies }: {
             </div>
             <div className="banner-rij">
               <SterrenNaarWinkel kindId={kind.id} aantal={vrij} metWoord />
+              <PotChip kind={kind} />
               {eten && <Vanavond eten={eten} />}
             </div>
           </div>
@@ -125,6 +127,7 @@ function StartLezer({ deel, kind, lijst, geladen, vrij, eten, kies }: {
             {geladen && lijst.length > 0 && <p className="kop-sub">Al {gedaan} van de {lijst.length} taken gedaan vandaag</p>}
           </div>
           {eten && <Vanavond eten={eten} />}
+          <PotChip kind={kind} />
           <SterrenNaarWinkel kindId={kind.id} aantal={vrij} metWoord />
         </header>
       )}

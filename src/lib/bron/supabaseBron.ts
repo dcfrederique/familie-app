@@ -2,7 +2,7 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Aanbod } from '../../data/aanbod.ts'
 import { maakWeergave, type WereldWeergave } from '../wereld/weergave.ts'
 import { leesOpgeslagen, type Opgeslagen as WereldKaart } from '../wereld/gebieden.ts'
-import type { ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, ChatOverzicht, GezondheidProfiel, SpraakToken, Inzending, LogRegel, Maaltijd, NieuweNotitie, NieuweOuderTaak, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Saldo, Spelregels, Taak, Tijdverzoek, Winkel, VoorraadArtikel, VoorraadLogRegel, VoorraadOverzicht, Recept, Moment, WeekmenuInstellingen } from './types.ts'
+import type { ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, ChatOverzicht, GezondheidProfiel, SpraakToken, Inzending, LogRegel, Maaltijd, NieuweNotitie, NieuweOuderTaak, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Saldo, Sterrenpot, Gezinspot, Potten, Spelregels, Taak, Tijdverzoek, Winkel, VoorraadArtikel, VoorraadLogRegel, VoorraadOverzicht, Recept, Moment, WeekmenuInstellingen } from './types.ts'
 
 // Postgres numeric komt als tekst of getal binnen.
 const getal = (w: unknown) => (w === null || w === undefined ? null : Number(w))
@@ -60,10 +60,10 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
       return (data ?? []) as Tijdverzoek[]
     },
     async saldi() {
-      const { data, error } = await sb.from('kind_saldo').select('kind_id, saldo, gereserveerd, vrij')
+      const { data, error } = await sb.from('kind_saldo').select('kind_id, saldo, gereserveerd, vrij, in_pot')
       fout(error)
       const uit: Record<string, Saldo> = {}
-      for (const r of data ?? []) uit[r.kind_id] = { saldo: r.saldo, gereserveerd: r.gereserveerd, vrij: r.vrij }
+      for (const r of data ?? []) uit[r.kind_id] = { saldo: r.saldo, gereserveerd: r.gereserveerd, vrij: r.vrij, in_pot: r.in_pot ?? 0 }
       return uit
     },
     async log(kindId) {
@@ -253,6 +253,60 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
       fout(error)
       if (!data) throw new Error('geen antwoord van spraak-token')
       return data
+    },
+    async potten() {
+      // Zonder migratie 20261107000200_sterrenpot is er nog geen pot.
+      const leeg: Potten = { eigen: {}, gezin: null }
+      const [eigen, gezin, bij] = await Promise.all([
+        sb.from('sterrenpot').select('kind_id, aan, naam, prent, doel, in_pot'),
+        sb.from('gezinspot').select('aan, naam, prent, doel, max_per_kind').maybeSingle(),
+        sb.from('gezinspot_bijdragen').select('kind_id, sterren'),
+      ])
+      if (eigen.error || gezin.error || bij.error) return leeg
+      const uit: Potten = { eigen: {}, gezin: null }
+      for (const r of eigen.data ?? []) uit.eigen[r.kind_id] = r as Sterrenpot
+      if (gezin.data) {
+        uit.gezin = { ...(gezin.data as Omit<Gezinspot, 'bijdragen'>), bijdragen: Object.fromEntries((bij.data ?? []).map((b) => [b.kind_id, b.sterren])) }
+      }
+      return uit
+    },
+    async potStorten(kindId, aantal) {
+      const { error } = await sb.rpc('pot_storten', { p_kind: kindId, p_aantal: aantal })
+      fout(error)
+    },
+    async gezinspotStorten(kindId, aantal) {
+      const { error } = await sb.rpc('gezinspot_storten', { p_kind: kindId, p_aantal: aantal })
+      fout(error)
+    },
+    async potInstellen(kindId, i, pin) {
+      const { data, error } = await sb.rpc('pot_instellen', { p_kind: kindId, p_aan: i.aan, p_naam: i.naam, p_prent: i.prent, p_doel: i.doel, p_pin: pin })
+      fout(error)
+      return data as OuderUitkomst
+    },
+    async potHalen(kindId, aantal, pin) {
+      const { data, error } = await sb.rpc('pot_halen', { p_kind: kindId, p_aantal: aantal, p_pin: pin })
+      fout(error)
+      return data as OuderUitkomst
+    },
+    async potAfronden(kindId, pin) {
+      const { data, error } = await sb.rpc('pot_afronden', { p_kind: kindId, p_pin: pin })
+      fout(error)
+      return data as OuderUitkomst
+    },
+    async gezinspotInstellen(i, pin) {
+      const { data, error } = await sb.rpc('gezinspot_instellen', { p_aan: i.aan, p_naam: i.naam, p_prent: i.prent, p_doel: i.doel, p_max: i.max_per_kind, p_pin: pin })
+      fout(error)
+      return data as OuderUitkomst
+    },
+    async gezinspotHalen(kindId, aantal, pin) {
+      const { data, error } = await sb.rpc('gezinspot_halen', { p_kind: kindId, p_aantal: aantal, p_pin: pin })
+      fout(error)
+      return data as OuderUitkomst
+    },
+    async gezinspotAfronden(pin) {
+      const { data, error } = await sb.rpc('gezinspot_afronden', { p_pin: pin })
+      fout(error)
+      return data as OuderUitkomst
     },
     async kopen(kindId, soort, sleutel, naam) {
       const { error } = await sb.rpc('kopen', { p_kind: kindId, p_soort: soort, p_sleutel: sleutel, p_naam: naam })

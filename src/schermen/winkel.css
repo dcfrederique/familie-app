@@ -27,3 +27,5 @@
   .bladzijden.vast > .winkel-raster .winkel-kaart { min-height: 0; padding-block: 10px; }
 }
 
+
+.winkel-pillen { display: flex; align-items: center; gap: 12px; }

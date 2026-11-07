@@ -1,4 +1,23 @@
-# Sterrenpot en Dagboek (ontwerp, nog niet gebouwd)
+# Sterrenpot en Dagboek
+
+**Status 7 november 2026:** de Sterrenpot (eigen pot en gezinspot) is gebouwd; het Dagboek is nog ontwerp.
+
+## Gebouwd: Sterrenpot (afwijkingen van het ontwerp hieronder)
+- Keuze van Frederique: **alleen een ouder haalt sterren uit een pot** (ook uit de gezinspot). Het kind kan enkel storten. Daarom staat
+  er in het kindscherm geen "Haal er 5 uit" en is er in de winkel geen "uit de pot kopen"; de ouder haalt sterren terug bij Kinderen
+  en tijd. Een ouder-aanpassing (`pot_halen`, `gezinspot_halen`) vraagt de pincode op een tablet.
+- Server: migratie `20261107000200_sterrenpot.sql` (tabellen `sterrenpot`, `gezinspot`, `gezinspot_bijdragen`, `pot_beweging`; functies
+  `pot_instellen`, `pot_storten`, `pot_halen`, `pot_afronden`, `gezinspot_instellen`, `gezinspot_storten`, `gezinspot_halen`,
+  `gezinspot_afronden`). `gereserveerd()` omvat nu ook wat in een pot zit, dus winkel, tijdaanvraag en sterren afnemen zien die sterren
+  als niet vrij; het saldo zelf verandert pas bij Gedaan (puntenlog, bron `pot`). Het kind kan alleen storten tot het doel (eigen pot)
+  of tot het doel en het maximum per kind (gezinspot). Tests: `supabase/tests/sterrenpot.test.sql`, `src/lib/sterrenpot.test.ts`.
+- App: scherm `/kind/:id/pot` (`SterrenPot.tsx`, tab Samen als er ook een gezinspot is), chip op het startscherm en in de winkel
+  (`PotChip.tsx`), ouderdeel in Kinderen en tijd (`PotBeheer.tsx`: gezinspot bovenaan, eigen pot per kind) en een kaart "pot is vol"
+  met Gedaan op Vandaag. Doelprentjes en helpers in `src/data/sterrenpot.ts`. `proefBron` blokkeert storten.
+- Nog niet: pushmelding naar de ouders als een pot vol is (ze zien het op Vandaag), de bonus van de ouders bij een volle pot.
+
+## Ontwerp
+
 
 Ontwerp van 7 november 2026, op vraag van Frederique. Mockup: `prototypes/sterrenpot-dagboek.html` (draait in de dev-server met de echte
 thema-kopprenten: `npm run dev`, dan `/prototypes/sterrenpot-dagboek.html?scene=pot-luca`; zonder `scene` een lijst met alle scènes).

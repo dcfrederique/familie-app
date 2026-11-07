@@ -11,6 +11,7 @@ import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import OuderKader, { ouderPin, pinOpnieuw } from './OuderKader.tsx'
 import Figuurtje, { hoofdUitsnede } from './Figuurtje.tsx'
 import { SterrenPil } from './onderdelen.tsx'
+import { GezinspotBeheer, KindPotBeheer } from './PotBeheer.tsx'
 import './figuurtje.css'
 
 // Per kind: saldo, tijd geven, instellingen en geschiedenis. De spelregels staan in Spelregels.tsx.
@@ -28,6 +29,7 @@ export default function KinderenBeheer() {
 
   return (
     <OuderKader titel="Kinderen en tijd">
+      {magBeheren && <GezinspotBeheer ververs={ververs} />}
       {kinderen.map((k) => (
         <KindBeheer key={k.id} kind={k} vrij={data?.saldi[k.id]?.vrij ?? 0} magBeheren={magBeheren} ververs={ververs} />
       ))}
@@ -92,6 +94,7 @@ function KindBeheer({ kind, vrij, magBeheren, ververs }: {
       </div>
       {melding && <p className="tip" role="status">{melding}</p>}
       <SterrenAanpassen vrij={vrij} pasAan={pasAan} />
+      {magBeheren && <KindPotBeheer kind={kind} ververs={ververs} />}
       {magBeheren && (
         <div className="vinkjes">
           <label><input type="checkbox" checked={kind.kan_lezen} onChange={(e) => wijzig({ kan_lezen: e.target.checked })} /> Kan lezen</label>

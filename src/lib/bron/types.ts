@@ -65,9 +65,38 @@ export interface ActiviteitRegel {
 
 export interface Saldo {
   saldo: number
+  /** Gereserveerd voor een tijdaanvraag (sterren in een pot staan apart in `in_pot`). */
   gereserveerd: number
+  /** Vrij om uit te geven: saldo min gereserveerd min wat in een pot zit. */
   vrij: number
+  /** Sterren in de eigen pot en de gezinspot (docs/sterrenpot-dagboek.md); niet vrij. */
+  in_pot?: number
 }
+
+/** Eigen pot van een kind: sparen voor een doel dat de ouders kozen. */
+export interface Sterrenpot {
+  kind_id: string
+  aan: boolean
+  naam: string
+  prent: DoelPrent
+  doel: number
+  in_pot: number
+}
+/** De gezinspot ("Samen") met wat elk kind gaf. */
+export interface Gezinspot {
+  aan: boolean
+  naam: string
+  prent: DoelPrent
+  doel: number
+  max_per_kind: number
+  bijdragen: Record<string, number>
+}
+export type DoelPrent = 'pretpark' | 'ijs' | 'bios' | 'cadeau' | 'zwem' | 'speelgoed'
+export interface Potten {
+  eigen: Record<string, Sterrenpot>
+  gezin: Gezinspot | null
+}
+export interface PotInstelling { aan: boolean; naam: string; prent: DoelPrent; doel: number }
 
 export interface LogRegel {
   id: number
@@ -322,7 +351,7 @@ export interface ActiviteitLimiet {
 }
 
 /** Uitkomst van een ouder-actie; 'pincode_fout' betekent opnieuw ontgrendelen. */
-export type OuderUitkomst = 'goedgekeurd' | 'afgekeurd' | 'toegekend' | 'afgewezen' | 'vervallen' | 'pincode_fout' | 'aangepast'
+export type OuderUitkomst = 'goedgekeurd' | 'afgekeurd' | 'toegekend' | 'afgewezen' | 'vervallen' | 'pincode_fout' | 'aangepast' | 'ingesteld' | 'gehaald' | 'afgerond'
 
 export type NieuweTaak = Omit<Taak, 'id' | 'actief'> & { id?: string }
 
@@ -396,6 +425,21 @@ export interface Bron {
   spraakToken(kindId: string, gebruikt: number): Promise<SpraakToken>
   /** Koopt een spelletje (soort 'spel'), een stuk van het figuurtje of van het huis; de sterren gaan van het vrije saldo. */
   kopen(kindId: string, soort: string, sleutel: string, naam: string): Promise<void>
+  /** Alle potten van het gezin; leeg als er (nog) niets is ingesteld of de migratie ontbreekt. */
+  potten(): Promise<Potten>
+  /** Kind doet sterren in de eigen pot (van het vrije saldo). */
+  potStorten(kindId: string, aantal: number): Promise<void>
+  /** Kind geeft sterren aan de gezinspot (maximum per kind, nooit meer dan er nog nodig is). */
+  gezinspotStorten(kindId: string, aantal: number): Promise<void>
+  /** Bewaart het doel van een kind (ouder); aan = false zet de pot uit en geeft de sterren terug. */
+  potInstellen(kindId: string, instelling: PotInstelling, pin: string | null): Promise<OuderUitkomst>
+  /** Alleen een ouder haalt sterren uit de pot. */
+  potHalen(kindId: string, aantal: number, pin: string | null): Promise<OuderUitkomst>
+  /** Gedaan: de volle pot wordt afgeschreven (puntenlog, bron 'pot'). */
+  potAfronden(kindId: string, pin: string | null): Promise<OuderUitkomst>
+  gezinspotInstellen(instelling: PotInstelling & { max_per_kind: number }, pin: string | null): Promise<OuderUitkomst>
+  gezinspotHalen(kindId: string, aantal: number, pin: string | null): Promise<OuderUitkomst>
+  gezinspotAfronden(pin: string | null): Promise<OuderUitkomst>
   /** Bewaart het figuurtje; null zet het terug naar het basisfiguurtje. De server controleert of alles gekocht is. */
   figuurtjeBewaren(kindId: string, figuurtje: Figuurtje | null): Promise<void>
   /** Bewaart het eigen figuurtje van de ingelogde ouder (alles vrij). */
