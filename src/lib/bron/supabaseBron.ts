@@ -285,7 +285,7 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
       fout((await sb.rpc('dagboek_gezien', { p_kind: kindId, p_dag: dag })).error)
     },
     async huisdieren() {
-      // Zonder migratie 20261107000400_huisdier is er nog niets.
+      // Zonder migratie 20261107000500_huisdier is er nog niets.
       const { data, error } = await sb.rpc('huisdier_overzicht')
       return error || !data ? leegHuisdieren : (data as Huisdieren)
     },

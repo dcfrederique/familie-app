@@ -1,6 +1,6 @@
 # Mijn huisdier
 
-Gebouwd op 7 november 2026 (nieuwtje 0.110, migratie `20261107000400_huisdier.sql`), op vraag van Frederique: een huisdier als
+Gebouwd op 7 november 2026 (nieuwtje 0.110, migratie `20261107000500_huisdier.sql`), op vraag van Frederique: een huisdier als
 eigen scherm bij Ik → Mijn huisdier (`/kind/:id/mijn-huisdier`), los van de wereld. Mockups: `prototypes/huisdier.html`.
 
 - Een ouder zet het per kind aan (Kinderen → Huisdier, `/ouder/huisdier`). Het kind kiest één keer een diertje uit 12 (leeuw, olifant,
