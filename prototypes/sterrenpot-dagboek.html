@@ -1,0 +1,565 @@
+<!doctype html>
+<html lang="nl-BE">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sterrenpot en Dagboek (mockup)</title>
+<!--
+  Mockup van twee nieuwe kinderfuncties: de Sterrenpot (sparen voor een doel van de ouders) en het Dagboek (Mijn dag).
+  Niet gebouwd in de app. Draait in de dev-server, want het gebruikt de echte stijl en de echte kopprenten van de thema's:
+    npm run dev   en open   /prototypes/sterrenpot-dagboek.html?scene=pot-luca
+  Scènes: zie de lijst SCENES onderaan; zonder ?scene toont de pagina een overzicht. Zie docs/sterrenpot-dagboek.md.
+-->
+<style>body{margin:0}#app{display:contents}</style>
+</head>
+<body>
+<div id="app"></div>
+<script type="module">
+import '@fontsource/baloo-2/latin-600.css'
+import '@fontsource/baloo-2/latin-800.css'
+import '@fontsource/nunito/latin-600.css'
+import '@fontsource/nunito/latin-700.css'
+import '@fontsource/nunito/latin-800.css'
+import '@fontsource/ibm-plex-sans/latin-400.css'
+import '@fontsource/ibm-plex-sans/latin-500.css'
+import '@fontsource/ibm-plex-sans/latin-600.css'
+import '/src/styles/thema.css'
+import '/src/schermen/schermen.css'
+import '/src/schermen/kindbalk.css'
+import '/src/schermen/kindhubs.css'
+import '/src/schermen/thema-schermen.css'
+import '/src/schermen/ouder.css'
+import { kopPrent } from '/src/data/themaPrenten.ts'
+
+/* ───────── Kinderen ───────── */
+const KINDEREN = {
+  luca: { naam: 'Luca', kleur: 'blauw', thema: 'race', leest: true },
+  yuna: { naam: 'Yuna', kleur: 'roze', thema: 'kasteel', leest: true },
+  feline: { naam: 'Feline', kleur: 'lila', thema: 'tuin', leest: false },
+}
+
+/* ───────── Iconen ───────── */
+const ic = (d, g = 32) => `<svg class="ic" viewBox="0 0 24 24" width="${g}" height="${g}" aria-hidden="true"><path d="${d}"/></svg>`
+const P = {
+  thuis: 'M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z',
+  taken: 'M9 6h11M9 12h11M9 18h11M4 6l1 1l2-2M4 12l1 1l2-2M4 18l1 1l2-2',
+  spelen: 'M6 9h12a4 4 0 0 1 0 8c-1.5 0-2.5-1-3-2H9c-.5 1-1.5 2-3 2a4 4 0 0 1 0-8zM8 11v3M6.5 12.5h3M15.5 12h.01M17.5 14h.01',
+  winkel: 'M4 9l1.5-5h13L20 9M4 9h16v11H4zM4 9c0 2 3 2 4 0c1 2 3 2 4 0c1 2 3 2 4 0c1 2 4 2 4 0M10 20v-5h4v5',
+  chat: 'M4 5h16v11H10l-5 4v-4H4z',
+  ik: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM8.5 10h.01M15.5 10h.01M8 14.5c1 1.5 2.5 2.2 4 2.2s3-.7 4-2.2',
+  terug: 'M15 5l-7 7 7 7',
+  geluid: 'M4 10h4l5-4v12l-5-4H4zM16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11',
+  mic: 'M12 3a3 3 0 0 1 3 3v5a3 3 0 0 1-6 0V6a3 3 0 0 1 3-3zM6 11a6 6 0 0 0 12 0M12 17v4M9 21h6',
+  potlood: 'M4 20l1-4L16 5l3 3L8 19zM14 7l3 3',
+  tekst: 'M5 7h14M5 12h14M5 17h9',
+  vink: 'M5 12.5l4.5 4.5L19 7.5',
+  plus: 'M12 5v14M5 12h14',
+  min: 'M5 12h14',
+  slot: 'M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4',
+  pot: 'M8 4h8M9 4v3M15 4v3M7 7h10c1 1 2 3 2 6v5a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3v-5c0-3 1-5 2-6z',
+  chatpraat: 'M4 5h16v11H10l-5 4v-4H4zM8 10h.01M12 10h.01M16 10h.01',
+  menu: 'M4 7h16M4 12h16M4 17h16',
+  bel: 'M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 21h4',
+}
+const STER = (g = 22, f = '#F2B33D', s = '#B8800F') => `<svg viewBox="0 0 24 24" width="${g}" height="${g}" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z" fill="${f}" stroke="${s}" stroke-width="1.4" stroke-linejoin="round"/></svg>`
+
+/* ───────── Doelprenten (de ouders kiezen er één) ───────── */
+const DOEL = {
+  pretpark: { naam: 'Pretpark', svg: `<svg viewBox="0 0 64 64"><circle cx="32" cy="27" r="19" fill="none" stroke="#2D6BD6" stroke-width="3.5"/><path d="M32 8v38M13 27h38M18.5 13.5l27 27M45.5 13.5l-27 27" stroke="#2D6BD6" stroke-width="2" fill="none"/><circle cx="32" cy="27" r="4" fill="#F2B33D"/><rect x="20" y="52" width="24" height="5" rx="2" fill="#B8800F"/><path d="M26 56l6-12l6 12" fill="none" stroke="#B8800F" stroke-width="3"/><g fill="#E23B3B"><rect x="10" y="24" width="7" height="6" rx="2"/><rect x="47" y="24" width="7" height="6" rx="2"/><rect x="28.5" y="3" width="7" height="6" rx="2"/></g></svg>` },
+  ijs: { naam: 'IJsje', svg: `<svg viewBox="0 0 64 64"><path d="M20 30h24l-12 30z" fill="#E8B26B" stroke="#B07A2C" stroke-width="2.5" stroke-linejoin="round"/><path d="M26 36l6 10M36 36l-6 10" stroke="#B07A2C" stroke-width="1.6"/><circle cx="25" cy="24" r="10" fill="#F59AC8"/><circle cx="39" cy="24" r="10" fill="#F6E27A"/><circle cx="32" cy="14" r="10" fill="#9DD9F3"/><circle cx="32" cy="4.5" r="3" fill="#E23B3B"/></svg>` },
+  bios: { naam: 'Bioscoop', svg: `<svg viewBox="0 0 64 64"><path d="M14 26h36l-4 30H18z" fill="#E23B3B"/><path d="M24 26l1.5 30M32 26v30M40 26l-1.5 30" stroke="#fff" stroke-width="3"/><g fill="#FFF4D6" stroke="#E8B26B" stroke-width="2"><circle cx="20" cy="20" r="7"/><circle cx="30" cy="15" r="8"/><circle cx="41" cy="18" r="8"/><circle cx="48" cy="24" r="5"/></g></svg>` },
+  cadeau: { naam: 'Cadeau', svg: `<svg viewBox="0 0 64 64"><rect x="10" y="26" width="44" height="30" rx="3" fill="#8A3FC0"/><rect x="7" y="18" width="50" height="11" rx="3" fill="#A863D8"/><rect x="28" y="18" width="8" height="38" fill="#F2B33D"/><path d="M32 18c-10-14-20-4-8 0M32 18c10-14 20-4 8 0" fill="none" stroke="#F2B33D" stroke-width="4" stroke-linecap="round"/></svg>` },
+  zwem: { naam: 'Zwembad', svg: `<svg viewBox="0 0 64 64"><path d="M4 42c6-6 10 6 16 0s10 6 16 0 10 6 16 0 6-3 8-2v16H4z" fill="#58B7E8"/><path d="M4 32c6-6 10 6 16 0s10 6 16 0 10 6 16 0 6-3 8-2" fill="none" stroke="#2D6BD6" stroke-width="3"/><path d="M44 36V14a6 6 0 0 1 12 0M52 36V14" fill="none" stroke="#9AA6B5" stroke-width="3.5" stroke-linecap="round"/></svg>` },
+  boek: { naam: 'Speelgoed', svg: `<svg viewBox="0 0 64 64"><rect x="12" y="34" width="22" height="22" rx="3" fill="#E23B3B"/><rect x="34" y="40" width="18" height="16" rx="3" fill="#2D6BD6"/><rect x="18" y="14" width="18" height="20" rx="3" fill="#F2B33D"/><text x="23" y="29" font-family="Baloo 2" font-weight="800" font-size="14" fill="#6B4A00">A</text><text x="16" y="52" font-family="Baloo 2" font-weight="800" font-size="14" fill="#fff">B</text></svg>` },
+}
+
+/* ───────── Gezichtjes voor het dagboek ───────── */
+const GEVOEL = {
+  super: { naam: 'Super blij', kleur: '#F2B33D', ogen: 'open', mond: 'M10 22q10 14 20 0z', extra: 'wangen' },
+  blij: { naam: 'Blij', kleur: '#8FD18B', ogen: 'open', mond: 'M11 22q9 9 18 0', extra: '' },
+  gewoon: { naam: 'Gewoon', kleur: '#B9D2EC', ogen: 'open', mond: 'M12 25h16', extra: '' },
+  moe: { naam: 'Moe', kleur: '#C9B8F0', ogen: 'dicht', mond: 'M14 25q6 3 12 0', extra: 'zzz' },
+  verdrietig: { naam: 'Verdrietig', kleur: '#7FB3EE', ogen: 'open', mond: 'M12 27q8-8 16 0', extra: 'traan' },
+  boos: { naam: 'Boos', kleur: '#F29A78', ogen: 'boos', mond: 'M12 27q8-6 16 0', extra: '' },
+}
+function gezicht(sleutel, g = 120) {
+  const m = GEVOEL[sleutel]
+  const ogen = m.ogen === 'dicht'
+    ? '<path d="M11 16q3 3 6 0M23 16q3 3 6 0" stroke="#1C2433" stroke-width="2.4" fill="none" stroke-linecap="round"/>'
+    : '<circle cx="14" cy="16" r="2.6" fill="#1C2433"/><circle cx="26" cy="16" r="2.6" fill="#1C2433"/>' +
+      (m.ogen === 'boos' ? '<path d="M9 10l8 3M31 10l-8 3" stroke="#1C2433" stroke-width="2.6" stroke-linecap="round"/>' : '')
+  const mond = sleutel === 'super'
+    ? `<path d="${m.mond}" fill="#7A2E2E" stroke="#1C2433" stroke-width="2" stroke-linejoin="round"/><path d="M13 24q7 4 14 0" fill="#F59AC8"/>`
+    : `<path d="${m.mond}" stroke="#1C2433" stroke-width="2.6" fill="none" stroke-linecap="round"/>`
+  const extra = (m.extra === 'wangen' ? '<circle cx="8" cy="21" r="3" fill="#F29A78" opacity=".7"/><circle cx="32" cy="21" r="3" fill="#F29A78" opacity=".7"/>' : '') +
+    (m.extra === 'zzz' ? '<text x="29" y="9" font-family="Baloo 2" font-weight="800" font-size="8" fill="#6A4FB0">z</text><text x="33" y="5" font-family="Baloo 2" font-weight="800" font-size="6" fill="#6A4FB0">z</text>' : '') +
+    (m.extra === 'traan' ? '<path d="M14 20q-3 5 0 6q3-1 0-6z" fill="#fff" stroke="#2D6BD6" stroke-width="1.2"/>' : '')
+  return `<svg viewBox="0 0 40 40" width="${g}" height="${g}" aria-hidden="true"><circle cx="20" cy="20" r="18" fill="${m.kleur}" stroke="#1C2433" stroke-width="2"/>${ogen}${mond}${extra}</svg>`
+}
+
+/* ───────── Sterrenpot-tekening ───────── */
+function pot(vol, doel, { breed = 250, sticker = null, kleurDeksel = 'var(--kid)', groepen = false } = {}) {
+  const p = Math.max(0, Math.min(1, vol / doel))
+  // glas: 20..200 breed, van y=60 tot y=250
+  const top = 70, bodem = 252, hoogte = bodem - top, y = bodem - hoogte * p
+  const spots = [[60, 238], [100, 240], [140, 238], [175, 238], [80, 218], [120, 220], [158, 216], [58, 198], [98, 198], [138, 196], [172, 198], [78, 176], [118, 176], [156, 174], [98, 154], [138, 152], [78, 132], [118, 130], [160, 128], [98, 108], [138, 106]]
+  const aantal = groepen ? 0 : Math.min(spots.length, Math.round(spots.length * p + (p > 0 ? 1 : 0)))
+  const sterren = spots.slice(0, aantal).map(([x, yy], i) => `<g transform="translate(${x} ${yy}) rotate(${(i * 37) % 40 - 20})">${STER(30)}</g>`).join('').replace(/<svg[^>]*>/g, '<svg x="-15" y="-15" width="30" height="30" viewBox="0 0 24 24">')
+  const stickerSvg = sticker ? `<g transform="translate(55 112)"><circle cx="45" cy="45" r="50" fill="#fff" stroke="var(--kid)" stroke-width="4"/><svg x="10" y="10" width="70" height="70" viewBox="0 0 64 64">${DOEL[sticker].svg.replace(/^<svg[^>]*>/, '').replace(/<\/svg>$/, '')}</svg></g>` : ''
+  return `<svg class="pot-svg" viewBox="0 0 250 290" width="${breed}" aria-hidden="true">
+    <defs><clipPath id="glas"><path d="M45 70h160c14 14 22 34 22 60v100c0 14-10 24-24 24H47c-14 0-24-10-24-24V130c0-26 8-46 22-60z"/></clipPath></defs>
+    <ellipse cx="125" cy="280" rx="95" ry="9" fill="rgba(0,0,0,.14)"/>
+    <path d="M45 70h160c14 14 22 34 22 60v100c0 14-10 24-24 24H47c-14 0-24-10-24-24V130c0-26 8-46 22-60z" fill="rgba(255,255,255,.55)"/>
+    <g clip-path="url(#glas)"><rect x="0" y="${y}" width="250" height="${bodem - y + 40}" fill="#F7CD6B"/><rect x="0" y="${y}" width="250" height="7" fill="#FBE2A0"/>${sterren}</g>
+    <path d="M45 70h160c14 14 22 34 22 60v100c0 14-10 24-24 24H47c-14 0-24-10-24-24V130c0-26 8-46 22-60z" fill="none" stroke="#7C8CA8" stroke-width="5" stroke-linejoin="round"/>
+    <path d="M44 96c-8 14-10 40-9 64" fill="none" stroke="#fff" stroke-width="7" stroke-linecap="round" opacity=".8"/>
+    ${stickerSvg}
+    <rect x="52" y="44" width="146" height="30" rx="12" fill="${kleurDeksel}"/><rect x="62" y="30" width="126" height="18" rx="9" fill="${kleurDeksel}" opacity=".85"/>
+    <path d="M70 52h110" stroke="rgba(255,255,255,.45)" stroke-width="4" stroke-linecap="round"/>
+  </svg>`
+}
+
+/* ───────── Kindframe ───────── */
+const BALK = (actief, k) => `
+<nav class="kind-balk" aria-label="Menu">
+  ${[['thuis', 'Thuis'], ['taken', 'Taken'], ['spelen', 'Spelen'], ['winkel', 'Winkel'], ['chat', 'Chat'], ['ik', 'Ik']].filter(([s]) => s !== 'chat' || k.chat !== false).map(([s, n]) => `
+  <span class="balk-deel${s === actief ? ' actief' : ''}"><span class="balk-icoon">${ic(P[s], 36)}</span>${k.leest ? `<span class="balk-naam">${n}</span>` : ''}</span>`).join('')}
+</nav>`
+
+function kop(k, scherm, titel, sub, rechts = '') {
+  const lees = k.leest
+  return `<header class="thema-kop">
+    <svg class="thema-kop-prent" viewBox="0 0 1000 190" preserveAspectRatio="xMaxYMax slice" aria-hidden="true">${kopPrent(k.thema, scherm)}</svg>
+    <div class="thema-kop-inhoud">
+      <span class="rond">${ic(P.terug, 28)}</span>
+      <div class="thema-kop-tekst"><h1 class="display thema-kop-titel${lees ? '' : ' thema-verborgen'}">${titel}</h1>${lees && sub ? `<span class="thema-kop-sub">${sub}</span>` : ''}</div>
+      ${rechts}<span class="rond">${ic(P.geluid, 26)}</span>
+    </div></header>`
+}
+const frame = (kid, scherm, kopHtml, inhoud, actief) => {
+  const k = KINDEREN[kid]
+  return `<div class="kind kleur-${k.kleur} thema thema-${k.thema} thema-scherm-${scherm} kind-mock">
+    ${kopHtml}
+    <main class="mock-inhoud">${inhoud}</main>
+    ${BALK(actief, k)}
+  </div>`
+}
+const pil = (n, kid) => `<span class="mijlpaal sterren-pil-mock">${STER(26)}<b class="display">${n}</b></span>`
+
+/* ───────── Sterrenpot: scènes ───────── */
+const POT = {
+  luca: { doel: 'pretpark', naam: 'Plopsaland met papa', totaal: 120, nu: 80, vrij: 50, stap: [5, 10, 25], sub: 'Sparen voor de finish' },
+  yuna: { doel: 'bios', naam: 'Bioscoop met mama', totaal: 60, nu: 35, vrij: 40, stap: [5, 10, 20], sub: 'De schatkamer' },
+  feline: { doel: 'ijs', naam: 'IJsje eten met mama', totaal: 10, nu: 6, vrij: 25, stap: [1, 2], sub: '' },
+}
+const sterrenRij = (n, totaal, g = 44) => { // Feline telt: vijf per rij, gevuld of leeg
+  let h = ''
+  for (let i = 0; i < totaal; i++) h += (i % 5 === 0 ? '<div class="f-rij">' : '') + STER(g, i < n ? '#F2B33D' : '#FFFFFF', i < n ? '#B8800F' : '#9AA6B5') + (i % 5 === 4 || i === totaal - 1 ? '</div>' : '')
+  return h
+}
+function potScherm(kid, { vol = false } = {}) {
+  const k = KINDEREN[kid], d = POT[kid]
+  const nu = vol ? d.totaal : d.nu
+  const rest = d.totaal - nu
+  const knop = (txt, plus) => `<span class="pot-knop ${plus ? 'plus' : 'min'}">${ic(plus ? P.plus : P.min, 30)}${k.leest ? txt : STER(34)}</span>`
+  const rechts = k.leest ? `
+    <div class="pot-kaart doel">
+      <span class="doel-prent">${DOEL[d.doel].svg}</span>
+      <div><div class="pot-klein">Jouw doel</div><div class="display pot-doelnaam">${d.naam}</div></div>
+    </div>
+    <div class="pot-kaart">
+      ${vol ? `<div class="display pot-groot ok">Je pot is vol!</div><div class="pot-klein">Zeg het aan mama of papa. Zij regelen het met jou.</div>`
+            : `<div class="display pot-groot">Nog ${rest} sterren</div><div class="pot-klein">${nu} van ${d.totaal} in de pot</div>`}
+      <div class="pot-balk"><i style="width:${(nu / d.totaal) * 100}%"></i></div>
+    </div>
+    ${vol ? '' : `<div class="pot-kaart acties">
+      <div class="pot-klein">Doe sterren in je pot <span class="vrij">${STER(18)} ${d.vrij} vrij</span></div>
+      <div class="pot-rij">${d.stap.map((s) => knop(`${s}`, true)).join('')}</div>
+      <div class="pot-rij klein"><span class="pot-terug">${ic(P.min, 22)} Haal er ${d.stap[0]} uit</span></div>
+    </div>`}`
+  : `
+    <div class="pot-kaart doel f">
+      <span class="doel-prent groot">${DOEL[d.doel].svg}</span>
+      <span class="rond klein-r">${ic(P.geluid, 26)}</span>
+    </div>
+    <div class="pot-kaart f">
+      <div class="f-sterren">${sterrenRij(nu, d.totaal, 50)}</div>
+      ${vol ? '' : `<div class="pot-rij f-knoppen"><span class="pot-knop plus f">${ic(P.plus, 34)}${STER(40)}</span><span class="pot-knop min f">${ic(P.min, 34)}${STER(40)}</span></div>`}
+    </div>`
+  const kopHtml = kop(k, 'spelen', 'Sterrenpot', d.sub, `<span class="mijlpaal pil-kop">${STER(24)}<b class="display">${d.vrij}</b>${k.leest ? '<small>vrij</small>' : ''}</span>`)
+  const feest = vol ? `<div class="feest">${Array.from({ length: 26 }, (_, i) => `<i style="left:${(i * 37) % 100}%;top:${(i * 53) % 70}%;background:${['#F2B33D', '#E23B3B', '#2D6BD6', '#F59AC8', '#3FB874'][i % 5]};transform:rotate(${i * 29}deg)"></i>`).join('')}</div>` : ''
+  return frame(kid, 'spelen', kopHtml, `${feest}
+    <div class="pot-raster${k.leest ? '' : ' f'}">
+      <div class="pot-links">${pot(nu, d.totaal, { sticker: d.doel, breed: k.leest ? 330 : 300 })}</div>
+      <div class="pot-rechts">${rechts}</div>
+    </div>`, 'winkel')
+}
+
+/* Startscherm Luca met sterrenpot-chip: de echte schermafdruk als achtergrond en een chip erbij (alleen indicatief). */
+function startLuca() {
+  return `<div class="kind-mock overlay-basis"><img src="/prototypes/img/start-luca.png" width="1194" height="834" alt="">
+   <div class="chip-pot">${pot(80, 120, { breed: 46, kleurDeksel: '#E23B3B' })}<div><div class="display">Pot</div><div class="mini-balk"><i style="width:67%"></i></div><small>80 van 120</small></div></div>
+   <div class="uitleg-pijl">Nieuw: de sterrenpot naast je sterren. Tik erop om te sparen.</div></div>`
+}
+
+/* Winkel: te weinig vrije sterren, maar wel sterren in de pot. */
+function winkelDialoog() {
+  const k = KINDEREN.luca
+  return frame('luca', 'spelen', kop(k, 'spelen', 'Winkel', 'De pitstop', `<span class="mijlpaal pil-kop">${STER(24)}<b class="display">12</b><small>vrij</small></span>`), `
+    <div class="dialoog-achter"></div>
+    <div class="dialoog">
+      <div class="display dialoog-titel">Basketbal kopen?</div>
+      <div class="dialoog-prijs">${STER(34)} <b class="display">40</b></div>
+      <p>Je hebt <b>12</b> sterren vrij. Nog <b>28</b> te weinig.</p>
+      <div class="pot-uit">${pot(80, 120, { breed: 64, kleurDeksel: '#E23B3B' })}<div><b>In je sterrenpot zitten 80 sterren</b><br><small>Haal je er 28 uit, dan staat je pot op 52 van 120.</small></div></div>
+      <div class="dialoog-knoppen"><span class="groot-knop-m licht">Nee, ik spaar verder</span><span class="groot-knop-m goud">${ic(P.min, 26)} 28 uit de pot en kopen</span></div>
+    </div>`, 'winkel')
+}
+
+/* ───────── Dagboek: scènes ───────── */
+const stapPunten = (n) => `<div class="stappen">${[1, 2, 3].map((i) => `<i class="${i === n ? 'nu' : i < n ? 'af' : ''}"></i>`).join('')}</div>`
+const stemKnop = `<span class="rond klein-r">${ic(P.geluid, 26)}</span>`
+function dagboekGevoel(kid, gekozen) {
+  const k = KINDEREN[kid]
+  const tegels = Object.entries(GEVOEL).map(([s, m]) => `<span class="gevoel-tegel${s === gekozen ? ' gekozen' : ''}">${gezicht(s, k.leest ? 118 : 138)}${k.leest ? `<b class="display">${m.naam}</b>` : ''}</span>`).join('')
+  return frame(kid, 'figuurtje', kop(k, 'figuurtje', 'Mijn dag', { luca: 'Hoe was je rit?', yuna: 'Het geheime boekje', feline: 'De fluisterboom' }[kid]), `
+    <div class="dag-vraag display">${k.leest ? `Hoe voel je je vandaag, ${k.naam}?` : `${stemKnop.replace('klein-r', 'klein-r vraag-stem')}`}</div>
+    <div class="gevoel-raster">${tegels}</div>
+    <div class="dag-voet">${stapPunten(1)}<span class="groot-knop-m ${gekozen ? 'goud' : 'uit'}">${k.leest ? 'Volgende' : ''}${ic(P.terug, 30).replace('M15 5l-7 7 7 7', 'M9 5l7 7-7 7')}</span></div>`, 'ik')
+}
+const REDEN = [
+  ['school', 'School', 'M3 10l9-5 9 5-9 5zM7 12v5c3 2 7 2 10 0v-5', '#2D6BD6'],
+  ['vrienden', 'Vrienden', 'M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM16 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM2 20c0-3 3-5 6-5s6 2 6 5M12 15c1-.7 2-1 4-1 3 0 6 2 6 6', '#F2B33D'],
+  ['thuis', 'Thuis', P.thuis, '#1F7A4A'],
+  ['slapen', 'Slapen', 'M20 14A8 8 0 1 1 10 4a6.5 6.5 0 0 0 10 10z', '#8A3FC0'],
+  ['eten', 'Eten', 'M7 3v7a2 2 0 0 0 4 0V3M9 12v9M17 3c-2 2-3 5-3 8h3v10', '#C2541A'],
+  ['spelen', 'Spelen', P.spelen, '#C2337A'],
+  ['ziek', 'Ziek of pijn', 'M12 21s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 11c0 5.5-7 10-7 10zM12 9v5M9.5 11.5h5', '#E23B3B'],
+  ['anders', 'Iets anders', 'M5 12h.01M12 12h.01M19 12h.01', '#4E5A6B'],
+]
+function dagboekReden(kid, gekozen) {
+  const k = KINDEREN[kid]
+  const t = REDEN.map(([s, n, d, kl]) => `<span class="reden-tegel${gekozen.includes(s) ? ' gekozen' : ''}"><span class="reden-ic" style="color:${kl}">${ic(d, 52)}</span>${k.leest ? `<b class="display">${n}</b>` : ''}</span>`).join('')
+  return frame(kid, 'figuurtje', kop(k, 'figuurtje', 'Mijn dag', 'Waarom voel je je zo?'), `
+    <div class="dag-vraag display"><span class="mini-gezicht">${gezicht('verdrietig', 64)}</span>${k.leest ? 'Waar ging het over? (kies er één of twee)' : ''}</div>
+    <div class="reden-raster">${t}</div>
+    <div class="dag-voet">${stapPunten(2)}<span class="groot-knop-m goud">${k.leest ? 'Volgende' : ''}${ic('M9 5l7 7-7 7', 30)}</span></div>`, 'ik')
+}
+function dagboekVertel(kid, { tekening = false, praten = true } = {}) {
+  const k = KINDEREN[kid]
+  const keuzes = `
+    <span class="vertel-knop${!tekening ? ' gekozen' : ''}">${ic(P.tekst, 56)}${k.leest ? '<b class="display">Schrijven</b>' : ''}</span>
+    <span class="vertel-knop${tekening ? ' gekozen' : ''}">${ic(P.potlood, 56)}${k.leest ? '<b class="display">Tekenen</b>' : ''}</span>
+    <span class="vertel-knop later">${ic(P.mic, 56)}${k.leest ? '<b class="display">Inspreken</b>' : ''}<em>fase 2</em></span>`
+  const doek = tekening
+    ? `<div class="doek"><svg viewBox="0 0 600 260" width="100%" height="100%"><rect width="600" height="260" fill="#fff"/><circle cx="150" cy="120" r="46" fill="#F2B33D" stroke="#1C2433" stroke-width="4"/><circle cx="135" cy="110" r="5" fill="#1C2433"/><circle cx="165" cy="110" r="5" fill="#1C2433"/><path d="M130 134q20 16 40 0" stroke="#1C2433" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M240 200c20-60 60-80 90-40s60-30 90-10" stroke="#2D6BD6" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M450 70l9 20 22 3-16 15 4 22-19-11-19 11 4-22-16-15 22-3z" fill="#E23B3B"/><circle cx="520" cy="190" r="26" fill="#3FB874" stroke="#1C2433" stroke-width="4"/></svg></div>`
+    : `<div class="doek tekst">${k.leest ? `<span class="typ">${k.naam === 'Luca' ? 'Tom wou niet met mij voetballen op de speelplaats' : 'Ik kreeg een stickertje van juf'}<u></u></span><div class="sneltekst"><span>Ik ben blij omdat…</span><span>Het was moeilijk omdat…</span><span>Ik wil graag…</span></div>` : ''}</div>`
+  return frame(kid, 'figuurtje', kop(k, 'figuurtje', 'Mijn dag', 'Wil je er iets bij doen?'), `
+    <div class="vertel-raster"><div class="vertel-keuzes">${keuzes}</div>${doek}</div>
+    ${praten ? `<div class="praten-rij"><span class="praten-schakel"><i></i></span><span class="praten-tekst">${k.leest ? '<b class="display">Ik wil graag praten met mama of papa</b>' : ''}${ic(P.chatpraat, 40)}</span><span class="pot-klein">${k.leest ? 'Dan krijgen ze meteen een melding.' : ''}</span></div>` : ''}
+    <div class="dag-voet">${stapPunten(3)}<span class="groot-knop-m ok">${ic(P.vink, 32)}${k.leest ? 'Klaar' : ''}</span></div>`, 'ik')
+}
+function dagboekKlaar(kid) {
+  const k = KINDEREN[kid]
+  return frame(kid, 'figuurtje', kop(k, 'figuurtje', 'Mijn dag', ''), `
+    <div class="klaar-midden">
+      <div class="klaar-gezicht">${gezicht('blij', 190)}<span class="hartje h1">${P && ''}<svg viewBox="0 0 24 24" width="48"><path d="M12 21s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6-8 11-8 11z" fill="#F59AC8"/></svg></span><span class="hartje h2"><svg viewBox="0 0 24 24" width="36"><path d="M12 21s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6-8 11-8 11z" fill="#F2B33D"/></svg></span></div>
+      <div class="display klaar-titel">${k.leest ? 'Bedankt, ' + k.naam + '!' : ''}${k.leest ? '' : stemKnop}</div>
+      <div class="klaar-sub">${k.leest ? 'Mama en papa kunnen het lezen. Morgen ben je weer welkom.' : ''}</div>
+      <div class="klaar-mijn-dagen">${['ma', 'di', 'wo', 'do', 'vr'].map((d, i) => `<span><small>${d}</small>${gezicht(['blij', 'super', 'gewoon', 'blij', 'super'][i], 50)}</span>`).join('')}</div>
+    </div>`, 'ik')
+}
+function ikHub(kid) {
+  const k = KINDEREN[kid]
+  const tegel = (naam, uitleg, d, tint, nieuw = false) => `<span class="hub-tegel${k.leest ? '' : ' rond'}"><span class="hub-icoon" style="background:${tint};color:${tint.startsWith('#') ? '#6B4A00' : 'var(--kid)'}">${ic(d, 48)}</span>${k.leest ? `<span class="hub-naam display">${naam}</span><span class="hub-uitleg">${uitleg}</span>` : ''}${nieuw ? '<span class="nieuw-label display">Nieuw</span>' : ''}</span>`
+  return frame(kid, 'figuurtje', kop(k, 'figuurtje', 'Ik', { luca: 'Op het podium', yuna: 'Spiegeltje aan de wand', feline: 'De feeënkring' }[kid]), `
+    <div class="hub-raster mock-hub" style="--kol:4">
+      ${tegel('Mijn figuurtje', 'Aankleden', 'M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM5 21c0-4 3-7 7-7s7 3 7 7', 'var(--soft)')}
+      ${tegel('Mijn huis', 'Bouwen en versieren', P.thuis, 'var(--soft)')}
+      ${tegel('Mijn thema', 'Kies je kleur', 'M12 3a9 9 0 1 0 0 18c1.5 0 2-1 2-2s-1-1.5-1-2.5S14 15 15 15h2a4 4 0 0 0 4-4c0-4.5-4-8-9-8z', 'var(--soft)')}
+      ${tegel('Mijn dag', 'Hoe voel ik me?', P.ik, '#FFF1C9', true)}
+    </div>`, 'ik')
+}
+
+/* ───────── Ouder (gsm) ───────── */
+const OUDER = (titel, inhoud, nav = '') => `<div class="ouder gsm">
+  <header class="o-bar"><span>${ic(P.menu, 24)}</span><b>${titel}</b><span>${ic(P.bel, 22)}</span></header>
+  <main class="o-main">${inhoud}</main>${nav}</div>`
+const avatar = (kleur, l) => `<span class="o-av" style="background:${kleur}">${l}</span>`
+const oSter = (n) => `<span class="o-sterpil">${STER(16)} <b>${n}</b></span>`
+
+function ouderPotInstellen() {
+  return OUDER('Kinderen en tijd', `
+    <section class="o-kaart">
+      <div class="o-kop">${avatar('#E3EDFC', 'L')}<b>Luca</b>${oSter(50)}</div>
+      <div class="o-sectie">Sterrenpot</div>
+      <label class="o-rij"><input type="checkbox" checked> <span>Sterrenpot aan voor Luca</span></label>
+      <div class="o-label">Doel</div>
+      <input class="o-input" value="Plopsaland met papa">
+      <div class="o-label">Prentje</div>
+      <div class="o-prenten">${Object.entries(DOEL).map(([s, d]) => `<span class="o-prent${s === 'pretpark' ? ' aan' : ''}">${d.svg}<small>${d.naam}</small></span>`).join('')}</div>
+      <div class="o-twee">
+        <div><div class="o-label">Aantal sterren</div><input class="o-input" value="120"></div>
+        <div><div class="o-label">Staat nu in de pot</div><input class="o-input" value="80" disabled></div>
+      </div>
+      <label class="o-rij"><input type="checkbox" checked> <span>Luca mag er zelf sterren uithalen</span></label>
+      <label class="o-rij"><input type="checkbox"> <span>Wij leggen er 10 sterren bij als de pot vol is</span></label>
+      <div class="o-actie"><span class="o-knop vol">Bewaren</span><span class="o-knop">Pot leegmaken</span></div>
+      <p class="o-hint">Sterren in de pot kan Luca niet uitgeven in de winkel en niet vragen als tijd. Ze tellen niet mee voor het dagplafond.</p>
+    </section>`)
+}
+function ouderPotVol() {
+  return OUDER('Goedkeuren', `
+    <section class="o-kaart accent">
+      <div class="o-kop">${avatar('#E3EDFC', 'L')}<b>Luca</b><span class="o-tag ok">Pot is vol</span></div>
+      <div class="o-doel">${DOEL.pretpark.svg}<div><b>Plopsaland met papa</b><br><span class="o-grijs">120 sterren in de pot, gevuld sinds 3 november</span></div></div>
+      <p class="o-tekst">Regel de uitstap met Luca. Tik daarna op <b>Gedaan</b>: de 120 sterren gaan dan uit de pot (puntenlog: “Sterrenpot: Plopsaland met papa”).</p>
+      <div class="o-actie"><span class="o-knop vol">Gedaan, sterren afschrijven</span><span class="o-knop">Later</span></div>
+      <div class="o-actie klein"><span class="o-link">Nieuw doel instellen na afloop</span></div>
+    </section>
+    <section class="o-kaart">
+      <div class="o-kop"><b>Tijd aangevraagd</b></div><p class="o-grijs">Niets in afwachting.</p>
+    </section>`)
+}
+const WEEK = {
+  Luca: ['blij', 'super', 'gewoon', 'verdrietig', 'blij', 'super', 'blij'],
+  Yuna: ['blij', 'blij', 'moe', 'blij', 'super', 'super', 'blij'],
+  Feline: ['super', 'blij', 'blij', 'boos', 'blij', 'super', 'super'],
+}
+const DAGEN = ['ma', 'di', 'wo', 'do', 'vr', 'za', 'zo']
+function ouderDagboek() {
+  const rij = ([n, v], kl, l, wil) => `<section class="o-kaart"><div class="o-kop">${avatar(kl, l)}<b>${n}</b>${wil ? '<span class="o-tag warn">Wil praten</span>' : ''}</div>
+    <div class="o-week">${DAGEN.map((d, i) => `<span><small>${d}</small>${v[i] ? gezicht(v[i], 38) : '<span class="leeg"></span>'}</span>`).join('')}</div></section>`
+  return OUDER('Dagboek', `
+    <div class="o-kop-pagina">Deze week</div>
+    ${rij(['Luca', WEEK.Luca], '#E3EDFC', 'L', true)}
+    ${rij(['Yuna', WEEK.Yuna.map((v, i) => i === 6 ? null : v)], '#FCE4F0', 'Y', false)}
+    ${rij(['Feline', WEEK.Feline.map((v, i) => i === 6 ? null : v)], '#EFE4FA', 'F', false)}
+    <div class="o-kop-pagina">Laatste berichten</div>
+    <section class="o-kaart lijst">
+      <div class="o-bericht"><span class="o-dag">do</span>${gezicht('verdrietig', 36)}<div><b>Luca</b> · School, Vrienden<br><span class="o-grijs">“Tom wou niet met mij voetballen…”</span></div><span class="o-tag warn">Praten</span></div>
+      <div class="o-bericht"><span class="o-dag">zo</span>${gezicht('blij', 36)}<div><b>Yuna</b> · Spelen<br><span class="o-grijs">Tekening</span></div></div>
+      <div class="o-bericht"><span class="o-dag">za</span>${gezicht('super', 36)}<div><b>Feline</b> · Spelen, Thuis</div></div>
+    </section>`)
+}
+function ouderDagboekDetail() {
+  return OUDER('Dagboek · Luca', `
+    <section class="o-kaart">
+      <div class="o-kop">${gezicht('verdrietig', 56)}<div><b>Verdrietig</b><br><span class="o-grijs">donderdag 5 november, 18:42</span></div><span class="o-tag warn">Wil praten</span></div>
+      <div class="o-label">Waar ging het over</div>
+      <div class="o-redenen"><span>${ic(REDEN[0][2], 20)} School</span><span>${ic(REDEN[1][2], 20)} Vrienden</span></div>
+      <div class="o-label">Luca schreef</div>
+      <div class="o-citaat">Tom wou niet met mij voetballen op de speelplaats</div>
+      <div class="o-label">Tekening</div>
+      <div class="o-tekening"><svg viewBox="0 0 600 260" width="100%"><rect width="600" height="260" fill="#fff"/><circle cx="150" cy="120" r="46" fill="#7FB3EE" stroke="#1C2433" stroke-width="4"/><circle cx="135" cy="110" r="5" fill="#1C2433"/><circle cx="165" cy="110" r="5" fill="#1C2433"/><path d="M130 146q20-14 40 0" stroke="#1C2433" stroke-width="5" fill="none" stroke-linecap="round"/><circle cx="470" cy="130" r="30" fill="#fff" stroke="#1C2433" stroke-width="4"/><path d="M440 130h60M470 100v60" stroke="#1C2433" stroke-width="3"/></svg></div>
+      <div class="o-actie"><span class="o-knop vol">${ic(P.chat, 18)} Antwoorden in de chat</span><span class="o-knop">Gezien</span></div>
+    </section>`)
+}
+function ouderDagboekInstellen() {
+  const kind = (n, l, kl, aan) => `<div class="o-kind-rij">${avatar(kl, l)}<b>${n}</b><span class="o-schakel${aan ? ' aan' : ''}"><i></i></span></div>`
+  return OUDER('Dagboek instellen', `
+    <section class="o-kaart">
+      <div class="o-sectie">Wie schrijft in het Dagboek?</div>
+      ${kind('Luca', 'L', '#E3EDFC', true)}${kind('Yuna', 'Y', '#FCE4F0', true)}${kind('Feline', 'F', '#EFE4FA', true)}
+    </section>
+    <section class="o-kaart">
+      <div class="o-sectie">Wie leest mee?</div>
+      <label class="o-rij"><input type="checkbox" checked> <span>Mama en papa allebei</span></label>
+      <label class="o-rij"><input type="checkbox"> <span>Alleen de ouder die ik kies per kind</span></label>
+      <div class="o-sectie">Meldingen op de gsm</div>
+      <label class="o-rij"><input type="checkbox" checked> <span>Als een kind “Ik wil praten” aanzet</span></label>
+      <label class="o-rij"><input type="checkbox" checked> <span>Na 3 sombere dagen op rij (verdrietig of boos)</span></label>
+      <label class="o-rij"><input type="checkbox"> <span>Bij elke boze of verdrietige dag</span></label>
+      <div class="o-sectie">Herinnering aan het kind</div>
+      <label class="o-rij"><input type="checkbox" checked> <span>Mijn dag opent vanzelf als de taken van vandaag klaar zijn</span></label>
+      <label class="o-rij"><input type="checkbox"> <span>Niet voor 17:00</span></label>
+      <p class="o-hint">Het kind ziet altijd in woorden of prentjes dat mama en papa meelezen. Sterren verdient het hier niet mee.</p>
+    </section>`)
+}
+
+/* ───────── Scènes en overzicht ───────── */
+const SCENES = {
+  'pot-luca': [1194, 834, () => potScherm('luca')],
+  'pot-yuna': [1194, 834, () => potScherm('yuna')],
+  'pot-feline': [1194, 834, () => potScherm('feline')],
+  'pot-vol-luca': [1194, 834, () => potScherm('luca', { vol: true })],
+  'pot-vol-feline': [1194, 834, () => potScherm('feline', { vol: true })],
+  'pot-start-luca': [1194, 834, startLuca],
+  'pot-winkel-luca': [1194, 834, winkelDialoog],
+  'pot-ouder-instellen': [390, 940, ouderPotInstellen],
+  'pot-ouder-vol': [390, 560, ouderPotVol],
+  'dag-ik-luca': [1194, 834, () => ikHub('luca')],
+  'dag-1-luca': [1194, 834, () => dagboekGevoel('luca', 'blij')],
+  'dag-2-luca': [1194, 834, () => dagboekReden('luca', ['school', 'vrienden'])],
+  'dag-3-luca': [1194, 834, () => dagboekVertel('luca')],
+  'dag-1-yuna': [1194, 834, () => dagboekGevoel('yuna', 'super')],
+  'dag-3-yuna': [1194, 834, () => dagboekVertel('yuna', { tekening: true, praten: false })],
+  'dag-1-feline': [1194, 834, () => dagboekGevoel('feline', 'verdrietig')],
+  'dag-2-feline': [1194, 834, () => dagboekReden('feline', ['thuis'])],
+  'dag-klaar-feline': [1194, 834, () => dagboekKlaar('feline')],
+  'dag-ouder-overzicht': [390, 960, ouderDagboek],
+  'dag-ouder-detail': [390, 880, ouderDagboekDetail],
+  'dag-ouder-instellen': [390, 1010, ouderDagboekInstellen],
+}
+const q = new URLSearchParams(location.search)
+const scene = q.get('scene')
+const app = document.getElementById('app')
+const style = document.createElement('style')
+style.textContent = `
+/* ── kindschermen (mockup) ── */
+.kind-mock { width: 1194px; height: 834px; min-height: 0; overflow: hidden; display: flex; flex-direction: column; position: relative; background: var(--thema-achtergrond, var(--bg)); }
+.kind-mock > .thema-kop { margin: 18px 32px 8px; width: auto; flex: none; max-width: none; }
+.mock-inhoud { flex: 1; min-height: 0; display: flex; flex-direction: column; padding: 8px 32px 6px; gap: 12px; position: relative; }
+.kind-mock > .kind-balk { margin: 0 32px 16px; width: auto; flex: none; position: relative; z-index: 2; }
+.kind-mock .mock-inhoud { z-index: 1; }
+.pil-kop { display: inline-flex; align-items: center; gap: 6px; background: #fff; color: #1C2433; border-radius: 999px; padding: 6px 16px; min-height: 48px; font-size: 24px; }
+.pil-kop small { font: 700 14px Nunito; color: #4E5A6B; }
+.thema-race .pil-kop { background: #F3F6FC; }
+.sterren-pil-mock { display: none }
+
+/* sterrenpot */
+.pot-raster { flex: 1; min-height: 0; display: grid; grid-template-columns: 400px 1fr; gap: 24px; align-items: center; }
+.pot-raster.f { grid-template-columns: 380px 1fr; }
+.pot-raster.f .pot-rechts { align-content: stretch; grid-template-rows: auto 1fr; }
+.pot-raster.f .pot-kaart { align-content: center; }
+.pot-links { display: grid; place-items: center; height: 100%; background: var(--surface); border-radius: 32px; box-shadow: 0 6px 0 var(--shade); }
+.pot-svg { height: min(100%, 440px); width: auto; max-width: 100%; display: block; }
+.pot-rechts { display: grid; gap: 12px; align-content: center; height: 100%; }
+.pot-kaart { background: var(--surface); border-radius: 28px; box-shadow: 0 6px 0 var(--shade); padding: 14px 22px; display: grid; gap: 8px; }
+.pot-kaart.doel { grid-auto-flow: column; justify-content: start; align-items: center; gap: 18px; }
+.doel-prent { width: 76px; height: 76px; border-radius: 22px; background: var(--kid-tint); display: grid; place-items: center; padding: 8px; }
+.doel-prent.groot { width: 150px; height: 150px; padding: 14px; border-radius: 36px; }
+.pot-klein { font-size: 17px; font-weight: 700; color: var(--muted); display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+.pot-klein .vrij { display: inline-flex; align-items: center; gap: 4px; background: var(--gold-bg); color: var(--gold-ink); border-radius: 999px; padding: 3px 12px; font-weight: 800; }
+.pot-doelnaam { font-size: 32px; line-height: 1.1; }
+.pot-groot { font-size: 44px; line-height: 1; }
+.pot-groot.ok { color: var(--ok); }
+.pot-balk { height: 26px; border-radius: 13px; background: var(--soft); overflow: hidden; }
+.pot-balk i { display: block; height: 100%; border-radius: 13px; background: linear-gradient(90deg, #F2B33D, #F7CD6B); }
+.pot-rij { display: flex; gap: 12px; }
+.pot-knop { flex: 1; min-height: 72px; border-radius: 36px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; font: 800 28px 'Baloo 2'; background: var(--kid); color: var(--on-solid); }
+.thema-race .pot-knop { background: #4A86F0; color: #fff; }
+.pot-knop.f { min-height: 96px; }
+.pot-knop.min { background: var(--soft); color: var(--muted); }
+.thema-kasteel .pot-knop.plus, .thema-tuin .pot-knop.plus { color: #fff; }
+.pot-rij.klein { justify-content: center; }
+.pot-terug { display: inline-flex; align-items: center; gap: 8px; min-height: 52px; padding: 0 22px; border-radius: 26px; background: var(--soft); color: var(--muted); font-weight: 800; font-size: 18px; }
+.rond.klein-r { width: 64px; height: 64px; border-radius: 50%; background: var(--soft); color: var(--kid); display: grid; place-items: center; }
+.pot-kaart.doel.f { grid-auto-flow: column; justify-content: space-between; padding: 18px 26px; }
+.f-sterren { display: grid; gap: 10px; justify-items: center; padding: 6px 0; }
+.f-rij { display: flex; gap: 14px; }
+.f-knoppen .pot-knop { min-height: 96px; }
+.feest { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+.pot-raster { position: relative; z-index: 1; }
+.feest i { position: absolute; width: 16px; height: 28px; border-radius: 4px; }
+.chip-pot { position: absolute; left: 552px; top: 100px; display: flex; align-items: center; gap: 10px; background: #fff; color: #1C2433; border-radius: 999px; padding: 6px 22px 6px 14px; box-shadow: 0 0 0 4px #F2B33D; }
+.chip-pot .display { font-size: 17px; line-height: 1 }
+.chip-pot small { font: 800 14px Nunito; color: #4E5A6B; }
+.mini-balk { width: 110px; height: 10px; border-radius: 5px; background: #E3EDFC; overflow: hidden; margin: 3px 0 }
+.mini-balk i { display: block; height: 100%; background: #F2B33D; }
+.overlay-basis img { position: absolute; inset: 0; }
+.uitleg-pijl { position: absolute; left: 530px; top: 170px; width: 300px; background: #1C2433; color: #fff; border-radius: 18px; padding: 12px 16px; font-weight: 800; font-size: 17px; }
+.uitleg-pijl::before { content: ''; position: absolute; left: 70px; top: -10px; border: 10px solid transparent; border-top: 0; border-bottom-color: #1C2433; }
+.dialoog-achter { position: absolute; inset: 0; background: rgba(5,10,25,.55); z-index: 2; margin: -230px -32px -120px; }
+.dialoog { position: absolute; z-index: 4; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 620px; background: var(--surface); border-radius: 36px; padding: 28px 32px; display: grid; gap: 12px; text-align: center; box-shadow: 0 10px 0 var(--shade); }
+.dialoog-titel { font-size: 36px; }
+.dialoog-prijs { display: flex; justify-content: center; align-items: center; gap: 8px; font-size: 40px; }
+.dialoog p { margin: 0; font-size: 20px; }
+.pot-uit { display: flex; align-items: center; gap: 14px; text-align: left; background: var(--gold-bg); color: var(--gold-ink); border-radius: 22px; padding: 10px 16px; font-size: 18px; }
+.pot-uit small { font-size: 15px; font-weight: 700; }
+.dialoog-knoppen { display: grid; gap: 10px; }
+.groot-knop-m { min-height: 68px; border-radius: 34px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; font: 800 22px 'Baloo 2'; padding: 0 26px; }
+.groot-knop-m.licht { background: var(--soft); color: var(--muted); }
+.groot-knop-m.goud { background: #F2B33D; color: #3A2A00; }
+.groot-knop-m.ok { background: var(--ok); color: var(--on-solid); }
+.groot-knop-m.uit { background: var(--soft); color: var(--muted); opacity: .6; }
+.thema-race .groot-knop-m.licht { color: #B3C2DE; }
+
+/* dagboek */
+.dag-vraag { font-size: 34px; text-align: center; display: flex; justify-content: center; align-items: center; gap: 14px; min-height: 64px; }
+.vraag-stem { width: 80px !important; height: 80px !important; }
+.gevoel-raster { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(2, 1fr); gap: 14px; }
+.gevoel-tegel { background: var(--surface); border-radius: 30px; box-shadow: 0 6px 0 var(--shade); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; border: 6px solid transparent; }
+.gevoel-tegel b { font-size: 26px; }
+.gevoel-tegel.gekozen { border-color: var(--kid); background: var(--kid-tint); transform: scale(1.02); }
+.thema-race .gevoel-tegel.gekozen { border-color: #F2B33D; }
+.dag-voet { flex: none; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-top: 4px; }
+.stappen { display: flex; gap: 10px; } .stappen i { width: 16px; height: 16px; border-radius: 50%; background: var(--line); } .stappen i.nu { width: 42px; border-radius: 8px; background: var(--kid); } .stappen i.af { background: var(--kid); opacity: .5; }
+.reden-raster { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: repeat(2, 1fr); gap: 14px; }
+.reden-tegel { background: var(--surface); border-radius: 28px; box-shadow: 0 6px 0 var(--shade); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; border: 6px solid transparent; }
+.reden-tegel b { font-size: 24px; }
+.reden-tegel.gekozen { border-color: var(--kid); background: var(--kid-tint); }
+.thema-race .reden-tegel.gekozen { border-color: #F2B33D; }
+.reden-ic .ic { stroke-width: 1.8; }
+.mini-gezicht { display: inline-flex; }
+.vertel-raster { flex: 1; min-height: 0; display: grid; grid-template-columns: 260px 1fr; gap: 18px; }
+.vertel-keuzes { display: grid; gap: 12px; grid-template-rows: repeat(3, 1fr); }
+.vertel-knop { position: relative; background: var(--surface); border-radius: 26px; box-shadow: 0 6px 0 var(--shade); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; color: var(--kid); border: 6px solid transparent; }
+.vertel-knop b { font-size: 22px; color: var(--ink); }
+.vertel-knop.gekozen { border-color: var(--kid); background: var(--kid-tint); }
+.thema-race .vertel-knop.gekozen { border-color: #F2B33D; }
+.vertel-knop.later { opacity: .55; border: 4px dashed var(--line); box-shadow: none; }
+.vertel-knop em { position: absolute; top: 8px; right: 12px; font: 800 13px Nunito; color: var(--muted); }
+.doek { background: #fff; border-radius: 28px; box-shadow: 0 6px 0 var(--shade); overflow: hidden; display: grid; }
+.doek.tekst { padding: 22px 26px; align-content: space-between; color: #1C2433; font-size: 34px; font-family: 'Baloo 2'; font-weight: 600; }
+.typ u { display: inline-block; width: 3px; height: 38px; background: var(--kid); margin-left: 4px; vertical-align: -6px; }
+.sneltekst { display: flex; gap: 10px; flex-wrap: wrap; font: 800 18px Nunito; }
+.sneltekst span { background: var(--kid-tint); color: var(--kid); border-radius: 999px; padding: 10px 18px; }
+.thema-race .sneltekst span { color: #9DBBFF; }
+.praten-rij { flex: none; display: flex; align-items: center; gap: 16px; background: var(--gold-bg); color: var(--gold-ink); border-radius: 26px; padding: 10px 22px; min-height: 72px; }
+.praten-tekst { display: inline-flex; align-items: center; gap: 12px; flex: 1; font-size: 22px; }
+.praten-schakel { width: 76px; height: 44px; border-radius: 22px; background: #fff; padding: 4px; flex: none; box-shadow: inset 0 0 0 3px var(--gold-ink); } .praten-schakel i { display: block; width: 36px; height: 36px; border-radius: 50%; background: var(--gold-ink); opacity: .45; }
+.klaar-midden { flex: 1; display: grid; place-items: center; align-content: center; gap: 8px; text-align: center; }
+.klaar-gezicht { position: relative; } .hartje { position: absolute; } .h1 { right: -50px; top: -4px; } .h2 { left: -46px; top: 30px; }
+.klaar-titel { font-size: 52px; } .klaar-sub { font-size: 22px; color: var(--muted); }
+.klaar-mijn-dagen { display: flex; gap: 14px; margin-top: 12px; background: var(--surface); padding: 10px 22px; border-radius: 28px; box-shadow: 0 6px 0 var(--shade); } .klaar-mijn-dagen span { display: grid; justify-items: center; font-weight: 800; }
+.mock-hub { flex: 1; } .nieuw-label { position: absolute; top: 12px; right: 16px; background: #F2B33D; color: #3A2A00; border-radius: 14px; padding: 2px 12px; font-size: 17px; }
+
+/* ouder (gsm) */
+.gsm { width: 390px; min-height: 100%; background: var(--bg); font-family: var(--f-ouder); color: var(--ink); font-weight: 400; }
+.gsm * { font-family: var(--f-ouder); }
+.o-bar { background: var(--bar); color: var(--bar-ink); height: 60px; display: grid; grid-template-columns: 56px 1fr 56px; align-items: center; text-align: center; font-size: 17px; }
+.o-bar span { display: grid; place-items: center; } .o-bar b { font-weight: 600; }
+.o-main { padding: 14px 16px 24px; display: grid; gap: 12px; }
+.o-kaart { background: var(--surface); border: 1px solid var(--line); padding: 16px; display: grid; gap: 10px; }
+.o-kaart.accent { border-left: 6px solid var(--ok); }
+.o-kop { display: flex; align-items: center; gap: 12px; } .o-kop b { font-weight: 600; font-size: 18px; } .o-kop > :nth-last-child(1):not(b) { margin-left: auto; }
+.o-av { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-weight: 600; color: #16264A; }
+.o-sterpil { background: var(--gold-bg); color: var(--gold-ink); padding: 6px 12px; font-weight: 600; display: inline-flex; gap: 6px; align-items: center; margin-left: auto; }
+.o-sectie { font-weight: 600; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding-top: 4px; }
+.o-label { font-size: 14px; color: var(--muted); }
+.o-input { border: 1px solid var(--line); background: var(--surface); padding: 12px; font-size: 16px; min-height: 48px; width: 100%; box-sizing: border-box; color: var(--ink); }
+.o-input:disabled { background: var(--soft); color: var(--muted); }
+.o-twee { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.o-rij { display: flex; gap: 12px; align-items: flex-start; min-height: 40px; font-size: 16px; } .o-rij input { width: 22px; height: 22px; margin-top: 2px; }
+.o-prenten { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.o-prent { border: 2px solid var(--line); padding: 8px 4px; display: grid; justify-items: center; gap: 2px; font-size: 13px; min-height: 90px; } .o-prent svg { width: 44px; height: 44px; } .o-prent.aan { border-color: var(--luca); background: var(--luca-tint); font-weight: 600; }
+.o-actie { display: grid; gap: 8px; } .o-actie.klein { margin-top: -4px; text-align: center; }
+.o-knop { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--soft); font-weight: 600; font-size: 16px; padding: 0 16px; } .o-knop.vol { background: var(--luca); color: #fff; }
+.o-hint { margin: 0; font-size: 14px; color: var(--muted); } .o-tekst { margin: 0; font-size: 16px; line-height: 1.5; } .o-grijs { color: var(--muted); font-size: 14px; }
+.o-link { color: var(--luca); text-decoration: underline; font-size: 15px; }
+.o-tag { font-size: 13px; font-weight: 600; padding: 4px 10px; margin-left: auto; } .o-tag.ok { background: var(--ok-bg); color: var(--ok-ink); } .o-tag.warn { background: var(--warn-bg); color: var(--warn-ink); }
+.o-doel { display: flex; gap: 12px; align-items: center; } .o-doel svg { width: 56px; height: 56px; flex: none; background: var(--luca-tint); padding: 6px; }
+.o-kop-pagina { font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); padding-top: 4px; }
+.o-week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; } .o-week span { display: grid; justify-items: center; gap: 2px; } .o-week small { font-size: 12px; color: var(--muted); } .o-week .leeg { width: 34px; height: 34px; border: 2px dashed var(--line); border-radius: 50%; }
+.o-bericht { display: grid; grid-template-columns: 28px 36px 1fr auto; gap: 10px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); font-size: 15px; } .o-bericht:first-child { border-top: 0; } .o-dag { color: var(--muted); font-size: 13px; text-transform: uppercase; } .o-bericht .o-tag { margin: 0; }
+.o-citaat { border-left: 4px solid var(--luca); padding: 8px 12px; background: var(--soft); font-size: 16px; }
+.o-redenen { display: flex; gap: 8px; flex-wrap: wrap; } .o-redenen span { display: inline-flex; gap: 6px; align-items: center; background: var(--soft); padding: 8px 12px; font-size: 15px; }
+.o-tekening { border: 1px solid var(--line); }
+.o-kind-rij { display: flex; align-items: center; gap: 12px; min-height: 52px; } .o-kind-rij b { font-weight: 600; flex: 1; }
+.o-schakel { width: 52px; height: 30px; background: var(--line); border-radius: 15px; padding: 3px; display: flex; } .o-schakel i { width: 24px; height: 24px; border-radius: 50%; background: #fff; } .o-schakel.aan { background: var(--ok); justify-content: flex-end; }
+`
+document.head.append(style)
+
+if (scene && SCENES[scene]) {
+  const [w, h, f] = SCENES[scene]
+  document.body.style.cssText = `width:${w}px;height:${h}px;overflow:hidden;background:var(--bg)`
+  app.innerHTML = f()
+  document.title = scene
+} else {
+  document.body.style.cssText = 'padding:24px;background:#EEF3F8;font-family:Nunito'
+  app.innerHTML = `<h1 style="font-family:'Baloo 2'">Sterrenpot en Dagboek: scènes</h1><ul>${Object.keys(SCENES).map((s) => `<li><a href="?scene=${s}">${s}</a></li>`).join('')}</ul>`
+}
+</script>
+</body>
+</html>
