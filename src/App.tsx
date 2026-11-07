@@ -58,6 +58,8 @@ import Winkelaanbod from './schermen/Winkelaanbod.tsx'
 import Winkel from './schermen/Winkel.tsx'
 import SterrenPot from './schermen/SterrenPot.tsx'
 import Dagboek from './schermen/Dagboek.tsx'
+import MijnHuisdier from './schermen/MijnHuisdier.tsx'
+import HuisdierBeheer from './schermen/HuisdierBeheer.tsx'
 import Nieuwtjes from './schermen/Nieuwtjes.tsx'
 import PincodeBeheer from './schermen/PincodeBeheer.tsx'
 import Weekmenu from './schermen/Weekmenu.tsx'
@@ -114,6 +116,7 @@ export default function App() {
         <Route path="winkel" element={<Winkel />} />
         <Route path="pot" element={<SterrenPot />} />
         <Route path="dag" element={<Dagboek />} />
+        <Route path="mijn-huisdier" element={<MijnHuisdier />} />
         <Route path="rekenen" element={<Rekenen />} />
         <Route path="memory" element={<Memory />} />
         <Route path="penalty" element={<Penalty />} />
@@ -168,6 +171,7 @@ export default function App() {
       <Route path="/ouder/spelregels" element={<Spelregels />} />
       <Route path="/ouder/proberen" element={<Proberen />} />
       <Route path="/ouder/dagboek" element={<DagboekOuder />} />
+      <Route path="/ouder/huisdier" element={<HuisdierBeheer />} />
       <Route path="/ouder/aanbod" element={<Winkelaanbod />} />
       <Route path="/ouder/nieuw" element={<Nieuwtjes />} />
       <Route path="/ouder/pincode" element={<PincodeBeheer />} />

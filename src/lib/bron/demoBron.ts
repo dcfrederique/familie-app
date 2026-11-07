@@ -6,6 +6,7 @@ import { controleerHuis, huisCategorieen, type Huis } from '../../data/huis.ts'
 import { spelMenu } from '../../data/spelletjes.ts'
 import { kiesCadeau } from '../../data/cadeau.ts'
 import { demoGebruikers, type Gebruiker } from '../../data/gezin.ts'
+import { standaardRegels as huisdierRegels, verzorgenKan, type HuisdierKind, type HuisdierRegels } from '../../data/huisdier.ts'
 import { dagVan } from '../datum.ts'
 import { maakWeergave, standaardWeergave, type WereldWeergave } from '../wereld/weergave.ts'
 import { leesOpgeslagen, leegOpgeslagen, type Opgeslagen as WereldKaart } from '../wereld/gebieden.ts'
@@ -17,6 +18,11 @@ import type { WeekmenuInstellingen, ActiviteitLimiet, ActiviteitRegel, Bericht, 
 const DEMO_PIN = '1234'
 const WELKOM = 'Welkom! Je eerste sterren'
 
+type DemoHuisdier = HuisdierKind & { uit_dag: string | null }
+const nieuwHuisdier = (aan: boolean): DemoHuisdier => ({
+  aan, soort: null, naam: '', gekozen_op: null, laatst_eten: null, laatst_wassen: null, laatst_knuffel: null, pootjes: 0, uitgegeven_vandaag: 0, uit_dag: null,
+})
+
 interface Toestand {
   taken: Taak[]
   inzendingen: Inzending[]
@@ -26,6 +32,9 @@ interface Toestand {
   aankopen: Record<string, string[]>
   potten: Potten
   dagboekAan: Record<string, boolean>
+  huisdieren: { regels: HuisdierRegels; kinderen: Record<string, DemoHuisdier> }
+  /** Aantal goedgekeurde taken toen het ei gekozen werd (de demo kent geen beoordeeld_op). */
+  huisdierBasis: Record<string, number>
   dagboek: DagboekDag[]
   aanbod: Aanbod
   /** Spelletjes die de ouders net vrijgaven en kinderen nog niet hoorden; per kind de laatste dag van het hoera. */
@@ -81,6 +90,8 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
     aankopen: {},
     potten: { eigen: {}, gezin: null },
     dagboekAan: {},
+    huisdieren: { regels: { ...huisdierRegels }, kinderen: Object.fromEntries(kinderen.map((k) => [k.id, nieuwHuisdier(true)])) },
+    huisdierBasis: {},
     dagboek: [],
     aanbod: { dicht: [], nieuw: [], verborgen: {}, prijzen: {} },
     // Twee spelletjes net vrijgegeven, zodat het dagelijkse hoera meteen te zien is.
@@ -199,6 +210,13 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
     }
   }
 
+  // Demo: Luca heeft Rokko al (kind), Feline een katje (baby), Yuna kiest nog haar ei.
+  for (const [naam, soort, pootjes, hd] of [['luca', 'dino', 11, 'Rokko'], ['feline', 'kat', 5, 'Mimi']] as const) {
+    const k = kinderen.find((x) => x.naam.toLowerCase() === naam)
+    if (!k) continue
+    Object.assign(t.huisdieren.kinderen[k.id], { soort, naam: hd, gekozen_op: new Date().toISOString() })
+    t.huisdierBasis[k.id] = -pootjes
+  }
   const saldo = (kind: string) => t.log.filter((l) => l.kind_id === kind).reduce((s, l) => s + l.delta, 0)
   const tijdGereserveerd = (kind: string) =>
     t.verzoeken.filter((v) => v.kind_id === kind && v.status === 'aangevraagd').reduce((s, v) => s + v.sterren, 0)
@@ -208,6 +226,7 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
   const extraVandaag = (kind: string) => t.verzoeken
     .filter((v) => v.kind_id === kind && v.dag === dagVan(new Date()) && (v.status === 'aangevraagd' || v.status === 'toegekend'))
     .reduce((s, v) => s + v.minuten, 0)
+  const goedgekeurd = (kind: string) => t.inzendingen.filter((i) => i.kind_id === kind && i.status === 'goedgekeurd').length
   const boek = (kind: string, delta: number, reden: string, bron?: string) =>
     t.log.push({ id: ++volgnr, kind_id: kind, delta, reden, tijdstip: new Date().toISOString(), bron })
   const pinOk = (pin: string | null) => pin === null || pin === DEMO_PIN
@@ -321,6 +340,50 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
     async dagboekGezien(kindId, dag) {
       const d = t.dagboek.find((x) => x.kind_id === kindId && x.dag === dag)
       if (d) d.gezien_op = new Date().toISOString()
+    },
+    async huisdieren() {
+      const kinderen = Object.fromEntries(Object.entries(t.huisdieren.kinderen).map(([id, h]) => [id, { ...h, pootjes: goedgekeurd(id) - (t.huisdierBasis[id] ?? 0) }]))
+      return structuredClone({ regels: t.huisdieren.regels, kinderen })
+    },
+    async huisdierKiezen(kindId, soort, naam) {
+      const h = t.huisdieren.kinderen[kindId]
+      if (!h?.aan) throw new Error('het huisdier staat uit')
+      if (h.soort) throw new Error('er is al een huisdier gekozen')
+      if (!t.huisdieren.regels.soorten.includes(soort)) throw new Error('soort niet toegelaten')
+      if (!naam.trim()) throw new Error('geef je huisdier een naam')
+      h.soort = soort; h.naam = naam.trim().slice(0, 20); h.gekozen_op = new Date().toISOString()
+      t.huisdierBasis[kindId] = goedgekeurd(kindId)
+    },
+    async huisdierVerzorgen(kindId, wat) {
+      const h = t.huisdieren.kinderen[kindId]
+      const r = t.huisdieren.regels
+      if (!h) throw new Error('geen huisdier')
+      const nu = new Date()
+      const pootjes = goedgekeurd(kindId) - (t.huisdierBasis[kindId] ?? 0)
+      const vrij = saldo(kindId) - gereserveerd(kindId)
+      const nee = verzorgenKan(wat, { ...h, pootjes, uitgegeven_vandaag: h.uit_dag === dagVan(nu) ? h.uitgegeven_vandaag : 0 }, r, vrij, nu)
+      if (nee) throw new Error(nee === 'daglimiet' ? 'daglimiet voor het huisdier bereikt' : nee === 'te weinig sterren' ? 'niet genoeg vrije sterren' : nee)
+      const prijs = wat === 'eten' ? r.prijs_eten : wat === 'wassen' ? r.prijs_wassen : 0
+      if (prijs > 0) {
+        boek(kindId, -prijs, `Huisdier: ${wat} (${h.naam})`, 'huisdier')
+        h.uitgegeven_vandaag = (h.uit_dag === dagVan(nu) ? h.uitgegeven_vandaag : 0) + prijs
+        h.uit_dag = dagVan(nu)
+      }
+      const nuTekst = nu.toISOString()
+      if (wat === 'eten') h.laatst_eten = nuTekst; else if (wat === 'wassen') h.laatst_wassen = nuTekst; else h.laatst_knuffel = nuTekst
+      return saldo(kindId) - gereserveerd(kindId)
+    },
+    async huisdierInstellen(kindId, aan, pin): Promise<OuderUitkomst> {
+      if (!pinOk(pin)) return 'pincode_fout'
+      const h = t.huisdieren.kinderen[kindId] ?? (t.huisdieren.kinderen[kindId] = nieuwHuisdier(aan))
+      h.aan = aan
+      return 'ingesteld'
+    },
+    async huisdierRegelsBewaren(r, pin): Promise<OuderUitkomst> {
+      if (!pinOk(pin)) return 'pincode_fout'
+      if (!(r.pootjes_baby < r.pootjes_kind && r.pootjes_kind < r.pootjes_groot)) throw new Error('het aantal pootjes moet oplopen')
+      t.huisdieren.regels = { ...r }
+      return 'ingesteld'
     },
     async potten() { return structuredClone(t.potten) },
     async potStorten(kindId, aantal) {
