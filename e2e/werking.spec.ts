@@ -157,3 +157,27 @@ test('kaart bewerken: ouder zet het huis van Luca in het bos, Luca begint daar e
   await page.keyboard.up('ArrowDown')
   expect(fouten).toEqual([])
 })
+
+test('huisdier: een diertje kiezen, en Luca eet met zijn dinootje (kost 2 sterren)', async ({ page }) => {
+  await startAls(page, 'yuna')
+  await doorWelkomstpad(page)
+  await naar(page, '/kind/yuna/mijn-huisdier')
+  await expect(page.locator('.hd-ei-tegel')).toHaveCount(12)
+  await page.getByRole('button', { name: 'Leeuwtje' }).click()
+  await page.getByRole('button', { name: 'Simba' }).click()
+  await page.getByRole('button', { name: 'Dit ei neem ik' }).click()
+  await expect(page.locator('.hd-naam')).toHaveText('Simba')
+  await expect(page.getByText('Het ei broedt…')).toBeVisible()
+})
+
+test('huisdier: eten kost sterren en vult het buikje', async ({ page }) => {
+  await startAls(page, 'luca')
+  await doorWelkomstpad(page)
+  await naar(page, '/kind/luca/mijn-huisdier')
+  await expect(page.locator('.hd-naam')).toHaveText('Rokko')
+  await expect(page.getByRole('img', { name: 'Buikje: 3 van 5' })).toBeVisible()
+  await page.getByRole('button', { name: 'Eten', exact: true }).click()
+  await expect(page.getByRole('img', { name: 'Buikje: 5 van 5' })).toBeVisible()
+  await expect(page.locator('.hd-vandaag')).toContainText('2 van 6')
+  await expect(page.getByRole('button', { name: 'Eten', exact: true })).toBeDisabled()
+})

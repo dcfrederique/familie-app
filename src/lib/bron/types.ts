@@ -2,6 +2,7 @@
 import type { Aanbod } from '../../data/aanbod.ts'
 import type { Figuurtje } from '../../data/figuurtje.ts'
 import type { Huis } from '../../data/huis.ts'
+import type { HuisdierRegels, HuisdierSoort, Huisdieren, Verzorging } from '../../data/huisdier.ts'
 import type { Kleur, WereldLopen } from '../../data/gezin.ts'
 import type { Activiteit } from '../regels.ts'
 import type { WereldWeergave } from '../wereld/weergave.ts'
@@ -457,6 +458,14 @@ export interface Bron {
   dagboekOpslaan(kindId: string, invoer: DagboekInvoer): Promise<void>
   dagboekInstellen(kindId: string, aan: boolean, pin: string | null): Promise<OuderUitkomst>
   dagboekGezien(kindId: string, dag: string): Promise<void>
+  /** Mijn huisdier (docs/huisdier.md): regels en per kind wat er staat; leeg als de migratie ontbreekt. */
+  huisdieren(): Promise<Huisdieren>
+  /** Het kind kiest zijn ei en geeft het een naam (eenmalig). */
+  huisdierKiezen(kindId: string, soort: HuisdierSoort, naam: string): Promise<void>
+  /** Eten, wassen (kosten sterren) of knuffelen (gratis); geeft het vrije saldo terug. */
+  huisdierVerzorgen(kindId: string, wat: Verzorging): Promise<number>
+  huisdierInstellen(kindId: string, aan: boolean, pin: string | null): Promise<OuderUitkomst>
+  huisdierRegelsBewaren(regels: HuisdierRegels, pin: string | null): Promise<OuderUitkomst>
   /** Kind doet sterren in de eigen pot (van het vrije saldo). */
   potStorten(kindId: string, aantal: number): Promise<void>
   /** Kind geeft sterren aan de gezinspot (maximum per kind, nooit meer dan er nog nodig is). */

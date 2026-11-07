@@ -1,0 +1,147 @@
+/* Mijn huisdier (MijnHuisdier.tsx): kamer links, naam, meters en knoppen rechts, onderbalk onderaan, zonder scrollen. */
+.hd-raster { position: relative; z-index: 0; flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 20px; padding-bottom: 14px; }
+.hd-kamer { position: relative; border-radius: 32px; overflow: hidden; box-shadow: 0 6px 0 var(--shade); min-height: 0; background: var(--surface); }
+.hd-kamer-prent, .hd-kamer-prent svg.kamer-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hd-zegt { position: absolute; left: 20px; bottom: 16px; background: #fff; color: #1C2433; border-radius: 22px; padding: 6px 20px; font-size: 24px; }
+.hd-rechts { display: grid; gap: 10px; grid-template-rows: auto 1fr auto auto; min-height: 0; align-content: stretch; }
+.hd-kaart { background: var(--surface); border-radius: 28px; box-shadow: 0 6px 0 var(--shade); padding: 12px 20px; display: grid; gap: 8px; align-content: center; min-height: 0; }
+.hd-kaart.hd-wacht { justify-items: center; text-align: center; }
+.hd-klein { font-size: 17px; font-weight: 700; color: var(--muted); }
+.hd-klein.c { text-align: center; }
+.hd-naamrij { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.hd-naam { font-size: 40px; line-height: 1; }
+.hd-stadium { display: inline-flex; align-items: center; gap: 8px; background: var(--kid-tint); color: var(--kid); border-radius: 999px; padding: 6px 16px; font: 800 18px Nunito, sans-serif; min-height: 40px; }
+.hd-stadium i { width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 2px solid var(--kid); }
+.hd-stadium i.aan { background: var(--kid); }
+.thema-race .hd-stadium { color: #9DBBFF; }
+.hd-poten { display: flex; gap: 6px; flex-wrap: wrap; }
+.hd-pijl { display: flex; align-items: center; gap: 6px; font-size: 34px; }
+.hd-groot-pootjes { display: inline-flex; align-items: center; gap: 4px; margin-left: 8px; }
+.hd-zorg { gap: 6px; }
+.hd-meter { display: flex; align-items: center; gap: 12px; }
+.hd-micon { width: 48px; height: 48px; border-radius: 16px; display: grid; place-items: center; color: #1C2433; flex: none; }
+.hd-mnaam { font: 800 20px Nunito, sans-serif; width: 90px; }
+.hd-harten { display: inline-flex; gap: 3px; margin-left: auto; }
+.hd-knoppen { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.hd-knop {
+  min-height: 118px; border: 0; border-radius: 28px; color: #fff; display: grid; justify-items: center; align-content: center; gap: 2px; padding: 8px 4px;
+  box-shadow: 0 6px 0 rgba(0, 0, 0, .18); background: var(--kn, #E56A5A); font: inherit;
+}
+.hd-eten { --kn: #E56A5A; } .hd-wassen { --kn: #3E9BD6; } .hd-knuffel { --kn: #E0568A; }
+.hd-knop b { font-size: 24px; line-height: 1.1; }
+.hd-knop:disabled { opacity: .45; box-shadow: none; }
+.hd-prijs { display: inline-flex; align-items: center; gap: 4px; background: rgba(255, 255, 255, .92); color: #3A2A00; border-radius: 999px; padding: 2px 12px 2px 8px; font: 800 16px Nunito, sans-serif; }
+.hd-vandaag { font: 700 16px Nunito, sans-serif; color: var(--muted); text-align: center; }
+.hd-fout { margin: 0; text-align: center; color: var(--warn-ink); background: var(--warn-bg); border-radius: 18px; padding: 8px 16px; font-weight: 800; }
+.hd-leeg { flex: 1; display: grid; place-items: center; text-align: center; font-size: 28px; }
+.hd-prent { display: block; } .hd-prent svg { width: 100%; height: 100%; display: block; }
+.hd-groot-knop {
+  min-height: 68px; border: 0; border-radius: 34px; display: inline-flex; align-items: center; justify-content: center; gap: 10px;
+  font: 800 22px 'Baloo 2', Nunito, sans-serif; padding: 0 26px; background: #F2B33D; color: #3A2A00; align-self: center;
+}
+.hd-groot-knop:disabled { opacity: .5; }
+
+/* een ei kiezen */
+.hd-ei-raster { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); grid-auto-rows: minmax(0, 1fr); gap: 12px; padding-bottom: 8px; }
+.hd-ei-tegel {
+  background: var(--surface); border: 6px solid transparent; border-radius: 32px; box-shadow: 0 6px 0 var(--shade); display: grid; grid-template-rows: minmax(0, 1fr) auto;
+  justify-items: center; padding: 8px; min-height: 0; color: inherit; font: inherit;
+}
+.hd-ei-tegel[aria-pressed="true"] { border-color: #F2B33D; }
+.hd-ei-tegel .hd-prent { height: 100%; min-height: 0; max-height: 200px; aspect-ratio: 1; }
+.hd-ei-tegel b { font-size: 20px; }
+.hd-ei-voet { flex: none; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 12px; }
+.hd-ei-voet:has(.hd-groot-knop:only-child) { justify-content: center; }
+.hd-namen { display: flex; gap: 10px; margin-top: 6px; flex-wrap: wrap; }
+.hd-namen button, .hd-typ {
+  min-height: 56px; display: inline-flex; align-items: center; padding: 0 22px; border: 0; border-radius: 28px; background: var(--surface); color: inherit;
+  box-shadow: 0 4px 0 var(--shade); font: 800 22px 'Baloo 2', Nunito, sans-serif;
+}
+.hd-namen button[aria-pressed="true"] { background: var(--kid); color: var(--on-solid); }
+.thema-race .hd-namen button[aria-pressed="true"] { background: #4A86F0; color: #fff; }
+.hd-typ { width: 220px; }
+
+/* hoera bij een nieuw stadium */
+.hd-hoera {
+  position: absolute; inset: 0; z-index: 5; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; padding: 16px;
+}
+.hd-hoera > * { position: relative; z-index: 1; }
+.hd-hoera .thema-feest { position: absolute; z-index: 0; }
+.hd-hoera-midden { display: flex; align-items: center; justify-content: center; gap: 28px; min-height: 0; flex: 1; width: 100%; }
+.hd-hoera-midden .voor { height: 55%; max-height: 220px; opacity: .55; aspect-ratio: 1; }
+.hd-hoera-midden .na { height: 100%; max-height: 330px; aspect-ratio: 1; }
+.hd-hoera-titel { font-size: 46px; text-align: center; display: flex; justify-content: center; gap: 10px; line-height: 1.1; }
+
+/* Startscherm: het huisdier naast de sterren */
+.hd-chip {
+  display: inline-flex; align-items: center; gap: 10px; min-height: 64px; padding: 4px 22px 4px 8px; border-radius: 999px; background: #fff; color: #1C2433;
+  text-decoration: none; font-weight: 800; box-shadow: 0 0 0 3px #F2B33D;
+}
+.hd-chip .hd-prent { width: 56px; height: 56px; flex: none; }
+.hd-chip .display { font-size: 17px; line-height: 1; display: block; }
+.hd-chip small { font: 800 14px Nunito, sans-serif; color: #4E5A6B; }
+.hd-chip .hd-chip-harten { display: flex; margin: 2px 0; }
+
+@media (orientation: portrait) {
+  .hd-raster { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 34%) minmax(0, 1fr); }
+  .hd-kamer { min-height: 0; }
+  .hd-ei-raster { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .hd-vandaag { display: none; }
+  .hd-knop { min-height: 96px; }
+}
+@media (orientation: portrait), (max-height: 700px) and (orientation: landscape) {
+  /* meters naast elkaar: icoon met de hartjes eronder */
+  .hd-zorg { grid-auto-flow: column; grid-auto-columns: 1fr; gap: 6px; }
+  .hd-meter { flex-direction: column; gap: 2px; }
+  .hd-mnaam { display: none; }
+  .hd-harten { margin: 0; }
+}
+@media (max-height: 700px) and (orientation: landscape) {
+  .hd-raster { gap: 12px; padding-bottom: 6px; }
+  .hd-rechts { gap: 8px; }
+  .hd-kaart { padding: 6px 14px; gap: 4px; overflow: hidden; }
+  .hd-naam { font-size: 30px; }
+  .hd-knop { min-height: 76px; }
+  .hd-knop b { font-size: 18px; }
+  .hd-micon { width: 30px; height: 30px; } .hd-micon svg { width: 20px; height: 20px; } .hd-mnaam { font-size: 17px; }
+  .hd-harten svg { width: 22px; height: 22px; }
+  .hd-vandaag { display: none; }
+  .hd-rechts .hd-kaart:first-child .hd-klein { display: none; }
+  .hd-ei-tegel b { font-size: 20px; } .hd-ei-voet { padding-bottom: 6px; }
+  .hd-hoera-titel { font-size: 34px; }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .hd-raster { gap: 8px; padding-bottom: 4px; }
+  .hd-rechts { gap: 6px; }
+  .hd-kaart { padding: 4px 10px; gap: 2px; }
+  .hd-kaart .hd-klein { font-size: 14px; }
+  .hd-naam { font-size: 24px; }
+  .hd-stadium { min-height: 30px; padding: 2px 10px; font-size: 14px; }
+  .hd-poten svg { width: 22px; height: 22px; }
+  .hd-harten svg { width: 20px; height: 20px; }
+  .hd-micon { width: 30px; height: 30px; } .hd-micon svg { width: 20px; height: 20px; }
+  .hd-meter { gap: 8px; }
+  .hd-poten { flex-wrap: nowrap; }
+  .hd-knop { min-height: 48px; gap: 0; padding: 2px; } .hd-knop b { font-size: 15px; } .hd-knop svg { width: 26px; height: 26px; } .hd-prijs { font-size: 13px; padding: 0 8px 0 4px; }
+  .hd-groot-knop { min-height: 52px; font-size: 18px; }
+  .hd-namen button, .hd-typ { min-height: 44px; font-size: 17px; padding: 0 14px; }
+  .hd-hoera-titel { font-size: 26px; }
+  .hd-ei-tegel { padding: 4px; border-width: 4px; grid-template-rows: minmax(0, 1fr); }
+  .hd-ei-tegel b { display: none; }
+  .hd-ei-raster { gap: 6px; padding-bottom: 4px; }
+  .hd-harten svg { width: 17px; height: 17px; }
+}
+
+/* Ouderdeel */
+.hd-ouder-prent { width: 56px; height: 56px; flex: none; } .hd-ouder-prent .hd-prent { width: 100%; height: 100%; }
+.hd-soorten { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.hd-soort { border: 2px solid var(--line); background: var(--surface); color: inherit; padding: 6px 2px; display: grid; justify-items: center; font-size: 12px; min-height: 88px; }
+.hd-soort[aria-pressed="true"] { border-color: var(--ok); background: var(--soft); }
+.hd-soort .hd-prent { width: 56px; height: 56px; }
+
+/* Smal of laag: op het startscherm enkel het diertje, zonder tekst (de rij naast de sterren is dan vol) */
+@media (max-height: 500px) and (orientation: landscape), (orientation: portrait) and (max-width: 900px) {
+  .hd-chip { padding: 2px 6px; min-height: 48px; }
+  .hd-chip > span:not(.hd-prent) { display: none; }
+  .hd-chip .hd-prent { width: 44px; height: 44px; }
+}

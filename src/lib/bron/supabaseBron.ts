@@ -1,5 +1,6 @@
 import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Aanbod } from '../../data/aanbod.ts'
+import { leegHuisdieren, type Huisdieren } from '../../data/huisdier.ts'
 import { maakWeergave, type WereldWeergave } from '../wereld/weergave.ts'
 import { leesOpgeslagen, type Opgeslagen as WereldKaart } from '../wereld/gebieden.ts'
 import type { DagboekOverzicht, DagboekDag, Gevoel, ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, ChatOverzicht, GezondheidProfiel, SpraakToken, Inzending, LogRegel, Maaltijd, NieuweNotitie, NieuweOuderTaak, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Saldo, Sterrenpot, Gezinspot, Potten, Spelregels, Taak, Tijdverzoek, Winkel, VoorraadArtikel, VoorraadLogRegel, VoorraadOverzicht, Recept, Moment, WeekmenuInstellingen } from './types.ts'
@@ -282,6 +283,32 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
     },
     async dagboekGezien(kindId, dag) {
       fout((await sb.rpc('dagboek_gezien', { p_kind: kindId, p_dag: dag })).error)
+    },
+    async huisdieren() {
+      // Zonder migratie 20261107000500_huisdier is er nog niets.
+      const { data, error } = await sb.rpc('huisdier_overzicht')
+      return error || !data ? leegHuisdieren : (data as Huisdieren)
+    },
+    async huisdierKiezen(kindId, soort, naam) {
+      fout((await sb.rpc('huisdier_kiezen', { p_kind: kindId, p_soort: soort, p_naam: naam })).error)
+    },
+    async huisdierVerzorgen(kindId, wat) {
+      const { data, error } = await sb.rpc('huisdier_verzorgen', { p_kind: kindId, p_wat: wat })
+      fout(error)
+      return data as number
+    },
+    async huisdierInstellen(kindId, aan, pin) {
+      const { data, error } = await sb.rpc('huisdier_instellen', { p_kind: kindId, p_aan: aan, p_pin: pin })
+      fout(error)
+      return data as OuderUitkomst
+    },
+    async huisdierRegelsBewaren(r, pin) {
+      const { data, error } = await sb.rpc('huisdier_regels_bewaren', {
+        p_baby: r.pootjes_baby, p_kind: r.pootjes_kind, p_groot: r.pootjes_groot, p_eten: r.prijs_eten, p_wassen: r.prijs_wassen,
+        p_max: r.max_per_dag, p_soorten: r.soorten, p_pin: pin,
+      })
+      fout(error)
+      return data as OuderUitkomst
     },
     async potten() {
       // Zonder migratie 20261107000200_sterrenpot is er nog geen pot.

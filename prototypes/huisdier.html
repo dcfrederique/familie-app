@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="nl-BE">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Huisdier (mockup)</title>
+<!--
+  Mockup van het Huisdier (7 november 2026): een huisdier dat groeit door taken en dat het kind met sterren verzorgt.
+  Niet gebouwd in de app. Draait in de dev-server, want het gebruikt de echte stijl en de echte kopprenten van de thema's:
+    npm run dev   en open   /prototypes/huisdier.html?scene=luca
+  Scènes: zie de lijst SCENES onderaan; zonder ?scene toont de pagina een overzicht. 
+-->
+<style>body{margin:0}#app{display:contents}</style>
+</head>
+<body>
+<div id="app"></div>
+<script type="module">
+import '@fontsource/baloo-2/latin-600.css'
+import '@fontsource/baloo-2/latin-800.css'
+import '@fontsource/nunito/latin-600.css'
+import '@fontsource/nunito/latin-700.css'
+import '@fontsource/nunito/latin-800.css'
+import '@fontsource/ibm-plex-sans/latin-400.css'
+import '@fontsource/ibm-plex-sans/latin-500.css'
+import '@fontsource/ibm-plex-sans/latin-600.css'
+import '/src/styles/thema.css'
+import '/src/schermen/schermen.css'
+import '/src/schermen/kindbalk.css'
+import '/src/schermen/kindhubs.css'
+import '/src/schermen/thema-schermen.css'
+import '/src/schermen/ouder.css'
+import { kopPrent } from '/src/data/themaPrenten.ts'
+
+
+/* ───────── Iconen ───────── */
+const ic = (d, g = 32) => `<svg class="ic" viewBox="0 0 24 24" width="${g}" height="${g}" aria-hidden="true"><path d="${d}"/></svg>`
+const P = {
+  thuis: 'M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z',
+  taken: 'M9 6h11M9 12h11M9 18h11M4 6l1 1l2-2M4 12l1 1l2-2M4 18l1 1l2-2',
+  spelen: 'M6 9h12a4 4 0 0 1 0 8c-1.5 0-2.5-1-3-2H9c-.5 1-1.5 2-3 2a4 4 0 0 1 0-8zM8 11v3M6.5 12.5h3M15.5 12h.01M17.5 14h.01',
+  winkel: 'M4 9l1.5-5h13L20 9M4 9h16v11H4zM4 9c0 2 3 2 4 0c1 2 3 2 4 0c1 2 3 2 4 0c1 2 4 2 4 0M10 20v-5h4v5',
+  chat: 'M4 5h16v11H10l-5 4v-4H4z',
+  ik: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM8.5 10h.01M15.5 10h.01M8 14.5c1 1.5 2.5 2.2 4 2.2s3-.7 4-2.2',
+  terug: 'M15 5l-7 7 7 7',
+  geluid: 'M4 10h4l5-4v12l-5-4H4zM16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11',
+  mic: 'M12 3a3 3 0 0 1 3 3v5a3 3 0 0 1-6 0V6a3 3 0 0 1 3-3zM6 11a6 6 0 0 0 12 0M12 17v4M9 21h6',
+  potlood: 'M4 20l1-4L16 5l3 3L8 19zM14 7l3 3',
+  tekst: 'M5 7h14M5 12h14M5 17h9',
+  vink: 'M5 12.5l4.5 4.5L19 7.5',
+  plus: 'M12 5v14M5 12h14',
+  min: 'M5 12h14',
+  slot: 'M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4',
+  pot: 'M8 4h8M9 4v3M15 4v3M7 7h10c1 1 2 3 2 6v5a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3v-5c0-3 1-5 2-6z',
+  chatpraat: 'M4 5h16v11H10l-5 4v-4H4zM8 10h.01M12 10h.01M16 10h.01',
+  menu: 'M4 7h16M4 12h16M4 17h16',
+  bel: 'M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 21h4',
+}
+const STER = (g = 22, f = '#F2B33D', s = '#B8800F') => `<svg viewBox="0 0 24 24" width="${g}" height="${g}" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z" fill="${f}" stroke="${s}" stroke-width="1.4" stroke-linejoin="round"/></svg>`
+
+/* ───────── Kindframe ───────── */
+const BALK = (actief, k) => `
+<nav class="kind-balk" aria-label="Menu">
+  ${[['thuis', 'Thuis'], ['taken', 'Taken'], ['spelen', 'Spelen'], ['winkel', 'Winkel'], ['chat', 'Chat'], ['ik', 'Ik']].filter(([s]) => s !== 'chat' || k.chat !== false).map(([s, n]) => `
+  <span class="balk-deel${s === actief ? ' actief' : ''}"><span class="balk-icoon">${ic(P[s], 36)}</span>${k.leest ? `<span class="balk-naam">${n}</span>` : ''}</span>`).join('')}
+</nav>`
+
+function kop(k, scherm, titel, sub, rechts = '') {
+  const lees = k.leest
+  return `<header class="thema-kop">
+    <svg class="thema-kop-prent" viewBox="0 0 1000 190" preserveAspectRatio="xMaxYMax slice" aria-hidden="true">${kopPrent(k.thema, scherm)}</svg>
+    <div class="thema-kop-inhoud">
+      <span class="rond">${ic(P.terug, 28)}</span>
+      <div class="thema-kop-tekst"><h1 class="display thema-kop-titel${lees ? '' : ' thema-verborgen'}">${titel}</h1>${lees && sub ? `<span class="thema-kop-sub">${sub}</span>` : ''}</div>
+      ${rechts}<span class="rond">${ic(P.geluid, 26)}</span>
+    </div></header>`
+}
+const frame = (kid, scherm, kopHtml, inhoud, actief) => {
+  const k = KINDEREN[kid]
+  return `<div class="kind kleur-${k.kleur} thema thema-${k.thema} thema-scherm-${scherm} kind-mock">
+    ${kopHtml}
+    <main class="mock-inhoud">${inhoud}</main>
+    ${BALK(actief, k)}
+  </div>`
+}
+const pil = (n, kid) => `<span class="mijlpaal sterren-pil-mock">${STER(26)}<b class="display">${n}</b></span>`
+
+
+/* ───────── Kinderen ───────── */
+const KINDEREN = {
+  luca: { naam: 'Luca', kleur: 'blauw', thema: 'race', leest: true, dier: 'dino', dnaam: 'Rokko' },
+  yuna: { naam: 'Yuna', kleur: 'roze', thema: 'kasteel', leest: true, dier: 'konijn', dnaam: 'Pluisje' },
+  feline: { naam: 'Feline', kleur: 'lila', thema: 'tuin', leest: false, dier: 'kat', dnaam: 'Mimi' },
+}
+Object.assign(P, {
+  eten: 'M3 12h18a9 9 0 0 1-18 0zM8 8c0-2 1-2 1-4M12 8c0-2 1-2 1-4M16 8c0-2 1-2 1-4',
+  druppel: 'M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z',
+  hart: 'M12 21s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6-8 11-8 11z',
+  pootje: 'M12 11c3 0 5 2.5 5 5 0 2-1.5 3-3 3-1 0-1.5-.5-2-.5s-1 .5-2 .5c-1.5 0-3-1-3-3 0-2.5 2-5 5-5z',
+})
+const HART = (g = 26, vol = true) => `<svg viewBox="0 0 24 24" width="${g}" height="${g}" aria-hidden="true"><path d="${P.hart}" fill="${vol ? '#EF5A7A' : '#fff'}" stroke="${vol ? '#B02A4A' : '#9AA6B5'}" stroke-width="1.5" stroke-linejoin="round"/></svg>`
+const POOT = (g = 30, vol = true) => `<svg viewBox="0 0 24 24" width="${g}" height="${g}" aria-hidden="true"><g fill="${vol ? '#8A5A2B' : '#fff'}" stroke="${vol ? '#5E3A15' : '#9AA6B5'}" stroke-width="1.3"><ellipse cx="12" cy="16" rx="5" ry="4"/><circle cx="6" cy="10" r="2.2"/><circle cx="10" cy="6.5" r="2.2"/><circle cx="14" cy="6.5" r="2.2"/><circle cx="18" cy="10" r="2.2"/></g></svg>`
+
+/* ───────── Huisdieren: eigen ontwerp ───────── */
+const SOORT = {
+  hond: { naam: 'Hondje', kleur: '#D9A25F', buik: '#F6DDB5', donker: '#8B5A2B' },
+  kat: { naam: 'Katje', kleur: '#F29A5B', buik: '#FFE3C8', donker: '#B85F22' },
+  konijn: { naam: 'Konijntje', kleur: '#C9B8F0', buik: '#F3EDFF', donker: '#8A6FD0' },
+  dino: { naam: 'Dinootje', kleur: '#7CCB7A', buik: '#E4F6C8', donker: '#3F8F47' },
+}
+const STADIA = ['ei', 'baby', 'kind', 'groot']
+const SCHAAL = { baby: 0.6, kind: 0.8, groot: 1 }
+const UIT = '#1C2433'
+function ei(soort, bijna = false) {
+  const s = SOORT[soort]
+  return `<svg viewBox="0 0 200 200" aria-hidden="true">
+    <ellipse cx="100" cy="184" rx="48" ry="8" fill="rgba(0,0,0,.14)"/>
+    <path d="M100 18c36 0 54 54 54 94 0 36-24 70-54 70s-54-34-54-70c0-40 18-94 54-94z" fill="${s.buik}" stroke="${UIT}" stroke-width="3"/>
+    <g fill="${s.kleur}" opacity=".95"><circle cx="78" cy="70" r="11"/><circle cx="124" cy="96" r="14"/><circle cx="86" cy="130" r="13"/><circle cx="122" cy="150" r="9"/><circle cx="106" cy="46" r="7"/></g>
+    ${bijna ? `<path d="M64 98l16 14 12-16 14 16 14-14 16 14" fill="none" stroke="${UIT}" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round"/>` : ''}
+    <path d="M70 52q12-14 28-16" stroke="#fff" stroke-width="6" stroke-linecap="round" fill="none" opacity=".75"/>
+  </svg>`
+}
+function dier(soort, stadium, stemming = 'blij') {
+  if (stadium === 'ei') return ei(soort)
+  const s = SOORT[soort], k = s.kleur, b = s.buik, d = s.donker, sc = SCHAAL[stadium]
+  const staart = {
+    hond: `<path d="M142 142q26-6 24-34" stroke="${d}" stroke-width="13" stroke-linecap="round" fill="none"/>`,
+    kat: `<path d="M142 156q36 6 28-40" stroke="${k}" stroke-width="13" stroke-linecap="round" fill="none"/><path d="M168 126q4 12 0 22" stroke="${d}" stroke-width="13" stroke-linecap="round" fill="none"/>`,
+    konijn: `<circle cx="146" cy="156" r="12" fill="${b}" stroke="${UIT}" stroke-width="2.5"/>`,
+    dino: `<path d="M138 150q40 6 46-24q-8 12-26 12z" fill="${k}" stroke="${UIT}" stroke-width="2.5" stroke-linejoin="round"/>`,
+  }[soort]
+  const rug = soort === 'dino' ? `<g fill="${d}" stroke="${UIT}" stroke-width="2" stroke-linejoin="round"><path d="M138 120l14-16 4 22z"/><path d="M142 140l18-10 0 22z"/></g>` : ''
+  const oorAchter = {
+    hond: `<ellipse cx="58" cy="90" rx="15" ry="28" transform="rotate(14 58 90)" fill="${d}" stroke="${UIT}" stroke-width="2.5"/><ellipse cx="142" cy="90" rx="15" ry="28" transform="rotate(-14 142 90)" fill="${d}" stroke="${UIT}" stroke-width="2.5"/>`,
+    kat: `<path d="M58 70l-8-40 38 22z" fill="${k}" stroke="${UIT}" stroke-width="2.5" stroke-linejoin="round"/><path d="M60 62l-3-20 18 12z" fill="#F59AC8"/><path d="M142 70l8-40-38 22z" fill="${k}" stroke="${UIT}" stroke-width="2.5" stroke-linejoin="round"/><path d="M140 62l3-20-18 12z" fill="#F59AC8"/>`,
+    konijn: `<ellipse cx="76" cy="34" rx="13" ry="38" transform="rotate(-6 76 34)" fill="${k}" stroke="${UIT}" stroke-width="2.5"/><ellipse cx="76" cy="38" rx="6" ry="26" transform="rotate(-6 76 38)" fill="#F59AC8"/><ellipse cx="124" cy="34" rx="13" ry="38" transform="rotate(6 124 34)" fill="${k}" stroke="${UIT}" stroke-width="2.5"/><ellipse cx="124" cy="38" rx="6" ry="26" transform="rotate(6 124 38)" fill="#F59AC8"/>`,
+    dino: `<g fill="${d}" stroke="${UIT}" stroke-width="2.5" stroke-linejoin="round"><path d="M72 56l6-22 10 18z"/><path d="M90 50l10-26 10 26z"/><path d="M112 52l10-18 6 22z"/></g>`,
+  }[soort]
+  const snuit = soort === 'dino'
+    ? `<ellipse cx="100" cy="110" rx="26" ry="16" fill="${b}"/><circle cx="92" cy="106" r="2.4" fill="${d}"/><circle cx="108" cy="106" r="2.4" fill="${d}"/>`
+    : `<ellipse cx="100" cy="110" rx="22" ry="15" fill="${b}"/><path d="M93 101q7-6 14 0q-2 7-7 7t-7-7z" fill="${soort === 'konijn' ? '#E56A9A' : UIT}"/>` +
+      (soort === 'kat' ? `<path d="M64 108l-24-4M64 114l-24 6M136 108l24-4M136 114l24 6" stroke="${UIT}" stroke-width="2" stroke-linecap="round"/>` : '')
+  const streep = soort === 'kat' ? `<path d="M92 52l4 14M100 50v16M108 52l-4 14" stroke="${d}" stroke-width="5" stroke-linecap="round"/>` : ''
+  const open = (dx) => `<ellipse cx="${dx}" cy="94" rx="7" ry="8.5" fill="${UIT}"/><circle cx="${dx + 2.5}" cy="90.5" r="2.6" fill="#fff"/>`
+  let ogen, mond, extra = ''
+  if (stemming === 'slaap') {
+    ogen = `<path d="M70 96q9 7 18 0M112 96q9 7 18 0" fill="none" stroke="${UIT}" stroke-width="3.4" stroke-linecap="round"/>`
+    mond = `<path d="M94 122q6 3 12 0" fill="none" stroke="${UIT}" stroke-width="3" stroke-linecap="round"/>`
+    extra = `<g font-family="Baloo 2" font-weight="800" fill="#6A4FB0"><text x="140" y="56" font-size="22">z</text><text x="154" y="40" font-size="16">z</text></g>`
+  } else if (stemming === 'wassen') {
+    ogen = `<path d="M70 98q9-9 18 0M112 98q9-9 18 0" fill="none" stroke="${UIT}" stroke-width="3.4" stroke-linecap="round"/>`
+    mond = `<path d="M88 118q12 12 24 0z" fill="#7A2E2E" stroke="${UIT}" stroke-width="2.4" stroke-linejoin="round"/>`
+    extra = `<g fill="#fff" stroke="#58B7E8" stroke-width="2.4" opacity=".95"><circle cx="46" cy="60" r="12"/><circle cx="154" cy="52" r="9"/><circle cx="38" cy="108" r="7"/><circle cx="164" cy="104" r="12"/><circle cx="96" cy="30" r="8"/></g><path d="M60 62l-6-6" stroke="#58B7E8" stroke-width="2" stroke-linecap="round"/>`
+  } else if (stemming === 'eten') {
+    ogen = open(80) + open(120)
+    mond = `<ellipse cx="100" cy="124" rx="11" ry="10" fill="#7A2E2E" stroke="${UIT}" stroke-width="2.4"/><path d="M92 128q8 6 16 0" fill="#F59AC8"/>`
+  } else if (stemming === 'honger') {
+    ogen = open(80) + open(120) + `<path d="M68 78q12-8 22-2M132 78q-12-8-22-2" fill="none" stroke="${UIT}" stroke-width="3" stroke-linecap="round"/>`
+    mond = `<path d="M92 126q8-7 16 0" fill="none" stroke="${UIT}" stroke-width="3.2" stroke-linecap="round"/>`
+  } else if (stemming === 'trots') {
+    ogen = `<path d="M70 98q9-9 18 0M112 98q9-9 18 0" fill="none" stroke="${UIT}" stroke-width="3.4" stroke-linecap="round"/>`
+    mond = `<path d="M86 116q14 16 28 0z" fill="#7A2E2E" stroke="${UIT}" stroke-width="2.4" stroke-linejoin="round"/><path d="M92 124q8 5 16 0" fill="#F59AC8"/>`
+  } else {
+    ogen = open(80) + open(120)
+    mond = `<path d="M90 120q10 9 20 0" fill="none" stroke="${UIT}" stroke-width="3.2" stroke-linecap="round"/>`
+  }
+  const wangen = `<circle cx="64" cy="112" r="8" fill="#F29A9A" opacity=".6"/><circle cx="136" cy="112" r="8" fill="#F29A9A" opacity=".6"/>`
+  const sjaal = stadium === 'groot' ? `<path d="M58 128q42 22 84 0l-4 16q-38 18-76 0z" fill="#E23B3B" stroke="${UIT}" stroke-width="2.5" stroke-linejoin="round"/><path d="M128 138l8 26 12-4-8-24z" fill="#E23B3B" stroke="${UIT}" stroke-width="2.5" stroke-linejoin="round"/>`
+    : stadium === 'kind' ? `<path d="M64 128q36 16 72 0" fill="none" stroke="#2D6BD6" stroke-width="7" stroke-linecap="round"/>` : ''
+  return `<svg viewBox="0 0 200 200" aria-hidden="true">
+    <ellipse cx="100" cy="184" rx="${50 * sc}" ry="${8 * sc}" fill="rgba(0,0,0,.14)"/>
+    <g transform="translate(100 183) scale(${sc}) translate(-100 -183)">
+      ${staart}
+      ${oorAchter}
+      <ellipse cx="100" cy="142" rx="44" ry="40" fill="${k}" stroke="${UIT}" stroke-width="3"/>
+      ${rug}
+      <ellipse cx="100" cy="152" rx="27" ry="26" fill="${b}"/>
+      <ellipse cx="74" cy="178" rx="17" ry="9" fill="${k}" stroke="${UIT}" stroke-width="2.8"/><ellipse cx="126" cy="178" rx="17" ry="9" fill="${k}" stroke="${UIT}" stroke-width="2.8"/>
+      ${sjaal}
+      <ellipse cx="100" cy="92" rx="47" ry="43" fill="${k}" stroke="${UIT}" stroke-width="3"/>
+      ${streep}${snuit}${wangen}${ogen}${mond}${extra}
+    </g>
+  </svg>`
+}
+
+/* ───────── De kamer ───────── */
+function kamer(kid, stadium, stemming, { bubbel = null, broed = false } = {}) {
+  const k = KINDEREN[kid]
+  const kleur = { race: ['#D9E6FB', '#B7CFF3', '#8FA8D6'], kasteel: ['#F9E1EC', '#F0C3D8', '#C99BB3'], tuin: ['#E3F4D9', '#C6E8B4', '#A8CF92'] }[k.thema]
+  const fig = stadium === 'ei' ? ei(k.dier, broed) : dier(k.dier, stadium, stemming)
+  const grootte = stadium === 'ei' ? 250 : 330
+  const deco = {
+    race: `<g transform="translate(60 150)"><rect width="150" height="22" rx="8" fill="#E23B3B"/><rect x="14" y="-26" width="104" height="28" rx="12" fill="#F25555"/><circle cx="34" cy="26" r="15" fill="#2B3445"/><circle cx="116" cy="26" r="15" fill="#2B3445"/><circle cx="34" cy="26" r="6" fill="#AEB9CC"/><circle cx="116" cy="26" r="6" fill="#AEB9CC"/><rect x="34" y="-20" width="30" height="16" rx="5" fill="#BFE0FF"/><rect x="72" y="-20" width="30" height="16" rx="5" fill="#BFE0FF"/></g>`,
+    kasteel: `<g transform="translate(66 96)"><path d="M0 120V40h28v16h16V40h28v16h16V40h28v80z" fill="#E7D3F0" stroke="#8A6FB0" stroke-width="3" stroke-linejoin="round"/><rect x="48" y="78" width="28" height="42" rx="14" fill="#8A6FB0"/><path d="M0 40l14-26 14 26zM100 40l14-26 14 26z" fill="#E86AA0"/></g>`,
+    tuin: `<g transform="translate(72 118)"><path d="M54 90V40" stroke="#4E8A3D" stroke-width="7" stroke-linecap="round"/><g fill="#F6C84C" stroke="#B8800F" stroke-width="2"><circle cx="54" cy="24" r="12"/><circle cx="38" cy="34" r="12"/><circle cx="70" cy="34" r="12"/><circle cx="42" cy="50" r="12"/><circle cx="66" cy="50" r="12"/></g><circle cx="54" cy="38" r="9" fill="#C2541A"/><path d="M54 70q-22-10-30 4q18 10 30-4zM54 76q22-10 30 4q-18 10-30-4z" fill="#6FB65A"/></g>`,
+  }[k.thema]
+  const kom = `<g transform="translate(468 292)"><path d="M0 0h96l-10 46H10z" fill="${stemming === 'honger' ? '#F2B33D' : '#E56A5A'}" stroke="${UIT}" stroke-width="3" stroke-linejoin="round"/><ellipse cx="48" cy="0" rx="48" ry="9" fill="#FFF4D6" stroke="${UIT}" stroke-width="3"/><g fill="#8A5A2B"><circle cx="30" cy="-2" r="5"/><circle cx="46" cy="1" r="5"/><circle cx="62" cy="-3" r="5"/></g></g>`
+  const bol = bubbel === 'eten' ? `<g transform="translate(396 56)"><path d="M0 0h140a22 22 0 0 1 22 22v52a22 22 0 0 1-22 22H72l-26 26 2-26H22A22 22 0 0 1 0 74z" fill="#fff" stroke="${UIT}" stroke-width="3" stroke-linejoin="round"/><g transform="translate(40 18) scale(3)" fill="none" stroke="#E56A5A" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="${P.eten}"/></g></g>`
+    : bubbel === 'hart' ? `<g transform="translate(396 70)">${[0, 1, 2].map((i) => `<g transform="translate(${i * 44} ${i % 2 ? 12 : 0})">${HART(40)}</g>`).join('')}</g>` : ''
+  return `<svg class="kamer-svg" viewBox="60 0 520 420" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+    <rect width="640" height="420" fill="${kleur[0]}"/>
+    <rect y="296" width="640" height="124" fill="${kleur[1]}"/><rect y="292" width="640" height="8" fill="${kleur[2]}" opacity=".6"/>
+    <g transform="translate(96 30)"><rect width="120" height="110" rx="14" fill="#EAF6FF" stroke="${kleur[2]}" stroke-width="7"/><path d="M60 0v110M0 55h120" stroke="${kleur[2]}" stroke-width="5"/><circle cx="92" cy="30" r="12" fill="#F6C84C"/></g>
+    <ellipse cx="320" cy="364" rx="150" ry="26" fill="${kleur[2]}" opacity=".35"/>
+    ${deco}${kom}
+    <svg x="${320 - grootte / 2}" y="${stadium === 'ei' ? 118 : 74}" width="${grootte}" height="${grootte}" viewBox="0 0 200 200">${fig.replace(/^<svg[^>]*>|<\/svg>$/g, '')}</svg>
+    ${bol}
+  </svg>`
+}
+
+/* ───────── Schermen ───────── */
+const GROEI = { ei: 3, baby: 8, kind: 15 } // taken die nodig zijn om door te gaan
+const STADIUMNAAM = { ei: 'Ei', baby: 'Baby', kind: 'Kind', groot: 'Groot' }
+const meters = (v, g = 28) => [1, 2, 3, 4, 5].map((i) => HART(g, i <= v)).join('')
+function huisdierScherm(kid, { stadium = 'kind', stemming = 'blij', buik = 4, schoon = 4, blij = 5, taken = 11, bubbel = null, kop2 = true } = {}) {
+  const k = KINDEREN[kid], leest = k.leest
+  const volgend = STADIA[STADIA.indexOf(stadium) + 1]
+  const nodig = GROEI[stadium], vorige = stadium === 'baby' ? GROEI.ei : stadium === 'kind' ? GROEI.baby : 0
+  const rest = nodig ? nodig - taken : 0
+  const pootjes = nodig ? Array.from({ length: nodig - vorige }, (_, i) => POOT(leest ? 30 : 38, vorige + i < taken)).join('') : ''
+  const groei = stadium === 'groot'
+    ? `<div class="pot-kaart"><div class="display hd-groot ok">${leest ? `${k.dnaam} is groot!` : HART(60)}</div>${leest ? '<div class="pot-klein">Elke taak geeft nog een pootje: 4 meer en je krijgt een medaille.</div>' : ''}</div>`
+    : `<div class="pot-kaart"><div class="hd-naamrij"><span class="display hd-naam">${k.dnaam}</span><span class="hd-stadium">${leest ? STADIUMNAAM[stadium] : ''}${STADIA.slice(1).map((s, i) => `<i class="${i <= STADIA.indexOf(stadium) - 1 ? 'aan' : ''}"></i>`).join('')}</span></div>
+      <div class="hd-poten">${pootjes}</div>
+      ${leest ? `<div class="pot-klein">Nog <b>${rest}</b> ${rest === 1 ? 'taak' : 'taken'} tot ${STADIUMNAAM[volgend]}</div>` : `<div class="hd-pijl">${POOT(30)}<b class="display">${rest}</b>${ic('M9 5l7 7-7 7', 26)}</div>`}</div>`
+  const meter = (naam, icoon, v, tint) => `<div class="hd-meter"><span class="hd-micon" style="background:${tint}">${ic(icoon, 30)}</span>${leest ? `<b class="hd-mnaam">${naam}</b>` : ''}<span class="hd-harten">${meters(v, leest ? 26 : 32)}</span></div>`
+  const knop = (naam, icoon, prijs, kleur, uit) => `<span class="hd-knop${uit ? ' uit' : ''}" style="--kn:${kleur}">${ic(icoon, leest ? 38 : 48)}${leest ? `<b class="display">${naam}</b>` : ''}<span class="hd-prijs">${prijs ? `${STER(22)} ${prijs}` : `${HART(22)} gratis`}</span></span>`
+  const kopHtml = kop(k, 'figuurtje', 'Mijn huisdier', leest ? { luca: 'Samen in de garage', yuna: 'In het kasteeltuintje', feline: '' }[kid] : '', `<span class="mijlpaal pil-kop">${STER(24)}<b class="display">${{ luca: 50, yuna: 40, feline: 25 }[kid]}</b>${leest ? '<small>vrij</small>' : ''}</span>`)
+  return frame(kid, 'figuurtje', kopHtml, `
+    <div class="hd-raster">
+      <div class="hd-kamer">${kamer(kid, stadium, stemming, { bubbel })}${stemming === 'honger' && leest ? `<span class="hd-zegt display">${k.dnaam} heeft honger</span>` : ''}</div>
+      <div class="hd-rechts">
+        ${groei}
+        <div class="pot-kaart hd-zorg">${meter('Buikje', P.eten, buik, '#FFE3C8')}${meter('Schoon', P.druppel, schoon, '#DDF0FF')}${meter('Blij', P.hart, blij, '#FFD9E2')}</div>
+        <div class="hd-knoppen">${knop('Eten', P.eten, 2, '#E56A5A')}${knop('Wassen', P.druppel, 1, '#3E9BD6')}${knop('Knuffelen', P.hart, 0, '#E0568A')}</div>
+        ${leest ? '<div class="hd-vandaag">Eten en wassen vandaag: <b>3 van 6</b> sterren</div>' : ''}
+      </div>
+    </div>`, 'ik')
+}
+
+function eiKiezen() {
+  const k = KINDEREN.luca
+  const eieren = ['dino', 'hond', 'kat', 'konijn'].map((s, i) => `<span class="ei-tegel${s === 'dino' ? ' gekozen' : ''}"><span class="ei-prent">${ei(s)}</span><b class="display">${SOORT[s].naam}</b></span>`).join('')
+  return frame('luca', 'figuurtje', kop(k, 'figuurtje', 'Kies je ei', 'Wat kruipt er uit?'), `
+    <div class="ei-raster">${eieren}</div>
+    <div class="ei-voet"><div class="ei-naam"><span class="pot-klein">Hoe heet je dinootje?</span><div class="ei-namen"><span class="gekozen">Rokko</span><span>Dino</span><span>Groeny</span><span>Zelf typen</span></div></div>
+      <span class="groot-knop-m goud">${ic(P.vink, 32)} Dit ei neem ik</span></div>`, 'ik')
+}
+
+function groeiHoera(kid) {
+  const k = KINDEREN[kid], leest = k.leest
+  const feest = `<div class="feest">${Array.from({ length: 30 }, (_, i) => `<i style="left:${(i * 37) % 100}%;top:${(i * 53) % 80}%;background:${['#F2B33D', '#E23B3B', '#2D6BD6', '#8FD18B', '#C2337A'][i % 5]};transform:rotate(${i * 29}deg)"></i>`).join('')}</div>`
+  return frame(kid, 'figuurtje', kop(k, 'figuurtje', 'Hoera!', leest ? 'Een nieuw stadium' : ''), `${feest}
+    <div class="hoera-midden">
+      <div class="hoera-voor">${dier(k.dier, 'kind')}</div>${ic('M5 12h14M13 6l6 6-6 6', 56)}
+      <div class="hoera-na">${dier(k.dier, 'groot', 'trots')}</div>
+    </div>
+    <div class="display hoera-titel">${leest ? `${k.dnaam} is nu groot!` : `${HART(70)}${HART(70)}${HART(70)}`}</div>
+    ${leest ? `<div class="pot-klein c">Dank zij jouw taken. Je krijgt een sjaal en een medaille voor je kamer.</div>` : ''}
+    <span class="groot-knop-m goud mid">${ic(P.vink, 32)}${leest ? 'Super!' : ''}</span>`, 'ik')
+}
+
+function ikHub(kid) {
+  const k = KINDEREN[kid]
+  const tegel = (naam, uitleg, d, nieuw = false) => `<span class="hub-tegel"><span class="hub-icoon" style="background:${nieuw ? '#FFF1C9' : 'var(--soft)'};color:var(--kid)">${ic(d, 56)}</span><b class="display">${naam}</b><small>${uitleg}</small>${nieuw ? '<span class="nieuw-label display">Nieuw</span>' : ''}</span>`
+  return frame(kid, 'figuurtje', kop(k, 'figuurtje', 'Ik', 'Op het podium'), `
+    <div class="hub-raster mock-hub" style="--kol:4">
+      ${tegel('Mijn figuurtje', 'Aankleden', 'M12 3a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM5 21c0-4 3-7 7-7s7 3 7 7')}
+      ${tegel('Mijn huis', 'Bouwen en versieren', P.thuis)}
+      ${tegel('Mijn huisdier', 'Verzorgen en groeien', P.hart, true)}
+      ${tegel('Mijn dag', 'Hoe voel ik me?', P.ik)}
+    </div>`, 'ik')
+}
+
+function startChip() {
+  return `<div class="kind-mock overlay-basis"><img src="/prototypes/img/start-luca.png" width="1194" height="834" alt="">
+   <div class="chip-hd"><span class="chip-dier">${dier('dino', 'kind', 'honger')}</span><div><div class="display">Rokko</div><div class="chip-h">${meters(2, 16)}</div><small>Rokko heeft honger!</small></div></div>
+   <div class="uitleg-pijl" style="left:520px;top:200px">Nieuw: je huisdier staat op het startscherm. Hij groeit van jouw taken.</div></div>`
+}
+
+/* ───────── Ouder (gsm) ───────── */
+const OUDER = (titel, inhoud) => `<div class="ouder gsm">
+  <header class="o-bar"><span>${ic(P.menu, 24)}</span><b>${titel}</b><span>${ic(P.bel, 22)}</span></header>
+  <main class="o-main">${inhoud}</main></div>`
+const avatar = (kleur, l) => `<span class="o-av" style="background:${kleur}">${l}</span>`
+function ouderHuisdier() {
+  const kind = (n, l, kl, soort, aan, stad, extra) => `<div class="o-hd-kind"><div class="o-kind-rij">${avatar(kl, l)}<b>${n}</b><span class="o-schakel${aan ? ' aan' : ''}"><i></i></span></div>
+    <div class="o-hd-info"><span class="o-hd-dier">${dier(soort, stad)}</span><div><b>${extra[0]}</b> · ${STADIUMNAAM[stad]}<br><span class="o-grijs">${extra[1]}</span></div></div></div>`
+  return OUDER('Huisdier', `
+    <section class="o-kaart">
+      <div class="o-sectie">Wie heeft een huisdier?</div>
+      ${kind('Luca', 'L', '#E3EDFC', 'dino', true, 'kind', ['Rokko (dinootje)', '11 taken · tot Groot nog 4'])}
+      ${kind('Yuna', 'Y', '#FCE4F0', 'konijn', true, 'groot', ['Pluisje (konijntje)', '34 taken · groot sinds 2 nov'])}
+      ${kind('Feline', 'F', '#EFE4FA', 'kat', true, 'baby', ['Mimi (katje)', '5 taken · tot Kind nog 3'])}
+    </section>
+    <section class="o-kaart">
+      <div class="o-sectie">Groei</div>
+      <label class="o-rij"><input type="checkbox" checked> <span>Een goedgekeurde taak = 1 pootje</span></label>
+      <div class="o-label">Pootjes nodig</div>
+      <div class="o-drie"><div><small class="o-grijs">Ei → Baby</small><input class="o-input" value="3"></div><div><small class="o-grijs">Baby → Kind</small><input class="o-input" value="8"></div><div><small class="o-grijs">Kind → Groot</small><input class="o-input" value="15"></div></div>
+      <p class="o-hint">Taken die de ouders zelf aan een kind geven tellen mee. Afkeuren kost geen pootjes en een groot huisdier wordt nooit weer klein.</p>
+    </section>
+    <section class="o-kaart">
+      <div class="o-sectie">Verzorgen met sterren</div>
+      <div class="o-drie"><div><small class="o-grijs">Eten (★)</small><input class="o-input" value="2"></div><div><small class="o-grijs">Wassen (★)</small><input class="o-input" value="1"></div><div><small class="o-grijs">Max per dag</small><input class="o-input" value="6"></div></div>
+      <label class="o-rij"><input type="checkbox" checked> <span>Knuffelen is altijd gratis</span></label>
+      <label class="o-rij"><input type="checkbox" checked> <span>Het huisdier wordt nooit ziek of verdrietig als het kind een dag niet speelt: het wil gewoon graag eten of een knuffel</span></label>
+      <label class="o-rij"><input type="checkbox"> <span>Melding aan de ouders als er 3 dagen niet verzorgd is</span></label>
+      <p class="o-hint">De sterren gaan van het vrije saldo af (puntenlog: “Huisdier: eten”), niet van de sterrenpot en niet van de schermtijd.</p>
+    </section>
+    <section class="o-kaart">
+      <div class="o-sectie">Soorten die het kind mag kiezen</div>
+      <div class="o-soorten">${Object.entries(SOORT).map(([s, d]) => `<span class="o-soort aan"><span class="o-hd-dier">${dier(s, 'kind')}</span><small>${d.naam}</small></span>`).join('')}</div>
+      <div class="o-actie"><span class="o-knop vol">Bewaren</span></div>
+    </section>`)
+}
+
+/* ───────── Scènes ───────── */
+const SCENES = {
+  'luca': [1194, 834, () => huisdierScherm('luca')],
+  'luca-laag': [1024, 600, () => huisdierScherm('luca')],
+  'luca-gsm': [844, 390, () => huisdierScherm('luca')],
+  'yuna-honger': [1194, 834, () => huisdierScherm('yuna', { stadium: 'groot', stemming: 'honger', buik: 1, schoon: 3, blij: 4, taken: 34, bubbel: 'eten' })],
+  'yuna-laag': [1024, 600, () => huisdierScherm('yuna', { stadium: 'groot', stemming: 'honger', buik: 1, schoon: 3, blij: 4, taken: 34, bubbel: 'eten' })],
+  'feline': [1194, 834, () => huisdierScherm('feline', { stadium: 'baby', stemming: 'blij', buik: 3, schoon: 5, blij: 4, taken: 5, bubbel: 'hart' })],
+  'feline-laag': [1024, 600, () => huisdierScherm('feline', { stadium: 'baby', stemming: 'blij', buik: 3, schoon: 5, blij: 4, taken: 5, bubbel: 'hart' })],
+  'feline-wassen': [1194, 834, () => huisdierScherm('feline', { stadium: 'baby', stemming: 'wassen', buik: 3, schoon: 4, blij: 4, taken: 5 })],
+  'luca-slaapt': [1194, 834, () => huisdierScherm('luca', { stemming: 'slaap' })],
+  'ei-kiezen': [1194, 834, eiKiezen],
+  'ei-broedt-luca': [1194, 834, () => huisdierScherm('luca', { stadium: 'ei', taken: 2 })],
+  'hoera-yuna': [1194, 834, () => groeiHoera('yuna')],
+  'hoera-feline': [1194, 834, () => groeiHoera('feline')],
+  'ik-luca': [1194, 834, () => ikHub('luca')],
+  'start-luca': [1194, 834, startChip],
+  'ouder': [390, 1500, ouderHuisdier],
+}
+const q = new URLSearchParams(location.search)
+const scene = q.get('scene')
+const app = document.getElementById('app')
+const style = document.createElement('style')
+style.textContent = `
+/* ── kindschermen (mockup) ── */
+.kind-mock { width: 1194px; height: 834px; min-height: 0; overflow: hidden; display: flex; flex-direction: column; position: relative; background: var(--thema-achtergrond, var(--bg)); }
+.kind-mock > .thema-kop { margin: 18px 32px 8px; width: auto; flex: none; max-width: none; }
+.mock-inhoud { flex: 1; min-height: 0; display: flex; flex-direction: column; padding: 8px 32px 6px; gap: 12px; position: relative; }
+.kind-mock > .kind-balk { margin: 0 32px 16px; width: auto; flex: none; position: relative; z-index: 2; }
+.kind-mock .mock-inhoud { z-index: 1; }
+.pil-kop { display: inline-flex; align-items: center; gap: 6px; background: #fff; color: #1C2433; border-radius: 999px; padding: 6px 16px; min-height: 48px; font-size: 24px; }
+.pil-kop small { font: 700 14px Nunito; color: #4E5A6B; }
+.thema-race .pil-kop { background: #F3F6FC; }
+.sterren-pil-mock { display: none }
+
+.kind-mock { width: var(--W, 1194px); height: var(--H, 834px); }
+.kind-mock > .thema-kop { margin: calc(var(--H,834px) * .02) 32px 6px; }
+.thema-kop-prent { max-height: calc(var(--H,834px) * .2); }
+.pot-kaart { background: var(--surface); border-radius: 28px; box-shadow: 0 6px 0 var(--shade); padding: 12px 20px; display: grid; gap: 8px; }
+.pot-klein { font-size: 17px; font-weight: 700; color: var(--muted); }
+.pot-klein.c { text-align: center; }
+.pot-klein .vrij { display: inline-flex; }
+.groot-knop-m { min-height: 68px; border-radius: 34px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; font: 800 22px 'Baloo 2'; padding: 0 26px; }
+.groot-knop-m.goud { background: #F2B33D; color: #3A2A00; }
+.groot-knop-m.mid { align-self: center; }
+.rond.klein-r { width: 64px; height: 64px; }
+.display.ok, .ok { color: var(--ok); }
+.feest { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+.feest i { position: absolute; width: 16px; height: 28px; border-radius: 4px; }
+.chip-hd { position: absolute; left: 560px; top: 96px; display: flex; align-items: center; gap: 12px; background: #fff; color: #1C2433; border-radius: 999px; padding: 4px 24px 4px 8px; box-shadow: 0 0 0 4px #F2B33D; }
+.chip-hd small { font: 800 14px Nunito; color: #4E5A6B; } .chip-hd .display { font-size: 18px; line-height: 1 }
+.chip-dier { width: 62px; height: 62px; } .chip-dier svg { width: 100%; height: 100% }
+.chip-h { display: flex; margin: 2px 0 }
+.overlay-basis img { position: absolute; inset: 0; }
+.uitleg-pijl { position: absolute; width: 300px; background: #1C2433; color: #fff; border-radius: 18px; padding: 12px 16px; font-weight: 800; font-size: 17px; }
+.uitleg-pijl::before { content: ''; position: absolute; left: 70px; top: -10px; border: 10px solid transparent; border-top: 0; border-bottom-color: #1C2433; }
+.hub-raster { display: grid; grid-template-columns: repeat(var(--kol), 1fr); gap: 20px; align-content: center; flex: 1; }
+.hub-tegel { position: relative; background: var(--surface); border-radius: 32px; box-shadow: 0 6px 0 var(--shade); display: grid; place-items: center; align-content: center; gap: 8px; padding: 20px; min-height: 260px; text-align: center; }
+.hub-tegel b { font-size: 28px; } .hub-tegel small { font: 700 17px Nunito; color: var(--muted); }
+.hub-icoon { width: 110px; height: 110px; border-radius: 30px; display: grid; place-items: center; }
+.nieuw-label { position: absolute; top: 12px; right: 16px; background: #F2B33D; color: #3A2A00; border-radius: 14px; padding: 2px 12px; font-size: 17px; }
+.pil-kop { display: inline-flex; align-items: center; gap: 6px; background: #fff; color: #1C2433; border-radius: 999px; padding: 6px 16px; min-height: 48px; font-size: 24px; }
+.pil-kop small { font: 700 14px Nunito; color: #4E5A6B; }
+.sterren-pil-mock { display: none }
+
+/* huisdier */
+.hd-raster { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 20px; position: relative; z-index: 1; }
+.hd-kamer { position: relative; border-radius: 32px; overflow: hidden; box-shadow: 0 6px 0 var(--shade); min-height: 0; background: var(--surface); }
+.kamer-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hd-zegt { position: absolute; left: 20px; bottom: 16px; background: #fff; color: #1C2433; border-radius: 22px; padding: 6px 20px; font-size: 24px; }
+.hd-rechts { display: grid; gap: 10px; grid-template-rows: auto 1fr auto auto; min-height: 0; }
+.hd-naamrij { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.hd-naam { font-size: 40px; line-height: 1; }
+.hd-stadium { display: inline-flex; align-items: center; gap: 8px; background: var(--kid-tint); color: var(--kid); border-radius: 999px; padding: 6px 16px; font: 800 18px Nunito; min-height: 40px; }
+.hd-stadium i { width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 2px solid var(--kid); } .hd-stadium i.aan { background: var(--kid); }
+.hd-poten { display: flex; gap: 6px; flex-wrap: wrap; }
+.hd-pijl { display: flex; align-items: center; gap: 6px; font-size: 34px; }
+.hd-groot { font-size: 36px; line-height: 1.1; }
+.hd-zorg { gap: 6px; align-content: center; }
+.hd-meter { display: flex; align-items: center; gap: 12px; }
+.hd-micon { width: 48px; height: 48px; border-radius: 16px; display: grid; place-items: center; color: #1C2433; flex: none; }
+.hd-mnaam { font: 800 20px Nunito; width: 90px; }
+.hd-harten { display: inline-flex; gap: 3px; margin-left: auto; }
+.hd-knoppen { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; align-self: end; }
+.hd-knop { min-height: 118px; border-radius: 28px; background: var(--kn); color: #fff; display: grid; justify-items: center; align-content: center; gap: 2px; padding: 8px 4px; box-shadow: 0 6px 0 rgba(0,0,0,.18); }
+.hd-knop b { font-size: 24px; line-height: 1.1; }
+.hd-knop.uit { opacity: .5; }
+.hd-prijs { display: inline-flex; align-items: center; gap: 4px; background: rgba(255,255,255,.92); color: #3A2A00; border-radius: 999px; padding: 2px 12px 2px 8px; font: 800 16px Nunito; }
+.hd-vandaag { font: 700 16px Nunito; color: var(--muted); text-align: center; }
+.thema-race .hd-stadium { color: #9DBBFF; }
+
+.ei-raster { flex: 1; display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; min-height: 0; }
+.ei-tegel { background: var(--surface); border-radius: 32px; box-shadow: 0 6px 0 var(--shade); display: grid; grid-template-rows: 1fr auto; justify-items: center; padding: 14px; border: 6px solid transparent; min-height: 0; }
+.ei-tegel.gekozen { border-color: #F2B33D; }
+.ei-prent { height: 100%; min-height: 0; display: grid; } .ei-prent svg { height: 100%; max-height: 270px; width: auto; }
+.ei-tegel b { font-size: 26px; }
+.ei-voet { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.ei-namen { display: flex; gap: 10px; margin-top: 6px; }
+.ei-namen span { min-height: 56px; display: inline-flex; align-items: center; padding: 0 22px; border-radius: 28px; background: var(--surface); box-shadow: 0 4px 0 var(--shade); font: 800 22px 'Baloo 2'; }
+.ei-namen .gekozen { background: var(--kid); color: var(--on-solid); }
+
+.hoera-midden { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; gap: 28px; position: relative; z-index: 1; }
+.hoera-voor { height: 100%; max-height: 220px; opacity: .55; } .hoera-na { height: 100%; max-height: 330px; }
+.hoera-voor svg, .hoera-na svg { height: 100%; width: auto; }
+.hoera-titel { font-size: 46px; text-align: center; position: relative; z-index: 1; display: flex; justify-content: center; gap: 10px; }
+
+.o-hd-kind { border-top: 1px solid var(--line); padding-top: 8px; }
+.o-hd-info { display: flex; align-items: center; gap: 12px; font-size: 15px; }
+.o-hd-dier { width: 64px; height: 64px; flex: none; display: block; } .o-hd-dier svg { width: 100%; height: 100%; }
+.o-drie { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.o-soorten { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.o-soort { border: 2px solid var(--line); padding: 6px 2px; display: grid; justify-items: center; font-size: 12px; } .o-soort.aan { border-color: var(--ok); background: var(--soft); }
+
+/* laag liggend: alles krimpt mee */
+.kind-mock.laag > .thema-kop { height: 84px; min-height: 0; margin-top: 10px; } .kind-mock.laag .thema-kop-prent { max-height: 84px; } .kind-mock.laag .thema-kop-sub { display: none; }
+.kind-mock.laag > .thema-kop .thema-kop-titel { font-size: 30px; } .kind-mock.laag .thema-kop .rond { width: 52px; height: 52px; }
+.kind-mock.laag > .kind-balk { margin-bottom: 8px; } .kind-mock.laag .balk-icoon svg { width: 28px; height: 28px; } .kind-mock.laag .balk-naam { font-size: 14px; }
+.kind-mock.laag .mock-inhoud { padding-top: 4px; }
+.kind-mock.laag .hd-knop { min-height: 84px; } .kind-mock.laag .hd-knop b { font-size: 18px; } .kind-mock.laag .hd-naam { font-size: 30px; }
+.kind-mock.laag .pot-kaart { padding: 8px 14px; gap: 4px; } .kind-mock.laag .hd-micon { width: 38px; height: 38px; } .kind-mock.laag .hd-micon svg { width: 24px; height: 24px }
+.kind-mock.laag .hd-mnaam { font-size: 17px; } .kind-mock.laag .hd-vandaag { display: none; } .kind-mock.laag .hd-raster { gap: 14px; }
+/* ouder (gsm) */
+.gsm { width: 390px; min-height: 100%; background: var(--bg); font-family: var(--f-ouder); color: var(--ink); font-weight: 400; }
+.gsm * { font-family: var(--f-ouder); }
+.o-bar { background: var(--bar); color: var(--bar-ink); height: 60px; display: grid; grid-template-columns: 56px 1fr 56px; align-items: center; text-align: center; font-size: 17px; }
+.o-bar span { display: grid; place-items: center; } .o-bar b { font-weight: 600; }
+.o-main { padding: 14px 16px 24px; display: grid; gap: 12px; }
+.o-kaart { background: var(--surface); border: 1px solid var(--line); padding: 16px; display: grid; gap: 10px; }
+.o-kaart.accent { border-left: 6px solid var(--ok); }
+.o-kop { display: flex; align-items: center; gap: 12px; } .o-kop b { font-weight: 600; font-size: 18px; } .o-kop > :nth-last-child(1):not(b) { margin-left: auto; }
+.o-av { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-weight: 600; color: #16264A; }
+.o-sterpil { background: var(--gold-bg); color: var(--gold-ink); padding: 6px 12px; font-weight: 600; display: inline-flex; gap: 6px; align-items: center; margin-left: auto; }
+.o-sectie { font-weight: 600; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); padding-top: 4px; }
+.o-label { font-size: 14px; color: var(--muted); }
+.o-input { border: 1px solid var(--line); background: var(--surface); padding: 12px; font-size: 16px; min-height: 48px; width: 100%; box-sizing: border-box; color: var(--ink); }
+.o-input:disabled { background: var(--soft); color: var(--muted); }
+.o-twee { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.o-rij { display: flex; gap: 12px; align-items: flex-start; min-height: 40px; font-size: 16px; } .o-rij input { width: 22px; height: 22px; margin-top: 2px; }
+.o-prenten { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.o-prent { border: 2px solid var(--line); padding: 8px 4px; display: grid; justify-items: center; gap: 2px; font-size: 13px; min-height: 90px; } .o-prent svg { width: 44px; height: 44px; } .o-prent.aan { border-color: var(--luca); background: var(--luca-tint); font-weight: 600; }
+.o-actie { display: grid; gap: 8px; } .o-actie.klein { margin-top: -4px; text-align: center; }
+.o-knop { min-height: 48px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--soft); font-weight: 600; font-size: 16px; padding: 0 16px; } .o-knop.vol { background: var(--luca); color: #fff; }
+.o-hint { margin: 0; font-size: 14px; color: var(--muted); } .o-tekst { margin: 0; font-size: 16px; line-height: 1.5; } .o-grijs { color: var(--muted); font-size: 14px; }
+.o-link { color: var(--luca); text-decoration: underline; font-size: 15px; }
+.o-tag { font-size: 13px; font-weight: 600; padding: 4px 10px; margin-left: auto; } .o-tag.ok { background: var(--ok-bg); color: var(--ok-ink); } .o-tag.warn { background: var(--warn-bg); color: var(--warn-ink); }
+.o-doel { display: flex; gap: 12px; align-items: center; } .o-doel svg { width: 56px; height: 56px; flex: none; background: var(--luca-tint); padding: 6px; }
+.o-kop-pagina { font-weight: 600; font-size: 13px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); padding-top: 4px; }
+.o-week { display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; text-align: center; } .o-week span { display: grid; justify-items: center; gap: 2px; } .o-week small { font-size: 12px; color: var(--muted); } .o-week .leeg { width: 34px; height: 34px; border: 2px dashed var(--line); border-radius: 50%; }
+.o-bericht { display: grid; grid-template-columns: 28px 36px 1fr auto; gap: 10px; align-items: center; padding: 10px 0; border-top: 1px solid var(--line); font-size: 15px; } .o-bericht:first-child { border-top: 0; } .o-dag { color: var(--muted); font-size: 13px; text-transform: uppercase; } .o-bericht .o-tag { margin: 0; }
+.o-citaat { border-left: 4px solid var(--luca); padding: 8px 12px; background: var(--soft); font-size: 16px; }
+.o-redenen { display: flex; gap: 8px; flex-wrap: wrap; } .o-redenen span { display: inline-flex; gap: 6px; align-items: center; background: var(--soft); padding: 8px 12px; font-size: 15px; }
+.o-tekening { border: 1px solid var(--line); }
+.o-kind-rij { display: flex; align-items: center; gap: 12px; min-height: 52px; } .o-kind-rij b { font-weight: 600; flex: 1; }
+.o-schakel { width: 52px; height: 30px; background: var(--line); border-radius: 15px; padding: 3px; display: flex; } .o-schakel i { width: 24px; height: 24px; border-radius: 50%; background: #fff; } .o-schakel.aan { background: var(--ok); justify-content: flex-end; }
+`
+document.head.append(style)
+
+if (scene && SCENES[scene]) {
+  let [w, h, f] = SCENES[scene]
+  const laag = h < 700 && w > 600
+  const z = h < 500 ? h / 600 : 1
+  const bw = laag ? w / z : w, bh = laag ? h / z : h
+  document.body.style.cssText = `width:${w}px;height:${h}px;overflow:hidden;background:var(--bg);--W:${bw}px;--H:${bh}px`
+  app.innerHTML = f()
+  if (laag) { const m = app.querySelector('.kind-mock'); if (m) { m.classList.add('laag'); if (z < 1) m.style.zoom = z } }
+  document.title = scene
+} else {
+  document.body.style.cssText = 'padding:24px;background:#EEF3F8;font-family:Nunito'
+  app.innerHTML = `<h1 style="font-family:'Baloo 2'">Huisdier: scènes</h1><ul>${Object.keys(SCENES).map((s) => `<li><a href="?scene=${s}">${s}</a></li>`).join('')}</ul>`
+}
+</script>
+</body>
+</html>
