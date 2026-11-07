@@ -12,7 +12,7 @@ import { leesOpgeslagen, leegOpgeslagen, type Opgeslagen as WereldKaart } from '
 import { activiteitOmschrijving, activiteitSterren, blokKeuzes, limietVoor, regels as standaardRegels } from '../regels.ts'
 import type { Weging } from '../gewicht.ts'
 import { etersVoor, kookSleutel, standaardVoor, verbruikMetDelen } from '../voorraad.ts'
-import type { WeekmenuInstellingen, ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, GezondheidProfiel, Inzending, LogRegel, Maaltijd, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Spelregels, Potten, Taak, Tijdverzoek, VoorraadArtikel, VoorraadLogRegel, Recept, Winkel } from './types.ts'
+import type { WeekmenuInstellingen, ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, GezondheidProfiel, Inzending, LogRegel, Maaltijd, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Spelregels, Potten, DagboekDag, Taak, Tijdverzoek, VoorraadArtikel, VoorraadLogRegel, Recept, Winkel } from './types.ts'
 
 const DEMO_PIN = '1234'
 const WELKOM = 'Welkom! Je eerste sterren'
@@ -25,6 +25,8 @@ interface Toestand {
   log: LogRegel[]
   aankopen: Record<string, string[]>
   potten: Potten
+  dagboekAan: Record<string, boolean>
+  dagboek: DagboekDag[]
   aanbod: Aanbod
   /** Spelletjes die de ouders net vrijgaven en kinderen nog niet hoorden; per kind de laatste dag van het hoera. */
   nieuwVrij: string[]
@@ -78,6 +80,8 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
     log: kinderen.map((k, i) => ({ id: i + 1, kind_id: k.id, delta: 40, reden: 'Startsaldo (demo)', tijdstip: nu })),
     aankopen: {},
     potten: { eigen: {}, gezin: null },
+    dagboekAan: {},
+    dagboek: [],
     aanbod: { dicht: [], nieuw: [], verborgen: {}, prijzen: {} },
     // Twee spelletjes net vrijgegeven, zodat het dagelijkse hoera meteen te zien is.
     nieuwVrij: ['pompoen', 'basket'],
@@ -297,6 +301,26 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       const bij = Math.max(0, Math.min(sterren, t.regels.max_saldo - saldo(kind)))
       if (bij > 0) boek(kind, bij, activiteitOmschrijving(a))
       return bij
+    },
+    async dagboekOverzicht() { return { aan: { ...t.dagboekAan }, dagen: structuredClone(t.dagboek).sort((a, b) => b.dag.localeCompare(a.dag)) } },
+    async dagboekWeek(kindId) {
+      return t.dagboek.filter((d) => d.kind_id === kindId).sort((a, b) => a.dag.localeCompare(b.dag)).slice(-7).map((d) => ({ dag: d.dag, gevoel: d.gevoel }))
+    },
+    async dagboekOpslaan(kindId, i) {
+      if (!t.dagboekAan[kindId]) throw new Error('het dagboek staat uit')
+      const dag = dagVan(new Date())
+      const rij: DagboekDag = { kind_id: kindId, dag, gevoel: i.gevoel, redenen: i.redenen.slice(0, 2), tekst: i.tekst.slice(0, 300), tekening: i.tekening, wil_praten: i.wil_praten, gezien_op: null }
+      const bestaand = t.dagboek.findIndex((d) => d.kind_id === kindId && d.dag === dag)
+      if (bestaand >= 0) t.dagboek[bestaand] = rij; else t.dagboek.push(rij)
+    },
+    async dagboekInstellen(kindId, aan, pin): Promise<OuderUitkomst> {
+      if (!pinOk(pin)) return 'pincode_fout'
+      t.dagboekAan[kindId] = aan
+      return 'ingesteld'
+    },
+    async dagboekGezien(kindId, dag) {
+      const d = t.dagboek.find((x) => x.kind_id === kindId && x.dag === dag)
+      if (d) d.gezien_op = new Date().toISOString()
     },
     async potten() { return structuredClone(t.potten) },
     async potStorten(kindId, aantal) {

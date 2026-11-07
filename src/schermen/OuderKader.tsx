@@ -50,6 +50,8 @@ const iconen: Record<MenuIcoon | 'menu' | 'bel' | 'terug', ReactNode> = {
   // Etalage met een prijskaartje.
   aanbod: <><path d="M3 10l1.5-5h15L21 10M4 10v10h16V10M3 10h18" /><path d="M9 14h6v6H9z" /></>,
   // Speelknop in een rondje.
+  // Een lachend gezichtje.
+  dagboek: <><circle cx="12" cy="12" r="8.5" /><path d="M9 10h.01M15 10h.01M8.5 14c1 1.5 2.2 2.2 3.5 2.2s2.5-.7 3.5-2.2" /></>,
   proberen: <><circle cx="12" cy="12" r="8.5" /><path d="M10 8.5l5.5 3.5-5.5 3.5z" /></>,
   // De wereld: een huisje aan een weg met een boom.
   wereld: <><path d="M3 20h18M5 20v-7l4-4l4 4v7M9 20v-4h0M16 20v-5M16 15a2.5 2.5 0 1 0 0-5a2.5 2.5 0 0 0 0 5z" /></>,

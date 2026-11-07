@@ -142,3 +142,11 @@ in het ouderdeel. Het dagboek is bedoeld om te praten, niet om te belonen of te 
 ## Open vragen
 Zie het antwoord in de thread: het gaat om (1) pot apart of enkel een markering, (2) mag het kind sterren terughalen, (3) telt de
 pot mee voor het spaarmaximum, (4) bonus van de ouders, (5) inspreken ja of nee, (6) meldingen bij sombere dagen, (7) naam "Mijn dag".
+
+
+## Status Dagboek (7 november 2026): gebouwd
+
+- Server: migratie `20261107000300_dagboek.sql` (`dagboek_instelling`, `dagboek`, functies `dagboek_instellen`, `dagboek_opslaan`, `dagboek_week`, `dagboek_gezien`); alleen een ouder-account leest `dagboek` (RLS). Test: `supabase/tests/dagboek.test.sql`.
+- Kind: Ik → Mijn dag (`/kind/:id/dag`, `src/schermen/Dagboek.tsx`): gevoel, waarom (max. 2), schrijven of tekenen, "Ik wil graag praten". Tegel verschijnt pas als een ouder het voor dat kind aanzette. Geen sterren.
+- Ouder: Kinderen → Dagboek (`/ouder/dagboek`, `DagboekOuder.tsx`): aan/uit per kind (met pincode op een tablet), laatste dagen, detail met tekening en Gezien; op Vandaag een kaart bij "wil praten".
+- Nog niet: inspreken (fase 2) en een pushmelding bij "wil praten".

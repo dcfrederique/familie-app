@@ -10,6 +10,7 @@ import { supabase } from '../lib/supabase.ts'
 import { MijnTaken } from './OnzeTaken.tsx'
 import OuderKader, { KindAvatar } from './OuderKader.tsx'
 import { PotVolKaarten } from './PotBeheer.tsx'
+import { WilPratenKaarten } from './DagboekOuder.tsx'
 
 // Vandaag: wat op jou wacht en per kind sterren, taken en extra tijd.
 export default function OuderStart() {
@@ -45,6 +46,7 @@ export default function OuderStart() {
         </section>
       ))}
       <PotVolKaarten />
+      <WilPratenKaarten />
       <MijnTaken />
       {data && kinderen.map((kind) => {
         const lijst = takenVoorKind(data.taken, kind.id, data.inzendingen, new Date())

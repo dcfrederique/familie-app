@@ -96,6 +96,28 @@ export interface Potten {
   eigen: Record<string, Sterrenpot>
   gezin: Gezinspot | null
 }
+export type Gevoel = 'super' | 'blij' | 'gewoon' | 'moe' | 'verdrietig' | 'boos'
+export type DagboekReden = 'school' | 'vrienden' | 'thuis' | 'slapen' | 'eten' | 'spelen' | 'ziek' | 'anders'
+/** Een tekening in het dagboek: lijnen in een vlak van 600 × 260. */
+export interface Tekening { lijnen: { kleur: string; punten: [number, number][] }[] }
+/** Eén dag in het Dagboek (Mijn dag, docs/sterrenpot-dagboek.md). */
+export interface DagboekDag {
+  kind_id: string
+  dag: string
+  gevoel: Gevoel
+  redenen: DagboekReden[]
+  tekst: string
+  tekening: Tekening | null
+  wil_praten: boolean
+  gezien_op: string | null
+}
+export interface DagboekInvoer { gevoel: Gevoel; redenen: DagboekReden[]; tekst: string; tekening: Tekening | null; wil_praten: boolean }
+export interface DagboekOverzicht {
+  /** Per kind: heeft een ouder het dagboek aangezet? */
+  aan: Record<string, boolean>
+  /** De laatste twee weken; alleen een ouder-account krijgt ze, een tablet krijgt een lege lijst. */
+  dagen: DagboekDag[]
+}
 export interface PotInstelling { aan: boolean; naam: string; prent: DoelPrent; doel: number }
 
 export interface LogRegel {
@@ -427,6 +449,14 @@ export interface Bron {
   kopen(kindId: string, soort: string, sleutel: string, naam: string): Promise<void>
   /** Alle potten van het gezin; leeg als er (nog) niets is ingesteld of de migratie ontbreekt. */
   potten(): Promise<Potten>
+  /** Dagboek: wie het aan heeft en (voor ouders) de laatste dagen. Leeg als de migratie ontbreekt. */
+  dagboekOverzicht(): Promise<DagboekOverzicht>
+  /** De eigen gezichtjes van de laatste dagen van dit kind (voor het bedankscherm). */
+  dagboekWeek(kindId: string): Promise<{ dag: string; gevoel: Gevoel }[]>
+  /** Het kind bewaart de dag van vandaag; nog eens bewaren past hem aan. */
+  dagboekOpslaan(kindId: string, invoer: DagboekInvoer): Promise<void>
+  dagboekInstellen(kindId: string, aan: boolean, pin: string | null): Promise<OuderUitkomst>
+  dagboekGezien(kindId: string, dag: string): Promise<void>
   /** Kind doet sterren in de eigen pot (van het vrije saldo). */
   potStorten(kindId: string, aantal: number): Promise<void>
   /** Kind geeft sterren aan de gezinspot (maximum per kind, nooit meer dan er nog nodig is). */

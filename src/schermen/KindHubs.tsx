@@ -15,6 +15,7 @@ import './kindhubs.css'
 
 const KLOK = 'M12 21a9 9 0 1 0 0-18a9 9 0 0 0 0 18zM12 7v5l3 2'
 const PENSEEL = 'M12 3a9 9 0 1 0 0 18c1.5 0 2-1 2-2s-1-1.5-1-2.5S14 15 15 15h2a4 4 0 0 0 4-4c0-4.5-4-8-9-8zM7.5 11h.01M10 7.5h.01M15 8h.01'
+const DAG = 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM8.5 10h.01M15.5 10h.01M8 14.5c1 1.5 2.5 2.2 4 2.2s3-.7 4-2.2'
 const SLOT = 'M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4'
 
 /** Eén grote tegel in een hubscherm; wie niet leest ziet enkel het prentje en hoort het woord bij het tikken. */
@@ -76,15 +77,18 @@ export function KindIk() {
 }
 
 function IkInhoud({ kind }: { kind: Gebruiker }) {
-  const { perKind } = useSessie()
+  const { perKind, bron } = useSessie()
+  const { data: dagboek } = useGegevens(bron ? () => bron.dagboekOverzicht() : null, [bron])
+  const dagAan = !!dagboek?.aan[kind.id]
   return (
     <>
-      <div className="hub-raster" style={{ '--kol': 3 } as React.CSSProperties}>
+      <div className="hub-raster" style={{ '--kol': dagAan ? 4 : 3 } as React.CSSProperties}>
         <HubTegel kind={kind} naar={`/kind/${kind.id}/figuurtje`} naam="Mijn figuurtje" uitleg="Aankleden" kleur="goud"
                   prent={<span className="hub-hoofd"><Figuurtje figuurtje={figuurtjeVan(kind)} uitsnede={hoofdUitsnede} /></span>} />
         <HubTegel kind={kind} naar={`/kind/${kind.id}/huis`} naam="Mijn huis" uitleg="Bouwen en versieren" kleur="oranje"
                   prent={<span className="hub-huis"><HuisPrent huis={huisVan(kind)} kaal /></span>} />
         <HubTegel kind={kind} naar={`/kind/${kind.id}/thema`} naam="Mijn thema" uitleg="Kies je kleur" kleur="paars" icoon={PENSEEL} />
+        {dagAan && <HubTegel kind={kind} naar={`/kind/${kind.id}/dag`} naam="Mijn dag" uitleg="Hoe voel ik me?" kleur="goud" icoon={DAG} />}
       </div>
       <div className="hub-tijd">
         <Link to={perKind ? '/ouder' : '/kinderen'} className="hub-ouders" aria-label={perKind ? 'Voor mama of papa' : 'Terug naar wie speelt er'}>

@@ -2,7 +2,7 @@ import type { SupabaseClient } from '@supabase/supabase-js'
 import type { Aanbod } from '../../data/aanbod.ts'
 import { maakWeergave, type WereldWeergave } from '../wereld/weergave.ts'
 import { leesOpgeslagen, type Opgeslagen as WereldKaart } from '../wereld/gebieden.ts'
-import type { ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, ChatOverzicht, GezondheidProfiel, SpraakToken, Inzending, LogRegel, Maaltijd, NieuweNotitie, NieuweOuderTaak, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Saldo, Sterrenpot, Gezinspot, Potten, Spelregels, Taak, Tijdverzoek, Winkel, VoorraadArtikel, VoorraadLogRegel, VoorraadOverzicht, Recept, Moment, WeekmenuInstellingen } from './types.ts'
+import type { DagboekOverzicht, DagboekDag, Gevoel, ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, ChatOverzicht, GezondheidProfiel, SpraakToken, Inzending, LogRegel, Maaltijd, NieuweNotitie, NieuweOuderTaak, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Saldo, Sterrenpot, Gezinspot, Potten, Spelregels, Taak, Tijdverzoek, Winkel, VoorraadArtikel, VoorraadLogRegel, VoorraadOverzicht, Recept, Moment, WeekmenuInstellingen } from './types.ts'
 
 // Postgres numeric komt als tekst of getal binnen.
 const getal = (w: unknown) => (w === null || w === undefined ? null : Number(w))
@@ -253,6 +253,35 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
       fout(error)
       if (!data) throw new Error('geen antwoord van spraak-token')
       return data
+    },
+    async dagboekOverzicht() {
+      const leeg: DagboekOverzicht = { aan: {}, dagen: [] }
+      const [aan, dagen] = await Promise.all([
+        sb.from('dagboek_instelling').select('kind_id, aan'),
+        sb.from('dagboek').select('kind_id, dag, gevoel, redenen, tekst, tekening, wil_praten, gezien_op').order('dag', { ascending: false }).limit(60),
+      ])
+      if (aan.error || dagen.error) return leeg
+      return {
+        aan: Object.fromEntries((aan.data ?? []).map((r) => [r.kind_id, r.aan])),
+        dagen: (dagen.data ?? []) as DagboekDag[],
+      }
+    },
+    async dagboekWeek(kindId) {
+      const { data, error } = await sb.rpc('dagboek_week', { p_kind: kindId })
+      if (error) return []
+      return (data ?? []) as { dag: string; gevoel: Gevoel }[]
+    },
+    async dagboekOpslaan(kindId, i) {
+      const { error } = await sb.rpc('dagboek_opslaan', { p_kind: kindId, p_gevoel: i.gevoel, p_redenen: i.redenen, p_tekst: i.tekst, p_tekening: i.tekening, p_wil_praten: i.wil_praten })
+      fout(error)
+    },
+    async dagboekInstellen(kindId, aan, pin) {
+      const { data, error } = await sb.rpc('dagboek_instellen', { p_kind: kindId, p_aan: aan, p_pin: pin })
+      fout(error)
+      return data as OuderUitkomst
+    },
+    async dagboekGezien(kindId, dag) {
+      fout((await sb.rpc('dagboek_gezien', { p_kind: kindId, p_dag: dag })).error)
     },
     async potten() {
       // Zonder migratie 20261107000200_sterrenpot is er nog geen pot.

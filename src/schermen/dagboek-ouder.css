@@ -1,0 +1,17 @@
+.dagboek-uitleg { margin: 0 0 8px; color: var(--muted); }
+.dagboek-fout { color: var(--warn-ink); background: var(--warn-bg); padding: 8px 12px; font-weight: 600; }
+.dagboek-kind, .dagboek-detail { display: grid; gap: 8px; }
+.dagboek-kop { display: flex; align-items: center; gap: 12px; }
+.dagboek-kop h2 { flex: 1; margin: 0; }
+.dagboek-aan { display: inline-flex; align-items: center; gap: 8px; min-height: 48px; font-weight: 600; }
+.dagboek-aan input { width: 28px; height: 28px; }
+.o-kop { display: flex; align-items: center; gap: 12px; }
+.o-grijs { color: var(--muted); }
+.o-bericht { display: flex; align-items: center; gap: 10px; min-height: 56px; width: 100%; text-align: left; background: none; border: 0; border-top: 1px solid var(--line); padding: 8px 0; font: inherit; color: inherit; }
+.o-dag { width: 28px; font-weight: 600; color: var(--muted); text-transform: uppercase; font-size: 12px; }
+.dagboek-rij { flex: 1; min-width: 0; }
+.o-tag.warn { background: var(--warn-bg); color: var(--warn-ink); padding: 2px 8px; font-size: 12px; font-weight: 600; }
+.dagboek-tekst { font-style: italic; }
+.dagboek-praten { background: var(--gold-bg); color: var(--gold-ink); padding: 8px 12px; font-weight: 600; }
+.dagboek-acties { display: flex; gap: 10px; }
+.dagboek-acties .knop { flex: 1; }

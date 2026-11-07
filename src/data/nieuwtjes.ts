@@ -19,6 +19,13 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.108',
+    datum: '2026-11-07',
+    titel: 'Dagboek: Mijn dag',
+    tekst: 'Een kind kan elke dag kiezen hoe het zich voelt (zes gezichtjes), waarover het ging (school, vrienden, thuis...) en er iets bij schrijven of tekenen. Zet het per kind aan bij Dagboek in het ouderdeel (Kinderen); dan verschijnt Mijn dag bij Ik. Alleen jullie kunnen het lezen en tikken op Gezien. Kiest het kind "Ik wil graag praten", dan staat er een kaart bij Vandaag. Er zijn geen sterren mee te verdienen.',
+    open: 'Nog geen inspreken en geen pushmelding bij "wil praten": je ziet het bij Vandaag.',
+  },
+  {
     versie: '0.107',
     datum: '2026-11-07',
     titel: 'Sterrenpot en gezinspot',

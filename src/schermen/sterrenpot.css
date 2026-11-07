@@ -69,11 +69,61 @@
 @media (orientation: portrait) {
   .pot-raster { grid-template-columns: minmax(0, 1fr); grid-template-rows: minmax(0, 38%) minmax(0, 1fr); }
 }
-@media (max-height: 500px) and (orientation: landscape) {
+@media (max-height: 700px) and (orientation: landscape) {
   .pot-raster { gap: 10px; padding-bottom: 6px; }
-  .pot-kaart { padding: 6px 14px; gap: 4px; }
-  .pot-groot { font-size: 26px; } .pot-doelnaam { font-size: 20px; }
-  .doel-icoon { width: 44px; height: 44px; padding: 4px; }
-  .pot-knop { min-height: 52px; font-size: 22px; }
-  .pot-tab { min-height: 44px; }
+  .pot-rechts { gap: 8px; align-content: stretch; grid-auto-rows: auto; }
+  .pot-kaart { padding: 6px 14px; gap: 4px; overflow: hidden; }
+  .pot-kaart.doel { gap: 12px; }
+  .pot-kaart.doel .pot-klein { display: none; }
+  .pot-groot { font-size: 26px; } .pot-doelnaam { font-size: 22px; }
+  .pot-balk { height: 16px; }
+  .doel-icoon { width: 44px; height: 44px; padding: 4px; border-radius: 14px; }
+  .pot-knop { min-height: 56px; font-size: 22px; }
+  .pot-tab { min-height: 48px; }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .pot-raster { gap: 8px; padding-bottom: 4px; }
+  .pot-tabs { padding: 0 0 4px; }
+  .pot-tab { min-height: 40px; font-size: 17px; padding: 0 18px; }
+  .pot-rechts { gap: 6px; }
+  .pot-kaart { padding: 4px 12px; gap: 2px; }
+  .pot-kaart .pot-klein { display: none; }
+  .pot-kaart .pot-vrij { display: inline-flex; }
+  .pot-groot { font-size: 20px; } .pot-doelnaam { font-size: 18px; }
+  .pot-balk { height: 12px; }
+  .doel-icoon { width: 34px; height: 34px; padding: 2px; }
+  .pot-knop { min-height: 48px; font-size: 20px; }
+  .pot-links { padding: 4px; }
+}
+
+/* Samen op een lage tablet of liggende gsm: de bijdragen van de kinderen naast elkaar in plaats van onder elkaar. */
+@media (max-height: 700px) and (orientation: landscape) {
+  .pot-raster.samen .pot-kaart:not(.doel):not(.acties) { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
+  .pot-raster.samen .pot-kaart:not(.doel):not(.acties) > .pot-groot,
+  .pot-raster.samen .pot-kaart:not(.doel):not(.acties) > .pot-balk { flex: 1 0 100%; }
+  .pot-raster.samen .pot-kaart:not(.doel):not(.acties) > .pot-klein { display: none; }
+  .pot-raster.samen .bijdrage { flex: 1 1 0; grid-template-columns: 30px 1fr 34px; gap: 6px; min-width: 0; }
+  .pot-raster.samen .bij-av { width: 30px; height: 30px; font-size: 15px; }
+  .pot-raster.samen .bij-balk { height: 14px; }
+  .pot-raster.samen .bijdrage b { font-size: 18px; }
+  .pot-raster.samen .pot-kaart.acties .pot-klein { display: none; }
+  .pot-raster.samen .pot-kaart.doel { padding: 4px 14px; }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .pot-raster.samen .pot-kaart { padding: 4px 12px; }
+  .pot-raster.samen .pot-knop { min-height: 48px; }
+  .pot-raster.samen .pot-doelnaam { font-size: 18px; }
+  .pot-raster.samen .doel-icoon { width: 34px; height: 34px; }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .pot-raster.samen .pot-kaart:not(.doel):not(.acties) { gap: 2px 8px; padding: 2px 12px; }
+  .pot-raster.samen .pot-groot { font-size: 16px; line-height: 1.1; }
+  .pot-raster.samen .pot-balk { height: 10px; }
+  .pot-raster.samen .bijdrage { grid-template-columns: 24px 1fr 28px; }
+  .pot-raster.samen .bij-av { width: 24px; height: 24px; font-size: 13px; }
+  .pot-raster.samen .bij-balk { height: 10px; }
+  .pot-raster.samen .bijdrage b { font-size: 15px; }
+  .pot-raster.samen .pot-kaart.doel { padding: 2px 12px; }
+  .pot-raster.samen .doel-icoon { width: 30px; height: 30px; }
+  .pot-raster.samen .pot-knop { min-height: 44px; }
 }

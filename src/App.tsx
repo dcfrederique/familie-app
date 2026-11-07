@@ -57,6 +57,7 @@ import Spelregels from './schermen/Spelregels.tsx'
 import Winkelaanbod from './schermen/Winkelaanbod.tsx'
 import Winkel from './schermen/Winkel.tsx'
 import SterrenPot from './schermen/SterrenPot.tsx'
+import Dagboek from './schermen/Dagboek.tsx'
 import Nieuwtjes from './schermen/Nieuwtjes.tsx'
 import PincodeBeheer from './schermen/PincodeBeheer.tsx'
 import Weekmenu from './schermen/Weekmenu.tsx'
@@ -77,6 +78,7 @@ import KaartBewerken from './schermen/KaartBewerken.tsx'
 import Chat from './schermen/Chat.tsx'
 import OuderChat from './schermen/OuderChat.tsx'
 import Proberen from './schermen/Proberen.tsx'
+import DagboekOuder from './schermen/DagboekOuder.tsx'
 import Welkom from './schermen/Welkom.tsx'
 import Welkomstpad from './schermen/Welkomstpad.tsx'
 import WieSpeelt from './schermen/WieSpeelt.tsx'
@@ -111,6 +113,7 @@ export default function App() {
         <Route path="ik" element={<KindIk />} />
         <Route path="winkel" element={<Winkel />} />
         <Route path="pot" element={<SterrenPot />} />
+        <Route path="dag" element={<Dagboek />} />
         <Route path="rekenen" element={<Rekenen />} />
         <Route path="memory" element={<Memory />} />
         <Route path="penalty" element={<Penalty />} />
@@ -164,6 +167,7 @@ export default function App() {
       <Route path="/ouder/testmelding" element={<Testmelding />} />
       <Route path="/ouder/spelregels" element={<Spelregels />} />
       <Route path="/ouder/proberen" element={<Proberen />} />
+      <Route path="/ouder/dagboek" element={<DagboekOuder />} />
       <Route path="/ouder/aanbod" element={<Winkelaanbod />} />
       <Route path="/ouder/nieuw" element={<Nieuwtjes />} />
       <Route path="/ouder/pincode" element={<PincodeBeheer />} />
