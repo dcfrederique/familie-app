@@ -120,7 +120,6 @@ function StartLezer({ deel, kind, lijst, geladen, vrij, eten, kies }: {
               <SterrenNaarWinkel kindId={kind.id} aantal={vrij} metWoord />
               <PotChip kind={kind} />
               <HuisdierChip kind={kind} />
-          <HuisdierChip kind={kind} />
               {eten && <Vanavond eten={eten} />}
             </div>
           </div>

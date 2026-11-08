@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.115',
+    datum: '2026-11-08',
+    titel: 'Huisdier stond dubbel op het startscherm',
+    tekst: 'Op het startscherm van de kinderen stond het huisdier door een fout twee keer in de kop. Nu staat er weer maar één.',
+  },
+  {
     versie: '0.114',
     datum: '2026-11-08',
     titel: 'Andere soorten figuurtjes: robot, katje, ridder, astronaut en draakje',
