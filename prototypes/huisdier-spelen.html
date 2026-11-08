@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="nl-BE">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Huisdier spelen (mockup)</title>
+<!--
+  Mockup (8 november 2026): spelletjes met het huisdier. Niet gebouwd. Dev-server: npm run dev en open /prototypes/huisdier-spelen.html?scene=...
+    npm run dev   en open   /prototypes/huisdier.html?scene=luca
+-->
+<style>body{margin:0}#app{display:contents}</style>
+</head>
+<body>
+<div id="app"></div>
+<script type="module">
+import '@fontsource/baloo-2/latin-600.css'
+import '@fontsource/baloo-2/latin-800.css'
+import '@fontsource/nunito/latin-600.css'
+import '@fontsource/nunito/latin-700.css'
+import '@fontsource/nunito/latin-800.css'
+import '@fontsource/ibm-plex-sans/latin-400.css'
+import '@fontsource/ibm-plex-sans/latin-500.css'
+import '@fontsource/ibm-plex-sans/latin-600.css'
+import '/src/styles/thema.css'
+import '/src/schermen/schermen.css'
+import '/src/schermen/kindbalk.css'
+import '/src/schermen/kindhubs.css'
+import '/src/schermen/thema-schermen.css'
+import '/src/schermen/ouder.css'
+import { kopPrent } from '/src/data/themaPrenten.ts'
+
+
+import { dierSvg } from '/src/lib/huisdierTekening.ts'
+/* ───────── Iconen ───────── */
+const ic = (d, g = 32) => `<svg class="ic" viewBox="0 0 24 24" width="${g}" height="${g}" aria-hidden="true"><path d="${d}"/></svg>`
+const P = {
+  thuis: 'M4 11l8-7 8 7v9a1 1 0 0 1-1 1h-4v-6h-6v6H5a1 1 0 0 1-1-1z',
+  taken: 'M9 6h11M9 12h11M9 18h11M4 6l1 1l2-2M4 12l1 1l2-2M4 18l1 1l2-2',
+  spelen: 'M6 9h12a4 4 0 0 1 0 8c-1.5 0-2.5-1-3-2H9c-.5 1-1.5 2-3 2a4 4 0 0 1 0-8zM8 11v3M6.5 12.5h3M15.5 12h.01M17.5 14h.01',
+  winkel: 'M4 9l1.5-5h13L20 9M4 9h16v11H4zM4 9c0 2 3 2 4 0c1 2 3 2 4 0c1 2 3 2 4 0c1 2 4 2 4 0M10 20v-5h4v5',
+  chat: 'M4 5h16v11H10l-5 4v-4H4z',
+  ik: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zM8.5 10h.01M15.5 10h.01M8 14.5c1 1.5 2.5 2.2 4 2.2s3-.7 4-2.2',
+  terug: 'M15 5l-7 7 7 7',
+  geluid: 'M4 10h4l5-4v12l-5-4H4zM16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11',
+  mic: 'M12 3a3 3 0 0 1 3 3v5a3 3 0 0 1-6 0V6a3 3 0 0 1 3-3zM6 11a6 6 0 0 0 12 0M12 17v4M9 21h6',
+  potlood: 'M4 20l1-4L16 5l3 3L8 19zM14 7l3 3',
+  tekst: 'M5 7h14M5 12h14M5 17h9',
+  vink: 'M5 12.5l4.5 4.5L19 7.5',
+  plus: 'M12 5v14M5 12h14',
+  min: 'M5 12h14',
+  slot: 'M5 11h14v10H5zM8 11V7a4 4 0 0 1 8 0v4',
+  pot: 'M8 4h8M9 4v3M15 4v3M7 7h10c1 1 2 3 2 6v5a3 3 0 0 1-3 3H8a3 3 0 0 1-3-3v-5c0-3 1-5 2-6z',
+  chatpraat: 'M4 5h16v11H10l-5 4v-4H4zM8 10h.01M12 10h.01M16 10h.01',
+  menu: 'M4 7h16M4 12h16M4 17h16',
+  bel: 'M6 16V11a6 6 0 0 1 12 0v5l2 2H4zM10 21h4',
+}
+const STER = (g = 22, f = '#F2B33D', s = '#B8800F') => `<svg viewBox="0 0 24 24" width="${g}" height="${g}" aria-hidden="true"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.3 6.1 20.6l1.3-6.6L2.5 9.4l6.6-.8z" fill="${f}" stroke="${s}" stroke-width="1.4" stroke-linejoin="round"/></svg>`
+
+/* ───────── Kindframe ───────── */
+const BALK = (actief, k) => `
+<nav class="kind-balk" aria-label="Menu">
+  ${[['thuis', 'Thuis'], ['taken', 'Taken'], ['spelen', 'Spelen'], ['winkel', 'Winkel'], ['chat', 'Chat'], ['ik', 'Ik']].filter(([s]) => s !== 'chat' || k.chat !== false).map(([s, n]) => `
+  <span class="balk-deel${s === actief ? ' actief' : ''}"><span class="balk-icoon">${ic(P[s], 36)}</span>${k.leest ? `<span class="balk-naam">${n}</span>` : ''}</span>`).join('')}
+</nav>`
+
+function kop(k, scherm, titel, sub, rechts = '') {
+  const lees = k.leest
+  return `<header class="thema-kop">
+    <svg class="thema-kop-prent" viewBox="0 0 1000 190" preserveAspectRatio="xMaxYMax slice" aria-hidden="true">${kopPrent(k.thema, scherm)}</svg>
+    <div class="thema-kop-inhoud">
+      <span class="rond">${ic(P.terug, 28)}</span>
+      <div class="thema-kop-tekst"><h1 class="display thema-kop-titel${lees ? '' : ' thema-verborgen'}">${titel}</h1>${lees && sub ? `<span class="thema-kop-sub">${sub}</span>` : ''}</div>
+      ${rechts}<span class="rond">${ic(P.geluid, 26)}</span>
+    </div></header>`
+}
+const frame = (kid, scherm, kopHtml, inhoud, actief) => {
+  const k = KINDEREN[kid]
+  return `<div class="kind kleur-${k.kleur} thema thema-${k.thema} thema-scherm-${scherm} kind-mock">
+    ${kopHtml}
+    <main class="mock-inhoud">${inhoud}</main>
+    ${BALK(actief, k)}
+  </div>`
+}
+const pil = (n, kid) => `<span class="mijlpaal sterren-pil-mock">${STER(26)}<b class="display">${n}</b></span>`
+
+
+/* ───────── Kinderen ───────── */
+const KINDEREN = {
+  luca: { naam: 'Luca', kleur: 'blauw', thema: 'race', leest: true, dier: 'dino', dnaam: 'Rokko' },
+  yuna: { naam: 'Yuna', kleur: 'roze', thema: 'kasteel', leest: true, dier: 'konijn', dnaam: 'Pluisje' },
+  feline: { naam: 'Feline', kleur: 'lila', thema: 'tuin', leest: false, dier: 'kat', dnaam: 'Mimi' },
+}
+Object.assign(P, {
+  eten: 'M3 12h18a9 9 0 0 1-18 0zM8 8c0-2 1-2 1-4M12 8c0-2 1-2 1-4M16 8c0-2 1-2 1-4',
+  druppel: 'M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11z',
+  hart: 'M12 21s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6-8 11-8 11z',
+  pootje: 'M12 11c3 0 5 2.5 5 5 0 2-1.5 3-3 3-1 0-1.5-.5-2-.5s-1 .5-2 .5c-1.5 0-3-1-3-3 0-2.5 2-5 5-5z',
+})
+const HART = (g = 26, vol = true) => `<svg viewBox="0 0 24 24" width="${g}" height="${g}" aria-hidden="true"><path d="${P.hart}" fill="${vol ? '#EF5A7A' : '#fff'}" stroke="${vol ? '#B02A4A' : '#9AA6B5'}" stroke-width="1.5" stroke-linejoin="round"/></svg>`
+const POOT = (g = 30, vol = true) => `<svg viewBox="0 0 24 24" width="${g}" height="${g}" aria-hidden="true"><g fill="${vol ? '#8A5A2B' : '#fff'}" stroke="${vol ? '#5E3A15' : '#9AA6B5'}" stroke-width="1.3"><ellipse cx="12" cy="16" rx="5" ry="4"/><circle cx="6" cy="10" r="2.2"/><circle cx="10" cy="6.5" r="2.2"/><circle cx="14" cy="6.5" r="2.2"/><circle cx="18" cy="10" r="2.2"/></g></svg>`
+
+/* ───────── Spelideeën ───────── */
+const SOORT = { luca: ['dino', 'kind'], yuna: ['konijn', 'groot'], feline: ['kat', 'baby'] }
+const pet = (kid, stemming = 'blij') => dierSvg(SOORT[kid][0], SOORT[kid][1], stemming)
+const KL = { race: ['#D9E6FB', '#B7CFF3', '#8FA8D6'], kasteel: ['#F9E1EC', '#F0C3D8', '#C99BB3'], tuin: ['#E3F4D9', '#C6E8B4', '#A8CF92'] }
+const veld = (kid, inhoud, extra = '') => {
+  const c = KL[KINDEREN[kid].thema]
+  return `<div class="sp-veld" style="background:linear-gradient(${c[0]} 0 62%, ${c[1]} 62% 100%)"><i class="sp-rand" style="background:${c[2]}"></i>${inhoud}${extra}</div>`
+}
+const T = { // pictogrammen
+  zit: 'M7 9l5 5 5-5M7 15l5 5 5-5', rol: 'M19 12a7 7 0 1 1-2.5-5.4M19 4v4h-4', spring: 'M12 20V5M6 11l6-6 6 6', zwaai: 'M4 15c3-5 5-5 8 0s5 5 8 0',
+  zoek: 'M10 4a6 6 0 1 0 0 12 6 6 0 0 0 0-12zM15 15l5 5', vang: 'M4 10h16l-2 9H6zM9 6l1 4M15 6l-1 4', dans: 'M9 18a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM12 15V4l7 2',
+}
+const KOEKJE = (g = 56) => `<svg viewBox="0 0 40 40" width="${g}" height="${g}"><circle cx="20" cy="20" r="17" fill="#E0A458" stroke="#8A5A2B" stroke-width="2.6"/><g fill="#6B3E16"><circle cx="14" cy="15" r="2.6"/><circle cx="25" cy="13" r="2.4"/><circle cx="22" cy="25" r="2.8"/><circle cx="12" cy="26" r="2.2"/></g></svg>`
+const SOK = (g = 56) => `<svg viewBox="0 0 40 40" width="${g}" height="${g}"><path d="M13 5h14v15l7 8c2 3-1 7-5 7H16c-4 0-5-3-3-6z" fill="#B7B0E8" stroke="#5C52A8" stroke-width="2.6" stroke-linejoin="round"/><path d="M13 11h14" stroke="#5C52A8" stroke-width="3"/></svg>`
+const STRUIK = (g = 190) => `<svg viewBox="0 0 200 150" width="${g}" height="${g * .75}"><g fill="#4E9A4A" stroke="#2D6A33" stroke-width="3"><circle cx="50" cy="90" r="42"/><circle cx="100" cy="64" r="52"/><circle cx="150" cy="90" r="42"/><rect x="20" y="90" width="160" height="50" rx="20"/></g><g fill="#EF5A7A"><circle cx="70" cy="60" r="6"/><circle cx="128" cy="96" r="6"/><circle cx="96" cy="112" r="6"/></g></svg>`
+const DOOS = (g = 190) => `<svg viewBox="0 0 200 150" width="${g}" height="${g * .75}"><path d="M10 40h180v100H10z" fill="#D9A25F" stroke="#8A5A2B" stroke-width="4" stroke-linejoin="round"/><path d="M10 40l30-28h120l30 28z" fill="#E7B877" stroke="#8A5A2B" stroke-width="4" stroke-linejoin="round"/><path d="M80 40v36h40V40" fill="#C58E4C"/></svg>`
+const GORDIJN = (g = 190) => `<svg viewBox="0 0 200 150" width="${g}" height="${g * .75}"><path d="M20 140V16q40 20 80 0q40 20 80 0v124z" fill="#B58FE0" stroke="#6A4FB0" stroke-width="4" stroke-linejoin="round"/><path d="M60 30v108M100 24v114M140 30v108" stroke="#8E66C8" stroke-width="4"/></svg>`
+const TOETS = (naam, d, { kleur = '#fff', ring = false, g = 56 } = {}) => `<span class="sp-toets${ring ? ' ring' : ''}" style="background:${kleur}">${ic(d, g)}</span>`
+
+/* knoppenrij van Mijn huisdier, nu met Spelen */
+const knop4 = (leest, naam, d, kleur, prijs) => `<span class="hd-knop" style="--kn:${kleur}">${ic(d, leest ? 38 : 48)}${leest ? `<b class="display">${naam}</b>` : ''}<span class="hd-prijs">${prijs}</span></span>`
+function kamerMetSpelen(kid, { stemming = 'blij' } = {}) {
+  const k = KINDEREN[kid], leest = k.leest, [soort, st] = SOORT[kid]
+  const c = KL[k.thema]
+  const kopHtml = kop(k, 'figuurtje', 'Mijn huisdier', leest ? 'Samen spelen' : '', '')
+  return frame(kid, 'figuurtje', kopHtml, `
+    <div class="hd-raster">
+      <div class="hd-kamer"><div class="sp-veld in" style="background:linear-gradient(${c[0]} 0 62%, ${c[1]} 62% 100%)"><i class="sp-rand" style="background:${c[2]}"></i>
+        <div class="sp-dier" style="left:50%;bottom:2%;width:470px;transform:translateX(-50%)">${pet(kid, stemming)}</div></div></div>
+      <div class="hd-rechts">
+        <div class="pot-kaart"><div class="hd-naamrij"><span class="display hd-naam">${k.dnaam}</span></div>
+          <div class="hd-poten">${[1, 2, 3, 4, 5].map((i) => POOT(leest ? 30 : 38, i < 4)).join('')}</div></div>
+        <div class="pot-kaart hd-zorg">${[['Buikje', P.eten, 4, '#FFE3C8'], ['Schoon', P.druppel, 5, '#DDF0FF'], ['Blij', P.hart, 3, '#FFD9E2']].map(([n, d, v, t]) => `<div class="hd-meter"><span class="hd-micon" style="background:${t}">${ic(d, 30)}</span>${leest ? `<b class="hd-mnaam">${n}</b>` : ''}<span class="hd-harten">${meters(v)}</span></div>`).join('')}</div>
+        <div class="sp-spelen-knop" style="--kn:#7A56D6">${ic(T.dans, leest ? 46 : 60)}${leest ? `<b class="display">Samen spelen</b>` : ''}<span class="hd-prijs">${HART(22)} ${leest ? 'gratis' : ''}</span><span class="nieuw-label display">${leest ? 'Nieuw' : '★'}</span></div>
+        <div class="hd-knoppen">${knop4(leest, 'Eten', P.eten, '#E56A5A', `${STER(22)} 2`)}${knop4(leest, 'Wassen', P.druppel, '#3E9BD6', `${STER(22)} 1`)}${knop4(leest, 'Knuffelen', P.hart, '#E0568A', `${HART(22)} ${leest ? 'gratis' : ''}`)}</div>
+      </div>
+    </div>`, 'ik')
+}
+const meters = (v, g = 28) => [1, 2, 3, 4, 5].map((i) => HART(g, i <= v)).join('')
+
+/* spel kiezen */
+function kiezen(kid) {
+  const k = KINDEREN[kid], leest = k.leest
+  const t = (naam, uitleg, d, kleur, niv) => `<span class="sp-tegel"><span class="sp-tegel-prent" style="background:${kleur}">${ic(d, 84)}<span class="sp-mini">${pet(kid)}</span></span><b class="display">${leest ? naam : ''}</b>${leest ? `<small>${uitleg}</small>` : ''}</span>`
+  return frame(kid, 'figuurtje', kop(k, 'figuurtje', 'Samen spelen', leest ? `met ${k.dnaam}` : ''), `
+    <div class="hub-raster" style="--kol:3;flex:1">
+      ${t('Verstoppertje', `Waar zit ${k.dnaam}?`, T.zoek, '#CFE9C0')}
+      ${t('Koekjes vangen', 'Vang de koekjes in het mandje', T.vang, '#FFE2B0')}
+      ${t('Trucjes leren', `Leer ${k.dnaam} een kunstje`, T.zit, '#DCCDF7')}
+    </div>
+    <div class="pot-klein c">${leest ? 'Spelen met je huisdier kost niets en maakt het blij.' : ''}</div>`, 'ik')
+}
+
+/* 1 Verstoppertje */
+function verstoppertje(kid) {
+  const k = KINDEREN[kid], leest = k.leest
+  const plek = (x, svg, zit) => `<div class="sp-plek" style="left:${x}%">${zit ? `<div class="sp-kijk">${pet(kid, 'blij')}</div>` : ''}<div class="sp-voor">${svg}</div></div>`
+  const bol = `<div class="sp-bolletje display">${leest ? 'Waar zit ' + k.dnaam + '?' : '?'}</div>`
+  return frame(kid, 'figuurtje', kop(k, 'figuurtje', 'Verstoppertje', leest ? 'Tik waar hij zit' : ''), `
+    ${veld(kid, plek(17, STRUIK(), false) + plek(50, DOOS(), true) + plek(83, GORDIJN(), false), bol + `<div class="sp-score">${[1, 2, 3].map((i) => POOT(44, i < 3)).join('')}</div>`)}`, 'ik')
+}
+
+/* 2 Koekjes vangen */
+function vangen(kid) {
+  const k = KINDEREN[kid], leest = k.leest
+  const val = (x, y, s, r = 0) => `<div class="sp-val" style="left:${x}%;top:${y}%;transform:rotate(${r}deg)">${s}</div>`
+  const luca = kid === 'luca'
+  const v = val(24, 12, KOEKJE(), -10) + val(48, 36, KOEKJE(), 20) + val(66, 6, KOEKJE(), 0) + (luca ? val(36, 4, SOK(), 15) + val(78, 30, SOK(), -12) : val(82, 22, KOEKJE(), 12))
+  const mand = `<div class="sp-mandje"><svg viewBox="0 0 120 70" width="170"><path d="M4 8h112l-14 56H18z" fill="#E56A5A" stroke="#1C2433" stroke-width="3.4" stroke-linejoin="round"/><path d="M4 8h112" stroke="#1C2433" stroke-width="3.4"/></svg><span class="kk">${KOEKJE(46)}${KOEKJE(40)}</span></div>`
+  const pijl = (z) => `<span class="sp-pijl ${z}">${ic(z === 'l' ? 'M15 5l-7 7 7 7' : 'M9 5l7 7-7 7', 48)}</span>`
+  return frame(kid, 'figuurtje', kop(k, 'figuurtje', 'Koekjes vangen', leest ? (luca ? 'Pas op voor de sokken!' : 'Sleep het mandje') : ''), `
+    ${veld(kid, v + `<div class="sp-dier" style="left:40%;bottom:1%;width:340px">${pet(kid, 'eten')}</div>` + mand + pijl('l') + pijl('r'),
+      `<div class="sp-score">${KOEKJE(40)}<b class="display">7</b></div><div class="sp-hartrij">${meters(3, 34)}</div>`)}`, 'ik')
+}
+
+/* 3 Trucjes leren */
+function trucjes(kid) {
+  const k = KINDEREN[kid], leest = k.leest
+  const rij = ['zit', 'spring', 'rol']
+  const knoppen = ['zit', 'rol', 'spring', 'zwaai'].map((t, i) => `<span class="sp-trukknop${t === 'spring' ? ' nu' : ''}" style="background:${['#CFE9C0', '#FFE2B0', '#CDE3FA', '#F9D3E3'][i]}">${ic(T[t], 64)}${leest ? `<b class="display">${{ zit: 'Zit', rol: 'Rol', spring: 'Spring', zwaai: 'Zwaai' }[t]}</b>` : ''}</span>`).join('')
+  const volgorde = rij.map((t, i) => `<span class="sp-stap${i === 0 ? ' klaar' : i === 1 ? ' nu' : ''}">${i === 0 ? ic('M5 12.5l4.5 4.5L19 7.5', 40) : ic(T[t], 40)}</span>`).join(ic('M9 5l7 7-7 7', 28))
+  return frame(kid, 'figuurtje', kop(k, 'figuurtje', 'Trucjes leren', leest ? 'Doe na wat hij doet' : ''), `
+    ${veld(kid, `<div class="sp-dier" style="left:50%;bottom:3%;width:420px;transform:translateX(-50%)">${pet(kid, 'trots')}</div>
+      <div class="sp-bolletje display" style="top:8%">${leest ? `${k.dnaam} doet…` : ''}<span class="sp-volg">${volgorde}</span></div>`,
+      `<div class="sp-score">${leest ? '<small class="display" style="font-size:20px">Truc 2 van 3</small>' : ''}${[1, 2, 3].map((i) => HART(36, i < 2)).join('')}</div>`)}
+    <div class="sp-trukrij">${knoppen}</div>`, 'ik')
+}
+
+/* beloning */
+function klaar(kid) {
+  const k = KINDEREN[kid], leest = k.leest
+  const feest = `<div class="feest">${Array.from({ length: 30 }, (_, i) => `<i style="left:${(i * 37) % 100}%;top:${(i * 53) % 80}%;background:${['#F2B33D', '#E23B3B', '#2D6BD6', '#8FD18B', '#C2337A'][i % 5]};transform:rotate(${i * 40}deg)"></i>`).join('')}</div>`
+  return frame(kid, 'figuurtje', kop(k, 'figuurtje', 'Hoera!', ''), `${feest}
+    <div class="hoera-midden"><div class="hoera-na">${pet(kid, 'trots')}</div></div>
+    <div class="display hoera-titel">${leest ? `${k.dnaam} is blij!` : `${HART(70)}${HART(70)}${HART(70)}`}</div>
+    <div class="sp-klaar-rij">${leest ? '<span class="pot-klein">Blij</span>' : ''}${meters(5, 40)}${leest ? '<span class="sp-medaille">' + ic(T.zit, 30) + '<b class="display">Nieuw kunstje: spring!</b></span>' : ''}</div>
+    <span class="groot-knop-m goud mid">${ic(P.vink, 32)}${leest ? 'Nog een keer' : ''}</span>`, 'ik')
+}
+
+const SCENES = {
+  'kamer-luca': [1194, 834, () => kamerMetSpelen('luca')],
+  'kamer-feline': [1194, 834, () => kamerMetSpelen('feline')],
+  'kiezen-luca': [1194, 834, () => kiezen('luca')],
+  'kiezen-feline': [1194, 834, () => kiezen('feline')],
+  'verstoppertje-feline': [1194, 834, () => verstoppertje('feline')],
+  'verstoppertje-feline-laag': [1024, 600, () => verstoppertje('feline')],
+  'vangen-yuna': [1194, 834, () => vangen('yuna')],
+  'vangen-luca': [1194, 834, () => vangen('luca')],
+  'trucjes-luca': [1194, 834, () => trucjes('luca')],
+  'trucjes-yuna-laag': [1024, 600, () => trucjes('yuna')],
+  'klaar-yuna': [1194, 834, () => klaar('yuna')],
+  'klaar-feline': [1194, 834, () => klaar('feline')],
+}
+const q = new URLSearchParams(location.search)
+const scene = q.get('scene')
+const app = document.getElementById('app')
+const style = document.createElement('style')
+style.textContent = `
+/* ── kindschermen (mockup) ── */
+.kind-mock { width: 1194px; height: 834px; min-height: 0; overflow: hidden; display: flex; flex-direction: column; position: relative; background: var(--thema-achtergrond, var(--bg)); }
+.kind-mock > .thema-kop { margin: 18px 32px 8px; width: auto; flex: none; max-width: none; }
+.mock-inhoud { flex: 1; min-height: 0; display: flex; flex-direction: column; padding: 8px 32px 6px; gap: 12px; position: relative; }
+.kind-mock > .kind-balk { margin: 0 32px 16px; width: auto; flex: none; position: relative; z-index: 2; }
+.kind-mock .mock-inhoud { z-index: 1; }
+.pil-kop { display: inline-flex; align-items: center; gap: 6px; background: #fff; color: #1C2433; border-radius: 999px; padding: 6px 16px; min-height: 48px; font-size: 24px; }
+.pil-kop small { font: 700 14px Nunito; color: #4E5A6B; }
+.thema-race .pil-kop { background: #F3F6FC; }
+.sterren-pil-mock { display: none }
+
+.kind-mock { width: var(--W, 1194px); height: var(--H, 834px); }
+.kind-mock > .thema-kop { margin: calc(var(--H,834px) * .02) 32px 6px; }
+.thema-kop-prent { max-height: calc(var(--H,834px) * .2); }
+.pot-kaart { background: var(--surface); border-radius: 28px; box-shadow: 0 6px 0 var(--shade); padding: 12px 20px; display: grid; gap: 8px; }
+.pot-klein { font-size: 17px; font-weight: 700; color: var(--muted); }
+.pot-klein.c { text-align: center; }
+.pot-klein .vrij { display: inline-flex; }
+.groot-knop-m { min-height: 68px; border-radius: 34px; display: inline-flex; align-items: center; justify-content: center; gap: 10px; font: 800 22px 'Baloo 2'; padding: 0 26px; }
+.groot-knop-m.goud { background: #F2B33D; color: #3A2A00; }
+.groot-knop-m.mid { align-self: center; }
+.rond.klein-r { width: 64px; height: 64px; }
+.display.ok, .ok { color: var(--ok); }
+.feest { position: absolute; inset: 0; pointer-events: none; z-index: 0; }
+.feest i { position: absolute; width: 16px; height: 28px; border-radius: 4px; }
+.chip-hd { position: absolute; left: 560px; top: 96px; display: flex; align-items: center; gap: 12px; background: #fff; color: #1C2433; border-radius: 999px; padding: 4px 24px 4px 8px; box-shadow: 0 0 0 4px #F2B33D; }
+.chip-hd small { font: 800 14px Nunito; color: #4E5A6B; } .chip-hd .display { font-size: 18px; line-height: 1 }
+.chip-dier { width: 62px; height: 62px; } .chip-dier svg { width: 100%; height: 100% }
+.chip-h { display: flex; margin: 2px 0 }
+.overlay-basis img { position: absolute; inset: 0; }
+.uitleg-pijl { position: absolute; width: 300px; background: #1C2433; color: #fff; border-radius: 18px; padding: 12px 16px; font-weight: 800; font-size: 17px; }
+.uitleg-pijl::before { content: ''; position: absolute; left: 70px; top: -10px; border: 10px solid transparent; border-top: 0; border-bottom-color: #1C2433; }
+.hub-raster { display: grid; grid-template-columns: repeat(var(--kol), 1fr); gap: 20px; align-content: center; flex: 1; }
+.hub-tegel { position: relative; background: var(--surface); border-radius: 32px; box-shadow: 0 6px 0 var(--shade); display: grid; place-items: center; align-content: center; gap: 8px; padding: 20px; min-height: 260px; text-align: center; }
+.hub-tegel b { font-size: 28px; } .hub-tegel small { font: 700 17px Nunito; color: var(--muted); }
+.hub-icoon { width: 110px; height: 110px; border-radius: 30px; display: grid; place-items: center; }
+.nieuw-label { position: absolute; top: 12px; right: 16px; background: #F2B33D; color: #3A2A00; border-radius: 14px; padding: 2px 12px; font-size: 17px; }
+.pil-kop { display: inline-flex; align-items: center; gap: 6px; background: #fff; color: #1C2433; border-radius: 999px; padding: 6px 16px; min-height: 48px; font-size: 24px; }
+.pil-kop small { font: 700 14px Nunito; color: #4E5A6B; }
+.sterren-pil-mock { display: none }
+
+/* huisdier */
+.hd-raster { flex: 1; min-height: 0; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 20px; position: relative; z-index: 1; }
+.hd-kamer { position: relative; border-radius: 32px; overflow: hidden; box-shadow: 0 6px 0 var(--shade); min-height: 0; background: var(--surface); }
+.kamer-svg { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.hd-zegt { position: absolute; left: 20px; bottom: 16px; background: #fff; color: #1C2433; border-radius: 22px; padding: 6px 20px; font-size: 24px; }
+.hd-rechts { display: grid; gap: 10px; grid-template-rows: auto 1fr auto auto; min-height: 0; }
+.hd-naamrij { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.hd-naam { font-size: 40px; line-height: 1; }
+.hd-stadium { display: inline-flex; align-items: center; gap: 8px; background: var(--kid-tint); color: var(--kid); border-radius: 999px; padding: 6px 16px; font: 800 18px Nunito; min-height: 40px; }
+.hd-stadium i { width: 14px; height: 14px; border-radius: 50%; background: #fff; border: 2px solid var(--kid); } .hd-stadium i.aan { background: var(--kid); }
+.hd-poten { display: flex; gap: 6px; flex-wrap: wrap; }
+.hd-pijl { display: flex; align-items: center; gap: 6px; font-size: 34px; }
+.hd-groot { font-size: 36px; line-height: 1.1; }
+.hd-zorg { gap: 6px; align-content: center; }
+.hd-meter { display: flex; align-items: center; gap: 12px; }
+.hd-micon { width: 48px; height: 48px; border-radius: 16px; display: grid; place-items: center; color: #1C2433; flex: none; }
+.hd-mnaam { font: 800 20px Nunito; width: 90px; }
+.hd-harten { display: inline-flex; gap: 3px; margin-left: auto; }
+.hd-knoppen { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; align-self: end; }
+.hd-knop { min-height: 118px; border-radius: 28px; background: var(--kn); color: #fff; display: grid; justify-items: center; align-content: center; gap: 2px; padding: 8px 4px; box-shadow: 0 6px 0 rgba(0,0,0,.18); }
+.sp-veld { flex: 1; min-height: 0; position: relative; border-radius: 32px; overflow: hidden; box-shadow: 0 6px 0 var(--shade); }
+.sp-veld.in { position: absolute; inset: 0; border-radius: 0; box-shadow: none; }
+.sp-rand { position: absolute; left: 0; right: 0; top: 62%; height: 8px; opacity: .6; }
+.sp-dier { position: absolute; } .sp-dier svg { width: 100%; height: auto; display: block; }
+.sp-plek { position: absolute; bottom: 8%; width: 24%; transform: translateX(-50%); display: grid; justify-items: center; }
+.sp-plek .sp-voor { position: relative; z-index: 2; } .sp-plek .sp-voor svg { width: 100%; height: auto; display: block; }
+.sp-plek .sp-kijk { position: absolute; bottom: 50%; width: 66%; z-index: 1; } .sp-plek .sp-kijk svg { width: 100%; height: auto; display: block; }
+.sp-bolletje { position: absolute; left: 50%; top: 6%; transform: translateX(-50%); background: #fff; color: #1C2433; border-radius: 28px; padding: 8px 28px; font-size: 30px; box-shadow: 0 5px 0 rgba(0,0,0,.12); display: flex; align-items: center; gap: 16px; white-space: nowrap; }
+.sp-score { position: absolute; left: 18px; top: 14px; background: #fff; color: #1C2433; border-radius: 999px; padding: 6px 18px; display: flex; align-items: center; gap: 8px; min-height: 56px; }
+.sp-score b { font-size: 30px; } .sp-hartrij { position: absolute; right: 18px; top: 14px; background: #fff; border-radius: 999px; padding: 6px 16px; display: flex; gap: 2px; }
+.sp-val { position: absolute; } .sp-mandje { position: absolute; left: calc(40% + 85px); bottom: 330px; } .sp-mandje .kk { position: absolute; left: 30px; top: -22px; display: flex }
+.sp-pijl { position: absolute; bottom: 14px; width: 84px; height: 84px; border-radius: 50%; background: rgba(255,255,255,.85); color: #1C2433; display: grid; place-items: center; box-shadow: 0 4px 0 rgba(0,0,0,.12); }
+.sp-pijl.l { left: 16px; } .sp-pijl.r { right: 16px; }
+.sp-trukrij { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; flex: none; }
+.sp-trukknop { min-height: 104px; border-radius: 28px; display: grid; place-items: center; align-content: center; gap: 2px; color: #1C2433; box-shadow: 0 5px 0 rgba(0,0,0,.14); }
+.sp-trukknop b { font-size: 22px; line-height: 1; } .sp-trukknop.nu { outline: 5px solid #F2B33D; }
+.sp-volg { display: inline-flex; align-items: center; gap: 6px; }
+.sp-stap { width: 64px; height: 64px; border-radius: 20px; background: #EFE9FB; color: #1C2433; display: grid; place-items: center; } .sp-stap.klaar { background: #CFE9C0; } .sp-stap.nu { outline: 4px solid #F2B33D; }
+.sp-spelen-knop { background: var(--kn); color: #fff; border-radius: 28px; min-height: 92px; display: flex; align-items: center; justify-content: center; gap: 14px; box-shadow: 0 5px 0 rgba(0,0,0,.18); position: relative; padding: 0 18px; }
+.sp-spelen-knop b { font-size: 28px; } .sp-spelen-knop .nieuw-label { top: -10px; right: 14px; }
+.sp-tegel { background: var(--surface); border-radius: 32px; box-shadow: 0 6px 0 var(--shade); display: grid; justify-items: center; align-content: center; gap: 6px; padding: 14px; } .sp-tegel b { font-size: 30px; } .sp-tegel small { font: 700 18px Nunito; color: var(--muted); text-align: center; }
+.sp-tegel-prent { position: relative; width: 100%; height: 190px; border-radius: 24px; display: grid; place-items: center; color: #1C2433; } .sp-tegel-prent .sp-mini { position: absolute; right: 8px; bottom: -6px; width: 110px; } .sp-mini svg { width: 100%; height: auto; }
+.sp-klaar-rij { display: flex; align-items: center; justify-content: center; gap: 6px; position: relative; z-index: 1; }
+.sp-medaille { display: inline-flex; align-items: center; gap: 8px; margin-left: 22px; background: #FFF1C9; color: #3A2A00; border-radius: 999px; padding: 6px 18px; font-size: 22px; }
+.hoera-midden { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; } .hoera-na { height: 100%; max-height: 300px; aspect-ratio: 1; } .hoera-na svg { width: 100%; height: 100%; } .hoera-titel { font-size: 46px; text-align: center; position: relative; z-index: 1; display: flex; justify-content: center; gap: 10px; }
+.kind-mock .hd-knoppen .hd-knop { min-height: 96px; } .kind-mock.laag .sp-dier { width: 250px !important; } .kind-mock.laag .sp-score { transform: scale(.75); transform-origin: left top; } .kind-mock.laag .sp-bolletje { left: 60%; top: 4%; } .kind-mock.laag .sp-spelen-knop { min-height: 64px; } .kind-mock.laag .sp-mandje { bottom: 200px; } .kind-mock.laag .sp-trukknop { min-height: 70px; } .kind-mock.laag .sp-trukknop svg { width: 44px; height: 44px; } .kind-mock.laag .sp-bolletje { font-size: 22px; } .kind-mock.laag .sp-stap { width: 48px; height: 48px; }
+`
+document.head.append(style)
+document.head.append(style)
+
+if (scene && SCENES[scene]) {
+  let [w, h, f] = SCENES[scene]
+  const laag = h < 700 && w > 600
+  const z = h < 500 ? h / 600 : 1
+  const bw = laag ? w / z : w, bh = laag ? h / z : h
+  document.body.style.cssText = `width:${w}px;height:${h}px;overflow:hidden;background:var(--bg);--W:${bw}px;--H:${bh}px`
+  app.innerHTML = f()
+  if (laag) { const m = app.querySelector('.kind-mock'); if (m) { m.classList.add('laag'); if (z < 1) m.style.zoom = z } }
+  document.title = scene
+} else {
+  document.body.style.cssText = 'padding:24px;background:#EEF3F8;font-family:Nunito'
+  app.innerHTML = `<h1 style="font-family:'Baloo 2'">Huisdier spelen: scènes</h1><ul>${Object.keys(SCENES).map((s) => `<li><a href="?scene=${s}">${s}</a></li>`).join('')}</ul>`
+}
+</script>
+</body>
+</html>
