@@ -67,3 +67,7 @@ De tests in `src/data/*.test.ts` houden de twee gelijk.
   `activiteiten.test.sql`.
 - App: `KoopVraag.tsx` is het venster om te kopen, gebruikt in `Spelen.tsx` en `Kleerkast.tsx`. Het feestscherm
   voor mijlpalen (`NieuwStuk`) is weg.
+
+## Soorten figuurtjes (8 november 2026)
+
+Naast het kind kiest een kind bij Mijn figuurtje → **Soort** een robot, katje, ridder, astronaut of draakje (`soort` is een categorie van het figuurtje in `src/data/figuurtje.ts`, tekeningen in `src/lib/figuurtje/soorten.ts`). Prijzen: katje 30, robot 40, ridder 40, astronaut 50, draakje 60 (wie niet leest de helft); ze liggen pas in de winkel na vrijgave in Kinderen → Winkelaanbod. Bij een andere soort zijn alleen de tabbladen Soort en Extra te kiezen (hoeden, haar, shirt en broek horen bij het kind). Een nieuwe soort toevoegen: een tekening in `soorten.ts`, een stuk in de categorie `soort` en een rij in `figuurtje_stukken` (nieuwe migratie). Oudere figuurtjes zonder `soort` zijn een kind; de server accepteert 12 of 13 velden (migratie 20261108000200).

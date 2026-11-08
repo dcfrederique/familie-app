@@ -18,10 +18,12 @@ export type HuidKleur = keyof typeof huidKleuren
 export type HaarKleur = keyof typeof haarKleuren
 export type KledingKleur = keyof typeof kledingKleuren
 
-export type Categorie = 'huid' | 'gezicht' | 'haar' | 'hoofd' | 'shirt' | 'broek' | 'schoenen' | 'extra'
+export type Categorie = 'soort' | 'huid' | 'gezicht' | 'haar' | 'hoofd' | 'shirt' | 'broek' | 'schoenen' | 'extra'
 export type KleurVeld = 'haarKleur' | 'shirtKleur' | 'broekKleur' | 'schoenKleur'
 
 export interface Figuurtje {
+  /** Wat voor figuurtje: kind, robot, katje, ridder, astronaut of draakje. Oudere figuurtjes hebben het niet (= kind). */
+  soort: string
   huid: string
   gezicht: string
   haar: string
@@ -60,6 +62,13 @@ export interface CategorieInfo {
 const hoofdUitsnede = '24 -12 152 160'
 
 export const categorieen: CategorieInfo[] = [
+  { id: 'soort', naam: 'Soort', uitsnede: '-4 -12 208 302', prenten: true,
+    icoon: 'M7 8h10a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2zM12 8V4M9 13h.01M15 13h.01M9 16.5h6',
+    stukken: [
+      { id: 'kind', naam: 'Kind', prijs: 0, prenten: true }, { id: 'robot', naam: 'Robot', prijs: 40, prenten: true },
+      { id: 'kat', naam: 'Katje', prijs: 30, prenten: true }, { id: 'ridder', naam: 'Ridder', prijs: 40, prenten: true },
+      { id: 'astronaut', naam: 'Astronaut', prijs: 50, prenten: true }, { id: 'draak', naam: 'Draakje', prijs: 60, prenten: true },
+    ] },
   { id: 'huid', naam: 'Huid', uitsnede: hoofdUitsnede, prenten: true,
     icoon: 'M12 3c3 4 6 7 6 11a6 6 0 0 1-12 0c0-4 3-7 6-11z',
     stukken: Object.keys(huidKleuren).map((k) => ({ id: k, naam: k[0].toUpperCase() + k.slice(1), prijs: 0, prenten: true })) },
@@ -204,9 +213,11 @@ export const isVrij = (cat: Categorie, stuk: Stuk, v: Bezit) =>
   prijsVoor(stuk, v) === 0 || v.eigen.has(bezitSleutel(cat, stuk.id))
 
 /** Categorieën en stukken die dit kind te zien krijgt. */
-export function zichtbareCategorieen(kanLezen: boolean): CategorieInfo[] {
-  return categorieen.filter((c) => kanLezen || c.prenten)
+export function zichtbareCategorieen(kanLezen: boolean, soort = 'kind'): CategorieInfo[] {
+  return categorieen.filter((c) => (kanLezen || c.prenten) && (soort === 'kind' || soortDeelCategorieen.includes(c.id)))
 }
+/** Een robot, katje, ridder, astronaut of draakje heeft zijn eigen lijf: alleen de soort en een extra te kiezen. */
+export const soortDeelCategorieen: Categorie[] = ['soort', 'extra']
 export function zichtbareStukken(c: CategorieInfo, kanLezen: boolean): Stuk[] {
   return c.stukken.filter((s) => kanLezen || s.prenten)
 }
@@ -216,7 +227,7 @@ const themaShirt = { blauw: 'blauw', oranje: 'oranje', groen: 'groen', paars: 'p
 /** Basisfiguurtje voor wie er nog geen maakte: shirt in de kleur van het thema. */
 export function basisFiguurtje(thema: Kleur | null): Figuurtje {
   return {
-    huid: 'licht', gezicht: 'lach', haar: 'kort', haarKleur: 'bruin', hoofd: 'geen',
+    soort: 'kind', huid: 'licht', gezicht: 'lach', haar: 'kort', haarKleur: 'bruin', hoofd: 'geen',
     shirt: 'tshirt', shirtKleur: themaShirt[thema ?? 'blauw'], broek: 'lang', broekKleur: 'jeans',
     schoenen: 'sport', schoenKleur: 'wit', extra: 'geen',
   }
@@ -231,6 +242,7 @@ export function verrassing(v: Bezit, huidig: Figuurtje, kans: () => number = Mat
   const kies = <T,>(xs: T[]) => xs[Math.floor(kans() * xs.length)]
   const uit: Figuurtje = { ...huidig }
   for (const c of zichtbareCategorieen(v.kanLezen)) {
+    if (c.id !== 'soort' && uit.soort !== 'kind' && !soortDeelCategorieen.includes(c.id)) continue
     uit[c.id] = kies(zichtbareStukken(c, v.kanLezen).filter((s) => isVrij(c.id, s, v) && mag(c.id, s))).id
     if (c.kleur) uit[c.kleur.veld] = kies(Object.keys(c.kleur.palet))
   }

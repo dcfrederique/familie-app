@@ -57,6 +57,7 @@ export default function Kleerkast({ ouder = false }: { ouder?: boolean }) {
       start[info.id] = s
       setCat(info.id)
     }
+    if (!zichtbareCategorieen(kind.kan_lezen, start.soort).some((c) => c.id === 'haar')) setCat('soort')
     setFiguurtje(start)
   }, [kind, figuurtje, zoek])
   useEffect(() => () => window.clearTimeout(proefKlok.current), [])
@@ -80,6 +81,8 @@ export default function Kleerkast({ ouder = false }: { ouder?: boolean }) {
   function wijzig(nieuw: FiguurtjeData) {
     setVorige((h) => [...h, figuurtje!])
     setFiguurtje(nieuw)
+    // Een andere soort heeft niet alle tabbladen: val terug op Soort als dit tabblad verdwijnt.
+    if (!zichtbareCategorieen(lezer, nieuw.soort).some((c) => c.id === cat)) setCat('soort')
     setProef(null)
     setHuppel((n) => n + 1)
   }
@@ -162,7 +165,7 @@ export default function Kleerkast({ ouder = false }: { ouder?: boolean }) {
 
           <section className="kast">
             <div className="kast-tabs" role="tablist" aria-label="Wat wil je veranderen?">
-              {zichtbareCategorieen(lezer).map((c) => (
+              {zichtbareCategorieen(lezer, figuurtje.soort).map((c) => (
                 <button key={c.id} type="button" role="tab" className="kast-tab" aria-selected={c.id === cat} aria-label={c.naam}
                         onClick={() => { setCat(c.id); setProef(null); zeg(c.naam) }}>
                   <svg className="ic" viewBox="0 0 24 24" width={lezer ? 28 : 40} height={lezer ? 28 : 40} aria-hidden="true"><path d={c.icoon} /></svg>

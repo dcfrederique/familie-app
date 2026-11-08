@@ -21,7 +21,7 @@ const alsStuk = (soort: string, s: Stuk, huis: boolean): CadeauStuk => ({ soort,
 
 /** Alle stukken die cadeau kunnen: figuurtje (zonder huid) en huis (zonder de grootte van het huis) dat iets kost. */
 export const cadeauStukken = (kanLezen: boolean): CadeauStuk[] => [
-  ...categorieen.filter((c) => c.id !== 'huid' && (kanLezen || c.prenten))
+  ...categorieen.filter((c) => c.id !== 'huid' && c.id !== 'soort' && (kanLezen || c.prenten))
     .flatMap((c) => c.stukken.filter((s) => s.prijs > 0 && (kanLezen || s.prenten)).map((s) => alsStuk(c.id, s, false))),
   ...huisCategorieen.filter((c) => c.id !== 'huis' && (kanLezen || c.prenten))
     .flatMap((c) => c.stukken.filter((s) => s.prijs > 0 && (kanLezen || s.prenten)).map((s) => alsStuk(c.id, s, true))),

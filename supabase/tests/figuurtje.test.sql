@@ -107,6 +107,14 @@ select public.figuurtje_bewaren(:'pim', pg_temp.fig('extra', 'cape'));
 select public.figuurtje_bewaren(:'lex', null);
 select pg_temp.gelijk((select figuurtje from public.gebruikers where id = :'lex'), null::jsonb, 'teruggezet');
 
+\echo '6b. Soorten figuurtjes: kind zonder soort of met soort, de rest pas na vrijgave'
+select public.figuurtje_bewaren(:'pim', pg_temp.fig('soort', 'kind'));
+select pg_temp.gelijk((select figuurtje ->> 'soort' from public.gebruikers where id = :'pim'), 'kind', 'soort bewaard');
+select pg_temp.fout(format('select public.figuurtje_bewaren(%L, %L)', :'pim', pg_temp.fig('soort', 'robot')), 'nog niet in de winkel');
+select pg_temp.fout(format('select public.figuurtje_bewaren(%L, %L)', :'pim', pg_temp.fig('soort', 'spook')), 'onbekend stuk');
+select pg_temp.gelijk((select string_agg(sleutel || ':' || prijs, ',' order by sleutel) from public.figuurtje_stukken where soort = 'soort'),
+                      'astronaut:50,draak:60,kat:30,kind:0,ridder:40,robot:40', 'soorten in de catalogus');
+
 \echo '7. Andere gezinnen zien niets'
 reset role;
 insert into auth.users values ('00000000-0000-0000-0000-000000000303');

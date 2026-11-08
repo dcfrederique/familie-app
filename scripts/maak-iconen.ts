@@ -7,7 +7,7 @@ import { mkdirSync, writeFileSync } from 'node:fs'
 import type { Figuurtje } from '../src/data/figuurtje.ts'
 import { tekenFiguurtje } from '../src/lib/figuurtje/tekenen.ts'
 
-const basis: Figuurtje = { huid: 'licht', gezicht: 'lach', haar: 'kort', haarKleur: 'bruin', hoofd: 'geen', shirt: 'tshirt',
+const basis: Figuurtje = { soort: 'kind', huid: 'licht', gezicht: 'lach', haar: 'kort', haarKleur: 'bruin', hoofd: 'geen', shirt: 'tshirt',
   shirtKleur: 'blauw', broek: 'lang', broekKleur: 'jeans', schoenen: 'sport', schoenKleur: 'wit', extra: 'geen' }
 const gezin = {
   papa:   { ...basis, haar: 'kort', haarKleur: 'bruin', shirtKleur: 'donker', gezicht: 'groot' },

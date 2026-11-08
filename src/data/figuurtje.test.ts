@@ -4,7 +4,7 @@ import { tekenFiguurtje } from '../lib/figuurtje/tekenen.ts'
 import nieuw from '../../supabase/migrations/20261024000500_sterren_kopen.sql?raw'
 import { insertBlokken } from '../lib/laterMigraties.ts'
 import {
-  basisFiguurtje, categorieen, controleer, haarKleuren, isVrij, kledingKleuren, prijsVoor, verrassing, zichtbareCategorieen,
+  basisFiguurtje, categorieen, controleer, figuurtjeVan, haarKleuren, isVrij, kledingKleuren, prijsVoor, verrassing, zichtbareCategorieen,
 } from './figuurtje.ts'
 
 const geen = new Set<string>()
@@ -74,6 +74,31 @@ describe('tekenen', () => {
     const raar = tekenFiguurtje({ ...basisFiguurtje(null), shirtKleur: '"><script>', huid: 'x' }, 'a"b')
     expect(raar).not.toContain('<script>')
     expect(raar).not.toContain('a"b')
+  })
+})
+
+describe('soorten figuurtjes', () => {
+  it('tekent elke soort met een eigen lijf en een extra erbij', () => {
+    const soorten = categorieen.find((c) => c.id === 'soort')!.stukken.map((s) => s.id)
+    expect(soorten).toEqual(['kind', 'robot', 'kat', 'ridder', 'astronaut', 'draak'])
+    const tekeningen = new Set(soorten.map((soort) => tekenFiguurtje({ ...basisFiguurtje(null), soort }, 'f')))
+    expect(tekeningen.size).toBe(soorten.length)
+    for (const soort of soorten) {
+      const svg = tekenFiguurtje({ ...basisFiguurtje(null), soort, extra: 'cape' }, 'f')
+      expect(svg).not.toContain('undefined')
+      expect(svg).toContain('#D93A3A')
+    }
+  })
+  it('toont bij een andere soort alleen Soort en Extra', () => {
+    expect(zichtbareCategorieen(true, 'robot').map((c) => c.id)).toEqual(['soort', 'extra'])
+    expect(zichtbareCategorieen(true, 'kind').length).toBe(categorieen.length)
+  })
+  it('een oud figuurtje zonder soort is een kind en een nieuwe soort moet gekocht zijn', () => {
+    const oud = { ...basisFiguurtje(null) } as Partial<ReturnType<typeof basisFiguurtje>>
+    delete oud.soort
+    expect(figuurtjeVan({ figuurtje: oud as never, thema: null }).soort).toBe('kind')
+    expect(controleer({ ...basisFiguurtje(null), soort: 'robot' }, luca)).toMatch(/nog niet gekocht/)
+    expect(controleer({ ...basisFiguurtje(null), soort: 'robot' }, { ...luca, eigen: new Set(['soort:robot']) })).toBeNull()
   })
 })
 

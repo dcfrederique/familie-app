@@ -19,6 +19,13 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.114',
+    datum: '2026-11-08',
+    titel: 'Andere soorten figuurtjes: robot, katje, ridder, astronaut en draakje',
+    tekst: 'Bij Mijn figuurtje staat vooraan een nieuw tabblad Soort. Naast het kind kiest een kind nu een robot, een katje, een ridder, een astronaut of een draakje, elk met een eigen lijf. Bij zo\'n soort past het kind alleen nog de extra aan (cape, staf, bal...); hoeden, haar, shirt en broek horen bij het kind. Het kind koopt de soorten met sterren in de winkel (katje 30, robot en ridder 40, astronaut 50, draakje 60; wie niet leest betaalt de helft). Ze liggen er pas na vrijgave: geef ze vrij in Kinderen → Winkelaanbod (tabblad Figuurtje, groep Soort).',
+    open: 'Geef de soorten vrij in Kinderen → Winkelaanbod als de kinderen ze mogen kopen.',
+  },
+  {
     versie: '0.113',
     datum: '2026-11-08',
     titel: 'Ik-scherm en Mijn huisdier duidelijker voor Feline',
