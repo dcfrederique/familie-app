@@ -173,3 +173,36 @@
   .mijn-thema .thema-keuze-vink { width: 34px; height: 34px; top: -6px; right: -6px; }
   .mijn-thema-voorlees.rond { width: 44px; height: 44px; }
 }
+
+/* Welkomstpad, stap thema (13 thema's sinds 8 november): de kaarten vullen de hoogte tussen kop en voet, zoals in Mijn thema,
+   zodat de knop Verder nooit over een kaart ligt. Liggend vijf kaarten naast elkaar (ook in Mijn thema), staand drie. */
+@media (min-width: 600px) and (min-height: 560px), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .welkom-pad:has(.welkom-themas) { height: 100dvh; min-height: 0; overflow: hidden; }
+  .welkom-inhoud > .welkom-themas { min-height: 0; gap: clamp(8px, 1.6dvh, 16px); }
+  .welkom-inhoud .welkom-titel { margin: 0; font-size: clamp(22px, 4dvh, 34px); }
+  .welkom-inhoud .thema-keuzes { flex: 1; min-height: 0; grid-auto-rows: minmax(0, 1fr); gap: clamp(8px, 1.6dvh, 16px); }
+  .welkom-inhoud .thema-keuze { grid-template-rows: minmax(0, 1fr) auto; min-height: 0; gap: 6px; padding: 8px 8px 10px; border-radius: 24px; }
+  .welkom-inhoud .thema-keuze:not(:has(.thema-naam)) { grid-template-rows: minmax(0, 1fr); padding-bottom: 8px; }
+  .welkom-inhoud .thema-prent, .welkom-inhoud .prenten .thema-prent, .prenten .welkom-inhoud .thema-prent { height: 100%; min-height: 0; max-height: 220px; border-radius: 18px; }
+  .welkom-inhoud .thema-naam { font-size: clamp(15px, 2.4dvh, 22px); }
+  .welkom-inhoud .thema-keuze-vink { width: 40px; height: 40px; top: -8px; right: -8px; }
+}
+@media (min-width: 600px) and (min-height: 560px) and (orientation: landscape), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .welkom-inhoud .thema-keuzes, .mijn-thema .thema-keuzes { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+@media (min-width: 600px) and (min-height: 560px) and (orientation: portrait) {
+  .welkom-inhoud .thema-keuzes, .mijn-thema .thema-keuzes { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+/* Liggende gsm: kop en voet van het welkomstpad lager, zodat de kaarten plaats hebben. */
+@media (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .welkom-pad:has(.welkom-themas) { padding: 6px 16px 8px; gap: 6px; }
+  .welkom-pad:has(.welkom-themas) .welkom-kop { grid-template-columns: 44px 1fr 44px; }
+  .welkom-pad:has(.welkom-themas) .welkom-kop-plek { width: 44px; height: 44px; }
+  .welkom-pad:has(.welkom-themas) .welkom-stappen li { width: 28px; height: 28px; }
+  .welkom-pad:has(.welkom-themas) .welkom-knop { min-height: 52px; min-width: 52px; font-size: 18px; padding: 0 20px; }
+  .welkom-pad:has(.welkom-themas) .welkom-knop.verder { min-width: 140px; }
+  .welkom-inhoud .thema-naam { font-size: 12px; }
+  .welkom-inhoud .thema-keuze { border-radius: 16px; padding: 4px 4px 6px; gap: 2px; }
+  .welkom-inhoud .thema-prent { border-radius: 12px; }
+  .welkom-inhoud .thema-keuze-vink { width: 30px; height: 30px; top: -6px; right: -6px; }
+}

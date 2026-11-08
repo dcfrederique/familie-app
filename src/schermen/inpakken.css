@@ -34,7 +34,7 @@
 /* Staand: de stukjes onder het papier. */
 @media (orientation: portrait) {
   .inpak-speel { flex-direction: column; }
-  .inpak-papier { height: auto; width: min(78vw, 40dvh); max-width: none; }
+  .inpak-papier { height: auto; width: min(78vw, 37dvh); max-width: none; }
   .inpak-zij { max-width: 94vw; }
   .inpak-bak { max-width: 94vw; }
 }
@@ -57,7 +57,10 @@
   .inpak-actie { min-height: 44px; font-size: 14px; padding: 0 10px; }
   .inpak-zij { gap: 4px; }
   .inpak-knoppen { gap: 4px; }
-  .inpak-bak { gap: 4px; max-width: 300px; }
+  .inpak-bak { gap: 4px; max-width: none; }
+  /* Luca (moeilijk) heeft zes stukjes en vier knoppen: breder naast het papier, knoppen op één rij, zodat niets onder het scherm valt. */
+  .inpak-zij { max-width: 52vw; }
+  .inpak-knoppen { flex-wrap: nowrap; }
 }
 /* Detail: het gekozen stukje wiebelt zachtjes, zodat het kind ziet wat het vasthoudt; een knop veert in bij een tik. */
 .inpak-stukknop:active { transform: scale(.94); }

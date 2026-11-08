@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.112',
+    datum: '2026-11-08',
+    titel: 'Thema kiezen met 13 thema\'s past weer op het scherm',
+    tekst: 'Met de nieuwe thema\'s lag de knop Verder in het welkomstpad over een themakaart. De kaarten vullen nu het scherm, vijf naast elkaar op een liggende tablet en drie op een staande, ook in Mijn thema. De Inpakpuzzel past weer voor Luca op een staande 7-inch tablet en op de gsm. Zolang er nog geen Sterrenpot is, staat er een lege glazen pot, zodat ook wie niet leest iets ziet.',
+  },
+  {
     versie: '0.111',
     datum: '2026-11-08',
     titel: 'Pakjestoren, De pakjestoren en De regenboogbrug',

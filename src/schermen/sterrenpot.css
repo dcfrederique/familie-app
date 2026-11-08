@@ -127,3 +127,19 @@
   .pot-raster.samen .doel-icoon { width: 30px; height: 30px; }
   .pot-raster.samen .pot-knop { min-height: 44px; }
 }
+/* Detail: nog geen pot? Dan staat er een lege glazen pot met een deksel, ook voor wie (nog) niet leest. */
+.pot-leeg { align-content: center; gap: 18px; }
+.pot-leeg::before {
+  content: ''; justify-self: center; width: clamp(90px, 16dvh, 150px); aspect-ratio: 4 / 5; border-radius: 22% 22% 30% 30% / 14% 14% 22% 22%;
+  background: linear-gradient(100deg, rgb(255 255 255 / .75) 12%, transparent 26%), rgb(255 255 255 / .35);
+  border: 5px solid rgb(120 140 170 / .55); border-top-width: 14px; border-top-color: var(--gold);
+  box-shadow: 0 8px 0 rgb(0 0 0 / .06);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .pot-leeg::before { animation: pot-leeg-wieg 3.2s ease-in-out infinite; transform-origin: 50% 100%; }
+}
+@keyframes pot-leeg-wieg { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg); } }
+@media (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .pot-leeg { gap: 8px; font-size: 20px; }
+  .pot-leeg::before { width: 64px; border-width: 4px; border-top-width: 10px; }
+}
