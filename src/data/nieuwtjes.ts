@@ -21,8 +21,8 @@ export const nieuwtjes: Nieuwtje[] = [
   {
     versie: '0.113',
     datum: '2026-11-08',
-    titel: 'Mijn huisdier is duidelijker voor Feline',
-    tekst: 'Bij kinderen die nog niet lezen staan de hartjes nu vlak boven de knop waar ze bij horen (eten, wassen, knuffelen), in plaats van in een aparte lijst. Naast de pootjes ziet het kind het volgende groter diertje als doel, en een luidsprekerknop op de kamer zegt hoe het huisdier eraan toe is.',
+    titel: 'Ik-scherm en Mijn huisdier duidelijker voor Feline',
+    tekst: 'Het Ik-scherm van kinderen die nog niet lezen toonde door een fout kleine, platte bolletjes in plaats van grote tegels; nu zijn het weer vier grote tegels met grotere prentjes, en Mijn huisdier toont het eigen diertje. Bij het huisdier staan de hartjes nu vlak boven de knop waar ze bij horen (eten, wassen, knuffelen), in plaats van in een aparte lijst. Naast de pootjes ziet het kind het volgende groter diertje als doel, en een luidsprekerknop op de kamer zegt hoe het huisdier eraan toe is.',
   },
   {
     versie: '0.112',

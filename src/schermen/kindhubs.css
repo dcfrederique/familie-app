@@ -7,10 +7,11 @@
   position: relative; min-height: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px;
   padding: 10px; border-radius: 28px; background: var(--surface); color: var(--ink); text-decoration: none; box-shadow: 0 6px 0 var(--shade); text-align: center;
 }
-.hub-tegel.rond { border-radius: 36px; }
+.hub-tegel.hub-kleuter { border-radius: 36px; }
 .hub-icoon { width: clamp(56px, 11dvh, 92px); height: clamp(56px, 11dvh, 92px); border-radius: 24px; display: grid; place-items: center; overflow: hidden; }
 .hub-icoon svg { width: 60%; height: 60%; }
-.hub-tegel.rond .hub-icoon { width: clamp(72px, 15dvh, 120px); height: clamp(72px, 15dvh, 120px); border-radius: 50%; }
+.hub-tegel.hub-kleuter .hub-icoon svg { width: 66%; height: 66%; }
+.hub-tegel.hub-kleuter .hub-icoon { width: clamp(110px, 26dvh, 210px); height: clamp(110px, 26dvh, 210px); border-radius: 50%; }
 .hub-naam { font-size: clamp(20px, 3dvh, 26px); font-weight: 800; line-height: 1.1; }
 .hub-uitleg { font-size: 15px; color: var(--muted); font-weight: 700; }
 .hub-teller { position: absolute; top: 10px; right: 14px; min-width: 28px; height: 28px; padding: 0 7px; border-radius: 14px; background: var(--kid); color: #fff; font-weight: 800; display: grid; place-items: center; }
@@ -27,8 +28,8 @@
 @media (max-height: 500px) and (orientation: landscape) {
   .hub-raster { gap: 8px; padding: 2px 2px 6px; }
   .hub-tegel { padding: 4px; gap: 0; border-radius: 20px; }
-  .hub-icoon, .hub-tegel.rond .hub-icoon { width: 44px; height: 44px; border-radius: 14px; }
-  .hub-tegel.rond .hub-icoon { border-radius: 50%; width: 52px; height: 52px; }
+  .hub-icoon, .hub-tegel.hub-kleuter .hub-icoon { width: 44px; height: 44px; border-radius: 14px; }
+  .hub-tegel.hub-kleuter .hub-icoon { border-radius: 50%; width: 76px; height: 76px; }
   .hub-naam { font-size: 17px; }
   .hub-uitleg { display: none; }
   .hub-tijd { padding-bottom: 6px; gap: 10px; }
@@ -39,3 +40,5 @@
   .kind-vol .balk-icoon svg { width: 26px; height: 26px; }
   .kind-vol .balk-naam { font-size: 14px; }
 }
+.hub-hoofd .hd-prent, .hub-hoofd .hd-prent svg { display: block; width: 100%; height: 100%; }
+.hub-hoofd .hd-prent svg { transform: scale(1.7); }

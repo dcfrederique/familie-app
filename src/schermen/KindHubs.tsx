@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom'
 import type { Gebruiker } from '../data/gezin.ts'
 import { figuurtjeVan } from '../data/figuurtje.ts'
 import { huisVan } from '../data/huis.ts'
+import { stadiumVan } from '../data/huisdier.ts'
 import { tegelsVoor } from '../data/thema.ts'
 import { vandaag } from '../lib/datum.ts'
 import { useGegevens } from '../lib/gegevens.ts'
@@ -9,6 +10,7 @@ import { useSessie } from '../lib/sessie.tsx'
 import { leesVoor } from '../lib/voorlezen.ts'
 import Figuurtje, { hoofdUitsnede } from './Figuurtje.tsx'
 import HuisPrent from './HuisPrent.tsx'
+import { HuisdierPrent } from './HuisdierPrent.tsx'
 import KindBalk from './KindBalk.tsx'
 import SpelKader from './SpelKader.tsx'
 import './kindhubs.css'
@@ -25,7 +27,7 @@ function HubTegel({ kind, naar, naam, uitleg, kleur = 'blauw', icoon, prent, tel
 }) {
   const inhoud = prent ?? <svg className="ic" viewBox="0 0 24 24" width="48" height="48" aria-hidden="true"><path d={icoon} /></svg>
   return (
-    <Link to={naar} className={`hub-tegel${kind.kan_lezen ? '' : ' rond'}`} aria-label={teller ? `${naam}, ${teller} nieuw` : naam}
+    <Link to={naar} className={`hub-tegel${kind.kan_lezen ? '' : ' hub-kleuter'}`} aria-label={teller ? `${naam}, ${teller} nieuw` : naam}
           onClick={() => { if (!kind.kan_lezen) leesVoor(naam) }}>
       <span className={`hub-icoon tint-${kleur}`}>{inhoud}</span>
       {kind.kan_lezen && <span className="hub-naam display">{naam}</span>}
@@ -82,7 +84,8 @@ function IkInhoud({ kind }: { kind: Gebruiker }) {
   const { data: dagboek } = useGegevens(bron ? () => bron.dagboekOverzicht() : null, [bron])
   const dagAan = !!dagboek?.aan[kind.id]
   const { data: huisdieren } = useGegevens(bron ? () => bron.huisdieren() : null, [bron])
-  const hdAan = !!huisdieren?.kinderen[kind.id]?.aan
+  const hdKind = huisdieren?.kinderen[kind.id]
+  const hdAan = !!hdKind?.aan
   const kolommen = 3 + (dagAan ? 1 : 0) + (hdAan ? 1 : 0)
   return (
     <>
@@ -92,7 +95,8 @@ function IkInhoud({ kind }: { kind: Gebruiker }) {
         <HubTegel kind={kind} naar={`/kind/${kind.id}/huis`} naam="Mijn huis" uitleg="Bouwen en versieren" kleur="oranje"
                   prent={<span className="hub-huis"><HuisPrent huis={huisVan(kind)} kaal /></span>} />
         <HubTegel kind={kind} naar={`/kind/${kind.id}/thema`} naam="Mijn thema" uitleg="Kies je kleur" kleur="paars" icoon={PENSEEL} />
-        {hdAan && <HubTegel kind={kind} naar={`/kind/${kind.id}/mijn-huisdier`} naam="Mijn huisdier" uitleg="Verzorgen en groeien" kleur="oranje" icoon={HARTJE} />}
+        {hdAan && <HubTegel kind={kind} naar={`/kind/${kind.id}/mijn-huisdier`} naam="Mijn huisdier" uitleg="Verzorgen en groeien" kleur="oranje" icoon={HARTJE}
+                                  prent={hdKind?.soort ? <span className="hub-hoofd"><HuisdierPrent soort={hdKind.soort} stadium={stadiumVan(hdKind.pootjes, huisdieren!.regels)} /></span> : undefined} />}
         {dagAan && <HubTegel kind={kind} naar={`/kind/${kind.id}/dag`} naam="Mijn dag" uitleg="Hoe voel ik me?" kleur="goud" icoon={DAG} />}
       </div>
       <div className="hub-tijd">
