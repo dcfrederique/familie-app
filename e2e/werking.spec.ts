@@ -170,6 +170,23 @@ test('huisdier: een diertje kiezen, en Luca eet met zijn dinootje (kost 2 sterre
   await expect(page.getByText('Het ei broedt…')).toBeVisible()
 })
 
+test('huisdier: samen spelen, verstoppertje uitspelen vult het Blij-meetertje', async ({ page }) => {
+  await startAls(page, 'luca')
+  await doorWelkomstpad(page)
+  await naar(page, '/kind/luca/mijn-huisdier')
+  await page.getByRole('link', { name: 'Samen spelen' }).click()
+  await expect(page.locator('.hs-tegel')).toHaveCount(3)
+  await page.getByRole('button', { name: 'Verstoppertje' }).click()
+  for (let i = 0; i < 40 && !(await page.locator('.hs-klaar').count()); i++) {
+    const open = page.locator('.hs-plek:not(.fout):not(.uit)')
+    if (await open.count()) await open.first().click({ timeout: 2000 }).catch(() => {})
+    await page.waitForTimeout(400)
+  }
+  await expect(page.locator('.hs-klaar')).toBeVisible()
+  await page.getByRole('button', { name: 'Klaar' }).click()
+  await expect(page.getByRole('img', { name: 'Blij: 5 van 5' })).toBeVisible()
+})
+
 test('huisdier: eten kost sterren en vult het buikje', async ({ page }) => {
   await startAls(page, 'luca')
   await doorWelkomstpad(page)

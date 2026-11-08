@@ -1,0 +1,92 @@
+/* Samen spelen met het huisdier (HuisdierSpelen.tsx): geen scrollen, het veld vult het scherm. */
+.hs-kiezen { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; padding-bottom: 8px; }
+.hs-tegels { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+.hs-tegel { border: 0; font: inherit; color: inherit; background: var(--surface); border-radius: 32px; box-shadow: 0 6px 0 var(--shade); display: grid; grid-template-rows: 1fr auto auto; justify-items: center; align-content: center; gap: 6px; padding: 14px; min-height: 0; }
+.hs-tegel b { font-size: 30px; line-height: 1.1; } .hs-tegel small { font: 700 18px Nunito, sans-serif; color: var(--muted); text-align: center; }
+.hs-tegel-prent { position: relative; width: 100%; height: 100%; min-height: 0; border-radius: 24px; display: grid; place-items: center; color: #1C2433; }
+.hs-verstop .hs-tegel-prent { background: #CFE9C0; } .hs-vangen .hs-tegel-prent { background: #FFE2B0; } .hs-trucs .hs-tegel-prent { background: #DCCDF7; }
+.hs-tegel-prent .ic { stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.hs-mini { position: absolute; right: 8px; bottom: -6px; height: 55%; aspect-ratio: 1; } .hs-mini svg { width: 100%; height: 100%; }
+
+.hs-veld { flex: 1; min-height: 0; position: relative; border-radius: 32px; overflow: hidden; box-shadow: 0 6px 0 var(--shade); touch-action: none; user-select: none; -webkit-user-select: none; }
+.hs-rand { position: absolute; left: 0; right: 0; top: 62%; height: 8px; background: rgba(0, 0, 0, .12); }
+.hs-score { position: absolute; left: 14px; top: 12px; z-index: 3; background: #fff; color: #1C2433; border-radius: 999px; padding: 4px 16px; display: flex; align-items: center; gap: 6px; min-height: 52px; }
+.hs-score b { font-size: 28px; } .hs-score small { font-size: 18px; margin-right: 4px; }
+.hs-koekje svg { width: 36px; height: 36px; display: block; }
+.hs-rij-rechts { position: absolute; right: 14px; top: 12px; z-index: 3; background: #fff; border-radius: 999px; padding: 4px 14px; display: flex; gap: 2px; align-items: center; min-height: 52px; }
+.hs-bol { position: absolute; left: 50%; top: 12px; transform: translateX(-50%); z-index: 3; background: #fff; color: #1C2433; border-radius: 28px; padding: 6px 26px; font-size: 28px; box-shadow: 0 5px 0 rgba(0, 0, 0, .12); display: flex; align-items: center; gap: 10px; white-space: nowrap; max-width: calc(100% - 340px); }
+.hs-stop { position: absolute; right: 14px; bottom: 14px; z-index: 4; width: 64px; height: 64px; border-radius: 50%; border: 0; background: rgba(255, 255, 255, .9); color: #1C2433; display: grid; place-items: center; box-shadow: 0 4px 0 rgba(0, 0, 0, .12); }
+.hs-stop .ic, .hs-spreek .ic { stroke: currentColor; fill: none; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.hs-spreek { position: absolute; left: 14px; bottom: 14px; z-index: 4; }
+
+/* verstoppertje */
+.hs-plekken { position: absolute; left: 0; right: 0; bottom: 6%; height: 46%; display: grid; grid-template-columns: repeat(var(--n), 1fr); gap: 2%; padding: 0 5%; }
+.hs-plek { position: relative; border: 0; background: none; padding: 0; display: flex; justify-content: center; align-items: flex-end; min-height: 64px; }
+.hs-voorwrap { position: relative; width: min(100%, 300px); max-height: 100%; aspect-ratio: 4 / 3; align-self: flex-end; }
+.hs-voor { position: absolute; inset: 0; z-index: 2; display: block; transition: transform .25s; }
+.hs-voor svg { width: 100%; height: 100%; display: block; }
+.hs-kijk { position: absolute; z-index: 1; left: 20%; width: 60%; bottom: 8%; aspect-ratio: 1; transition: bottom .5s cubic-bezier(.3, 1.6, .5, 1); }
+.hs-kijk svg { width: 100%; height: 100%; }
+.hs-plek.uit .hs-kijk { bottom: 70%; left: 8%; width: 84%; z-index: 3; }
+.hs-plek.fout .hs-voor { animation: hs-schud .4s; }
+@keyframes hs-schud { 0%, 100% { transform: none; } 25% { transform: translateX(-10px) rotate(-3deg); } 75% { transform: translateX(10px) rotate(3deg); } }
+
+/* koekjes vangen */
+.hs-vang { flex: 1; min-height: 0; display: flex; flex-direction: column; padding-bottom: 8px; }
+.hs-val { position: absolute; width: 56px; height: 56px; transform: translate(-50%, -50%); pointer-events: none; } .hs-val svg { width: 100%; height: 100%; display: block; }
+.hs-vang-dier { position: absolute; bottom: 2%; transform: translateX(-50%); pointer-events: none; display: grid; justify-items: center; }
+.hs-vang-dier { --pw: min(34dvh, 38vw); }
+.hs-mand { width: 100%; max-width: 240px; min-width: 110px; display: block; margin-bottom: calc(var(--pw) * -.42); position: relative; z-index: 2; }
+.hs-vang-prent { width: var(--pw); display: block; } .hs-vang-prent svg { width: 100%; height: auto; display: block; }
+
+/* trucjes */
+.hs-trucs { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 10px; padding-bottom: 8px; }
+.hs-volgorde { gap: 8px; }
+.hs-stap { width: 56px; height: 56px; border-radius: 18px; background: #EFE9FB; color: #1C2433; display: grid; place-items: center; }
+.hs-stap .ic { stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.hs-stap.nu { outline: 4px solid #F2B33D; background: #fff; } .hs-stap.klaar { background: #CFE9C0; } .hs-stap.wacht { opacity: .45; } .hs-vraag { font-size: 30px; }
+.hs-trucdier { position: absolute; left: 50%; bottom: 3%; height: 62%; aspect-ratio: 1; transform: translateX(-50%); transform-origin: 50% 90%; }
+.hs-trucprent, .hs-trucprent svg { width: 100%; height: 100%; display: block; }
+.hs-trucdier.doet-zit { animation: hs-zit .7s; } .hs-trucdier.doet-rol { animation: hs-rol .7s; } .hs-trucdier.doet-spring { animation: hs-spring .7s; } .hs-trucdier.doet-zwaai { animation: hs-zwaai .7s; }
+@keyframes hs-zit { 40% { transform: translateX(-50%) scaleY(.82) scaleX(1.08); } }
+@keyframes hs-rol { to { transform: translateX(-50%) rotate(360deg); } }
+@keyframes hs-spring { 45% { transform: translateX(-50%) translateY(-24%); } }
+@keyframes hs-zwaai { 25% { transform: translateX(-50%) rotate(-9deg); } 75% { transform: translateX(-50%) rotate(9deg); } }
+.hs-trukrij { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; flex: none; }
+.hs-trukknop { position: relative; border: 0; font: inherit; color: #1C2433; min-height: 96px; border-radius: 28px; display: grid; place-items: center; align-content: center; gap: 2px; box-shadow: 0 5px 0 rgba(0, 0, 0, .14); }
+.hs-trukknop:disabled { opacity: .55; box-shadow: none; }
+.hs-trukknop .ic { stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.hs-trukknop b { font-size: 22px; line-height: 1; } .hs-ster { position: absolute; top: 6px; right: 12px; color: #D79A12; font-style: normal; font-size: 24px; }
+.hs-t-zit { background: #CFE9C0; } .hs-t-rol { background: #FFE2B0; } .hs-t-spring { background: #CDE3FA; } .hs-t-zwaai { background: #F9D3E3; }
+
+/* klaar */
+.hs-klaar { flex: 1; min-height: 0; position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; padding-bottom: 10px; }
+.hs-klaar-prent { flex: 1; min-height: 0; aspect-ratio: 1; max-height: 300px; position: relative; z-index: 1; } .hs-klaar-prent svg { width: 100%; height: 100%; }
+.hs-klaar-titel { font-size: 44px; text-align: center; display: flex; gap: 10px; position: relative; z-index: 1; }
+.hs-klaar-rij { display: flex; gap: 4px; position: relative; z-index: 1; }
+.hs-medaille { display: inline-flex; align-items: center; gap: 8px; background: #FFF1C9; color: #3A2A00; border-radius: 999px; padding: 6px 20px; font-size: 22px; position: relative; z-index: 1; }
+.hs-medaille .ic { stroke: currentColor; fill: none; stroke-width: 2.2; }
+.hs-klaar-knoppen { display: flex; gap: 14px; position: relative; z-index: 1; }
+
+/* knop op Mijn huisdier */
+.hs-knop-spelen { position: absolute; right: 14px; top: 14px; z-index: 3; min-height: 64px; min-width: 64px; padding: 0 22px; border-radius: 32px; background: #7A56D6; color: #fff; display: inline-flex; align-items: center; justify-content: center; gap: 10px; text-decoration: none; box-shadow: 0 5px 0 rgba(0, 0, 0, .2); }
+.hs-knop-spelen .ic { stroke: currentColor; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; } .hs-knop-spelen b { font-size: 24px; }
+
+@media (max-height: 700px) and (orientation: landscape) {
+  .hs-score, .hs-rij-rechts { min-height: 40px; padding: 2px 12px; left: 10px; top: 8px; } .hs-rij-rechts { left: auto; right: 10px; }
+  .hs-bol { font-size: 20px; padding: 4px 18px; top: 8px; } .hs-stap { width: 40px; height: 40px; border-radius: 12px; } .hs-stap .ic { width: 26px; height: 26px; }
+  .hs-tegel b { font-size: 22px; } .hs-tegel small { font-size: 15px; } .hs-tegel { gap: 2px; padding: 8px; }
+  .hs-trukknop { min-height: 64px; } .hs-trukknop .ic { width: 38px; height: 38px; } .hs-trukknop b { font-size: 17px; }
+  .hs-stop { width: 52px; height: 52px; } .hs-klaar-titel { font-size: 32px; } .hs-klaar-prent { max-height: 200px; } .hs-klaar-rij svg { width: 28px; height: 28px; }
+  .hs-val { width: 44px; height: 44px; }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .hs-tegel-prent .ic { width: 52px; height: 52px; } .hs-trukknop { min-height: 52px; } .hs-trukknop .ic { width: 28px; height: 28px; } .hs-trukknop b { display: none; }
+  .hs-klaar { gap: 2px; } .hs-klaar-prent { max-height: 130px; } .hs-klaar-titel { font-size: 24px; } .hs-klaar-titel svg { width: 36px; height: 36px; } .hs-klaar-rij svg { width: 22px; height: 22px; }
+  .hs-klaar-knoppen .groot-knop { min-height: 48px; padding: 0 16px; font-size: 16px; } .hs-medaille { font-size: 15px; padding: 2px 12px; }
+  .hs-knop-spelen { min-height: 48px; min-width: 48px; padding: 0 14px; } .hs-knop-spelen b { font-size: 17px; }
+  .hs-bol { max-width: calc(100% - 220px); font-size: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hs-trucdier, .hs-plek.fout .hs-voor { animation: none !important; } .hs-kijk { transition: none; }
+}

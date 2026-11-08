@@ -14,3 +14,15 @@ eigen scherm bij Ik → Mijn huisdier (`/kind/:id/mijn-huisdier`), los van de we
 - Regels staan op de server (`huisdier_verzorgen`, leidend) en in `src/data/huisdier.ts`. Feline (kan niet lezen): alleen prentjes, de naam
   kiest de app uit de voorstellen, voorleesknop per knop.
 - Nog niet: pushmelding bij honger, kleertjes of mandjes in de winkel. Het spelletje Huisdier wassen blijft los.
+
+## Samen spelen (8 november 2026, nieuwtje 0.116)
+
+Knop Spelen op Mijn huisdier (zodra het ei uit is) naar `/kind/:id/huisdier-spelen` (`src/schermen/HuisdierSpelen.tsx`, logica en test in
+`src/lib/spelletjes/huisdierSpel.ts`). Drie spelletjes met het eigen huisdier en het thema van het kind; mockups in `prototypes/huisdier-spelen.html`.
+
+- Verstoppertje: tik waar het huisdier zit (3 plekken, 4 voor de oudste lezer), drie rondes.
+- Koekjes vangen: sleep het mandje, 12 koekjes; niveau volgt `startKastanjesNiveau`, de oudste lezer krijgt er sokken bij.
+- Trucjes leren: het huisdier doet een rijtje (zit, rol, spring, zwaai) voor, het kind doet het na; drie rondes met langere rijtjes. Geleerde
+  kunstjes staan per kind in localStorage (`huisdier-trucs-<kind>`), een sterretje bij de knop.
+- Spelen kost niets en geeft geen sterren. Na elk spel gebeurt een gratis knuffel (`huisdier_verzorgen`), dus Blij gaat naar 5; is die al vol, dan blijft
+  het bij het feestscherm. Daglimiet en aan/uit per kind zijn er (nog) niet; geen activiteitlog (geen migratie).

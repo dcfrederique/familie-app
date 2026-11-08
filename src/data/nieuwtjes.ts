@@ -19,6 +19,10 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.116',
+    datum: '2026-11-08',
+    titel: 'Samen spelen met je huisdier',
+    tekst: 'Op Mijn huisdier staat een paarse knop Spelen. Daarna kiest het kind uit drie spelletjes met het eigen huisdier: Verstoppertje (tik waar het huisdier zit), Koekjes vangen (sleep het mandje; de oudste lezer moet sokken ontwijken) en Trucjes leren (doe het rijtje kunstjes na; elk gehaald rondje leert een nieuw kunstje, met een sterretje bij de knop). Spelen kost niets en geeft geen sterren, maar vult het Blij-meetertje. Feline speelt zonder lezen, met prentjes en voorleesknoppen. Er is niets aan te zetten: het staat er zodra het huisdier uit het ei is.',
     versie: '0.115',
     datum: '2026-11-08',
     titel: 'Huisdier stond dubbel op het startscherm',

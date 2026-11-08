@@ -59,6 +59,7 @@ import Winkelaanbod from './schermen/Winkelaanbod.tsx'
 import Winkel from './schermen/Winkel.tsx'
 import SterrenPot from './schermen/SterrenPot.tsx'
 import Dagboek from './schermen/Dagboek.tsx'
+import HuisdierSpelen from './schermen/HuisdierSpelen.tsx'
 import MijnHuisdier from './schermen/MijnHuisdier.tsx'
 import HuisdierBeheer from './schermen/HuisdierBeheer.tsx'
 import Nieuwtjes from './schermen/Nieuwtjes.tsx'
@@ -118,6 +119,7 @@ export default function App() {
         <Route path="pot" element={<SterrenPot />} />
         <Route path="dag" element={<Dagboek />} />
         <Route path="mijn-huisdier" element={<MijnHuisdier />} />
+        <Route path="huisdier-spelen" element={<HuisdierSpelen />} />
         <Route path="rekenen" element={<Rekenen />} />
         <Route path="memory" element={<Memory />} />
         <Route path="penalty" element={<Penalty />} />

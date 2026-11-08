@@ -10,6 +10,7 @@ import type { Stemming } from '../lib/huisdierTekening.ts'
 import { foutmelding, useSessie } from '../lib/sessie.tsx'
 import { geluid } from '../lib/spelletjes/geluid.ts'
 import { leesVoor } from '../lib/voorlezen.ts'
+import { SpelenKnop } from './HuisdierSpelen.tsx'
 import { Hartje, HuisdierKamer, HuisdierPrent, Pootje, hartjes } from './HuisdierPrent.tsx'
 import KindBalk from './KindBalk.tsx'
 import { Ster } from './onderdelen.tsx'
@@ -183,6 +184,7 @@ function Kamer({ kind, data, ververs }: { kind: Gebruiker; data: Data; ververs: 
         <div className="hd-kamer">
           <HuisdierKamer thema={themaVan(kind)} soort={soort} stadium={stadium} stemming={stemming}
                          bubbel={stemming === 'honger' ? 'eten' : actie === 'trots' ? 'hart' : null} bijna={stadium === 'ei' && !!volgende && rest <= 1} />
+          {stadium !== 'ei' && <SpelenKnop kind={kind} />}
           {stemming === 'honger' && lezer && <span className="hd-zegt display">{h.naam} heeft honger</span>}
           {stadium === 'ei' && lezer && <span className="hd-zegt display">Het ei broedt…</span>}
           {!lezer && (
