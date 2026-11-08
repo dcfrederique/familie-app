@@ -185,21 +185,25 @@ function Kamer({ kind, data, ververs }: { kind: Gebruiker; data: Data; ververs: 
                          bubbel={stemming === 'honger' ? 'eten' : actie === 'trots' ? 'hart' : null} bijna={stadium === 'ei' && !!volgende && rest <= 1} />
           {stemming === 'honger' && lezer && <span className="hd-zegt display">{h.naam} heeft honger</span>}
           {stadium === 'ei' && lezer && <span className="hd-zegt display">Het ei broedt…</span>}
+          {!lezer && (
+            <button type="button" className="rond hd-spreek" aria-label="Voorlezen" onClick={() => leesVoor(stadium === 'ei' ? `${h.naam} zit nog in het ei. Doe je taken.` : stemming === 'honger' ? `${h.naam} heeft honger. Geef eten.` : `${h.naam} is blij.`)}>
+              <Pad d="M4 10h4l5-4v12l-5-4H4zM16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11" g={34} />
+            </button>
+          )}
         </div>
         <div className="hd-rechts">
           <div className="hd-kaart">
             <div className="hd-naamrij">
               <span className="display hd-naam">{h.naam}</span>
-              <span className="hd-stadium">{lezer && stadiumNaam[stadium]}{stadia.slice(1).map((s, i) => <i key={s} className={i < stadia.indexOf(stadium) ? 'aan' : ''} />)}</span>
+              {lezer && <span className="hd-stadium">{stadiumNaam[stadium]}{stadia.slice(1).map((s, i) => <i key={s} className={i < stadia.indexOf(stadium) ? 'aan' : ''} />)}</span>}
             </div>
             {volgende ? (
               <>
                 <div className="hd-poten" role="img" aria-label={`${h.pootjes - vorigeDrempel(stadium, r)} van ${volgende - vorigeDrempel(stadium, r)} pootjes`}>
                   {Array.from({ length: volgende - vorigeDrempel(stadium, r) }, (_, i) => <Pootje key={i} g={lezer ? 30 : 38} vol={vorigeDrempel(stadium, r) + i < h.pootjes} />)}
+                  {!lezer && <span className="hd-volgend"><Pad d="M5 12h14M13 6l6 6-6 6" g={30} /><HuisdierPrent soort={soort} stadium={stadia[stadia.indexOf(stadium) + 1]} klas="hd-volgend-prent" /></span>}
                 </div>
-                {lezer
-                  ? <div className="hd-klein">Nog <b>{rest}</b> {rest === 1 ? 'taak' : 'taken'} tot {stadiumNaam[stadia[stadia.indexOf(stadium) + 1]]}</div>
-                  : <div className="hd-pijl"><Pootje g={30} /><b className="display">{rest}</b></div>}
+                {lezer && <div className="hd-klein">Nog <b>{rest}</b> {rest === 1 ? 'taak' : 'taken'} tot {stadiumNaam[stadia[stadia.indexOf(stadium) + 1]]}</div>}
               </>
             ) : (
               <div className="hd-klein">{lezer ? `${h.naam} is groot! Elke taak geeft nog een pootje.` : ''}<span className="hd-groot-pootjes"><Pootje g={30} /> <b>{h.pootjes}</b></span></div>
@@ -207,8 +211,19 @@ function Kamer({ kind, data, ververs }: { kind: Gebruiker; data: Data; ververs: 
           </div>
           {stadium === 'ei'
             ? <div className="hd-kaart hd-wacht"><Pootje g={44} /><span className="hd-klein">{lezer ? 'Doe je taken, dan komt het ei uit.' : ''}</span></div>
+            : !lezer ? null
             : <div className="hd-kaart hd-zorg">{meter('Buikje', ETEN, buik, '#FFE3C8')}{meter('Schoon', DRUPPEL, schoon, '#DDF0FF')}{meter('Blij', HART, blij, '#FFD9E2')}</div>}
-          {stadium !== 'ei' && <div className="hd-knoppen">{knop('eten', 'Eten', ETEN)}{knop('wassen', 'Wassen', DRUPPEL)}{knop('knuffel', 'Knuffelen', HART)}</div>}
+          {stadium !== 'ei' && lezer && <div className="hd-knoppen">{knop('eten', 'Eten', ETEN)}{knop('wassen', 'Wassen', DRUPPEL)}{knop('knuffel', 'Knuffelen', HART)}</div>}
+          {stadium !== 'ei' && !lezer && (
+            <div className="hd-knoppen hd-f">
+              {([['eten', 'Eten', ETEN, buik], ['wassen', 'Wassen', DRUPPEL, schoon], ['knuffel', 'Knuffelen', HART, blij]] as const).map(([wat, naam, pad, v]) => (
+                <div key={wat} className="hd-f-kol">
+                  <span className="hd-harten" role="img" aria-label={`${naam}: ${v} van ${maxHartjes}`}>{hartjes(v, 24)}</span>
+                  {knop(wat, naam, pad)}
+                </div>
+              ))}
+            </div>
+          )}
           {lezer && stadium !== 'ei' && <div className="hd-vandaag">Eten en wassen vandaag: <b>{h.uitgegeven_vandaag} van {r.max_per_dag}</b> sterren</div>}
           {fout && <p className="hd-fout" role="alert">{fout}</p>}
         </div>
