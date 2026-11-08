@@ -7,6 +7,7 @@ import type { InpakNiveau } from './inpakken.ts'
 import type { DakNiveau } from './daken.ts'
 import type { DelenNiveau } from './delen.ts'
 import type { WeegNiveau } from './weegschaal.ts'
+import type { TorenNiveau } from './torens.ts'
 
 export type MemoryNiveau = 'klein' | 'middel' | 'groot'
 export type RekenNiveau = 'tellen' | 'tot10' | 'tot20' | 'tot100' | 'tot1000' | 'tafels'
@@ -319,6 +320,27 @@ export const weegschaalNiveaus: Record<WeegNiveau, {
 
 export const weegschaalRondesAantal = 4
 
+/**
+ * Pakjestoren. `hulp`: de volgende goede zet licht op; `toonMinimum`: het kleinste aantal zetten staat erbij; `terug`: een zet terugnemen
+ * (telt als zet); `pluimen`: strenge score; `marge`: hoeveel meer zetten dan het minimum nog een pluim geven; `seconden`: tijd voor de snelheidspluim.
+ */
+export const torensNiveaus: Record<TorenNiveau, {
+  label: string; hulp: boolean; toonMinimum: boolean; terug: boolean; pluimen: boolean; marge: number; seconden: number
+}> = {
+  makkelijk: { label: 'Makkelijk', hulp: true, toonMinimum: false, terug: false, pluimen: false, marge: 0, seconden: 0 },
+  middel: { label: 'Middel', hulp: false, toonMinimum: true, terug: false, pluimen: false, marge: 0, seconden: 0 },
+  moeilijk: { label: 'Moeilijk', hulp: false, toonMinimum: false, terug: true, pluimen: true, marge: 0.2, seconden: 240 },
+}
+
+export const torensRondesAantal = 4
+
+/** Wie niet leest begint makkelijk, de oudste lezer moeilijk, andere lezers middel. */
+export function startTorensNiveau(kind: Gebruiker, kinderen: Gebruiker[]): TorenNiveau {
+  if (!kind.kan_lezen) return 'makkelijk'
+  const oudsteLezer = kinderen.filter((k) => k.kan_lezen).sort((a, b) => a.volgorde - b.volgorde)[0]
+  return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
+}
+
 /** Wie niet leest begint makkelijk, de oudste lezer moeilijk, andere lezers middel. */
 export function startWeegNiveau(kind: Gebruiker, kinderen: Gebruiker[]): WeegNiveau {
   if (!kind.kan_lezen) return 'makkelijk'
@@ -443,7 +465,7 @@ export function startNiveaus(kind: Gebruiker, kinderen: Gebruiker[]): { memory: 
   return oudsteLezer?.id === kind.id ? { memory: 'groot', rekenen: 'tot100' } : { memory: 'middel', rekenen: 'tot20' }
 }
 
-export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'weegschaal' | 'springen'
+export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'weegschaal' | 'torens' | 'springen'
 
 export interface SpelInfo {
   sleutel: SpelSleutel
@@ -503,6 +525,8 @@ export const spelMenu: SpelInfo[] = [
     icoon: 'M4 11h16v9H4zM4 11q0-6 8-6t8 6M10 13h4v4h-4z' },
   { sleutel: 'lantaarns', naam: 'Lantaarns aansteken', uitleg: 'Laat alle lantaarns branden', prijs: 25,
     icoon: 'M12 2v3M8 6h8l1 13H7zM12 6v13M7.5 12h9' },
+  { sleutel: 'torens', naam: 'Pakjestoren', uitleg: 'Verhuis de toren van pakjes', prijs: 25,
+    icoon: 'M4 20h16M6 20v-5h12v5M8 15v-5h8v5M10 10V6h4v4M12 3v3' },
   { sleutel: 'weegschaal', naam: 'Weegschaal', uitleg: 'Breng de weegschaal in evenwicht', prijs: 25,
     icoon: 'M12 3v16M5 7h14M5 7l-3 7h6zM19 7l-3 7h6zM8 20h8' },
   { sleutel: 'delen', naam: 'Eerlijk delen', uitleg: 'Geef iedereen evenveel', prijs: 25,

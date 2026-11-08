@@ -1,0 +1,88 @@
+{
+  "nr": 53,
+  "titel": "De pakjestoren",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Sinterklaas, stapelen en geduld",
+  "bladzijden": [
+    {
+      "tekst": "Het is bijna Sinterklaas. Daan en Noor helpen in het pakjesmagazijn. Op de eerste plank staat een hoge toren van pakjes: een groot, een middelgroot en een klein pakje, netjes boven elkaar. \"Die toren moet naar de derde plank,\" zegt de Sint vriendelijk. \"Maar je mag maar één pakje tegelijk dragen.\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor kijkt naar de toren. \"Dan pak ik het bovenste,\" zegt ze. Het kleine pakje gaat naar de derde plank. Dat is gemakkelijk. Ze vindt het een leuk werkje.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan pakt het middelgrote pakje. Hij wil het naast het kleine pakje zetten, maar dan valt het kleine pakje bijna om. \"Oei,\" zegt hij. \"Een groot pakje moet onderaan, anders valt het om.\" Hij zet het middelgrote pakje op de tweede plank.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Nu moet het kleine pakje op het middelgrote pakje. Daan en Noor kijken elkaar aan. Dan lachen ze allebei. \"Zo gaat het dus,\" zegt Noor. \"We hebben drie planken nodig, ook al staat de toren op het einde op één plank.\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Tijs de hond zit op de grond en kijkt toe. Hij kwispelt bij elk pakje dat wordt verplaatst. Daan telt hardop: \"Eén, twee, drie, vier.\" De toren wordt langzaam kleiner op de ene plank en groter op de andere. Het ruikt naar pepernoten in het magazijn.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "noor",
+          "hond"
+        ]
+      }
+    },
+    {
+      "tekst": "Het grote pakje is nu vrij. Noor tilt het voorzichtig op en zet het op de derde plank. \"Nu nog de andere twee,\" zegt ze. \"Het kleine pakje en het middelgrote pakje moeten er netjes op.\" Daan knikt. Hij is blij dat ze samen werken.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "Eerst het kleine pakje naar de eerste plank. Dan het middelgrote pakje op het grote pakje. Dan het kleine pakje er weer bovenop. De toren staat! \"Klaar!\" roepen ze allebei. Het duurde zeven keer dragen, en elke keer klopte het.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "De Sint komt binnen en klapt in zijn handen. \"Prachtig gestapeld,\" zegt hij. \"Wie nadenkt, vindt altijd de weg.\" Daan en Noor krijgen elk een pepernoot, en Tijs krijgt er ook een kleintje. Ze zijn trots op hun toren.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "noor",
+          "hond"
+        ]
+      }
+    }
+  ]
+}

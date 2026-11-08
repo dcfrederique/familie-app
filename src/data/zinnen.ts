@@ -46,6 +46,8 @@ export const zin = {
   stippenKlaar: 'Kijk, de lampion straalt!',
   inpakUitleg: 'Leg alle stukjes op het papier, tot er geen gaatjes meer zijn. Draai het stukje als het niet past!',
   delenUitleg: 'Geef elk kind evenveel. Tik op een koekje, dan tik je op een mandje.',
+  torensUitleg: 'Verhuis alle pakjes naar de gouden plank. Een groot pakje mag nooit op een klein pakje.',
+  torensKlaar: 'De hele toren is verhuisd!',
   weegUitleg: 'Leg gewichtjes tot de weegschaal recht staat.',
   weegKlaar: 'De weegschaal staat in evenwicht!',
   delenKlaar: 'Iedereen heeft evenveel gekregen!',

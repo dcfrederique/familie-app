@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.111',
+    datum: '2026-11-08',
+    titel: 'Pakjestoren, De pakjestoren en De regenboogbrug',
+    tekst: 'Nieuw verhaal "De pakjestoren" (Sinterklaas, pakjes verhuizen en nadenken) en nieuwe kleurplaat "De pakjestoren", meteen te lezen en in te kleuren. Het spelletje Pakjestoren kost 25 sterren: verhuis de toren van pakjes naar de gouden plank, een groot pakje mag nooit op een klein pakje. Makkelijk: 2 of 3 pakjes met een lichtje dat de volgende zet toont. Middel: 3 of 4 pakjes, met het aantal zetten en het kleinste aantal erbij. Moeilijk: 5 tot 7 pakjes (tot 127 zetten of meer), geen hulp, in de laatste twee rondes mogen pakjes van dezelfde kleur nooit op elkaar, met Terug, klokje en pluimen voor weinig zetten en snelheid. De pakjestoren staat aan het meer (gouden rand tot 22 november, slot tot gekocht). Springland: Wolkenrijk krijgt zijn tweede level, De regenboogbrug, met drie gaten en twee vogels.',
+    verhaal: 'De pakjestoren',
+    spel: { naam: 'Pakjestoren', prijs: 25 },
+    stukken: ['Figuurtje: Helm van de pakjesbouwer (15), Werkvest (20), Stapeltje pakjes (15)', 'Mijn huis: Pakjestoren (25), Bezorgkar (25), Wimpels (20)'],
+    open: 'Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod. Pakjes verplaats je door te tikken (slepen kan nog niet).',
+  },
+  {
     versie: '0.110',
     datum: '2026-11-07',
     titel: 'Mijn huisdier',
