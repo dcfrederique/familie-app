@@ -1,0 +1,63 @@
+/* Hoe laat is het?: bij kiezen de vraag boven en de klokken naast elkaar; bij zelf zetten de grote klok links en de knoppen rechts. */
+.kl { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 1.4dvh, 14px); width: 100%; }
+.kl-balk { display: flex; align-items: center; justify-content: center; gap: 18px; font-weight: 800; }
+.kl-vragen { display: flex; gap: 6px; }
+.kl-vragen span { width: 14px; height: 14px; border-radius: 50%; background: var(--line); }
+.kl-vragen .af { background: var(--gold, #F2C530); }
+.kl-vragen .nu { background: var(--kid); }
+.kl-cijfer { text-anchor: middle; dominant-baseline: central; font-size: 19px; font-weight: 800; fill: #33414F; pointer-events: none; }
+.kl-vraag { display: flex; align-items: center; justify-content: center; gap: 10px; margin: 0; text-align: center; font-size: clamp(20px, 3.4dvh, 32px); font-weight: 800; }
+.kl-luister { width: 52px; height: 52px; flex: none; border: 0; border-radius: 50%; background: var(--surface); box-shadow: 0 3px 0 var(--shade); font-size: 24px; cursor: pointer; }
+.kl-kies { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(10px, 3dvh, 30px); width: 100%; flex: 1; min-height: 0; }
+.kl-opties { display: flex; gap: clamp(10px, 2.4vw, 28px); }
+.kl-optie {
+  --maat: min(calc((100vw - 80px) / var(--n) - 24px), 40dvh, 260px);
+  display: grid; place-items: center; width: var(--maat); height: var(--maat); padding: 6px;
+  border: 4px solid var(--line); border-radius: 26px; background: var(--surface); box-shadow: 0 5px 0 var(--shade); cursor: pointer; touch-action: manipulation;
+}
+.kl-optie svg { width: 100%; height: 100%; }
+.kl-optie.mis { border-color: #D33D36; opacity: .55; }
+.kl-optie.juist { border-color: #43A047; background: #E6F4E6; }
+.kl-zelf { display: flex; align-items: center; justify-content: center; gap: clamp(12px, 3vw, 40px); width: 100%; }
+.kl-plek { display: grid; place-items: center; width: min(60vw, calc(100dvh - 240px)); height: calc(100dvh - 240px); }
+.kl-groteklok { max-width: 100%; max-height: 100%; width: auto; height: 100%; touch-action: none; user-select: none; cursor: grab; }
+.kl-groot.sleep line { filter: drop-shadow(0 0 3px rgba(47, 128, 201, .5)); }
+.kl-zij { display: flex; flex-direction: column; align-items: center; gap: 14px; max-width: 320px; }
+.kl-stappen { display: flex; gap: 10px; }
+.kl-knop, .kl-klaar {
+  min-width: 96px; min-height: 64px; padding: 0 16px; border: 3px solid var(--line); border-radius: 18px; background: var(--surface); color: var(--ink);
+  box-shadow: 0 4px 0 var(--shade); font-size: 20px; font-weight: 800; cursor: pointer; touch-action: manipulation;
+}
+.kl-klaar { min-width: 180px; background: #43A047; border-color: #2E7D32; color: #FFF; font-size: 24px; }
+.kl-knop:disabled, .kl-klaar:disabled { opacity: .5; }
+.kl-eindprent { width: clamp(140px, 26dvh, 240px); height: auto; }
+@media (prefers-reduced-motion: no-preference) {
+  .kl-optie.mis, .kl-groteklok.mis { animation: kl-schud .35s ease-in-out; }
+  .kl-optie.juist, .kl-groteklok.juist { animation: kl-plop .4s ease-out; }
+  .kl-optie:not(:disabled):active { transform: scale(.95); }
+}
+@keyframes kl-schud { 25% { translate: -6px 0; } 75% { translate: 6px 0; } }
+@keyframes kl-plop { 50% { scale: 1.05; } }
+@media (orientation: portrait) {
+  .kl-opties { flex-wrap: wrap; justify-content: center; }
+  .kl-optie { --maat: min(calc((100vw - 80px) / 2 - 20px), 30dvh, 260px); }
+  .kl-zelf { flex-direction: column; }
+  .kl-plek { width: calc(100vw - 40px); height: min(calc(100dvh - 520px), calc(100vw - 40px)); }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .kl { gap: 2px; }
+  .kl-kies { gap: 6px; }
+  .kl-vraag { font-size: 17px; }
+  .kl-luister { width: 44px; height: 44px; font-size: 20px; }
+  .kl-optie { --maat: min(calc((100vw - 80px) / var(--n) - 24px), 42dvh); padding: 2px; border-radius: 18px; }
+  .kl-zij { gap: 6px; }
+  .kl-knop, .kl-klaar { min-height: 48px; font-size: 17px; }
+}
+
+/* Volle opmaak (tablet, liggende gsm): de klok krijgt precies de vrije plaats. */
+@media (min-width: 600px) and (min-height: 560px), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .kl { flex: 1; min-height: 0; }
+  .kl-zelf { flex: 1; min-height: 0; }
+  .kl-plek { flex: 1; align-self: stretch; width: auto; height: auto; min-width: 0; min-height: 0; container-type: size; }
+  .kl-plek .kl-groteklok { width: 100cqw; height: 100cqh; }
+}

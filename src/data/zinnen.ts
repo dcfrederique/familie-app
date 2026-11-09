@@ -70,6 +70,8 @@ export const zin = {
   piramideKlaar: "Jij bouwt elke toren!",
   lampionliedUitleg: "Luister goed. De lampionnen zingen een liedje. Tik daarna de lampionnen aan in dezelfde volgorde. Elke keer komt er een toontje bij.",
   lampionliedKlaar: "Wat zing jij mooi!",
+  klokUitleg: "Kijk naar de klok. De kleine wijzer zegt het uur. Tik op de klok die past bij wat ik zeg.",
+  klokKlaar: "Jij kunt klokkijken!",
   roosterUitleg: 'Zet elke kleur één keer in elke rij en in elke kolom.',
   roosterKlaar: 'Alle pakjes staan op hun plaats!',
   torensUitleg: 'Verhuis alle pakjes naar de gouden plank. Een groot pakje mag nooit op een klein pakje.',

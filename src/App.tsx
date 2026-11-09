@@ -32,6 +32,7 @@ import Delen from './schermen/Delen.tsx'
 import Weegschaal from './schermen/Weegschaal.tsx'
 import Torens from './schermen/Torens.tsx'
 import Rooster from './schermen/Rooster.tsx'
+import Klok from './schermen/Klok.tsx'
 import Lampionlied from './schermen/Lampionlied.tsx'
 import Piramide from './schermen/Piramide.tsx'
 import Patroon from './schermen/Patroon.tsx'
@@ -159,6 +160,7 @@ export default function App() {
         <Route path="weegschaal" element={<Weegschaal />} />
         <Route path="torens" element={<Torens />} />
         <Route path="rooster" element={<Rooster />} />
+        <Route path="klok" element={<Klok />} />
         <Route path="lampionlied" element={<Lampionlied />} />
         <Route path="piramide" element={<Piramide />} />
         <Route path="patroon" element={<Patroon />} />

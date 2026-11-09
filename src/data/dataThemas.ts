@@ -171,6 +171,12 @@ const boerderij = wikkel(`<g class="tn-nacht" fill="#FFF3C4"><circle cx="120" cy
   <g transform="translate(830 128)"><circle r="10" fill="#F2C530"/><circle cx="-4" cy="-2" r="1.6" fill="#33414F"/><path d="M-12 0L-16 2L-12 3Z" fill="#F28C28"/></g>
   <g transform="translate(200 150)"><rect x="-30" y="-10" width="60" height="30" rx="14" fill="#F4A6B8"/><circle cx="-30" cy="-2" r="14" fill="#F4A6B8"/><ellipse cx="-38" cy="0" rx="6" ry="5" fill="#E68AA0"/><circle cx="-26" cy="-8" r="2" fill="#33414F"/><path d="M-22 -16L-16 -24L-12 -14Z" fill="#E68AA0"/><path d="M30 0q8 -6 4 4q-4 6 4 2" stroke="#E68AA0" stroke-width="2.5" fill="none"/><path d="M-18 20V30M18 20V30" stroke="#E68AA0" stroke-width="6"/></g>`)
 
+const speurder = wikkel(`<g class="tn-nacht" fill="#FFF3C4"><circle cx="120" cy="40" r="2.5"/><circle cx="880" cy="50" r="2"/><circle cx="520" cy="30" r="2"/></g>
+  <g transform="translate(320 70)"><rect x="0" y="20" width="240" height="130" fill="#5B6B7A"/><path d="M-10 20H250L236 0H4Z" fill="#33414F"/><rect x="24" y="44" width="70" height="56" fill="#FFF3C4"/><path d="M59 44V100M24 72H94" stroke="#33414F" stroke-width="4"/><rect x="146" y="44" width="70" height="106" fill="#8A5A33"/><circle cx="204" cy="100" r="4" fill="#F2C530"/><rect x="60" y="112" width="70" height="22" rx="3" fill="#F2C530"/><text x="95" y="128" text-anchor="middle" font-size="13" font-weight="800" fill="#33414F">SPEUR</text></g>
+  <g transform="translate(700 100)" class="thema-zweef"><circle r="32" fill="#BFE3F7" opacity=".55"/><circle r="32" fill="none" stroke="#8A5A33" stroke-width="9"/><path d="M23 23L54 54" stroke="#8A5A33" stroke-width="12" stroke-linecap="round"/><path d="M-14 -14Q-6 -22 6 -20" stroke="#FFF" stroke-width="4" fill="none" stroke-linecap="round"/></g>
+  <g transform="translate(200 165)" fill="#33414F"><ellipse cx="0" cy="0" rx="7" ry="10"/><ellipse cx="22" cy="-16" rx="7" ry="10"/><ellipse cx="6" cy="-34" rx="7" ry="10"/><ellipse cx="30" cy="-52" rx="7" ry="10"/></g>
+  <g transform="translate(850 150)"><rect x="-26" y="-20" width="52" height="38" rx="4" fill="#C9A27A"/><path d="M-26 -20L0 2L26 -20" stroke="#8A5A33" stroke-width="3" fill="none"/><text x="0" y="12" text-anchor="middle" font-size="20" font-weight="800" fill="#D33D36">?</text></g>`)
+
 const vink = (kleur: string) => `<path d="M-16 0L-6 10L16 -12" stroke="${kleur}" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
 
 export const dataThemas: DataThema[] = [
@@ -460,6 +466,22 @@ export const dataThemas: DataThema[] = [
     slot: '<circle r="18" fill="#B8BFCB"/><path d="M-10 8V-4L0 -12L10 -4V8Z" fill="#5B6B7A"/>',
     feest: [ster('#F2C530'), '<ellipse rx="6" ry="8" fill="#FFF3C4"/>', '<circle r="6" fill="#F4A6B8"/>'], confetti: ['#B8432F', '#F2C530', '#8CC86A', '#FFF3C4'],
     tegelRadius: '14px', tegelRand: '6px solid var(--kid)',
+  },
+  {
+    sleutel: 'speurder', naam: 'Speurdersbureau', kidKleur: '#3B5B7A', shirt: 'blauw', verhouding: 1,
+    ondertitels: { spelen: 'De speurtocht', verhalen: 'Het dossierkastje', kleurplaten: 'De vingerafdrukken', figuurtje: 'Vermomd', huis: 'Mijn geheime bureau' },
+    klaarTekst: 'Zaak opgelost!', nogTeDoen: (n) => `Nog ${n} ${n === 1 ? 'aanwijzing' : 'aanwijzingen'} tot de zaak opgelost is`,
+    licht: { bg: '#F2F4F6', surface: '#FFFFFF', soft: '#E1E7ED', ink: '#16222E', muted: '#55687A', line: '#D2DBE3', shade: '#B4C1CD', kid: '#3B5B7A', 'kid-tint': '#DFE8F0', 'on-solid': '#FFFFFF',
+      'tn-grond': '#9AA6B5', 'tn-nacht': 'none', 'tn-banner': 'linear-gradient(#E6EDF3,#F2F4F6)', 'tn-titel': '#16222E', 'tn-sub': '#8A5A33', 'tn-spoor': '#D2DBE3' },
+    donker: { bg: '#0D131A', surface: '#18212B', soft: '#1F2A36', ink: '#E8EEF4', muted: '#A3B4C4', line: '#2A3746', shade: '#05080B', kid: '#8FB4D9', 'kid-tint': '#22344A', 'on-solid': '#0D131A',
+      'tn-grond': '#2A3746', 'tn-nacht': 'inline', 'tn-banner': 'linear-gradient(#05080B,#1C2836)', 'tn-titel': '#FFFFFF', 'tn-sub': '#F2C530', 'tn-spoor': '#2A3746' },
+    prent: speurder,
+    voortgang: { mover: '<circle r="8" fill="none" stroke="#8A5A33" stroke-width="3"/><path d="M6 6L12 12" stroke="#8A5A33" stroke-width="4" stroke-linecap="round"/>', doel: '<text y="7" text-anchor="middle" font-size="22" font-weight="800" fill="#D33D36">?</text>' },
+    nieuw: '<ellipse rx="6" ry="9" fill="#33414F"/><ellipse cx="12" cy="-14" rx="6" ry="9" fill="#33414F"/>',
+    vink: `<circle r="20" fill="#3B5B7A"/><g transform="scale(.9)">${vink('#fff')}</g>`,
+    slot: '<circle r="18" fill="#B8BFCB"/><circle cx="-2" cy="-2" r="8" fill="none" stroke="#5B6B7A" stroke-width="3"/><path d="M4 4L10 10" stroke="#5B6B7A" stroke-width="4" stroke-linecap="round"/>',
+    feest: [ster('#F2C530'), '<text y="6" text-anchor="middle" font-size="18" font-weight="800" fill="#D33D36">?</text>', '<circle r="6" fill="#8A5A33"/>'], confetti: ['#3B5B7A', '#F2C530', '#D33D36', '#FFFFFF'],
+    tegelRadius: '10px', tegelRand: '5px dashed var(--kid)',
   },
 ]
 

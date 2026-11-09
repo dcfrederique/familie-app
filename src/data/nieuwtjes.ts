@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.131',
+    datum: '2026-11-09',
+    titel: "Hoe laat is het?, Pip en de klok en een nieuw level in Speelgoedland",
+    tekst: "Nieuw verhaal \"Pip en de klok\" (herfst, het wordt vroeg donker) en nieuwe kleurplaat \"De staande klok\", meteen te lezen en in te kleuren. Het spelletje Hoe laat is het? kost 20 sterren: klokkijken met een wijzerklok, vier rondjes van vier vragen. Makkelijk: hele uren, kies de juiste klok uit drie (de vraag wordt voorgelezen). Middel: ook halve uren (half vier), kies uit vier. Moeilijk: zet zelf de grote wijzer (de kleine schuift mee zoals bij een echte klok) op tijden per vijf minuten, zoals tien voor half vier of kwart voor vijf, en soms: hoe laat is het over een kwartier?; klokje en pluimen. In Springland kwam het vierde level van Speelgoedland erbij: De treinrails. Nieuw kinderthema: Speurdersbureau, te kiezen bij Mijn thema.",
+    verhaal: "Pip en de klok",
+    spel: { naam: "Hoe laat is het?", prijs: 20 },
+    stukken: ["Figuurtje: Uilenmuts (15), Shirt met een klok (20), Zakhorloge (15)", "Mijn huis: Koekoeksklok (25), Zonnewijzer (20), Grote wekker op de vensterbank (15)"],
+    open: "Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.",
+  },
+  {
     versie: '0.130',
     datum: '2026-11-09',
     titel: "Lampionnenlied, Het lampionnenlied en een pittig level in Speelgoedland",
