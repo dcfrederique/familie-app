@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.138',
+    datum: '2026-11-09',
+    titel: "Raadselprent, De brief met het raadsel en De paddenstoelentrap",
+    tekst: "Nieuw verhaal \"De brief met het raadsel\" (de Sint stuurt een raadselprent) en nieuwe kleurplaat \"Het vogelhuisje\", meteen te lezen en in te kleuren. Het spelletje Raadselprent kost 25 sterren: de cijfers naast elke rij en boven elke kolom zeggen hoeveel vakjes je na elkaar kleurt; zo verschijnt een verstopte prent (een pakje, een mijter, een paardje...). Met het kruisje zet je een teken waar zeker niets komt, en een rij die klopt, kleurt groen. Makkelijk: 4×4 met hulp. Middel: 6×6 met hulp. Moeilijk: 8×8 met groepjes, zonder hulp; klokje en pluimen. In Springland kwam er een derde level in het Paddenstoelenbos bij: De paddenstoelentrap (pittig). Nieuw kinderthema: Bijenkorf, te kiezen bij Mijn thema.",
+    verhaal: "De brief met het raadsel",
+    spel: { naam: "Raadselprent", prijs: 25 },
+    stukken: ["Figuurtje: Vogelnestje op je hoofd (20), Shirt met een raadselrooster (20), Groot kleurpotlood (15)", "Mijn huis: Krijtrooster op de stoep (15), Vogelbadje (20), Brievenbus met een rode zegel (20)"],
+    open: "Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.",
+  },
+  {
     versie: '0.137',
     datum: '2026-11-09',
     titel: "Pijltjesroute, Het paardje op het dak en Het hertenpad",

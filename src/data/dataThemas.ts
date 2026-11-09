@@ -206,6 +206,13 @@ const manege = wikkel(`<g class="tn-nacht" fill="#FFF3C4"><circle cx="160" cy="4
   <g transform="translate(760 150)"><path d="M-50 0V-40M50 0V-40" stroke="#FFFFFF" stroke-width="8"/><path d="M-56 -30H56" stroke="#E5484D" stroke-width="8" stroke-dasharray="16 12"/><path d="M-56 -12H56" stroke="#FFFFFF" stroke-width="6"/></g>
   <g transform="translate(900 80)"><path d="M-14 16C-24 -8 -12 -22 0 -22C12 -22 24 -8 14 16" stroke="#9AA6B5" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="-12" cy="0" r="2" fill="#5B6B7A"/><circle cx="12" cy="0" r="2" fill="#5B6B7A"/></g>`)
 
+const bijen = wikkel(`<g class="tn-nacht" fill="#FFF3C4"><circle cx="140" cy="36" r="2.5"/><circle cx="620" cy="30" r="2"/><circle cx="900" cy="44" r="2"/></g>
+  <g transform="translate(180 50)" fill="#F2C530" stroke="#C9971A" stroke-width="4"><path d="M0 0l26 15v30L0 60l-26-15V15Z"/><path d="M52 0l26 15v30L52 60l-26-15V15Z"/><path d="M26 45l26 15v30L26 105L0 90V60Z"/></g>
+  <g transform="translate(220 110)" fill="#E0A21A"><path d="M-4 30q4 14 8 0z"/></g>
+  <g transform="translate(520 100)" class="thema-zweef"><ellipse rx="34" ry="24" fill="#F2C530"/><path d="M-12 -22V22M6 -23V23" stroke="#33414F" stroke-width="9"/><circle cx="34" cy="-4" r="16" fill="#33414F"/><circle cx="40" cy="-8" r="4" fill="#FFFFFF"/><ellipse cx="-6" cy="-34" rx="20" ry="13" fill="#DFF2FB" opacity=".9"/><ellipse cx="14" cy="-32" rx="16" ry="11" fill="#DFF2FB" opacity=".9"/><path d="M-34 0l-12 4 12 4Z" fill="#33414F"/><path d="M38 -18q4 -14 12 -16M30 -18q-2 -14 4 -18" stroke="#33414F" stroke-width="3" fill="none"/></g>
+  <g transform="translate(760 160)"><path d="M0 0V-40" stroke="#43A047" stroke-width="4"/><g fill="#F48FB1"><circle cy="-52" r="10"/><circle cx="12" cy="-42" r="10"/><circle cx="-12" cy="-42" r="10"/><circle cy="-32" r="10"/></g><circle cy="-42" r="8" fill="#F2C530"/></g>
+  <g transform="translate(880 150)"><path d="M0 0V-30" stroke="#43A047" stroke-width="4"/><g fill="#FFFFFF"><circle cy="-40" r="8"/><circle cx="9" cy="-32" r="8"/><circle cx="-9" cy="-32" r="8"/><circle cy="-24" r="8"/></g><circle cy="-32" r="6" fill="#F2C530"/></g>`)
+
 const vink = (kleur: string) => `<path d="M-16 0L-6 10L16 -12" stroke="${kleur}" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
 
 export const dataThemas: DataThema[] = [
@@ -575,6 +582,22 @@ export const dataThemas: DataThema[] = [
     slot: '<circle r="18" fill="#B8BFCB"/><path d="M-8 8C-12 -4 -6 -12 0 -12C6 -12 12 -4 8 8" stroke="#5B6B7A" stroke-width="4" fill="none"/>',
     feest: [ster('#F2C530'), '<circle r="6" fill="#E5484D"/>', '<circle r="6" fill="#A0522D"/>'], confetti: ['#A0522D', '#E5484D', '#F2C530', '#43A047'],
     tegelRadius: '20px', tegelRand: '4px solid var(--kid)',
+  },
+  {
+    sleutel: 'bijen', naam: 'Bijenkorf', kidKleur: '#D99A0E', shirt: 'oranje', verhouding: 1,
+    ondertitels: { spelen: 'Zoemen en spelen', verhalen: 'Lezen bij de honingraat', kleurplaten: 'Bloemetjes kleuren', figuurtje: 'Klein bijtje', huis: 'Mijn eigen korf' },
+    klaarTekst: 'Zoem zoem, de honingpot is vol!', nogTeDoen: (n) => `Nog ${n} ${n === 1 ? 'druppeltje' : 'druppeltjes'} honing`,
+    licht: { bg: '#FFFBEF', surface: '#FFFFFF', soft: '#FFF2C9', ink: '#3A2C08', muted: '#7A6630', line: '#F4E3AE', shade: '#E2C980', kid: '#D99A0E', 'kid-tint': '#FFF0C4', 'on-solid': '#FFFFFF',
+      'tn-grond': '#A8DCA0', 'tn-nacht': 'none', 'tn-banner': 'linear-gradient(#E6F4FB,#FFFBEF)', 'tn-titel': '#3A2C08', 'tn-sub': '#C2185B', 'tn-spoor': '#F4E3AE' },
+    donker: { bg: '#161205', surface: '#241D0B', soft: '#2D2410', ink: '#FBF3DC', muted: '#D4C08A', line: '#3D3216', shade: '#070502', kid: '#F2C530', 'kid-tint': '#3A2F10', 'on-solid': '#161205',
+      'tn-grond': '#2F4A33', 'tn-nacht': 'inline', 'tn-banner': 'linear-gradient(#070502,#2A2210)', 'tn-titel': '#FFFFFF', 'tn-sub': '#F48FB1', 'tn-spoor': '#3D3216' },
+    prent: bijen,
+    voortgang: { mover: '<ellipse rx="9" ry="7" fill="#F2C530"/><path d="M-3 -6V6M2 -6V6" stroke="#33414F" stroke-width="2.5"/><ellipse cx="0" cy="-9" rx="6" ry="4" fill="#DFF2FB"/>', doel: '<path d="M0 -12l10 6v12L0 12l-10-6V-6Z" fill="#F2C530" stroke="#C9971A" stroke-width="2"/>' },
+    nieuw: '<ellipse rx="10" ry="8" fill="#F2C530"/><path d="M-3 -7V7M3 -7V7" stroke="#33414F" stroke-width="3"/>',
+    vink: `<circle r="20" fill="#D99A0E"/><g transform="scale(.9)">${vink('#fff')}</g>`,
+    slot: '<circle r="18" fill="#B8BFCB"/><path d="M0 -10l9 5v10L0 10l-9-5V-5Z" fill="#5B6B7A"/>',
+    feest: [ster('#F2C530'), '<path d="M0 -7l6 3.5v7L0 7l-6-3.5v-7Z" fill="#F2C530"/>', '<circle r="6" fill="#F48FB1"/>'], confetti: ['#D99A0E', '#F2C530', '#F48FB1', '#33414F'],
+    tegelRadius: '24px', tegelRand: '5px solid var(--kid)',
   },
 ]
 

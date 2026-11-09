@@ -1,0 +1,50 @@
+/* Raadselprent: het rooster met de cijfers links (of boven, staand), de pennen en de hulp ernaast. De SVG schaalt mee. */
+.rp { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 1.4dvh, 14px); width: 100%; }
+.rp-balk { display: flex; align-items: center; justify-content: center; gap: 18px; font-weight: 800; }
+.rp-spel { display: flex; align-items: center; justify-content: center; gap: clamp(12px, 3vw, 36px); width: 100%; }
+.rp-plek { display: grid; place-items: center; width: min(66vw, calc(100dvh - 230px)); height: calc(100dvh - 230px); }
+.rp-bord { max-width: 100%; max-height: 100%; width: auto; height: 100%; user-select: none; touch-action: manipulation; }
+.rp-cijfer { font-weight: 800; font-size: 24px; fill: var(--ink); text-anchor: middle; dominant-baseline: central; }
+.rp-cijfer.ok { fill: #43A047; }
+.rp-rand { fill: var(--line); }
+.rp-vak { cursor: pointer; }
+.rp-vak .leeg { fill: var(--surface); }
+.rp-vak .vol { fill: var(--kid); }
+.rp-kruis { stroke: var(--muted); stroke-width: 3; stroke-linecap: round; pointer-events: none; }
+.rp-lijn { stroke: var(--ink); stroke-width: 2; opacity: .35; pointer-events: none; }
+.rp-zij { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.rp-tekst { margin: 0; max-width: 200px; text-align: center; font-weight: 800; font-size: clamp(16px, 2.4dvh, 22px); }
+.rp-pennen { display: flex; gap: 8px; }
+.rp-knop {
+  display: grid; place-items: center; width: 72px; height: 72px; padding: 0; border: 3px solid var(--line); border-radius: 20px;
+  background: var(--surface); color: var(--ink); box-shadow: 0 4px 0 var(--shade); cursor: pointer; touch-action: manipulation;
+}
+.rp-knop svg { width: 34px; height: 34px; }
+.rp-knop.aan { border-color: var(--kid); background: var(--kid-tint); color: var(--kid); }
+.rp-knop:disabled { opacity: .45; cursor: default; }
+.rp-eindprent { width: clamp(200px, 36dvh, 340px); height: auto; }
+@media (prefers-reduced-motion: no-preference) {
+  .rp-vak rect { transition: fill .15s; }
+  .rp-bord.viert { animation: rp-hup .5s ease-out 2 alternate; }
+}
+@keyframes rp-hup { to { scale: 1.03; } }
+@media (orientation: portrait) {
+  .rp-spel { flex-direction: column; }
+  .rp-zij { flex-direction: row; }
+  .rp-plek { width: calc(100vw - 32px); height: min(calc(100dvh - 400px), calc(100vw - 32px)); }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .rp { gap: 2px; }
+  .rp-zij { gap: 6px; }
+  .rp-knop { width: 52px; height: 52px; }
+  .rp-knop svg { width: 26px; height: 26px; }
+  .rp-tekst { font-size: 14px; max-width: 170px; }
+}
+
+/* Volle opmaak (tablet, liggende gsm): het rooster krijgt precies de vrije plaats. */
+@media (min-width: 600px) and (min-height: 560px), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .rp { flex: 1; min-height: 0; }
+  .rp-spel { flex: 1; min-height: 0; }
+  .rp-plek { flex: 1; align-self: stretch; width: auto; height: auto; min-width: 0; min-height: 0; container-type: size; }
+  .rp-plek .rp-bord { width: 100cqw; height: 100cqh; }
+}

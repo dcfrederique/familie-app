@@ -1,0 +1,101 @@
+{
+  "nr": 72,
+  "titel": "De brief met het raadsel",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "De Sint komt eraan, een raadselprent oplossen",
+  "bladzijden": [
+    {
+      "tekst": "Op een ochtend ligt er een brief op de mat. Op de envelop staat: Voor Noor en Daan. Er zit een rode lakzegel op. \"Van de Sint!\" roept Daan. Hij scheurt de envelop open. Er zit geen tekening in, en ook geen lange brief. Alleen een vel papier met vakjes en cijfers.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Onderaan staat één zin: Kleur de vakjes en je weet waar het verrassingsdoosje staat. Opa zet zijn bril op. \"Een raadselprent,\" zegt hij. \"Die maakte ik vroeger ook. De cijfers zeggen hoeveel vakjes je na elkaar kleurt.\" Noor haalt meteen haar potloden.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "opa",
+          "noor",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "De eerste rij heeft het cijfer vier. En de rij is maar vier vakjes breed. \"Dan kleur je ze allemaal,\" zegt Noor. Zij kleurt vier vakjes rood. Daan kijkt naar een rij met het cijfer nul. \"Daar komt niets,\" zegt hij. Hij zet in elk vakje een klein kruisje.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan wordt het moeilijker. Een rij met een één en nog een één. \"Twee losse vakjes,\" zegt opa. \"Met minstens één wit vakje ertussen.\" Maar welke? Noor kijkt naar de cijfers bovenaan. De kolommen helpen mee! Waar boven een nul staat, kan niets komen.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "opa",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "Stukje bij beetje wordt de prent zichtbaar. Eerst een vierkant. Dan een dakje erop. \"Het is een huisje!\" zegt Daan. \"Nee, wacht,\" zegt Noor. \"Er zit iets onder. Twee pootjes.\" Ze kleuren verder. Het huisje krijgt een rond gat in het midden.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan krabt in zijn haar. Een huisje met een rond gat en twee pootjes? Dan ziet Noor het. \"Het is een vogelhuisje!\" roept ze. \"Zoals het vogelhuisje in de tuin!\" Ze kijken elkaar aan. Dan rennen ze allebei naar de achterdeur.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Het gras is nat en koud. Het vogelhuisje hangt aan de appelboom. Daan gaat op zijn tenen staan. Er zit iets in. Hij trekt er voorzichtig een klein doosje uit, met een gouden strikje erom. Een merel kijkt vanaf een tak toe.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "daan",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "In het doosje zitten twee chocoladeletters. Een N voor Noor en een D voor Daan. En nog een briefje: Goed gezocht, slimme speurders! \"Hoe wist de Sint van ons vogelhuisje?\" vraagt Daan. Opa staat in de deur en glimlacht. \"De Sint weet heel veel,\" zegt hij.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "daan",
+          "noor",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "Die middag maakt Noor zelf een raadselprent, voor opa. Ze tekent een rooster en kleurt in het geheim een kopje. Dan schrijft ze de cijfers erbij en gumt de kleuren weg. Opa puzzelt en puzzelt. \"Een kopje koffie!\" zegt hij op het einde. Noor lacht. \"Dat mag je nu gaan halen.\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "opa"
+        ]
+      }
+    }
+  ]
+}

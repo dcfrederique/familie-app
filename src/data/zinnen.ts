@@ -80,6 +80,8 @@ export const zin = {
   dominoKlaar: "Alle stenen liggen netjes in een rij!",
   pijltjesUitleg: "Tik op de pijltjes en breng het paardje naar de rode schoorsteen. Het kan niet door de grijze schoorstenen heen.",
   pijltjesKlaar: "Alle pakjes zijn bezorgd!",
+  raadselprentUitleg: "De cijfers zeggen hoeveel vakjes je na elkaar kleurt. Kleur de juiste vakjes, dan zie je de verstopte prent.",
+  raadselprentKlaar: "Alle raadsels opgelost!",
   roosterUitleg: 'Zet elke kleur één keer in elke rij en in elke kolom.',
   roosterKlaar: 'Alle pakjes staan op hun plaats!',
   torensUitleg: 'Verhuis alle pakjes naar de gouden plank. Een groot pakje mag nooit op een klein pakje.',
