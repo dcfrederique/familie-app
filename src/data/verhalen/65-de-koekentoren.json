@@ -49,23 +49,13 @@
       }
     },
     {
-      "tekst": "Bovenaan staat nog 18. Onderaan staan nog 2 en 4. Op de tweede rij staan nog een 5 en een 4. Daan krabt in zijn haar. \"Er ontbreken er zoveel,\" zucht hij. \"Begin bij twee dozen die je al kent,\" zegt Noor. \"Dan kun je altijd de derde vinden.\"",
+      "tekst": "Bovenaan staat nog 18. Onderaan staan nog 2 en 4. Op de tweede rij staan nog een 5 en een 4. Daan krabt in zijn haar. \"Er ontbreken er zoveel,\" zucht hij. \"Begin bij twee dozen die je al kent,\" zegt Noor. \"Dan kun je altijd de derde vinden.\" Daan kijkt naar de 5. Daaronder staan 2 en een lege doos. \"Twee en hoeveel is vijf?\" fluistert hij. Hij telt op zijn vingers verder: drie, vier, vijf. \"Drie!\" Noor schrijft een nieuw kaartje. \"Zie je wel. Je kunt ook terugrekenen.\"",
       "prent": {
         "decor": "bakkerij",
         "figuren": [
           "noor",
           "daan",
           "doos"
-        ]
-      }
-    },
-    {
-      "tekst": "Daan kijkt naar de 5. Daaronder staan 2 en een lege doos. \"Twee en hoeveel is vijf?\" fluistert hij. Hij telt op zijn vingers verder: drie, vier, vijf. \"Drie!\" Noor schrijft een nieuw kaartje. \"Zie je wel. Je kunt ook terugrekenen.\"",
-      "prent": {
-        "decor": "bakkerij",
-        "figuren": [
-          "daan",
-          "noor"
         ]
       }
     },

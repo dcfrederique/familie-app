@@ -16,23 +16,13 @@
       }
     },
     {
-      "tekst": "Pip blijft stilstaan. \"Een paard?\" vraagt ze. \"Het paard van de Sint! Hij rijdt 's nachts over de daken, maar soms komt hij ook door het park. Dat zegt opa.\" Mo kijkt naar het water. \"Dan heeft hij een brug nodig,\" zegt hij ernstig.",
+      "tekst": "Pip blijft stilstaan. \"Een paard?\" vraagt ze. \"Het paard van de Sint! Hij rijdt 's nachts over de daken, maar soms komt hij ook door het park. Dat zegt opa.\" Mo kijkt naar het water. \"Dan heeft hij een brug nodig,\" zegt hij ernstig. Thuis vertellen ze het aan opa. Opa krabt in zijn baard. \"Een echte brug bouwen is werk voor grote mensen,\" zegt hij. \"Maar een plan tekenen, dat kunnen jullie heel goed.\" Hij legt een groot blad papier op tafel en zoekt de kleurpotloden.",
       "prent": {
         "decor": "park",
         "figuren": [
           "pip",
           "mo",
-          "paard"
-        ]
-      }
-    },
-    {
-      "tekst": "Thuis vertellen ze het aan opa. Opa krabt in zijn baard. \"Een echte brug bouwen is werk voor grote mensen,\" zegt hij. \"Maar een plan tekenen, dat kunnen jullie heel goed.\" Hij legt een groot blad papier op tafel en zoekt de kleurpotloden.",
-      "prent": {
-        "decor": "keuken",
-        "figuren": [
-          "pip",
-          "mo",
+          "paard",
           "opa"
         ]
       }
@@ -84,7 +74,7 @@
       }
     },
     {
-      "tekst": "Mo loopt als eerste over de brug, heel voorzichtig. Hij wiebelt niet. Dan Pip, dan mama, en als laatste opa met zijn armen wijd, als een koorddanser. Iedereen lacht. Koek de kat kijkt van de kant toe en durft niet.",
+      "tekst": "Mo loopt als eerste over de brug, heel voorzichtig. Hij wiebelt niet. Dan Pip, dan mama, en als laatste opa met zijn armen wijd, als een koorddanser. Iedereen lacht. Koek de kat kijkt van de kant toe en durft niet. Die avond zet Pip haar schoen bij de deur. Ze legt er de tekening van de brug in, met een wortel. \"Zodat het paard weet dat hij nu over de beek kan,\" fluistert ze tegen Mo. Mo legt er nog een tweede wortel bij. Voor de zekerheid.",
       "prent": {
         "decor": "park",
         "figuren": [
@@ -93,18 +83,6 @@
           "opa",
           "pipmama",
           "koek"
-        ]
-      }
-    },
-    {
-      "tekst": "Die avond zet Pip haar schoen bij de deur. Ze legt er de tekening van de brug in, met een wortel. \"Zodat het paard weet dat hij nu over de beek kan,\" fluistert ze tegen Mo. Mo legt er nog een tweede wortel bij. Voor de zekerheid.",
-      "prent": {
-        "decor": "kamer",
-        "figuren": [
-          "pip",
-          "mo",
-          "schoen",
-          "tekening"
         ]
       }
     },

@@ -6,7 +6,7 @@
   "thema": "Herfst, het wordt vroeg donker en klokkijken",
   "bladzijden": [
     {
-      "tekst": "Het is herfst. Buiten wordt het al vroeg donker. Pip kijkt door het raam. \"Is het al nacht?\" vraagt ze. \"Moet ik al slapen?\" Mama lacht. \"Nee hoor. Het is pas vijf uur. Kijk maar naar de klok.\"",
+      "tekst": "Het is herfst. Buiten wordt het al vroeg donker. Pip kijkt door het raam. \"Is het al nacht?\" vraagt ze. \"Moet ik al slapen?\" Mama lacht. \"Nee hoor. Het is pas vijf uur. Kijk maar naar de klok.\" Aan de muur hangt een grote ronde klok. Er staan cijfers op, van één tot twaalf. En er zijn twee wijzers. Een kleine rode wijzer en een grote blauwe wijzer. \"De kleine wijzer zegt welk uur het is,\" zegt mama.",
       "prent": {
         "decor": "kamer",
         "figuren": [
@@ -16,28 +16,9 @@
       }
     },
     {
-      "tekst": "Aan de muur hangt een grote ronde klok. Er staan cijfers op, van één tot twaalf. En er zijn twee wijzers. Een kleine rode wijzer en een grote blauwe wijzer. \"De kleine wijzer zegt welk uur het is,\" zegt mama.",
+      "tekst": "Pip kijkt goed. De kleine wijzer staat op de vijf. De grote wijzer wijst recht naar boven, naar de twaalf. \"Vijf uur,\" zegt Pip. \"Goed zo,\" zegt mama. \"Als de grote wijzer bovenaan staat, is het een heel uur.\" Om zes uur eten ze soep. De kleine wijzer staat nu op de zes. Mo wijst. \"Kijk, de kleine wijzer is een stapje verder gelopen.\" Koek de kat ligt op de stoel. Zij heeft geen klok nodig. Zij slaapt gewoon wanneer ze wil.",
       "prent": {
         "decor": "kamer",
-        "figuren": [
-          "pip",
-          "pipmama"
-        ]
-      }
-    },
-    {
-      "tekst": "Pip kijkt goed. De kleine wijzer staat op de vijf. De grote wijzer wijst recht naar boven, naar de twaalf. \"Vijf uur,\" zegt Pip. \"Goed zo,\" zegt mama. \"Als de grote wijzer bovenaan staat, is het een heel uur.\"",
-      "prent": {
-        "decor": "kamer",
-        "figuren": [
-          "pip"
-        ]
-      }
-    },
-    {
-      "tekst": "Om zes uur eten ze soep. De kleine wijzer staat nu op de zes. Mo wijst. \"Kijk, de kleine wijzer is een stapje verder gelopen.\" Koek de kat ligt op de stoel. Zij heeft geen klok nodig. Zij slaapt gewoon wanneer ze wil.",
-      "prent": {
-        "decor": "keuken",
         "figuren": [
           "pip",
           "mo",
@@ -46,48 +27,20 @@
       }
     },
     {
-      "tekst": "Na het eten spelen Pip en Mo met de blokken. Ze bouwen een toren en een brug. Pip kijkt af en toe naar de klok. De grote blauwe wijzer loopt langzaam rond. Je ziet het bijna niet. Maar hij loopt wel.",
+      "tekst": "Na het eten spelen Pip en Mo met de blokken. Ze bouwen een toren en een brug. Pip kijkt af en toe naar de klok. De grote blauwe wijzer loopt langzaam rond. Je ziet het bijna niet. Maar hij loopt wel. Dan staat de grote wijzer onderaan, op de zes. \"Half zeven,\" zegt mama. \"Nog even spelen, en dan in bad.\" Pip denkt na. \"Half, omdat de grote wijzer half rond is?\" Mama knikt. \"Wat ben jij slim.\" In bad maakt Pip een schuimklok. Ze tekent een rondje met haar vinger. Twee streepjes in het midden. \"Dit is de kleine wijzer,\" zegt ze. \"En dit is de grote.\" Mo maakt er ook een. Die van hem heeft drie wijzers. \"Een babywijzer,\" lacht hij.",
       "prent": {
         "decor": "kamer",
         "figuren": [
           "pip",
-          "mo"
-        ]
-      }
-    },
-    {
-      "tekst": "Dan staat de grote wijzer onderaan, op de zes. \"Half zeven,\" zegt mama. \"Nog even spelen, en dan in bad.\" Pip denkt na. \"Half, omdat de grote wijzer half rond is?\" Mama knikt. \"Wat ben jij slim.\"",
-      "prent": {
-        "decor": "kamer",
-        "figuren": [
-          "pip",
+          "mo",
           "pipmama"
         ]
       }
     },
     {
-      "tekst": "In bad maakt Pip een schuimklok. Ze tekent een rondje met haar vinger. Twee streepjes in het midden. \"Dit is de kleine wijzer,\" zegt ze. \"En dit is de grote.\" Mo maakt er ook een. Die van hem heeft drie wijzers. \"Een babywijzer,\" lacht hij.",
+      "tekst": "Om zeven uur zit Pip in haar pyjama op bed. Ze kijkt naar de klok op haar kamer. De kleine wijzer staat op de zeven. De grote wijzer staat bovenaan. \"Zeven uur,\" zegt ze zelf. \"Slaaptijd.\" Mama stopt haar in. Buiten is het donker, maar binnen is het warm. \"Morgen,\" fluistert Pip, \"als de kleine wijzer op de acht staat, is het weer licht.\" Mama geeft haar een kus. Tik, tak, doet de klok. Tik, tak. En Pip slaapt.",
       "prent": {
         "decor": "kamer",
-        "figuren": [
-          "pip",
-          "mo"
-        ]
-      }
-    },
-    {
-      "tekst": "Om zeven uur zit Pip in haar pyjama op bed. Ze kijkt naar de klok op haar kamer. De kleine wijzer staat op de zeven. De grote wijzer staat bovenaan. \"Zeven uur,\" zegt ze zelf. \"Slaaptijd.\"",
-      "prent": {
-        "decor": "kamer",
-        "figuren": [
-          "pip"
-        ]
-      }
-    },
-    {
-      "tekst": "Mama stopt haar in. Buiten is het donker, maar binnen is het warm. \"Morgen,\" fluistert Pip, \"als de kleine wijzer op de acht staat, is het weer licht.\" Mama geeft haar een kus. Tik, tak, doet de klok. Tik, tak. En Pip slaapt.",
-      "prent": {
-        "decor": "nacht",
         "figuren": [
           "pip",
           "pipmama",

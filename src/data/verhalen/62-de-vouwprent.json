@@ -39,24 +39,14 @@
       }
     },
     {
-      "tekst": "\"En nu?\" vraagt Noor. \"Nu vouw je het blad dicht en strijk je er zachtjes over met je hand,\" zegt opa. \"Van de vouw naar buiten.\" Daan strijkt heel voorzichtig. Het papier voelt nat en koud. Er piept een randje geel uit de zijkant.",
+      "tekst": "\"En nu?\" vraagt Noor. \"Nu vouw je het blad dicht en strijk je er zachtjes over met je hand,\" zegt opa. \"Van de vouw naar buiten.\" Daan strijkt heel voorzichtig. Het papier voelt nat en koud. Er piept een randje geel uit de zijkant. Dan vouwen ze het blad weer open. Noor houdt haar adem in. Op het blad staat een vlinder! Twee rode vleugels, met in elke vleugel een gele stip. Precies hetzelfde aan beide kanten. \"Hoe kan dat?\" roept Daan.",
       "prent": {
         "decor": "keuken",
         "figuren": [
           "daan",
           "opa",
-          "tekening"
-        ]
-      }
-    },
-    {
-      "tekst": "Dan vouwen ze het blad weer open. Noor houdt haar adem in. Op het blad staat een vlinder! Twee rode vleugels, met in elke vleugel een gele stip. Precies hetzelfde aan beide kanten. \"Hoe kan dat?\" roept Daan.",
-      "prent": {
-        "decor": "keuken",
-        "figuren": [
-          "noor",
-          "daan",
-          "tekening"
+          "tekening",
+          "noor"
         ]
       }
     },
@@ -83,23 +73,14 @@
       }
     },
     {
-      "tekst": "Dan wil Daan iets moeilijks. Hij vouwt een blad twee keer: eerst in de lengte en dan in de breedte. \"Nu krijg ik vier keer hetzelfde,\" zegt hij. Hij doet één klodder blauw in het hoekje. Als hij het blad openvouwt, staat er een bloem met vier blauwe blaadjes.",
+      "tekst": "Dan wil Daan iets moeilijks. Hij vouwt een blad twee keer: eerst in de lengte en dan in de breedte. \"Nu krijg ik vier keer hetzelfde,\" zegt hij. Hij doet één klodder blauw in het hoekje. Als hij het blad openvouwt, staat er een bloem met vier blauwe blaadjes. Noor tekent er nog een snor bij aan de kever. Iedereen moet lachen. \"Die geven we niet aan de Sint,\" zegt ze. \"Die hangen we op de koelkast.\" Opa knikt plechtig. \"Een kever met een snor verdient een ereplaats.\"",
       "prent": {
         "decor": "keuken",
         "figuren": [
           "daan",
-          "tekening"
-        ]
-      }
-    },
-    {
-      "tekst": "Noor tekent er nog een snor bij aan de kever. Iedereen moet lachen. \"Die geven we niet aan de Sint,\" zegt ze. \"Die hangen we op de koelkast.\" Opa knikt plechtig. \"Een kever met een snor verdient een ereplaats.\"",
-      "prent": {
-        "decor": "keuken",
-        "figuren": [
+          "tekening",
           "noor",
-          "opa",
-          "tekening"
+          "opa"
         ]
       }
     },
