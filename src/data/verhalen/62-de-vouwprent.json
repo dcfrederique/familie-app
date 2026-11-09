@@ -1,0 +1,119 @@
+{
+  "nr": 62,
+  "titel": "De vouwprent",
+  "reeks": "avonturiers",
+  "leeftijd": 6,
+  "thema": "Herfst en Sinterklaas, spiegelen en samen knutselen",
+  "bladzijden": [
+    {
+      "tekst": "Het regent buiten en de bladeren plakken tegen het raam. Noor en Daan zitten aan de keukentafel. Ze willen een tekening maken voor de Sint, maar ze weten niet wat. \"Iets moois,\" zegt Noor. \"Iets wat hij nog nooit gezien heeft,\" zegt Daan.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "noor",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Opa komt binnen met een oud schort en vier potjes verf. \"Ik ken een trucje van toen ik klein was,\" zegt hij. \"Het heet een vouwprent. Je hebt maar een halve tekening nodig, en toch krijg je een hele.\" Daan fronst. \"Dat kan toch niet?\"",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "noor",
+          "daan",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "Opa vouwt een groot blad dubbel en weer open. In het midden zit nu een rechte streep. \"Doe een paar klodders verf aan één kant van de streep,\" zegt hij. \"Alleen aan één kant. Niet meer.\" Noor neemt rood. Daan neemt geel. Ze doen drie klodders, dicht bij de vouw.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "noor",
+          "daan",
+          "opa",
+          "tekening"
+        ]
+      }
+    },
+    {
+      "tekst": "\"En nu?\" vraagt Noor. \"Nu vouw je het blad dicht en strijk je er zachtjes over met je hand,\" zegt opa. \"Van de vouw naar buiten.\" Daan strijkt heel voorzichtig. Het papier voelt nat en koud. Er piept een randje geel uit de zijkant.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "daan",
+          "opa",
+          "tekening"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan vouwen ze het blad weer open. Noor houdt haar adem in. Op het blad staat een vlinder! Twee rode vleugels, met in elke vleugel een gele stip. Precies hetzelfde aan beide kanten. \"Hoe kan dat?\" roept Daan.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "noor",
+          "daan",
+          "tekening"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Het is een spiegel,\" legt opa uit. \"Wat links staat, komt rechts omgekeerd terecht. Dichtbij de vouw blijft dichtbij. Ver weg blijft ver weg.\" Daan houdt een klein spiegeltje tegen de vouw. Hij ziet nog steeds een hele vlinder. Nu snapt hij het.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "daan",
+          "opa",
+          "tekening"
+        ]
+      }
+    },
+    {
+      "tekst": "Ze maken er nog meer. Noor maakt een pompoen, maar die lijkt eerder op een kever. Daan probeert een mijter. Hij doet de punt heel dicht bij de vouw, want hij weet nu dat de punt anders in twee stukken komt. Het lukt. Een gele mijter met een rood kruis!",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "noor",
+          "daan",
+          "tekening"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan wil Daan iets moeilijks. Hij vouwt een blad twee keer: eerst in de lengte en dan in de breedte. \"Nu krijg ik vier keer hetzelfde,\" zegt hij. Hij doet één klodder blauw in het hoekje. Als hij het blad openvouwt, staat er een bloem met vier blauwe blaadjes.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "daan",
+          "tekening"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor tekent er nog een snor bij aan de kever. Iedereen moet lachen. \"Die geven we niet aan de Sint,\" zegt ze. \"Die hangen we op de koelkast.\" Opa knikt plechtig. \"Een kever met een snor verdient een ereplaats.\"",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "noor",
+          "opa",
+          "tekening"
+        ]
+      }
+    },
+    {
+      "tekst": "Die avond leggen Noor en Daan de vlinder en de mijter in hun schoen. Ze zijn droog en een beetje bobbelig. \"Denk je dat de Sint snapt hoe we het gedaan hebben?\" vraagt Noor. Daan grijnst. \"De Sint weet alles,\" zegt hij. \"Maar het trucje van opa, dat houden we geheim.\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "daan",
+          "schoen",
+          "tekening"
+        ]
+      }
+    }
+  ]
+}

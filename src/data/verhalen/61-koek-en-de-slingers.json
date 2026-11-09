@@ -1,0 +1,102 @@
+{
+  "nr": 61,
+  "titel": "Koek en de slingers",
+  "reeks": "kleine-oortjes",
+  "leeftijd": 4,
+  "thema": "Sinterklaas, versieren en geduld",
+  "bladzijden": [
+    {
+      "tekst": "Morgen komt de Sint op bezoek in de klas. Vandaag maakt Pip het huis al feestelijk. Mama heeft een grote doos gevonden op zolder. Er zitten slingers in. Rode, gele, blauwe en groene.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "pipmama",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Maar oei. De slingers zitten helemaal in de knoop. Rood zit om geel. Geel zit om blauw. En blauw zit om groen. \"Het lijkt wel spaghetti,\" lacht Pip.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan springt Koek de kat in de doos. Hij grijpt een slinger met zijn pootjes. Hij rolt om en om. Nu zit Koek ook in de knoop! Alleen zijn staart steekt er nog uit. \"Miauw,\" zegt Koek zacht.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "koek",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Rustig maar, Koek,\" zegt Pip. \"Niet trekken. Dan wordt het erger.\" Mama houdt Koek vast. Pip zoekt het begin van de rode slinger. Ze volgt hem met haar vinger. Onder, boven, onder. Daar is het einde!",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "pipmama",
+          "koek"
+        ]
+      }
+    },
+    {
+      "tekst": "De rode slinger is los. Dan de gele. Die is makkelijk. Dan de blauwe. Die zit om Koeks pootje. Pip wikkelt hem er heel voorzichtig af. Koek spint. Hij is weer vrij.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "koek"
+        ]
+      }
+    },
+    {
+      "tekst": "Nu hangen ze de slingers op. Mama heeft vier haakjes in de muur. Twee rode, twee gele, twee blauwe en twee groene. \"Elke slinger gaat van zijn haakje naar het haakje met dezelfde kleur,\" zegt mama.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "pipmama"
+        ]
+      }
+    },
+    {
+      "tekst": "Pip hangt rood van links naar rechts. Geel gaat eronder. Maar blauw wil over rood heen. \"Dan zit het weer in de knoop,\" zegt Pip. Ze denkt na. Ze hangt blauw met een boogje erlangs. Zo kruisen ze niet!",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip"
+        ]
+      }
+    },
+    {
+      "tekst": "Als laatste hangt groen, helemaal bovenaan. Pip stapt achteruit. Wat is het mooi! Vier slingers, niemand in de knoop. Zelfs Koek kijkt omhoog met grote ogen.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "koek"
+        ]
+      }
+    },
+    {
+      "tekst": "'s Avonds doet mama de lampjes aan. De slingers glinsteren. Pip zet haar schoen bij de deur, met een wortel erin. \"Morgen komt de Sint,\" fluistert ze tegen Koek. \"En alles is klaar.\" Koek geeuwt en rolt zich op in de lege doos.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "koek",
+          "schoen"
+        ]
+      }
+    }
+  ]
+}

@@ -128,6 +128,22 @@ const slaap = wikkel(`<g transform="translate(150 30)"><rect x="0" y="0" width="
   <g transform="translate(860 170)"><rect x="-30" y="0" width="60" height="50" rx="6" fill="#B5733A"/><rect x="-24" y="8" width="48" height="16" rx="3" fill="#8A5A33"/><rect x="-12" y="-36" width="24" height="36" rx="4" fill="#F4F6F9"/><path d="M-8 -36Q0 -50 8 -36" fill="#FFE27A"/></g>
   <path d="M0 220v-24h1000v24z" style="fill:var(--tn-grond)"/>`)
 
+const piraat = wikkel(`<path d="M0 150Q60 140 120 150T240 150T360 150T480 150T600 150T720 150T840 150T960 150T1080 150V220H0Z" style="fill:var(--tn-zee)"/>
+  <g class="tn-nacht" fill="#FFF3C4"><circle cx="120" cy="40" r="3"/><circle cx="260" cy="70" r="2"/><circle cx="820" cy="30" r="2.5"/><circle cx="930" cy="80" r="2"/></g>
+  <g transform="translate(470 40)"><rect x="-4" y="0" width="8" height="120" fill="#6E4A28"/><path d="M6 6Q70 30 6 64Z" fill="#F4F6F9"/><path d="M-6 14Q-60 40 -6 78Z" fill="#EDE3D0"/><path d="M4 0V-22L34 -14L4 -6" fill="#1E2A38"/><circle cx="16" cy="-14" r="3.5" fill="#FFFFFF"/><path d="M-110 112H120L96 160H-86Z" fill="#8A5A33"/><path d="M-110 112H120" stroke="#5B3A1E" stroke-width="6"/><circle cx="-50" cy="134" r="7" fill="#33414F"/><circle cx="0" cy="134" r="7" fill="#33414F"/><circle cx="50" cy="134" r="7" fill="#33414F"/></g>
+  <g transform="translate(760 150)"><ellipse cx="0" cy="18" rx="70" ry="16" fill="#F2DDA0"/><rect x="-6" y="-60" width="10" height="72" rx="4" fill="#8A5A33"/><path d="M0 -60q-34 -6 -46 14M0 -60q30 -10 46 10M0 -60q-20 -24 -40 -22M0 -60q22 -22 40 -18" stroke="#43A047" stroke-width="9" fill="none" stroke-linecap="round"/><rect x="24" y="0" width="30" height="20" rx="3" fill="#B5733A"/><path d="M24 6h30" stroke="#F2C530" stroke-width="3"/></g>
+  <g class="thema-zweef" transform="translate(220 110)"><path d="M-14 0q14 -10 28 0" stroke="#FFFFFF" stroke-width="3" fill="none"/></g>
+  <g class="thema-zweef" transform="translate(320 90)"><path d="M-10 0q10 -8 20 0" stroke="#FFFFFF" stroke-width="3" fill="none"/></g>
+  <path d="M0 220v-24h1000v24z" style="fill:var(--tn-grond)"/>`)
+
+const dans = wikkel(`
+  <g transform="translate(360 64)"><rect x="0" y="0" width="200" height="100" rx="6" fill="#DCE8F2" stroke="#B8C6D4" stroke-width="6"/><path d="M20 90L60 30L100 84M110 90L150 44L180 90" stroke="#FFFFFF" stroke-width="5" fill="none" opacity=".7"/></g>
+  <path d="M300 140H640" stroke="#B5733A" stroke-width="6" stroke-linecap="round"/><path d="M320 140V196M620 140V196" stroke="#B5733A" stroke-width="5"/>
+  <g transform="translate(720 100) scale(.72)"><circle cx="0" cy="0" r="16" fill="#F2D3A8"/><path d="M-16 -4Q0 -26 16 -4" fill="#8A5A33"/><circle cx="0" cy="-20" r="8" fill="#8A5A33"/><path d="M-6 16H6L30 60H-30Z" fill="#F7A8C4"/><path d="M-40 54Q0 34 40 54Q0 72 -40 54Z" fill="#FBC9DB"/><path d="M-6 66L-14 120M6 66L22 116" stroke="#F2D3A8" stroke-width="6" stroke-linecap="round"/><path d="M-6 26L-40 6M6 26L36 -2" stroke="#F2D3A8" stroke-width="5" stroke-linecap="round"/><ellipse cx="-15" cy="122" rx="7" ry="4" fill="#E86FB0"/><ellipse cx="24" cy="118" rx="7" ry="4" fill="#E86FB0"/></g>
+  ${[[150, 60, '#E86FB0'], [230, 110, '#8E5BD1'], [860, 50, '#F2B90F'], [920, 120, '#E86FB0']].map(([x, y, c]) => `<g class="thema-zweef" transform="translate(${x} ${y})"><path d="M0 -10L3 -3L10 0L3 3L0 10L-3 3L-10 0L-3 -3Z" fill="${c}"/></g>`).join('')}
+  <g class="tn-nacht" fill="#FFF3C4"><circle cx="420" cy="60" r="2"/><circle cx="500" cy="90" r="2.5"/></g>
+  <path d="M0 220v-24h1000v24z" style="fill:var(--tn-grond)"/>`)
+
 const vink = (kleur: string) => `<path d="M-16 0L-6 10L16 -12" stroke="${kleur}" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
 
 export const dataThemas: DataThema[] = [
@@ -320,6 +336,38 @@ export const dataThemas: DataThema[] = [
     vink: `<circle r="20" fill="#4A63C9"/><g transform="scale(.9)">${vink('#fff')}</g>`,
     slot: '<circle r="18" fill="#B8BFCB"/><rect x="-10" y="-6" width="20" height="13" rx="6" fill="#5B6B7A"/>',
     feest: [ster('#FFE27A'), '<path d="M4 -10a10 10 0 1 0 8 15a8 8 0 1 1 -8 -15z" fill="#FFE27A"/>', '<rect x="-8" y="-5" width="16" height="10" rx="5" fill="#F7A8C4"/>'], confetti: ['#4A63C9', '#FFE27A', '#F7A8C4', '#FFFFFF'],
+    tegelRadius: '26px', tegelRand: '6px solid var(--kid)',
+  },
+  {
+    sleutel: 'piraat', naam: 'Piratenschip', kidKleur: '#B5402A', shirt: 'oranje', verhouding: 1,
+    ondertitels: { spelen: 'Aan dek', verhalen: 'Lezen in de kajuit', kleurplaten: 'De schatkaart tekenen', figuurtje: 'De kapitein', huis: 'Mijn eigen eiland' },
+    klaarTekst: 'Schat gevonden, ahoi!', nogTeDoen: (n) => `Nog ${n} ${n === 1 ? 'stap' : 'stappen'} tot de schat`,
+    licht: { bg: '#FBF3E6', surface: '#FFFFFF', soft: '#F3E3C8', ink: '#3A2412', muted: '#7A5A3A', line: '#E8D3B0', shade: '#D9BE94', kid: '#B5402A', 'kid-tint': '#F7E0D6', 'on-solid': '#FFFFFF',
+      'tn-grond': '#2E8BC0', 'tn-zee': '#5DB7E8', 'tn-nacht': 'none', 'tn-banner': 'linear-gradient(#BFE3F7,#FBF3E6)', 'tn-titel': '#3A2412', 'tn-sub': '#8A3A20', 'tn-spoor': '#E8D3B0' },
+    donker: { bg: '#0E1620', surface: '#1A2632', soft: '#22313F', ink: '#F4EADB', muted: '#C2AE92', line: '#2C3B4A', shade: '#05090D', kid: '#F08A6A', 'kid-tint': '#3A2620', 'on-solid': '#0E1620',
+      'tn-grond': '#123A55', 'tn-zee': '#1C4E70', 'tn-nacht': 'inline', 'tn-banner': 'linear-gradient(#060B12,#1C4E70)', 'tn-titel': '#FFFFFF', 'tn-sub': '#F2C530', 'tn-spoor': '#2C3B4A' },
+    prent: piraat,
+    voortgang: { mover: '<path d="M-10 2H10L7 8H-7Z" fill="#8A5A33"/><path d="M0 2V-12L8 -4Z" fill="#F4F6F9"/>', doel: '<rect x="-10" y="-8" width="20" height="14" rx="3" fill="#B5733A"/><path d="M-10 -3h20" stroke="#F2C530" stroke-width="3"/>' },
+    nieuw: '<path d="M-14 2H14L10 12H-10Z" fill="#8A5A33"/><path d="M0 2V-18L12 -6Z" fill="#F4F6F9"/>',
+    vink: `<circle r="20" fill="#B5402A"/><g transform="scale(.9)">${vink('#fff')}</g>`,
+    slot: '<circle r="18" fill="#B8BFCB"/><rect x="-10" y="-6" width="20" height="14" rx="3" fill="#5B6B7A"/>',
+    feest: [ster('#F2C530'), '<circle r="7" fill="#F2C530" stroke="#C99712" stroke-width="2"/>', '<path d="M-6 0H6L4 5H-4Z" fill="#8A5A33"/>'], confetti: ['#B5402A', '#F2C530', '#2E8BC0', '#FFFFFF'],
+    tegelRadius: '18px', tegelRand: '6px solid var(--kid)',
+  },
+  {
+    sleutel: 'dans', naam: 'Dansstudio', kidKleur: '#D0478A', shirt: 'roze', verhouding: 1,
+    ondertitels: { spelen: 'De danszaal', verhalen: 'Lezen aan de barre', kleurplaten: 'Het kostuumatelier', figuurtje: 'Klaar voor de voorstelling', huis: 'Mijn eigen studio' },
+    klaarTekst: 'Dansje klaar, buigen maar!', nogTeDoen: (n) => `Nog ${n} ${n === 1 ? 'pasje' : 'pasjes'} tot de buiging`,
+    licht: { bg: '#FCF0F6', surface: '#FFFFFF', soft: '#F7DCE9', ink: '#4A1530', muted: '#8A4A6A', line: '#F0CDDE', shade: '#E2B0C8', kid: '#D0478A', 'kid-tint': '#FBE2EE', 'on-solid': '#FFFFFF',
+      'tn-grond': '#D8A878', 'tn-muur': '#FCF0F6', 'tn-nacht': 'none', 'tn-banner': 'linear-gradient(#F7D6E6,#FCF0F6)', 'tn-titel': '#4A1530', 'tn-sub': '#A82E6A', 'tn-spoor': '#F0CDDE' },
+    donker: { bg: '#1E0C17', surface: '#2F1525', soft: '#3A1A2E', ink: '#FCEAF3', muted: '#D9A6C1', line: '#4A2239', shade: '#0A0408', kid: '#F28DBE', 'kid-tint': '#4A1E37', 'on-solid': '#1E0C17',
+      'tn-grond': '#5A3A2A', 'tn-muur': '#1E0C17', 'tn-nacht': 'inline', 'tn-banner': 'linear-gradient(#12060E,#4A1E37)', 'tn-titel': '#FFFFFF', 'tn-sub': '#F2C530', 'tn-spoor': '#4A2239' },
+    prent: dans,
+    voortgang: { mover: '<path d="M-6 0Q0 -8 6 0Q0 6 -6 0Z" fill="#E86FB0"/><path d="M0 0V-10" stroke="#E86FB0" stroke-width="2"/>', doel: `<g transform="scale(.8)">${ster('#F2C530')}</g>` },
+    nieuw: '<path d="M-12 4Q0 -10 12 4Q0 12 -12 4Z" fill="#E86FB0"/><circle cy="-8" r="5" fill="#E86FB0"/>',
+    vink: `<circle r="20" fill="#D0478A"/><g transform="scale(.9)">${vink('#fff')}</g>`,
+    slot: '<circle r="18" fill="#B8BFCB"/><path d="M-9 4Q0 -6 9 4Q0 10 -9 4Z" fill="#5B6B7A"/>',
+    feest: [ster('#F2C530'), '<path d="M-8 2Q0 -8 8 2Q0 8 -8 2Z" fill="#F7A8C4"/>', '<path d="M0 -6L2 -2L6 0L2 2L0 6L-2 2L-6 0L-2 -2Z" fill="#8E5BD1"/>'], confetti: ['#D0478A', '#F2C530', '#8E5BD1', '#FFFFFF'],
     tegelRadius: '26px', tegelRand: '6px solid var(--kid)',
   },
 ]

@@ -19,6 +19,26 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.126',
+    datum: '2026-11-09',
+    titel: "Spiegelprent, De vouwprent en het vijfde level van het Lichtjesbos",
+    tekst: "Nieuw verhaal \"De vouwprent\" (herfst en Sinterklaas, spiegelen) en nieuwe kleurplaat \"De vouwprent\" (een vlinder), meteen te lezen en in te kleuren. Het spelletje Spiegelprent kost 25 sterren: de helft van een prent is al gekleurd; kleur de andere helft in spiegelbeeld (tikken of slepen, met een gom). Makkelijk: 4 × 4 tot 6 × 6 met één of twee kleuren, en een stippellijntje toont welke vakjes nog moeten. Middel: tot 8 × 8 met drie kleuren, zonder hulp. Moeilijk: tot 12 × 10 met vier kleuren, vaak met twee spiegels (je maakt drie kwarten uit één), zelf nakijken met Klaar?, klokje en pluimen. In Springland ligt het vijfde level van het Lichtjesbos: Het maanpad. Nieuw kinderthema: Dansstudio, te kiezen bij Mijn thema.",
+    verhaal: "De vouwprent",
+    spel: { naam: "Spiegelprent", prijs: 25 },
+    stukken: ["Figuurtje: Haarband met vlinder (15), Shirt half en half (20), Handspiegeltje (10)", "Mijn huis: Vlinderhuisje (25), Spiegelvijver (25), Vlinderstruik (20)"],
+    open: "Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.",
+  },
+  {
+    versie: '0.125',
+    datum: '2026-11-09',
+    titel: "Slingers ophangen, Koek en de slingers en een nieuw level",
+    tekst: "Nieuw verhaal \"Koek en de slingers\" (Sinterklaas, voor de kleinsten) en nieuwe kleurplaat \"Slingers voor de Sint\", meteen te lezen en in te kleuren. Het spelletje Slingers ophangen kost 30 sterren: op een rooster staan telkens twee lampjes van dezelfde kleur; trek met je vinger een slinger van het ene naar het andere, zonder dat slingers kruisen. Makkelijk: 4 × 4 en 5 × 5 met 3 tot 5 kleuren, alleen verbinden. Middel: 6 × 6 en 7 × 7, en elk vakje moet vol hangen. Moeilijk: 8 × 8 tot 10 × 9 met tot 9 lange, kronkelende slingers, vol hangen, met klokje en pluimen (Hulp kost de hulppluim). In Springland ligt het vierde level van het Lichtjesbos: De lichtjesboom (pittig). Nieuw kinderthema: Piratenschip, te kiezen bij Mijn thema.",
+    verhaal: "Koek en de slingers",
+    spel: { naam: "Slingers ophangen", prijs: 30 },
+    stukken: ["Figuurtje: Feesthoedje met slinger (15), Trui met lampjes (20), Feesttoeter (10)", "Mijn huis: Slinger tussen twee palen (25), Feesttafel met taart (30), Tros ballonnen (20)"],
+    open: "Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.",
+  },
+  {
     versie: '0.124',
     datum: '2026-11-09',
     titel: "Bruggen bouwen, Een brug voor het paard en een nieuw level",

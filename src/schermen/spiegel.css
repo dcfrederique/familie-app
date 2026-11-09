@@ -1,0 +1,44 @@
+/* Spiegelprent: het blad links (of boven, staand), de verfpotjes ernaast. De SVG schaalt mee. */
+.sp { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 1.4dvh, 14px); width: 100%; }
+.sp-spel { display: flex; align-items: center; justify-content: center; gap: clamp(12px, 3vw, 36px); width: 100%; }
+.sp-plek { display: grid; place-items: center; width: min(70vw, calc((100dvh - 230px) * 1.2)); height: calc(100dvh - 230px); }
+.sp-bord { width: 100%; height: 100%; touch-action: none; user-select: none; -webkit-user-select: none; }
+.sp-rand { fill: #FFFFFF; stroke: var(--line); stroke-width: .6; }
+.sp-vak { fill: #F1F3F7; transition: fill .15s; }
+.sp-vak.vast { fill: #E3E7EE; }
+.sp-tip { fill: none; stroke-width: .8; stroke-dasharray: 1.2 1; pointer-events: none; }
+.sp-as { stroke: #F2B90F; stroke-width: .8; stroke-dasharray: 2 1.4; stroke-linecap: round; pointer-events: none; }
+.sp-zij { display: flex; flex-direction: column; align-items: center; gap: 10px; font-weight: 800; }
+.sp-potten { display: grid; grid-template-columns: repeat(2, auto); gap: 8px; }
+.sp-pot { display: grid; place-items: center; width: 64px; height: 64px; padding: 0; border: 4px solid #fff; border-radius: 50%; box-shadow: 0 4px 0 rgba(0, 0, 0, .18); cursor: pointer; touch-action: manipulation; }
+.sp-pot.gum { background: #FFFFFF; border-color: var(--line); }
+.sp-pot svg { width: 60%; height: 60%; }
+.sp-pot.nu { outline: 4px solid var(--ink); outline-offset: 2px; }
+.sp-oei { max-width: 200px; text-align: center; color: #B3261E; }
+.sp-eindprent { width: clamp(160px, 28dvh, 280px); height: auto; }
+@media (prefers-reduced-motion: no-preference) {
+  .sp-bord.viert { animation: sp-hup .5s ease-out 2 alternate; }
+  .sp-pot:active { transform: scale(.92); }
+}
+@media (prefers-reduced-motion: reduce) { .sp-vak { transition: none; } }
+@keyframes sp-hup { to { transform: scale(1.03); } }
+@media (orientation: portrait) {
+  .sp-spel { flex-direction: column; }
+  .sp-zij { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+  .sp-potten { grid-template-columns: repeat(5, auto); }
+  .sp-plek { width: calc(100vw - 40px); height: min(calc(100dvh - 420px), calc(100vw - 40px)); }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .sp { gap: 2px; }
+  .sp-zij { gap: 4px; }
+  .sp-pot { width: 46px; height: 46px; border-width: 3px; }
+  .sp-potten { gap: 4px; }
+}
+
+/* Volle opmaak (tablet, liggende gsm): het blad krijgt precies de vrije plaats. */
+@media (min-width: 600px) and (min-height: 560px), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .sp { flex: 1; min-height: 0; }
+  .sp-spel { flex: 1; min-height: 0; }
+  .sp-plek { flex: 1; align-self: stretch; width: auto; height: auto; min-width: 0; min-height: 0; container-type: size; }
+  .sp-plek .sp-bord { width: 100cqw; height: 100cqh; }
+}
