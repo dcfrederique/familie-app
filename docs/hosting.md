@@ -32,6 +32,8 @@ PR gesloten/gemerged ───────────────────�
 - Https zit er standaard bij, dus web-push (`docs/meldingen.md`), installeren op het startscherm en de camera werken.
 - Zonder het secret `AZURE_STATIC_WEB_APPS_API_TOKEN` slaat de deploy-job zich over; CI blijft dan gewoon groen.
 
+**Repo publiek (9 november 2026):** de gratis GitHub Actions-minuten van een privérepo waren op, dus de repo is publiek gemaakt (Frederique besliste dit bewust; kindernamen en leeftijden staan erin, geen geheimen). Actions is voor een publieke repo gratis en onbeperkt, dus CI, migraties en deploy blijven draaien. Geheimen blijven alleen in GitHub-secrets; zet nooit een sleutel of wachtwoord in de code of een plan.
+
 **Kost:** Static Web Apps Free, Speech Free F0 en een Storage-account van enkele MB: samen ±€0,05 per maand. Free geeft 100 GB verkeer per maand, 2 eigen domeinen en 3 voorbeeld-adressen tegelijk.
 
 **Over het Visual Studio-abonnement:** dit alles kost (bijna) niets van het tegoed. De voorwaarde "dev/test only" (`docs/azure.md`) blijft gelden; wie dat strikt wil, maakt dezelfde resources op een gratis pay-as-you-go-abonnement. Valt het abonnement weg, dan gaat de app offline tot je hem opnieuw aanmaakt (de deploy is één secret wisselen), de gegevens in Supabase blijven.
