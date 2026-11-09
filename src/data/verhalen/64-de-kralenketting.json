@@ -1,0 +1,105 @@
+{
+  "nr": 64,
+  "titel": "De kralenketting",
+  "reeks": "kleine-oortjes",
+  "leeftijd": 4,
+  "thema": "Herfst, een patroon maken en iets geven",
+  "bladzijden": [
+    {
+      "tekst": "Oma is jarig. Pip wil haar iets geven. Iets wat ze zelf maakt. Mama zet een doos op tafel. Er zitten kralen in. Rode kralen, gele kralen en blauwe kralen. En een lang touwtje.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pip",
+          "pipmama",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Pip rijgt een rode kraal op het touwtje. Dan een gele. Dan weer een rode. En een gele. \"Rood, geel, rood, geel,\" zingt Pip. Het klinkt als een liedje.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pip"
+        ]
+      }
+    },
+    {
+      "tekst": "Mo komt kijken. \"Wat komt er nu?\" vraagt mama. Pip kijkt naar haar ketting. Rood, geel, rood, geel. \"Rood!\" roept ze. Ze rijgt een rode kraal. Klopt!",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pip",
+          "mo",
+          "pipmama"
+        ]
+      }
+    },
+    {
+      "tekst": "Mo wil ook helpen. Hij pakt een blauwe kraal. \"Oei,\" zegt Pip. \"Blauw past niet in mijn liedje.\" Mo kijkt sip. Pip denkt na. \"Weet je wat? Jij mag een nieuw liedje beginnen.\"",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pip",
+          "mo"
+        ]
+      }
+    },
+    {
+      "tekst": "Mo rijgt op een ander touwtje. Blauw, blauw, geel. Blauw, blauw, geel. \"Twee blauwe en dan een gele,\" zegt hij trots. \"Dat is mijn liedje.\" Koek de kat kijkt van op de stoel. Haar staart gaat heen en weer. Links, rechts, links, rechts.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "mo",
+          "koek"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Kijk,\" lacht Pip. \"Koek maakt ook een patroon met haar staart!\" Mama lacht mee. Het is net een spelletje. Wat komt erna? Pip weet het altijd. Mo ook.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pip",
+          "mo",
+          "pipmama",
+          "koek"
+        ]
+      }
+    },
+    {
+      "tekst": "Als de touwtjes vol zijn, knoopt mama ze aan elkaar. Nu is het één lange ketting. Een stukje rood en geel, een stukje blauw, blauw, geel. Pip vindt het de mooiste ketting van de hele wereld.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pip",
+          "pipmama"
+        ]
+      }
+    },
+    {
+      "tekst": "Ze pakken de ketting in, in een klein doosje met een strik. Mo tekent er een kaartje bij. Hij tekent drie kralen: rood, geel, rood. \"Dan weet oma wat er komt,\" zegt hij.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pip",
+          "mo",
+          "doos",
+          "tekening"
+        ]
+      }
+    },
+    {
+      "tekst": "Oma maakt het doosje open. \"Oh!\" zegt ze. Ze doet de ketting meteen om. \"Rood, geel, rood, geel,\" leest ze. \"En dan blauw, blauw, geel.\" Pip en Mo knikken trots. Oma geeft hen een dikke knuffel. Een knuffel, een kus, een knuffel, een kus.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "mo",
+          "doos"
+        ]
+      }
+    }
+  ]
+}

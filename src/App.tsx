@@ -32,6 +32,7 @@ import Delen from './schermen/Delen.tsx'
 import Weegschaal from './schermen/Weegschaal.tsx'
 import Torens from './schermen/Torens.tsx'
 import Rooster from './schermen/Rooster.tsx'
+import Patroon from './schermen/Patroon.tsx'
 import Kalaha from './schermen/Kalaha.tsx'
 import Spiegel from './schermen/Spiegel.tsx'
 import Slingers from './schermen/Slingers.tsx'
@@ -156,6 +157,7 @@ export default function App() {
         <Route path="weegschaal" element={<Weegschaal />} />
         <Route path="torens" element={<Torens />} />
         <Route path="rooster" element={<Rooster />} />
+        <Route path="patroon" element={<Patroon />} />
         <Route path="kalaha" element={<Kalaha />} />
         <Route path="spiegel" element={<Spiegel />} />
         <Route path="slingers" element={<Slingers />} />

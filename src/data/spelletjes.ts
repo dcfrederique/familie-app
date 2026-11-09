@@ -487,7 +487,7 @@ export function startNiveaus(kind: Gebruiker, kinderen: Gebruiker[]): { memory: 
   return oudsteLezer?.id === kind.id ? { memory: 'groot', rekenen: 'tot100' } : { memory: 'middel', rekenen: 'tot20' }
 }
 
-export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'weegschaal' | 'torens' | 'rooster' | 'kalaha' | 'spiegel' | 'slingers' | 'bruggen' | 'schuif' | 'vlek' | 'hekjes' | 'zoeken' | 'geheim' | 'springen'
+export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'weegschaal' | 'torens' | 'rooster' | 'patroon' | 'kalaha' | 'spiegel' | 'slingers' | 'bruggen' | 'schuif' | 'vlek' | 'hekjes' | 'zoeken' | 'geheim' | 'springen'
 
 export interface SpelInfo {
   sleutel: SpelSleutel
@@ -549,6 +549,8 @@ export const spelMenu: SpelInfo[] = [
     icoon: 'M12 2v3M8 6h8l1 13H7zM12 6v13M7.5 12h9' },
   { sleutel: 'rooster', naam: 'Kleurenrooster', uitleg: 'Zet elke kleur één keer in elke rij en kolom', prijs: 25,
     icoon: 'M4 4h16v16H4zM4 9.3h16M4 14.7h16M9.3 4v16M14.7 4v16' },
+  { sleutel: 'patroon', naam: "Wat komt erna?", uitleg: "Kijk naar de rij en kies wat erna komt", prijs: 20,
+    icoon: 'M3 12a2 2 0 1 0 4 0a2 2 0 1 0 -4 0M9 10h4v4H9zM15 12a2 2 0 1 0 4 0M21 10v4' },
   { sleutel: 'kalaha', naam: "Kalaha", uitleg: "Strooi de pepernoten rond en win de meeste", prijs: 30,
     icoon: 'M3 9a9 6 0 0 0 18 0M3 9h18M7 12.5h.01M12 13h.01M17 12.5h.01M5 9V7M19 9V7' },
   { sleutel: 'spiegel', naam: "Spiegelprent", uitleg: "Kleur de andere helft in spiegelbeeld", prijs: 25,

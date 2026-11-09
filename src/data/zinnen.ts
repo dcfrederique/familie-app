@@ -64,6 +64,8 @@ export const zin = {
   spiegelKlaar: "Alle prenten zijn heel!",
   kalahaUitleg: "Tik op een putje aan jouw kant. De pepernoten gaan één voor één in de volgende putjes. Valt de laatste in jouw grote pot, dan mag je nog eens. Wie het meeste in zijn pot heeft, wint.",
   kalahaKlaar: "Goed gespeeld tegen de eekhoorn!",
+  patroonUitleg: "Kijk goed naar de rij. Wat komt er op het lege plekje? Tik op het goede prentje.",
+  patroonKlaar: "Jij ziet elke regel!",
   roosterUitleg: 'Zet elke kleur één keer in elke rij en in elke kolom.',
   roosterKlaar: 'Alle pakjes staan op hun plaats!',
   torensUitleg: 'Verhuis alle pakjes naar de gouden plank. Een groot pakje mag nooit op een klein pakje.',

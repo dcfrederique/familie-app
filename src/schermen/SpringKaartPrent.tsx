@@ -57,6 +57,18 @@ export function Grond({ w }: { w: KaartWereld }) {
         {vlekken('#FFFFFF', 6)}
       </g>
     )
+    case 'speelgoed': return (
+      <g>
+        <rect x={x} y="0" width={b} height={H} fill="#F4DDB4" />
+        {Array.from({ length: Math.ceil(H / 34) }, (_, i) => <path key={i} d={`M${x} ${i * 34}H${x + b}`} stroke="#E6C894" strokeWidth="3" />)}
+        {Array.from({ length: Math.ceil(b / 140) * Math.ceil(H / 34) }, (_, i) => (
+          <path key={`n${i}`} d={`M${x + ((i * 140 + (Math.floor(i / Math.ceil(b / 140)) % 2) * 70) % b)} ${Math.floor(i / Math.ceil(b / 140)) * 34}v34`} stroke="#E6C894" strokeWidth="3" />
+        ))}
+        {/* Een groot speelkleed met een weg erop */}
+        <rect x={x + 30} y={H * 0.12} width={b - 60} height={H * 0.76} rx="30" fill="#CDEBFA" />
+        <rect x={x + 44} y={H * 0.12 + 14} width={b - 88} height={H * 0.76 - 28} rx="22" fill="none" stroke="#FFFFFF" strokeWidth="5" strokeDasharray="14 12" />
+      </g>
+    )
     case 'snoep': return (
       <g>
         <rect x={x} y="0" width={b} height={H} fill="#FFD3E8" />
@@ -315,6 +327,30 @@ export function Versiersel({ v }: { v: Versiersel }) {
       <path d="M0-50L30 0H14L36 24H-36L-14 0H-30Z" fill="#1F6B4A" />
       {[[-10, -18], [12, -8], [-18, 12], [6, 14], [22, 18], [-2, -32]].map(([lx, ly], i) => <circle key={i} cx={lx} cy={ly} r="3.5" fill={['#FFE27A', '#FF8A80', '#80D8FF'][i % 3]} className="k-glinster" style={traag(i / 3)} />)}
     </>} />
+    case 'blokkenkasteel': return <Stuk v={v} kind={<>
+      <ellipse cx="0" cy="38" rx="56" ry="9" fill="rgba(0,0,0,.15)" />
+      {[[-36, 10, '#E5484D'], [-12, 10, '#2F80C9'], [12, 10, '#F2C530'], [36, 10, '#43A047'], [-24, -14, '#F28C28'], [24, -14, '#8E5BD1'], [0, -14, '#E86FB0']].map(([bx, by, c], i) => (
+        <rect key={i} x={(bx as number) - 12} y={by as number} width="24" height="24" rx="3" fill={c as string} stroke="rgba(0,0,0,.15)" strokeWidth="2" />
+      ))}
+      <path d="M-36-14L-24-34L-12-14ZM12-14L24-34L36-14Z" fill="#E5484D" /><path d="M0-14V-44" stroke="#5B3A1E" strokeWidth="3" /><path d="M0-44L16-38L0-32Z" fill="#F2C530" className="k-wieg" style={d} />
+    </>} />
+    case 'treintje': return <Stuk v={v} kind={<>
+      <ellipse cx="0" cy="22" rx="70" ry="7" fill="rgba(0,0,0,.15)" />
+      <path d="M-70 18H70" stroke="#8A5A33" strokeWidth="4" />
+      <rect x="-64" y="-6" width="36" height="22" rx="4" fill="#43A047" /><rect x="-22" y="-6" width="36" height="22" rx="4" fill="#F2C530" />
+      <rect x="20" y="-14" width="40" height="30" rx="4" fill="#E5484D" /><rect x="44" y="-30" width="10" height="16" fill="#33414F" /><rect x="26" y="-24" width="16" height="12" rx="2" fill="#2F80C9" />
+      {[-56, -36, -14, 6, 28, 50].map((wx) => <circle key={wx} cx={wx} cy="18" r="6" fill="#33414F" />)}
+      <circle cx="54" cy="-38" r="6" fill="#FFFFFF" opacity=".8" className="k-wieg" style={d} />
+    </>} />
+    case 'draaitol': return <Stuk v={v} kind={<g className="k-wieg" style={d}>
+      <ellipse cx="0" cy="34" rx="22" ry="5" fill="rgba(0,0,0,.15)" />
+      <path d="M0 32L-34 -4Q0 -26 34 -4Z" fill="#E86FB0" /><path d="M0 32L-34 -4Q-12 -12 0 -12Z" fill="#8E5BD1" /><path d="M0 32L34 -4Q12 -12 0 -12Z" fill="#F2C530" />
+      <rect x="-4" y="-34" width="8" height="24" rx="3" fill="#5B3A1E" />
+    </g>} />
+    case 'blokje': return <Stuk v={v} kind={<g transform={`rotate(${(v.x * 7) % 30 - 15})`}><rect x="-11" y="-11" width="22" height="22" rx="3" fill={['#E5484D', '#2F80C9', '#F2C530', '#43A047'][Math.floor(v.x) % 4]} stroke="rgba(0,0,0,.15)" strokeWidth="2" /><text y="5" textAnchor="middle" fontSize="13" fontWeight="800" fill="#FFFFFF">{'ABC'[Math.floor(v.y) % 3]}</text></g>} />
+    case 'knikker': return <Stuk v={v} kind={<g><circle r="7" fill="#2F80C9" /><path d="M-5 -2Q0 4 5 -2" stroke="#F2C530" strokeWidth="2" fill="none" /><circle cx="-2" cy="-3" r="2" fill="#FFFFFF" opacity=".7" /></g>} />
+    case 'teddy': return <Stuk v={v} kind={<g className="k-wieg" style={d}><circle cx="-8" cy="-14" r="5" fill="#B5733A" /><circle cx="8" cy="-14" r="5" fill="#B5733A" /><circle cy="-8" r="10" fill="#C98A4A" /><ellipse cy="10" rx="11" ry="12" fill="#C98A4A" /><ellipse cy="-5" rx="4" ry="3" fill="#F2D3A8" /></g>} />
+    case 'balletje': return <Stuk v={v} kind={<g><circle r="9" fill="#FFFFFF" /><path d="M-9 0A9 9 0 0 0 9 0Z" fill="#E5484D" /><path d="M-9 0H9" stroke="#33414F" strokeWidth="1.5" /></g>} />
     case 'lampionnetje': return <Stuk v={v} kind={<g className="k-wieg" style={d}>
       <path d="M0-24V-12" stroke="#4A2E1E" strokeWidth="2" /><ellipse cy="0" rx="10" ry="12" fill="#FF9F43" /><path d="M-10 0h20M0-12V12" stroke="#E07B1A" strokeWidth="1.5" /><circle r="4" fill="#FFE27A" opacity=".8" />
     </g>} />

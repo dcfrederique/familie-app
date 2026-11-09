@@ -23,6 +23,7 @@ const wereldKleur: Record<WereldStijl, { pad: string; rand: string }> = {
   snoep: { pad: '#FFF4FA', rand: '#F3A8CB' },
   hemel: { pad: '#FFFFFF', rand: '#BFE0F5' },
   nacht: { pad: '#FFE9A8', rand: '#C9A23E' },
+  speelgoed: { pad: '#FFE9A8', rand: '#E0AE17' },
 }
 
 /** Klein prentje van de stijl van een level, voor in het plekje en op de knop Volgend level. */

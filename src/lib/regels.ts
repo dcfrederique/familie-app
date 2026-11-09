@@ -57,7 +57,7 @@ export function limietVoor(limieten: { kind_id: string | null; activiteit: strin
 }
 
 export type Activiteit = 'memory' | 'penalty_schieten' | 'penalty_keepen' | 'rekenen' | 'verhaal' | 'kleurplaat' | 'tekenen'
-  | 'racen' | 'basket' | 'koken' | 'touwspringen' | 'huisdier' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'weegschaal' | 'torens' | 'rooster' | 'kalaha' | 'spiegel' | 'slingers' | 'bruggen' | 'schuif' | 'vlek' | 'hekjes' | 'zoeken' | 'geheim' | 'springen' | 'zelf_gelezen' | 'schrijven'
+  | 'racen' | 'basket' | 'koken' | 'touwspringen' | 'huisdier' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'weegschaal' | 'torens' | 'rooster' | 'patroon' | 'kalaha' | 'spiegel' | 'slingers' | 'bruggen' | 'schuif' | 'vlek' | 'hekjes' | 'zoeken' | 'geheim' | 'springen' | 'zelf_gelezen' | 'schrijven'
 
 /**
  * Sterren voor een afgewerkte activiteit (docs/spec.md, Activiteiten), nog vóór het dagplafond.
@@ -106,6 +106,7 @@ export function activiteitOmschrijving({ activiteit, inhoud }: { activiteit: Act
     case 'weegschaal': return 'Weegschaal'
     case 'torens': return 'Pakjestoren'
     case 'rooster': return 'Kleurenrooster'
+    case 'patroon': return "Wat komt erna?"
     case 'kalaha': return "Kalaha"
     case 'spiegel': return "Spiegelprent"
     case 'slingers': return "Slingers ophangen"

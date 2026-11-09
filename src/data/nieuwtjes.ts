@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.128',
+    datum: '2026-11-09',
+    titel: "Wat komt erna?, De kralenketting en een nieuwe wereld in Springland",
+    tekst: "Nieuw verhaal \"De kralenketting\" (voor de kleinsten, patronen) en nieuwe kleurplaat \"De kralenketting\", meteen te lezen en in te kleuren. Het spelletje Wat komt erna? kost 20 sterren: een rij prentjes of getallen volgt een regel; kies wat er op het lege plekje hoort. Vier rondjes van vijf vragen. Makkelijk: twee of drie prentjes die om de beurt komen, drie knoppen. Middel: langere herhalingen (zoals twee keer hetzelfde en dan iets anders), vier knoppen. Moeilijk: kleur en vorm met elk een eigen ritme, en getallenrijen (sprongen, om de beurt twee sprongen, verdubbelen, telkens één meer erbij), soms met een gat in het midden; klokje en pluimen. In Springland begint een nieuwe wereld: Speelgoedland, met een blokkenkasteel, een treintje en een draaitol op de kaart; eerste level De blokkenweg. Nieuw kinderthema: Brandweerkazerne, te kiezen bij Mijn thema.",
+    verhaal: "De kralenketting",
+    spel: { naam: "Wat komt erna?", prijs: 20 },
+    stukken: ["Figuurtje: Kroontje van kralen (15), Shirt met kralenrij (20), Telraampje (15)", "Mijn huis: Toren van blokken (20), Kralengordijn in een poort (25), Pad met rondjes en vierkantjes (20)"],
+    open: "Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.",
+  },
+  {
     versie: '0.127',
     datum: '2026-11-09',
     titel: "Kalaha, Het pepernotenspel en de baas van het Lichtjesbos",

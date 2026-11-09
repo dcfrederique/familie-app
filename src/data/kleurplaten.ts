@@ -790,6 +790,25 @@ export const kleurplaten: Kleurplaat[] = [
     lijnen: ['M136 131h0M178 138h0M224 131h0M140 178h0M262 172h0'],
     voorbeeld: ['#FFF3C4', '#C9A27A', '#B5733A', '#6E4424', '#6E4424', '#C98A4A', '#C98A4A', '#C98A4A', '#C98A4A', '#C98A4A', '#C98A4A', '#C98A4A', '#C98A4A', '#F28C28'],
   },
+  {
+    sleutel: 'kralenketting', titel: 'De kralenketting',
+    vlakken: [
+      { r: [0, 0, 400, 300] },
+      { r: [120, 190, 160, 70, 8] },
+      { d: 'M110 190L200 160L290 190Z' },
+      { c: [60, 80, 18] },
+      { c: [100, 104, 18] },
+      { c: [144, 120, 18] },
+      { c: [190, 126, 18] },
+      { c: [236, 122, 18] },
+      { c: [280, 108, 18] },
+      { c: [322, 86, 18] },
+      { c: [350, 240, 26] },
+      { r: [20, 230, 70, 50, 6] },
+    ],
+    lijnen: ['M40 60Q200 170 344 66', 'M200 190V260M120 222H280', 'M350 214v-12M338 228l10 6'],
+    voorbeeld: ['#FFF3C4', '#2F80C9', '#E5484D', '#E53935', '#F2C530', '#E53935', '#F2C530', '#E53935', '#F2C530', '#E53935', '#F28C28', '#43A047'],
+  },
 ]
 
 /** Deel van de vlakken dat ingekleurd moet zijn voor de plaat af is. */
