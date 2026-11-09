@@ -1,0 +1,54 @@
+/* Kalaha: het houten bord met de putjes (een SVG die vanzelf schaalt), rechts wie er aan zet is. */
+.kh { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 1.4dvh, 14px); width: 100%; }
+.kh-spel { display: flex; align-items: center; justify-content: center; gap: clamp(10px, 2.4vw, 28px); width: 100%; }
+.kh-plek { position: relative; display: grid; place-items: center; width: min(76vw, calc((100dvh - 230px) * 3.2)); height: calc(100dvh - 230px); }
+.kh-bord { width: 100%; height: 100%; touch-action: manipulation; user-select: none; }
+.kh-hout { fill: #B5733A; stroke: #8A5A33; stroke-width: 6; }
+.kh-gat { fill: #6E4424; }
+.kh-putje .kh-gat { transition: fill .2s; }
+.kh-putje.kan { cursor: pointer; }
+.kh-putje.kan .kh-gat { fill: #7E4E2A; stroke: #F2D3A8; stroke-width: 3; }
+.kh-putje.tip .kh-gat { stroke: #F2C530; stroke-width: 6; }
+.kh-noot { fill: #C98A4A; stroke: #8A5A33; stroke-width: 1.5; }
+.kh-glim { fill: #F2D3A8; opacity: .8; }
+.kh-tal { font-size: 26px; font-weight: 800; text-anchor: middle; fill: #FFF3E0; pointer-events: none; }
+.kh-tal.groot { font-size: 34px; fill: #FFFFFF; paint-order: stroke; stroke: #5B3A1E; stroke-width: 6px; }
+.kh-pot.p1 .kh-gat { stroke: var(--kid); stroke-width: 5; }
+.kh-pot.p2 .kh-gat { stroke: #D9853B; stroke-width: 5; }
+.kh-zij { display: flex; flex-direction: column; align-items: center; gap: 10px; font-weight: 800; }
+.kh-wie { display: flex; flex-direction: column; align-items: center; gap: 4px; min-width: 92px; padding: 8px; border-radius: 18px; border: 3px solid transparent; }
+.kh-wie.beurt { border-color: var(--kid); background: var(--kid-tint); }
+.kh-wie b { font-size: 34px; line-height: 1; }
+.kh-eekhoorn { width: 64px; height: 64px; }
+.kh-ik { width: 44px; height: 44px; }
+.kh-naam { font-size: 18px; }
+.kh-uitslag { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 12px; background: rgba(255, 255, 255, .72); border-radius: 22px; }
+.kh-eindprent { width: clamp(180px, 30dvh, 300px); height: auto; }
+@media (prefers-reduced-motion: no-preference) {
+  .kh-spoor { animation: kh-plof .35s ease-out backwards; transform-box: fill-box; transform-origin: center; }
+  .kh-putje.tip .kh-gat { animation: kh-knipper 1s ease-in-out infinite alternate; }
+  .kh-eekhoorn.denkt { animation: kh-denk .6s ease-in-out infinite alternate; }
+}
+@keyframes kh-plof { from { transform: scale(.6); opacity: .3; } }
+@keyframes kh-knipper { to { stroke-opacity: .35; } }
+@keyframes kh-denk { to { transform: rotate(6deg); } }
+@media (orientation: portrait) {
+  .kh-spel { flex-direction: column; }
+  .kh-zij { flex-direction: row; }
+  .kh-plek { width: calc(100vw - 30px); height: min(calc(100dvh - 400px), calc((100vw - 30px) / 3)); }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .kh { gap: 2px; }
+  .kh-zij { gap: 4px; }
+  .kh-wie { min-width: 70px; padding: 4px; }
+  .kh-wie b { font-size: 24px; }
+  .kh-eekhoorn { width: 44px; height: 44px; }
+}
+
+/* Volle opmaak (tablet, liggende gsm): het bord krijgt precies de vrije plaats. */
+@media (min-width: 600px) and (min-height: 560px), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .kh { flex: 1; min-height: 0; }
+  .kh-spel { flex: 1; min-height: 0; }
+  .kh-plek { flex: 1; align-self: stretch; width: auto; height: auto; min-width: 0; min-height: 0; container-type: size; }
+  .kh-plek .kh-bord { width: 100cqw; height: 100cqh; }
+}

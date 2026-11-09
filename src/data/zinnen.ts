@@ -62,6 +62,8 @@ export const zin = {
   slingersKlaar: "Alle slingers hangen!",
   spiegelUitleg: "Kijk naar de helft die al gekleurd is. Kleur de andere kant precies zo, alsof je in een spiegel kijkt. Kies een kleur en tik op de vakjes.",
   spiegelKlaar: "Alle prenten zijn heel!",
+  kalahaUitleg: "Tik op een putje aan jouw kant. De pepernoten gaan één voor één in de volgende putjes. Valt de laatste in jouw grote pot, dan mag je nog eens. Wie het meeste in zijn pot heeft, wint.",
+  kalahaKlaar: "Goed gespeeld tegen de eekhoorn!",
   roosterUitleg: 'Zet elke kleur één keer in elke rij en in elke kolom.',
   roosterKlaar: 'Alle pakjes staan op hun plaats!',
   torensUitleg: 'Verhuis alle pakjes naar de gouden plank. Een groot pakje mag nooit op een klein pakje.',

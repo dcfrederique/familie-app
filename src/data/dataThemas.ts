@@ -144,6 +144,14 @@ const dans = wikkel(`
   <g class="tn-nacht" fill="#FFF3C4"><circle cx="420" cy="60" r="2"/><circle cx="500" cy="90" r="2.5"/></g>
   <path d="M0 220v-24h1000v24z" style="fill:var(--tn-grond)"/>`)
 
+const kermis = wikkel(`<g class="tn-nacht" fill="#FFF3C4"><circle cx="140" cy="40" r="2.5"/><circle cx="300" cy="60" r="2"/><circle cx="880" cy="40" r="2.5"/></g>
+  <g transform="translate(470 66) scale(.85)"><path d="M-120 50L0 0L120 50Z" fill="#E86FB0"/><path d="M-120 50L-80 50L0 0ZM-40 50L0 50L0 0ZM40 50L80 50L0 0Z" fill="#FFFFFF" opacity=".8"/><circle cx="0" cy="-4" r="7" fill="#F2C530"/><rect x="-120" y="50" width="240" height="12" fill="#F2C530"/><path d="M-120 62q15 12 30 0t30 0t30 0t30 0t30 0t30 0t30 0t30 0" fill="#E86FB0"/><rect x="-4" y="62" width="8" height="92" fill="#C9A27A"/>
+    ${[-80, 0, 80].map((x, k) => `<g transform="translate(${x} ${100 + (k % 2) * 14})"><rect x="-2" y="-38" width="4" height="40" fill="#F2C530"/><path d="M-22 6Q-24 -12 -8 -12L14 -12Q24 -20 26 -8Q22 -2 16 -2L16 10H-18Z" fill="${['#FFFFFF', '#8EC9F0', '#F7A8C4'][k]}"/><path d="M14 -12Q18 -22 24 -18" stroke="#8A5A33" stroke-width="3" fill="none"/></g>`).join('')}
+    <ellipse cx="0" cy="156" rx="130" ry="10" fill="#C98A4A"/></g>
+  <g transform="translate(760 110)"><rect x="-40" y="0" width="80" height="80" fill="#FFFFFF"/><path d="M-46 0H46L40 -26H-40Z" fill="#8EC9F0"/><path d="M-30 0L-34 -26M-10 0L-11 -26M10 0L11 -26M30 0L34 -26" stroke="#FFFFFF" stroke-width="6"/><g transform="translate(0 30)"><rect x="-2" y="0" width="4" height="30" fill="#E8D3B0"/><circle cx="0" cy="-6" r="16" fill="#F7A8C4"/><circle cx="-8" cy="-12" r="8" fill="#FBC9DB"/></g></g>
+  ${[[200, 112, '#E5484D'], [236, 126, '#F2C530'], [168, 132, '#2F80C9']].map(([x, y, c]) => `<g class="thema-zweef" transform="translate(${x} ${y})"><ellipse rx="14" ry="18" fill="${c}"/><path d="M0 18q-6 16 4 40" stroke="#7A6A5A" stroke-width="1.5" fill="none"/></g>`).join('')}
+  <path d="M0 220v-24h1000v24z" style="fill:var(--tn-grond)"/>`)
+
 const vink = (kleur: string) => `<path d="M-16 0L-6 10L16 -12" stroke="${kleur}" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
 
 export const dataThemas: DataThema[] = [
@@ -368,6 +376,22 @@ export const dataThemas: DataThema[] = [
     vink: `<circle r="20" fill="#D0478A"/><g transform="scale(.9)">${vink('#fff')}</g>`,
     slot: '<circle r="18" fill="#B8BFCB"/><path d="M-9 4Q0 -6 9 4Q0 10 -9 4Z" fill="#5B6B7A"/>',
     feest: [ster('#F2C530'), '<path d="M-8 2Q0 -8 8 2Q0 8 -8 2Z" fill="#F7A8C4"/>', '<path d="M0 -6L2 -2L6 0L2 2L0 6L-2 2L-6 0L-2 -2Z" fill="#8E5BD1"/>'], confetti: ['#D0478A', '#F2C530', '#8E5BD1', '#FFFFFF'],
+    tegelRadius: '26px', tegelRand: '6px solid var(--kid)',
+  },
+  {
+    sleutel: 'kermis', naam: 'Kermis', kidKleur: '#D9468C', shirt: 'roze', verhouding: 1,
+    ondertitels: { spelen: 'Op de draaimolen', verhalen: 'Lezen bij de suikerspin', kleurplaten: 'Ballonnen kleuren', figuurtje: 'Kermiskleren', huis: 'Mijn kermiswagen' },
+    klaarTekst: 'Nog een rondje? Hoera!', nogTeDoen: (n) => `Nog ${n} ${n === 1 ? 'rondje' : 'rondjes'} op de draaimolen`,
+    licht: { bg: '#FDF1F7', surface: '#FFFFFF', soft: '#FADDEB', ink: '#4A1430', muted: '#8C4A6C', line: '#F3CFE0', shade: '#E5B3CB', kid: '#D9468C', 'kid-tint': '#FCE3EF', 'on-solid': '#FFFFFF',
+      'tn-grond': '#8FCB6A', 'tn-nacht': 'none', 'tn-banner': 'linear-gradient(#D3ECFA,#FDF1F7)', 'tn-titel': '#4A1430', 'tn-sub': '#A8306A', 'tn-spoor': '#F3CFE0' },
+    donker: { bg: '#1C0B15', surface: '#2E1424', soft: '#391A2D', ink: '#FCE9F3', muted: '#DDA5C2', line: '#4A2139', shade: '#0A0408', kid: '#F590C2', 'kid-tint': '#4A1D36', 'on-solid': '#1C0B15',
+      'tn-grond': '#2F5A2A', 'tn-nacht': 'inline', 'tn-banner': 'linear-gradient(#0E0610,#3A1A30)', 'tn-titel': '#FFFFFF', 'tn-sub': '#F2C530', 'tn-spoor': '#4A2139' },
+    prent: kermis,
+    voortgang: { mover: '<ellipse rx="7" ry="9" fill="#E5484D"/><path d="M0 9q-3 6 1 10" stroke="#7A6A5A" stroke-width="1" fill="none"/>', doel: `<g transform="scale(.8)">${ster('#F2C530')}</g>` },
+    nieuw: '<ellipse rx="12" ry="15" fill="#E86FB0"/><path d="M0 15q-4 8 2 14" stroke="#7A6A5A" stroke-width="1.5" fill="none"/>',
+    vink: `<circle r="20" fill="#D9468C"/><g transform="scale(.9)">${vink('#fff')}</g>`,
+    slot: '<circle r="18" fill="#B8BFCB"/><ellipse rx="7" ry="9" fill="#5B6B7A"/>',
+    feest: [ster('#F2C530'), '<ellipse rx="6" ry="8" fill="#2F80C9"/>', '<ellipse rx="6" ry="8" fill="#E5484D"/>'], confetti: ['#D9468C', '#F2C530', '#2F80C9', '#FFFFFF'],
     tegelRadius: '26px', tegelRand: '6px solid var(--kid)',
   },
 ]

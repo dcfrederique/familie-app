@@ -455,9 +455,9 @@ export class SpringVeld {
     ctx.fillStyle = 'rgba(0,0,0,.15)'
     ctx.beginPath(); ctx.ellipse(0, 0, w * 0.5, T * 0.1, 0, 0, Math.PI * 2); ctx.fill()
     const soort = springLevels[this.spel.level].baas?.soort
-    const pepernoot = soort === 'pepernoot', sneeuw = soort === 'sneeuw', krab = soort === 'krab', wolk = soort === 'wolk'
+    const pepernoot = soort === 'pepernoot', sneeuw = soort === 'sneeuw', krab = soort === 'krab', wolk = soort === 'wolk', uil = soort === 'uil'
     // Pompoen: drie oranje bollen met een groene steel. Pepernoot: drie bruine koekjes met glazuurstreepjes en een rood mijtertje.
-    for (const [dx, kleur] of (wolk ? [[-0.26, '#B8C4D4'], [0.26, '#A9B7CA'], [0, '#D3DCE8']] : krab ? [[-0.26, '#D9452E'], [0.26, '#D9452E'], [0, '#EE6248']] : sneeuw ? [[-0.26, '#DCEAF6'], [0.26, '#C9DDEE'], [0, '#F4F9FD']] : pepernoot ? [[-0.26, '#A8693A'], [0.26, '#8A5A33'], [0, '#C08246']] : [[-0.26, '#EE8222'], [0.26, '#EE8222'], [0, '#F6A33B']]) as [number, string][]) {
+    for (const [dx, kleur] of (uil ? [[-0.26, '#7A5A3C'], [0.26, '#6E5034'], [0, '#9A7650']] : wolk ? [[-0.26, '#B8C4D4'], [0.26, '#A9B7CA'], [0, '#D3DCE8']] : krab ? [[-0.26, '#D9452E'], [0.26, '#D9452E'], [0, '#EE6248']] : sneeuw ? [[-0.26, '#DCEAF6'], [0.26, '#C9DDEE'], [0, '#F4F9FD']] : pepernoot ? [[-0.26, '#A8693A'], [0.26, '#8A5A33'], [0, '#C08246']] : [[-0.26, '#EE8222'], [0.26, '#EE8222'], [0, '#F6A33B']]) as [number, string][]) {
       ctx.fillStyle = kleur
       ctx.beginPath(); ctx.ellipse(dx * w, -h * 0.48, w * (dx ? 0.3 : 0.27), h * 0.48, 0, 0, Math.PI * 2); ctx.fill()
     }
@@ -470,6 +470,29 @@ export class SpringVeld {
       ctx.beginPath(); ctx.moveTo(-w * 0.14, -h * 0.98); ctx.lineTo(0, -h * 1.3); ctx.lineTo(w * 0.14, -h * 0.98); ctx.closePath(); ctx.fill()
       ctx.fillStyle = '#F2B33D'
       ctx.fillRect(-w * 0.015, -h * 1.22, w * 0.03, h * 0.16); ctx.fillRect(-w * 0.06, -h * 1.17, w * 0.12, h * 0.03)
+    } else if (uil) {
+      // Bromuil: een bruine uil met oorpluimen, een lichte buik met veertjes, een gele snavel en een lampionnetje.
+      ctx.fillStyle = '#5B4028'
+      for (const z of [-1, 1]) {
+        ctx.beginPath(); ctx.moveTo(z * w * 0.14, -h * 0.94); ctx.lineTo(z * w * 0.36, -h * 1.3); ctx.lineTo(z * w * 0.36, -h * 0.86); ctx.closePath(); ctx.fill()
+      }
+      ctx.fillStyle = '#E8D3B0'
+      ctx.beginPath(); ctx.ellipse(0, -h * 0.3, w * 0.22, h * 0.26, 0, 0, Math.PI * 2); ctx.fill()
+      ctx.strokeStyle = '#B08A62'; ctx.lineWidth = T * 0.05; ctx.lineCap = 'round'
+      for (const [x0, y0] of [[-0.08, 0.36], [0.08, 0.36], [0, 0.22], [-0.1, 0.16], [0.1, 0.16]] as const) {
+        ctx.beginPath(); ctx.moveTo(x0 * w - T * 0.07, -h * y0 - T * 0.04); ctx.lineTo(x0 * w, -h * y0); ctx.lineTo(x0 * w + T * 0.07, -h * y0 - T * 0.04); ctx.stroke()
+      }
+      ctx.fillStyle = '#F2B33D'
+      ctx.beginPath(); ctx.moveTo(-T * 0.09, -h * 0.55); ctx.lineTo(T * 0.09, -h * 0.55); ctx.lineTo(0, -h * 0.44); ctx.closePath(); ctx.fill()
+      const zwaai = Math.sin(this.spel.klok * 4) * 0.25
+      ctx.save(); ctx.translate(-b.richting * w * 0.5, -h * 0.35); ctx.rotate(zwaai)
+      ctx.strokeStyle = '#3A2412'; ctx.lineWidth = T * 0.04
+      ctx.beginPath(); ctx.moveTo(0, 0); ctx.lineTo(0, T * 0.25); ctx.stroke()
+      ctx.fillStyle = '#F28C28'
+      ctx.beginPath(); ctx.ellipse(0, T * 0.45, T * 0.2, T * 0.24, 0, 0, Math.PI * 2); ctx.fill()
+      ctx.fillStyle = '#FFE27A'
+      ctx.beginPath(); ctx.ellipse(0, T * 0.45, T * 0.09, T * 0.12, 0, 0, Math.PI * 2); ctx.fill()
+      ctx.restore()
     } else if (wolk) {
       // Bromwolk: een grijze wolk met een geel bliksemkuifje en druppels die eronder vallen.
       ctx.fillStyle = '#F2C530'

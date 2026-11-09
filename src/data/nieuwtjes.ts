@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.127',
+    datum: '2026-11-09',
+    titel: "Kalaha, Het pepernotenspel en de baas van het Lichtjesbos",
+    tekst: "Nieuw verhaal \"Het pepernotenspel\" (Sinterklaas, vooruit denken en eerlijk verliezen) en nieuwe kleurplaat \"Het pepernotenspel\", meteen te lezen en in te kleuren. Het spelletje Kalaha kost 30 sterren: een oud bordspel met pepernoten, drie spelletjes tegen de eekhoorn. Tik op een putje aan je kant; de pepernoten gaan één voor één rond. Valt de laatste in je pot, dan mag je nog eens; in een leeg putje van jou pak je ook wat er tegenover ligt. Makkelijk: 4 putjes met 3 pepernoten, de putjes waarmee je nog eens mag lichten op en de eekhoorn kiest vaak zomaar. Middel: 6 putjes, de eekhoorn pakt wat hij meteen kan. Moeilijk: 6 putjes met 4 pepernoten en een eekhoorn die een hele reeks zetten vooruit denkt, met pluimen. In Springland wacht de baas van het Lichtjesbos: de Bromuil, met zijn lampionnetje; het Lichtjesbos is nu vol. Nieuw kinderthema: Kermis, te kiezen bij Mijn thema.",
+    verhaal: "Het pepernotenspel",
+    spel: { naam: "Kalaha", prijs: 30 },
+    stukken: ["Figuurtje: Haarband met eekhoornoortjes (15), Shirt met eikels (20), Zakje pepernoten (10)", "Mijn huis: Groot kalahabord (25), Pepernotenkraam (30), Eekhoornhuisje (20)"],
+    open: "Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.",
+  },
+  {
     versie: '0.126',
     datum: '2026-11-09',
     titel: "Spiegelprent, De vouwprent en het vijfde level van het Lichtjesbos",
