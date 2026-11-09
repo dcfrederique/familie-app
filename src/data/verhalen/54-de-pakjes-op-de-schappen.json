@@ -1,0 +1,87 @@
+{
+  "nr": 54,
+  "titel": "De pakjes op de schappen",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Sinterklaas, ordenen en kleuren",
+  "bladzijden": [
+    {
+      "tekst": "Het is bijna Sinterklaas. In het magazijn staat een grote stelling met vier schappen onder elkaar. Daan en Noor mogen de pakjes ordenen. \"Er is één regel,\" zegt de Sint. \"Op elk schap en in elke kolom staat elke kleur maar één keer.\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor kijkt naar de rode, blauwe, groene en gele pakjes. \"Dan zet ik rood hier,\" zegt ze, en ze zet een rood pakje links bovenaan. Dat is een mooi begin. Ze vindt het een spannend raadsel.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan pakt een blauw pakje. Hij wil het naast het rode pakje zetten. Dan ziet hij dat er onder het rode pakje al een blauw pakje staat. \"Oei,\" zegt Daan. \"Blauw staat al in deze kolom.\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Hij zet het blauwe pakje een plek verder. Noor knikt. \"Goed gezien,\" zegt ze. \"Kijk altijd eerst naar de rij en dan naar de kolom.\" Daan kijkt nog eens extra goed.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "Tijs de hond zit onder de stelling en kijkt toe. Hij snuffelt aan een geel pakje. \"Nee, Tijs,\" lacht Noor. \"Dat pakje ruikt naar pepernoten, maar het is niet voor jou.\" Tijs gaat weer rustig liggen en legt zijn kop op zijn pootjes. Hij vindt het gezellig.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "hond"
+        ]
+      }
+    },
+    {
+      "tekst": "Het rooster wordt langzaam voller. Soms moet Daan lang nadenken. Dan ziet hij ineens waar het groene pakje moet staan, omdat alle andere plekken niet kunnen. Hij steekt zijn duim op. Zo werkt het: wie goed kijkt, ziet het antwoord.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Het laatste gele pakje past precies in het laatste gat. Alle rijen hebben vier kleuren en alle kolommen ook. \"Klaar!\" roepen Daan en Noor tegelijk. De stelling ziet er prachtig uit, vol kleuren en strikken. Tijs kwispelt zo hard dat zijn staart tegen een schap tikt.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "De Sint komt kijken en lacht. \"Wie rustig nadenkt, krijgt alles op zijn plaats,\" zegt hij. Daan en Noor krijgen elk een pepernoot, en Tijs krijgt een klein stukje speculaas. Ze zijn trots op hun stelling.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "noor",
+          "hond"
+        ]
+      }
+    }
+  ]
+}

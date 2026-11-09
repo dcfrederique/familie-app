@@ -8,6 +8,7 @@ import type { DakNiveau } from './daken.ts'
 import type { DelenNiveau } from './delen.ts'
 import type { WeegNiveau } from './weegschaal.ts'
 import type { TorenNiveau } from './torens.ts'
+import type { RoosterNiveau } from './rooster.ts'
 
 export type MemoryNiveau = 'klein' | 'middel' | 'groot'
 export type RekenNiveau = 'tellen' | 'tot10' | 'tot20' | 'tot100' | 'tot1000' | 'tafels'
@@ -334,6 +335,27 @@ export const torensNiveaus: Record<TorenNiveau, {
 
 export const torensRondesAantal = 4
 
+/**
+ * Kleurenrooster. `live`: fouten krijgen meteen een rode rand (anders pas na Controleer); `hulp`: een vakje met één mogelijke kleur licht op;
+ * `pluimen`: strenge score; `misstappen`: hoeveel foute Controleer-wegingen voor de pluim wegvalt; `seconden`: tijd voor de snelheidspluim.
+ */
+export const roosterNiveaus: Record<RoosterNiveau, {
+  label: string; live: boolean; hulp: boolean; pluimen: boolean; misstappen: number; seconden: number
+}> = {
+  makkelijk: { label: 'Makkelijk', live: true, hulp: true, pluimen: false, misstappen: 0, seconden: 0 },
+  middel: { label: 'Middel', live: true, hulp: false, pluimen: false, misstappen: 0, seconden: 0 },
+  moeilijk: { label: 'Moeilijk', live: false, hulp: false, pluimen: true, misstappen: 2, seconden: 300 },
+}
+
+export const roosterRondesAantal = 4
+
+/** Wie niet leest begint makkelijk, de oudste lezer moeilijk, andere lezers middel. */
+export function startRoosterNiveau(kind: Gebruiker, kinderen: Gebruiker[]): RoosterNiveau {
+  if (!kind.kan_lezen) return 'makkelijk'
+  const oudsteLezer = kinderen.filter((k) => k.kan_lezen).sort((a, b) => a.volgorde - b.volgorde)[0]
+  return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
+}
+
 /** Wie niet leest begint makkelijk, de oudste lezer moeilijk, andere lezers middel. */
 export function startTorensNiveau(kind: Gebruiker, kinderen: Gebruiker[]): TorenNiveau {
   if (!kind.kan_lezen) return 'makkelijk'
@@ -465,7 +487,7 @@ export function startNiveaus(kind: Gebruiker, kinderen: Gebruiker[]): { memory: 
   return oudsteLezer?.id === kind.id ? { memory: 'groot', rekenen: 'tot100' } : { memory: 'middel', rekenen: 'tot20' }
 }
 
-export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'weegschaal' | 'torens' | 'springen'
+export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'weegschaal' | 'torens' | 'rooster' | 'springen'
 
 export interface SpelInfo {
   sleutel: SpelSleutel
@@ -525,6 +547,8 @@ export const spelMenu: SpelInfo[] = [
     icoon: 'M4 11h16v9H4zM4 11q0-6 8-6t8 6M10 13h4v4h-4z' },
   { sleutel: 'lantaarns', naam: 'Lantaarns aansteken', uitleg: 'Laat alle lantaarns branden', prijs: 25,
     icoon: 'M12 2v3M8 6h8l1 13H7zM12 6v13M7.5 12h9' },
+  { sleutel: 'rooster', naam: 'Kleurenrooster', uitleg: 'Zet elke kleur één keer in elke rij en kolom', prijs: 25,
+    icoon: 'M4 4h16v16H4zM4 9.3h16M4 14.7h16M9.3 4v16M14.7 4v16' },
   { sleutel: 'torens', naam: 'Pakjestoren', uitleg: 'Verhuis de toren van pakjes', prijs: 25,
     icoon: 'M4 20h16M6 20v-5h12v5M8 15v-5h8v5M10 10V6h4v4M12 3v3' },
   { sleutel: 'weegschaal', naam: 'Weegschaal', uitleg: 'Breng de weegschaal in evenwicht', prijs: 25,

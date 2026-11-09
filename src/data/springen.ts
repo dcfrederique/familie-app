@@ -500,6 +500,23 @@ export const springLevelLijst: SpringLevelInfo[] = [
       '##############~~~#####################################~~####~~################################################',
     ],
   },
+  {
+    id: 'onweerswolkjes', wereld: 'wolkenrijk', stijl: 'wolken',
+    naam: 'De onweerswolkjes', beestje: 'vogel', fruit: 'kers', snelheid: 1.2,
+    kaart: [
+      '                                                                                                                   ',
+      '                                                                                                                   ',
+      '                                                                                    ***                            ',
+      '                                                                                  =======                          ',
+      '                                                                                                                   ',
+      '                                       **                                                                          ',
+      '            ***                                         **   **   **                                ***     *****  ',
+      '           *   *                        ##                                                                         ',
+      '  P ooo               e       e       ####     oCo         o    o         e        o o o        C               H  ',
+      '############   #########################################  ###  ###  ################################   ############',
+      '############~~~#########################################~~###~~###~~################################~~~############',
+    ],
+  },
 ]
 
 export const springLevels: Record<SpringLevel, SpringLevelInfo> = Object.fromEntries(springLevelLijst.map((l) => [l.id, l]))

@@ -91,6 +91,8 @@ export const gebouwen: Gebouw[] = [
     spel: 'weegschaal', nieuwSinds: '2026-11-07', gebied: 'meer' },
   { id: 'torens', naam: 'Pakjestoren', x: 15.8 * U, y: 18 * U, w: 200, pad: 'torens', welkom: 'Welkom bij de pakjestoren!', telt_mee: true,
     spel: 'torens', nieuwSinds: '2026-11-08', gebied: 'meer' },
+  { id: 'rooster', naam: 'Pakjesstelling', x: 20.3 * U, y: 18 * U, w: 200, pad: 'rooster', welkom: 'Welkom bij de pakjesstelling!', telt_mee: true,
+    spel: 'rooster', nieuwSinds: '2026-11-09', gebied: 'meer' },
   { id: 'bouw', naam: 'Bouwplaats', x: 52.7 * U, y: 21 * U, w: 150, pad: null, welkom: 'Hier komt later een nieuw gebouw. Wat zou het worden?', telt_mee: false },
 ]
 

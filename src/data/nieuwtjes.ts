@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.117',
+    datum: '2026-11-09',
+    titel: 'Kleurenrooster, De pakjes op de schappen en De onweerswolkjes',
+    tekst: 'Nieuw verhaal "De pakjes op de schappen" (Sinterklaas, kleuren ordenen) en nieuwe kleurplaat "De pakjesstelling", meteen te lezen en in te kleuren. Het spelletje Kleurenrooster kost 25 sterren: zet elke kleur pakje één keer in elke rij en elke kolom, zoals een kindersudoku. Makkelijk: 3 × 3 met 5 of 6 pakjes al op hun plaats, fouten krijgen meteen een rode rand en een vakje met één mogelijke kleur licht op. Middel: 4 × 4 met 7 tot 9 vaste pakjes. Moeilijk: een echte 6 × 6-sudoku met blokken van 2 × 3 en maar 11 tot 14 vaste pakjes, geen meldingen tijdens het spelen, je moet op Controleer tikken (een fout telt als misstap), met klokje en pluimen. De pakjesstelling staat aan het meer (gouden rand tot 23 november, slot tot gekocht). Springland: Wolkenrijk krijgt zijn derde level, De onweerswolkjes, een pittig level met drie korte gaten na elkaar en drie vogels.',
+    verhaal: 'De pakjes op de schappen',
+    spel: { naam: 'Kleurenrooster', prijs: 25 },
+    stukken: ['Figuurtje: Ruitjesmuts (15), Ruitjesshirt (20), Doosje kleurpakjes (15)', 'Mijn huis: Rek met pakjes (25), Kleurenhekje (20), Ruitjesgordijn (20)'],
+    open: 'Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.',
+  },
+  {
     versie: '0.116',
     datum: '2026-11-08',
     titel: 'Samen spelen met je huisdier',
