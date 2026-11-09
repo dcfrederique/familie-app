@@ -1,0 +1,58 @@
+/* Pepernotendomino: de rij stenen bovenaan over de hele breedte, het handje met stenen eronder, de knoppen ernaast. */
+.dm { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 1.4dvh, 14px); width: 100%; }
+.dm-balk { display: flex; align-items: center; justify-content: center; gap: 18px; font-weight: 800; }
+.dm-plek { display: grid; place-items: center; width: 100%; height: clamp(90px, 22dvh, 200px); padding: 8px; border-radius: 24px; background: #C98A4B33; }
+.dm-rij { width: 100%; height: 100%; touch-action: manipulation; user-select: none; }
+.dm-gat { fill: none; stroke: #9A5B2A; stroke-width: 3; stroke-dasharray: 8 6; opacity: .35; }
+.dm-eind { cursor: pointer; }
+.dm-eind.doel .dm-gat { fill: #F2C530; fill-opacity: .55; stroke: #C9971A; opacity: 1; }
+.dm-onder { display: flex; align-items: center; justify-content: center; gap: clamp(12px, 3vw, 32px); width: 100%; }
+.dm-hand { display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: clamp(6px, 1.2vw, 12px); width: min(100%, calc(var(--n) * 150px)); }
+.dm-steen {
+  display: grid; place-items: center; min-height: 64px; padding: 6px; border: 3px solid var(--line); border-radius: 16px;
+  background: var(--surface); box-shadow: 0 4px 0 var(--shade); cursor: pointer; touch-action: manipulation;
+}
+.dm-steen svg { width: 100%; height: auto; max-height: 70px; }
+.dm-steen.gekozen { border-color: #F2C530; background: #FFF4C7; translate: 0 -6px; }
+.dm-steen.tip { border-color: #43A047; }
+.dm-steen.mis { border-color: #D33D36; }
+.dm-zij { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.dm-tekst { margin: 0; max-width: 200px; text-align: center; font-weight: 800; font-size: clamp(16px, 2.4dvh, 22px); }
+.dm-knoppen { display: flex; gap: 10px; }
+.dm-knop {
+  display: grid; place-items: center; width: 72px; height: 72px; padding: 0; border: 3px solid var(--line); border-radius: 20px;
+  background: var(--surface); color: var(--ink); box-shadow: 0 4px 0 var(--shade); cursor: pointer; touch-action: manipulation;
+}
+.dm-knop svg { width: 34px; height: 34px; }
+.dm-knop.geen { border-color: #D33D36; }
+.dm-knop:disabled { opacity: .45; cursor: default; }
+.dm-eindprent { width: clamp(220px, 40dvh, 380px); height: auto; }
+@media (prefers-reduced-motion: no-preference) {
+  .dm-steen { transition: translate .15s; }
+  .dm-steen.mis { animation: dm-schud .3s ease-in-out 2; }
+  .dm-steen.tip, .dm-eind.doel .dm-gat { animation: dm-puls .7s ease-in-out infinite alternate; }
+  .dm-rij.viert { animation: dm-hup .45s ease-out 2 alternate; }
+}
+@keyframes dm-schud { 25% { translate: -5px 0; } 75% { translate: 5px 0; } }
+@keyframes dm-puls { to { opacity: .55; } }
+@keyframes dm-hup { to { scale: 1.03; } }
+@media (orientation: portrait) {
+  .dm-onder { flex-direction: column; }
+  .dm-zij { flex-direction: row; }
+  .dm-hand { grid-template-columns: repeat(min(var(--n), 4), minmax(0, 1fr)); }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .dm { gap: 4px; }
+  .dm-plek { height: 26dvh; padding: 2px; }
+  .dm-steen { min-height: 48px; padding: 3px; }
+  .dm-steen svg { max-height: 44px; }
+  .dm-knop { width: 52px; height: 52px; }
+  .dm-knop svg { width: 26px; height: 26px; }
+  .dm-tekst { font-size: 14px; max-width: 160px; }
+}
+
+/* Volle opmaak (tablet, liggende gsm): de rij krijgt de vrije plaats boven het handje. */
+@media (min-width: 600px) and (min-height: 560px), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .dm { flex: 1; min-height: 0; }
+  .dm-plek { flex: 1; min-height: 80px; max-height: 260px; }
+}

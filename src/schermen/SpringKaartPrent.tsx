@@ -69,6 +69,17 @@ export function Grond({ w }: { w: KaartWereld }) {
         <rect x={x + 44} y={H * 0.12 + 14} width={b - 88} height={H * 0.76 - 28} rx="22" fill="none" stroke="#FFFFFF" strokeWidth="5" strokeDasharray="14 12" />
       </g>
     )
+    case 'herfst': return (
+      <g>
+        <rect x={x} y="0" width={b} height={H} fill="#E9CB8E" />
+        {vlekken('#DDB572', 9)}
+        {/* Overal gevallen blaadjes op de bosgrond */}
+        {Array.from({ length: Math.floor(b / 26) }, (_, i) => (
+          <path key={i} d="M0-7C6-6 8 0 0 7C-8 0-6-6 0-7Z" transform={`translate(${x + ((i * 61) % b)} ${12 + ((i * 113) % (H - 24))}) rotate(${(i * 47) % 360})`}
+                fill={['#E07A2E', '#C2662D', '#E8A33A', '#B5432B'][i % 4]} opacity=".7" />
+        ))}
+      </g>
+    )
     case 'snoep': return (
       <g>
         <rect x={x} y="0" width={b} height={H} fill="#FFD3E8" />
@@ -351,6 +362,38 @@ export function Versiersel({ v }: { v: Versiersel }) {
     case 'knikker': return <Stuk v={v} kind={<g><circle r="7" fill="#2F80C9" /><path d="M-5 -2Q0 4 5 -2" stroke="#F2C530" strokeWidth="2" fill="none" /><circle cx="-2" cy="-3" r="2" fill="#FFFFFF" opacity=".7" /></g>} />
     case 'teddy': return <Stuk v={v} kind={<g className="k-wieg" style={d}><circle cx="-8" cy="-14" r="5" fill="#B5733A" /><circle cx="8" cy="-14" r="5" fill="#B5733A" /><circle cy="-8" r="10" fill="#C98A4A" /><ellipse cy="10" rx="11" ry="12" fill="#C98A4A" /><ellipse cy="-5" rx="4" ry="3" fill="#F2D3A8" /></g>} />
     case 'balletje': return <Stuk v={v} kind={<g><circle r="9" fill="#FFFFFF" /><path d="M-9 0A9 9 0 0 0 9 0Z" fill="#E5484D" /><path d="M-9 0H9" stroke="#33414F" strokeWidth="1.5" /></g>} />
+    case 'paddenstoelhuis': return <Stuk v={v} kind={<>
+      <ellipse cx="0" cy="40" rx="50" ry="9" fill="rgba(0,0,0,.15)" />
+      <path d="M-24 40V-2H24V40Z" fill="#FFF3E0" stroke="#E0C9A6" strokeWidth="2" />
+      <path d="M-8 40V18a8 8 0 0 1 16 0V40Z" fill="#8A5A33" /><circle cx="14" cy="8" r="6" fill="#FFE27A" stroke="#8A5A33" strokeWidth="2" />
+      <path d="M-52 2C-50 -40 50 -40 52 2C30 10 -30 10 -52 2Z" fill="#E53935" />
+      <circle cx="-26" cy="-14" r="7" fill="#FFFFFF" /><circle cx="6" cy="-24" r="6" fill="#FFFFFF" /><circle cx="30" cy="-8" r="6" fill="#FFFFFF" /><circle cx="-6" cy="-4" r="4" fill="#FFFFFF" />
+      <path d="M30 -30q4 -10 0 -18" stroke="#C9C2B8" strokeWidth="4" fill="none" strokeLinecap="round" className="k-wieg" style={d} />
+    </>} />
+    case 'holleboom': return <Stuk v={v} kind={<>
+      <ellipse cx="0" cy="42" rx="44" ry="8" fill="rgba(0,0,0,.15)" />
+      <path d="M-20 42C-18 20 -22 0 -16 -10H16C22 0 18 20 20 42Z" fill="#8A5A33" />
+      <ellipse cx="0" cy="14" rx="9" ry="12" fill="#3A2412" />
+      <g className="k-wieg" style={d}><circle cx="-2" cy="10" r="6" fill="#D9824A" /><circle cx="-4" cy="9" r="1.5" fill="#33414F" /><circle cx="1" cy="9" r="1.5" fill="#33414F" /></g>
+      <circle cx="0" cy="-36" r="34" fill="#E07A2E" /><circle cx="-26" cy="-20" r="20" fill="#C2662D" /><circle cx="26" cy="-22" r="20" fill="#E8A33A" />
+    </>} />
+    case 'bladerhoop': return <Stuk v={v} kind={<>
+      <ellipse cx="0" cy="16" rx="46" ry="8" fill="rgba(0,0,0,.12)" />
+      <path d="M-44 16C-40 -14 40 -14 44 16Z" fill="#C2662D" />
+      {[[-26, 4, '#E07A2E'], [-8, -6, '#E8A33A'], [12, -2, '#B5432B'], [28, 8, '#E07A2E'], [0, 8, '#F2C530']].map(([bx, by, c], i) => (
+        <path key={i} d="M0-8C7-7 9 0 0 8C-9 0-7-7 0-8Z" transform={`translate(${bx} ${by}) rotate(${i * 40})`} fill={c as string} />
+      ))}
+      <g className="k-knik" style={d}><circle cx="30" cy="-10" r="9" fill="#8A6A4A" /><path d="M24 -16l-2 -6M30 -18v-6M36 -16l2 -6" stroke="#5B4430" strokeWidth="2" /><circle cx="37" cy="-9" r="1.5" fill="#1C2433" /></g>
+    </>} />
+    case 'herfstboom': return <Stuk v={v} kind={<>
+      <ellipse cx="0" cy="18" rx="20" ry="6" fill="rgba(0,0,0,.12)" />
+      <g className="k-wieg" style={d}>
+        <rect x="-5" y="-2" width="10" height="20" rx="3" fill="#8A5A33" />
+        <circle cx="0" cy="-16" r="22" fill={['#E07A2E', '#E8A33A', '#C2662D'][Math.floor(v.x) % 3]} /><circle cx="-10" cy="-8" r="13" fill="#D96B27" /><circle cx="11" cy="-9" r="13" fill="#E8A33A" />
+      </g>
+    </>} />
+    case 'blaadje': return <Stuk v={v} kind={<g className="k-knik" style={d}><path d="M0-10C9-9 12 0 0 10C-12 0-9-9 0-10Z" fill="#E07A2E" /><path d="M0-8V9" stroke="#B5432B" strokeWidth="1.5" /></g>} />
+    case 'eikel': return <Stuk v={v} kind={<g><ellipse cy="3" rx="6" ry="8" fill="#C98A4B" /><path d="M-8-2Q-7-9 0-9Q7-9 8-2Q0 0-8-2Z" fill="#8A5A33" /><path d="M0-9q1-3 3-4" stroke="#6B4226" strokeWidth="2" fill="none" /></g>} />
     case 'lampionnetje': return <Stuk v={v} kind={<g className="k-wieg" style={d}>
       <path d="M0-24V-12" stroke="#4A2E1E" strokeWidth="2" /><ellipse cy="0" rx="10" ry="12" fill="#FF9F43" /><path d="M-10 0h20M0-12V12" stroke="#E07B1A" strokeWidth="1.5" /><circle r="4" fill="#FFE27A" opacity=".8" />
     </g>} />
@@ -396,6 +439,11 @@ export function Leven({ w }: { w: KaartWereld }) {
       ))}
       {stijl === 'sneeuw' && Array.from({ length: 18 }, (_, i) => (
         <circle key={i} cx={w.van + ((i * 151) % b)} cy="-10" r={2 + (i % 3)} fill="#FFFFFF" className="k-vlok" style={traag(i * 0.7)} />
+      ))}
+      {stijl === 'herfst' && Array.from({ length: 12 }, (_, i) => (
+        <g key={i} transform={`translate(${w.van + ((i * 151) % b)} -10)`}>
+          <path d="M0-6C5-5 7 0 0 6C-7 0-5-5 0-6Z" fill={['#E07A2E', '#E8A33A', '#C2662D'][i % 3]} className="k-vlok" style={traag(i * 0.9)} />
+        </g>
       ))}
       {stijl === 'snoep' && Array.from({ length: 10 }, (_, i) => (
         <path key={i} d="M0-6l1.5 4.5L6 0l-4.5 1.5L0 6l-1.5-4.5L-6 0l4.5-1.5z" transform={`translate(${w.van + ((i * 173) % b)} ${30 + ((i * 89) % (H - 60))})`}

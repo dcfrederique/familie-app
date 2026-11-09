@@ -1,0 +1,54 @@
+{
+  "nr": 70,
+  "titel": "De koekjesdomino",
+  "reeks": "kleine-oortjes",
+  "leeftijd": 4,
+  "thema": "De Sint komt eraan, koekjes bakken en domino spelen",
+  "bladzijden": [
+    {
+      "tekst": "Het regent. Pip en Mo mogen niet buiten spelen. \"Weet je wat?\" zegt mama. \"We bakken koekjes voor de Sint.\" Ze rolt het deeg uit, heel plat. Pip snijdt het in lange rechte stukken. Elk koekje krijgt een streepje in het midden, zodat het twee vakjes heeft. \"Het lijken wel dominostenen,\" zegt Mo. Mama knipoogt. \"Dat is ook de bedoeling. Straks spelen we ermee.\" Mo kijkt verbaasd. \"Met koekjes spelen?\" Mama lacht. \"Wacht maar af.\"",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pip",
+          "mo",
+          "pipmama"
+        ]
+      }
+    },
+    {
+      "tekst": "Nu komen de pepernootjes erop. In elk vakje legt Pip er een paar. Eén pepernootje. Twee pepernootjes. Drie. Mo telt mee op zijn vingers. \"Deze heeft drie en drie,\" zegt hij. \"Dat is een dubbele!\" Koek de kat ruikt aan het deeg. \"Nee, Koek,\" lacht Pip. \"Die zijn niet voor jou.\" Dan gaan de koekjes de oven in. Het hele huis ruikt naar speculaas. Pip en Mo zitten op hun knieën voor het glas en kijken hoe de koekjes bruin worden.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pip",
+          "mo",
+          "koek"
+        ]
+      }
+    },
+    {
+      "tekst": "Als de koekjes afgekoeld zijn, legt mama er één in het midden van de tafel. Twee pepernootjes en drie pepernootjes. \"Wie heeft er een koekje met twee of met drie?\" vraagt ze. Pip zoekt. Ze vindt er een met drie en één. Ze legt de drie tegen de drie. Klik. Het past! Mo legt een koekje met twee tegen de andere kant. Zo wordt de rij langer en langer. Koek de kat zit op de stoel en kijkt mee. Zijn staart zwiept heen en weer.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pip",
+          "mo",
+          "pipmama"
+        ]
+      }
+    },
+    {
+      "tekst": "Op het einde past er geen enkel koekje meer. \"Hoe lang is onze rij?\" vraagt Mo. Ze tellen samen. Tien koekjes! \"En nu?\" vraagt Pip. Mama lacht. \"Nu mag elk één koekje kiezen. De rest is voor de Sint, in je schoen.\" Pip kiest de dubbele drie. Mo kiest het koekje met één pepernootje. \"Want dan is er meer koekje,\" zegt hij. Buiten regent het nog steeds. Maar binnen is het warm, en lekker.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pip",
+          "mo",
+          "pipmama",
+          "koek"
+        ]
+      }
+    }
+  ]
+}

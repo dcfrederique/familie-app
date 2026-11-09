@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.136',
+    datum: '2026-11-09',
+    titel: "Pepernotendomino, De koekjesdomino en een nieuwe wereld: het Paddenstoelenbos",
+    tekst: "Nieuw verhaal \"De koekjesdomino\" (koekjes bakken voor de Sint) en nieuwe kleurplaat \"De koekjesdomino\", meteen te lezen en in te kleuren. Het spelletje Pepernotendomino kost 25 sterren: leg elke dominosteen uit je handje aan de kant van de rij waar evenveel pepernootjes staan, tot alle stenen liggen; Terug neemt een steen terug. Makkelijk: vier stenen tot drie, elk aantal met een eigen kleur, met hulp. Middel: zes stenen tot vijf, met hulp. Moeilijk: twaalf stenen van nul tot zes, elke steen maar één keer en zonder kleuren of hulp; wie zomaar legt wat past, loopt vast, dus vooruit denken; klokje en pluimen. In Springland begint een nieuwe wereld, het Paddenstoelenbos, met het eerste level Het mospad. Nieuw kinderthema: Vliegveld, te kiezen bij Mijn thema.",
+    verhaal: "De koekjesdomino",
+    spel: { naam: "Pepernotendomino", prijs: 25 },
+    stukken: ["Figuurtje: Pet met een dominosteen (15), Trui met speculaasjes (20), Koekjestrommel (15)", "Mijn huis: Tafeltje met een dominorij (20), Rekje met verse koekjes (20), Buitenoventje (20)"],
+    open: "Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.",
+  },
+  {
     versie: '0.135',
     datum: '2026-11-09',
     titel: "Eikeltjes springen, Eikeltjes voor de winter en de Bromrobot in Speelgoedland",

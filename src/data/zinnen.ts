@@ -76,6 +76,8 @@ export const zin = {
   knikkersKlaar: "Alles netjes gesorteerd!",
   eikelsUitleg: "Tik op een eikeltje. Het mag over een ander eikeltje springen, naar een leeg putje erachter. Het eikeltje waar je overheen springt, eet de eekhoorn op. Hou er zo weinig mogelijk over.",
   eikelsKlaar: "De eekhoorn is lekker vol!",
+  dominoUitleg: "Tik op een steen uit je handje. Hij past als er aan de kant van de rij evenveel pepernootjes staan. Leg alle stenen in één lange rij.",
+  dominoKlaar: "Alle stenen liggen netjes in een rij!",
   roosterUitleg: 'Zet elke kleur één keer in elke rij en in elke kolom.',
   roosterKlaar: 'Alle pakjes staan op hun plaats!',
   torensUitleg: 'Verhuis alle pakjes naar de gouden plank. Een groot pakje mag nooit op een klein pakje.',

@@ -24,6 +24,7 @@ const wereldKleur: Record<WereldStijl, { pad: string; rand: string }> = {
   hemel: { pad: '#FFFFFF', rand: '#BFE0F5' },
   nacht: { pad: '#FFE9A8', rand: '#C9A23E' },
   speelgoed: { pad: '#FFE9A8', rand: '#E0AE17' },
+  herfst: { pad: '#F6E3B4', rand: '#B7793A' },
 }
 
 /** Klein prentje van de stijl van een level, voor in het plekje en op de knop Volgend level. */
