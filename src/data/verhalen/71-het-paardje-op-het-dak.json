@@ -1,0 +1,96 @@
+{
+  "nr": 71,
+  "titel": "Het paardje op het dak",
+  "reeks": "avonturiers",
+  "leeftijd": 8,
+  "thema": "De Sint komt eraan, een route plannen met pijltjes",
+  "bladzijden": [
+    {
+      "tekst": "Over twee weken komt de Sint. Daan en Noor logeren bij opa, en buiten is het grijs en nat. \"Weet je hoe het paard van de Sint de goede schoorsteen vindt?\" vraagt opa. Daan haalt zijn schouders op. \"Het weet de weg gewoon.\" Opa lacht. \"Misschien. Maar ik denk dat iemand hem de route voorzegt. Zullen we dat eens proberen?\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "noor",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "Opa legt op de vloer van de woonkamer een groot rooster met plakband. Vijf vakken breed en vier vakken diep. Dat is het dak. Op drie vakken zet hij een omgekeerde emmer: dat zijn schoorstenen waar het paard niet door kan. Op één vak zet hij een rode doos. \"Dat is de schoorsteen waar het pakje in moet,\" zegt hij.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "opa",
+          "daan",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor mag het paardje zijn. Ze gaat op het vak in de hoek staan. Daan krijgt een stapeltje kaartjes met pijlen: omhoog, omlaag, naar links, naar rechts. \"Leg de hele route eerst neer,\" zegt opa. \"Pas als alle kaartjes liggen, mag het paardje vertrekken. En het paardje doet precies wat de kaartjes zeggen.\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "daan",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan legt snel vier kaartjes: rechts, rechts, rechts, omlaag. \"Start!\" roept hij. Noor stapt naar rechts, en nog eens, en dan staat ze met haar teen tegen een emmer. \"Boem,\" zegt Noor, en ze laat zich lachend omvallen. \"Ik zat in de schoorsteen vast!\" Daan kijkt naar zijn kaartjes. Hij had de emmer niet gezien.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Nog eens,\" zegt opa. \"Maar kijk eerst met je vinger.\" Daan zit op zijn knieën en volgt de vakken met zijn wijsvinger. Eén naar rechts, dan omlaag, langs de emmer, en weer naar rechts. Hij wisselt twee kaartjes om en legt er één bij. Deze keer loopt Noor met grote stappen netjes om de emmer heen, tot ze naast de rode doos staat. \"Bezorgd!\" juicht ze.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "noor",
+          "opa",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan maakt opa het moeilijker. Hij legt twee kleine pakjes op het dak. \"Het paardje moet eerst de pakjes ophalen,\" zegt hij. \"En je krijgt maar acht kaartjes.\" Daan fronst. Met acht kaartjes kan je niet zomaar alle kanten op. Je moet een slimme weg vinden, waar geen enkel stapje te veel in zit.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "opa",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Nu denken Noor en Daan samen na. Noor wijst. \"Als we eerst dat pakje halen, staan we al naast het andere.\" Daan telt de vakjes. Zeven kaartjes, één over! Hij legt ze voorzichtig neer en kijkt ze nog één keer allemaal na. Noor stapt, raapt het eerste pakje op, dan het tweede, en eindigt precies bij de rode doos. Opa klapt in zijn handen.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "daan",
+          "opa",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "'s Avonds, als ze in bed liggen, hoort Daan de regen op het dak tikken. \"Denk je dat het paard van de Sint ook kaartjes krijgt?\" fluistert hij. Noor geeuwt. \"Nee,\" zegt ze. \"Ik denk dat het paard gewoon heel goed kan plannen. Net als wij.\" En met een glimlach vallen ze allebei in slaap.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "noor"
+        ]
+      }
+    }
+  ]
+}

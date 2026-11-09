@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.137',
+    datum: '2026-11-09',
+    titel: "Pijltjesroute, Het paardje op het dak en Het hertenpad",
+    tekst: "Nieuw verhaal \"Het paardje op het dak\" (de Sint komt eraan, een route plannen met kaartjes) en nieuwe kleurplaat \"De daken bij nacht\", meteen te lezen en in te kleuren. Het spelletje Pijltjesroute kost 25 sterren: breng het paardje met pijltjes over het dak naar de rode schoorsteen, zonder tegen de grijze schoorstenen te botsen. Makkelijk: elk pijltje zet meteen een stapje, met hulp. Middel: leg eerst de hele route met pijltjes en tik dan op Start. Moeilijk: een groot dak, eerst drie pakjes ophalen, en maar één pijltje meer dan de kortste route: vooruit denken; klokje en pluimen. In Springland kwam er een tweede level in het Paddenstoelenbos bij: Het hertenpad. Nieuw kinderthema: Manege, te kiezen bij Mijn thema.",
+    verhaal: "Het paardje op het dak",
+    spel: { naam: "Pijltjesroute", prijs: 25 },
+    stukken: ["Figuurtje: Haarband met paardenoortjes (15), Shirt met pijltjes (20), Stokpaardje (20)", "Mijn huis: Pakje op de schoorsteen (20), Wegwijzer met pijltjes (15), Klein paardenstalletje (30)"],
+    open: "Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.",
+  },
+  {
     versie: '0.136',
     datum: '2026-11-09',
     titel: "Pepernotendomino, De koekjesdomino en een nieuwe wereld: het Paddenstoelenbos",

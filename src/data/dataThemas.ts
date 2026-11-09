@@ -200,6 +200,12 @@ const vliegveld = wikkel(`<g class="tn-nacht" fill="#FFF3C4"><circle cx="140" cy
   <g transform="translate(780 150)"><rect x="-40" y="-28" width="34" height="26" rx="5" fill="#F28C28"/><rect x="-28" y="-34" width="10" height="8" rx="2" fill="none" stroke="#8A5A33" stroke-width="3"/><rect x="0" y="-22" width="28" height="20" rx="5" fill="#43A047"/><path d="M-36 -2v6M-10 -2v6M4 -2v6M24 -2v6" stroke="#33414F" stroke-width="4"/></g>
   <path d="M300 180H1000" stroke="#FFFFFF" stroke-width="5" stroke-dasharray="30 22" opacity=".8"/>`)
 
+const manege = wikkel(`<g class="tn-nacht" fill="#FFF3C4"><circle cx="160" cy="40" r="2.5"/><circle cx="620" cy="30" r="2"/><circle cx="880" cy="50" r="2"/></g>
+  <g transform="translate(170 60)"><rect x="-60" y="30" width="120" height="90" fill="#C0392B"/><path d="M-72 34L0 -14L72 34Z" fill="#8E2A20"/><rect x="-22" y="58" width="44" height="62" fill="#FFF3E0"/><path d="M-22 58L22 120M22 58L-22 120" stroke="#C0392B" stroke-width="4"/><circle cx="0" cy="14" r="9" fill="#FFF3E0"/></g>
+  <g transform="translate(520 120)" class="thema-zweef"><ellipse cx="0" cy="0" rx="52" ry="26" fill="#8A5A33"/><path d="M-36 20V58M-16 24V60M16 24V60M36 20V58" stroke="#8A5A33" stroke-width="10" stroke-linecap="round"/><path d="M40 -10C50 -36 70 -46 84 -40C92 -30 88 -14 70 -6Z" fill="#8A5A33"/><path d="M60 -40L64 -54L70 -40Z" fill="#8A5A33"/><circle cx="74" cy="-30" r="3" fill="#33414F"/><path d="M44 -14C38 -30 50 -42 58 -44" stroke="#33414F" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M-50 -4C-70 0 -74 20 -66 34" stroke="#33414F" stroke-width="8" fill="none" stroke-linecap="round"/></g>
+  <g transform="translate(760 150)"><path d="M-50 0V-40M50 0V-40" stroke="#FFFFFF" stroke-width="8"/><path d="M-56 -30H56" stroke="#E5484D" stroke-width="8" stroke-dasharray="16 12"/><path d="M-56 -12H56" stroke="#FFFFFF" stroke-width="6"/></g>
+  <g transform="translate(900 80)"><path d="M-14 16C-24 -8 -12 -22 0 -22C12 -22 24 -8 14 16" stroke="#9AA6B5" stroke-width="7" fill="none" stroke-linecap="round"/><circle cx="-12" cy="0" r="2" fill="#5B6B7A"/><circle cx="12" cy="0" r="2" fill="#5B6B7A"/></g>`)
+
 const vink = (kleur: string) => `<path d="M-16 0L-6 10L16 -12" stroke="${kleur}" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
 
 export const dataThemas: DataThema[] = [
@@ -553,6 +559,22 @@ export const dataThemas: DataThema[] = [
     slot: '<circle r="18" fill="#B8BFCB"/><path d="M-8 0C-8 -3 5 -3 8 -1V2C5 3 -8 3 -8 0Z" fill="#5B6B7A"/>',
     feest: [ster('#F2C530'), '<circle r="6" fill="#E5484D"/>', '<circle r="6" fill="#5DB7E8"/>'], confetti: ['#2F6FB0', '#E5484D', '#F2C530', '#5DB7E8'],
     tegelRadius: '14px', tegelRand: '4px solid var(--kid)',
+  },
+  {
+    sleutel: 'manege', naam: 'Manege', kidKleur: '#A0522D', shirt: 'oranje', verhouding: 1,
+    ondertitels: { spelen: 'De rijbak', verhalen: 'Lezen in de stal', kleurplaten: 'Paardjes kleuren', figuurtje: 'Klaar om te rijden', huis: 'Mijn eigen stal' },
+    klaarTekst: 'Wat een sprong over de hindernis!', nogTeDoen: (n) => `Nog ${n} ${n === 1 ? 'sterretje' : 'sterretjes'} tot de hindernis`,
+    licht: { bg: '#FBF6F1', surface: '#FFFFFF', soft: '#F3E7DC', ink: '#3A2416', muted: '#7A5C48', line: '#EAD9CA', shade: '#D4BBA5', kid: '#A0522D', 'kid-tint': '#F5E4D7', 'on-solid': '#FFFFFF',
+      'tn-grond': '#D9C08A', 'tn-nacht': 'none', 'tn-banner': 'linear-gradient(#E6F2FA,#FBF6F1)', 'tn-titel': '#3A2416', 'tn-sub': '#C0392B', 'tn-spoor': '#EAD9CA' },
+    donker: { bg: '#17100B', surface: '#251A12', soft: '#2E2117', ink: '#F8EDE3', muted: '#CDB29C', line: '#3D2C1F', shade: '#080503', kid: '#E0A070', 'kid-tint': '#3B281B', 'on-solid': '#17100B',
+      'tn-grond': '#4A3A22', 'tn-nacht': 'inline', 'tn-banner': 'linear-gradient(#080503,#2A1C12)', 'tn-titel': '#FFFFFF', 'tn-sub': '#F2C530', 'tn-spoor': '#3D2C1F' },
+    prent: manege,
+    voortgang: { mover: '<path d="M-8 8C-12 -4 -6 -12 2 -12C8 -12 10 -6 8 -2L6 8Z" fill="#A0522D"/><circle cx="2" cy="-6" r="1.5" fill="#fff"/>', doel: '<path d="M-10 10C-16 -6 -8 -14 0 -14C8 -14 16 -6 10 10" stroke="#9AA6B5" stroke-width="5" fill="none" stroke-linecap="round"/>' },
+    nieuw: '<path d="M-10 10C-16 -6 -8 -14 0 -14C8 -14 16 -6 10 10" stroke="#F2C530" stroke-width="5" fill="none" stroke-linecap="round"/>',
+    vink: `<circle r="20" fill="#A0522D"/><g transform="scale(.9)">${vink('#fff')}</g>`,
+    slot: '<circle r="18" fill="#B8BFCB"/><path d="M-8 8C-12 -4 -6 -12 0 -12C6 -12 12 -4 8 8" stroke="#5B6B7A" stroke-width="4" fill="none"/>',
+    feest: [ster('#F2C530'), '<circle r="6" fill="#E5484D"/>', '<circle r="6" fill="#A0522D"/>'], confetti: ['#A0522D', '#E5484D', '#F2C530', '#43A047'],
+    tegelRadius: '20px', tegelRand: '4px solid var(--kid)',
   },
 ]
 

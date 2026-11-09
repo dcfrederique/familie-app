@@ -1,0 +1,60 @@
+/* Pijltjesroute: het dak links (of boven, staand), de route en de pijltjes ernaast. De SVG schaalt mee. */
+.pj { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 1.4dvh, 14px); width: 100%; }
+.pj-balk { display: flex; align-items: center; justify-content: center; gap: 18px; font-weight: 800; }
+.pj-spel { display: flex; align-items: center; justify-content: center; gap: clamp(12px, 3vw, 36px); width: 100%; }
+.pj-plek { display: grid; place-items: center; width: min(62vw, calc((100dvh - 230px) * 1.4)); height: calc(100dvh - 230px); }
+.pj-dak { max-width: 100%; max-height: 100%; width: 100%; height: auto; user-select: none; }
+.pj-pan { fill: #D0674C; stroke: #A84630; stroke-width: 2; }
+.pj-paard { transition: transform .32s ease-in-out; }
+.pj-zij { display: flex; flex-direction: column; align-items: center; gap: 10px; max-width: 300px; }
+.pj-tekst { margin: 0; text-align: center; font-weight: 800; font-size: clamp(15px, 2.3dvh, 21px); }
+.pj-route { display: grid; grid-template-columns: repeat(6, 36px); gap: 4px; justify-content: center; }
+.pj-vak { display: grid; place-items: center; width: 36px; height: 36px; border: 2px dashed var(--line); border-radius: 10px; color: var(--ink); }
+.pj-vak.vol { border-style: solid; border-color: var(--kid); background: var(--kid-tint); }
+.pj-vak svg { width: 24px; height: 24px; }
+.pj-pijlen { display: grid; grid-template-columns: repeat(3, 72px); grid-template-rows: repeat(3, 64px); gap: 4px; }
+.pj-op { grid-area: 1 / 2; } .pj-wis { grid-area: 3 / 1; } .pj-start, .pj-hulp { grid-area: 3 / 3; } .pj-links { grid-area: 2 / 1; } .pj-rechts { grid-area: 2 / 3; } .pj-neer { grid-area: 3 / 2; }
+.pj-pijlen .pj-knop { width: 72px; height: 64px; }
+.pj-knop {
+  display: grid; place-items: center; width: 72px; height: 72px; padding: 0; border: 3px solid var(--line); border-radius: 20px;
+  background: var(--surface); color: var(--ink); box-shadow: 0 4px 0 var(--shade); cursor: pointer; touch-action: manipulation;
+}
+.pj-knop svg { width: 34px; height: 34px; }
+.pj-knop.tip { border-color: #43A047; background: #E3F4E4; }
+.pj-knop.start { background: #43A047; border-color: #2E7D32; color: #fff; }
+.pj-knop:disabled { opacity: .45; cursor: default; }
+.pj-eindprent { width: clamp(200px, 34dvh, 320px); height: auto; }
+@media (prefers-reduced-motion: no-preference) {
+  .pj-schud { animation: pj-schud .3s ease-in-out 2; }
+  .pj-knop.tip { animation: pj-puls .7s ease-in-out infinite alternate; }
+  .pj-dak.viert { animation: pj-hup .45s ease-out 2 alternate; }
+}
+@media (prefers-reduced-motion: reduce) { .pj-paard { transition: none; } }
+@keyframes pj-schud { 25% { translate: -5px 0; } 75% { translate: 5px 0; } }
+@keyframes pj-puls { to { scale: 1.06; } }
+@keyframes pj-hup { to { scale: 1.02; } }
+@media (orientation: portrait) {
+  .pj-spel { flex-direction: column; }
+  .pj-plek { width: calc(100vw - 32px); height: auto; }
+  .pj-zij { max-width: none; flex-direction: row; flex-wrap: wrap; justify-content: center; }
+  .pj-tekst { flex-basis: 100%; }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .pj { gap: 2px; }
+  .pj-zij { gap: 4px; }
+  .pj-pijlen { grid-template-columns: repeat(3, 52px); grid-template-rows: repeat(3, 44px); gap: 2px; }
+  .pj-pijlen .pj-knop { width: 52px; height: 44px; }
+  .pj-knop svg { width: 24px; height: 24px; }
+  .pj-route { grid-template-columns: repeat(8, 26px); gap: 2px; }
+  .pj-vak { width: 26px; height: 26px; }
+  .pj-vak svg { width: 18px; height: 18px; }
+  .pj-tekst { font-size: 13px; }
+}
+
+/* Volle opmaak (tablet, liggende gsm): het dak krijgt precies de vrije plaats. */
+@media (min-width: 600px) and (min-height: 560px), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .pj { flex: 1; min-height: 0; }
+  .pj-spel { flex: 1; min-height: 0; }
+  .pj-plek { flex: 1; align-self: stretch; width: auto; height: auto; min-width: 0; min-height: 0; container-type: size; }
+  .pj-plek .pj-dak { width: 100cqw; height: 100cqh; }
+}
