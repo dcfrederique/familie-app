@@ -137,13 +137,9 @@ Dit gebeurt in twee fases: eerst uitdenken (ontwerp), daarna coderen (bouw).
   (naam, wereld, stijl, beestje, fruit, schets van het verloop). De bouw moet het robotje het nieuwe level laten
   uitspelen (`npx vitest run src/lib/spelletjes/springen.test.ts`); lukt dat niet, pas het level aan tot het haalbaar
   is. Een level is geen unlockable in de winkel: het gaat open door het vorige uit te spelen. Noem het in het nieuwtje.
-- De wereld (`docs/wereld.md`): elk nieuw spelletje krijgt ook een plekje in De wereld, als huisje of een andere passende
-  vorm (een rij in `gebouwen` in `src/data/wereld.ts` met `spel`, `pad` = de spelsleutel en `nieuwSinds`, tekening in `src/data/wereldPrenten.ts`; het plan noemt vorm, plek en tekening; de gouden rand, het slot en de vrijgave volgen vanzelf uit `gebouwenVoor`, zie `docs/wereld.md`, "Gebouwen van spelletjes"; geef `SpelKader` de prop `wereldDeur`).
-  Nieuw = een **gouden rand** om het gebouw (de eerste 14 dagen). Nog niet gekocht door dit kind = een
-  **slot** op het gebouw; na de aankoop weg. De vrijgaveregel blijft gelden: een spelletje dat de ouders nog niet vrijgaven
-  voor een kind is daar niet te zien (ook niet als gebouw of bouwplaats), tot ze het vrijgeven in Winkelaanbod. Zet geen
-  gebouw op een plek die al bezet is. Later zet Frederique een aparte routine in die de bestaande spelletjes ook in de wereld
-  plaatst (bv. Springland als springkasteel-gebied waar het in dat werelddeel verdergaat); die doet de nacht nu niet.
+- De wereld (`docs/wereld.md`): de nacht plaatst **geen** gebouw meer in De wereld (Frederique, 9 november 2026). Nieuwe spelletjes
+  krijgen dus geen rij in `gebouwen` en geen tekening in `wereldPrenten.ts`; ze staan alleen in het spelmenu en de winkel. Het plan en het
+  nieuwtje noemen geen wereldgebouw. Eventuele plaatsing van spelletjes in de wereld doet Frederique later zelf of via een aparte routine.
 
 ## Wekelijks: drie nieuwe kinderthema's (Frederique, 7 november 2026)
 Elke **zaterdag** (`TZ=Europe/Brussels date +%u` = 6) maakt de nacht erbij **drie nieuwe thema's**, één met de smaak van
