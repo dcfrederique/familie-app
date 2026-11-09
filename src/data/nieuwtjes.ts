@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.132',
+    datum: '2026-11-09',
+    titel: "Knikkers sorteren, De knikkerpotjes en het laatste level van Speelgoedland",
+    tekst: "Nieuw verhaal \"De knikkerpotjes\" (opa's knikkers sorteren) en nieuwe kleurplaat \"De knikkerpotjes\", meteen te lezen en in te kleuren. Het spelletje Knikkers sorteren kost 30 sterren: knikkers liggen door elkaar in buisjes; leg ze één voor één over tot elk buisje maar één kleur heeft. Je mag een knikker alleen op dezelfde kleur of in een leeg buisje leggen; met Terug zet je een zet terug. Drie rondes. Makkelijk: drie kleuren, met een hulpknop. Middel: vier kleuren, met hulp. Moeilijk: zes kleuren en maar twee lege buisjes, geen hulp, vooruit denken; klokje en pluimen. In Springland kwam het vijfde en laatste gewone level van Speelgoedland erbij: De speelgoedtrap, een pittig level. Nieuw kinderthema: Bloemenwinkel, te kiezen bij Mijn thema.",
+    verhaal: "De knikkerpotjes",
+    spel: { naam: "Knikkers sorteren", prijs: 30 },
+    stukken: ["Figuurtje: Pet met een knikker (15), Shirt met knikkers (20), Zakje met knikkers (15)", "Mijn huis: Houten knikkerbaan (25), Speelgoedkist (20), Grote draaitol (15)"],
+    open: "Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.",
+  },
+  {
     versie: '0.131',
     datum: '2026-11-09',
     titel: "Hoe laat is het?, Pip en de klok en een nieuw level in Speelgoedland",

@@ -72,6 +72,8 @@ export const zin = {
   lampionliedKlaar: "Wat zing jij mooi!",
   klokUitleg: "Kijk naar de klok. De kleine wijzer zegt het uur. Tik op de klok die past bij wat ik zeg.",
   klokKlaar: "Jij kunt klokkijken!",
+  knikkersUitleg: "Tik op een buisje om de bovenste knikker te pakken. Tik dan op een ander buisje. Je mag hem alleen op dezelfde kleur leggen, of in een leeg buisje.",
+  knikkersKlaar: "Alles netjes gesorteerd!",
   roosterUitleg: 'Zet elke kleur één keer in elke rij en in elke kolom.',
   roosterKlaar: 'Alle pakjes staan op hun plaats!',
   torensUitleg: 'Verhuis alle pakjes naar de gouden plank. Een groot pakje mag nooit op een klein pakje.',

@@ -1,0 +1,89 @@
+{
+  "nr": 68,
+  "titel": "De knikkerpotjes",
+  "reeks": "avonturiers",
+  "leeftijd": 8,
+  "thema": "Herfst, sorteren en vooruit denken",
+  "bladzijden": [
+    {
+      "tekst": "Het regent al de hele zaterdag. Daan zit bij opa op zolder, tussen dozen vol oude spullen. In een blikken trommel vindt hij iets wat rammelt. Knikkers! Honderden knikkers, rood, blauw, geel en groen, allemaal door elkaar. \"Die zijn nog van toen ik klein was,\" zegt opa.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "opa",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Opa zet vier lege glazen potjes op tafel. \"Vroeger sorteerden we ze per kleur,\" vertelt hij. \"Maar met een spelregel.\" Hij vult de potjes met knikkers, door elkaar, elk potje vier knikkers. Dan zet hij er twee lege potjes naast. \"De regel is zo,\" zegt opa. \"Je mag alleen de bovenste knikker pakken. En je mag hem alleen leggen op een knikker van dezelfde kleur, of in een leeg potje. Op het einde moet elk potje één kleur hebben.\" Daan knikt. Dat lijkt hem makkelijk.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "daan",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan begint meteen. Rood op rood. Blauw in een leeg potje. Geel op... nee, er ligt nergens geel bovenaan. Groen in het andere lege potje. En dan zit hij vast. Elk potje is vol, of heeft bovenaan een kleur die nergens past. \"Oei,\" zegt Daan.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Opa lacht niet. Hij legt alles terug zoals het was. \"Weet je wat ik vroeger deed? Eerst kijken, dan pas pakken. Welke knikker zit diep vanonder? Die moet je vrijmaken. En hou altijd een leeg potje over als het kan. Een leeg potje is goud waard.\"",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "daan",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan kijkt nu langer. In het tweede potje zit onderaan een gele knikker, met drie andere erop. \"Die drie moeten eerst weg,\" mompelt hij. Hij legt de rode op de rode. De blauwe in het lege potje. De groene bij de andere groene. Nu ligt de gele vrij.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Stap voor stap gaat het verder. Soms denkt Daan drie zetten vooruit, zoals bij dammen. Soms moet hij een zet terug doen. Maar hij houdt altijd één potje leeg, net zoals opa zei. De kat van de buren zit op de vensterbank en kijkt mee.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "daan",
+          "opa",
+          "koek"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan is het laatste potje aan de beurt. Vier rode knikkers, één voor één, netjes op elkaar. \"Klaar!\" roept Daan. Vier potjes, vier kleuren. En twee lege potjes, glanzend in het licht van de lamp. Opa klapt in zijn handen. \"Beter dan ik toen ik acht was.\"",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "daan",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Nog eens,\" zegt Daan. \"Maar nu met zes kleuren.\" Opa haalt twee extra potjes en een hele hand paarse en oranje knikkers. Het regent nog altijd. Maar dat geeft niet. Daan zit al voorovergebogen. Eerst kijken, dan pas pakken.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "daan",
+          "opa"
+        ]
+      }
+    }
+  ]
+}

@@ -177,6 +177,14 @@ const speurder = wikkel(`<g class="tn-nacht" fill="#FFF3C4"><circle cx="120" cy=
   <g transform="translate(200 165)" fill="#33414F"><ellipse cx="0" cy="0" rx="7" ry="10"/><ellipse cx="22" cy="-16" rx="7" ry="10"/><ellipse cx="6" cy="-34" rx="7" ry="10"/><ellipse cx="30" cy="-52" rx="7" ry="10"/></g>
   <g transform="translate(850 150)"><rect x="-26" y="-20" width="52" height="38" rx="4" fill="#C9A27A"/><path d="M-26 -20L0 2L26 -20" stroke="#8A5A33" stroke-width="3" fill="none"/><text x="0" y="12" text-anchor="middle" font-size="20" font-weight="800" fill="#D33D36">?</text></g>`)
 
+const bloemist = wikkel(`<g class="tn-nacht" fill="#FFF3C4"><circle cx="120" cy="40" r="2.5"/><circle cx="880" cy="50" r="2"/><circle cx="560" cy="24" r="2"/></g>
+  <g transform="translate(330 70)"><rect x="0" y="40" width="240" height="110" fill="#FFFFFF" stroke="#B9DDB0" stroke-width="4"/><path d="M-12 40H252L238 4H2Z" fill="#6DBE6A"/><path d="M2 4L-12 40M50 4L42 40M98 4L94 40M146 4L146 40M194 4L198 40M238 4L252 40" stroke="#FFFFFF" stroke-width="10"/><rect x="20" y="64" width="90" height="62" rx="4" fill="#DFF2FB"/><rect x="140" y="64" width="80" height="86" fill="#A0703F"/><circle cx="204" cy="108" r="4" fill="#F2C530"/>
+    <g transform="translate(40 150)"><rect x="-14" y="-22" width="28" height="22" rx="3" fill="#C98A4B"/><circle cx="-6" cy="-32" r="9" fill="#E5484D"/><circle cx="7" cy="-34" r="9" fill="#F2C530"/><circle cx="0" cy="-44" r="9" fill="#F48FB1"/></g>
+    <g transform="translate(96 150)"><rect x="-14" y="-22" width="28" height="22" rx="3" fill="#2F80C9"/><circle cx="-6" cy="-32" r="9" fill="#8E5BD0"/><circle cx="7" cy="-32" r="9" fill="#FFFFFF"/><circle cx="0" cy="-43" r="9" fill="#8E5BD0"/></g></g>
+  <g transform="translate(720 70)" class="thema-zweef"><path d="M-30 10L0 110L30 10Z" fill="#F4D3A8"/><path d="M-20 30L18 80M20 30L-16 80" stroke="#E0B27A" stroke-width="3"/><circle cx="-14" cy="0" r="16" fill="#E5484D"/><circle cx="14" cy="-2" r="16" fill="#F48FB1"/><circle cx="0" cy="-18" r="16" fill="#F2C530"/><circle cx="-2" cy="12" r="10" fill="#FFFFFF"/><path d="M-26 14l-10 -4M26 14l10 -4" stroke="#43A047" stroke-width="6" stroke-linecap="round"/><path d="M-10 76Q0 90 12 76" stroke="#E5484D" stroke-width="5" fill="none"/></g>
+  <g transform="translate(210 160)"><path d="M0 0V-34" stroke="#43A047" stroke-width="4"/><path d="M0 -18q-12 -2 -14 -12q12 0 14 12" fill="#43A047"/><circle cy="-40" r="8" fill="#F2C530"/><g fill="#FFFFFF"><circle cy="-52" r="6"/><circle cx="12" cy="-40" r="6"/><circle cy="-28" r="6"/><circle cx="-12" cy="-40" r="6"/></g><circle cy="-40" r="7" fill="#F2C530"/></g>
+  <g transform="translate(860 150)"><path d="M-18 -10H18L14 20H-14Z" fill="#9AA6B5"/><path d="M18 -4q12 -2 10 10" stroke="#9AA6B5" stroke-width="4" fill="none"/><path d="M-18 -10L-30 -20" stroke="#9AA6B5" stroke-width="5" stroke-linecap="round"/><g fill="#5DB7E8"><circle cx="-36" cy="-14" r="2.5"/><circle cx="-40" cy="-6" r="2.5"/><circle cx="-34" cy="0" r="2.5"/></g></g>`)
+
 const vink = (kleur: string) => `<path d="M-16 0L-6 10L16 -12" stroke="${kleur}" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
 
 export const dataThemas: DataThema[] = [
@@ -482,6 +490,22 @@ export const dataThemas: DataThema[] = [
     slot: '<circle r="18" fill="#B8BFCB"/><circle cx="-2" cy="-2" r="8" fill="none" stroke="#5B6B7A" stroke-width="3"/><path d="M4 4L10 10" stroke="#5B6B7A" stroke-width="4" stroke-linecap="round"/>',
     feest: [ster('#F2C530'), '<text y="6" text-anchor="middle" font-size="18" font-weight="800" fill="#D33D36">?</text>', '<circle r="6" fill="#8A5A33"/>'], confetti: ['#3B5B7A', '#F2C530', '#D33D36', '#FFFFFF'],
     tegelRadius: '10px', tegelRand: '5px dashed var(--kid)',
+  },
+  {
+    sleutel: 'bloemist', naam: 'Bloemenwinkel', kidKleur: '#3E8E41', shirt: 'groen', verhouding: 1,
+    ondertitels: { spelen: 'De bloemenkraam', verhalen: 'Lezen tussen de tulpen', kleurplaten: 'Boeketjes kleuren', figuurtje: 'Met mijn schortje', huis: 'Mijn eigen bloemenwinkel' },
+    klaarTekst: 'Je boeket is af!', nogTeDoen: (n) => `Nog ${n} ${n === 1 ? 'bloem' : 'bloemen'} in je boeket`,
+    licht: { bg: '#F5FAF2', surface: '#FFFFFF', soft: '#E3F1DC', ink: '#1E3320', muted: '#5A7A5C', line: '#D2E7C9', shade: '#B3D3A6', kid: '#3E8E41', 'kid-tint': '#E0F0DA', 'on-solid': '#FFFFFF',
+      'tn-grond': '#8CC86A', 'tn-nacht': 'none', 'tn-banner': 'linear-gradient(#E3F4FB,#F5FAF2)', 'tn-titel': '#1E3320', 'tn-sub': '#C2185B', 'tn-spoor': '#D2E7C9' },
+    donker: { bg: '#0C140C', surface: '#162116', soft: '#1C2A1C', ink: '#E8F4E5', muted: '#A6C9A2', line: '#283A28', shade: '#040704', kid: '#7CCB7E', 'kid-tint': '#1F3A21', 'on-solid': '#0C140C',
+      'tn-grond': '#2F4A26', 'tn-nacht': 'inline', 'tn-banner': 'linear-gradient(#050805,#1A2A1A)', 'tn-titel': '#FFFFFF', 'tn-sub': '#F48FB1', 'tn-spoor': '#283A28' },
+    prent: bloemist,
+    voortgang: { mover: '<circle r="5" fill="#F2C530"/><g fill="#F48FB1"><circle cy="-8" r="5"/><circle cx="8" r="5"/><circle cy="8" r="5"/><circle cx="-8" r="5"/></g><circle r="4" fill="#F2C530"/>', doel: `<g transform="scale(.8)">${ster('#F2C530')}</g>` },
+    nieuw: '<path d="M0 14V-2" stroke="#43A047" stroke-width="3"/><circle cy="-8" r="5" fill="#F2C530"/><g fill="#E5484D"><circle cy="-16" r="5"/><circle cx="8" cy="-8" r="5"/><circle cx="-8" cy="-8" r="5"/></g><circle cy="-8" r="4" fill="#F2C530"/>',
+    vink: `<circle r="20" fill="#3E8E41"/><g transform="scale(.9)">${vink('#fff')}</g>`,
+    slot: '<circle r="18" fill="#B8BFCB"/><path d="M0 10V0" stroke="#5B6B7A" stroke-width="3"/><circle cy="-4" r="7" fill="#5B6B7A"/>',
+    feest: [ster('#F2C530'), '<circle r="6" fill="#F48FB1"/>', '<circle r="6" fill="#E5484D"/>'], confetti: ['#3E8E41', '#F48FB1', '#F2C530', '#FFFFFF'],
+    tegelRadius: '24px', tegelRand: '5px solid var(--kid)',
   },
 ]
 

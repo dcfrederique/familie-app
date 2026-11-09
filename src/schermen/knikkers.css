@@ -1,0 +1,52 @@
+/* Knikkers sorteren: de buisjes naast elkaar, de knoppen Terug en Hulp ernaast (of eronder, staand). De SVG schaalt mee. */
+.kn { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 1.4dvh, 14px); width: 100%; }
+.kn-balk { display: flex; align-items: center; justify-content: center; gap: 18px; font-weight: 800; }
+.kn-spel { display: flex; align-items: center; justify-content: center; gap: clamp(12px, 3vw, 36px); width: 100%; }
+.kn-plek { display: grid; place-items: center; width: min(74vw, calc((100dvh - 230px) * 1.6)); height: calc(100dvh - 230px); }
+.kn-bord { max-width: 100%; max-height: 100%; width: auto; height: 100%; touch-action: manipulation; user-select: none; }
+.kn-buis { cursor: pointer; }
+.kn-glas { fill: color-mix(in srgb, var(--surface) 70%, #BFE3F7); stroke: #9AA6B5; stroke-width: 3; }
+.kn-buis.gekozen .kn-glas { stroke: #F2C530; stroke-width: 5; }
+.kn-buis.kan .kn-glas { stroke: var(--kid); stroke-dasharray: 8 6; }
+.kn-buis.vol .kn-glas { fill: #E6F4E6; stroke: #43A047; }
+.kn-buis.tipvan .kn-glas { stroke: #F2C530; stroke-width: 6; }
+.kn-buis.tipnaar .kn-glas { stroke: #43A047; stroke-width: 6; stroke-dasharray: 8 6; }
+.kn-zij { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.kn-tekst { margin: 0; max-width: 200px; text-align: center; font-weight: 800; font-size: clamp(16px, 2.4dvh, 22px); }
+.kn-knop {
+  display: flex; align-items: center; justify-content: center; gap: 8px; min-width: 72px; min-height: 72px; padding: 0 16px;
+  border: 3px solid var(--line); border-radius: 20px; background: var(--surface); color: var(--ink); box-shadow: 0 4px 0 var(--shade);
+  font-size: 20px; font-weight: 800; cursor: pointer; touch-action: manipulation;
+}
+.kn-knop svg { width: 34px; height: 34px; }
+.kn-knop.vast { border-color: #D33D36; }
+.kn-knop:disabled { opacity: .45; cursor: default; }
+.kn-eindprent { width: clamp(180px, 30dvh, 300px); height: auto; }
+@media (prefers-reduced-motion: no-preference) {
+  .kn-op { animation: kn-wip .6s ease-in-out infinite alternate; }
+  .kn-bord.viert { animation: kn-hup .45s ease-out 2 alternate; }
+  .kn-buis.tipvan .kn-glas, .kn-buis.tipnaar .kn-glas { animation: kn-puls .7s ease-in-out infinite alternate; }
+}
+@keyframes kn-wip { to { translate: 0 -5px; } }
+@keyframes kn-hup { to { scale: 1.02; } }
+@keyframes kn-puls { to { stroke-width: 3; } }
+@media (orientation: portrait) {
+  .kn-spel { flex-direction: column; }
+  .kn-zij { flex-direction: row; }
+  .kn-plek { width: calc(100vw - 32px); height: min(calc(100dvh - 400px), calc((100vw - 32px) * .8)); }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .kn { gap: 2px; }
+  .kn-zij { gap: 6px; }
+  .kn-knop { min-width: 52px; min-height: 52px; padding: 0 10px; font-size: 16px; }
+  .kn-knop svg { width: 26px; height: 26px; }
+  .kn-tekst { font-size: 14px; max-width: 160px; }
+}
+
+/* Volle opmaak (tablet, liggende gsm): de buisjes krijgen precies de vrije plaats. */
+@media (min-width: 600px) and (min-height: 560px), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .kn { flex: 1; min-height: 0; }
+  .kn-spel { flex: 1; min-height: 0; }
+  .kn-plek { flex: 1; align-self: stretch; width: auto; height: auto; min-width: 0; min-height: 0; container-type: size; }
+  .kn-plek .kn-bord { width: 100cqw; height: 100cqh; }
+}
