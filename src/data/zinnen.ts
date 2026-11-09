@@ -66,6 +66,8 @@ export const zin = {
   kalahaKlaar: "Goed gespeeld tegen de eekhoorn!",
   patroonUitleg: "Kijk goed naar de rij. Wat komt er op het lege plekje? Tik op het goede prentje.",
   patroonKlaar: "Jij ziet elke regel!",
+  piramideUitleg: "Op elk pakje staat hoeveel de twee pakjes eronder samen zijn. Tik op een leeg pakje en kies het goede getal.",
+  piramideKlaar: "Jij bouwt elke toren!",
   roosterUitleg: 'Zet elke kleur één keer in elke rij en in elke kolom.',
   roosterKlaar: 'Alle pakjes staan op hun plaats!',
   torensUitleg: 'Verhuis alle pakjes naar de gouden plank. Een groot pakje mag nooit op een klein pakje.',

@@ -1,0 +1,66 @@
+/* Rekenpiramide: de toren van pakjes links (of boven, staand), het cijferblok ernaast. De SVG schaalt mee. */
+.pr { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 1.4dvh, 14px); width: 100%; }
+.pr-balk { display: flex; align-items: center; justify-content: center; gap: 18px; font-weight: 800; }
+.pr-spel { display: flex; align-items: center; justify-content: center; gap: clamp(12px, 3vw, 36px); width: 100%; }
+.pr-plek { display: grid; place-items: center; width: min(62vw, calc((100dvh - 230px) * 1.4)); height: calc(100dvh - 230px); }
+.pr-toren { max-width: 100%; max-height: 100%; width: auto; height: 100%; touch-action: manipulation; user-select: none; overflow: visible; }
+.pr-pakje { cursor: default; }
+.pr-pakje.leeg { cursor: pointer; }
+.pr-doos { stroke: rgba(0, 0, 0, .18); stroke-width: 2; }
+.pr-pakje.leeg .pr-doos { fill: var(--surface); stroke: var(--kid); stroke-width: 3.5; stroke-dasharray: 9 6; }
+.pr-pakje.kan .pr-doos { fill: var(--kid-tint); }
+.pr-pakje.gekozen .pr-doos { stroke: #F2C530; stroke-width: 6; stroke-dasharray: none; }
+.pr-pakje.mis .pr-doos { stroke: #D33D36; }
+.pr-label { fill: #FFF; opacity: .92; }
+.pr-pakje.leeg .pr-label { fill: transparent; }
+.pr-getal { text-anchor: middle; dominant-baseline: middle; font-weight: 800; fill: #33414F; pointer-events: none; }
+.pr-pakje.leeg .pr-getal { fill: var(--kid); }
+.pr-pakje.ingevuld .pr-label { fill: #E6F4E6; }
+.pr-stip { fill: #FFF; stroke: rgba(0, 0, 0, .25); stroke-width: 1; }
+.pr-paneel { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.pr-tekst { margin: 0; max-width: 260px; text-align: center; font-weight: 800; font-size: clamp(16px, 2.4dvh, 22px); }
+.pr-blok { display: grid; grid-template-columns: repeat(3, var(--knop)); gap: 8px; --knop: clamp(56px, 9.5dvh, 84px); }
+.pr-keuzes { display: flex; flex-direction: column; gap: 12px; }
+.pr-knop {
+  display: grid; place-items: center; width: var(--knop, 72px); height: var(--knop, 72px); padding: 0;
+  border: 3px solid var(--line); border-radius: 18px; background: var(--surface); color: var(--ink);
+  box-shadow: 0 4px 0 var(--shade); font-size: calc(var(--knop, 72px) * .42); font-weight: 800; cursor: pointer; touch-action: manipulation;
+}
+.pr-knop.groot { --knop: clamp(72px, 15dvh, 120px); width: calc(var(--knop) * 1.5); }
+.pr-knop.ok { background: #43A047; border-color: #2E7D32; color: #FFF; }
+.pr-knop.wis { color: var(--muted, #6B7785); }
+.pr-knop:disabled { opacity: .45; cursor: default; }
+.pr-eindprent { width: clamp(160px, 28dvh, 280px); height: auto; }
+@media (prefers-reduced-motion: no-preference) {
+  .pr-toren.viert { animation: pr-hup .45s ease-out 2 alternate; transform-origin: 50% 100%; }
+  .pr-pakje.gekozen .pr-doos { animation: pr-puls .8s ease-in-out infinite alternate; }
+  .pr-pakje.mis { animation: pr-schud .35s ease-in-out; }
+  .pr-strik { animation: pr-wiebel 2.6s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 50%; }
+  .pr-knop:not(:disabled):active { transform: scale(.94); }
+}
+@keyframes pr-hup { to { transform: scale(1.04); } }
+@keyframes pr-puls { to { stroke-width: 3; } }
+@keyframes pr-schud { 25% { translate: -5px 0; } 75% { translate: 5px 0; } }
+@keyframes pr-wiebel { 50% { rotate: 8deg; } }
+@media (orientation: portrait) {
+  .pr-spel { flex-direction: column; }
+  .pr-keuzes { flex-direction: row; }
+  .pr-plek { width: calc(100vw - 40px); height: min(calc(100dvh - 560px), calc(100vw - 40px)); }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .pr { gap: 2px; }
+  .pr-paneel { gap: 4px; }
+  .pr-blok { --knop: 15dvh; gap: 4px; grid-template-columns: repeat(4, var(--knop)); }
+  .pr-knop { min-width: 44px; min-height: 44px; border-radius: 12px; }
+  .pr-knop.groot { --knop: 17dvh; }
+  .pr-keuzes { gap: 6px; }
+  .pr-tekst { font-size: 14px; max-width: 200px; }
+}
+
+/* Volle opmaak (tablet, liggende gsm): de toren krijgt precies de vrije plaats. */
+@media (min-width: 600px) and (min-height: 560px), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .pr { flex: 1; min-height: 0; }
+  .pr-spel { flex: 1; min-height: 0; }
+  .pr-plek { flex: 1; align-self: stretch; width: auto; height: auto; min-width: 0; min-height: 0; container-type: size; }
+  .pr-plek .pr-toren { width: 100cqw; height: 100cqh; }
+}

@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.129',
+    datum: '2026-11-09',
+    titel: "Rekenpiramide, De koekentoren en het knikkerpad in Speelgoedland",
+    tekst: "Nieuw verhaal \"De koekentoren\" (rekenen in de bakkerij) en nieuwe kleurplaat \"De koekentoren\", meteen te lezen en in te kleuren. Het spelletje Rekenpiramide kost 25 sterren: een toren van pakjes waarop elk pakje de som is van de twee pakjes eronder; tik op een leeg pakje en vul het getal in. Vier torens. Makkelijk: drie rijen, kleine getallen met stipjes en drie knoppen om uit te kiezen. Middel: vier rijen met een cijferblok, soms ook terugrekenen (wat hoort er onder?). Moeilijk: vijf rijen met grote getallen (bovenaan vaak meer dan honderd), de lege pakjes vooral onderaan, geen hulp, klokje en pluimen. In Springland kwam het tweede level van Speelgoedland erbij: Het knikkerpad. Nieuw kinderthema: IJssalon, te kiezen bij Mijn thema.",
+    verhaal: "De koekentoren",
+    spel: { naam: "Rekenpiramide", prijs: 25 },
+    stukken: ["Figuurtje: Muts met cijfers (15), Shirt met een pakjestoren (20), Krijtbordje met een som (15)", "Mijn huis: Schoolbord met een piramide (20), Tegelpad met cijfers (20), Boompje met strikken (20)"],
+    open: "Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.",
+  },
+  {
     versie: '0.128',
     datum: '2026-11-09',
     titel: "Wat komt erna?, De kralenketting en een nieuwe wereld in Springland",

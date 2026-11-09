@@ -1,0 +1,106 @@
+{
+  "nr": 65,
+  "titel": "De koekentoren",
+  "reeks": "avonturiers",
+  "leeftijd": 6,
+  "thema": "Sinterklaas, optellen en terugrekenen in de bakkerij",
+  "bladzijden": [
+    {
+      "tekst": "Het ruikt naar speculaas in de bakkerij. Noor en Daan mogen de bakker helpen, want de Sint komt bijna. In het raam wil de bakker een toren bouwen van grote koekendozen. \"Een piramide,\" zegt hij. \"Onderaan vier dozen, dan drie, dan twee, en helemaal bovenaan één.\"",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "noor",
+          "daan",
+          "bakker"
+        ]
+      }
+    },
+    {
+      "tekst": "Op elke doos plakt de bakker een kaartje met een getal. \"Dat is mijn geheimpje,\" knipoogt hij. \"Op elke doos staat hoeveel twee dozen eronder samen zijn.\" Onderaan staan 2, 3, 1 en 4. Daan rekent. Twee en drie is vijf. Drie en één is vier. Eén en vier is vijf.",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "daan",
+          "bakker",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan gaat de bel van de winkeldeur. Er komt een klant binnen, en met haar een koude windvlaag. De kaartjes waaien van de dozen af! Ze dwarrelen door de winkel en landen in de bloem. Wit en plakkerig zijn ze. Je kunt er niets meer op lezen.",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "noor",
+          "daan",
+          "bakker"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Oei,\" zegt de bakker. \"Nu weet ik niet meer welk getal waar hoorde.\" Hij moet snel terug naar de oven. \"Kunnen jullie dat oplossen?\" Noor knikt. \"Er staan er nog een paar,\" zegt ze. \"Die zijn blijven plakken. Daarmee kunnen we de rest vinden.\"",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "noor",
+          "bakker"
+        ]
+      }
+    },
+    {
+      "tekst": "Bovenaan staat nog 18. Onderaan staan nog 2 en 4. Op de tweede rij staan nog een 5 en een 4. Daan krabt in zijn haar. \"Er ontbreken er zoveel,\" zucht hij. \"Begin bij twee dozen die je al kent,\" zegt Noor. \"Dan kun je altijd de derde vinden.\"",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "noor",
+          "daan",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan kijkt naar de 5. Daaronder staan 2 en een lege doos. \"Twee en hoeveel is vijf?\" fluistert hij. Hij telt op zijn vingers verder: drie, vier, vijf. \"Drie!\" Noor schrijft een nieuw kaartje. \"Zie je wel. Je kunt ook terugrekenen.\"",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "daan",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "Nu gaat het sneller. Boven de drie en de volgende lege doos staat 4. Drie en hoeveel is vier? \"Eén!\" zegt Noor. En één en vier samen is vijf. Op de tweede rij staan nu 5, 4 en 5. Daan rekent verder naar boven: vijf en vier is negen, vier en vijf is ook negen.",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "daan",
+          "noor",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "\"En negen en negen?\" vraagt Noor. Daan sluit zijn ogen. \"Achttien!\" roept hij. Dat getal stond er nog bovenaan. Het klopt! De hele toren klopt. Noor klapt in haar handen en Daan maakt een buiging, met bloem op zijn neus.",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "noor",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "De bakker komt kijken met een plaat warme speculaas. Hij telt alles na, van onder naar boven. \"Perfect,\" zegt hij. \"Jullie zijn echte rekenbakkers.\" Elk krijgt een speculaaspoppetje. Daan bijt eerst het hoofdje eraf. \"Eén en één,\" grijnst hij, \"is twee koekjes. Mag ik er nog een?\"",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "noor",
+          "daan",
+          "bakker",
+          "taart"
+        ]
+      }
+    }
+  ]
+}
