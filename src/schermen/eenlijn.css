@@ -1,0 +1,55 @@
+/* In één lijn: de vorm met bolletjes links (of boven, staand), de knoppen ernaast. De SVG schaalt mee. */
+.el { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 1.4dvh, 14px); width: 100%; }
+.el-balk { display: flex; align-items: center; justify-content: center; gap: 18px; font-weight: 800; }
+.el-teller { font-size: 20px; }
+.el-spel { display: flex; align-items: center; justify-content: center; gap: clamp(12px, 3vw, 36px); width: 100%; }
+.el-plek { display: grid; place-items: center; width: min(66vw, calc(100dvh - 230px)); height: calc(100dvh - 230px); padding: 8px; border-radius: 24px; background: var(--soft); }
+.el-bord { max-width: 100%; max-height: 100%; width: auto; height: 100%; user-select: none; touch-action: manipulation; overflow: visible; }
+.el-lijn { stroke: var(--muted); stroke-width: 6; stroke-dasharray: 2 12; stroke-linecap: round; opacity: .6; }
+.el-lijn.getekend { stroke: var(--kid); stroke-width: 12; stroke-dasharray: none; opacity: 1; }
+.el-punt { cursor: pointer; }
+.el-bol { fill: var(--surface); stroke: var(--ink); stroke-width: 4; }
+.el-punt.laatst .el-bol { fill: var(--kid); stroke: var(--kid); }
+.el-punt.wijs .el-bol { fill: #F2C530; stroke: #C9971A; }
+.el-bord.vast .el-punt.laatst .el-bol { fill: #D33D36; stroke: #D33D36; }
+.el-zij { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.el-tekst { margin: 0; max-width: 220px; text-align: center; font-weight: 800; font-size: clamp(16px, 2.4dvh, 22px); }
+.el-knoppen { display: flex; gap: 10px; }
+.el-knop {
+  display: grid; place-items: center; width: 72px; height: 72px; padding: 0; border: 3px solid var(--line); border-radius: 20px;
+  background: var(--surface); color: var(--ink); box-shadow: 0 4px 0 var(--shade); cursor: pointer; touch-action: manipulation;
+}
+.el-knop svg { width: 34px; height: 34px; }
+.el-knop.geen { border-color: #D33D36; }
+.el-knop.wijs { border-color: #F2C530; background: #FFF4C7; }
+.el-knop:disabled { opacity: .45; cursor: default; }
+.el-eindprent { width: clamp(150px, 26dvh, 240px); height: auto; }
+@media (prefers-reduced-motion: no-preference) {
+  .el-punt.wijs .el-bol { animation: el-puls .6s ease-in-out infinite alternate; transform-box: fill-box; transform-origin: center; }
+  .el-bord.viert { animation: el-hup .45s ease-out 2 alternate; }
+  .el-bord.vast { animation: el-schud .3s ease-in-out 2; }
+}
+@keyframes el-puls { to { scale: 1.35; } }
+@keyframes el-hup { to { scale: 1.03; } }
+@keyframes el-schud { 25% { translate: -5px 0; } 75% { translate: 5px 0; } }
+@media (orientation: portrait) {
+  .el-spel { flex-direction: column; }
+  .el-zij { flex-direction: row; }
+  .el-plek { width: calc(100vw - 32px); height: min(calc(100dvh - 400px), calc(100vw - 32px)); }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .el { gap: 2px; }
+  .el-zij { gap: 6px; }
+  .el-plek { padding: 4px; }
+  .el-knop { width: 52px; height: 52px; }
+  .el-knop svg { width: 26px; height: 26px; }
+  .el-tekst { font-size: 14px; max-width: 170px; }
+}
+
+/* Volle opmaak (tablet, liggende gsm): de vorm krijgt precies de vrije plaats. */
+@media (min-width: 600px) and (min-height: 560px), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .el { flex: 1; min-height: 0; }
+  .el-spel { flex: 1; min-height: 0; }
+  .el-plek { flex: 1; align-self: stretch; width: auto; height: auto; min-width: 0; min-height: 0; container-type: size; }
+  .el-plek .el-bord { width: 100cqw; height: 100cqh; }
+}

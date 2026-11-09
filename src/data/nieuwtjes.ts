@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.139',
+    datum: '2026-11-10',
+    titel: "In één lijn, Het huis in één lijn en De eerste vorst",
+    tekst: "Nieuw verhaal \"Het huis in één lijn\" (het huis van de Sint met stoepkrijt) en nieuwe kleurplaat \"Tekenen met stoepkrijt\", meteen te lezen en in te kleuren. Het spelletje In één lijn kost 25 sterren: teken de prent in één lijn door de bolletjes na elkaar aan te tikken, zonder een lijntje twee keer te tekenen. Makkelijk: kleine vormen, het beginbolletje knippert, met hulp. Middel: het huis van de Sint, een envelop, een pakje met strik, een ster en een bootje, met hulp. Moeilijk: een kerkje, een vis, een molentje en een huis met schoorsteen en deur, zonder hulp en zonder beginbolletje: wie verkeerd begint, loopt vast; klokje en pluimen. In Springland kwam er een vierde level in het Paddenstoelenbos bij: De eerste vorst. Nieuw kinderthema: Vulkaaneiland, te kiezen bij Mijn thema.",
+    verhaal: "Het huis in één lijn",
+    spel: { naam: "In één lijn", prijs: 25 },
+    stukken: ["Figuurtje: Muts met krijtstreepjes (15), Shirt met het huis van de Sint (20), Stoepkrijtjes (15)", "Mijn huis: Hinkelpad (15), Krijthuisje op de stoep (20), Emmertje met stoepkrijt (15)"],
+    open: "Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.",
+  },
+  {
     versie: '0.138',
     datum: '2026-11-09',
     titel: "Raadselprent, De brief met het raadsel en De paddenstoelentrap",

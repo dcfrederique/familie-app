@@ -2,12 +2,16 @@
 .bladzijden { display: flex; flex-direction: column; gap: 14px; }
 .bladzijden.vast { flex: 1; min-height: 0; }
 .bladzijden.vast > .blad { flex: 1; min-height: 0; display: grid; }
-.blader { flex: none; display: flex; align-items: center; justify-content: center; gap: 22px; position: relative; z-index: 2; }
+.blader { flex: none; display: flex; min-width: 0; max-width: 100%; align-items: center; justify-content: center; gap: 22px; position: relative; z-index: 2; }
 .blader-knop { width: 68px; height: 68px; border: 0; background: var(--surface); color: var(--kid); box-shadow: 0 5px 0 var(--shade); }
 .blader-knop:active { transform: translateY(3px); box-shadow: 0 2px 0 var(--shade); }
 .blader-knop:disabled { opacity: .3; box-shadow: none; }
-.blader-stippen { display: flex; gap: 8px; align-items: center; }
-.blader-stippen i { width: 14px; height: 14px; border-radius: 7px; background: var(--line); transition: width .2s; }
+.blader-stippen { display: flex; gap: 8px; align-items: center; min-width: 0; flex: 0 1 auto; }
+.blader-stippen i { width: 14px; height: 14px; flex: 0 1 auto; min-width: 5px; border-radius: 7px; background: var(--line); transition: width .2s; }
+.blader-stippen i.nu { flex-shrink: 0; }
+/* Veel bladzijden: kleinere stippen, zodat de pijlen altijd in beeld blijven. */
+.blader-stippen:has(i:nth-child(12)) { gap: 4px; }
+.blader-stippen:has(i:nth-child(12)) i:not(.nu) { width: 9px; height: 9px; }
 .blader-stippen i.nu { width: 34px; background: var(--kid); }
 
 /* Pijlen naast het raster (naast): de stippen staan eronder, het raster krijgt bijna de volle hoogte. */

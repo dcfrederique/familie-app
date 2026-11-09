@@ -213,6 +213,13 @@ const bijen = wikkel(`<g class="tn-nacht" fill="#FFF3C4"><circle cx="140" cy="36
   <g transform="translate(760 160)"><path d="M0 0V-40" stroke="#43A047" stroke-width="4"/><g fill="#F48FB1"><circle cy="-52" r="10"/><circle cx="12" cy="-42" r="10"/><circle cx="-12" cy="-42" r="10"/><circle cy="-32" r="10"/></g><circle cy="-42" r="8" fill="#F2C530"/></g>
   <g transform="translate(880 150)"><path d="M0 0V-30" stroke="#43A047" stroke-width="4"/><g fill="#FFFFFF"><circle cy="-40" r="8"/><circle cx="9" cy="-32" r="8"/><circle cx="-9" cy="-32" r="8"/><circle cy="-24" r="8"/></g><circle cy="-32" r="6" fill="#F2C530"/></g>`)
 
+const vulkaan = wikkel(`<g class="tn-nacht" fill="#FFF3C4"><circle cx="120" cy="40" r="2.5"/><circle cx="640" cy="28" r="2"/><circle cx="900" cy="46" r="2"/></g>
+  <path d="M0 200C120 186 240 194 360 188C520 180 700 192 1000 186V200Z" fill="#5BBDE8" opacity=".7"/>
+  <g transform="translate(470 190)"><path d="M-170 0L-50 -130H50L170 0Z" fill="#6E4A3A"/><path d="M-50 -130Q0 -116 50 -130L40 -110Q0 -100 -40 -110Z" fill="#E5484D"/><path d="M-30 -112Q-20 -70 -40 -40M20 -110Q30 -80 18 -56" stroke="#F28C28" stroke-width="10" stroke-linecap="round" fill="none"/>
+    <g class="thema-zweef"><circle cx="-10" cy="-158" r="20" fill="#9AA6B5" opacity=".8"/><circle cx="18" cy="-176" r="16" fill="#B8BFCB" opacity=".8"/><circle cx="-24" cy="-190" r="12" fill="#D2D7DE" opacity=".8"/></g></g>
+  <g transform="translate(150 180)"><path d="M0 0V-70" stroke="#8A5A33" stroke-width="8"/><path d="M0 -70C-30 -80 -50 -66 -56 -52M0 -70C30 -84 52 -70 58 -56M0 -70C-14 -96 -40 -98 -50 -90M0 -70C14 -98 42 -98 50 -88" stroke="#43A047" stroke-width="9" stroke-linecap="round" fill="none"/></g>
+  <g transform="translate(820 170)"><ellipse rx="34" ry="14" fill="#8A6A4A"/><path d="M-34 0Q-30 -26 0 -28Q30 -26 34 0" fill="#43A047"/><path d="M-20 -22L-10 -6M0 -28V-8M20 -22L10 -6" stroke="#2E7D32" stroke-width="3"/><circle cx="40" cy="-4" r="9" fill="#9BD7A8"/><circle cx="43" cy="-6" r="2" fill="#33414F"/></g>`)
+
 const vink = (kleur: string) => `<path d="M-16 0L-6 10L16 -12" stroke="${kleur}" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
 
 export const dataThemas: DataThema[] = [
@@ -598,6 +605,22 @@ export const dataThemas: DataThema[] = [
     slot: '<circle r="18" fill="#B8BFCB"/><path d="M0 -10l9 5v10L0 10l-9-5V-5Z" fill="#5B6B7A"/>',
     feest: [ster('#F2C530'), '<path d="M0 -7l6 3.5v7L0 7l-6-3.5v-7Z" fill="#F2C530"/>', '<circle r="6" fill="#F48FB1"/>'], confetti: ['#D99A0E', '#F2C530', '#F48FB1', '#33414F'],
     tegelRadius: '24px', tegelRand: '5px solid var(--kid)',
+  },
+  {
+    sleutel: 'vulkaan', naam: 'Vulkaaneiland', kidKleur: '#D2462E', shirt: 'oranje', verhouding: 1,
+    ondertitels: { spelen: 'Op de lavarots', verhalen: 'Verhalen bij het kampvuur', kleurplaten: 'Lava kleuren', figuurtje: 'De ontdekker', huis: 'Mijn hut op het eiland' },
+    klaarTekst: 'De vulkaan barst van trots!', nogTeDoen: (n) => `Nog ${n} ${n === 1 ? 'vonkje' : 'vonkjes'} tot de vulkaan rommelt`,
+    licht: { bg: '#FFF6F2', surface: '#FFFFFF', soft: '#FBE6DE', ink: '#3A1810', muted: '#7E5446', line: '#F1D4C8', shade: '#DDB2A2', kid: '#D2462E', 'kid-tint': '#FBE1D8', 'on-solid': '#FFFFFF',
+      'tn-grond': '#8A6A4A', 'tn-nacht': 'none', 'tn-banner': 'linear-gradient(#FFE3C4,#FFF6F2)', 'tn-titel': '#3A1810', 'tn-sub': '#2E7D32', 'tn-spoor': '#F1D4C8' },
+    donker: { bg: '#170A07', surface: '#26130D', soft: '#2F1912', ink: '#FCEDE7', muted: '#D6AE9F', line: '#43241A', shade: '#080302', kid: '#FF7A50', 'kid-tint': '#44201A', 'on-solid': '#170A07',
+      'tn-grond': '#3E2A1E', 'tn-nacht': 'inline', 'tn-banner': 'linear-gradient(#080302,#3A150C)', 'tn-titel': '#FFFFFF', 'tn-sub': '#F2C530', 'tn-spoor': '#43241A' },
+    prent: vulkaan,
+    voortgang: { mover: '<path d="M-9 8L-3 -6H3L9 8Z" fill="#6E4A3A"/><path d="M-3 -6Q0 -4 3 -6L2 -2H-2Z" fill="#E5484D"/>', doel: '<circle r="9" fill="#F28C28"/><circle r="5" fill="#F2C530"/>' },
+    nieuw: '<path d="M-10 8L-3 -6H3L10 8Z" fill="#6E4A3A"/><circle cy="-11" r="4" fill="#F28C28"/>',
+    vink: `<circle r="20" fill="#D2462E"/><g transform="scale(.9)">${vink('#fff')}</g>`,
+    slot: '<circle r="18" fill="#B8BFCB"/><path d="M-9 8L-3 -6H3L9 8Z" fill="#5B6B7A"/>',
+    feest: [ster('#F2C530'), '<circle r="6" fill="#F28C28"/>', '<circle r="6" fill="#E5484D"/>'], confetti: ['#D2462E', '#F28C28', '#F2C530', '#43A047'],
+    tegelRadius: '12px', tegelRand: '4px solid var(--kid)',
   },
 ]
 

@@ -82,6 +82,8 @@ export const zin = {
   pijltjesKlaar: "Alle pakjes zijn bezorgd!",
   raadselprentUitleg: "De cijfers zeggen hoeveel vakjes je na elkaar kleurt. Kleur de juiste vakjes, dan zie je de verstopte prent.",
   raadselprentKlaar: "Alle raadsels opgelost!",
+  eenlijnUitleg: "Teken de prent in één lijn. Tik de bolletjes na elkaar aan. Elk lijntje mag maar één keer.",
+  eenlijnKlaar: "Alles in één lijn getekend!",
   roosterUitleg: 'Zet elke kleur één keer in elke rij en in elke kolom.',
   roosterKlaar: 'Alle pakjes staan op hun plaats!',
   torensUitleg: 'Verhuis alle pakjes naar de gouden plank. Een groot pakje mag nooit op een klein pakje.',

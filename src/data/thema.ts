@@ -7,7 +7,7 @@ import { dataThemas } from './dataThemas.ts'
  * 'kasteel': roze prinsessenkasteel met regenboog. 'tuin': lila feeëntuin met bloemen en vlinders.
  * 'voetbal': grasgroen voetbalveld met doel, bal, hoekvlag en stadionlampen.
  */
-export type Banner = 'race' | 'kasteel' | 'tuin' | 'voetbal' | 'ruimte' | 'zee' | 'dier' | 'wolk' | 'bak' | 'kliniek' | 'bouw' | 'circus' | 'speelgoed' | 'trein' | 'muziek' | 'pyjamafeest' | 'piraat' | 'dans' | 'kermis' | 'brandweer' | 'ijsjes' | 'boerderij' | 'speurder' | 'bloemist' | 'eenhoorn' | 'vliegveld' | 'manege' | 'bijen' | null
+export type Banner = 'race' | 'kasteel' | 'tuin' | 'voetbal' | 'ruimte' | 'zee' | 'dier' | 'wolk' | 'bak' | 'kliniek' | 'bouw' | 'circus' | 'speelgoed' | 'trein' | 'muziek' | 'pyjamafeest' | 'piraat' | 'dans' | 'kermis' | 'brandweer' | 'ijsjes' | 'boerderij' | 'speurder' | 'bloemist' | 'eenhoorn' | 'vliegveld' | 'manege' | 'bijen' | 'vulkaan' | null
 
 /** Thema per kleur; een ouder kiest het per kind bij Kinderen. */
 export const bannerVoorKleur: Record<NonNullable<Gebruiker['thema']>, Banner> = {
@@ -18,7 +18,7 @@ export const bannerVoorKleur: Record<NonNullable<Gebruiker['thema']>, Banner> = 
   roze: 'kasteel',
   lila: 'tuin',
   gras: 'voetbal',
-  ruimte: 'ruimte', zee: 'zee', dier: 'dier', wolk: 'wolk', bak: 'bak', kliniek: 'kliniek', bijen: 'bijen', manege: 'manege', vliegveld: 'vliegveld', eenhoorn: 'eenhoorn', bloemist: 'bloemist', speurder: 'speurder', boerderij: 'boerderij', ijsjes: 'ijsjes', brandweer: 'brandweer', kermis: 'kermis', dans: 'dans', piraat: 'piraat', pyjamafeest: 'pyjamafeest', muziek: 'muziek', trein: 'trein', speelgoed: 'speelgoed', circus: 'circus', bouw: 'bouw',
+  ruimte: 'ruimte', zee: 'zee', dier: 'dier', wolk: 'wolk', bak: 'bak', kliniek: 'kliniek', vulkaan: 'vulkaan', bijen: 'bijen', manege: 'manege', vliegveld: 'vliegveld', eenhoorn: 'eenhoorn', bloemist: 'bloemist', speurder: 'speurder', boerderij: 'boerderij', ijsjes: 'ijsjes', brandweer: 'brandweer', kermis: 'kermis', dans: 'dans', piraat: 'piraat', pyjamafeest: 'pyjamafeest', muziek: 'muziek', trein: 'trein', speelgoed: 'speelgoed', circus: 'circus', bouw: 'bouw',
 }
 
 /** Keuzes voor de ouder (Kinderen) en het kind zelf (welkomstpad, Mijn thema), in volgorde. */

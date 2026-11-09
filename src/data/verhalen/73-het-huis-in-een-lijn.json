@@ -1,0 +1,51 @@
+{
+  "nr": 73,
+  "titel": "Het huis in één lijn",
+  "reeks": "kleine-oortjes",
+  "leeftijd": 4,
+  "thema": "De Sint komt eraan, een huisje tekenen in één lijn",
+  "bladzijden": [
+    {
+      "tekst": "Het is koud buiten, maar de zon schijnt. Pip en Mo tekenen met stoepkrijt op de stoep. Mo tekent een zon. Pip tekent een bloem met zes blaadjes. Hun handen worden helemaal geel en blauw van het krijt. Dan komt mama naar buiten met een warme sjaal. \"Zal ik jullie een toverhuisje leren?\" vraagt ze. \"Het huis van de Sint. Je tekent het in één lijn, zonder je krijtje op te tillen.\"",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "pip",
+          "mo",
+          "pipmama"
+        ]
+      }
+    },
+    {
+      "tekst": "Mama zet haar krijtje linksonder. Ze zegt een versje bij elk lijntje: \"Dit. Is. Het. Huis. Van. De. Sint. Klaar!\" Haar krijtje gaat omhoog, schuin, naar het dak, weer naar beneden, kriskras door het huis. Ze tilt het krijtje geen enkele keer op. En geen enkel lijntje tekent ze twee keer. Daar staat een huisje met een dak en een groot kruis erin. Pip en Mo kijken met open mond. \"Hoe deed je dat?\" vraagt Mo.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "pipmama",
+          "pip"
+        ]
+      }
+    },
+    {
+      "tekst": "Nu probeert Pip het. Ze begint bovenaan, bij het dak. Maar halverwege weet ze niet meer waar ze heen moet. Er is nog een lijntje over, maar daar komt ze niet meer bij. \"Oei,\" zegt Pip. Mama lacht. \"Het geheim zit in het begin. Begin onderaan, in een hoekje. Dan lukt het.\" Pip begint opnieuw, linksonder, en zegt het versje zachtjes mee. Dit. Is. Het. Huis. Bij elk woordje één lijntje. Haar tong steekt een beetje uit haar mond, zo goed let ze op.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "pip",
+          "pipmama"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Klaar!\" roept Pip. Het huisje is af, in één lijn! Mo wil het ook. Hij begint in het andere hoekje onderaan, en het lukt hem ook. Zo staat de hele stoep vol huisjes van de Sint. Koek de kat komt kijken en zet haar pootje midden in een huisje. \"Kijk,\" zegt Mo. \"Koek woont er al in.\" Mama lacht. \"Dan tekenen we nog een huisje. Eén voor ons, en één voor de Sint.\"",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "pip",
+          "mo",
+          "koek"
+        ]
+      }
+    }
+  ]
+}
