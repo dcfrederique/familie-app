@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.140',
+    datum: '2026-11-10',
+    titel: "Verf mengen, Drie potjes verf en De mospaadjes",
+    tekst: "Nieuw verhaal \"Drie potjes verf\" (herfst, met drie kleuren een knutselbos verven) en nieuwe kleurplaat \"De schildersezel\", meteen te lezen en in te kleuren. Het spelletje Verf mengen kost 20 sterren: doe druppels rood, geel, blauw en wit in de verfpot tot de verf precies de kleur van het pakje heeft (rood en geel maakt oranje, wit maakt lichter). Terug neemt een druppel weg, de pot kan je leeggooien. Makkelijk: oranje, groen en paars met twee druppels, met hulp. Middel: ook wit en twee tegen één (roze, lila, blauwgroen...), met hulp. Moeilijk: bruin, olijfgroen, perzik, mosgroen... met drie of vier kleuren in de juiste verhouding, tot zes druppels, zonder hulp; klokje en pluimen. In Springland kwam het vijfde en laatste gewone level van het Paddenstoelenbos erbij: De mospaadjes. Nieuw kinderthema: Kunstatelier, te kiezen bij Mijn thema.",
+    verhaal: "Drie potjes verf",
+    spel: { naam: "Verf mengen", prijs: 20 },
+    stukken: ["Figuurtje: Pet met verfvlekken (15), Schildersschort (20), Verfpalet met penseel (15)", "Mijn huis: Rij verfpotjes rood, geel en blauw (15), Knutselbos in een doos (25), Regenboog van verfstrepen op de muur (20)"],
+    open: "Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.",
+  },
+  {
     versie: '0.139',
     datum: '2026-11-10',
     titel: "In één lijn, Het huis in één lijn en De eerste vorst",

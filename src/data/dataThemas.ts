@@ -220,6 +220,14 @@ const vulkaan = wikkel(`<g class="tn-nacht" fill="#FFF3C4"><circle cx="120" cy="
   <g transform="translate(150 180)"><path d="M0 0V-70" stroke="#8A5A33" stroke-width="8"/><path d="M0 -70C-30 -80 -50 -66 -56 -52M0 -70C30 -84 52 -70 58 -56M0 -70C-14 -96 -40 -98 -50 -90M0 -70C14 -98 42 -98 50 -88" stroke="#43A047" stroke-width="9" stroke-linecap="round" fill="none"/></g>
   <g transform="translate(820 170)"><ellipse rx="34" ry="14" fill="#8A6A4A"/><path d="M-34 0Q-30 -26 0 -28Q30 -26 34 0" fill="#43A047"/><path d="M-20 -22L-10 -6M0 -28V-8M20 -22L10 -6" stroke="#2E7D32" stroke-width="3"/><circle cx="40" cy="-4" r="9" fill="#9BD7A8"/><circle cx="43" cy="-6" r="2" fill="#33414F"/></g>`)
 
+const atelier = wikkel(`<g class="tn-nacht" fill="#FFF3C4"><circle cx="110" cy="36" r="2.5"/><circle cx="560" cy="24" r="2"/><circle cx="930" cy="44" r="2"/></g>
+  <path d="M0 200C160 192 320 196 500 192C680 188 840 196 1000 192V200Z" fill="#C9A27A" opacity=".8"/>
+  <g transform="translate(480 192)"><path d="M-46 0L-10 -150M46 0L10 -150M0 -150V0" stroke="#8A5A33" stroke-width="7" stroke-linecap="round"/><rect x="-62" y="-140" width="124" height="96" rx="4" fill="#FFFFFF" stroke="#8A5A33" stroke-width="5"/>
+    <path d="M-50 -70C-30 -110 0 -60 20 -96C34 -118 46 -100 50 -90" stroke="#E5484D" stroke-width="10" stroke-linecap="round" fill="none"/><circle cx="-26" cy="-112" r="12" fill="#F2C530"/><path d="M-50 -56H50" stroke="#2F80C9" stroke-width="8" stroke-linecap="round"/></g>
+  <g transform="translate(200 182)"><ellipse rx="46" ry="26" fill="#E8C9A0"/><circle cx="20" cy="4" r="9" fill="#FFF6F2"/><circle cx="-24" cy="-6" r="8" fill="#E5484D"/><circle cx="-4" cy="-14" r="8" fill="#F2C530"/><circle cx="16" cy="-14" r="7" fill="#2F80C9"/><circle cx="-26" cy="12" r="7" fill="#43A047"/></g>
+  <g transform="translate(790 186)" class="thema-zweef"><rect x="-8" y="-70" width="16" height="50" rx="3" fill="#C98A4B"/><path d="M-8 -20H8L4 0H-4Z" fill="#9AA6B5"/><path d="M-4 0Q0 14 4 0Z" fill="#8E5BD1"/></g>
+  <g transform="translate(860 186)"><rect x="-22" y="-34" width="44" height="34" rx="6" fill="#2F80C9"/><rect x="-22" y="-34" width="44" height="10" rx="5" fill="#E5484D"/></g>`)
+
 const vink = (kleur: string) => `<path d="M-16 0L-6 10L16 -12" stroke="${kleur}" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
 
 export const dataThemas: DataThema[] = [
@@ -621,6 +629,22 @@ export const dataThemas: DataThema[] = [
     slot: '<circle r="18" fill="#B8BFCB"/><path d="M-9 8L-3 -6H3L9 8Z" fill="#5B6B7A"/>',
     feest: [ster('#F2C530'), '<circle r="6" fill="#F28C28"/>', '<circle r="6" fill="#E5484D"/>'], confetti: ['#D2462E', '#F28C28', '#F2C530', '#43A047'],
     tegelRadius: '12px', tegelRand: '4px solid var(--kid)',
+  },
+  {
+    sleutel: 'atelier', naam: 'Kunstatelier', kidKleur: '#8E5BD1', shirt: 'paars', verhouding: 1,
+    ondertitels: { spelen: 'Aan de schildersezel', verhalen: 'Verhalen tussen de verf', kleurplaten: 'Zelf schilderen', figuurtje: 'De kunstenaar', huis: 'Mijn atelier' },
+    klaarTekst: 'Een echt kunstwerk!', nogTeDoen: (n) => `Nog ${n} ${n === 1 ? 'verfvlek' : 'verfvlekken'} tot het schilderij klaar is`,
+    licht: { bg: '#FBF7FF', surface: '#FFFFFF', soft: '#F0E8FA', ink: '#2A1A3E', muted: '#6E5A86', line: '#E2D6F2', shade: '#C7B3E0', kid: '#8E5BD1', 'kid-tint': '#ECE0FA', 'on-solid': '#FFFFFF',
+      'tn-grond': '#C9A27A', 'tn-nacht': 'none', 'tn-banner': 'linear-gradient(#FFE8F2,#FBF7FF)', 'tn-titel': '#2A1A3E', 'tn-sub': '#C2185B', 'tn-spoor': '#E2D6F2' },
+    donker: { bg: '#120B1C', surface: '#1E142C', soft: '#271A38', ink: '#F4EEFC', muted: '#BBA8D6', line: '#352549', shade: '#06030A', kid: '#B48CF0', 'kid-tint': '#33234D', 'on-solid': '#120B1C',
+      'tn-grond': '#4A3826', 'tn-nacht': 'inline', 'tn-banner': 'linear-gradient(#06030A,#2A1640)', 'tn-titel': '#FFFFFF', 'tn-sub': '#F2C530', 'tn-spoor': '#352549' },
+    prent: atelier,
+    voortgang: { mover: '<rect x="-3" y="-12" width="6" height="16" rx="2" fill="#C98A4B"/><path d="M-3 4H3L1 10H-1Z" fill="#E5484D"/>', doel: '<ellipse rx="10" ry="7" fill="#E8C9A0"/><circle cx="-3" cy="-1" r="2.5" fill="#E5484D"/><circle cx="3" cy="1" r="2.5" fill="#2F80C9"/>' },
+    nieuw: '<ellipse rx="10" ry="7" fill="#E8C9A0"/><circle cx="-4" r="3" fill="#E5484D"/><circle cx="3" cy="-2" r="3" fill="#F2C530"/>',
+    vink: `<circle r="20" fill="#8E5BD1"/><g transform="scale(.9)">${vink('#fff')}</g>`,
+    slot: '<circle r="18" fill="#B8BFCB"/><ellipse rx="9" ry="6" fill="#5B6B7A"/>',
+    feest: [ster('#F2C530'), '<circle r="6" fill="#E5484D"/>', '<circle r="6" fill="#2F80C9"/>'], confetti: ['#8E5BD1', '#E5484D', '#F2C530', '#2F80C9', '#43A047'],
+    tegelRadius: '18px', tegelRand: '4px solid var(--kid)',
   },
 ]
 

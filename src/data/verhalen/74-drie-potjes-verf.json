@@ -1,0 +1,80 @@
+{
+  "nr": 74,
+  "titel": "Drie potjes verf",
+  "reeks": "avonturiers",
+  "leeftijd": 8,
+  "thema": "Herfst, verf mengen voor een knutselbos",
+  "bladzijden": [
+    {
+      "tekst": "Noor heeft een groot plan. Van een schoenendoos wil ze een herfstbos maken, met paddenstoelen van eierdozen, een eekhoorn van klei en een beekje van zilverpapier. Ze zet alles klaar op de keukentafel. Maar als ze de verfdoos openmaakt, schrikt ze. \"Er zijn maar drie kleuren over,\" zegt ze. \"Rood, geel en blauw. En een tube wit.\"",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "noor",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "Opa kijkt over haar schouder. \"Dan heb je alles wat je nodig hebt,\" zegt hij. Noor fronst. \"Ik wil bruin voor de boomstammen. En oranje voor de bladeren. En mosgroen.\" Opa schuift een wit bordje naar haar toe. \"Met die drie kan je bijna elke kleur maken. Je moet alleen weten hoeveel van elk.\"",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "opa",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "Eerst oranje. Opa laat Noor één druppel rood en één druppel geel op het bordje doen. Ze roert met haar penseel. De rode en de gele draaien om elkaar heen, en dan is het oranje, warm als een pompoen. \"Nu met twee druppels geel,\" zegt opa. Het oranje wordt lichter, bijna als een mandarijn.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "noor",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan komt kijken en wil ook. Hij doet een druppel van elke kleur bij elkaar: rood, geel én blauw. Hij roert en roert. \"Gatver,\" zegt hij. \"Het lijkt modder.\" Opa lacht. \"Dat is geen modder. Dat is bruin. Precies wat Noor nodig heeft voor haar boomstammen.\" Daan kijkt trots naar zijn bruine klodder.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "daan",
+          "opa",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "Het mosgroen is het moeilijkst. Noor probeert geel en blauw, maar dat geeft een fel grasgroen. \"Te vrolijk,\" zegt ze. Ze doet er een druppel rood bij. Nu is het donker, bijna bruin. Te veel! Ze begint opnieuw, met drie druppels geel, twee blauw en maar één heel klein druppeltje rood.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "Ze houdt het bordje naast een echt stukje mos dat ze uit de tuin heeft meegebracht. Het is bijna dezelfde kleur. \"Je moet de druppels tellen,\" zegt ze tegen Daan. \"Anders vind je de kleur nooit meer terug.\" Ze schrijft het op een briefje: mosgroen, drie geel, twee blauw, één rood.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "noor",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Die avond staat het herfstbos te drogen op de vensterbank. De boomstammen zijn bruin, de bladeren oranje en geel, het mos zacht groen. Op een paddenstoel zit een eekhoorn van klei, met een staart in roestbruin: twee rood, één geel, één blauw. Opa zet zijn bril recht. \"Een echte schilderes,\" zegt hij. Noor glimlacht en veegt een vlek verf van haar neus.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "noor",
+          "opa",
+          "daan"
+        ]
+      }
+    }
+  ]
+}

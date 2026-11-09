@@ -84,6 +84,8 @@ export const zin = {
   raadselprentKlaar: "Alle raadsels opgelost!",
   eenlijnUitleg: "Teken de prent in één lijn. Tik de bolletjes na elkaar aan. Elk lijntje mag maar één keer.",
   eenlijnKlaar: "Alles in één lijn getekend!",
+  verfmengenUitleg: "Kijk naar de kleur van het pakje. Doe druppels verf in de pot tot de verf precies dezelfde kleur heeft.",
+  verfmengenKlaar: "Alle pakjes zijn geverfd!",
   roosterUitleg: 'Zet elke kleur één keer in elke rij en in elke kolom.',
   roosterKlaar: 'Alle pakjes staan op hun plaats!',
   torensUitleg: 'Verhuis alle pakjes naar de gouden plank. Een groot pakje mag nooit op een klein pakje.',

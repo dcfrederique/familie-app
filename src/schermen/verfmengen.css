@@ -1,0 +1,62 @@
+/* Verf mengen: het voorbeeldpakje, de verfpot en de verftubes naast elkaar (staand onder elkaar). */
+.vm { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 1.4dvh, 14px); width: 100%; }
+.vm-balk { display: flex; align-items: center; justify-content: center; gap: 18px; font-weight: 800; }
+.vm-spel { display: flex; align-items: center; justify-content: center; gap: clamp(12px, 3vw, 40px); width: 100%; }
+.vm-doel { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.vm-pakje { width: clamp(110px, 24dvh, 220px); padding: 10px; border-radius: 24px; background: var(--soft); }
+.vm-pakje svg, .vm-pot svg { display: block; width: 100%; height: auto; }
+.vm-naam { font-weight: 800; font-size: clamp(16px, 2.6dvh, 24px); }
+.vm-pot { width: clamp(150px, 36dvh, 320px); }
+.vm-zij { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.vm-tekst { margin: 0; max-width: 220px; text-align: center; font-weight: 800; font-size: clamp(15px, 2.3dvh, 21px); }
+.vm-tubes { display: grid; grid-template-columns: repeat(2, 76px); gap: 8px; }
+.vm-tube {
+  display: grid; place-items: center; width: 76px; height: 76px; padding: 0; border: 3px solid var(--line); border-radius: 50%;
+  background: var(--surface); box-shadow: 0 4px 0 var(--shade); cursor: pointer; touch-action: manipulation;
+}
+.vm-tube svg { width: 48px; height: 48px; }
+.vm-tube.tip { border-color: #43A047; background: #E3F4E4; }
+.vm-tube:disabled { opacity: .45; cursor: default; }
+.vm-knoppen { display: flex; gap: 8px; }
+.vm-knop {
+  display: grid; place-items: center; width: 64px; height: 64px; padding: 0; border: 3px solid var(--line); border-radius: 18px;
+  background: var(--surface); color: var(--ink); box-shadow: 0 4px 0 var(--shade); cursor: pointer; touch-action: manipulation;
+}
+.vm-knop svg { width: 30px; height: 30px; }
+.vm-knop.geen { border-color: #D33D36; }
+.vm-knop.wijs { border-color: #F2C530; background: #FFF4C7; }
+.vm-knop:disabled { opacity: .45; cursor: default; }
+.vm-eindprent { display: flex; gap: 10px; }
+.vm-eindprent svg { width: clamp(60px, 12dvh, 100px); height: auto; }
+@media (prefers-reduced-motion: no-preference) {
+  .vm-verf { transition: fill .35s; }
+  .vm-tube:active { scale: .92; }
+  .vm-tube.tip { animation: vm-puls .7s ease-in-out infinite alternate; }
+  .vm-pot.viert, .vm-pakje.klaar { animation: vm-hup .45s ease-out 2 alternate; }
+  .vm-pot.mis { animation: vm-schud .3s ease-in-out 2; }
+}
+@keyframes vm-puls { to { scale: 1.08; } }
+@keyframes vm-hup { to { scale: 1.06; } }
+@keyframes vm-schud { 25% { translate: -5px 0; } 75% { translate: 5px 0; } }
+@media (orientation: portrait) {
+  .vm-spel { flex-wrap: wrap; }
+  .vm-zij { flex-basis: 100%; }
+  .vm-tubes { grid-template-columns: repeat(4, 76px); }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .vm { gap: 2px; }
+  .vm-pakje { width: 110px; padding: 6px; }
+  .vm-pot { width: 150px; }
+  .vm-zij { gap: 4px; }
+  .vm-tubes { gap: 4px; grid-template-columns: repeat(2, 56px); }
+  .vm-tube { width: 56px; height: 56px; }
+  .vm-tube svg { width: 34px; height: 34px; }
+  .vm-knop { width: 48px; height: 48px; }
+  .vm-knop svg { width: 24px; height: 24px; }
+  .vm-tekst { font-size: 13px; max-width: 170px; }
+  .vm-naam { font-size: 15px; }
+}
+@media (min-width: 600px) and (min-height: 560px), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .vm { flex: 1; min-height: 0; }
+  .vm-spel { flex: 1; min-height: 0; }
+}
