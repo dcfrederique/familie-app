@@ -28,7 +28,7 @@ import './wereld.css'
 // De wereld (docs/wereld.md): de straat van bovenaf. Het figuurtje loopt met de joystick of naar een tik toe;
 // de deur van een gebouw opent het bestaande scherm. Het startscherm blijft de basis en is één knop weg.
 
-const PRENT: Record<string, string> = { springland: '🦘 ⭐', gebied: '🗺 ✨', winkel: '🛍 ⭐', spellen: '🎮 ⭐', bouw: '🚧 ❓', huis: '🏠 ✨', bladeren: '🍂 ⭐', ketting: '🌰 ⭐', schoen: '👞 ⭐', weg: '🎁 ⭐', lichtjes: '🎄 ⭐', schaduw: '⛄ ⭐', verkleed: '🎭 ⭐', doolhof: '🌳 ⭐', winterslaap: '🐻 🌙', kastanjes: '🌰 ⭐', pakjesschuiven: '🎁 ⭐', stippen: '🏮 ⭐', inpakken: '🎁 ✂️', daken: '🐴 ⭐', delen: '🍊 ⭐', lantaarns: '🏮 ✨', kistslot: '🗝️ ⭐', buizen: '☕ ⭐', verschillen: '🔍 ⭐', vieropeenrij: '🐿️ ⭐', weegschaal: '⚖️ ⭐', torens: '🎁 ⭐', rooster: '🔲 ⭐', piramide: '🎁 ⭐', patroon: '🔁 ⭐', kalaha: '🥜 ⭐', spiegel: '🦋 ⭐', slingers: '🎉 ⭐', bruggen: '🌉 ⭐', schuif: '🧩 ⭐', vlek: '🎨 ⭐', hekjes: '🐿️ ⭐', zoeken: '🍪 ⭐', geheim: '🖼️ ⭐', slot: '🔒 ⭐' }
+const PRENT: Record<string, string> = { springland: '🦘 ⭐', gebied: '🗺 ✨', winkel: '🛍 ⭐', spellen: '🎮 ⭐', bouw: '🚧 ❓', huis: '🏠 ✨', bladeren: '🍂 ⭐', ketting: '🌰 ⭐', schoen: '👞 ⭐', weg: '🎁 ⭐', lichtjes: '🎄 ⭐', schaduw: '⛄ ⭐', verkleed: '🎭 ⭐', doolhof: '🌳 ⭐', winterslaap: '🐻 🌙', kastanjes: '🌰 ⭐', pakjesschuiven: '🎁 ⭐', stippen: '🏮 ⭐', inpakken: '🎁 ✂️', daken: '🐴 ⭐', delen: '🍊 ⭐', lantaarns: '🏮 ✨', kistslot: '🗝️ ⭐', buizen: '☕ ⭐', verschillen: '🔍 ⭐', vieropeenrij: '🐿️ ⭐', weegschaal: '⚖️ ⭐', torens: '🎁 ⭐', rooster: '🔲 ⭐', lampionlied: '🏮 ⭐', piramide: '🎁 ⭐', patroon: '🔁 ⭐', kalaha: '🥜 ⭐', spiegel: '🦋 ⭐', slingers: '🎉 ⭐', bruggen: '🌉 ⭐', schuif: '🧩 ⭐', vlek: '🎨 ⭐', hekjes: '🐿️ ⭐', zoeken: '🍪 ⭐', geheim: '🖼️ ⭐', slot: '🔒 ⭐' }
 
 const minderBeweging = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches
 

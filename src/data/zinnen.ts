@@ -68,6 +68,8 @@ export const zin = {
   patroonKlaar: "Jij ziet elke regel!",
   piramideUitleg: "Op elk pakje staat hoeveel de twee pakjes eronder samen zijn. Tik op een leeg pakje en kies het goede getal.",
   piramideKlaar: "Jij bouwt elke toren!",
+  lampionliedUitleg: "Luister goed. De lampionnen zingen een liedje. Tik daarna de lampionnen aan in dezelfde volgorde. Elke keer komt er een toontje bij.",
+  lampionliedKlaar: "Wat zing jij mooi!",
   roosterUitleg: 'Zet elke kleur één keer in elke rij en in elke kolom.',
   roosterKlaar: 'Alle pakjes staan op hun plaats!',
   torensUitleg: 'Verhuis alle pakjes naar de gouden plank. Een groot pakje mag nooit op een klein pakje.',

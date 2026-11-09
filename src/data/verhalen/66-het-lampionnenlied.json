@@ -1,0 +1,107 @@
+{
+  "nr": 66,
+  "titel": "Het lampionnenlied",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Sint-Maarten, luisteren en nazingen",
+  "bladzijden": [
+    {
+      "tekst": "Het is elf november. Vanavond is de lampionnenstoet voor Sint-Maarten. Noor heeft een lampion gemaakt van een oude kaasdoos en rood papier. Daan heeft een lampion in de vorm van een maan. \"Wie in de stoet loopt, zingt het liedje,\" zegt mama.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "daan",
+          "lampion"
+        ]
+      }
+    },
+    {
+      "tekst": "Maar Daan kent het liedje niet. \"Het is zo lang,\" zucht hij. \"Ik vergeet altijd hoe het verder gaat.\" Noor denkt na. \"Weet je wat? We leren het samen. Stukje per stukje. Ik zing iets voor, en jij zingt het na.\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor zingt drie tonen: \"Sint, Sint, Maar...\" Daan luistert goed. Dan zingt hij ze na. \"Sint, Sint, Maar...\" \"Goed zo,\" zegt Noor. \"Nu komt er één toon bij.\" Ze zingt vier tonen. Daan zingt ze na. Het klopt!",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Bij de vijfde toon gaat het mis. Daan zingt te hoog. Hij moet zelf lachen. \"Geeft niet,\" zegt Noor. \"Nog eens luisteren.\" Ze zingt het stukje nog een keer, heel traag. Nu lukt het wel. Tijs de hond kwispelt mee op de maat.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "daan",
+          "hond"
+        ]
+      }
+    },
+    {
+      "tekst": "Zo gaan ze verder. Telkens één toon erbij. Na een tijdje zingt Daan het hele begin alleen. \"Het is net een trap,\" zegt hij. \"Elke keer één treetje hoger.\" Noor knikt. \"En als je valt, begin je gewoon onderaan opnieuw.\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "Als het donker wordt, steken papa en mama de lampjes in de lampionnen aan. Buiten is het koud. De sterren schitteren al. In de straat staan overal kinderen met lichtjes. Rood, geel, groen en blauw. Het lijkt wel een rij vuurvliegjes.",
+      "prent": {
+        "decor": "nacht",
+        "figuren": [
+          "noor",
+          "daan",
+          "lampion",
+          "sterren"
+        ]
+      }
+    },
+    {
+      "tekst": "De stoet vertrekt. Vooraan speelt een man op een trompet. De kinderen zingen. Daan zingt eerst heel stil. Dan wat luider. Hij kent elke toon! Noor knipoogt naar hem en houdt haar lampion hoog.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "noor",
+          "daan",
+          "lampion"
+        ]
+      }
+    },
+    {
+      "tekst": "Aan het einde van de straat brandt een groot vuur. Er zijn warme chocomelk en mandarijnen. De buurvrouw vraagt: \"Wie zingt er nog eens voor mij?\" Daan steekt zijn hand op. Hij zingt het hele liedje, van begin tot einde, zonder fout.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "daan",
+          "buurvrouw",
+          "lampion"
+        ]
+      }
+    },
+    {
+      "tekst": "Iedereen klapt. Daan wordt een beetje rood, net als zijn lampion. Op de weg naar huis zingt hij het nog drie keer. \"Morgen leer ik jou een nieuw liedje,\" zegt hij tegen Noor. \"Ik zing voor, en jij zingt na.\"",
+      "prent": {
+        "decor": "nacht",
+        "figuren": [
+          "noor",
+          "daan",
+          "lampion",
+          "maan"
+        ]
+      }
+    }
+  ]
+}

@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.130',
+    datum: '2026-11-09',
+    titel: "Lampionnenlied, Het lampionnenlied en een pittig level in Speelgoedland",
+    tekst: "Nieuw verhaal \"Het lampionnenlied\" (Sint-Maarten, nazingen) en nieuwe kleurplaat \"De lampionnenstoet\", meteen te lezen en in te kleuren. Het spelletje Lampionnenlied kost 25 sterren: de lampionnen lichten op en zingen elk hun eigen toon; tik ze daarna aan in dezelfde volgorde, en telkens komt er een toon bij. Een fout kost niets: het liedje speelt gewoon nog eens. Makkelijk: drie lampionnen, tot vijf tonen. Middel: vier lampionnen, tot zeven tonen. Moeilijk: zes lampionnen, tot tien tonen, sneller, en om de beurt achterstevoren nazingen; pluimen voor elk liedje zonder fout. In Springland kwam het derde level van Speelgoedland erbij: De knikkerbaan, een pittig level. Nieuw kinderthema: Boerderij, te kiezen bij Mijn thema.",
+    verhaal: "Het lampionnenlied",
+    spel: { naam: "Lampionnenlied", prijs: 25 },
+    stukken: ["Figuurtje: Koptelefoon (15), Shirt met lampionnen (20), Trompetje (15)", "Mijn huis: Vuurtje voor Sint-Maarten (20), Windbelletjes (15), Grote trommel (20)"],
+    open: "Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.",
+  },
+  {
     versie: '0.129',
     datum: '2026-11-09',
     titel: "Rekenpiramide, De koekentoren en het knikkerpad in Speelgoedland",

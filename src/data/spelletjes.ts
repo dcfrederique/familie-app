@@ -487,7 +487,7 @@ export function startNiveaus(kind: Gebruiker, kinderen: Gebruiker[]): { memory: 
   return oudsteLezer?.id === kind.id ? { memory: 'groot', rekenen: 'tot100' } : { memory: 'middel', rekenen: 'tot20' }
 }
 
-export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'weegschaal' | 'torens' | 'rooster' | 'piramide' | 'patroon' | 'kalaha' | 'spiegel' | 'slingers' | 'bruggen' | 'schuif' | 'vlek' | 'hekjes' | 'zoeken' | 'geheim' | 'springen'
+export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'weegschaal' | 'torens' | 'rooster' | 'lampionlied' | 'piramide' | 'patroon' | 'kalaha' | 'spiegel' | 'slingers' | 'bruggen' | 'schuif' | 'vlek' | 'hekjes' | 'zoeken' | 'geheim' | 'springen'
 
 export interface SpelInfo {
   sleutel: SpelSleutel
@@ -549,6 +549,8 @@ export const spelMenu: SpelInfo[] = [
     icoon: 'M12 2v3M8 6h8l1 13H7zM12 6v13M7.5 12h9' },
   { sleutel: 'rooster', naam: 'Kleurenrooster', uitleg: 'Zet elke kleur één keer in elke rij en kolom', prijs: 25,
     icoon: 'M4 4h16v16H4zM4 9.3h16M4 14.7h16M9.3 4v16M14.7 4v16' },
+  { sleutel: 'lampionlied', naam: "Lampionnenlied", uitleg: "Luister naar de lampionnen en zing het na", prijs: 25,
+    icoon: 'M7 3v3M17 3v3M7 6a4 4 0 1 0 .01 0M17 6a4 4 0 1 0 .01 0M2 3h20M5 18l-1 3M9 18l1 3M15 18l-1 3M19 18l1 3' },
   { sleutel: 'piramide', naam: "Rekenpiramide", uitleg: "Twee pakjes samen maken het pakje erboven", prijs: 25,
     icoon: 'M10 3h4v4h-4zM7 9h4v4H7zM13 9h4v4h-4zM4 15h4v4H4zM10 15h4v4h-4zM16 15h4v4h-4z' },
   { sleutel: 'patroon', naam: "Wat komt erna?", uitleg: "Kijk naar de rij en kies wat erna komt", prijs: 20,

@@ -164,6 +164,13 @@ const ijsjes = wikkel(`<g class="tn-nacht" fill="#FFF3C4"><circle cx="120" cy="4
   <g transform="translate(210 150)"><path d="M-14 0L0 44L14 0Z" fill="#E6B26A"/><circle cx="0" cy="-6" r="15" fill="#8B5E3C"/><circle cx="-4" cy="-12" r="3" fill="#FFF"/></g>
   <g transform="translate(860 160)"><rect x="-26" y="-20" width="52" height="40" rx="8" fill="#FFFFFF" stroke="#F2B8CF" stroke-width="3"/><circle cx="-10" cy="-26" r="12" fill="#FFF3C4"/><circle cx="10" cy="-26" r="12" fill="#F48FB1"/><path d="M18 -36L28 -60" stroke="#E5484D" stroke-width="4" stroke-linecap="round"/></g>`)
 
+const boerderij = wikkel(`<g class="tn-nacht" fill="#FFF3C4"><circle cx="120" cy="40" r="2.5"/><circle cx="880" cy="50" r="2"/><circle cx="600" cy="26" r="2"/></g>
+  <g transform="translate(330 66)"><path d="M0 50L110 -6L220 50Z" fill="#8E2A1F"/><rect x="12" y="50" width="196" height="104" fill="#C0392B"/><rect x="80" y="82" width="60" height="72" fill="#F4E3C3"/><path d="M80 82L140 154M140 82L80 154" stroke="#C0392B" stroke-width="6"/><circle cx="110" cy="30" r="12" fill="#F4E3C3"/><path d="M12 66H208" stroke="#F4E3C3" stroke-width="5"/></g>
+  <g transform="translate(640 150)"><rect x="0" y="0" width="160" height="6" fill="#C9A27A"/><rect x="0" y="22" width="160" height="6" fill="#C9A27A"/><rect x="6" y="-8" width="8" height="48" fill="#A57A50"/><rect x="76" y="-8" width="8" height="48" fill="#A57A50"/><rect x="146" y="-8" width="8" height="48" fill="#A57A50"/></g>
+  <g transform="translate(700 120)" class="thema-zweef"><ellipse cx="0" cy="0" rx="34" ry="24" fill="#FFFFFF"/><circle cx="-26" cy="-12" r="14" fill="#FFFFFF"/><circle cx="-30" cy="-14" r="2.5" fill="#33414F"/><path d="M-40 -10L-48 -8L-40 -5Z" fill="#F28C28"/><path d="M-26 -26q4 -6 8 0q4 -6 8 0" fill="#E5484D"/><path d="M-2 22V32M10 22V32" stroke="#F28C28" stroke-width="3"/></g>
+  <g transform="translate(830 128)"><circle r="10" fill="#F2C530"/><circle cx="-4" cy="-2" r="1.6" fill="#33414F"/><path d="M-12 0L-16 2L-12 3Z" fill="#F28C28"/></g>
+  <g transform="translate(200 150)"><rect x="-30" y="-10" width="60" height="30" rx="14" fill="#F4A6B8"/><circle cx="-30" cy="-2" r="14" fill="#F4A6B8"/><ellipse cx="-38" cy="0" rx="6" ry="5" fill="#E68AA0"/><circle cx="-26" cy="-8" r="2" fill="#33414F"/><path d="M-22 -16L-16 -24L-12 -14Z" fill="#E68AA0"/><path d="M30 0q8 -6 4 4q-4 6 4 2" stroke="#E68AA0" stroke-width="2.5" fill="none"/><path d="M-18 20V30M18 20V30" stroke="#E68AA0" stroke-width="6"/></g>`)
+
 const vink = (kleur: string) => `<path d="M-16 0L-6 10L16 -12" stroke="${kleur}" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
 
 export const dataThemas: DataThema[] = [
@@ -437,6 +444,22 @@ export const dataThemas: DataThema[] = [
     slot: '<circle r="18" fill="#B8BFCB"/><path d="M-6 -2L0 12L6 -2Z" fill="#8E97A6"/><circle cy="-6" r="7" fill="#5B6B7A"/>',
     feest: [ster('#F2C530'), '<circle r="7" fill="#F48FB1"/>', '<circle r="6" fill="#9BD7A8"/>'], confetti: ['#D6487E', '#F2C530', '#9BD7A8', '#FFF3C4'],
     tegelRadius: '26px', tegelRand: '5px dotted var(--kid)',
+  },
+  {
+    sleutel: 'boerderij', naam: 'Boerderij', kidKleur: '#B8432F', shirt: 'oranje', verhouding: 1,
+    ondertitels: { spelen: 'Op het erf', verhalen: 'Lezen in het hooi', kleurplaten: 'Het kippenhok verven', figuurtje: 'In mijn laarzen', huis: 'Mijn eigen boerderijtje' },
+    klaarTekst: 'Alle dieren zijn blij!', nogTeDoen: (n) => `Nog ${n} ${n === 1 ? 'eitje' : 'eitjes'} rapen`,
+    licht: { bg: '#F8F5EC', surface: '#FFFFFF', soft: '#EFE6D2', ink: '#3A2416', muted: '#7D6450', line: '#E6D9BE', shade: '#D4C29E', kid: '#B8432F', 'kid-tint': '#F6E0D6', 'on-solid': '#FFFFFF',
+      'tn-grond': '#8CC86A', 'tn-nacht': 'none', 'tn-banner': 'linear-gradient(#D6EEFA,#F8F5EC)', 'tn-titel': '#3A2416', 'tn-sub': '#9B3626', 'tn-spoor': '#E6D9BE' },
+    donker: { bg: '#15110B', surface: '#251D14', soft: '#2F2519', ink: '#F7EEDF', muted: '#CDB596', line: '#3D3021', shade: '#070503', kid: '#E8826A', 'kid-tint': '#46261C', 'on-solid': '#15110B',
+      'tn-grond': '#2F4A26', 'tn-nacht': 'inline', 'tn-banner': 'linear-gradient(#08060A,#2A2016)', 'tn-titel': '#FFFFFF', 'tn-sub': '#F2C530', 'tn-spoor': '#3D3021' },
+    prent: boerderij,
+    voortgang: { mover: '<circle r="9" fill="#F2C530"/><circle cx="-3" cy="-2" r="1.6" fill="#33414F"/><path d="M-10 0L-14 2L-10 3Z" fill="#F28C28"/>', doel: '<ellipse rx="10" ry="13" fill="#FFF3C4" stroke="#C9A27A" stroke-width="2"/>' },
+    nieuw: '<ellipse rx="10" ry="13" fill="#FFF3C4" stroke="#C9A27A" stroke-width="2"/><path d="M-6 -2l3 3 3 -3 3 3 3 -3" stroke="#C9A27A" stroke-width="1.5" fill="none"/>',
+    vink: `<circle r="20" fill="#B8432F"/><g transform="scale(.9)">${vink('#fff')}</g>`,
+    slot: '<circle r="18" fill="#B8BFCB"/><path d="M-10 8V-4L0 -12L10 -4V8Z" fill="#5B6B7A"/>',
+    feest: [ster('#F2C530'), '<ellipse rx="6" ry="8" fill="#FFF3C4"/>', '<circle r="6" fill="#F4A6B8"/>'], confetti: ['#B8432F', '#F2C530', '#8CC86A', '#FFF3C4'],
+    tegelRadius: '14px', tegelRand: '6px solid var(--kid)',
   },
 ]
 

@@ -1,0 +1,40 @@
+/* Lampionnenlied: de lampionnen aan een stok in de avondlucht; ze lichten op en zingen. De SVG schaalt mee. */
+.ll { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 1.4dvh, 14px); width: 100%; }
+.ll-balk { display: flex; align-items: center; justify-content: center; gap: 18px; font-weight: 800; flex-wrap: wrap; }
+.ll-fase { display: flex; align-items: center; gap: 8px; min-height: 44px; padding: 4px 16px 4px 8px; border-radius: 999px; background: var(--surface); box-shadow: 0 3px 0 var(--shade); color: var(--kid); font-size: clamp(16px, 2.4dvh, 22px); }
+.ll-fase.oei { color: #D33D36; }
+.ll-fase.goed { color: #2E7D32; }
+.ll-faseicoon { width: 36px; height: 36px; }
+.ll-noten { font-size: 20px; }
+.ll-plek { display: grid; place-items: center; width: min(92vw, calc((100dvh - 250px) * 2.6)); height: calc(100dvh - 250px); }
+.ll-lucht {
+  max-width: 100%; max-height: 100%; width: auto; height: 100%; touch-action: manipulation; user-select: none;
+  border-radius: 28px; background: linear-gradient(#26305E, #4B3F7A 70%, #6A4E86);
+}
+.ll-lampion.tikbaar { cursor: pointer; }
+.ll-gloed { opacity: .45; filter: blur(8px); }
+.ll-eindprent { width: clamp(200px, 34dvh, 340px); height: auto; }
+@media (prefers-reduced-motion: no-preference) {
+  .ll-lampion > g { transform-box: fill-box; transform-origin: 50% 0; animation: ll-wieg 3.2s ease-in-out infinite; }
+  .ll-lampion:nth-child(odd) > g { animation-delay: -1.6s; }
+  .ll-lampion.aan > g { animation: ll-zing .3s ease-out; }
+  .ll-lucht.viert { animation: ll-hup .45s ease-out 2 alternate; }
+}
+@keyframes ll-wieg { 50% { rotate: 4deg; } }
+@keyframes ll-zing { 40% { scale: 1.1; } }
+@keyframes ll-hup { to { scale: 1.02; } }
+@media (orientation: portrait) {
+  .ll-plek { width: calc(100vw - 32px); height: min(calc(100dvh - 300px), calc((100vw - 32px) / 1.6)); }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .ll { gap: 2px; }
+  .ll-fase { min-height: 36px; font-size: 15px; }
+  .ll-faseicoon { width: 28px; height: 28px; }
+}
+
+/* Volle opmaak (tablet, liggende gsm): de lucht krijgt precies de vrije plaats. */
+@media (min-width: 600px) and (min-height: 560px), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .ll { flex: 1; min-height: 0; }
+  .ll-plek { flex: 1; align-self: stretch; width: auto; height: auto; min-width: 0; min-height: 0; container-type: size; }
+  .ll-plek .ll-lucht { width: 100cqw; height: 100cqh; }
+}
