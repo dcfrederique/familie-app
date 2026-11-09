@@ -34,7 +34,7 @@ export interface SpringLevelInfo {
   beestje: 'slak' | 'egel' | 'vogel'
   fruit: 'appel' | 'aardbei' | 'kers'
   /** Een baas op het einde van de wereld (het laatste level): de kaart is dan een kleine arena met B. */
-  baas?: { soort: 'pompoen' | 'pepernoot' | 'sneeuw' | 'krab' | 'wolk' | 'uil'; naam: string }
+  baas?: { soort: 'pompoen' | 'pepernoot' | 'sneeuw' | 'krab' | 'wolk' | 'uil' | 'robot'; naam: string }
   /** Hoe snel de beestjes wandelen, 1 = gewoon. Een pittig level mag er een tikje sneller zijn (tot 1.6). */
   snelheid?: number
   kaart: readonly string[]
@@ -757,6 +757,24 @@ export const springLevelLijst: SpringLevelInfo[] = [
       '  P  o o o e          o   e ###         o o o oe         o  C  o          o e o###          o o o e o o   H   ',
       '################   ###############   ###############  ##############   ###############   #####################',
       '################~~~###############~~~###############~~##############~~~###############~~~#####################',
+    ],
+  },
+  {
+    id: 'bromrobot', wereld: 'speelgoedland', stijl: 'weide',
+    naam: 'De bromrobot', beestje: 'slak', fruit: 'aardbei', snelheid: 1.2,
+    baas: { soort: 'robot', naam: 'Bromrobot' },
+    kaart: [
+      '                                                                  ',
+      '                                                                  ',
+      '                                                                  ',
+      '                  * *                                             ',
+      '                  ===                           * * *             ',
+      '                                                                  ',
+      '        o o              * *                                      ',
+      '                                  * * *                           ',
+      '  P   o o o  o    e                  o C o           B         H  ',
+      '############################  ######  ############################',
+      '############################~~######~~############################',
     ],
   },
 ]

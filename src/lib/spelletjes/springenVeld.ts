@@ -486,9 +486,9 @@ export class SpringVeld {
     ctx.rotate(rol)
     ctx.scale(1, plat)
     const soort = springLevels[this.spel.level].baas?.soort
-    const pepernoot = soort === 'pepernoot', sneeuw = soort === 'sneeuw', krab = soort === 'krab', wolk = soort === 'wolk', uil = soort === 'uil'
+    const pepernoot = soort === 'pepernoot', sneeuw = soort === 'sneeuw', krab = soort === 'krab', wolk = soort === 'wolk', uil = soort === 'uil', robot = soort === 'robot'
     // Pompoen: drie oranje bollen met een groene steel. Pepernoot: drie bruine koekjes met glazuurstreepjes en een rood mijtertje.
-    for (const [dx, kleur] of (uil ? [[-0.26, '#7A5A3C'], [0.26, '#6E5034'], [0, '#9A7650']] : wolk ? [[-0.26, '#B8C4D4'], [0.26, '#A9B7CA'], [0, '#D3DCE8']] : krab ? [[-0.26, '#D9452E'], [0.26, '#D9452E'], [0, '#EE6248']] : sneeuw ? [[-0.26, '#DCEAF6'], [0.26, '#C9DDEE'], [0, '#F4F9FD']] : pepernoot ? [[-0.26, '#A8693A'], [0.26, '#8A5A33'], [0, '#C08246']] : [[-0.26, '#EE8222'], [0.26, '#EE8222'], [0, '#F6A33B']]) as [number, string][]) {
+    for (const [dx, kleur] of (robot ? [[-0.26, '#5B8DB8'], [0.26, '#4F7FA8'], [0, '#7FB0D8']] : uil ? [[-0.26, '#7A5A3C'], [0.26, '#6E5034'], [0, '#9A7650']] : wolk ? [[-0.26, '#B8C4D4'], [0.26, '#A9B7CA'], [0, '#D3DCE8']] : krab ? [[-0.26, '#D9452E'], [0.26, '#D9452E'], [0, '#EE6248']] : sneeuw ? [[-0.26, '#DCEAF6'], [0.26, '#C9DDEE'], [0, '#F4F9FD']] : pepernoot ? [[-0.26, '#A8693A'], [0.26, '#8A5A33'], [0, '#C08246']] : [[-0.26, '#EE8222'], [0.26, '#EE8222'], [0, '#F6A33B']]) as [number, string][]) {
       ctx.fillStyle = kleur
       ctx.beginPath(); ctx.ellipse(dx * w, -h * 0.48, w * (dx ? 0.3 : 0.27), h * 0.48, 0, 0, Math.PI * 2); ctx.fill()
     }
@@ -501,6 +501,24 @@ export class SpringVeld {
       ctx.beginPath(); ctx.moveTo(-w * 0.14, -h * 0.98); ctx.lineTo(0, -h * 1.3); ctx.lineTo(w * 0.14, -h * 0.98); ctx.closePath(); ctx.fill()
       ctx.fillStyle = '#F2B33D'
       ctx.fillRect(-w * 0.015, -h * 1.22, w * 0.03, h * 0.16); ctx.fillRect(-w * 0.06, -h * 1.17, w * 0.12, h * 0.03)
+    } else if (robot) {
+      // Bromrobot: een blauw opwindrobotje met een antenne en rood lampje, een paneel met knopjes en een draaiend opwindsleuteltje.
+      ctx.strokeStyle = '#33414F'; ctx.lineWidth = T * 0.05; ctx.lineCap = 'round'
+      ctx.beginPath(); ctx.moveTo(0, -h * 0.95); ctx.lineTo(0, -h * 1.22); ctx.stroke()
+      ctx.fillStyle = Math.sin(this.spel.klok * 6) > 0 ? '#E5484D' : '#F7A1A3'
+      ctx.beginPath(); ctx.arc(0, -h * 1.26, T * 0.09, 0, Math.PI * 2); ctx.fill()
+      ctx.fillStyle = '#D9DEE5'
+      ctx.fillRect(-w * 0.16, -h * 0.42, w * 0.32, h * 0.22)
+      for (const [x0, kleur] of [[-0.09, '#F2C530'], [0, '#43A047'], [0.09, '#E5484D']] as const) {
+        ctx.fillStyle = kleur; ctx.beginPath(); ctx.arc(x0 * w, -h * 0.31, T * 0.05, 0, Math.PI * 2); ctx.fill()
+      }
+      // Het sleuteltje draait snel als hij zich opwindt (dan komt hij eraan) en staat stil als hij afgelopen is.
+      const draai = b.toestand === 'moe' ? 0.6 : this.spel.klok * (b.toestand === 'aanloop' ? 22 : 5)
+      ctx.save(); ctx.translate(b.richting * w * 0.52, -h * 0.5)
+      ctx.fillStyle = '#C9971A'; ctx.fillRect(0, -T * 0.03, b.richting * T * 0.16, T * 0.06)
+      ctx.translate(b.richting * T * 0.2, 0); ctx.scale(Math.cos(draai), 1)
+      ctx.beginPath(); ctx.ellipse(0, -T * 0.1, T * 0.06, T * 0.1, 0, 0, Math.PI * 2); ctx.ellipse(0, T * 0.1, T * 0.06, T * 0.1, 0, 0, Math.PI * 2); ctx.fill()
+      ctx.restore()
     } else if (uil) {
       // Bromuil: een bruine uil met oorpluimen, een lichte buik met veertjes, een gele snavel en een lampionnetje.
       ctx.fillStyle = '#5B4028'

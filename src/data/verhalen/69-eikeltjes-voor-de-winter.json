@@ -1,0 +1,103 @@
+{
+  "nr": 69,
+  "titel": "Eikeltjes voor de winter",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Herfst, de eekhoorn legt een voorraad aan",
+  "bladzijden": [
+    {
+      "tekst": "In het park liggen overal eikeltjes. Noor en Daan rapen er een hele zak vol. \"Voor de eekhoorn,\" zegt Noor. \"Dan heeft hij genoeg voor de winter.\" Bij de grote eik zit de eekhoorn al te wachten. Zijn staart staat recht omhoog.",
+      "prent": {
+        "decor": "park",
+        "figuren": [
+          "noor",
+          "daan",
+          "eekhoorn"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan legt de eikeltjes in een rij op het bankje. \"Kijk,\" zegt hij. \"Ik maak een spelletje.\" Hij legt ze in putjes van de houten plank, met één putje leeg. \"Een eikeltje mag over een ander springen,\" legt hij uit. \"Naar een leeg putje erachter.\"",
+      "prent": {
+        "decor": "park",
+        "figuren": [
+          "daan",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "\"En het eikeltje waar je overheen springt?\" vraagt Noor. Daan grijnst. \"Dat mag de eekhoorn hebben.\" De eekhoorn kijkt met grote ogen. Hij wipt dichterbij, hop, hop, tot hij vlak naast de plank zit.",
+      "prent": {
+        "decor": "park",
+        "figuren": [
+          "daan",
+          "noor",
+          "eekhoorn"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor probeert het eerst. Eén sprong, en de eekhoorn pakt het eikeltje. Nog een sprong. Nog een. Maar dan kan geen enkel eikeltje nog springen. Er liggen er drie over, ver uit elkaar. \"Oei,\" zegt Noor. \"Die raken elkaar niet meer.\"",
+      "prent": {
+        "decor": "park",
+        "figuren": [
+          "noor",
+          "eekhoorn"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Opnieuw,\" zegt Daan. Hij legt alles terug. \"Je moet ze samen houden. Spring naar het midden, niet naar de rand.\" Noor denkt na. Ze kiest een andere sprong dan de vorige keer. En nog een. De eikeltjes blijven dicht bij elkaar.",
+      "prent": {
+        "decor": "park",
+        "figuren": [
+          "daan",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "Nog drie eikeltjes. Nog twee. Noor houdt haar adem in. Het laatste eikeltje springt over het voorlaatste en landt in het putje in het midden. Er ligt er nog maar één! \"Gelukt!\" roept Noor. De eekhoorn maakt een sprongetje van blijdschap.",
+      "prent": {
+        "decor": "park",
+        "figuren": [
+          "noor",
+          "eekhoorn"
+        ]
+      }
+    },
+    {
+      "tekst": "Nu wil Daan het ook proberen. Hij is snel, misschien iets te snel. Er blijven er twee over. \"Bijna,\" zegt Noor. \"Je moet niet haasten. Eerst kijken waar je landt.\" Daan knikt. Hij probeert het nog een keer, heel rustig.",
+      "prent": {
+        "decor": "park",
+        "figuren": [
+          "daan",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "Deze keer kijkt Daan na elke sprong goed rond. Waar staan de anderen? Kan ik er straks nog over? Sprong na sprong worden het er minder. Tot er nog één eikeltje over is, helemaal alleen in het middelste putje.",
+      "prent": {
+        "decor": "park",
+        "figuren": [
+          "daan",
+          "eekhoorn"
+        ]
+      }
+    },
+    {
+      "tekst": "De eekhoorn heeft zijn wangen vol. Hij rent naar de eik en verstopt alles in een gat in de stam. Het laatste eikeltje geven Noor en Daan ook. \"Voor als je in de winter wakker wordt,\" fluistert Noor. De eekhoorn kijkt nog één keer om. Dan is hij weg, tussen de gele bladeren.",
+      "prent": {
+        "decor": "park",
+        "figuren": [
+          "noor",
+          "daan",
+          "eekhoorn",
+          "boom"
+        ]
+      }
+    }
+  ]
+}

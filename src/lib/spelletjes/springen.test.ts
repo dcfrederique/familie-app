@@ -47,6 +47,8 @@ function baasRobot(s: Springen, b: NonNullable<Springen['baas']>): { s: Springen
   else if (b.soort === 'krab' && (b.toestand === 'aanloop' || b.toestand === 'actie') && Math.abs(dx) < 3.2) { spr = b.toestand === 'actie'; dir = Math.abs(dx) < 2.9 ? -Math.sign(dx) : 0 }
   else if (b.soort === 'uil' && (b.toestand === 'aanloop' || b.toestand === 'actie') && Math.abs(b.doel - s.x) < 2.2) dir = s.x < b.doel ? -1 : 1
   else if (b.soort === 'pepernoot' && b.toestand !== 'loopt' && Math.abs(dx) < 4.2) dir = -Math.sign(dx)
+  else if (b.soort === 'robot' && b.toestand === 'actie' && Math.sign(dx) === -b.richting && Math.abs(dx) < 2.8) spr = true
+  else if (b.soort === 'robot' && b.toestand === 'aanloop' && Math.abs(dx) < 4) dir = -Math.sign(dx)
   else if (b.kwetsbaar && b.op < 0.5 && b.duizel <= 0) {
     // Dichtbij komen en hupsen als hij net voor je staat.
     dir = Math.abs(dx) > 1.9 ? Math.sign(dx) : 0

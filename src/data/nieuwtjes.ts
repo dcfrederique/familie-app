@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.135',
+    datum: '2026-11-09',
+    titel: "Eikeltjes springen, Eikeltjes voor de winter en de Bromrobot in Speelgoedland",
+    tekst: "Nieuw verhaal \"Eikeltjes voor de winter\" (herfst, de eekhoorn legt een voorraad aan) en nieuwe kleurplaat \"De eekhoornboom\", meteen te lezen en in te kleuren. Het spelletje Eikeltjes springen kost 30 sterren: een eikeltje springt over een buurtje naar een leeg putje, en het overgesprongen eikeltje is voor de eekhoorn; hou er zo weinig mogelijk over, het liefst één. Terug zet een sprong terug, en lukt het niet, dan ga je gewoon naar de volgende ronde. Makkelijk: een klein veldje met vier eikeltjes en hulp. Middel: zeven eikeltjes, met hulp. Moeilijk: het grote kruis met veertien eikeltjes, geen hulp; klokje en pluimen. In Springland kwam de baas van Speelgoedland erbij: de Bromrobot, een opwindrobotje: als zijn sleuteltje snel draait, rent hij recht op je af (spring over hem heen), en daarna staat hij even stil en kan je op hem hupsen. Speelgoedland is vol. Nieuw kinderthema: Eenhoornwei, te kiezen bij Mijn thema.",
+    verhaal: "Eikeltjes voor de winter",
+    spel: { naam: "Eikeltjes springen", prijs: 30 },
+    stukken: ["Figuurtje: Robothelm (20), Robotshirt met knopjes (20), Opwindsleutel (15)", "Mijn huis: Robotje in de tuin (25), Springbord met eikeltjes (20), Voederhuisje voor de eekhoorn (20)"],
+    open: "Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.",
+  },
+  {
     versie: '0.134',
     datum: '2026-11-09',
     titel: "Springland: gewone levels uitdagender voor Luca",

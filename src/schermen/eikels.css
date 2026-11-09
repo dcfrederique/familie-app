@@ -1,0 +1,59 @@
+/* Eikeltjes springen: het veld met putjes links (of boven, staand), de eekhoorn en de knoppen ernaast. De SVG schaalt mee. */
+.ek { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 1.4dvh, 14px); width: 100%; }
+.ek-balk { display: flex; align-items: center; justify-content: center; gap: 18px; font-weight: 800; }
+.ek-teller { display: flex; align-items: center; gap: 4px; font-size: 22px; }
+.ek-teller svg { width: 26px; height: 30px; }
+.ek-spel { display: flex; align-items: center; justify-content: center; gap: clamp(12px, 3vw, 36px); width: 100%; }
+.ek-plek { display: grid; place-items: center; width: min(66vw, calc(100dvh - 230px)); height: calc(100dvh - 230px); }
+.ek-bord { max-width: 100%; max-height: 100%; width: auto; height: 100%; touch-action: manipulation; user-select: none; border-radius: 24px; background: #9BCB6E; }
+.ek-putje { cursor: pointer; }
+.ek-gat { fill: #6E4A2B; opacity: .55; }
+.ek-putje.doel .ek-gat { fill: #F2C530; opacity: .9; }
+.ek-putje.tip .ek-gat { fill: #43A047; opacity: .9; }
+.ek-putje.gekozen .ek-gat { fill: #F2C530; opacity: .5; }
+.ek-zij { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+.ek-eekhoorn { position: relative; width: clamp(80px, 16dvh, 130px); }
+.ek-eekhoorn svg { width: 100%; height: auto; }
+.ek-op-teller { position: absolute; right: -6px; bottom: 4px; min-width: 34px; padding: 2px 8px; border-radius: 999px; background: var(--kid); color: var(--on-solid, #fff); font-weight: 800; text-align: center; }
+.ek-tekst { margin: 0; max-width: 220px; text-align: center; font-weight: 800; font-size: clamp(16px, 2.4dvh, 22px); }
+.ek-knoppen { display: flex; gap: 10px; }
+.ek-knop {
+  display: grid; place-items: center; width: 72px; height: 72px; padding: 0; border: 3px solid var(--line); border-radius: 20px;
+  background: var(--surface); color: var(--ink); box-shadow: 0 4px 0 var(--shade); cursor: pointer; touch-action: manipulation;
+}
+.ek-knop svg { width: 34px; height: 34px; }
+.ek-knop.geen { border-color: #D33D36; }
+.ek-knop.verder { background: #43A047; border-color: #2E7D32; color: #fff; }
+.ek-knop:disabled { opacity: .45; cursor: default; }
+.ek-eindprent { width: clamp(180px, 30dvh, 300px); height: auto; }
+@media (prefers-reduced-motion: no-preference) {
+  .ek-op { animation: ek-wip .6s ease-in-out infinite alternate; }
+  .ek-putje.doel .ek-gat, .ek-putje.tip .ek-gat { animation: ek-puls .7s ease-in-out infinite alternate; }
+  .ek-bord.viert { animation: ek-hup .45s ease-out 2 alternate; }
+  .ek-eekhoorn svg { animation: ek-knik 2.8s ease-in-out infinite; transform-origin: 50% 90%; }
+}
+@keyframes ek-wip { to { translate: 0 -5px; } }
+@keyframes ek-puls { to { opacity: .45; } }
+@keyframes ek-hup { to { scale: 1.02; } }
+@keyframes ek-knik { 50% { rotate: -4deg; } }
+@media (orientation: portrait) {
+  .ek-spel { flex-direction: column; }
+  .ek-zij { flex-direction: row; }
+  .ek-plek { width: calc(100vw - 32px); height: min(calc(100dvh - 420px), calc(100vw - 32px)); }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .ek { gap: 2px; }
+  .ek-zij { gap: 4px; }
+  .ek-eekhoorn { width: 64px; }
+  .ek-knop { width: 52px; height: 52px; }
+  .ek-knop svg { width: 26px; height: 26px; }
+  .ek-tekst { font-size: 14px; max-width: 170px; }
+}
+
+/* Volle opmaak (tablet, liggende gsm): het veld krijgt precies de vrije plaats. */
+@media (min-width: 600px) and (min-height: 560px), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .ek { flex: 1; min-height: 0; }
+  .ek-spel { flex: 1; min-height: 0; }
+  .ek-plek { flex: 1; align-self: stretch; width: auto; height: auto; min-width: 0; min-height: 0; container-type: size; }
+  .ek-plek .ek-bord { width: 100cqw; height: 100cqh; }
+}

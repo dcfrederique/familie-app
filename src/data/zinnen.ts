@@ -74,6 +74,8 @@ export const zin = {
   klokKlaar: "Jij kunt klokkijken!",
   knikkersUitleg: "Tik op een buisje om de bovenste knikker te pakken. Tik dan op een ander buisje. Je mag hem alleen op dezelfde kleur leggen, of in een leeg buisje.",
   knikkersKlaar: "Alles netjes gesorteerd!",
+  eikelsUitleg: "Tik op een eikeltje. Het mag over een ander eikeltje springen, naar een leeg putje erachter. Het eikeltje waar je overheen springt, eet de eekhoorn op. Hou er zo weinig mogelijk over.",
+  eikelsKlaar: "De eekhoorn is lekker vol!",
   roosterUitleg: 'Zet elke kleur één keer in elke rij en in elke kolom.',
   roosterKlaar: 'Alle pakjes staan op hun plaats!',
   torensUitleg: 'Verhuis alle pakjes naar de gouden plank. Een groot pakje mag nooit op een klein pakje.',

@@ -186,7 +186,16 @@ export default function SpringKaart({ figuur, lezer, af, best, alles, plek, mete
               {p.level.baas && (
                 // De baas van de wereld: een grote pompoen of pepernoot op het eilandje.
                 <g transform="translate(0 -26)" className="k-dobber">
-                  {p.level.baas.soort === 'uil' ? (
+                  {p.level.baas.soort === 'robot' ? (
+                    <>
+                      <path d="M0-20V-34" stroke="#33414F" strokeWidth="3" /><circle cy="-36" r="4" fill="#E5484D" />
+                      <ellipse cx="-14" cy="0" rx="17" ry="19" fill="#5B8DB8" /><ellipse cx="14" cy="0" rx="17" ry="19" fill="#4F7FA8" />
+                      <ellipse cx="0" cy="0" rx="15" ry="20" fill="#7FB0D8" />
+                      <rect x="-8" y="-11" width="6" height="5" rx="1" fill="#1C2433" /><rect x="2" y="-11" width="6" height="5" rx="1" fill="#1C2433" />
+                      <rect x="-9" y="2" width="18" height="9" rx="2" fill="#D9DEE5" /><circle cx="-4" cy="6.5" r="2" fill="#F2C530" /><circle cx="4" cy="6.5" r="2" fill="#E5484D" />
+                      <path d="M30 -2h6M38 -8q4 6 0 12M38 -8q-4 6 0 12" stroke="#C9971A" strokeWidth="3" fill="none" strokeLinecap="round" />
+                    </>
+                  ) : p.level.baas.soort === 'uil' ? (
                     <>
                       <path d="M-12-16L-18-34L-4-20ZM12-16L18-34L4-20Z" fill="#5B4028" />
                       <ellipse cx="-14" cy="0" rx="17" ry="19" fill="#7A5A3C" /><ellipse cx="14" cy="0" rx="17" ry="19" fill="#6E5034" />

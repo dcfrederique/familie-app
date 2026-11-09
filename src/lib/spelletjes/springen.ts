@@ -505,6 +505,22 @@ function patroon(s: Springen, b: Baas, dt: number, uit: SpringGebeurtenis[]) {
       } else if (b.tijd <= 0) naarToestand(b, 'loopt', Math.max(1.2, 2.0 - 0.2 * F))
       break
     }
+    case 'robot': {
+      // Windt zich op (het sleuteltje draait), rent dan recht vooruit tot de rand van zijn arena: spring over hem heen.
+      // Daarna is hij afgelopen en staat hij even stil; dan kan je op hem hupsen.
+      b.kwetsbaar = b.toestand === 'moe'
+      if (b.toestand === 'actie') {
+        const voor = inArena(s, b, b.x + b.richting * (5 + 0.6 * F) * dt)
+        const klaar = voor === b.x || b.tijd <= 0
+        b.x = voor
+        if (klaar) naarToestand(b, 'moe', Math.max(2, 2.4 - 0.12 * F))
+      } else if (b.tijd <= 0) {
+        if (b.toestand === 'loopt') { b.richting = naar; naarToestand(b, 'aanloop', Math.max(0.6, 1.0 - 0.1 * F)) }
+        else if (b.toestand === 'aanloop') naarToestand(b, 'actie', 2.5)
+        else naarToestand(b, 'loopt', Math.max(0.6, 1.2 - 0.15 * F))
+      }
+      break
+    }
     default: {
       // Pompoen: rolt heen en weer en wordt na elke hup sneller. Altijd kwetsbaar.
       b.kwetsbaar = true

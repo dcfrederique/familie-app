@@ -185,6 +185,12 @@ const bloemist = wikkel(`<g class="tn-nacht" fill="#FFF3C4"><circle cx="120" cy=
   <g transform="translate(210 160)"><path d="M0 0V-34" stroke="#43A047" stroke-width="4"/><path d="M0 -18q-12 -2 -14 -12q12 0 14 12" fill="#43A047"/><circle cy="-40" r="8" fill="#F2C530"/><g fill="#FFFFFF"><circle cy="-52" r="6"/><circle cx="12" cy="-40" r="6"/><circle cy="-28" r="6"/><circle cx="-12" cy="-40" r="6"/></g><circle cy="-40" r="7" fill="#F2C530"/></g>
   <g transform="translate(860 150)"><path d="M-18 -10H18L14 20H-14Z" fill="#9AA6B5"/><path d="M18 -4q12 -2 10 10" stroke="#9AA6B5" stroke-width="4" fill="none"/><path d="M-18 -10L-30 -20" stroke="#9AA6B5" stroke-width="5" stroke-linecap="round"/><g fill="#5DB7E8"><circle cx="-36" cy="-14" r="2.5"/><circle cx="-40" cy="-6" r="2.5"/><circle cx="-34" cy="0" r="2.5"/></g></g>`)
 
+const eenhoorn = wikkel(`<g class="tn-nacht" fill="#FFF3C4"><circle cx="120" cy="40" r="2.5"/><circle cx="880" cy="50" r="2"/><circle cx="520" cy="26" r="2"/></g>
+  <g transform="translate(250 30)" fill="none" stroke-width="12" stroke-linecap="round" opacity=".85"><path d="M0 150A190 150 0 0 1 380 150" stroke="#F48FB1"/><path d="M14 150A176 136 0 0 1 366 150" stroke="#F2C530"/><path d="M28 150A162 122 0 0 1 352 150" stroke="#9BD7A8"/><path d="M42 150A148 108 0 0 1 338 150" stroke="#9EC9F0"/><path d="M56 150A134 94 0 0 1 324 150" stroke="#C7A6EC"/></g>
+  <g transform="translate(700 110)" class="thema-zweef"><ellipse cx="0" cy="20" rx="46" ry="26" fill="#FFFFFF" stroke="#E7D8F5" stroke-width="3"/><path d="M-30 40V66M-12 44V70M12 44V70M30 40V66" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round"/><path d="M34 6C44 -14 58 -22 70 -18C78 -6 70 8 56 14Z" fill="#FFFFFF" stroke="#E7D8F5" stroke-width="3"/><path d="M62 -18L74 -46L70 -16Z" fill="#F2C530"/><circle cx="62" cy="-6" r="3" fill="#33414F"/><path d="M40 -10C30 -16 26 -4 32 4C22 6 22 18 30 22" stroke="#F48FB1" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M-44 14C-60 6 -66 24 -56 34C-66 40 -58 56 -48 50" stroke="#C7A6EC" stroke-width="8" fill="none" stroke-linecap="round"/></g>
+  <g transform="translate(180 160)"><path d="M0 0V-26" stroke="#43A047" stroke-width="3"/><circle cy="-32" r="6" fill="#F2C530"/><g fill="#F48FB1"><circle cy="-42" r="5"/><circle cx="10" cy="-32" r="5"/><circle cy="-22" r="5"/><circle cx="-10" cy="-32" r="5"/></g><circle cy="-32" r="5" fill="#F2C530"/></g>
+  <g transform="translate(860 70)"><path d="M0 -14L4 -4L14 -3L6 4L9 14L0 8L-9 14L-6 4L-14 -3L-4 -4Z" fill="#F2C530"/></g>`)
+
 const vink = (kleur: string) => `<path d="M-16 0L-6 10L16 -12" stroke="${kleur}" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
 
 export const dataThemas: DataThema[] = [
@@ -506,6 +512,22 @@ export const dataThemas: DataThema[] = [
     slot: '<circle r="18" fill="#B8BFCB"/><path d="M0 10V0" stroke="#5B6B7A" stroke-width="3"/><circle cy="-4" r="7" fill="#5B6B7A"/>',
     feest: [ster('#F2C530'), '<circle r="6" fill="#F48FB1"/>', '<circle r="6" fill="#E5484D"/>'], confetti: ['#3E8E41', '#F48FB1', '#F2C530', '#FFFFFF'],
     tegelRadius: '24px', tegelRand: '5px solid var(--kid)',
+  },
+  {
+    sleutel: 'eenhoorn', naam: 'Eenhoornwei', kidKleur: '#9B5FD0', shirt: 'paars', verhouding: 1,
+    ondertitels: { spelen: 'De regenboogwei', verhalen: 'Lezen onder de regenboog', kleurplaten: 'Manen kleuren', figuurtje: 'Met glitters', huis: 'Mijn eigen stalletje' },
+    klaarTekst: 'Jij laat de regenboog stralen!', nogTeDoen: (n) => `Nog ${n} ${n === 1 ? 'sterretje' : 'sterretjes'} voor de regenboog`,
+    licht: { bg: '#FAF6FE', surface: '#FFFFFF', soft: '#EFE5FA', ink: '#2E1A40', muted: '#735D88', line: '#E3D3F3', shade: '#CDB6E6', kid: '#9B5FD0', 'kid-tint': '#EFE3FA', 'on-solid': '#FFFFFF',
+      'tn-grond': '#A8DCA0', 'tn-nacht': 'none', 'tn-banner': 'linear-gradient(#E7F3FC,#FAF6FE)', 'tn-titel': '#2E1A40', 'tn-sub': '#C2185B', 'tn-spoor': '#E3D3F3' },
+    donker: { bg: '#130C1A', surface: '#21162C', soft: '#2A1C38', ink: '#F4EAFD', muted: '#C3ABDB', line: '#382649', shade: '#06030A', kid: '#C79BF0', 'kid-tint': '#352149', 'on-solid': '#130C1A',
+      'tn-grond': '#2F4A33', 'tn-nacht': 'inline', 'tn-banner': 'linear-gradient(#07040C,#251536)', 'tn-titel': '#FFFFFF', 'tn-sub': '#F2C530', 'tn-spoor': '#382649' },
+    prent: eenhoorn,
+    voortgang: { mover: '<path d="M-6 -2L2 -18L4 -2Z" fill="#F2C530"/><circle r="7" fill="#FFFFFF" stroke="#C7A6EC" stroke-width="2"/>', doel: `<g transform="scale(.8)">${ster('#F2C530')}</g>` },
+    nieuw: '<path d="M-3 4L4 -16L6 4Z" fill="#F2C530"/><circle cy="8" r="8" fill="#FFFFFF" stroke="#C7A6EC" stroke-width="2"/>',
+    vink: `<circle r="20" fill="#9B5FD0"/><g transform="scale(.9)">${vink('#fff')}</g>`,
+    slot: '<circle r="18" fill="#B8BFCB"/><path d="M-2 6L4 -12L6 6Z" fill="#5B6B7A"/>',
+    feest: [ster('#F2C530'), '<circle r="6" fill="#F48FB1"/>', '<circle r="6" fill="#C7A6EC"/>'], confetti: ['#9B5FD0', '#F48FB1', '#F2C530', '#9BD7A8'],
+    tegelRadius: '28px', tegelRand: '5px solid var(--kid)',
   },
 ]
 
