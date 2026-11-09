@@ -90,3 +90,10 @@
 @media (prefers-reduced-motion: reduce) {
   .hs-trucdier, .hs-plek.fout .hs-voor { animation: none !important; } .hs-kijk { transition: none; }
 }
+/* Detail: op de keuzetegels huppelt het huisdier zachtjes op en neer, elk op zijn eigen moment. */
+@media (prefers-reduced-motion: no-preference) {
+  .hs-tegel .hs-mini { animation: hs-wip 2.4s ease-in-out infinite; transform-origin: 50% 100%; }
+  .hs-tegel:nth-child(2) .hs-mini { animation-delay: -.8s; }
+  .hs-tegel:nth-child(3) .hs-mini { animation-delay: -1.6s; }
+}
+@keyframes hs-wip { 0%, 60%, 100% { translate: 0 0; } 75% { translate: 0 -10%; } 85% { translate: 0 0; } }

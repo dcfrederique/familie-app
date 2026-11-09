@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.118',
+    datum: '2026-11-09',
+    titel: 'Mijn figuurtje en Ik passen weer op een staande tablet',
+    tekst: 'Sinds de soorten figuurtjes heeft Mijn figuurtje negen tabbladen. Op een staande tablet vielen de knoppen onderaan daardoor uit beeld; nu staan de tabbladen met vijf op een rij en zijn de prentjes van de keuzes weer te zien. Op het Ik-scherm van wie niet leest, staken de ronde prentjes op een staande tablet buiten hun tegel; ook dat is hersteld. Bij Samen spelen huppelt het huisdier zachtjes op de keuzetegels.',
+  },
+  {
     versie: '0.117',
     datum: '2026-11-09',
     titel: 'Kleurenrooster, De pakjes op de schappen en De onweerswolkjes',

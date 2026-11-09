@@ -42,3 +42,6 @@
 }
 .hub-hoofd .hd-prent, .hub-hoofd .hd-prent svg { display: block; width: 100%; height: 100%; }
 .hub-hoofd .hd-prent svg { transform: scale(1.7); }
+/* Wie niet leest: het ronde prentje mag nooit breder zijn dan zijn tegel (staande tablet met vier tegels naast elkaar). */
+.hub-tegel.hub-kleuter .hub-icoon { max-width: 100%; height: auto; aspect-ratio: 1; flex: none; }
+@media (max-height: 500px) and (orientation: landscape) { .hub-tegel.hub-kleuter .hub-icoon { height: auto; } }

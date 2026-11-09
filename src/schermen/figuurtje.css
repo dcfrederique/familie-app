@@ -125,6 +125,17 @@
   .kleerkast { padding-inline: 20px; }
   .kleerkast.prenten .kast-tabs { grid-template-columns: repeat(6, minmax(0, 1fr)); }
 }
+/* Sinds de soorten figuurtjes (8 november) heeft een lezer negen tabbladen: op een tablet vijf per rij (twee rijen), anders
+   duwen drie rijen de knoppen onderaan uit beeld (staande tablet, ronde tabs van de feeëntuin). */
+@media (min-width: 600px) and (min-height: 560px) {
+  .kleerkast:not(.huisbouw):not(.prenten) .kast-tabs:has(> :nth-child(9)) { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+/* Staand met negen tabbladen: het podium iets lager en de ronde tabs (feeëntuin) kleiner, zodat de keuzes hun prentjes houden. */
+@media (min-width: 600px) and (min-height: 560px) and (orientation: portrait) {
+  .kleerkast:not(.huisbouw):not(.prenten):has(.kast-tabs > :nth-child(9)) .kleerkast-inhoud { grid-template-rows: minmax(0, 1fr) minmax(0, 2fr); }
+  .kleerkast:not(.huisbouw):not(.prenten) .kast-tabs:has(> :nth-child(9)) .kast-tab { min-height: clamp(52px, 6.4dvh, 70px); }
+  .thema-tuin .kleerkast:not(.huisbouw):not(.prenten) .kast-tabs:has(> :nth-child(9)) .kast-tab { width: min(100%, clamp(60px, 7.4dvh, 84px)); }
+}
 
 /* Gsm liggend: dezelfde opmaak als de tablet liggend (podium links, kast rechts), alleen kleiner.
    De tabs staan op één rij, kleuren en knoppen worden lager, de keuzes bladeren in wat overblijft. */
