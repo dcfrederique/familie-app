@@ -1,0 +1,50 @@
+/* Verflopen: het blad links (of boven, staand), de verfpotten ernaast. De vakjes schalen mee. */
+.vl { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 1.4dvh, 14px); width: 100%; }
+.vl-spel { display: flex; align-items: center; justify-content: center; gap: clamp(12px, 3vw, 36px); width: 100%; }
+.vl-blad {
+  --vak: min(calc((100dvh - 250px) / var(--rij)), calc((100vw - 300px) / var(--kol)), 90px);
+  display: grid; grid-template-columns: repeat(var(--kol), var(--vak)); grid-auto-rows: var(--vak);
+  padding: 8px; border-radius: 14px; background: #FFFFFF; box-shadow: 0 5px 0 var(--shade);
+}
+.vl-vak { display: block; transition: background .25s; }
+.vl-vak.mijn { box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .25); }
+.vl-vak:first-child { border-top-left-radius: 8px; }
+.vl-zij { display: flex; flex-direction: column; align-items: center; gap: 10px; font-weight: 800; }
+.vl-beurten { font-size: 22px; }
+.vl-beurten b { font-size: 1.3em; }
+.vl-potten { display: grid; grid-template-columns: repeat(3, auto); gap: 8px; }
+.vl-pot { display: grid; place-items: center; width: 68px; height: 68px; padding: 0; border: 4px solid #fff; border-radius: 50%; box-shadow: 0 4px 0 rgba(0, 0, 0, .18); cursor: pointer; touch-action: manipulation; }
+.vl-pot svg { width: 60%; height: 60%; }
+.vl-pot.nu { outline: 4px solid var(--ink); outline-offset: 2px; }
+.vl-pot:disabled { cursor: default; }
+.vl-pot:disabled:not(.nu) { opacity: .45; }
+.vl-op { max-width: 220px; text-align: center; color: #B3261E; }
+.vl-eindprent { width: clamp(160px, 28dvh, 280px); height: auto; }
+@media (prefers-reduced-motion: no-preference) {
+  .vl-blad.viert { animation: vl-hup .5s ease-out 2 alternate; }
+  .vl-pot:not(:disabled):active { transform: scale(.92); }
+}
+@media (prefers-reduced-motion: reduce) { .vl-vak { transition: none; } }
+@keyframes vl-hup { to { transform: scale(1.03); } }
+@media (orientation: portrait) {
+  .vl-spel { flex-direction: column; }
+  .vl-zij { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+  .vl-potten { grid-template-columns: repeat(6, auto); }
+  .vl-blad { --vak: min(calc((100dvh - 420px) / var(--rij)), calc((100vw - 50px) / var(--kol)), 90px); }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .vl { gap: 2px; }
+  .vl-blad { padding: 4px; }
+  .vl-zij { gap: 4px; }
+  .vl-pot { width: 46px; height: 46px; border-width: 3px; }
+  .vl-potten { gap: 4px; }
+  .vl-beurten { font-size: 16px; }
+}
+
+/* Volle opmaak (tablet, liggende gsm): het blad krijgt precies de vrije plaats (cq-eenheden). */
+@media (min-width: 600px) and (min-height: 560px), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .vl { flex: 1; min-height: 0; }
+  .vl-spel { flex: 1; min-height: 0; }
+  .vl-plek { flex: 1; align-self: stretch; min-width: 0; min-height: 0; container-type: size; display: grid; place-items: center; }
+  .vl-plek .vl-blad { --vak: min(calc((100cqh - 22px) / var(--rij)), calc((100cqw - 22px) / var(--kol)), 90px); }
+}

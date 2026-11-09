@@ -16,7 +16,7 @@ export type SpringLevel = string
 /** Hoe een level eruitziet: lucht, grond en achtergrond (springenVeld.ts tekent elke stijl). */
 export type SpringStijl = 'weide' | 'bos' | 'wolken' | 'strand' | 'sneeuw'
 /** Hoe een wereld eruitziet op de landkaart (Springen.tsx tekent elke kleur). */
-export type WereldStijl = 'groen' | 'zand' | 'sneeuw' | 'snoep' | 'hemel'
+export type WereldStijl = 'groen' | 'zand' | 'sneeuw' | 'snoep' | 'hemel' | 'nacht'
 
 export interface SpringWereld {
   id: string
@@ -50,6 +50,7 @@ export const springWerelden: SpringWereld[] = [
   { id: 'winterbergen', naam: 'Winterbergen', stijl: 'sneeuw' },
   { id: 'zonnestrand', naam: 'Zonnestrand', stijl: 'zand' },
   { id: 'wolkenrijk', naam: 'Wolkenrijk', stijl: 'hemel' },
+  { id: 'lichtjesbos', naam: 'Lichtjesbos', stijl: 'nacht' },
 ]
 
 /** Alle levels in speelvolgorde; nieuwe levels komen achteraan (bij de laatste wereld). */
@@ -567,6 +568,40 @@ export const springLevelLijst: SpringLevelInfo[] = [
       '  P   o o o       e                 o C o           B         H   ',
       '############################  ######  ############################',
       '############################~~######~~############################',
+    ],
+  },
+  {
+    id: 'lampionnenpad', wereld: 'lichtjesbos', stijl: 'bos',
+    naam: 'Het lampionnenpad', beestje: 'egel', fruit: 'appel', snelheid: 1.1,
+    kaart: [
+      '                                                                                                        ',
+      '                                                                                                        ',
+      '                                                     * * *                                              ',
+      '                         ***                         =====                                              ',
+      '                        =====                                                        ***                ',
+      '                                                                                     ===                ',
+      '            **                                                                                    ****  ',
+      '                                   ##                                  #                                ',
+      '  P o o o  o o  o  o o  o e  o    ####   o C o  o o    e     o  o o  ##  o o  o   e   o  o o  o  o     H',
+      '################  ##########################   ##############################  #########################',
+      '################~~##########################~~~##############################~~#########################',
+    ],
+  },
+  {
+    id: 'bospad', wereld: 'lichtjesbos', stijl: 'bos',
+    naam: 'Het donkere bospad', beestje: 'egel', fruit: 'appel', snelheid: 1.4,
+    kaart: [
+      '                                                                                                              ',
+      '                                                                                                              ',
+      '                                         * * *                                                                ',
+      '                       **               =====                                       ***                       ',
+      '                      ====                                                         =====                      ',
+      '                                                                                                              ',
+      '          ***                     #                     *  *                                    ****          ',
+      '                                ###                                     ##                                    ',
+      '  P o o o  o    e    o  o C  o ####  o   o   o  o  e    o o  o  C  o  ###  o o    e    o  o o  o   H          ',
+      '##############   ##################  ##  ####################   ######################   #####################',
+      '##############~~~##################~~##~~####################~~~######################~~~#####################',
     ],
   },
 ]

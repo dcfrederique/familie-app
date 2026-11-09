@@ -1,0 +1,89 @@
+{
+  "nr": 58,
+  "titel": "Pip verft inpakpapier",
+  "reeks": "kleine-oortjes",
+  "leeftijd": 4,
+  "thema": "Sinterklaas, zelf inpakpapier maken met verf",
+  "bladzijden": [
+    {
+      "tekst": "Het is bijna Sinterklaas. Pip heeft een tekening gemaakt voor oma. Maar er is geen inpakpapier meer. \"Dan maken we zelf papier,\" zegt mama. Ze legt een groot wit blad op de keukentafel.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pip",
+          "pipmama",
+          "tekening"
+        ]
+      }
+    },
+    {
+      "tekst": "Mama zet vier potjes verf neer. Rood, blauw, geel en groen. Pip krijgt een dikke kwast en een schort. \"Begin maar in de hoek,\" zegt mama. Pip doopt de kwast in het rood. Plets! Een rode vlek in de hoek. Pip kijkt er trots naar en doopt de kwast er meteen nog eens in.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pip",
+          "pipmama"
+        ]
+      }
+    },
+    {
+      "tekst": "Pip schildert verder. De rode vlek wordt groter en groter. Dan pakt ze het blauw. Waar rood en blauw elkaar raken, wordt het paars. \"Oh,\" zegt Pip verbaasd. \"Een nieuwe kleur!\"",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pip"
+        ]
+      }
+    },
+    {
+      "tekst": "Ze probeert het met geel en blauw. Dat wordt groen. En rood met geel wordt oranje. Pip lacht. Ze maakt rondjes en strepen en stipjes, tot het hele blad vol kleuren zit. Er blijft geen wit plekje meer over.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pip",
+          "pipmama"
+        ]
+      }
+    },
+    {
+      "tekst": "Ook op Pips neus zit een groene stip. En op haar wang een gele. Mama moet lachen. \"Jij bent zelf ook ingepakt,\" zegt ze. Ze veegt Pips gezicht schoon met een natte doek. Dat kriebelt. Pip giechelt en wil meteen verder schilderen.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pip",
+          "pipmama"
+        ]
+      }
+    },
+    {
+      "tekst": "Het papier moet drogen. Het ligt op de vensterbank in de zon. Pip gaat er telkens naar kijken. \"Is het al droog?\" \"Nog even,\" zegt mama. Pip telt tot tien. Dan nog eens tot tien.",
+      "prent": {
+        "decor": "huis",
+        "figuren": [
+          "pip"
+        ]
+      }
+    },
+    {
+      "tekst": "Eindelijk is het droog. Samen vouwen ze het papier rond de tekening. Mama plakt het vast met een stukje plakband. Pip mag het lint kiezen. Ze neemt een rood lint met een grote strik.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pip",
+          "pipmama",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Op zondag geeft Pip het pakje aan oma. \"Wat een mooi papier,\" zegt oma. \"Dat is te mooi om open te scheuren.\" Ze maakt het heel voorzichtig open. Het papier hangt nu aan oma's koelkast, naast de tekening.",
+      "prent": {
+        "decor": "huis",
+        "figuren": [
+          "pip",
+          "doos"
+        ]
+      }
+    }
+  ]
+}

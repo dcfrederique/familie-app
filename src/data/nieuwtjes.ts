@@ -19,6 +19,26 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.123',
+    datum: '2026-11-09',
+    titel: "Schuifpuzzel, De puzzel in de schoen en Het donkere bospad",
+    tekst: "Nieuw verhaal \"De puzzel in de schoen\" (Sinterklaas, volhouden) en nieuwe kleurplaat \"Mijter en staf\", meteen te lezen en in te kleuren. Het spelletje Schuifpuzzel kost 25 sterren: een prent in stukjes met één leeg vakje; schuif de stukjes tot de prent klopt. Vier prenten: de stoomboot, het paard op het dak, de pakjes en de lampion. Makkelijk: 2 × 2 en 3 × 3, maar een paar schuifjes door elkaar, met de prent als voorbeeld. Middel: 3 × 3 met cijfertjes en voorbeeld. Moeilijk: 4 × 4 ver door elkaar, zonder voorbeeld, met klokje en pluimen. In Springland ligt het tweede level van het Lichtjesbos: Het donkere bospad (pittig). Nieuw kinderthema: Muziekshow, te kiezen bij Mijn thema.",
+    verhaal: "De puzzel in de schoen",
+    spel: { naam: "Schuifpuzzel", prijs: 25 },
+    stukken: ["Figuurtje: Kapiteinspet (15), Puzzelshirt (20), Schuifpuzzeltje (15)", "Mijn huis: Stoombootje in een tobbe (30), Groot anker (20), Pad van kleurtegels (20)"],
+    open: "Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.",
+  },
+  {
+    versie: '0.122',
+    datum: '2026-11-09',
+    titel: "Verflopen, Pip verft inpakpapier en het Lichtjesbos",
+    tekst: "Nieuw verhaal \"Pip verft inpakpapier\" (Sinterklaas) en nieuwe kleurplaat \"Zelf inpakpapier verven\", meteen te lezen en in te kleuren. Het spelletje Verflopen kost 25 sterren: je vlek begint linksboven, kies een kleur en hij loopt over alle buurvakjes met die kleur, tot het hele blad één kleur is. Makkelijk: kleine bladen met drie kleuren en zoveel beurten als je wil. Middel: vier kleuren en een paar beurten extra. Moeilijk: tot 14 × 10 met zes kleuren en maar één beurt meer dan het slimme robotje, met klokje en pluimen. In Springland begint een zesde wereld, het Lichtjesbos, met Het lampionnenpad. Nieuw kinderthema: Treinstation, te kiezen bij Mijn thema.",
+    verhaal: "Pip verft inpakpapier",
+    spel: { naam: "Verflopen", prijs: 25 },
+    stukken: ["Figuurtje: Schildersbaret (15), Shirt met verfspatten (20), Dikke verfkwast (15)", "Mijn huis: Schildersezel (25), Rij verfpotten (20), Regenboogbankje (25)"],
+    open: "Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.",
+  },
+  {
     versie: '0.121',
     datum: '2026-11-09',
     titel: "Hekjes zetten, Het weitje van de pony en de Bromwolk",

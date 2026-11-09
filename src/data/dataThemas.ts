@@ -107,6 +107,19 @@ const speelgoed = wikkel(`
   <g transform="translate(130 160)"><rect x="-60" y="-10" width="60" height="34" rx="6" fill="#43A047"/><rect x="-46" y="-36" width="30" height="28" rx="4" fill="#43A047"/><rect x="4" y="-6" width="44" height="30" rx="5" fill="#2F80C9"/><rect x="54" y="-6" width="44" height="30" rx="5" fill="#E5484D"/><path d="M0 14h4M48 14h6" stroke="#5B6B7A" stroke-width="4"/>${[-48, -16, 16, 36, 66, 86].map((x) => `<circle cx="${x}" cy="28" r="9" fill="#33414F"/>`).join('')}<path d="M-40 -36v-14" stroke="#5B6B7A" stroke-width="6"/></g>
   <path d="M0 220v-28h1000v28z" style="fill:var(--tn-grond)"/>`)
 
+const trein = wikkel(`<g class="tn-dag"><circle cx="120" cy="50" r="28" fill="#FFD54A"/></g><g class="tn-nacht"><circle cx="120" cy="50" r="24" fill="#FCEBD0"/></g>
+  <g transform="translate(860 40)"><rect x="-6" y="0" width="12" height="150" fill="#5B6B7A"/><rect x="-20" y="10" width="40" height="70" rx="8" fill="#33414F"/><circle cx="0" cy="28" r="10" fill="#E5484D"/><circle cx="0" cy="56" r="10" fill="#43A047" class="thema-zweef"/></g>
+  <g transform="translate(330 120)"><rect x="0" y="0" width="150" height="56" rx="8" fill="#2F80C9"/><rect x="110" y="-46" width="80" height="102" rx="8" fill="#E5484D"/><rect x="124" y="-34" width="50" height="34" rx="4" fill="#BDE3F6"/><rect x="-10" y="-30" width="34" height="34" rx="4" fill="#33414F"/><path d="M-4 -30v-16h22v16" fill="#33414F"/><g class="thema-zweef"><circle cx="8" cy="-62" r="12" fill="#fff" opacity=".8"/><circle cx="-12" cy="-80" r="9" fill="#fff" opacity=".6"/></g>${[20, 70, 130, 170].map((x) => `<circle cx="${x}" cy="60" r="16" fill="#33414F"/><circle cx="${x}" cy="60" r="6" fill="#F2C530"/>`).join('')}<rect x="20" y="12" width="26" height="22" rx="3" fill="#BDE3F6"/><rect x="62" y="12" width="26" height="22" rx="3" fill="#BDE3F6"/></g>
+  <g transform="translate(560 140)"><rect x="0" y="0" width="120" height="40" rx="6" fill="#F2C530"/><rect x="10" y="-30" width="100" height="32" rx="6" fill="#43A047"/>${[22, 98].map((x) => `<circle cx="${x}" cy="44" r="14" fill="#33414F"/><circle cx="${x}" cy="44" r="5" fill="#E5484D"/>`).join('')}</g>
+  <path d="M0 220v-24h1000v24z" style="fill:var(--tn-grond)"/><path d="M0 200h1000M0 210h1000" stroke="#7A5A3A" stroke-width="4"/>${Array.from({ length: 26 }, (_, i) => `<rect x="${i * 40}" y="196" width="10" height="20" fill="#7A5A3A"/>`).join('')}`)
+
+const muziek = wikkel(`<path d="M380 0L300 220H420Z" fill="#FFF3C4" opacity=".35" class="tn-nacht"/><path d="M620 0L560 220H690Z" fill="#FFF3C4" opacity=".35" class="tn-nacht"/>
+  <g transform="translate(470 40)"><rect x="-150" y="80" width="300" height="100" rx="10" style="fill:var(--tn-podium)"/><path d="M-170 0H170V20Q120 50 80 20Q40 50 0 20Q-40 50 -80 20Q-120 50 -170 20Z" fill="#C2203F"/><path d="M-170 0V180M170 0V180" stroke="#8E1F1F" stroke-width="12"/></g>
+  <g transform="translate(420 130)"><ellipse cx="0" cy="34" rx="32" ry="40" fill="#C98A4A"/><ellipse cx="0" cy="0" rx="22" ry="26" fill="#C98A4A"/><circle cx="0" cy="22" r="10" fill="#5B3A1E"/><rect x="-4" y="-96" width="8" height="96" fill="#5B3A1E"/><rect x="-8" y="-110" width="16" height="18" rx="3" fill="#5B3A1E"/><path d="M-2 -96V60M2 -96V60" stroke="#FFF3C4" stroke-width="1"/></g>
+  <g transform="translate(540 160)"><rect x="-30" y="-10" width="60" height="44" rx="8" fill="#E5484D"/><ellipse cx="0" cy="-10" rx="30" ry="8" fill="#F4F6F9"/><path d="M-22 34L-30 50M22 34L30 50" stroke="#9AA6B5" stroke-width="4"/><path d="M-40 -40L-10 -14M40 -44L12 -16" stroke="#C98A4A" stroke-width="5" stroke-linecap="round"/></g>
+  ${[[160, 70, '#E5484D'], [240, 40, '#2F80C9'], [760, 60, '#8E5BD1'], [860, 100, '#F2A900']].map(([x, y, c]) => `<g class="thema-zweef" transform="translate(${x} ${y})"><ellipse cx="0" cy="20" rx="10" ry="8" fill="${c}"/><path d="M9 20V-14Q22 -8 24 4" stroke="${c}" stroke-width="5" fill="none"/></g>`).join('')}
+  <path d="M0 220v-24h1000v24z" style="fill:var(--tn-grond)"/>`)
+
 const vink = (kleur: string) => `<path d="M-16 0L-6 10L16 -12" stroke="${kleur}" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
 
 export const dataThemas: DataThema[] = [
@@ -252,6 +265,38 @@ export const dataThemas: DataThema[] = [
     slot: '<rect x="-18" y="-18" width="36" height="36" rx="5" fill="#B8BFCB"/><path d="M-7 -2h14v12h-14zM-4 -2v-5a4 4 0 0 1 8 0v5" fill="none" stroke="#5B6B7A" stroke-width="3"/>',
     feest: ['<rect x="-10" y="-10" width="20" height="20" rx="3" fill="#E5484D"/>', '<rect x="-10" y="-10" width="20" height="20" rx="3" fill="#2F80C9"/>', '<rect x="-10" y="-10" width="20" height="20" rx="3" fill="#F2C530"/>'], confetti: ['#E5484D', '#2F80C9', '#F2C530', '#43A047'],
     tegelRadius: '12px', tegelRand: '6px solid var(--kid)',
+  },
+  {
+    sleutel: 'trein', naam: 'Treinstation', kidKleur: '#1F6FB2', shirt: 'blauw', verhouding: 1,
+    ondertitels: { spelen: 'Het perron', verhalen: 'Lezen in de wagon', kleurplaten: 'De seinpost', figuurtje: 'Machinist van de dag', huis: 'Mijn stationnetje' },
+    klaarTekst: 'Alle treinen zijn aangekomen!', nogTeDoen: (n) => `Nog ${n} ${n === 1 ? 'halte' : 'haltes'} tot het station`,
+    licht: { bg: '#EAF3FB', surface: '#FFFFFF', soft: '#D6E8F7', ink: '#12304D', muted: '#46698C', line: '#C3DBF0', shade: '#B3CEE8', kid: '#1F6FB2', 'kid-tint': '#D9EAF8', 'on-solid': '#FFFFFF',
+      'tn-grond': '#B9A07E', 'tn-nacht': 'none', 'tn-dag': 'inline', 'tn-banner': 'linear-gradient(#BFDDF5,#EAF3FB)', 'tn-titel': '#12304D', 'tn-sub': '#174E80', 'tn-spoor': '#C3DBF0' },
+    donker: { bg: '#0A1828', surface: '#132A42', soft: '#18344F', ink: '#E2EEFA', muted: '#9DBEDD', line: '#22456A', shade: '#040B14', kid: '#6CB2F0', 'kid-tint': '#1A3A5A', 'on-solid': '#0A1828',
+      'tn-grond': '#4A3C2A', 'tn-nacht': 'inline', 'tn-dag': 'none', 'tn-banner': 'linear-gradient(#07111D,#1A3A5A)', 'tn-titel': '#FFFFFF', 'tn-sub': '#F2C530', 'tn-spoor': '#22456A' },
+    prent: trein,
+    voortgang: { mover: '<rect x="-14" y="-8" width="20" height="12" rx="2" fill="#2F80C9"/><rect x="2" y="-14" width="12" height="18" rx="2" fill="#E5484D"/><circle cx="-8" cy="6" r="4" fill="#33414F"/><circle cx="8" cy="6" r="4" fill="#33414F"/>', doel: '<rect x="-12" y="-6" width="24" height="18" fill="#F4F6F9" stroke="#5B6B7A" stroke-width="2"/><path d="M-16 -6L0 -16L16 -6Z" fill="#E5484D"/>' },
+    nieuw: '<circle r="18" fill="#33414F"/><circle cy="-6" r="6" fill="#43A047"/><circle cy="7" r="6" fill="#5B6B7A"/>',
+    vink: `<circle r="20" fill="#1F6FB2"/><g transform="scale(.9)">${vink('#fff')}</g>`,
+    slot: '<circle r="18" fill="#B8BFCB"/><circle cy="-6" r="6" fill="#E5484D"/><circle cy="7" r="6" fill="#8A94A3"/>',
+    feest: ['<circle r="10" fill="#E5484D"/>', '<rect x="-10" y="-7" width="20" height="14" rx="3" fill="#2F80C9"/>', '<circle r="9" fill="#F2C530"/>'], confetti: ['#2F80C9', '#E5484D', '#F2C530', '#43A047'],
+    tegelRadius: '18px', tegelRand: '6px solid var(--kid)',
+  },
+  {
+    sleutel: 'muziek', naam: 'Muziekshow', kidKleur: '#8E3FBF', shirt: 'paars', verhouding: 1,
+    ondertitels: { spelen: 'Het podium', verhalen: 'Lezen in de coulissen', kleurplaten: 'Het decoratelier', figuurtje: 'Ster van de show', huis: 'Mijn muziekkamer' },
+    klaarTekst: 'Show klaar, buigen maar!', nogTeDoen: (n) => `Nog ${n} ${n === 1 ? 'liedje' : 'liedjes'} tot het applaus`,
+    licht: { bg: '#F6EEFC', surface: '#FFFFFF', soft: '#EADCF7', ink: '#3A1650', muted: '#6E4A88', line: '#DCC6EE', shade: '#CDB2E4', kid: '#8E3FBF', 'kid-tint': '#EEDFF9', 'on-solid': '#FFFFFF',
+      'tn-grond': '#B98AD8', 'tn-podium': '#8A5A33', 'tn-nacht': 'none', 'tn-banner': 'linear-gradient(#E3CCF7,#F6EEFC)', 'tn-titel': '#3A1650', 'tn-sub': '#6E2A99', 'tn-spoor': '#DCC6EE' },
+    donker: { bg: '#170A22', surface: '#2A1440', soft: '#341A4E', ink: '#F3E8FC', muted: '#C7A8E2', line: '#45245F', shade: '#08030D', kid: '#C68AF0', 'kid-tint': '#3A1C55', 'on-solid': '#170A22',
+      'tn-grond': '#3A1C55', 'tn-podium': '#5A3A22', 'tn-nacht': 'inline', 'tn-banner': 'linear-gradient(#0D0516,#3A1C55)', 'tn-titel': '#FFFFFF', 'tn-sub': '#F2C530', 'tn-spoor': '#45245F' },
+    prent: muziek,
+    voortgang: { mover: '<ellipse cx="-4" cy="6" rx="7" ry="5" fill="#8E3FBF"/><path d="M2 6V-12Q10 -8 12 -2" stroke="#8E3FBF" stroke-width="3" fill="none"/>', doel: `<g transform="scale(.8)">${ster('#F2C530')}</g>` },
+    nieuw: '<ellipse cx="-6" cy="10" rx="10" ry="8" fill="#F2C530"/><path d="M3 10V-18Q16 -12 18 0" stroke="#F2C530" stroke-width="5" fill="none"/>',
+    vink: `<circle r="20" fill="#8E3FBF"/><g transform="scale(.9)">${vink('#fff')}</g>`,
+    slot: '<circle r="18" fill="#B8BFCB"/><ellipse cx="-4" cy="6" rx="6" ry="5" fill="#5B6B7A"/><path d="M1 6V-10" stroke="#5B6B7A" stroke-width="3"/>',
+    feest: [ster('#F2C530'), '<ellipse cx="-4" cy="6" rx="7" ry="5" fill="#C68AF0"/><path d="M2 6V-12" stroke="#C68AF0" stroke-width="3"/>', '<circle r="8" fill="#E5484D"/>'], confetti: ['#8E3FBF', '#F2C530', '#E5484D', '#FFFFFF'],
+    tegelRadius: '26px', tegelRand: '6px solid var(--kid)',
   },
 ]
 

@@ -1,0 +1,91 @@
+{
+  "nr": 59,
+  "titel": "De puzzel in de schoen",
+  "reeks": "avonturiers",
+  "leeftijd": 8,
+  "thema": "Sinterklaas, volhouden bij een lastige puzzel",
+  "bladzijden": [
+    {
+      "tekst": "Op dinsdagochtend rent Daan naar zijn schoen bij de open haard. Er zit een wortel minder in en een klein vierkant doosje meer. Het doosje is van hout, met een gouden rand. Er hangt een briefje aan: \"Voor Daan, die van raadsels houdt.\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "schoen",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "In het doosje ligt een schuifpuzzel. Vijftien houten blokjes en één leeg vakje. Op de blokjes staat een prent, maar alles staat door elkaar: de schoorsteen van de stoomboot zit onderaan, en een stuk zon ligt in het water. \"Schuif de blokjes tot de prent klopt,\" staat er op de achterkant.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan begint meteen. Hij schuift een blokje naar links, een ander naar boven. Klik, klik. Na vijf minuten zit de zon goed. Maar de boot is nu helemaal in stukken. \"Als ik het ene goed zet, gaat het andere weer fout,\" moppert hij.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor kijkt over zijn schouder. \"Misschien moet je niet alles tegelijk willen,\" zegt ze. \"Doe eerst de bovenste rij. Daarna raak je die niet meer aan.\" Daan zucht. Dat klinkt traag. Maar hij probeert het toch.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "De bovenste rij duurt lang. Bij het laatste blokje moet hij een trucje bedenken: eerst een blokje opzij, dan het andere eronder, dan allebei samen omhoog. Het lukt pas na drie keer proberen. Dan staat er bovenaan een stuk blauwe lucht met de zon. Daan glimlacht.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "De tweede rij gaat al sneller. Hij kent het trucje nu. Bij de laatste twee rijen moet hij de blokjes rondjes laten draaien, als een karrousel. Tijs de hond legt zijn kop op Daans knie en kijkt naar de blokjes die heen en weer schuiven.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "hond"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan schuift hij het laatste blokje op zijn plaats. De prent klopt: een rode stoomboot op blauw water, met witte rookwolkjes en een gele vlag. \"Gelukt!\" roept Daan. Noor klapt in haar handen. \"Hoe lang heb je erover gedaan?\" \"Een uur,\" zegt Daan trots.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "noor",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Die avond schudt Daan de blokjes weer door elkaar en geeft de puzzel aan Noor. \"Begin met de bovenste rij,\" zegt hij. \"En niet opgeven als het eerst slechter wordt.\" Noor knikt. Ze schuift het eerste blokje. Klik.",
+      "prent": {
+        "decor": "huis",
+        "figuren": [
+          "daan",
+          "noor",
+          "doos"
+        ]
+      }
+    }
+  ]
+}
