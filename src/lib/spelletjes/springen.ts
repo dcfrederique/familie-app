@@ -166,14 +166,32 @@ export function nieuwSpel(level: SpringLevel, besturing: SpringBesturing): Sprin
     startPunt: start, baas, kogels: [],
   }
   // Een level zonder eigen vlaggetjes (C) krijgt er vanzelf een of twee op stevige grond, in een lang level meer.
-  if (!vlaggen.length && !baas) {
+  if (!vlaggen.length && !baas && besturing === 'vanzelf') {
     const n = breed > 120 ? 2 : 1
     for (let i = 1; i <= n; i++) {
       const vlag = vlagPlek(spel, Math.round((breed * i) / (n + 1)))
       if (vlag) vlaggen.push(vlag)
     }
   }
+  // Wie zelf loopt (Luca, 9 november 2026): extra beestjes op vlakke grond, en alleen de vlaggetjes die het level zelf heeft.
+  if (besturing === 'zelf' && !baas) extraBeestjes(spel, level)
   return spel
+}
+
+/** Zet om de ±24 kolommen een extra beestje op stevige, vlakke grond, ver van gaten, vlaggetjes, andere beestjes en de start. */
+function extraBeestjes(s: Springen, level: SpringLevel) {
+  const info = springLevels[level]
+  for (let c = 20; c < s.breed - 22; c += 24) {
+    for (let d = 0; d < 10; d++) {
+      const x = c + d, g = s.hoog - 2
+      const vlak = [-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5].every((k) => isVast(s, x + k, g) && !isVast(s, x + k, g - 1) && !isVast(s, x + k, g - 2))
+      const vrij = s.beestjes.every((b) => Math.abs(b.x - x) > 6) && s.vlaggen.every((v) => Math.abs(v.x - x) > 6) && s.dingen.every((g) => g.soort !== 'ster' || Math.abs(g.x - x) > 0)
+      if (vlak && vrij) {
+        s.beestjes.push({ x: x + 0.5, y: g, thuis: x + 0.5, richting: -1, hupKlok: 0, soort: info.beestje, leven: BEESTJE_LEVENS[info.beestje], weg: false, krul: 0, op: 0 })
+        break
+      }
+    }
+  }
 }
 
 /** Zoekt bij kolom `rond` de dichtste stevige grond (drie vakjes breed, geen beestje vlakbij) voor een vlaggetje. */

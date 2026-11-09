@@ -38,6 +38,10 @@ Platformspel van opzij waarin het kind met zijn eigen figuurtje loopt en springt
 
 ## Vijanden
 
+Moeilijkheid per kind (9 november 2026): wie **Zelf lopen** speelt (Luca) krijgt in `nieuwSpel` extra beestjes (`extraBeestjes`, om de ±24
+kolommen op vlakke grond) en geen automatische vlaggetjes (alleen de `C` die het level zelf heeft); wie **Vanzelf lopen** speelt (Feline,
+Yuna) speelt het level zoals getekend. Teken een level dus voor Vanzelf; Zelf wordt vanzelf zwaarder.
+
 Erop springen verslaat een vijand (27 oktober 2026, Frederique): hij gaat "poef" weg met sterretjes, je kaatst vrolijk
 verder. De soort vijand volgt uit het `beestje` van het level, en elke soort heeft een eigen manier (`BEESTJE_LEVENS` in
 `springen.ts`):

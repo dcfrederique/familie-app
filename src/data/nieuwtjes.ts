@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.134',
+    datum: '2026-11-09',
+    titel: "Springland: gewone levels uitdagender voor Luca",
+    tekst: "Wie zelf loopt (Luca) krijgt in veel levels een of twee extra beestjes op vlakke stukken, en de vlaggetjes die een level niet zelf heeft, komen er niet meer vanzelf bij: bij nul hartjes ga je dan terug naar het laatste vlaggetje dat het level echt heeft, of naar de start. Wie vanzelf loopt (Feline, Yuna) merkt niets: zelfde beestjes, vlaggetjes en drie hartjes. Het robotje in de tests speelt nog elk level uit.",
+  },
+  {
     versie: '0.133',
     datum: '2026-11-09',
     titel: "Springland: elke baas is nu anders",
