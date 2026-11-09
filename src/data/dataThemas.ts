@@ -120,6 +120,14 @@ const muziek = wikkel(`<path d="M380 0L300 220H420Z" fill="#FFF3C4" opacity=".35
   ${[[160, 70, '#E5484D'], [240, 40, '#2F80C9'], [760, 60, '#8E5BD1'], [860, 100, '#F2A900']].map(([x, y, c]) => `<g class="thema-zweef" transform="translate(${x} ${y})"><ellipse cx="0" cy="20" rx="10" ry="8" fill="${c}"/><path d="M9 20V-14Q22 -8 24 4" stroke="${c}" stroke-width="5" fill="none"/></g>`).join('')}
   <path d="M0 220v-24h1000v24z" style="fill:var(--tn-grond)"/>`)
 
+const slaap = wikkel(`<g transform="translate(150 30)"><rect x="0" y="0" width="120" height="110" rx="8" fill="#FFFFFF" opacity=".9"/><rect x="8" y="8" width="104" height="94" rx="4" style="fill:var(--tn-raam)"/><path d="M60 8V102M8 55H112" stroke="#FFFFFF" stroke-width="5"/><path d="M84 22a16 16 0 1 0 14 24a12 12 0 1 1 -14 -24z" fill="#FFE27A"/><g class="tn-nacht" fill="#FFF3C4"><circle cx="26" cy="28" r="2.5"/><circle cx="40" cy="74" r="2"/><circle cx="92" cy="84" r="2.5"/></g></g>
+  <path d="M0 22Q250 64 500 26T1000 22" fill="none" stroke="#7A6A5A" stroke-width="2"/>
+  ${[[60, 30, '#F2C530'], [150, 44, '#E5484D'], [330, 46, '#43A047'], [420, 34, '#F2C530'], [580, 34, '#2F80C9'], [680, 44, '#E5484D'], [780, 38, '#F2C530'], [900, 26, '#43A047']].map(([x, y, c]) => `<g class="thema-zweef" transform="translate(${x} ${y})"><ellipse cx="0" cy="8" rx="6" ry="9" fill="${c}"/><rect x="-4" y="-4" width="8" height="5" fill="#7A6A5A"/></g>`).join('')}
+  <g transform="translate(470 120)"><path d="M-120 100L0 -40L120 100Z" fill="#F7A8C4"/><path d="M-120 100L0 -40L-30 100Z" fill="#E78AAE"/><path d="M0 -40L-30 100H30Z" fill="#7A3A5A" opacity=".55"/><path d="M-120 100L0 -40L120 100" fill="none" stroke="#FFFFFF" stroke-width="5" stroke-dasharray="2 14" stroke-linecap="round"/></g>
+  <g transform="translate(700 150)"><rect x="-80" y="20" width="200" height="50" rx="16" fill="#8FB8F0"/><rect x="-70" y="0" width="70" height="36" rx="16" fill="#FFFFFF"/><rect x="10" y="4" width="60" height="32" rx="16" fill="#FDE6B0"/><g transform="translate(96 -2)"><circle cx="-14" cy="-26" r="9" fill="#C98A4A"/><circle cx="14" cy="-26" r="9" fill="#C98A4A"/><circle cx="0" cy="-12" r="20" fill="#C98A4A"/><ellipse cx="0" cy="22" rx="22" ry="24" fill="#C98A4A"/><ellipse cx="0" cy="-6" rx="8" ry="6" fill="#F2D3A8"/><circle cx="-7" cy="-16" r="2.5" fill="#33414F"/><circle cx="7" cy="-16" r="2.5" fill="#33414F"/></g></g>
+  <g transform="translate(860 170)"><rect x="-30" y="0" width="60" height="50" rx="6" fill="#B5733A"/><rect x="-24" y="8" width="48" height="16" rx="3" fill="#8A5A33"/><rect x="-12" y="-36" width="24" height="36" rx="4" fill="#F4F6F9"/><path d="M-8 -36Q0 -50 8 -36" fill="#FFE27A"/></g>
+  <path d="M0 220v-24h1000v24z" style="fill:var(--tn-grond)"/>`)
+
 const vink = (kleur: string) => `<path d="M-16 0L-6 10L16 -12" stroke="${kleur}" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
 
 export const dataThemas: DataThema[] = [
@@ -296,6 +304,22 @@ export const dataThemas: DataThema[] = [
     vink: `<circle r="20" fill="#8E3FBF"/><g transform="scale(.9)">${vink('#fff')}</g>`,
     slot: '<circle r="18" fill="#B8BFCB"/><ellipse cx="-4" cy="6" rx="6" ry="5" fill="#5B6B7A"/><path d="M1 6V-10" stroke="#5B6B7A" stroke-width="3"/>',
     feest: [ster('#F2C530'), '<ellipse cx="-4" cy="6" rx="7" ry="5" fill="#C68AF0"/><path d="M2 6V-12" stroke="#C68AF0" stroke-width="3"/>', '<circle r="8" fill="#E5484D"/>'], confetti: ['#8E3FBF', '#F2C530', '#E5484D', '#FFFFFF'],
+    tegelRadius: '26px', tegelRand: '6px solid var(--kid)',
+  },
+  {
+    sleutel: 'pyjamafeest', naam: 'Pyjamafeestje', kidKleur: '#4A63C9', shirt: 'blauw', verhouding: 1,
+    ondertitels: { spelen: 'In de dekentent', verhalen: 'Verhaaltjes voor het slapen', kleurplaten: 'Tekenen onder de lampjes', figuurtje: 'In mijn pyjama', huis: 'Mijn slaapkamer' },
+    klaarTekst: 'Alles klaar, slaapwel!', nogTeDoen: (n) => `Nog ${n} ${n === 1 ? 'kussen' : 'kussens'} tot het feestje`,
+    licht: { bg: '#F0F3FC', surface: '#FFFFFF', soft: '#DFE5F8', ink: '#1E2A55', muted: '#56628C', line: '#CDD5F0', shade: '#B6C1E6', kid: '#4A63C9', 'kid-tint': '#E2E8FA', 'on-solid': '#FFFFFF',
+      'tn-grond': '#C9A27A', 'tn-raam': '#9CC8F2', 'tn-nacht': 'none', 'tn-banner': 'linear-gradient(#DCE4FA,#F0F3FC)', 'tn-titel': '#1E2A55', 'tn-sub': '#3A4FA8', 'tn-spoor': '#CDD5F0' },
+    donker: { bg: '#0D1124', surface: '#1A2140', soft: '#222B52', ink: '#E8ECFB', muted: '#A9B3DE', line: '#2D3766', shade: '#05070F', kid: '#8EA2F2', 'kid-tint': '#26305C', 'on-solid': '#0D1124',
+      'tn-grond': '#4A3A2E', 'tn-raam': '#1A2350', 'tn-nacht': 'inline', 'tn-banner': 'linear-gradient(#080B18,#26305C)', 'tn-titel': '#FFFFFF', 'tn-sub': '#FFE27A', 'tn-spoor': '#2D3766' },
+    prent: slaap,
+    voortgang: { mover: '<rect x="-10" y="-6" width="20" height="13" rx="6" fill="#FFFFFF" stroke="#4A63C9" stroke-width="2"/>', doel: '<path d="M4 -12a12 12 0 1 0 10 18a9 9 0 1 1 -10 -18z" fill="#FFE27A"/>' },
+    nieuw: '<path d="M4 -16a16 16 0 1 0 14 24a12 12 0 1 1 -14 -24z" fill="#FFE27A"/>',
+    vink: `<circle r="20" fill="#4A63C9"/><g transform="scale(.9)">${vink('#fff')}</g>`,
+    slot: '<circle r="18" fill="#B8BFCB"/><rect x="-10" y="-6" width="20" height="13" rx="6" fill="#5B6B7A"/>',
+    feest: [ster('#FFE27A'), '<path d="M4 -10a10 10 0 1 0 8 15a8 8 0 1 1 -8 -15z" fill="#FFE27A"/>', '<rect x="-8" y="-5" width="16" height="10" rx="5" fill="#F7A8C4"/>'], confetti: ['#4A63C9', '#FFE27A', '#F7A8C4', '#FFFFFF'],
     tegelRadius: '26px', tegelRand: '6px solid var(--kid)',
   },
 ]

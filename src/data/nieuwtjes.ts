@@ -19,6 +19,17 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.124',
+    datum: '2026-11-09',
+    titel: "Bruggen bouwen, Een brug voor het paard en een nieuw level",
+    tekst: "Nieuw verhaal \"Een brug voor het paard\" (Sinterklaas, samen bouwen) en nieuwe kleurplaat \"Brug over de beek\", meteen te lezen en in te kleuren. Het spelletje Bruggen bouwen kost 30 sterren: eilandjes in het water, elk met een getal; tik op twee eilandjes om er een bruggetje (of een dubbel) tussen te leggen, tot elk eilandje zijn getal heeft en alles verbonden is. Bruggetjes kruisen niet. Makkelijk: 3 tot 5 eilandjes met stipjes, en een eilandje kleurt groen als het genoeg heeft. Middel: tot 9 eilandjes met cijfers. Moeilijk: 12 tot 18 eilandjes dicht bij elkaar, zonder kleurhulp, zelf nakijken met Klaar?, met klokje en pluimen. In Springland ligt het derde level van het Lichtjesbos: De bruggetjes over de beek. Nieuw kinderthema: Pyjamafeestje, te kiezen bij Mijn thema.",
+    verhaal: "Een brug voor het paard",
+    spel: { naam: "Bruggen bouwen", prijs: 30 },
+    stukken: ["Figuurtje: Bevermuts (20), Kabeltrui (20), Hamertje (15)", "Mijn huis: Houten brugje (30), Stapstenen in een beekje (20), Stapel planken (20)"],
+    open: "Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.",
+  },
+
+  {
     versie: '0.123',
     datum: '2026-11-09',
     titel: "Schuifpuzzel, De puzzel in de schoen en Het donkere bospad",

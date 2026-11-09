@@ -1,0 +1,123 @@
+{
+  "nr": 60,
+  "titel": "Een brug voor het paard",
+  "reeks": "avonturiers",
+  "leeftijd": 6,
+  "thema": "Sinterklaas, samen iets bouwen en elkaar helpen",
+  "bladzijden": [
+    {
+      "tekst": "Het regent al drie dagen. In het park achter het huis is de kleine beek veel breder geworden. Het water stroomt over het pad, net op de plek waar Pip en Mo elke dag naar school wandelen. \"Daar kan niemand meer over,\" zegt Mo. \"Zelfs geen paard.\"",
+      "prent": {
+        "decor": "park",
+        "figuren": [
+          "pip",
+          "mo"
+        ]
+      }
+    },
+    {
+      "tekst": "Pip blijft stilstaan. \"Een paard?\" vraagt ze. \"Het paard van de Sint! Hij rijdt 's nachts over de daken, maar soms komt hij ook door het park. Dat zegt opa.\" Mo kijkt naar het water. \"Dan heeft hij een brug nodig,\" zegt hij ernstig.",
+      "prent": {
+        "decor": "park",
+        "figuren": [
+          "pip",
+          "mo",
+          "paard"
+        ]
+      }
+    },
+    {
+      "tekst": "Thuis vertellen ze het aan opa. Opa krabt in zijn baard. \"Een echte brug bouwen is werk voor grote mensen,\" zegt hij. \"Maar een plan tekenen, dat kunnen jullie heel goed.\" Hij legt een groot blad papier op tafel en zoekt de kleurpotloden.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pip",
+          "mo",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "Pip tekent de beek als een lange blauwe slang. Mo tekent stenen in het water, als kleine eilandjes. \"Van steen naar steen,\" zegt hij. \"Met een plank ertussen.\" Pip telt de stenen. Het zijn er vijf. \"Dan hebben we vier planken nodig,\" zegt ze trots.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pip",
+          "mo",
+          "tekening"
+        ]
+      }
+    },
+    {
+      "tekst": "Opa kijkt naar de tekening en knikt. \"Maar let op,\" zegt hij. \"Een plank moet recht liggen, van de ene steen naar de andere. En twee planken mogen niet over elkaar heen. Anders wiebelt alles.\" Mo gumt een schuine plank uit en tekent hem opnieuw, recht.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "mo",
+          "opa",
+          "tekening"
+        ]
+      }
+    },
+    {
+      "tekst": "Op zaterdag is de regen weg. Opa neemt planken mee uit de schuur, Pip draagt de hamer en Mo een emmer met spijkers. Mama komt ook. Ze zoeken grote, platte stenen aan de kant van de beek en leggen ze in het water, net zoals op de tekening.",
+      "prent": {
+        "decor": "park",
+        "figuren": [
+          "pip",
+          "mo",
+          "opa",
+          "pipmama",
+          "planken"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan komen de planken. De eerste ligt meteen goed. De tweede is te kort. \"Geen nood,\" zegt opa. \"Dan leggen we er twee naast elkaar, dat is extra stevig.\" Pip mag op de laatste plank een spijker slaan. Tik, tik, tik. Ze raakt hem met de vierde tik.",
+      "prent": {
+        "decor": "park",
+        "figuren": [
+          "pip",
+          "opa",
+          "planken"
+        ]
+      }
+    },
+    {
+      "tekst": "Mo loopt als eerste over de brug, heel voorzichtig. Hij wiebelt niet. Dan Pip, dan mama, en als laatste opa met zijn armen wijd, als een koorddanser. Iedereen lacht. Koek de kat kijkt van de kant toe en durft niet.",
+      "prent": {
+        "decor": "park",
+        "figuren": [
+          "pip",
+          "mo",
+          "opa",
+          "pipmama",
+          "koek"
+        ]
+      }
+    },
+    {
+      "tekst": "Die avond zet Pip haar schoen bij de deur. Ze legt er de tekening van de brug in, met een wortel. \"Zodat het paard weet dat hij nu over de beek kan,\" fluistert ze tegen Mo. Mo legt er nog een tweede wortel bij. Voor de zekerheid.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "mo",
+          "schoen",
+          "tekening"
+        ]
+      }
+    },
+    {
+      "tekst": "De volgende ochtend is de wortel weg. In de schoen liggen twee chocoladeletters, een P en een M. En op de tekening staat met gouden pen geschreven: \"Wat een mooie brug. Mijn paard liep er vannacht over. Dank je wel, bouwmeesters!\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "mo",
+          "schoen"
+        ]
+      }
+    }
+  ]
+}

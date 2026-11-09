@@ -56,6 +56,8 @@ export const zin = {
   vlekKlaar: "Alle bladen zijn helemaal geverfd!",
   schuifUitleg: "Tik op een stukje naast het lege vakje. Het schuift erin. Maak de prent weer heel.",
   schuifKlaar: "Alle prenten kloppen weer!",
+  bruggenUitleg: "Tik op een eilandje en dan op een ander eilandje. Zo leg je een bruggetje. Elk eilandje wil zoveel bruggetjes als er stipjes op staan.",
+  bruggenKlaar: "Alle eilandjes zijn verbonden!",
   roosterUitleg: 'Zet elke kleur één keer in elke rij en in elke kolom.',
   roosterKlaar: 'Alle pakjes staan op hun plaats!',
   torensUitleg: 'Verhuis alle pakjes naar de gouden plank. Een groot pakje mag nooit op een klein pakje.',

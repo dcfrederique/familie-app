@@ -714,6 +714,25 @@ export const kleurplaten: Kleurplaat[] = [
     lijnen: ['M200 40V30', 'M300 30q-14 14 0 24', 'M56 66h0M68 66h0'],
     voorbeeld: ['#FFF3C4', '#C9A27A', '#E53935', '#F2C530', '#F2C530', '#F2C530', '#F2C530', '#C9A27A', '#FFD84D', '#B5733A', '#B5733A'],
   },
+  {
+    sleutel: 'beekbrug', titel: 'Brug over de beek',
+    vlakken: [
+      { r: [0, 0, 400, 300] },
+      { d: 'M0 150Q100 130 200 150T400 150V300H0Z' },
+      { d: 'M0 190Q100 175 200 195T400 190V250Q300 235 200 255T0 250Z' },
+      { e: [80, 220, 34, 16] },
+      { e: [200, 225, 34, 16] },
+      { e: [320, 220, 34, 16] },
+      { r: [70, 196, 140, 14, 4] },
+      { r: [190, 196, 140, 14, 4] },
+      { c: [330, 60, 30] },
+      { e: [90, 70, 50, 20] },
+      { c: [60, 130, 22] },
+      { r: [56, 130, 8, 40] },
+    ],
+    lijnen: ['M100 196v14M130 196v14M160 196v14M230 196v14M260 196v14M290 196v14', 'M150 230q8-4 16 0M260 238q8-4 16 0'],
+    voorbeeld: ['#BFE3F7', '#8BC34A', '#4FA3E0', '#9E9E9E', '#9E9E9E', '#9E9E9E', '#B5733A', '#B5733A', '#FFD84D', '#FFFFFF', '#43A047', '#8D5A2B'],
+  },
 ]
 
 /** Deel van de vlakken dat ingekleurd moet zijn voor de plaat af is. */
