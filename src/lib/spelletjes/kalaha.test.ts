@@ -58,7 +58,8 @@ describe('Kalaha', () => {
       if (hij > ik) wint++
     }
     expect(wint).toBeGreaterThanOrEqual(5)
-  })
+    // Zes volle spelletjes met de diepe zoektocht van moeilijk: in CI duurt dat soms langer dan de standaard 5 seconden.
+  }, 30000)
 
   it('speelt drie spelletjes en geeft pluimen', () => {
     let s = nieuwSpel('moeilijk')
