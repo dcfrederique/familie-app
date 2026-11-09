@@ -13,6 +13,9 @@ export default defineConfig({
       includeAssets: ['icon.svg'],
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
+        // De hoofdbundel is groter dan de standaardgrens van 2 MiB (alle spelletjes en prenten); zonder deze grens
+        // stopt de bouw en komt er niets online. Ze moet wel vooraf in de cache, anders werkt de app niet offline.
+        maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,
         // Meldingen voor ouders: push en klikken op een melding (public/push-sw.js).
         importScripts: ['push-sw.js'],
         // Opnames van de voorleesstem: niet vooraf (±20 MB), wel bewaren zodra een verhaal één keer gespeeld is.
