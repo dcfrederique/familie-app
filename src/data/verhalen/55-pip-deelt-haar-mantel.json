@@ -1,0 +1,92 @@
+{
+  "nr": 55,
+  "titel": "Pip deelt haar mantel",
+  "reeks": "kleine-oortjes",
+  "leeftijd": 4,
+  "thema": "Sint-Maarten, delen met wie het koud heeft",
+  "bladzijden": [
+    {
+      "tekst": "Het is Sint-Maarten. Pip heeft een nieuwe rode mantel. Hij is zacht en warm, met een grote gouden knoop. Mama maakt de knoop dicht. \"Klaar voor de stoet,\" zegt mama. Pip draait een rondje. De mantel draait mee.",
+      "prent": {
+        "decor": "huis",
+        "figuren": [
+          "pip",
+          "pipmama"
+        ]
+      }
+    },
+    {
+      "tekst": "Pip krijgt ook een lampion. Hij is rond en geel, net een kleine maan. Er brandt een lichtje in. Pip houdt de stok heel stil vast, zodat de lampion niet wiebelt. Op de lampion staat een ster die ze zelf heeft getekend.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "pip",
+          "lampion"
+        ]
+      }
+    },
+    {
+      "tekst": "Buiten is het donker en koud. In de straat lopen veel kinderen met lampionnen. Rood, blauw, groen en geel. Ze zingen het liedje van Sint-Maarten. Pip zingt mee, zo hard als ze kan. Haar lampion knippert vrolijk mee.",
+      "prent": {
+        "decor": "bos-avond",
+        "figuren": [
+          "pip",
+          "lampion",
+          "sterren"
+        ]
+      }
+    },
+    {
+      "tekst": "Bij het bankje in het park zit Mo. Hij heeft geen jas aan, alleen een dunne trui. Hij trilt een beetje. \"Ik ben mijn jas vergeten,\" zegt Mo zacht. \"En nu heb ik koud.\"",
+      "prent": {
+        "decor": "park",
+        "figuren": [
+          "mo",
+          "pip"
+        ]
+      }
+    },
+    {
+      "tekst": "Pip kijkt naar haar mantel. Hij is groot. Heel groot. Dan weet ze het. Ze doet de gouden knoop open. \"Kom maar,\" zegt Pip. \"Er is plek voor twee.\" Ze slaat de mantel om Mo heen. Nu zitten ze er samen in, dicht tegen elkaar.",
+      "prent": {
+        "decor": "park",
+        "figuren": [
+          "pip",
+          "mo"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Zo deed Sint-Maarten het ook,\" zegt mama. \"Hij deelde zijn mantel met een man die het koud had.\" Mo lacht. Zijn neus is niet meer zo rood. \"Het is warm in jouw mantel,\" zegt hij.",
+      "prent": {
+        "decor": "park",
+        "figuren": [
+          "pip",
+          "mo",
+          "pipmama"
+        ]
+      }
+    },
+    {
+      "tekst": "Samen lopen ze verder in de stoet. Dat gaat een beetje wiebelig, want vier voetjes in één mantel is lastig. Links, rechts, links, rechts. Ze moeten erom giechelen. Hun lampionnen dansen mee.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "pip",
+          "mo",
+          "lampion"
+        ]
+      }
+    },
+    {
+      "tekst": "Aan het einde krijgt elk kind een warme appel en een koek. Pip deelt haar koek ook met Mo. Thuis hangt Pip haar mantel aan de haak. \"Morgen is hij weer van mij alleen,\" zegt ze. \"Maar delen was het fijnst.\"",
+      "prent": {
+        "decor": "huis",
+        "figuren": [
+          "pip",
+          "koek"
+        ]
+      }
+    }
+  ]
+}

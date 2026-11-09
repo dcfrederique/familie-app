@@ -105,7 +105,7 @@ function LantaarnScherm({ kind }: { kind: Gebruiker }) {
       <Chips label="Niveau" opties={lantaarnNiveaus} gekozen={niveau} kies={kiesNiveau} />
       <div className="lt-spel">
         <div className="lt-plek">
-        <div className={`lt-veld${feest ? ' feest' : ''}`} style={{ '--kol': spel.breed, '--rij': spel.hoog } as React.CSSProperties}>
+        <div className={`lt-veld${feest ? ' viert' : ''}`} style={{ '--kol': spel.breed, '--rij': spel.hoog } as React.CSSProperties}>
           {spel.aan.map((aan, i) => (
             <button key={i} type="button" className={`lt-vak${aan ? ' aan' : ''}${tip === i ? ' tip' : ''}`}
                     aria-label={aan ? 'Lantaarn brandt' : 'Lantaarn is uit'} onClick={() => druk(i)}>

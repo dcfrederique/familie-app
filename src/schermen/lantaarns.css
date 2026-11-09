@@ -10,12 +10,12 @@
 .lt-vak.aan { background: rgba(255, 226, 122, 0.16); }
 .lt-vak.tip { box-shadow: 0 0 0 4px var(--gold); animation: lt-tip 1s ease-in-out infinite alternate; }
 .lt-svg { width: 82%; height: 82%; pointer-events: none; }
-.lt-veld.feest .lt-vak { background: rgba(255, 226, 122, 0.3); }
+.lt-veld.viert .lt-vak { background: rgba(255, 226, 122, 0.3); }
 .lt-zij { display: flex; flex-direction: column; align-items: center; gap: 12px; font-weight: 700; }
 .lt-tikken b { font-size: 1.3em; }
 @keyframes lt-tip { from { transform: scale(1); } to { transform: scale(1.06); } }
 @media (prefers-reduced-motion: reduce) { .lt-vak.tip { animation: none; } }
-@media (prefers-reduced-motion: no-preference) { .lt-veld.feest .lt-svg { animation: lt-zwaai .6s ease-in-out 2 alternate; transform-origin: 50% 0; } }
+@media (prefers-reduced-motion: no-preference) { .lt-veld.viert .lt-svg { animation: lt-zwaai .6s ease-in-out 2 alternate; transform-origin: 50% 0; } }
 @keyframes lt-zwaai { from { transform: rotate(-6deg); } to { transform: rotate(6deg); } }
 @media (orientation: portrait) {
   .lt-spel { flex-direction: column; }
@@ -41,6 +41,6 @@
   .lt-vak.aan .lt-svg { animation: lt-flakker 2.6s ease-in-out infinite; }
   .lt-vak.aan:nth-child(3n) .lt-svg { animation-delay: -.9s; }
   .lt-vak.aan:nth-child(3n + 1) .lt-svg { animation-delay: -1.7s; }
-  .lt-veld.feest .lt-vak.aan .lt-svg { animation: lt-zwaai .6s ease-in-out 2 alternate; }
+  .lt-veld.viert .lt-vak.aan .lt-svg { animation: lt-zwaai .6s ease-in-out 2 alternate; }
 }
 @keyframes lt-flakker { 0%, 100% { filter: brightness(1); } 45% { filter: brightness(1.12) drop-shadow(0 0 6px rgba(255, 210, 90, .55)); } 70% { filter: brightness(.96); } }

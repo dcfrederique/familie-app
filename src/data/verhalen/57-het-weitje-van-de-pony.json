@@ -1,0 +1,97 @@
+{
+  "nr": 57,
+  "titel": "Het weitje van de pony",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Herfst op de boerderij, samen een hek bouwen",
+  "bladzijden": [
+    {
+      "tekst": "Het is herfst op de boerderij van opa. De bladeren zijn geel en rood, en het gras is nat van de dauw. Noor en Daan logeren een weekend. Ze dragen laarzen en dikke truien.",
+      "prent": {
+        "decor": "weide-ochtend",
+        "figuren": [
+          "noor",
+          "daan",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Vandaag krijgen we een nieuwe pony,\" zegt opa. \"Ze heet Mira. Maar haar weitje heeft nog geen hek. Willen jullie helpen?\" Daan en Noor springen op en neer. \"Ja!\" roepen ze tegelijk.",
+      "prent": {
+        "decor": "weide",
+        "figuren": [
+          "opa",
+          "noor",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Opa heeft al paaltjes in de grond geklopt. Ze staan in rijen, als stippen op een blad. Tussen de paaltjes moeten planken komen. \"Een weitje is pas klaar als er aan alle vier de kanten een plank zit,\" legt opa uit.",
+      "prent": {
+        "decor": "weide",
+        "figuren": [
+          "opa",
+          "planken"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor en Daan dragen samen een plank. Hij is lang en zwaar. Opa timmert hem vast. Tok, tok, tok. Dan de volgende. Na een tijdje heeft het eerste weitje drie kanten. \"Nog één plank,\" zegt Daan, \"dan is het dicht!\"",
+      "prent": {
+        "decor": "weide",
+        "figuren": [
+          "noor",
+          "daan",
+          "opa",
+          "planken"
+        ]
+      }
+    },
+    {
+      "tekst": "Maar dan ziet Noor iets. \"Opa, als we deze plank hier zetten, is niet alleen dit weitje dicht. Dan is het weitje ernaast ook bijna klaar.\" Opa knikt. \"Slim gezien. Met één plank kan je soms twee weitjes afmaken.\"",
+      "prent": {
+        "decor": "weide",
+        "figuren": [
+          "noor",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "Ze werken de hele ochtend. Er komt een kip kijken, en een schaap blaat over het oude hek. Om twaalf uur zijn er vier weitjes klaar. Eén voor Mira, één voor de schapen, één voor de kippen en één voor de groentetuin.",
+      "prent": {
+        "decor": "weide",
+        "figuren": [
+          "noor",
+          "daan",
+          "kip",
+          "schaap"
+        ]
+      }
+    },
+    {
+      "tekst": "Na de middag rijdt er een aanhangwagen het erf op. Daaruit stapt een kleine bruine pony met een witte vlek op haar neus. \"Dag Mira,\" fluistert Noor. Mira snuffelt aan haar hand. Haar adem is warm.",
+      "prent": {
+        "decor": "weide",
+        "figuren": [
+          "noor",
+          "paard"
+        ]
+      }
+    },
+    {
+      "tekst": "Opa doet het poortje open en Mira loopt haar weitje in. Ze rent een rondje langs het nieuwe hek en rolt in het gras. \"Ze vindt het mooi,\" lacht Daan. Noor knikt trots. \"Wij hebben haar hek gebouwd.\"",
+      "prent": {
+        "decor": "weide",
+        "figuren": [
+          "paard",
+          "noor",
+          "daan",
+          "opa"
+        ]
+      }
+    }
+  ]
+}

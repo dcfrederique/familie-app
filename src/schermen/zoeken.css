@@ -1,0 +1,58 @@
+/* Pepernoten zoeken: rode kussentjes in een raster; open = zandkleur met een getal of stipjes. Schaalt mee (geen scrollen). */
+.zk { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 1.4dvh, 14px); width: 100%; }
+.zk-spel { display: flex; align-items: center; justify-content: center; gap: clamp(12px, 3vw, 36px); width: 100%; }
+.zk-veld {
+  --vak: min(calc((100dvh - 250px) / var(--rij)), calc((100vw - 280px) / var(--kol)), 110px);
+  display: grid; grid-template-columns: repeat(var(--kol), var(--vak)); grid-auto-rows: var(--vak); gap: 4px;
+  padding: 8px; border-radius: 18px; background: #7A2E2E; box-shadow: 0 5px 0 rgba(0, 0, 0, .18);
+}
+.zk-vak {
+  display: grid; place-items: center; padding: 0; min-width: 0; min-height: 0; border: 0; border-radius: 22%; cursor: pointer; touch-action: manipulation;
+  background: radial-gradient(circle at 35% 30%, #F06A6A, #C93434 70%); box-shadow: inset 0 -4px 0 rgba(0, 0, 0, .2);
+  font-weight: 900; font-size: calc(var(--vak) * .5); line-height: 1;
+}
+.zk-vak.open { background: #F6E6C8; box-shadow: inset 0 2px 0 rgba(0, 0, 0, .08); cursor: default; }
+.zk-vak.noot { background: #F3D2C8; }
+.zk-vak.toon { background: #F6E6C8; }
+.zk-noot, .zk-vlag { width: 76%; height: 76%; pointer-events: none; }
+.zk-getal { pointer-events: none; }
+.zk-vak.t1 { color: #2F80C9; } .zk-vak.t2 { color: #2E8B57; } .zk-vak.t3 { color: #C93434; } .zk-vak.t4 { color: #6A3FB5; }
+.zk-vak.t5, .zk-vak.t6, .zk-vak.t7, .zk-vak.t8 { color: #7A2E2E; }
+.zk-stippen { display: flex; flex-wrap: wrap; justify-content: center; gap: calc(var(--vak) * .06); width: 70%; pointer-events: none; }
+.zk-stippen i { width: calc(var(--vak) * .17); height: calc(var(--vak) * .17); border-radius: 50%; background: #8A5A33; }
+.zk-zij { display: flex; flex-direction: column; align-items: center; gap: 10px; font-weight: 800; }
+.zk-teller { display: flex; align-items: center; gap: 6px; font-size: 22px; }
+.zk-teller .zk-noot { width: 30px; height: 30px; }
+.zk-stand { display: flex; gap: 6px; }
+.zk-standknop { display: inline-flex; align-items: center; gap: 6px; min-width: 64px; min-height: 64px; padding: 0 12px; border: 3px solid var(--line); border-radius: 16px; background: var(--surface); color: var(--ink); font-size: 18px; font-weight: 800; cursor: pointer; }
+.zk-standknop .zk-vlag { width: 30px; height: 30px; }
+.zk-standknop.gekozen { border-color: var(--kid); background: var(--kid-tint); }
+.zk-standknop:disabled { opacity: .5; }
+.zk-kussen-mini { width: 24px; height: 24px; border-radius: 6px; background: #C93434; }
+.zk-schaal { width: clamp(180px, 34dvh, 320px); height: auto; }
+@media (prefers-reduced-motion: no-preference) {
+  .zk-vak.open { animation: zk-plop .18s ease-out; }
+  .zk-veld.viert .zk-noot { animation: zk-hup .5s ease-in-out 2 alternate; }
+}
+@keyframes zk-plop { from { transform: scale(.85); } }
+@keyframes zk-hup { to { transform: translateY(-12%) rotate(10deg); } }
+@media (orientation: portrait) {
+  .zk-spel { flex-direction: column; }
+  .zk-zij { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+  .zk-veld { --vak: min(calc((100dvh - 400px) / var(--rij)), calc((100vw - 50px) / var(--kol)), 120px); }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .zk { gap: 2px; }
+  .zk-veld { padding: 4px; gap: 3px; }
+  .zk-zij { gap: 4px; }
+  .zk-standknop { min-width: 44px; min-height: 44px; font-size: 14px; padding: 0 8px; }
+  .zk-teller { font-size: 16px; }
+}
+
+/* Volle opmaak (tablet, liggende gsm): het veld krijgt precies de vrije plaats (cq-eenheden). */
+@media (min-width: 600px) and (min-height: 560px), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .zk { flex: 1; min-height: 0; }
+  .zk-spel { flex: 1; min-height: 0; }
+  .zk-plek { flex: 1; align-self: stretch; min-width: 0; min-height: 0; container-type: size; display: grid; place-items: center; }
+  .zk-plek .zk-veld { --vak: min(calc((100cqh - 16px - (var(--rij) - 1) * 4px) / var(--rij)), calc((100cqw - 16px - (var(--kol) - 1) * 4px) / var(--kol)), 120px); }
+}

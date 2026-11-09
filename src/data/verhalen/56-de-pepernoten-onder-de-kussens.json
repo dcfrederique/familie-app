@@ -1,0 +1,93 @@
+{
+  "nr": 56,
+  "titel": "De pepernoten onder de kussens",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Sinterklaas, slim zoeken met hints",
+  "bladzijden": [
+    {
+      "tekst": "Op zaterdagochtend vindt Noor een briefje op de tafel. Het is geschreven met gouden letters. \"Lieve Noor en Daan,\" leest mama voor. \"Onder de kussens van de zetel heb ik pepernoten verstopt. Zoek ze, maar wees slim. Groetjes, de Sint.\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "daan",
+          "tekening"
+        ]
+      }
+    },
+    {
+      "tekst": "In de woonkamer liggen twaalf kussens op een rij, op de zetel en op de grond. Rode, gele en blauwe. Daan wil meteen onder alle kussens tegelijk kijken. \"Wacht,\" zegt Noor. \"Er staat nog iets op de achterkant.\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Ze draait het briefje om. \"Onder sommige kussens ligt een kaartje met een cijfer. Dat cijfer zegt hoeveel pepernoten er rondom liggen. Til een kussen met pepernoten niet op, anders rollen ze weg.\" Daan krabt in zijn haar. \"Dat is een raadsel,\" zegt hij.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor tilt voorzichtig het kussen in de hoek op. Er ligt een kaartje met een nul. \"Nul pepernoten rondom,\" zegt ze. \"Dan mogen we de kussens ernaast ook optillen.\" Onder die kussens liggen kaartjes met een één en een twee.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan kijkt naar het kaartje met de één. Rondom liggen nog maar twee kussens die dicht zijn. Bij het kaartje met de twee ligt ook een van die kussens. \"Als hier twee pepernoten rond moeten liggen,\" denkt hij hardop, \"en er zijn er maar twee kussens over, dan liggen ze onder allebei!\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "Ze leggen een klein rood vlaggetje op die twee kussens. \"Hier niet optillen,\" zegt Noor. Zo werken ze verder. Kaartje na kaartje, kussen na kussen. Tijs de hond kijkt mee met zijn kop schuin.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "daan",
+          "hond"
+        ]
+      }
+    },
+    {
+      "tekst": "Op het einde liggen er nog vier kussens met een vlaggetje. Alle andere kussens zijn opgetild. \"Nu mag het,\" zegt mama. Daan en Noor tillen de laatste kussens op, heel langzaam. Onder elk kussen ligt een zakje pepernoten met een strikje.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "noor",
+          "koek"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Vier zakjes,\" juicht Daan. \"En geen enkele pepernoot is weggerold!\" Noor lacht. Ze geven er eentje aan mama en eentje aan papa. En Tijs krijgt een klein stukje speculaas, omdat hij zo goed heeft opgelet.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "daan",
+          "noor",
+          "hond",
+          "koek"
+        ]
+      }
+    }
+  ]
+}

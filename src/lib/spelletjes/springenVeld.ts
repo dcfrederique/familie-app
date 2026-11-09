@@ -455,9 +455,9 @@ export class SpringVeld {
     ctx.fillStyle = 'rgba(0,0,0,.15)'
     ctx.beginPath(); ctx.ellipse(0, 0, w * 0.5, T * 0.1, 0, 0, Math.PI * 2); ctx.fill()
     const soort = springLevels[this.spel.level].baas?.soort
-    const pepernoot = soort === 'pepernoot', sneeuw = soort === 'sneeuw', krab = soort === 'krab'
+    const pepernoot = soort === 'pepernoot', sneeuw = soort === 'sneeuw', krab = soort === 'krab', wolk = soort === 'wolk'
     // Pompoen: drie oranje bollen met een groene steel. Pepernoot: drie bruine koekjes met glazuurstreepjes en een rood mijtertje.
-    for (const [dx, kleur] of (krab ? [[-0.26, '#D9452E'], [0.26, '#D9452E'], [0, '#EE6248']] : sneeuw ? [[-0.26, '#DCEAF6'], [0.26, '#C9DDEE'], [0, '#F4F9FD']] : pepernoot ? [[-0.26, '#A8693A'], [0.26, '#8A5A33'], [0, '#C08246']] : [[-0.26, '#EE8222'], [0.26, '#EE8222'], [0, '#F6A33B']]) as [number, string][]) {
+    for (const [dx, kleur] of (wolk ? [[-0.26, '#B8C4D4'], [0.26, '#A9B7CA'], [0, '#D3DCE8']] : krab ? [[-0.26, '#D9452E'], [0.26, '#D9452E'], [0, '#EE6248']] : sneeuw ? [[-0.26, '#DCEAF6'], [0.26, '#C9DDEE'], [0, '#F4F9FD']] : pepernoot ? [[-0.26, '#A8693A'], [0.26, '#8A5A33'], [0, '#C08246']] : [[-0.26, '#EE8222'], [0.26, '#EE8222'], [0, '#F6A33B']]) as [number, string][]) {
       ctx.fillStyle = kleur
       ctx.beginPath(); ctx.ellipse(dx * w, -h * 0.48, w * (dx ? 0.3 : 0.27), h * 0.48, 0, 0, Math.PI * 2); ctx.fill()
     }
@@ -470,6 +470,16 @@ export class SpringVeld {
       ctx.beginPath(); ctx.moveTo(-w * 0.14, -h * 0.98); ctx.lineTo(0, -h * 1.3); ctx.lineTo(w * 0.14, -h * 0.98); ctx.closePath(); ctx.fill()
       ctx.fillStyle = '#F2B33D'
       ctx.fillRect(-w * 0.015, -h * 1.22, w * 0.03, h * 0.16); ctx.fillRect(-w * 0.06, -h * 1.17, w * 0.12, h * 0.03)
+    } else if (wolk) {
+      // Bromwolk: een grijze wolk met een geel bliksemkuifje en druppels die eronder vallen.
+      ctx.fillStyle = '#F2C530'
+      ctx.beginPath(); ctx.moveTo(-w * 0.04, -h * 0.96); ctx.lineTo(w * 0.1, -h * 1.22); ctx.lineTo(w * 0.02, -h * 1.18); ctx.lineTo(w * 0.12, -h * 1.4)
+      ctx.lineTo(-w * 0.06, -h * 1.12); ctx.lineTo(w * 0.02, -h * 1.15); ctx.closePath(); ctx.fill()
+      ctx.fillStyle = '#6BB5FF'
+      for (const [dx, f] of [[-0.3, 0], [0, 0.33], [0.3, 0.66]] as const) {
+        const y = ((this.spel.klok * 0.9 + f) % 1) * T * 0.5
+        ctx.beginPath(); ctx.ellipse(dx * w, -T * 0.05 + y - T * 0.5, T * 0.07, T * 0.11, 0, 0, Math.PI * 2); ctx.fill()
+      }
     } else if (krab) {
       // Krab: twee grote scharen die op en neer klappen, pootjes opzij en een zonnehoedje van stro.
       const klap = Math.sin(this.spel.klok * 9) * T * 0.08

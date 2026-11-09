@@ -7,7 +7,7 @@ import { dataThemas } from './dataThemas.ts'
  * 'kasteel': roze prinsessenkasteel met regenboog. 'tuin': lila feeëntuin met bloemen en vlinders.
  * 'voetbal': grasgroen voetbalveld met doel, bal, hoekvlag en stadionlampen.
  */
-export type Banner = 'race' | 'kasteel' | 'tuin' | 'voetbal' | 'ruimte' | 'zee' | 'dier' | 'wolk' | 'bak' | 'kliniek' | null
+export type Banner = 'race' | 'kasteel' | 'tuin' | 'voetbal' | 'ruimte' | 'zee' | 'dier' | 'wolk' | 'bak' | 'kliniek' | 'bouw' | 'circus' | 'speelgoed' | null
 
 /** Thema per kleur; een ouder kiest het per kind bij Kinderen. */
 export const bannerVoorKleur: Record<NonNullable<Gebruiker['thema']>, Banner> = {
@@ -18,7 +18,7 @@ export const bannerVoorKleur: Record<NonNullable<Gebruiker['thema']>, Banner> = 
   roze: 'kasteel',
   lila: 'tuin',
   gras: 'voetbal',
-  ruimte: 'ruimte', zee: 'zee', dier: 'dier', wolk: 'wolk', bak: 'bak', kliniek: 'kliniek',
+  ruimte: 'ruimte', zee: 'zee', dier: 'dier', wolk: 'wolk', bak: 'bak', kliniek: 'kliniek', speelgoed: 'speelgoed', circus: 'circus', bouw: 'bouw',
 }
 
 /** Keuzes voor de ouder (Kinderen) en het kind zelf (welkomstpad, Mijn thema), in volgorde. */

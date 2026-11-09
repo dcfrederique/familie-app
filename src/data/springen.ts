@@ -34,7 +34,7 @@ export interface SpringLevelInfo {
   beestje: 'slak' | 'egel' | 'vogel'
   fruit: 'appel' | 'aardbei' | 'kers'
   /** Een baas op het einde van de wereld (het laatste level): de kaart is dan een kleine arena met B. */
-  baas?: { soort: 'pompoen' | 'pepernoot' | 'sneeuw' | 'krab'; naam: string }
+  baas?: { soort: 'pompoen' | 'pepernoot' | 'sneeuw' | 'krab' | 'wolk'; naam: string }
   /** Hoe snel de beestjes wandelen, 1 = gewoon. Een pittig level mag er een tikje sneller zijn (tot 1.6). */
   snelheid?: number
   kaart: readonly string[]
@@ -515,6 +515,58 @@ export const springLevelLijst: SpringLevelInfo[] = [
       '  P ooo               e       e       ####     oCo         o    o         e        o o o        C               H  ',
       '############   #########################################  ###  ###  ################################   ############',
       '############~~~#########################################~~###~~###~~################################~~~############',
+    ],
+  },
+  {
+    id: 'regenboogeiland', wereld: 'wolkenrijk', stijl: 'wolken',
+    naam: 'Het regenboogeiland', beestje: 'vogel', fruit: 'aardbei', snelheid: 1.1,
+    kaart: [
+      '                                                                                                    ',
+      '                                                                                                    ',
+      '                                   ***                                                              ',
+      '                                  =====                                    * * *                    ',
+      '                  * *                                                      =====                    ',
+      '                  ===                                *   *                                          ',
+      '                                                    =======          ***                    ****    ',
+      '                                                                                                    ',
+      '  P oo     o o          e         ^    o C o              e            o o o       e      o o     H ',
+      '#############  ##################################  ##############################  #################',
+      '#############~~##################################~~##############################~~#################',
+    ],
+  },
+  {
+    id: 'sterrenpad', wereld: 'wolkenrijk', stijl: 'wolken',
+    naam: 'Het sterrenpad', beestje: 'vogel', fruit: 'kers', snelheid: 1.3,
+    kaart: [
+      '                                                                                                                ',
+      '                                                                                                                ',
+      '                                           * * *                                                                ',
+      '                       ***                 =====                                         ***                    ',
+      '                      =====                                                             =====                   ',
+      '                                                                                                                ',
+      '           **                   ##                       *   *                                          ****    ',
+      '                               ###        **  **                         e                                      ',
+      '  P oo o           e    o  C  ####     o   o   o    e         o o   C      o o        e      o o     e   o    H ',
+      '##############   ####################  ##  ################   ########################  ########################',
+      '##############~~~####################~~##~~################~~~########################~~########################',
+    ],
+  },
+  {
+    id: 'bromwolk', wereld: 'wolkenrijk', stijl: 'wolken',
+    naam: 'De bromwolk', beestje: 'vogel', fruit: 'aardbei', snelheid: 1.2,
+    baas: { soort: 'wolk', naam: 'Bromwolk' },
+    kaart: [
+      '                                                                  ',
+      '                                                                  ',
+      '                                                                  ',
+      '                  * *                                             ',
+      '                  ===                           * * *             ',
+      '                                                                  ',
+      '        * *              * *                                      ',
+      '                                  * * *                           ',
+      '  P   o o o       e                 o C o           B         H   ',
+      '############################  ######  ############################',
+      '############################~~######~~############################',
     ],
   },
 ]

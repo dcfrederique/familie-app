@@ -1,0 +1,56 @@
+/* Geheime prent: het rooster met de cijfers links (of boven, staand), de knoppen ernaast. De vakjes schalen mee. */
+.gh { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 1.4dvh, 14px); width: 100%; }
+.gh-spel { display: flex; align-items: center; justify-content: center; gap: clamp(12px, 3vw, 36px); width: 100%; }
+.gh-rooster {
+  --cel: min(calc((100dvh - 260px) / (var(--h) + var(--kc) * .5 + .3)), calc((100vw - 300px) / (var(--b) + var(--kr) * .55 + .3)), 80px);
+  display: grid; grid-template-columns: auto repeat(var(--b), var(--cel)); grid-template-rows: auto repeat(var(--h), var(--cel));
+  padding: 8px; border-radius: 16px; background: var(--surface); box-shadow: 0 4px 0 var(--shade);
+  font-size: calc(var(--cel) * .42); font-weight: 800; line-height: 1;
+}
+.gh-kc { display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 2px; padding-bottom: 4px; color: var(--ink); }
+.gh-rc { display: flex; justify-content: flex-end; align-items: center; gap: calc(var(--cel) * .18); padding-right: 6px; color: var(--ink); }
+.gh-kc.ok, .gh-rc.ok { color: var(--muted); opacity: .55; }
+.gh-vak { padding: 0; min-width: 0; min-height: 0; border: 1px solid #9AA6B5; background: #FFFFFF; cursor: pointer; touch-action: manipulation; position: relative; }
+.gh-vak.vijf-r { border-right: 3px solid #5B6B7A; }
+.gh-vak.vijf-o { border-bottom: 3px solid #5B6B7A; }
+.gh-vak.schaduw { background: #D3DCE8; box-shadow: inset 0 0 0 3px #fff; }
+.gh-vak.aan { background: #33414F; }
+.gh-rooster.viert .gh-vak.aan { background: var(--prent); transition: background .5s; }
+.gh-vak.kruis::after { content: '✕'; position: absolute; inset: 0; display: grid; place-items: center; color: #9AA6B5; font-size: calc(var(--cel) * .5); }
+.gh-vak.fout { background: #FBE4E1; }
+.gh-vak.fout::after { content: '✕'; position: absolute; inset: 0; display: grid; place-items: center; color: #B3261E; font-size: calc(var(--cel) * .6); }
+.gh-zij { display: flex; flex-direction: column; align-items: center; gap: 10px; font-weight: 700; min-width: 120px; }
+.gh-stand { display: flex; gap: 6px; }
+.gh-standknop { display: inline-flex; align-items: center; gap: 6px; min-width: 64px; min-height: 64px; padding: 0 12px; border: 3px solid var(--line); border-radius: 16px; background: var(--surface); color: var(--ink); font-size: 18px; font-weight: 800; cursor: pointer; }
+.gh-standknop.gekozen { border-color: var(--kid); background: var(--kid-tint); }
+.gh-blokje { width: 22px; height: 22px; border-radius: 4px; background: #33414F; }
+.gh-naam { font-size: 20px; font-weight: 800; color: var(--kid); }
+.gh-melding { min-height: 1.3em; max-width: 220px; text-align: center; font-weight: 800; color: #B3261E; }
+.gh-galerij { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+.gh-mini { display: grid; grid-template-columns: repeat(var(--b), 9px); grid-auto-rows: 9px; gap: 1px; padding: 6px; border-radius: 10px; background: var(--surface); }
+.gh-mini span { background: #EEF1F5; }
+@media (prefers-reduced-motion: no-preference) {
+  .gh-rooster.viert { animation: gh-hup .5s ease-out 2 alternate; }
+  .gh-vak.fout { animation: gh-schud .25s linear 2; }
+}
+@keyframes gh-hup { to { transform: scale(1.03); } }
+@keyframes gh-schud { 25% { transform: translateX(-3px); } 75% { transform: translateX(3px); } }
+@media (orientation: portrait) {
+  .gh-spel { flex-direction: column; }
+  .gh-zij { flex-direction: row; flex-wrap: wrap; justify-content: center; }
+  .gh-rooster { --cel: min(calc((100dvh - 420px) / (var(--h) + var(--kc) * .5 + .3)), calc((100vw - 40px) / (var(--b) + var(--kr) * .55 + .3)), 80px); }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .gh { gap: 2px; }
+  .gh-rooster { padding: 4px; }
+  .gh-zij { gap: 4px; }
+  .gh-standknop { min-width: 44px; min-height: 44px; font-size: 14px; padding: 0 8px; }
+}
+
+/* Volle opmaak (tablet, liggende gsm): het rooster krijgt precies de vrije plaats (cq-eenheden). */
+@media (min-width: 600px) and (min-height: 560px), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .gh { flex: 1; min-height: 0; }
+  .gh-spel { flex: 1; min-height: 0; }
+  .gh-plek { flex: 1; align-self: stretch; min-width: 0; min-height: 0; container-type: size; display: grid; place-items: center; }
+  .gh-plek .gh-rooster { --cel: min(calc((100cqh - 22px) / (var(--h) + var(--kc) * .5 + .3)), calc((100cqw - 22px) / (var(--b) + var(--kr) * .55 + .3)), 90px); }
+}

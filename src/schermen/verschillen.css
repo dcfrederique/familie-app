@@ -15,7 +15,7 @@
 @keyframes vs-weg { to { opacity: 0; } }
 @media (prefers-reduced-motion: no-preference) {
   .vs-ring { animation: vs-plop 0.35s cubic-bezier(.3, 1.6, .5, 1); transform-box: fill-box; transform-origin: center; }
-  .vs-prent.feest { animation: vs-hup .5s cubic-bezier(.3, 1.6, .5, 1); }
+  .vs-prent.viert { animation: vs-hup .5s cubic-bezier(.3, 1.6, .5, 1); }
 }
 @keyframes vs-plop { from { transform: scale(0.3); } to { transform: scale(1); } }
 @keyframes vs-hup { 40% { transform: translateY(-6px); } }

@@ -88,6 +88,25 @@ const kliniek = wikkel(`<g transform="translate(560 70)"><rect x="-70" y="10" wi
   <g transform="translate(140 80)"><circle r="40" style="fill:var(--tn-huis)"/><path d="M-6-22h12v16h16v12h-16v16h-12v-16h-16v-12h16z" fill="#FF7A8A"/></g>
   <path d="M0 220v-24h1000v24z" style="fill:var(--tn-grond)"/>`)
 
+const bouw = wikkel(`<g class="tn-dag"><circle cx="900" cy="50" r="30" fill="#FFD54A"/></g>
+  <g transform="translate(470 30)"><path d="M0 0v170" stroke="#F2A900" stroke-width="12"/><path d="M-6 10h300" stroke="#F2A900" stroke-width="10"/><path d="M0 10l40-30h20l-40 30" fill="#F2A900"/>${[0, 1, 2, 3, 4, 5, 6].map((i) => `<path d="M${i * 40} 10l20 0" stroke="#33414F" stroke-width="3"/>`).join('')}<path d="M240 10v60" stroke="#33414F" stroke-width="3"/><rect x="222" y="70" width="36" height="26" fill="#E5484D"/><rect x="-30" y="150" width="60" height="20" fill="#33414F"/></g>
+  <g transform="translate(700 150)"><rect x="-60" y="-34" width="90" height="40" rx="6" fill="#F2A900"/><rect x="-46" y="-70" width="46" height="40" rx="5" fill="#F2A900"/><rect x="-40" y="-64" width="32" height="26" fill="#BDE3F6"/><path d="M28 -20L80 -64L104 -40" fill="none" stroke="#E08A00" stroke-width="14" stroke-linejoin="round"/><path d="M100 -46l20 26-28 6z" fill="#33414F"/><rect x="-70" y="6" width="110" height="24" rx="12" fill="#33414F"/>${[-56, -30, -4, 22].map((x) => `<circle cx="${x}" cy="18" r="8" fill="#9AA6B5"/>`).join('')}</g>
+  <g transform="translate(250 150)"><rect x="-50" y="-30" width="70" height="36" rx="5" fill="#E5484D"/><path d="M20 -30h40l12 36H20z" fill="#E5484D"/><rect x="30" y="-24" width="24" height="16" fill="#BDE3F6"/><path d="M-50 -30l-30 -24 70 0 10 24z" style="fill:var(--tn-zand)"/><circle cx="-26" cy="10" r="14" fill="#33414F"/><circle cx="46" cy="10" r="14" fill="#33414F"/><circle cx="-26" cy="10" r="5" fill="#9AA6B5"/><circle cx="46" cy="10" r="5" fill="#9AA6B5"/></g>
+  ${[120, 380, 900].map((x) => `<g transform="translate(${x} 190)"><path d="M-14 0l10-40h8l10 40z" fill="#FF7A1A"/><path d="M-9 -16h18M-6 -28h12" stroke="#fff" stroke-width="5"/></g>`).join('')}
+  <path d="M0 220v-30h1000v30z" style="fill:var(--tn-grond)"/><path d="M820 190q40-40 80 0z" style="fill:var(--tn-zand)"/>`)
+
+const circus = wikkel(`  <g transform="translate(640 0)"><path d="M-170 190V90L0 20L170 90V190Z" style="fill:var(--tn-tent)"/>${[-170, -114, -57, 0, 57, 114].map((x) => `<path d="M0 20L${x} 190H${x + 28}Z" fill="#E5484D" opacity=".85"/>`).join('')}<path d="M-170 90L0 20L170 90" fill="none" stroke="#C2203F" stroke-width="10" stroke-linejoin="round"/><path d="M0 20V-10" stroke="#5B3A1E" stroke-width="5"/><path d="M0 -10L34 0L0 10Z" fill="#FFC857"/><path d="M-36 190a36 50 0 0 1 72 0z" fill="#3A1F5C"/></g>
+  <g class="thema-zweef" transform="translate(360 70)"><circle r="26" fill="#FF6B9A"/><path d="M0 26q-4 30 6 60" stroke="#fff" stroke-width="2" fill="none"/><circle cx="-34" cy="18" r="20" fill="#6BB5FF"/><path d="M-34 38q2 30-6 50" stroke="#fff" stroke-width="2" fill="none"/><circle cx="30" cy="22" r="18" fill="#FFC857"/><path d="M30 40q-2 28 4 46" stroke="#fff" stroke-width="2" fill="none"/></g>
+  <g transform="translate(200 150)"><ellipse rx="40" ry="30" fill="#9AA6B5"/><circle cx="-38" cy="-14" r="24" fill="#9AA6B5"/><path d="M-56 -10q-20 20-8 44" stroke="#9AA6B5" stroke-width="12" fill="none" stroke-linecap="round"/><circle cx="-40" cy="-20" r="4" fill="#33414F"/><ellipse cx="-22" cy="-22" rx="12" ry="18" fill="#B8C2CE"/><path d="M-50 -38l8 -16 8 16z" fill="#E5484D"/><circle cx="-42" cy="-56" r="4" fill="#FFC857"/><path d="M-26 30v14M20 30v14" stroke="#9AA6B5" stroke-width="12" stroke-linecap="round"/><rect x="-30" y="40" width="60" height="16" rx="4" fill="#E5484D"/></g>
+  <path d="M0 220v-30h1000v30z" style="fill:var(--tn-grond)"/>${[60, 900].map((x) => `<g transform="translate(${x} 175)"><rect x="-22" y="0" width="44" height="16" fill="#FFC857"/><rect x="-22" y="-16" width="44" height="16" fill="#E5484D"/><path d="M-22 -16h44" stroke="#fff" stroke-width="3"/></g>`).join('')}`)
+
+const speelgoed = wikkel(`
+  <g transform="translate(860 30)"><rect x="-50" y="0" width="100" height="80" rx="6" fill="#BDE3F6" stroke="#fff" stroke-width="8"/><path d="M0 0v80M-50 40h100" stroke="#fff" stroke-width="6"/><circle cx="24" cy="20" r="10" class="tn-dag" fill="#FFD54A"/><circle cx="24" cy="20" r="9" class="tn-nacht" fill="#FCEBD0"/></g>
+  <g transform="translate(400 120)"><circle cx="-34" cy="-46" r="16" fill="#B5733A"/><circle cx="34" cy="-46" r="16" fill="#B5733A"/><circle cx="0" cy="-20" r="40" fill="#C98A4A"/><ellipse cx="0" cy="-6" rx="16" ry="12" fill="#F2D2A8"/><circle cx="-14" cy="-28" r="4.5" fill="#33414F"/><circle cx="14" cy="-28" r="4.5" fill="#33414F"/><circle cx="0" cy="-10" r="5" fill="#5B3A1E"/><ellipse cx="0" cy="54" rx="44" ry="40" fill="#C98A4A"/><ellipse cx="0" cy="58" rx="24" ry="24" fill="#F2D2A8"/><path d="M-22 18l22 12 22-12-22 -6z" fill="#E5484D"/></g>
+  <g transform="translate(600 130)"><rect x="0" y="20" width="56" height="56" rx="6" fill="#E5484D"/><text x="28" y="62" text-anchor="middle" font-size="34" font-weight="800" fill="#fff">A</text><rect x="62" y="20" width="56" height="56" rx="6" fill="#2F80C9"/><text x="90" y="62" text-anchor="middle" font-size="34" font-weight="800" fill="#fff">B</text><rect x="31" y="-38" width="56" height="56" rx="6" fill="#F2C530"/><text x="59" y="4" text-anchor="middle" font-size="34" font-weight="800" fill="#fff">C</text></g>
+  <g transform="translate(130 160)"><rect x="-60" y="-10" width="60" height="34" rx="6" fill="#43A047"/><rect x="-46" y="-36" width="30" height="28" rx="4" fill="#43A047"/><rect x="4" y="-6" width="44" height="30" rx="5" fill="#2F80C9"/><rect x="54" y="-6" width="44" height="30" rx="5" fill="#E5484D"/><path d="M0 14h4M48 14h6" stroke="#5B6B7A" stroke-width="4"/>${[-48, -16, 16, 36, 66, 86].map((x) => `<circle cx="${x}" cy="28" r="9" fill="#33414F"/>`).join('')}<path d="M-40 -36v-14" stroke="#5B6B7A" stroke-width="6"/></g>
+  <path d="M0 220v-28h1000v28z" style="fill:var(--tn-grond)"/>`)
+
 const vink = (kleur: string) => `<path d="M-16 0L-6 10L16 -12" stroke="${kleur}" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
 
 export const dataThemas: DataThema[] = [
@@ -185,6 +204,54 @@ export const dataThemas: DataThema[] = [
     slot: '<circle r="18" fill="#fff"/><path d="M-6-16h12v10h10v12h-10v10h-12v-10h-10v-12h10z" fill="#B8BFCB"/>',
     feest: [hartje('#FF7A8A'), kruisje, '<circle r="8" fill="#6EDBC3"/>'], confetti: ['#FF7A8A', '#6EDBC3', '#FFFFFF', '#FFD166'],
     tegelRadius: '24px', tegelRand: '6px solid var(--kid)',
+  },
+  {
+    sleutel: 'bouw', naam: 'Bouwwerf', kidKleur: '#E08A00', shirt: 'oranje', verhouding: 1,
+    ondertitels: { spelen: 'De bouwkeet', verhalen: 'Lezen in de kraan', kleurplaten: 'De verfploeg', figuurtje: 'Bouwbaas van de dag', huis: 'Mijn bouwproject' },
+    klaarTekst: 'Alles gebouwd, helm af!', nogTeDoen: (n) => `Nog ${n} ${n === 1 ? 'klus' : 'klussen'} op de werf`,
+    licht: { bg: '#FFF6E0', surface: '#FFFFFF', soft: '#FDE9B8', ink: '#3A2A08', muted: '#7A5F2A', line: '#F2D48A', shade: '#EBC877', kid: '#C77700', 'kid-tint': '#FDEBC2', 'on-solid': '#FFFFFF',
+      'tn-grond': '#C9955A', 'tn-zand': '#E6BE85', 'tn-nacht': 'none', 'tn-dag': 'inline', 'tn-banner': 'linear-gradient(#FFE08A,#FFF6E0)', 'tn-titel': '#3A2A08', 'tn-sub': '#8A5200', 'tn-spoor': '#F2D48A' },
+    donker: { bg: '#1E1608', surface: '#33270F', soft: '#3F3014', ink: '#FFF1D0', muted: '#E0C58A', line: '#5A4518', shade: '#0E0A03', kid: '#FFC24A', 'kid-tint': '#4A3812', 'on-solid': '#1E1608',
+      'tn-grond': '#5A3F1E', 'tn-zand': '#7A5A2E', 'tn-nacht': 'inline', 'tn-dag': 'none', 'tn-banner': 'linear-gradient(#120D04,#4A3812)', 'tn-titel': '#FFFFFF', 'tn-sub': '#FFC24A', 'tn-spoor': '#5A4518' },
+    prent: bouw,
+    voortgang: { mover: '<rect x="-14" y="-8" width="20" height="12" rx="2" fill="#F2A900"/><rect x="-12" y="-16" width="10" height="9" fill="#F2A900"/><path d="M6 -4l10-8 5 5" stroke="#E08A00" stroke-width="4" fill="none"/><rect x="-16" y="4" width="26" height="7" rx="3.5" fill="#33414F"/>', doel: '<path d="M-12 12l8-26h8l8 26z" fill="#FF7A1A"/><path d="M-8 2h16" stroke="#fff" stroke-width="4"/>' },
+    nieuw: '<path d="M-20 10a20 20 0 0 1 40 0z" fill="#F2A900"/><rect x="-24" y="8" width="48" height="6" rx="3" fill="#E08A00"/><path d="M0 -10v-6" stroke="#E08A00" stroke-width="5"/>',
+    vink: `<circle r="20" fill="#F2A900"/><g transform="scale(.9)">${vink('#3A2A08')}</g>`,
+    slot: '<rect x="-18" y="-6" width="36" height="22" rx="3" fill="#9AA6B5"/><path d="M-18 -6l12 22M-6 -6l12 22M6 -6l12 22" stroke="#F2A900" stroke-width="4"/><path d="M-10 -6v-6a10 10 0 0 1 20 0v6" fill="none" stroke="#5B6B7A" stroke-width="4"/>',
+    feest: ['<path d="M-12 12l8-26h8l8 26z" fill="#FF7A1A"/>', '<rect x="-10" y="-10" width="20" height="20" fill="#E5484D"/>', '<circle r="9" fill="#F2A900"/>'], confetti: ['#F2A900', '#FF7A1A', '#33414F', '#FFFFFF'],
+    tegelRadius: '10px', tegelRand: '6px solid var(--kid)',
+  },
+  {
+    sleutel: 'circus', naam: 'Circus', kidKleur: '#C2203F', shirt: 'roze', verhouding: 1,
+    ondertitels: { spelen: 'De piste', verhalen: 'Lezen in de tent', kleurplaten: 'Het schminkhoekje', figuurtje: 'Artiest van de dag', huis: 'Mijn circuswagen' },
+    klaarTekst: 'Applaus, alles gedaan!', nogTeDoen: (n) => `Nog ${n} ${n === 1 ? 'kunstje' : 'kunstjes'} tot het applaus`,
+    licht: { bg: '#FFF0F2', surface: '#FFFFFF', soft: '#FFDDE3', ink: '#4A0F1E', muted: '#8A3A4E', line: '#F7C5CF', shade: '#F0B3C0', kid: '#C2203F', 'kid-tint': '#FFE0E6', 'on-solid': '#FFFFFF',
+      'tn-grond': '#E8B27A', 'tn-tent': '#FFDDE3', 'tn-nacht': 'none', 'tn-banner': 'linear-gradient(#FFC7D2,#FFF0F2)', 'tn-titel': '#4A0F1E', 'tn-sub': '#A0182F', 'tn-spoor': '#F7C5CF' },
+    donker: { bg: '#1E0A12', surface: '#3A1222', soft: '#48172B', ink: '#FFE6EC', muted: '#F0A8B8', line: '#5E2038', shade: '#0E0408', kid: '#FF7A96', 'kid-tint': '#4A1A2C', 'on-solid': '#1E0A12',
+      'tn-grond': '#5A3A22', 'tn-tent': '#7A2A44', 'tn-nacht': 'inline', 'tn-banner': 'linear-gradient(#12050A,#4A1A2C)', 'tn-titel': '#FFFFFF', 'tn-sub': '#FFC857', 'tn-spoor': '#5E2038' },
+    prent: circus,
+    voortgang: { mover: '<circle r="12" fill="#FFC857"/><path d="M-12 0a12 12 0 0 1 24 0" fill="#E5484D"/><circle cx="-4" cy="-3" r="2" fill="#fff"/>', doel: '<path d="M-14 12V-2L0 -14L14 -2V12Z" fill="#E5484D"/><path d="M0 -14V-22l10 4-10 4" fill="#FFC857"/>' },
+    nieuw: `<g transform="scale(1.4)">${ster('#FFC857')}</g>`,
+    vink: `<circle r="20" fill="#C2203F"/><g transform="scale(.9)">${vink('#fff')}</g>`,
+    slot: '<path d="M-18 14V-2L0 -18L18 -2V14Z" fill="#B8BFCB"/><path d="M-8 14a8 10 0 0 1 16 0z" fill="#5B6B7A"/>',
+    feest: [ster('#FFC857'), '<circle r="10" fill="#6BB5FF"/>', '<circle r="10" fill="#FF6B9A"/>'], confetti: ['#E5484D', '#FFC857', '#6BB5FF', '#FFFFFF'],
+    tegelRadius: '30px 30px 16px 16px', tegelRand: '6px solid var(--kid)',
+  },
+  {
+    sleutel: 'speelgoed', naam: 'Speelgoedkamer', kidKleur: '#2F80C9', shirt: 'blauw', verhouding: 1,
+    ondertitels: { spelen: 'De speelgoedkist', verhalen: 'Lezen bij de beer', kleurplaten: 'De tekentafel', figuurtje: 'Speelkameraad', huis: 'Mijn poppenhuis' },
+    klaarTekst: 'Alles opgeruimd, spelen maar!', nogTeDoen: (n) => `Nog ${n} ${n === 1 ? 'blokje' : 'blokjes'} op te ruimen`,
+    licht: { bg: '#EEF5FF', surface: '#FFFFFF', soft: '#DCEAFE', ink: '#14304F', muted: '#4A6A8E', line: '#C9DCF5', shade: '#B9D0EE', kid: '#2F80C9', 'kid-tint': '#DDEBFB', 'on-solid': '#FFFFFF',
+      'tn-grond': '#E3B98A', 'tn-muur': '#EEF5FF', 'tn-nacht': 'none', 'tn-dag': 'inline', 'tn-banner': 'linear-gradient(#CFE3FF,#EEF5FF)', 'tn-titel': '#14304F', 'tn-sub': '#1F5F99', 'tn-spoor': '#C9DCF5' },
+    donker: { bg: '#0C1A2C', surface: '#152A44', soft: '#1B3452', ink: '#E6F0FF', muted: '#A6C2E6', line: '#24456B', shade: '#050C16', kid: '#7DB8F0', 'kid-tint': '#1E3A5C', 'on-solid': '#0C1A2C',
+      'tn-grond': '#5A3F28', 'tn-muur': '#0C1A2C', 'tn-nacht': 'inline', 'tn-dag': 'none', 'tn-banner': 'linear-gradient(#08121F,#1E3A5C)', 'tn-titel': '#FFFFFF', 'tn-sub': '#F2C530', 'tn-spoor': '#24456B' },
+    prent: speelgoed,
+    voortgang: { mover: '<rect x="-14" y="-8" width="16" height="12" rx="3" fill="#43A047"/><rect x="4" y="-6" width="12" height="10" rx="2" fill="#E5484D"/><circle cx="-9" cy="6" r="4" fill="#33414F"/><circle cx="10" cy="6" r="4" fill="#33414F"/>', doel: '<circle cx="-8" cy="-10" r="5" fill="#B5733A"/><circle cx="8" cy="-10" r="5" fill="#B5733A"/><circle r="12" fill="#C98A4A"/><circle cx="-4" cy="-2" r="2" fill="#33414F"/><circle cx="4" cy="-2" r="2" fill="#33414F"/>' },
+    nieuw: '<rect x="-18" y="-18" width="36" height="36" rx="5" fill="#F2C530"/><path d="M0 -10L3 -3L10 -3L4 2L6 10L0 5L-6 10L-4 2L-10 -3L-3 -3Z" fill="#fff"/>',
+    vink: `<rect x="-20" y="-20" width="40" height="40" rx="6" fill="#43A047"/><g transform="scale(.9)">${vink('#fff')}</g>`,
+    slot: '<rect x="-18" y="-18" width="36" height="36" rx="5" fill="#B8BFCB"/><path d="M-7 -2h14v12h-14zM-4 -2v-5a4 4 0 0 1 8 0v5" fill="none" stroke="#5B6B7A" stroke-width="3"/>',
+    feest: ['<rect x="-10" y="-10" width="20" height="20" rx="3" fill="#E5484D"/>', '<rect x="-10" y="-10" width="20" height="20" rx="3" fill="#2F80C9"/>', '<rect x="-10" y="-10" width="20" height="20" rx="3" fill="#F2C530"/>'], confetti: ['#E5484D', '#2F80C9', '#F2C530', '#43A047'],
+    tegelRadius: '12px', tegelRand: '6px solid var(--kid)',
   },
 ]
 

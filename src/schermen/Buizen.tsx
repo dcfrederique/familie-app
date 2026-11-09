@@ -111,7 +111,7 @@ function BuisScherm({ kind }: { kind: Gebruiker }) {
       <Chips label="Niveau" opties={buisNiveaus} gekozen={niveau} kies={kiesNiveau} />
       <div className="bz-spel">
         <div className="bz-plek">
-        <div className={`bz-veld${feest ? ' feest' : ''}`} style={{ '--kol': spel.breed + 2, '--rij': spel.hoog } as React.CSSProperties}>
+        <div className={`bz-veld${feest ? ' viert' : ''}`} style={{ '--kol': spel.breed + 2, '--rij': spel.hoog } as React.CSSProperties}>
           {Array.from({ length: spel.hoog }, (_, y) => [
             <div key={`k${y}`} className="bz-rand">
               {y === spel.ketel && (

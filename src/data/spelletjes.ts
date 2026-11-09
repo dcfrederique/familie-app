@@ -487,7 +487,7 @@ export function startNiveaus(kind: Gebruiker, kinderen: Gebruiker[]): { memory: 
   return oudsteLezer?.id === kind.id ? { memory: 'groot', rekenen: 'tot100' } : { memory: 'middel', rekenen: 'tot20' }
 }
 
-export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'weegschaal' | 'torens' | 'rooster' | 'springen'
+export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'weegschaal' | 'torens' | 'rooster' | 'hekjes' | 'zoeken' | 'geheim' | 'springen'
 
 export interface SpelInfo {
   sleutel: SpelSleutel
@@ -549,6 +549,12 @@ export const spelMenu: SpelInfo[] = [
     icoon: 'M12 2v3M8 6h8l1 13H7zM12 6v13M7.5 12h9' },
   { sleutel: 'rooster', naam: 'Kleurenrooster', uitleg: 'Zet elke kleur één keer in elke rij en kolom', prijs: 25,
     icoon: 'M4 4h16v16H4zM4 9.3h16M4 14.7h16M9.3 4v16M14.7 4v16' },
+  { sleutel: 'hekjes', naam: "Hekjes zetten", uitleg: "Zet hekjes en maak de meeste weitjes", prijs: 30,
+    icoon: 'M5 5h0M12 5h0M19 5h0M5 12h0M12 12h0M19 12h0M5 19h0M12 19h0M19 19h0M5 5h7M5 5v7M12 5v7M5 12h7' },
+  { sleutel: 'zoeken', naam: "Pepernoten zoeken", uitleg: "Open alle kussentjes zonder pepernoot", prijs: 25,
+    icoon: 'M4 4h16v16H4zM4 12h16M12 4v16M8 8h0M16 16h0' },
+  { sleutel: 'geheim', naam: "Geheime prent", uitleg: "Kleur de vakjes volgens de cijfers", prijs: 25,
+    icoon: 'M4 4h16v16H4zM9 9h3v3H9zM12 12h3v3h-3zM9 15h3' },
   { sleutel: 'torens', naam: 'Pakjestoren', uitleg: 'Verhuis de toren van pakjes', prijs: 25,
     icoon: 'M4 20h16M6 20v-5h12v5M8 15v-5h8v5M10 10V6h4v4M12 3v3' },
   { sleutel: 'weegschaal', naam: 'Weegschaal', uitleg: 'Breng de weegschaal in evenwicht', prijs: 25,

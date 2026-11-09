@@ -105,7 +105,7 @@ function VerschilScherm({ kind }: { kind: Gebruiker }) {
 
   const r = straal(spel)
   const prent = (dingen: (Ding | null)[], kant: string) => (
-    <svg className={`vs-prent${feest ? ' feest' : ''}`} viewBox={`0 0 ${PRENT_B} ${PRENT_H}`} onPointerDown={tik} role="img" aria-label={kant}>
+    <svg className={`vs-prent${feest ? ' viert' : ''}`} viewBox={`0 0 ${PRENT_B} ${PRENT_H}`} onPointerDown={tik} role="img" aria-label={kant}>
       {KAMER}
       {dingen.map((d, i) => d && <DingTekening key={i} d={d} />)}
       {spel.verschillen.map((v, i) => v.gevonden ? <circle key={i} className="vs-ring" cx={v.x} cy={v.y} r={r} /> : tip === i ? <circle key={i} className="vs-tip" cx={v.x} cy={v.y} r={r * 1.6} /> : null)}

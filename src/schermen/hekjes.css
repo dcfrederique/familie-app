@@ -1,0 +1,57 @@
+/* Hekjes zetten: het bord in het midden (een SVG die vanzelf schaalt), links jij, rechts de eekhoorn. */
+.hk { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 1.4dvh, 14px); width: 100%; }
+.hk-spel { display: flex; align-items: center; justify-content: center; gap: clamp(10px, 2.4vw, 28px); width: 100%; }
+.hk-plek { position: relative; display: grid; place-items: center; width: min(70vw, calc((100dvh - 230px) * 1.4)); height: calc(100dvh - 230px); }
+.hk-bord { width: 100%; height: 100%; touch-action: manipulation; }
+.hk-gras { fill: #9BD07A; stroke: #6FAE4F; stroke-width: 4; }
+.hk-wei.w1 rect { fill: #FFF1B8; }
+.hk-wei.w2 rect { fill: #F3D2B0; }
+.hk-paal { fill: #6E4A28; }
+.hk-raak { stroke: transparent; stroke-width: 44; stroke-linecap: round; cursor: pointer; }
+.hk-lijn { stroke: rgba(255, 255, 255, .55); stroke-width: 6; stroke-dasharray: 4 12; stroke-linecap: round; pointer-events: none; }
+.hk-hek.staat .hk-lijn { stroke: #8A5A33; stroke-width: 12; stroke-dasharray: none; }
+.hk-hek.staat .hk-raak { cursor: default; }
+.hk-hek.laatste .hk-lijn { stroke: #C0661A; }
+.hk-hek.tip .hk-lijn { stroke: #F2C530; stroke-width: 10; stroke-dasharray: none; opacity: .9; }
+.hk-zij { display: flex; flex-direction: column; align-items: center; gap: 8px; min-width: 96px; padding: 10px; border-radius: 18px; border: 3px solid transparent; font-weight: 800; }
+.hk-zij.beurt { border-color: var(--kid); background: var(--kid-tint); }
+.hk-teken { width: 56px; height: 56px; }
+.hk-eekhoorn { width: 72px; height: 72px; }
+.hk-punten { font-size: 40px; line-height: 1; }
+.hk-naam { font-size: 18px; }
+.hk-uitslag { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 12px; background: rgba(255, 255, 255, .72); border-radius: 22px; }
+.hk-eindprent { width: clamp(160px, 26dvh, 260px); height: auto; }
+@media (prefers-reduced-motion: no-preference) {
+  .hk-hek.tip .hk-lijn { animation: hk-knipper 1s ease-in-out infinite alternate; }
+  .hk-eekhoorn.denkt { animation: hk-denk .6s ease-in-out infinite alternate; }
+  .hk-wei { animation: hk-plop .3s ease-out; transform-box: fill-box; transform-origin: center; }
+}
+@keyframes hk-knipper { to { opacity: .35; } }
+@keyframes hk-denk { to { transform: rotate(6deg); } }
+@keyframes hk-plop { from { transform: scale(.6); } }
+@media (orientation: portrait) {
+  .hk-spel { display: grid; grid-template-columns: 1fr 1fr; justify-items: center; gap: 10px; }
+  .hk-zij { flex-direction: row; }
+  .hk-zij.mij { grid-column: 1; grid-row: 1; }
+  .hk-zij.hij { grid-column: 2; grid-row: 1; }
+  .hk-plek { grid-column: 1 / 3; grid-row: 2; width: calc(100vw - 40px); height: min(calc(100dvh - 380px), calc((100vw - 40px) * .9)); }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .hk { gap: 2px; }
+  .hk-zij { min-width: 70px; padding: 4px; gap: 2px; }
+  .hk-teken { width: 36px; height: 36px; }
+  .hk-eekhoorn { width: 44px; height: 44px; }
+  .hk-punten { font-size: 26px; }
+}
+
+/* Volle opmaak (tablet, liggende gsm): het bord vult de vrije plaats. */
+@media (min-width: 600px) and (min-height: 560px), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .hk { flex: 1; min-height: 0; }
+  .hk-spel { flex: 1; min-height: 0; }
+  .hk-plek { flex: 1; align-self: stretch; width: auto; height: auto; min-width: 0; min-height: 0; }
+  .hk-bord { position: absolute; inset: 0; }
+}
+@media (min-width: 600px) and (min-height: 560px) and (orientation: portrait) {
+  .hk-spel { grid-template-rows: auto 1fr; align-items: stretch; }
+  .hk-plek { width: 100%; height: auto; }
+}

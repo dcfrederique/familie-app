@@ -16,7 +16,7 @@
 @media (prefers-reduced-motion: no-preference) {
   .bz-vak:active .bz-svg { transform: rotate(20deg); }
   .bz-beker.vol .bz-damp { animation: bz-damp 1.4s ease-in-out infinite alternate; }
-  .bz-veld.feest .bz-beker.vol { animation: bz-hup .5s cubic-bezier(.3, 1.6, .5, 1); }
+  .bz-veld.viert .bz-beker.vol { animation: bz-hup .5s cubic-bezier(.3, 1.6, .5, 1); }
 }
 @keyframes bz-damp { from { opacity: 0.3; transform: translateY(2px); } to { opacity: 1; transform: translateY(-3px); } }
 @keyframes bz-hup { 40% { transform: translateY(-8px); } }

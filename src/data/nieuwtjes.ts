@@ -19,6 +19,36 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.121',
+    datum: '2026-11-09',
+    titel: "Hekjes zetten, Het weitje van de pony en de Bromwolk",
+    tekst: "Nieuw verhaal \"Het weitje van de pony\" (herfst op de boerderij) en nieuwe kleurplaat \"Pony in de wei\", meteen te lezen en in te kleuren. Het spelletje Hekjes zetten kost 30 sterren: jij en de eekhoorn zetten om beurten een hekje tussen twee paaltjes; wie een weitje helemaal dichtmaakt, krijgt het en mag nog eens. Drie spelletjes na elkaar. Makkelijk: 3 × 2 weitjes, hekjes die een weitje afmaken lichten op en de eekhoorn vergeet soms een weitje. Middel: 3 × 3 en een eekhoorn die pakt wat hij kan. Moeilijk: 5 × 4 en een eekhoorn die op het einde altijd het kleinste stuk weggeeft, met pluimen. In Springland staat de baas van Wolkenrijk: de Bromwolk (een grijze wolk met een bliksemkuifje), dus Wolkenrijk is af. Nieuw kinderthema: Speelgoedkamer (teddybeer, blokken en een treintje), te kiezen bij Mijn thema.",
+    verhaal: "Het weitje van de pony",
+    spel: { naam: "Hekjes zetten", prijs: 30 },
+    stukken: ["Figuurtje: Strohoed van de boer (15), Geruit boerenhemd (20), Hooivorkje (15)", "Mijn huis: Wit weidehek (20), Schaapje (25), Ronde hooibaal (20)"],
+    open: "Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.",
+  },
+  {
+    versie: '0.120',
+    datum: '2026-11-09',
+    titel: "Pepernoten zoeken, De pepernoten onder de kussens en Het sterrenpad",
+    tekst: "Nieuw verhaal \"De pepernoten onder de kussens\" (Sinterklaas) en nieuwe kleurplaat \"Pepernoten in de zetel\", meteen te lezen en in te kleuren. Het spelletje Pepernoten zoeken kost 25 sterren: onder sommige kussentjes liggen pepernoten, en een open kussentje toont hoeveel er rondom liggen (ook schuin). Open alle kussentjes zonder pepernoot. De eerste tik is altijd veilig. Makkelijk: kleine velden en stipjes in plaats van cijfers. Middel: grotere velden met cijfers en vlaggetjes. Moeilijk: 9 × 7 tot 10 × 8 met veel pepernoten dicht bij elkaar, klokje en pluimen (geen enkele pepernoot openen). In Springland ligt het laatste gewone level van Wolkenrijk: Het sterrenpad (pittig). Nieuw kinderthema: Circus, te kiezen bij Mijn thema.",
+    verhaal: "De pepernoten onder de kussens",
+    spel: { naam: "Pepernoten zoeken", prijs: 25 },
+    stukken: ["Figuurtje: Muts met pepernoten (15), Rood shirt met gouden knoopjes (20), Rood vlaggetje (15)", "Mijn huis: Bankje met kussens (25), Grote pot pepernoten (20), Vlaggenmast met mijter (25)"],
+    open: "Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.",
+  },
+  {
+    versie: '0.119',
+    datum: '2026-11-09',
+    titel: "Geheime prent, Pip deelt haar mantel en Het regenboogeiland",
+    tekst: "Nieuw verhaal \"Pip deelt haar mantel\" (Sint-Maarten) en nieuwe kleurplaat \"Sint-Maarten op zijn paard\", meteen te lezen en in te kleuren. Het spelletje Geheime prent kost 25 sterren: de cijfers naast elke rij en boven elke kolom zeggen hoeveel vakjes na elkaar je kleurt, en wie alles goed kleurt ziet een prentje verschijnen. Makkelijk: 5 × 5 met de prent licht in het rooster, een fout vakje kleurt niet. Middel: 7 × 7 zonder schaduw, een fout vakje kleurt niet. Moeilijk: 8 × 8 en 10 × 10, geen hulp, kruisjes zetten, Controleer, klokje en pluimen. In Springland ligt een nieuw level in Wolkenrijk: Het regenboogeiland. Nieuw kinderthema: Bouwwerf (graafmachines en kranen), te kiezen bij Mijn thema.",
+    verhaal: "Pip deelt haar mantel",
+    spel: { naam: "Geheime prent", prijs: 25 },
+    stukken: ["Figuurtje: Pet met blokjes (15), Shirt met blokjeshart (20), Halve rode mantel (15)", "Mijn huis: Blokjesboom (25), Houten paard met mantel (30), Kist met appels (20)"],
+    open: "Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.",
+  },
+  {
     versie: '0.118',
     datum: '2026-11-09',
     titel: 'Mijn figuurtje en Ik passen weer op een staande tablet',

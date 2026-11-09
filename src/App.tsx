@@ -32,6 +32,9 @@ import Delen from './schermen/Delen.tsx'
 import Weegschaal from './schermen/Weegschaal.tsx'
 import Torens from './schermen/Torens.tsx'
 import Rooster from './schermen/Rooster.tsx'
+import Hekjes from './schermen/Hekjes.tsx'
+import Zoeken from './schermen/Zoeken.tsx'
+import Geheim from './schermen/Geheim.tsx'
 import Lantaarns from './schermen/Lantaarns.tsx'
 import Kistslot from './schermen/Kistslot.tsx'
 import Buizen from './schermen/Buizen.tsx'
@@ -147,6 +150,9 @@ export default function App() {
         <Route path="weegschaal" element={<Weegschaal />} />
         <Route path="torens" element={<Torens />} />
         <Route path="rooster" element={<Rooster />} />
+        <Route path="hekjes" element={<Hekjes />} />
+        <Route path="zoeken" element={<Zoeken />} />
+        <Route path="geheim" element={<Geheim />} />
         <Route path="lantaarns" element={<Lantaarns />} />
         <Route path="kistslot" element={<Kistslot />} />
         <Route path="buizen" element={<Buizen />} />
