@@ -132,7 +132,7 @@ Dit gebeurt in twee fases: eerst uitdenken (ontwerp), daarna coderen (bouw).
   (2, bij Vanzelf lopen 3), beestjes en de baas kosten een hartje en bij 0 ga je terug naar het laatste vlaggetje. **Vijanden
   verslaan door erop te springen (slak 1 hup, egel rolt op en 2 hups, vogel fladdert), `docs/springland.md` "Vijanden"; een nieuw level mag die soorten (en een nieuwe soort) gebruiken. Een level
   mag soms moeilijk zijn** (ongeveer om de twee, drie levels een pittig level, zie "Moeilijkheid" in `docs/springland.md`),
-  maar het blijft haalbaar met alleen tikken (Vanzelf lopen voor Feline en Yuna). De wereldkaart (van bovenaf,
+  maar het blijft haalbaar met alleen tikken (Vanzelf lopen voor Feline en Yuna). **Elke baas heeft zijn eigen aanval en zwak punt** (`docs/springland.md`, "Baas"; Frederique 9 november 2026): bedenk voor een nieuwe baas een patroon dat nog niet bestaat. De wereldkaart (van bovenaf,
   het figuurtje wandelt naar het level) en het vrijspelen volgen vanzelf uit de data. Bedenk het level in het plan
   (naam, wereld, stijl, beestje, fruit, schets van het verloop). De bouw moet het robotje het nieuwe level laten
   uitspelen (`npx vitest run src/lib/spelletjes/springen.test.ts`); lukt dat niet, pas het level aan tot het haalbaar

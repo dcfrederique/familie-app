@@ -3,7 +3,7 @@
 // voeten op (x, y): x is het midden. Wie in het water valt, staat meteen terug op de laatste veilige plek (dat kost
 // niets). Een beestje van opzij raken kost een hartje: bij 0 hartjes ga je terug naar het laatste vlaggetje met alle
 // hartjes weer vol (sterren die je al had, blijven van jou). Op het einde van een wereld wacht een baas (docs/springland.md).
-import { springLevels, type SpringBesturing, type SpringLevel } from '../../data/springen.ts'
+import { springLevels, type SpringBesturing, type SpringLevel, type SpringLevelInfo } from '../../data/springen.ts'
 
 export const ZWAARTE = 38
 /** Snelheid omhoog bij een sprong en op een springveer (vakjes per seconde). */
@@ -29,7 +29,7 @@ export const BEESTJE_BEREIK = 2
 /** Hartjes per besturing: wie vanzelf loopt (nog niet leest) krijgt er een extra. */
 export const LEVENS: Record<SpringBesturing, number> = { zelf: 2, vanzelf: 3 }
 /** Hoeveel keer je op de baas moet hupsen: voor wie vanzelf loopt een keer minder. */
-export const BAAS_NODIG: Record<SpringBesturing, number> = { zelf: 3, vanzelf: 2 }
+export const BAAS_NODIG: Record<SpringBesturing, number> = { zelf: 4, vanzelf: 2 }
 export const BAAS_BREED = 2.2
 export const BAAS_HOOG = 2
 /** Na een hup is de baas even duizelig: onschadelijk en je kan er gewoon langs. */
@@ -47,8 +47,10 @@ export interface Ding { x: number; y: number; soort: 'ster' | 'fruit'; weg: bool
  *  en moet met één hup op het juiste moment geraakt worden. */
 export type BeestjeSoort = 'slak' | 'egel' | 'vogel'
 export const BEESTJE_LEVENS: Record<BeestjeSoort, number> = { slak: 1, egel: 2, vogel: 1 }
-/** Hoelang een egel opgerold blijft na een hup. */
+/** Hoelang een egel opgerold blijft na een hup (wie zelf loopt, Luca: korter, 9 november 2026). */
 export const KRUL = 2.5
+export const KRUL_ZELF = 1.8
+
 /** Hoe hoog een vogel fladdert boven de grond. */
 export const VOGEL_FLADDER = 1.1
 export interface Beestje {
@@ -62,13 +64,31 @@ export interface Beestje {
   op: number
 }
 
+/** Elke baas heeft een eigen aanvalspatroon en een eigen zwak punt (docs/springland.md, "Baas"). */
+export type BaasSoort = NonNullable<SpringLevelInfo['baas']>['soort']
+/** loopt = gewone beweging van de baas, aanloop = hij laat zien wat er komt, actie = de aanval, moe = zwak punt. */
+export type BaasToestand = 'loopt' | 'aanloop' | 'actie' | 'moe'
 export interface Baas {
   x: number; y: number; thuis: number; richting: -1 | 1
   geraakt: number; nodig: number
   /** Seconden duizelig na een hup; hupKlok is het kort platdrukken. */
   duizel: number; hupKlok: number
   verslagen: boolean
+  soort: BaasSoort
+  toestand: BaasToestand
+  /** Seconden tot de volgende toestand. */
+  tijd: number
+  /** Hoe hoog de baas boven de grond zweeft (wolk, uil, hup van de pepernoot). */
+  op: number
+  /** Een hup op zijn kop telt alleen als hij op dat moment kwetsbaar is (anders kaats je er gewoon af). */
+  kwetsbaar: boolean
+  /** Waar de aanval heen gaat en waar hij begon (hup en duikvlucht). */
+  doel: number; van: number; duur: number
+  /** Nog te gooien ballen of druppels in deze aanval. */
+  teller: number
 }
+/** Ballen (sneeuwbaas, rollen over de grond) en druppels (bromwolk, vallen uit de lucht) waar je overheen springt of voor wegloopt. */
+export interface Kogel { x: number; y: number; vx: number; vy: number; soort: 'bal' | 'druppel' }
 export interface Vlag { x: number; y: number; bereikt: boolean }
 
 export interface Springen {
@@ -107,6 +127,7 @@ export interface Springen {
   /** Waar je terugkomt als je hartjes op zijn: het laatste vlaggetje of de start. */
   startPunt: { x: number; y: number }
   baas: Baas | null
+  kogels: Kogel[]
 }
 
 export interface Knoppen { links: boolean; rechts: boolean }
@@ -132,7 +153,7 @@ export function nieuwSpel(level: SpringLevel, besturing: SpringBesturing): Sprin
       if (t === '*' || t === 'o') dingen.push({ x: c + 0.5, y: r + 0.5, soort: t === '*' ? 'ster' : 'fruit', weg: false })
       if (t === 'e') beestjes.push({ x: c + 0.5, y: r + 1, thuis: c + 0.5, richting: -1, hupKlok: 0, soort: springLevels[level].beestje, leven: BEESTJE_LEVENS[springLevels[level].beestje], weg: false, krul: 0, op: 0 })
       if (t === 'C') vlaggen.push({ x: c + 0.5, y: r + 1, bereikt: false })
-      if (t === 'B') baas = { x: c + 0.5, y: r + 1, thuis: c + 0.5, richting: -1, geraakt: 0, nodig: BAAS_NODIG[besturing], duizel: 0, hupKlok: 0, verslagen: false }
+      if (t === 'B') baas = { x: c + 0.5, y: r + 1, thuis: c + 0.5, richting: -1, geraakt: 0, nodig: BAAS_NODIG[besturing], duizel: 0, hupKlok: 0, verslagen: false, soort: springLevels[level].baas?.soort ?? 'pompoen', toestand: 'loopt', tijd: 1.5, op: 0, kwetsbaar: false, doel: c + 0.5, van: c + 0.5, duur: 1, teller: 0 }
       if (t === 'P') start = { x: c + 0.5, y: r + 1 }
       if (t === 'H') huis = { x: c + 0.5, y: r + 1 }
       return t === '#' || t === '=' || t === '^' || t === '~' ? t : ' '
@@ -142,7 +163,7 @@ export function nieuwSpel(level: SpringLevel, besturing: SpringBesturing): Sprin
     level, besturing, vakken, breed, hoog, ...start, vx: 0, vy: 0, opGrond: true, kijkt: 1, dingen, beestjes,
     veilig: start, huis, onthoud: 0, randtijd: 0, knipper: 0, wacht: 0, stappen: 0, klok: 0, vallen: 0, klaar: false,
     levens: LEVENS[besturing], maxLevens: LEVENS[besturing], geraakt: 0, omvallen: 0, weerKlok: 0, vlaggen,
-    startPunt: start, baas,
+    startPunt: start, baas, kogels: [],
   }
   // Een level zonder eigen vlaggetjes (C) krijgt er vanzelf een of twee op stevige grond, in een lang level meer.
   if (!vlaggen.length && !baas) {
@@ -205,7 +226,7 @@ export function stap(s0: Springen, dt: number, knoppen: Knoppen): { spel: Spring
   if (s0.klaar) return { spel: s0, gebeurtenissen: [] }
   const gebeurtenissen: SpringGebeurtenis[] = []
   const s: Springen = { ...s0, dingen: s0.dingen.map((d) => ({ ...d })), beestjes: s0.beestjes.map((b) => ({ ...b })),
-    vlaggen: s0.vlaggen.map((v) => ({ ...v })), baas: s0.baas ? { ...s0.baas } : null }
+    vlaggen: s0.vlaggen.map((v) => ({ ...v })), baas: s0.baas ? { ...s0.baas } : null, kogels: s0.kogels.map((k) => ({ ...k })) }
   let rest = Math.min(dt, 0.1)
   while (rest > EPS && !s.klaar) {
     const h = Math.min(rest, 1 / 120)
@@ -353,7 +374,7 @@ function beestjesLopen(s: Springen, dt: number, uit: SpringGebeurtenis[]) {
       s.vy = -HUP; s.y = boven - BEESTJE_HOOG; b.hupKlok = 0.6
       b.leven--
       if (b.leven <= 0) { b.weg = true; uit.push('vijand') }
-      else { b.krul = KRUL; uit.push('hup') }
+      else { b.krul = s.besturing === 'zelf' ? KRUL_ZELF : KRUL; uit.push('hup') }
     } else if (b.krul <= 0 && s.knipper <= 0) {
       // Van opzij: een hartje minder en een zacht duwtje terug (een opgerolde egel doet niets).
       geraaktDoor(s, b.x, uit)
@@ -365,30 +386,164 @@ function beestjesLopen(s: Springen, dt: number, uit: SpringGebeurtenis[]) {
 export const springPunten = (s: Pick<Springen, 'dingen'>) => gepakt(s)
 
 
-/** De baas rolt heen en weer. Een hup op zijn kop maakt hem duizelig (en sneller als hij weer wakker wordt);
- *  van opzij raken kost een hartje, en hij draait dan meteen om. Genoeg hupsen en hij is verslagen. */
+const klem = (x: number, a: number, b: number) => Math.max(a, Math.min(b, x))
+
+/** Zet de baas op een plek binnen zijn arena (en niet in de poort bij het huisje). */
+function inArena(s: Springen, b: Baas, x: number) {
+  return klem(x, b.thuis - BAAS_BEREIK, Math.min(b.thuis + BAAS_BEREIK, s.huis.x - POORT_AFSTAND - BAAS_BREED / 2 - 0.2))
+}
+
+function gooi(s: Springen, b: Baas) {
+  const naar = s.x < b.x ? -1 : 1
+  b.richting = naar
+  s.kogels.push({ x: b.x + naar * 1.3, y: b.y, vx: naar * (4.2 + 0.5 * b.geraakt), vy: 0, soort: 'bal' })
+}
+
+function naarToestand(b: Baas, t: BaasToestand, tijd: number) { b.toestand = t; b.tijd = tijd }
+
+/** Elke baas heeft een eigen patroon (docs/springland.md, "Baas"). Een hup op zijn kop telt alleen als `kwetsbaar` waar is;
+ *  `geraakt` is de fase: hoe meer hupsen, hoe sneller en lastiger hij wordt. */
+function patroon(s: Springen, b: Baas, dt: number, uit: SpringGebeurtenis[]) {
+  b.tijd -= dt
+  const F = Math.min(b.geraakt, 3)
+  const naar = s.x < b.x ? -1 : 1
+  switch (b.soort) {
+    case 'pepernoot': {
+      // Hupt als een koekje naar je toe; alleen als hij geland is en even uitrust, kan je op hem hupsen.
+      b.kwetsbaar = b.toestand === 'loopt'
+      if (b.toestand === 'actie') {
+        const p = Math.min(1, 1 - b.tijd / b.duur)
+        b.x = b.van + (b.doel - b.van) * p
+        b.op = 2.8 * 4 * p * (1 - p)
+        if (b.tijd <= 0) { b.op = 0; b.x = b.doel; naarToestand(b, 'loopt', Math.max(0.9, 1.6 - 0.2 * F)) }
+      } else if (b.tijd <= 0) {
+        if (b.toestand === 'loopt') { b.richting = naar; naarToestand(b, 'aanloop', 0.5) }
+        else { b.van = b.x; b.doel = inArena(s, b, s.x - naar * 2.8); b.duur = Math.max(0.6, 0.95 - 0.1 * F); naarToestand(b, 'actie', b.duur) }
+      }
+      break
+    }
+    case 'sneeuw': {
+      // Gooit sneeuwballen die over de grond rollen: spring erover. Na het gooien is hij buiten adem.
+      b.kwetsbaar = b.toestand === 'moe'
+      if (b.tijd > 0) break
+      if (b.toestand === 'loopt') { b.richting = naar; naarToestand(b, 'aanloop', 0.8) }
+      else if (b.toestand === 'aanloop') { gooi(s, b); b.teller = b.geraakt >= 2 ? 1 : 0; naarToestand(b, 'actie', 0.7) }
+      else if (b.toestand === 'actie') {
+        if (b.teller > 0) { b.teller--; gooi(s, b); b.tijd = 0.7 } else naarToestand(b, 'moe', Math.max(1.1, 1.8 - 0.2 * F))
+      } else naarToestand(b, 'loopt', Math.max(0.8, 1.5 - 0.15 * F))
+      break
+    }
+    case 'krab': {
+      // Loopt zijwaarts naar je toe en klapt met zijn scharen: ver weg blijven of erover springen. Daarna is hij moe.
+      b.kwetsbaar = b.toestand === 'moe'
+      if (b.toestand === 'loopt') {
+        b.richting = naar
+        if (Math.abs(b.x - s.x) > 2.1) b.x = inArena(s, b, b.x + naar * (2.2 + 0.3 * F) * dt)
+        if (b.tijd <= 0 && Math.abs(b.x - s.x) < 4) naarToestand(b, 'aanloop', Math.max(0.5, 0.8 - 0.08 * F))
+      } else if (b.toestand === 'aanloop') {
+        if (b.tijd <= 0) naarToestand(b, 'actie', 0.4)
+      } else if (b.toestand === 'actie') {
+        if (Math.abs(b.x - s.x) < 2.7 && s.y > b.y - 1.1 && s.knipper <= 0) geraaktDoor(s, b.x, uit)
+        if (b.tijd <= 0) naarToestand(b, 'moe', Math.max(1.0, 1.6 - 0.15 * F))
+      } else if (b.tijd <= 0) naarToestand(b, 'loopt', Math.max(0.7, 1.4 - 0.15 * F))
+      break
+    }
+    case 'wolk': {
+      // Zweeft hoog en laat druppels op je vallen; daarna is hij uitgeregend, daalt en is hij kwetsbaar.
+      b.kwetsbaar = b.toestand === 'moe' && b.op < 0.5
+      if (b.toestand === 'loopt') {
+        b.op = Math.min(3.4, b.op + 4 * dt)
+        b.richting = naar
+        b.x = inArena(s, b, b.x + klem(s.x - b.x, -1, 1) * (2.4 + 0.3 * F) * dt)
+        b.teller -= dt
+        if (b.teller <= 0 && b.op > 3) {
+          s.kogels.push({ x: b.x, y: b.y - b.op + 0.6, vx: 0, vy: 5.5, soort: 'druppel' })
+          b.teller = Math.max(0.35, 0.7 - 0.1 * F)
+        }
+        if (b.tijd <= 0) naarToestand(b, 'moe', 2.1)
+      } else {
+        b.op = Math.max(0, b.op - 6 * dt)
+        if (b.tijd <= 0) { naarToestand(b, 'loopt', 2.8 + 0.2 * F); b.teller = 0.3 }
+      }
+      break
+    }
+    case 'uil': {
+      // Zweeft boven je, wijst zijn doel aan en duikt er dan op af. Na de duik zit hij verward op de grond.
+      b.kwetsbaar = b.toestand === 'moe'
+      if (b.toestand === 'loopt' || b.toestand === 'aanloop') {
+        b.op += (3 - b.op) * Math.min(1, 5 * dt)
+        b.richting = naar
+        b.x = inArena(s, b, b.x + klem(s.x - b.x, -1, 1) * (2 + 0.3 * F) * dt)
+        if (b.toestand === 'aanloop' && b.tijd > 0.3) b.doel = inArena(s, b, s.x)
+        if (b.tijd <= 0) {
+          if (b.toestand === 'loopt') naarToestand(b, 'aanloop', Math.max(0.7, 1.0 - 0.1 * F))
+          else { b.van = b.x; b.duur = 0.45; naarToestand(b, 'actie', b.duur) }
+        }
+      } else if (b.toestand === 'actie') {
+        const p = Math.min(1, 1 - b.tijd / b.duur)
+        b.x = b.van + (b.doel - b.van) * p
+        b.op = 3 * (1 - p * p)
+        if (b.tijd <= 0) { b.op = 0; naarToestand(b, 'moe', Math.max(1.1, 1.8 - 0.15 * F)) }
+      } else if (b.tijd <= 0) naarToestand(b, 'loopt', Math.max(1.2, 2.0 - 0.2 * F))
+      break
+    }
+    default: {
+      // Pompoen: rolt heen en weer en wordt na elke hup sneller. Altijd kwetsbaar.
+      b.kwetsbaar = true
+      const tempo = BAAS_SNELHEID + 0.7 * b.geraakt
+      const voor = b.x + b.richting * (BAAS_BREED / 2 + 0.05)
+      if (Math.abs(voor - b.thuis) > BAAS_BEREIK || isVast(s, Math.floor(voor), Math.round(b.y) - 1)) b.richting = b.richting === 1 ? -1 : 1
+      else b.x += b.richting * tempo * dt
+    }
+  }
+}
+
+/** Ballen rollen, druppels vallen; een raak is een hartje en de bal of druppel is dan weg. */
+function kogelsBewegen(s: Springen, dt: number, uit: SpringGebeurtenis[]) {
+  const b = s.baas
+  for (const k of s.kogels) {
+    k.x += k.vx * dt; k.y += k.vy * dt
+    const grond = b ? b.y : s.hoog
+    const hoogK = k.soort === 'bal' ? 0.8 : 0.3
+    const raakX = Math.abs(k.x - s.x) < (BREED + (k.soort === 'bal' ? 0.8 : 0.5)) / 2
+    const raakY = s.y > k.y - hoogK && s.y - HOOG < k.y
+    if (raakX && raakY && s.knipper <= 0) { geraaktDoor(s, k.x, uit); k.y = 999 }
+    else if ((k.soort === 'druppel' && k.y >= grond) || (b && (k.x < b.thuis - BAAS_BEREIK - 3 || k.x > s.huis.x)) || isVast(s, Math.floor(k.x), Math.round(k.y) - 1) && k.soort === 'bal') k.y = 999
+  }
+  s.kogels = s.kogels.filter((k) => k.y < 998)
+}
+
+/** Wanneer een baas je een hartje kost als je hem van opzij raakt: de wolk nooit (zijn druppels doen dat), de uil alleen
+ *  in zijn duikvlucht, de anderen altijd. */
+const doetPijn = (b: Baas) => b.soort === 'wolk' ? false : b.soort === 'uil' ? b.toestand === 'actie' : true
+
+/** De baas volgt zijn eigen patroon. Een hup op zijn kop telt alleen als hij kwetsbaar is; ben je op het verkeerde
+ *  moment aan de beurt, dan kaats je er gewoon af. Van opzij raken kost een hartje. */
 function baasRolt(s: Springen, dt: number, uit: SpringGebeurtenis[]) {
   const b = s.baas
   if (!b || b.verslagen) return
   b.hupKlok = Math.max(0, b.hupKlok - dt)
   b.duizel = Math.max(0, b.duizel - dt)
-  if (b.duizel <= 0) {
-    const tempo = BAAS_SNELHEID + 0.7 * b.geraakt
-    const voor = b.x + b.richting * (BAAS_BREED / 2 + 0.05)
-    if (Math.abs(voor - b.thuis) > BAAS_BEREIK || isVast(s, Math.floor(voor), Math.round(b.y) - 1)) b.richting = b.richting === 1 ? -1 : 1
-    else b.x += b.richting * tempo * dt
-  }
+  kogelsBewegen(s, dt, uit)
+  // Een baas begint pas als je zijn arena nadert; verder weg doet hij niets (alleen de pompoen rolt altijd).
+  const dichtbij = Math.abs(s.x - b.thuis) < BAAS_BEREIK + 8
+  if (b.duizel > 0) b.kwetsbaar = false
+  else if (dichtbij || b.soort === 'pompoen') patroon(s, b, dt, uit)
+  else { b.kwetsbaar = false; b.op = Math.max(0, b.op - 4 * dt) }
+  const by = b.y - b.op
   const raakX = Math.abs(b.x - s.x) < (BREED + BAAS_BREED) / 2 - 0.1
-  const raakY = s.y > b.y - BAAS_HOOG && s.y - HOOG < b.y
+  const raakY = s.y > by - BAAS_HOOG && s.y - HOOG < by
   if (!raakX || !raakY) return
-  if (s.vy > 0 && s.y < b.y - BAAS_HOOG + 1.2) {
-    // Van boven: hup! Alleen een wakkere baas telt, een duizelige baas is gewoon een trampoline.
-    s.vy = -HUP - 2; s.y = b.y - BAAS_HOOG
-    if (b.duizel <= 0) {
-      b.geraakt++; b.duizel = BAAS_DUIZEL; b.hupKlok = 0.5
+  if (s.vy > 0 && s.y < by - BAAS_HOOG + 1.2) {
+    // Van boven: hup! Alleen op het zwakke moment telt het; anders (of als hij duizelig is) is hij een trampoline.
+    s.vy = -HUP - 2; s.y = by - BAAS_HOOG
+    if (b.duizel <= 0 && b.kwetsbaar) {
+      b.geraakt++; b.duizel = BAAS_DUIZEL; b.hupKlok = 0.5; b.op = 0; b.teller = 0
+      if (b.soort === 'pepernoot') naarToestand(b, 'aanloop', 0.4); else naarToestand(b, 'loopt', 1.2)
+      s.kogels = []
       if (b.geraakt >= b.nodig) { b.verslagen = true; uit.push('verslagen') } else uit.push('baas')
     } else uit.push('hup')
-  } else if (b.duizel <= 0 && s.knipper <= 0) {
+  } else if (b.duizel <= 0 && s.knipper <= 0 && doetPijn(b)) {
     geraaktDoor(s, b.x, uit)
     b.richting = s.x < b.x ? 1 : -1
   }

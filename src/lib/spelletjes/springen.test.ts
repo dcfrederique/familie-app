@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { springLevels, springVolgorde, type SpringBesturing, type SpringLevel } from '../../data/springen.ts'
-import { HOOG, isVast, nieuwSpel, spring, springPunten, stap, totaal, type Knoppen, type Springen } from './springen.ts'
+import { BAAS_HOOG, HOOG, isVast, nieuwSpel, spring, springPunten, stap, totaal, type Knoppen, type Springen } from './springen.ts'
 
 const stil: Knoppen = { links: false, rechts: false }
 const rechts: Knoppen = { links: false, rechts: true }
@@ -27,10 +27,36 @@ function robot(s: Springen): { s: Springen; knoppen: Knoppen } {
   const muur = isVast(s, voor, r - 1) || isVast(s, voor, r - 2)
   const gat = !isVast(s, Math.floor(s.x + 0.55), r) && !isVast(s, Math.floor(s.x + 1.2), r) && !isVast(s, Math.floor(s.x + 1.2), r + 1)
   const beestje = s.beestjes.some((b) => !b.weg && b.x - s.x > 0 && b.x - s.x < 2.6 && Math.abs(b.y - s.y) < 1)
-  // De baas: hupsen als hij net voor je rolt (een duizelige baas laat je gewoon links liggen).
-  const b = s.baas
-  const baas = !!b && !b.verslagen && b.duizel <= 0 && Math.abs(b.x - s.x) < 3 && (s.x < s.huis.x - 3.3 || Math.sign(s.x - b.x) === b.richting)
-  return { s: s.opGrond && (muur || gat || beestje || baas) ? spring(s) : s, knoppen: rechts }
+  // De baas: elk patroon heeft zijn eigen antwoord (zie baasRobot).
+  const bs = s.baas
+  if (bs && !bs.verslagen && s.x > bs.thuis - 9) return baasRobot(s, bs)
+  return { s: s.opGrond && (muur || gat || beestje) ? spring(s) : s, knoppen: rechts }
+}
+
+/** Hoe een kind een baas verslaat: wegblijven van de aanval, dichtbij komen op het zwakke moment en dan hupsen. */
+function baasRobot(s: Springen, b: NonNullable<Springen['baas']>): { s: Springen; knoppen: Knoppen } {
+  const loop = (d: number): Knoppen => d > 0 ? rechts : d < 0 ? { links: true, rechts: false } : s.besturing === 'vanzelf' ? (Math.floor(s.klok * 8) % 2 ? { links: true, rechts: false } : rechts) : stil
+  const dx = b.x - s.x
+  let spr = false
+  let dir = 0
+  // Ballen: erover springen. Druppels: opzij.
+  const bal = s.kogels.find((k) => k.soort === 'bal' && Math.abs(k.x - s.x) < 2.3 && Math.sign(k.x - s.x) === -Math.sign(k.vx))
+  const druppel = s.kogels.find((k) => k.soort === 'druppel' && Math.abs(k.x - s.x) < 1.1)
+  if (bal) spr = true
+  else if (druppel) dir = s.x < druppel.x ? -1 : 1
+  else if (b.soort === 'krab' && (b.toestand === 'aanloop' || b.toestand === 'actie') && Math.abs(dx) < 3.2) { spr = b.toestand === 'actie'; dir = Math.abs(dx) < 2.9 ? -Math.sign(dx) : 0 }
+  else if (b.soort === 'uil' && (b.toestand === 'aanloop' || b.toestand === 'actie') && Math.abs(b.doel - s.x) < 2.2) dir = s.x < b.doel ? -1 : 1
+  else if (b.soort === 'pepernoot' && b.toestand !== 'loopt' && Math.abs(dx) < 4.2) dir = -Math.sign(dx)
+  else if (b.kwetsbaar && b.op < 0.5 && b.duizel <= 0) {
+    // Dichtbij komen en hupsen als hij net voor je staat.
+    dir = Math.abs(dx) > 1.9 ? Math.sign(dx) : 0
+    spr = Math.abs(dx) < 2.5
+  }
+  // Een wolk laat druppels vallen: blijf lopen, dan raken ze je niet.
+  else if (b.soort === 'wolk') dir = Math.sin(s.klok * 1.6) > 0 && s.x < s.huis.x - 5 ? 1 : -1
+  else if (b.soort !== 'pompoen') dir = 0
+  else spr = Math.abs(dx) < 3 && (s.x < s.huis.x - 3.3 || Math.sign(s.x - b.x) === b.richting)
+  return { s: s.opGrond && spr ? spring(s) : s, knoppen: loop(dir) }
 }
 
 describe('Springland', () => {
@@ -116,6 +142,54 @@ describe('Springland', () => {
     // Vogel: fladdert boven de grond en gaat met één hup weg.
     expect(nieuwSpel('wolken', 'zelf').beestjes[0].soort).toBe('vogel')
     expect(val('wolken', (b) => ({ ...b, op: 0.5 })).b.weg).toBe(true)
+  })
+
+
+  it('elke baas heeft een eigen aanval en een eigen zwak punt', () => {
+    // Zet het figuurtje op afstand van de baas (in de arena) en laat de klok lopen.
+    const arena = (level: string, afstand: number) => {
+      const s = nieuwSpel(level, 'zelf')
+      const b = s.baas!
+      return { ...s, x: b.x - afstand, y: b.y, veilig: { x: b.x - afstand, y: b.y }, startPunt: { x: b.x - afstand, y: b.y } }
+    }
+    const zie = (s: Springen, seconden: number) => {
+      const toestanden = new Set<string>(); const kogels = new Set<string>(); let max = 0
+      for (let t = 0; t < seconden; t += 1 / 60) {
+        s = stap(s, 1 / 60, stil).spel
+        toestanden.add(s.baas!.toestand); max = Math.max(max, s.baas!.op)
+        s.kogels.forEach((k) => kogels.add(k.soort))
+        s = { ...s, levens: 9, knipper: 0 }
+      }
+      return { s, toestanden, kogels, max }
+    }
+    // Pepernoot: hupt door de lucht en is alleen kwetsbaar als hij geland is.
+    const pep = zie(arena('pepernotenbaas', 5), 6)
+    expect(pep.max).toBeGreaterThan(2)
+    expect(pep.toestanden).toContain('actie')
+    // Sneeuwbaas: gooit ballen over de grond.
+    expect(zie(arena('sneeuwbaas', 5), 6).kogels).toContain('bal')
+    // Bromwolk: zweeft hoog en laat druppels vallen.
+    const wolk = zie(arena('bromwolk', 5), 6)
+    expect(wolk.kogels).toContain('druppel')
+    expect(wolk.max).toBeGreaterThan(3)
+    // Bromuil: duikt vanuit de lucht naar beneden.
+    const uil = zie(arena('bromuil', 5), 8)
+    expect(uil.toestanden).toContain('actie')
+    expect(uil.toestanden).toContain('moe')
+    // Krabbaas: klapt met zijn scharen; wie dan op de grond staat, verliest een hartje.
+    let krab = arena('krabbaas', 3.5)
+    let geraakt = 0
+    for (let t = 0; t < 8; t += 1 / 60) { krab = stap(krab, 1 / 60, stil).spel; geraakt = Math.max(geraakt, krab.geraakt); krab = { ...krab, knipper: 0 } }
+    expect(geraakt).toBeGreaterThan(0)
+    // Een hup op een baas die niet kwetsbaar is, telt niet: je kaatst gewoon.
+    const sn = arena('sneeuwbaas', 0)
+    const b = sn.baas!
+    const boven = { ...sn, x: b.x, y: b.y - BAAS_HOOG - 1, vy: 6, opGrond: false, baas: { ...b, toestand: 'loopt' as const, tijd: 5 } }
+    const na = speel(boven, 0.4).s
+    expect(na.baas!.geraakt).toBe(0)
+    // Maar op het zwakke punt (moe) wel.
+    const moe = { ...boven, baas: { ...b, toestand: 'moe' as const, tijd: 5 } }
+    expect(speel(moe, 0.4).s.baas!.geraakt).toBe(1)
   })
 
   it('een springveer kaatst hoog op', () => {

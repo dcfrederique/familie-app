@@ -59,11 +59,29 @@ Van opzij raken kost nog altijd een hartje. De baas heeft zijn eigen regels (zie
   kaart: een korte aanloop (sterren, een gat of twee, een beestje) en dan een open stuk grond waar hij heen en weer
   rolt voor het hekje bij het huisje (`POORT_AFSTAND`: dicht tot hij verslagen is).
 - Hup op zijn hoofd: dan is hij 2 seconden duizelig (kruisjes in zijn ogen, sterretjes, onschadelijk, je kan er
-  zelfs op blijven kaatsen) en rolt daarna iets sneller. 3 hups (`BAAS_NODIG`: 2 bij Vanzelf lopen) en hij is
-  verslagen. Van opzij raken kost een hartje en de baas draait om. De bolletjes naast de hartjes tellen af.
+  zelfs op blijven kaatsen). `BAAS_NODIG`: 4 hups bij Zelf lopen (Luca), 2 bij Vanzelf lopen. Van opzij raken kost een
+  hartje en de baas draait om. De bolletjes naast de hartjes tellen af.
+- **Elke baas heeft zijn eigen aanval en zijn eigen zwakke moment** (9 november 2026, op vraag van de kinderen). Een hup
+  telt alleen als `kwetsbaar` waar is (een gele pijl wipt dan boven zijn kop); anders kaats je er gewoon af, zonder straf.
+  `patroon()` in `springen.ts` is een kleine toestandsmachine per soort: `loopt` (gewoon), `aanloop` (hij toont wat er
+  komt), `actie` (de aanval) en `moe` (zwak punt). Hoe meer hupsen (`geraakt` = de fase), hoe korter de wachttijden en hoe
+  sneller de aanval. De baas begint pas als je zijn arena nadert (`BAAS_BEREIK + 8` vakjes van `thuis`), alleen de pompoen rolt altijd.
+  - **Pompoen**: rolt heen en weer, wordt na elke hup sneller; altijd te raken.
+  - **Pepernoot**: hupt in een boog naar je toe (hoger dan jij, dus eronder doorlopen kan, `aanloop` = hurken) en rust even
+    na de landing: alleen dan kan je erop hupsen.
+  - **Sneeuwbaas**: gooit een sneeuwbal (`Kogel`, rolt over de grond; erover springen), vanaf fase 2 twee na elkaar, en is daarna
+    buiten adem (`moe`).
+  - **Krab**: loopt zijwaarts naar je toe en klapt na een `aanloop` met zijn scharen: een rood vlak op de grond toont het bereik
+    (2,7 vakjes); wegblijven of erover springen. Daarna is hij moe.
+  - **Wolk**: zweeft hoog (`op`) en laat druppels vallen (`Kogel`, valt uit de lucht; blijf lopen), daalt dan uitgeregend: pas
+    laag kan je erop hupsen. De wolk zelf doet nooit pijn.
+  - **Uil**: zweeft boven je, wijst in de `aanloop` met een rood kruisje aan waar hij neerduikt (het kruisje blijft staan op
+    het laatste moment) en zit na de duik verward op de grond. Alleen de duik doet pijn.
+  Een nieuwe baas = een nieuw `soort`: kies een eigen aanval en een eigen zwak punt (niet weer "hup op zijn hoofd terwijl hij
+  rolt"), schrijf de tak in `patroon()` en voeg het antwoord toe aan `baasRobot` in `springen.test.ts`.
 - Geen schrik: de baas is boos-lief getekend, er is geen geweld, hij wordt gewoon duizelig en "poef" weg.
 - De eerste baas is de **pompoenbaas** (Zonnevallei, stijl bos). De derde is de **sneeuwbaas** (Winterbergen, stijl sneeuw, `soort: 'sneeuw'`: drie sneeuwballen met een blauwe muts, rode sjaal en wortelneus). De tweede is de **pepernotenbaas** (Pepernotenland, stijl weide, `soort: 'pepernoot'`: drie bruine koekjes met glazuurstreepjes en een rood mijtertje). De vierde is de **krabbaas** (Zonnestrand, stijl strand, `soort: 'krab'`). Een nieuwe baas = een nieuw `soort`: tekening in
-  `tekenBaas` (`springenVeld.ts`) en op het eilandje van de kaart (`SpringKaart.tsx`).
+  `tekenBaas` (`springenVeld.ts`, ook de telegraaf van de aanval) en op het eilandje van de kaart (`SpringKaart.tsx`).
 - Robotje: `springen.test.ts` laat het robotje ook de baas verslaan (hij hupt als de baas aan komt rollen).
 
 ## Op de gsm

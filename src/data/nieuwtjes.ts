@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.133',
+    datum: '2026-11-09',
+    titel: "Springland: elke baas is nu anders",
+    tekst: "Op vraag van de kinderen: de bazen werden altijd op dezelfde manier verslagen, dus nu heeft elke baas zijn eigen aanval en zijn eigen zwakke moment. Een hup op zijn kop telt alleen als hij moe is (een gele pijl wipt dan boven zijn kop); anders kaats je er gewoon af, zonder straf. Pompoenbaas: rolt heen en weer en wordt sneller (altijd te raken). Pepernotenbaas: hupt als een koekje naar je toe en rust even als hij geland is. Sneeuwbaas: gooit sneeuwballen die over de grond rollen (springen!) en is daarna buiten adem; later gooit hij er twee. Krabbaas: loopt zijwaarts naar je toe, het rode vlak op de grond toont waar hij klapt (ver weg blijven of erover springen), en daarna is hij moe. Bromwolk: zweeft hoog, laat druppels op je vallen (blijf lopen) en daalt dan uitgeregend. Bromuil: wijst met een rood kruisje aan waar hij neerduikt, en zit daarna verward op de grond. Elke hup maakt de baas sneller en lastiger. Wie vanzelf loopt (Feline, Yuna) hupt twee keer; wie zelf loopt (Luca) moet de baas vier keer raken, en een opgerolde egel blijft korter opgerold. Het robotje in de tests speelt elk level en elke baas nog altijd uit.",
+  },
+  {
     versie: '0.132',
     datum: '2026-11-09',
     titel: "Knikkers sorteren, De knikkerpotjes en het laatste level van Speelgoedland",

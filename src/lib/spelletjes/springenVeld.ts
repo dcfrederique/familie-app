@@ -3,7 +3,7 @@
 import { springLevels, type SpringBesturing, type SpringLevel, type SpringStijl } from '../../data/springen.ts'
 import { geluid } from './geluid.ts'
 import {
-  BAAS_BREED, BAAS_HOOG, BEESTJE_HOOG, HOOG, nieuwSpel, spring, stap, type Baas, type Beestje, type Ding, type Knoppen,
+  BAAS_BREED, BAAS_HOOG, BEESTJE_HOOG, HOOG, nieuwSpel, spring, stap, type Baas, type Beestje, type Kogel, type Ding, type Knoppen,
   type SpringGebeurtenis, type Springen,
 } from './springen.ts'
 
@@ -189,6 +189,7 @@ export class SpringVeld {
     for (const d of spel.dingen) if (!d.weg && d.x > van - 1 && d.x < tot + 1) this.tekenDing(d, T)
     for (const b of spel.beestjes) if (!b.weg) this.tekenBeestje(b, T)
     if (spel.baas && !spel.baas.verslagen) this.tekenBaas(spel.baas, T)
+    for (const k of spel.kogels) this.tekenKogel(k, T)
     this.tekenFiguur(T)
     for (const s of this.glinsters) this.tekenGlinster(s, T)
     ctx.restore()
@@ -432,6 +433,23 @@ export class SpringVeld {
     ctx.beginPath(); ctx.moveTo(x, y - T * 1.3); ctx.lineTo(x + T * 0.7, y - T * 1.1 + wapper); ctx.lineTo(x, y - T * 0.85); ctx.closePath(); ctx.fill()
   }
 
+  /** Een sneeuwbal die over de grond rolt of een regendruppel die valt. */
+  private tekenKogel(k: Kogel, T: number) {
+    const { ctx } = this
+    ctx.save(); ctx.translate(k.x * T, k.y * T)
+    if (k.soort === 'bal') {
+      ctx.translate(0, -T * 0.4); ctx.rotate(this.spel.klok * 6 * Math.sign(k.vx))
+      ctx.fillStyle = '#F4F9FD'; ctx.strokeStyle = '#9DB9D4'; ctx.lineWidth = T * 0.05
+      ctx.beginPath(); ctx.arc(0, 0, T * 0.4, 0, Math.PI * 2); ctx.fill(); ctx.stroke()
+      ctx.fillStyle = '#C9DDEE'
+      ctx.beginPath(); ctx.arc(-T * 0.12, -T * 0.1, T * 0.1, 0, Math.PI * 2); ctx.arc(T * 0.14, T * 0.12, T * 0.07, 0, Math.PI * 2); ctx.fill()
+    } else {
+      ctx.fillStyle = '#4C9BF0'
+      ctx.beginPath(); ctx.moveTo(0, -T * 0.3); ctx.quadraticCurveTo(T * 0.2, -T * 0.05, 0, 0); ctx.quadraticCurveTo(-T * 0.2, -T * 0.05, 0, -T * 0.3); ctx.fill()
+    }
+    ctx.restore()
+  }
+
   /** Het hekje voor het huisje: dicht tot de baas verslagen is. */
   private tekenPoort(spel: Springen, T: number) {
     const { ctx } = this
@@ -446,14 +464,27 @@ export class SpringVeld {
   private tekenBaas(b: Baas, T: number) {
     const { ctx } = this
     const w = BAAS_BREED * T, h = BAAS_HOOG * T
+    const klok = this.spel.klok
+    // Schaduw op de grond (kleiner als hij hoog zweeft), en wat er aankomt: een rode vlek (krab), een kruisje (uil).
+    ctx.fillStyle = 'rgba(0,0,0,.15)'
+    ctx.beginPath(); ctx.ellipse(b.x * T, b.y * T, w * 0.5 * (1 - Math.min(0.5, b.op * 0.12)), T * 0.1, 0, 0, Math.PI * 2); ctx.fill()
+    if (b.soort === 'krab' && (b.toestand === 'aanloop' || b.toestand === 'actie')) {
+      ctx.fillStyle = b.toestand === 'actie' ? 'rgba(217,69,46,.45)' : 'rgba(217,69,46,.2)'
+      ctx.beginPath(); ctx.ellipse(b.x * T, b.y * T - T * 0.05, 2.7 * T, T * 0.3, 0, 0, Math.PI * 2); ctx.fill()
+    }
+    if (b.soort === 'uil' && (b.toestand === 'aanloop' || b.toestand === 'actie')) {
+      ctx.strokeStyle = 'rgba(217,69,46,.8)'; ctx.lineWidth = T * 0.14; ctx.lineCap = 'round'
+      const kx = b.doel * T, ky = b.y * T - T * 0.1, r = T * 0.35
+      ctx.beginPath(); ctx.moveTo(kx - r, ky - r); ctx.lineTo(kx + r, ky + r); ctx.moveTo(kx + r, ky - r); ctx.lineTo(kx - r, ky + r); ctx.stroke()
+    }
     ctx.save()
-    ctx.translate(b.x * T, b.y * T)
-    const plat = b.hupKlok > 0 ? 0.7 : 1
-    const rol = b.duizel > 0 ? Math.sin(this.spel.klok * 10) * 0.12 : Math.sin(this.spel.klok * 8) * 0.03
+    ctx.translate(b.x * T, (b.y - b.op) * T)
+    // Hurken en trillen als er iets aankomt; een wiebel bij een hup of duizeligheid.
+    const klaar = b.toestand === 'aanloop'
+    const plat = b.hupKlok > 0 ? 0.7 : klaar ? 0.85 + Math.sin(klok * 30) * 0.03 : 1
+    const rol = b.duizel > 0 ? Math.sin(klok * 10) * 0.12 : klaar ? Math.sin(klok * 40) * 0.05 : Math.sin(klok * 8) * 0.03
     ctx.rotate(rol)
     ctx.scale(1, plat)
-    ctx.fillStyle = 'rgba(0,0,0,.15)'
-    ctx.beginPath(); ctx.ellipse(0, 0, w * 0.5, T * 0.1, 0, 0, Math.PI * 2); ctx.fill()
     const soort = springLevels[this.spel.level].baas?.soort
     const pepernoot = soort === 'pepernoot', sneeuw = soort === 'sneeuw', krab = soort === 'krab', wolk = soort === 'wolk', uil = soort === 'uil'
     // Pompoen: drie oranje bollen met een groene steel. Pepernoot: drie bruine koekjes met glazuurstreepjes en een rood mijtertje.
@@ -557,6 +588,14 @@ export class SpringVeld {
       ctx.fillStyle = '#1C2433'
       for (const dx of [-0.17, 0.17]) { ctx.beginPath(); ctx.arc(dx * w + b.richting * T * 0.07, -h * 0.62, T * 0.11, 0, Math.PI * 2); ctx.fill() }
       ctx.beginPath(); ctx.arc(0, -h * 0.3, T * 0.35, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke()
+    }
+    // Een wippende pijl boven zijn kop: nu kan je op hem hupsen!
+    if (b.kwetsbaar && b.duizel <= 0 && b.op < 0.5 && b.soort !== 'pompoen') {
+      const wip = Math.sin(klok * 8) * T * 0.12
+      ctx.fillStyle = '#F2B33D'; ctx.strokeStyle = '#8A5A10'; ctx.lineWidth = T * 0.05
+      ctx.beginPath(); ctx.moveTo(0, -h * 1.5 + wip + T * 0.3); ctx.lineTo(-T * 0.3, -h * 1.5 + wip - T * 0.1); ctx.lineTo(-T * 0.12, -h * 1.5 + wip - T * 0.1)
+      ctx.lineTo(-T * 0.12, -h * 1.5 + wip - T * 0.45); ctx.lineTo(T * 0.12, -h * 1.5 + wip - T * 0.45); ctx.lineTo(T * 0.12, -h * 1.5 + wip - T * 0.1); ctx.lineTo(T * 0.3, -h * 1.5 + wip - T * 0.1)
+      ctx.closePath(); ctx.fill(); ctx.stroke()
     }
     ctx.restore()
   }
