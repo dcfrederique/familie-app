@@ -219,3 +219,41 @@ test('het nieuwe dorp: in het eigen huis binnenlopen en weer buiten', async ({ p
   await expect(page.getByRole('dialog', { name: 'Mijn Schatboek' })).toBeVisible()
   expect(fouten).toEqual([])
 })
+
+test('het nieuwe dorp: een ouder loopt binnen bij een kind en door de oostpoort', async ({ page }) => {
+  const fouten: string[] = []
+  page.on('pageerror', (e) => fouten.push(e.message))
+  await page.setViewportSize({ width: 1194, height: 834 })
+  await page.clock.setFixedTime(new Date('2026-10-26T10:00:00'))
+  await page.goto('/ouder')
+  await pincodeAlsGevraagd(page)
+  // Mama begint voor het huis van het eerste kind (tegel 6, 17), zoals na een terugkeer uit een ander scherm.
+  await page.evaluate(() => sessionStorage.setItem('dorp-plek-mama', JSON.stringify({ s: 'dorp', tx: 6, ty: 17 })))
+  await naar(page, '/ouder/wereld')
+  const veld = page.locator('canvas.wereld-veld')
+  await expect(veld).toHaveAttribute('aria-label', 'Het dorp')
+  await page.getByRole('button', { name: 'Naar binnen' }).click()
+  await expect(veld).toHaveAttribute('aria-label', /^De kamer van /)
+  // naar buiten: de deur van de kamer ligt onderaan
+  await page.keyboard.down('ArrowDown')
+  await expect(veld).toHaveAttribute('aria-label', 'Het dorp', { timeout: 8000 })
+  await page.keyboard.up('ArrowDown')
+  expect(fouten).toEqual([])
+})
+
+test('het nieuwe dorp: een ouder gaat door de oostpoort naar het Meer', async ({ page }) => {
+  const fouten: string[] = []
+  page.on('pageerror', (e) => fouten.push(e.message))
+  await page.setViewportSize({ width: 1194, height: 834 })
+  await page.clock.setFixedTime(new Date('2026-10-26T10:00:00'))
+  await page.goto('/ouder')
+  await pincodeAlsGevraagd(page)
+  await page.evaluate(() => sessionStorage.setItem('dorp-plek-mama', JSON.stringify({ s: 'dorp', tx: 31, ty: 12 })))
+  await naar(page, '/ouder/wereld')
+  const veld = page.locator('canvas.wereld-veld')
+  await expect(veld).toHaveAttribute('aria-label', 'Het dorp')
+  await page.keyboard.down('ArrowRight')
+  await expect(veld).toHaveAttribute('aria-label', 'De wereld: Meer', { timeout: 8000 })
+  await page.keyboard.up('ArrowRight')
+  expect(fouten).toEqual([])
+})

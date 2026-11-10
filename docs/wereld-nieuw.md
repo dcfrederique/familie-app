@@ -135,6 +135,7 @@ Een Playwright-test in `e2e/` laadt De wereld, laat 3 seconden lopen zonder graf
 - `src/lib/dorp/stijl.ts` en `tekenen.ts`: de tekenstijl (inktlijn, licht van linksboven) en `DorpTekenaar`: grond één keer gebakken, plaatjes per ding, per beeld alleen wat beweegt. Nacht, schemer en weer met één vlak in vermenigvuldig-modus; nooit `filter` of `shadowBlur`.
 - `src/lib/dorp/voortgang.ts`: glinsters en appels van vandaag en het Schatboek, op het toestel (geen sterren, dus geen server nodig). Fase 3 zet dit op de server samen met het Dorpsbord.
 - `src/schermen/Dorp.tsx`: het scherm, door `Wereld.tsx` getoond voor het gebied `dorp` zolang Wereldinstellingen → Dorp op Nieuw staat (standaard). De andere gebieden en het dorp van vroeger gebruiken nog de oude tekenaar.
+- Een ouder (`/ouder/wereld`) loopt bij elk kind binnen (de kamer van dat kind, meubels alleen bekijken) en gaat door alle poorten; de poort naar Springland opent `/ouder/springland` (nieuwtje 0.149).
 - Lopen gaat in het dorp altijd tegel voor tegel. De gebouwen van de spelletjes staan niet in het nieuwe dorp (ze zitten in het Spellenhuis); Kaart bewerken werkt alleen nog voor de andere gebieden (een kindhuis dat in een ander gebied staat, verschijnt niet in het dorp).
 
 ## Fases

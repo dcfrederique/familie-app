@@ -438,6 +438,8 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
       const poort = GEBIEDEN[0].poorten.find((p) => p.zijde === zijde)
       if (!poort) return
       // terug uit Springland: aan de westpoort
+      // een ouder gaat naar de eigen landkaart van Springland (meekijken en zelf proberen)
+      if (poort.doel === 'springland' && ouder) { navigate('/ouder/springland'); return }
       if (poort.doel === 'springland') try { sessionStorage.setItem(`dorp-plek-${kind.id}`, JSON.stringify({ s: 'dorp', tx: 2, ty: 12 })) } catch { /* geen opslag */ }
       toestand.current.bezig = false
       reis(poort)

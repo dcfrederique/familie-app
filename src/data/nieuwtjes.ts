@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.149',
+    datum: '2026-11-10',
+    titel: 'Als ouder op bezoek in het dorp',
+    tekst: 'In De wereld (Spelen en wereld → De wereld) kun je nu als ouder bij elk kind binnenlopen: ga voor een huis staan en tik op Naar binnen. Je staat in de kamer van dat kind en ziet wie er ook is. De meubels kun je bekijken, spelen en bewaren doet het kind zelf. Door de poorten ga je naar de andere gebieden, en de poort naar Springland brengt je naar de landkaart van Springland.',
+  },
+  {
     versie: '0.148',
     datum: '2026-11-10',
     titel: 'Een nieuw dorp, en je eigen huis van binnen',

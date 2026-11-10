@@ -40,6 +40,12 @@ const KAMER_DOE: Record<KamerDoe, { icoon: string; label: string }> = {
   dag: { icoon: 'maan', label: 'Mijn dag' }, kleerkast: { icoon: 'shirt', label: 'Kleerkast' }, schatboek: { icoon: 'boek', label: 'Schatboek' },
   huisdier: { icoon: 'poot', label: 'Huisdier' }, tekenen: { icoon: 'potlood', label: 'Tekenen' }, mijnhuis: { icoon: 'huis', label: 'Mijn huis' },
 }
+/** Wat een ouder hoort bij een meubel in de kamer van een kind. */
+const OUDER_MEUBEL: Record<KamerDoe, (wie: string) => string> = {
+  dag: (w) => `Het bed van ${w}. Mijn dag lees je in het ouderdeel.`, kleerkast: (w) => `De kleerkast van ${w}.`,
+  schatboek: (w) => `Het Schatboek van ${w}: dat staat op de tablet.`, huisdier: (w) => `De mand van het huisdier van ${w}.`,
+  tekenen: (w) => `De tekentafel van ${w}.`, mijnhuis: (w) => `De kist van ${w}.`,
+}
 const DEUR_ICOON: Record<Deur['soort'], string> = { winkel: 'tas', spellen: 'ster', bakkerij: 'brood', huis: 'huis' }
 
 export interface DorpProps {
@@ -70,6 +76,9 @@ export default function Dorp({ kind, ouder, huizen, besturing, snelheid, binnenV
   const [sluit, setSluit] = useState(false)
   const [scene, setScene] = useState<'dorp' | 'kamer'>('dorp')
   const [boekTeller, setBoekTeller] = useState(0)
+  // In wiens kamer we staan: een kind in de eigen kamer, een ouder mag bij elk kind binnen.
+  const [kamerVan, setKamerVan] = useState(kind.id)
+  const kamerRef = useRef(kind.id)
   // Mijn dag en het huisdier gaan alleen open als een ouder ze aanzette.
   const { data: dagboek } = useGegevens(bron && !ouder ? () => bron.dagboekOverzicht() : null, [bron, ouder])
   const { data: huisdieren } = useGegevens(bron && !ouder ? () => bron.huisdieren() : null, [bron, ouder])
@@ -149,11 +158,15 @@ export default function Dorp({ kind, ouder, huizen, besturing, snelheid, binnenV
   const binnen = useCallback((d: Deur) => {
     const st = s.current
     st.route = []; st.doel = null
-    if (ouder) { zeg(DEUR_ICOON[d.soort], d.soort === 'huis' ? `Het huis van ${d.naam}.` : `${d.naam}: hier spelen de kinderen.`); return }
+    if (d.soort === 'huis' && d.kind && (ouder || d.kind === kind.id)) {
+      kamerRef.current = d.kind; setKamerVan(d.kind)
+      wissel(kamer, ...KAMER_START)
+      return
+    }
+    if (ouder) { zeg(DEUR_ICOON[d.soort], `${d.naam}: hier spelen de kinderen.`); return }
     if (d.soort === 'winkel') naarScherm('winkel', 'Welkom in de winkel!', 'tas')
     else if (d.soort === 'spellen') naarScherm('spelen', 'Welkom in het Spellenhuis!', 'ster')
     else if (d.soort === 'bakkerij') zeg('brood', 'De bakker bakt broodjes. Straks mag je helpen!')
-    else if (d.kind === kind.id) wissel(kamer, ...KAMER_START)
     else zeg('huis', `Het huis van ${d.naam}.`)
   }, [kamer, kind.id, naarScherm, ouder, wissel, zeg])
 
@@ -172,23 +185,28 @@ export default function Dorp({ kind, ouder, huizen, besturing, snelheid, binnenV
     const st = s.current
     st.route = []; st.doel = null
     const naam = KAMER_DOE[d.doe!]
+    if (ouder) {
+      // een ouder kijkt rond in de kamer van een kind; spelen en bewaren doet het kind zelf
+      const wie = huizen.find((h) => h.id === kamerRef.current)?.naam ?? 'het kind'
+      zeg(naam.icoon, OUDER_MEUBEL[d.doe!](wie)); return
+    }
     if (d.doe === 'schatboek') { setBoekOpen(true); return }
     if (d.doe === 'dag') { if (dagboek?.aan[kind.id]) naarScherm('dag', 'Mijn dag', naam.icoon); else zeg('maan', 'Je bed. Slaap lekker!'); return }
     if (d.doe === 'huisdier') { if (huisdieren?.kinderen[kind.id]?.aan) naarScherm('mijn-huisdier', 'Mijn huisdier', naam.icoon); else zeg('poot', 'Een lege mand. Misschien komt hier ooit een huisdiertje.'); return }
     if (d.doe === 'kleerkast') naarScherm('figuurtje', 'Mijn kleerkast', naam.icoon)
     else if (d.doe === 'tekenen') naarScherm('kleurplaten', 'Tekenen en kleuren', naam.icoon)
     else naarScherm('huis', 'Mijn huis', naam.icoon)
-  }, [dagboek, huisdieren, kind.id, naarScherm, zeg])
+  }, [dagboek, huisdieren, huizen, kind.id, naarScherm, ouder, zeg])
 
   /** Wat de doen-knop nu kan, waar het figuurtje staat. */
   const doeHier = useCallback((): Doe | null => {
     const st = s.current, { tx, ty } = st.ik, sc = st.scene
     if (sc.id === 'kamer') {
       const d = meubelBij(sc, tx, ty)
-      return d?.doe ? { id: d.id, ...KAMER_DOE[d.doe], actie: () => meubel(d) } : null
+      return d?.doe ? { id: d.id, ...KAMER_DOE[d.doe], ...(ouder ? { label: 'Bekijk' } : {}), actie: () => meubel(d) } : null
     }
     const deur = deurBij(sc, tx, ty)
-    if (deur) return { id: deur.id, icoon: DEUR_ICOON[deur.soort], label: deur.soort === 'huis' ? (deur.kind === kind.id ? 'Naar binnen' : deur.naam) : deur.naam, actie: () => binnen(deur) }
+    if (deur) return { id: deur.id, icoon: DEUR_ICOON[deur.soort], label: deur.soort === 'huis' ? (deur.kind === kind.id || ouder ? 'Naar binnen' : deur.naam) : deur.naam, actie: () => binnen(deur) }
     const boom = sc.dingen.find((d) => d.appel && bijBoom(d, tx, ty) && (st.v.appels[d.id] ?? 0) < APPELS_PER_BOOM)
     if (boom && !ouder) return { id: boom.id, icoon: 'appel', label: 'Pluk', actie: () => pluk(boom) }
     return null
@@ -218,7 +236,7 @@ export default function Dorp({ kind, ouder, huizen, besturing, snelheid, binnenV
     const leden = new Map(gebruikers.map((g) => [g.id, g]))
     st.anderen.clear()
     const zender = new Zender()
-    const nuPositie = () => ({ id: kind.id, x: st.ik.px, y: st.ik.py, face: st.ik.face, moving: !!st.ik.naar, g: st.scene.id === 'dorp' ? 'dorp' : `kamer:${kind.id}` })
+    const nuPositie = () => ({ id: kind.id, x: st.ik.px, y: st.ik.py, face: st.ik.face, moving: !!st.ik.naar, g: st.scene.id === 'dorp' ? 'dorp' : `kamer:${kamerRef.current}` })
     const sb = supabase
     const verbinding = verbindZuinig({
       gezin: account?.gezin_id ?? 'demo', ik: kind.id, client: supabase,
@@ -261,7 +279,7 @@ export default function Dorp({ kind, ouder, huizen, besturing, snelheid, binnenV
     const aangekomen = () => {
       const ik = st.ik, sc = st.scene
       if (sc.id === 'kamer') {
-        if (KAMER_UIT(ik.tx, ik.ty)) { const h = dorp.huizen.find((x) => x.id === kind.id); A().wissel(dorp, h?.cx ?? 18, h?.gy ?? 11, 'down') }
+        if (KAMER_UIT(ik.tx, ik.ty)) { const h = dorp.huizen.find((x) => x.id === kamerRef.current); A().wissel(dorp, h?.cx ?? 18, h?.gy ?? 11, 'down') }
       } else {
         const zijde = poortOp(sc, ik.tx, ik.ty)
         if (zijde) { st.bezig = true; st.route = []; A().reis(zijde); return }
@@ -402,7 +420,7 @@ export default function Dorp({ kind, ouder, huizen, besturing, snelheid, binnenV
   const tip = besturing === 'joystick' ? 'Sleep de joystick om te lopen.' : besturing === 'tikken' ? 'Tik op de grond om er heen te lopen.' : 'Sleep de joystick, of tik op de grond.'
   return (
     <div className={`wereld dorp kleur-${kind.thema ?? 'blauw'}`}>
-      <canvas ref={canvasRef} className="wereld-veld" onPointerDown={tik} role="img" aria-label={scene === 'kamer' ? 'Mijn kamer' : 'Het dorp'} />
+      <canvas ref={canvasRef} className="wereld-veld" onPointerDown={tik} role="img" aria-label={scene !== 'kamer' ? 'Het dorp' : kamerVan === kind.id && !ouder ? 'Mijn kamer' : `De kamer van ${huizen.find((h) => h.id === kamerVan)?.naam ?? 'een kind'}`} />
       {!ouder && (
         <button type="button" className="dorp-boek" aria-label={`Mijn Schatboek: ${gevonden} schatten gevonden`} onClick={() => setBoekOpen(true)}>
           <img alt="" src={icoonUrl('boek', 96)} />
