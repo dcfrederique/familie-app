@@ -1,0 +1,130 @@
+<title>Het dorp leeft</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800;900&display=swap">
+<style>
+/* Indeling: bovenaan de bediening van de proef, daaronder het toestel met het spel (canvas voor de wereld, html voor de knoppen), onderaan de techniekteller. */
+:root{--bg:#1E2A24;--paneel:#2A3A32;--rand:#3B4F44;--fg:#F2F6EF;--zacht:#A9BDB0;--accent:#F2B33D;--gras:#83BE63;--inkt:#2B2420;--wit:#FFFFFF;--hout:#B9854D;--houtd:#8A5E30;--blauw:#2D6BD6;--groen:#2E9A45}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--fg);font-family:'Nunito',system-ui,sans-serif}
+body{padding-block:14px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1{font-size:20px;margin:0 0 2px;font-weight:900}
+.sub{margin:0 0 12px;color:var(--zacht);font-size:13px;font-weight:600;max-width:70ch}
+.bar{display:flex;flex-wrap:wrap;gap:8px 18px;align-items:center;margin-bottom:12px}
+.groep{display:flex;gap:4px;align-items:center;background:var(--paneel);border:1px solid var(--rand);border-radius:12px;padding:4px}
+.groep b{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--zacht);padding:0 8px}
+.bar button{font:inherit;font-weight:800;font-size:13px;color:var(--fg);background:transparent;border:0;border-radius:9px;padding:7px 11px;cursor:pointer}
+.bar button[aria-pressed=true]{background:var(--accent);color:#2B2420}
+.bar button:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+#wikkel{position:relative;overflow:hidden}
+#stage{position:absolute;left:0;top:0;transform-origin:0 0;overflow:hidden;background:#83BE63;border-radius:14px;touch-action:none;user-select:none;-webkit-user-select:none;font-family:'Nunito',system-ui,sans-serif;color:var(--inkt)}
+#cv{position:absolute;inset:0;width:100%;height:100%;display:block}
+#tint{position:absolute;inset:0;pointer-events:none;mix-blend-mode:multiply;background:#fff;transition:background .6s}
+.hud{position:absolute;pointer-events:none}
+.hud>*{pointer-events:auto}
+.pil{display:flex;align-items:center;gap:8px;background:#fff;border:3px solid #fff;box-shadow:0 3px 0 rgba(0,0,0,.18);border-radius:22px;padding:6px 16px 6px 10px;font-weight:900;font-size:26px}
+.pil img{width:34px;height:34px}
+.hoek{position:absolute;display:flex;gap:10px;align-items:center}
+.tegel{width:72px;height:72px;border-radius:18px;background:#fff;border:0;box-shadow:0 4px 0 rgba(0,0,0,.2);display:grid;place-items:center;position:relative;cursor:pointer;padding:0;font:inherit}
+.tegel img{width:48px;height:48px}
+.tel[hidden]{display:none!important}
+.tegel .tel{position:absolute;right:-6px;top:-8px;min-width:28px;height:28px;border-radius:14px;background:#E8493F;color:#fff;font-weight:900;font-size:15px;display:grid;place-items:center;padding:0 6px;border:3px solid #fff}
+.bordchip{display:flex;gap:10px;align-items:center;background:#fff;border-radius:22px;box-shadow:0 4px 0 rgba(0,0,0,.2);padding:8px 14px 8px 10px;cursor:pointer;border:0;font:inherit;color:inherit}
+.bordchip img{width:44px;height:44px}
+.stempels{display:flex;gap:6px}
+.stempel{width:26px;height:26px;border-radius:50%;border:3px solid #C9D3C5;background:#fff;display:grid;place-items:center}
+.stempel.klaar{background:#2E9A45;border-color:#2E9A45}
+.stempel.klaar::after{content:'';width:10px;height:6px;border-left:3px solid #fff;border-bottom:3px solid #fff;transform:rotate(-45deg) translate(1px,-1px)}
+#joy{position:absolute;left:28px;bottom:28px;width:140px;height:140px;border-radius:50%;background:rgba(255,255,255,.55);border:4px solid #fff;box-shadow:0 3px 0 rgba(0,0,0,.15)}
+#knop{position:absolute;width:56px;height:56px;border-radius:50%;background:#2E9A45;left:42px;top:42px;box-shadow:0 3px 0 rgba(0,0,0,.25);border:4px solid rgba(255,255,255,.8)}
+#doe{position:absolute;right:28px;bottom:28px;width:116px;height:116px;border-radius:50%;background:#fff;border:0;box-shadow:0 5px 0 rgba(0,0,0,.22);display:none;flex-direction:column;align-items:center;justify-content:center;gap:0;cursor:pointer;font:inherit;color:inherit;transition:transform .12s}
+#doe.aan{display:flex;animation:puls 1.4s ease-in-out infinite}
+#doe img{width:62px;height:62px}
+#doe span{font-weight:900;font-size:16px;margin-top:-2px}
+#doe.stil{animation:none}
+@keyframes puls{50%{transform:scale(1.07)}}
+#bubbel{position:absolute;display:none;background:#fff;border-radius:22px;padding:10px 14px;box-shadow:0 4px 0 rgba(0,0,0,.18);font-weight:800;font-size:19px;max-width:340px;transform:translate(-50%,-100%);pointer-events:none}
+#bubbel::after{content:'';position:absolute;left:50%;bottom:-11px;margin-left:-11px;border:11px solid transparent;border-top-color:#fff;border-bottom:0}
+#bubbel .rij{display:flex;gap:10px;align-items:center;margin:2px 0}
+#bubbel img{width:38px;height:38px}
+#toast{position:absolute;left:50%;top:18px;transform:translate(-50%,-90px);background:#fff;border-radius:26px;padding:10px 22px 10px 12px;box-shadow:0 5px 0 rgba(0,0,0,.2);display:flex;gap:10px;align-items:center;font-weight:900;font-size:21px;transition:transform .35s cubic-bezier(.3,1.5,.5,1);z-index:30;pointer-events:none;white-space:nowrap}
+#toast.zie{transform:translate(-50%,0)}
+#toast img{width:46px;height:46px}
+.ov{position:absolute;inset:0;background:rgba(30,40,30,.5);display:none;align-items:center;justify-content:center;z-index:20}
+.ov.aan{display:flex}
+.kaart{background:#FFF9EC;border-radius:30px;padding:22px 26px;box-shadow:0 8px 0 rgba(0,0,0,.2);position:relative;max-width:94%;max-height:94%}
+.kaart h2{margin:0 0 12px;font-size:30px;font-weight:900;display:flex;align-items:center;gap:12px}
+.kaart h2 img{width:46px;height:46px}
+.sluit{position:absolute;right:-10px;top:-10px;width:56px;height:56px;border-radius:50%;background:#E8493F;color:#fff;border:4px solid #fff;font-size:26px;font-weight:900;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.2);line-height:1;font-family:inherit}
+.opdrachten{display:flex;gap:16px}
+.opd{width:218px;background:#fff;border-radius:24px;padding:14px;display:flex;flex-direction:column;align-items:center;gap:8px;border:4px solid #EFE3C8;position:relative}
+.opd.klaar{border-color:#2E9A45;background:#EEF9EE}
+.opd .groot{width:96px;height:96px}
+.opd .tekst{font-weight:900;font-size:19px;text-align:center;min-height:50px;display:flex;align-items:center}
+.opd .stip{display:flex;gap:6px;flex-wrap:wrap;justify-content:center}
+.opd .stip i{width:22px;height:22px;border-radius:50%;background:#E5E0D2;display:block}
+.opd .stip i.v{background:#F2B33D}
+.opd .vink{position:absolute;right:-10px;top:-10px;width:44px;height:44px;border-radius:50%;background:#2E9A45;border:4px solid #fff;display:none;place-items:center}
+.opd.klaar .vink{display:grid}
+.vink::after{content:'';width:16px;height:9px;border-left:4px solid #fff;border-bottom:4px solid #fff;transform:rotate(-45deg) translate(1px,-2px)}
+.luid{position:absolute;left:8px;top:8px;width:42px;height:42px;border-radius:50%;background:#EAF2FF;border:0;cursor:pointer;display:grid;place-items:center;padding:0}
+.luid svg{width:24px;height:24px}
+.schat{margin-top:16px;display:flex;align-items:center;gap:16px;background:#FFF1C9;border-radius:24px;padding:10px 18px}
+.schat img{width:64px;height:64px}
+.schat.dicht img{opacity:.55}
+.groenknop{font:inherit;font-weight:900;font-size:20px;background:#2E9A45;color:#fff;border:0;border-radius:20px;padding:12px 22px;box-shadow:0 4px 0 #1F6E31;cursor:pointer;min-height:56px}
+.groenknop[disabled]{background:#B9C4B6;box-shadow:0 4px 0 #9AA597;cursor:default}
+.tabs{display:flex;gap:8px;margin-bottom:12px}
+.tabs button{font:inherit;font-weight:900;font-size:17px;border:0;border-radius:16px;padding:10px 16px;background:#EFE3C8;color:#2B2420;cursor:pointer;min-height:52px}
+.tabs button[aria-pressed=true]{background:#2E9A45;color:#fff}
+.slots{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.slot{width:112px;background:#fff;border-radius:20px;padding:10px 6px;display:flex;flex-direction:column;align-items:center;gap:4px;border:3px solid #EFE3C8;font-weight:800;font-size:15px;text-align:center}
+.slot img{width:68px;height:68px}
+.slot.leeg{background:#F3EEDD}
+.slot.leeg img{opacity:.9}
+.slot.nieuw{border-color:#F2B33D;animation:puls 1.2s ease-in-out infinite}
+.slotje{margin-top:12px;color:#7A6E55;font-weight:800;font-size:16px}
+#vis{position:absolute;inset:0;display:none;z-index:25;background:linear-gradient(#9EDCF5 0 38%,#5CB0D8 38% 100%)}
+#vis.aan{display:block}
+#vis canvas{position:absolute;inset:0;width:100%;height:100%}
+#visUi{position:absolute;left:0;right:0;bottom:24px;display:flex;flex-direction:column;align-items:center;gap:10px}
+#visTekst{background:#fff;border-radius:20px;padding:8px 18px;font-weight:900;font-size:22px;box-shadow:0 4px 0 rgba(0,0,0,.18);display:flex;gap:10px;align-items:center}
+#visTekst img{width:40px;height:40px}
+#hijs{width:150px;height:84px;border-radius:42px;border:0;background:#F2B33D;color:#2B2420;font:inherit;font-weight:900;font-size:26px;box-shadow:0 6px 0 #B9841B;cursor:pointer}
+#hijs.hap{background:#E8493F;color:#fff;box-shadow:0 6px 0 #A92D26;animation:puls .35s ease-in-out infinite}
+.klein .tegel{width:56px;height:56px;border-radius:14px}.klein .tegel img{width:38px;height:38px}
+.klein .pil{font-size:21px;padding:3px 12px 3px 8px}.klein .pil img{width:28px;height:28px}
+.klein #joy{left:14px;bottom:12px;width:104px;height:104px}.klein #knop{width:42px;height:42px;left:29px;top:29px}
+.klein #doe{right:14px;bottom:12px;width:92px;height:92px}.klein #doe img{width:48px;height:48px}.klein #doe span{font-size:14px}
+.klein .bordchip{padding:4px 10px 4px 6px}.klein .bordchip img{width:34px;height:34px}.klein .stempel{width:20px;height:20px}
+.klein .kaart{padding:12px 16px}.klein .kaart h2{font-size:22px;margin-bottom:6px}.klein .opd{width:170px;padding:8px}.klein .opd .groot{width:60px;height:60px}.klein .opd .tekst{min-height:34px;font-size:15px}
+.klein .slot{width:86px;font-size:12px;padding:6px 4px}.klein .slot img{width:46px;height:46px}.klein .slots{gap:8px}.klein .schat{margin-top:8px;padding:6px 12px}.klein .schat img{width:44px;height:44px}
+.klein .tabs{margin-bottom:6px}.klein .tabs button{min-height:40px;font-size:14px;padding:6px 12px}
+.klein #bubbel{font-size:15px;padding:6px 10px}.klein #bubbel img{width:28px;height:28px}
+.klein #toast{font-size:16px}.klein #toast img{width:34px;height:34px}
+.klein .groenknop{min-height:44px;font-size:16px;padding:8px 16px}.klein .sluit{width:44px;height:44px;font-size:20px}
+#tech{margin-top:10px;display:flex;flex-wrap:wrap;gap:8px 24px;font-size:13px;font-weight:700;color:var(--zacht);font-variant-numeric:tabular-nums}
+#tech b{color:var(--fg)}
+#tech .slecht b{color:#FF8F7A}
+@media (prefers-reduced-motion:reduce){#doe.aan,.slot.nieuw,#hijs.hap{animation:none}}
+</style>
+<h1>Het dorp leeft</h1>
+<p class="sub">Mockup van de vernieuwde wereld: loop rond met de joystick of tik op de grond. Er is altijd iets te doen: glinsters zoeken, appels plukken, vissen, het hondje aaien en het Dorpsbord afwerken. Onderaan zie je wat het tekenen kost.</p>
+<div class="bar" role="toolbar" aria-label="Bediening van de proef">
+  <div class="groep" id="gKind"><b>Kind</b><button data-v="Luca" aria-pressed="true">Luca 8</button><button data-v="Yuna" aria-pressed="false">Yuna 6</button><button data-v="Feline" aria-pressed="false">Feline 4</button></div>
+  <div class="groep" id="gMaat"><b>Toestel</b><button data-v="1194x834" aria-pressed="true">Tablet</button><button data-v="1024x600" aria-pressed="false">Lage tablet</button><button data-v="844x390" aria-pressed="false">Gsm liggend</button></div>
+  <div class="groep" id="gTijd"><b>Tijd</b><button data-v="dag" aria-pressed="true">Dag</button><button data-v="avond" aria-pressed="false">Avond</button><button data-v="nacht" aria-pressed="false">Nacht</button></div>
+  <div class="groep" id="gActies"><button id="nieuweDag" aria-pressed="false">Nieuwe dag</button></div>
+</div>
+<div id="wikkel"><div id="stage">
+  <canvas id="cv"></canvas><div id="tint"></div>
+  <div class="hoek" style="left:22px;top:18px" id="hudL"><button class="tegel" id="bSchat" aria-label="Schatboek"><span class="tel" id="schatTel">0</span></button><button class="bordchip" id="bBord" aria-label="Dorpsbord"><div class="stempels" id="stempels"></div></button></div>
+  <div class="hoek" style="right:22px;top:18px" id="hudR"><div class="pil"><span id="sterren">50</span></div><button class="tegel" id="bHuis" aria-label="Naar huis"></button></div>
+  <div id="joy"><div id="knop"></div></div>
+  <button id="doe" aria-label="Doe"></button>
+  <div id="bubbel"></div><div id="toast"></div>
+  <div class="ov" id="ovBord"><div class="kaart" id="kBord"></div></div>
+  <div class="ov" id="ovSchat"><div class="kaart" id="kSchat"></div></div>
+  <div class="ov" id="ovHoera"><div class="kaart" id="kHoera" style="text-align:center"></div></div>
+  <div id="vis"><canvas id="visCv"></canvas><div id="visUi"><div id="visTekst"></div><button id="hijs">Wacht…</button></div><button class="sluit" id="visSluit" style="right:22px;top:18px">✕</button></div>
+</div></div>
+<div id="tech"></div>
