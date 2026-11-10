@@ -8,12 +8,14 @@ import { kanVoorlezen, leesVoor } from '../lib/voorlezen.ts'
 // Mis je hem, dan zwemt hij weg en probeer je opnieuw; er is geen straf. Wie niet leest heeft langer de tijd.
 
 type Fase = 'wacht' | 'hap' | 'gevangen' | 'weg'
-export type Vangst = 'vis' | 'goudvis'
+export type Vangst = 'vis' | 'goudvis' | 'snoek'
 
 const TEKST: Record<Fase, string> = { wacht: 'Wacht tot de dobber zakt.', hap: 'Het hapt! Tik snel!', gevangen: 'Gevangen!', weg: 'Net ontsnapt. Nog eens?' }
 
-export default function DorpVissen({ figuur, lezer, aantal, gevangen, sluit }: {
+export default function DorpVissen({ figuur, lezer, aantal, gevangen, sluit, zeldzaam = 'goudvis' }: {
   figuur: Figuurtje; lezer: boolean; aantal: number; gevangen: (v: Vangst) => void; sluit: () => void
+  /** Wat je hier vangt als je geluk hebt: de goudvis in het dorp, de snoek in het Meer. */
+  zeldzaam?: Vangst
 }) {
   const cvRef = useRef<HTMLCanvasElement>(null)
   const [fase, setFase] = useState<Fase>('wacht')
@@ -81,7 +83,7 @@ export default function DorpVissen({ figuur, lezer, aantal, gevangen, sluit }: {
   const hijs = () => {
     const s = st.current
     if (s.fase === 'hap') {
-      const soort: Vangst = Math.random() < 0.12 ? 'goudvis' : 'vis'
+      const soort: Vangst = Math.random() < 0.12 ? zeldzaam : 'vis'
       s.vangst = { soort, t: 0 }; zet('gevangen', 0)
       gevangen(soort)
     } else if (s.fase === 'wacht') zet('weg', 1.2)

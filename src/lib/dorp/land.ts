@@ -48,6 +48,7 @@ export function maakPlatteland(): Scene {
   const s = {
     id: 'platteland' as const, GW: gw, GH: gh, solid, dingen, deuren: [], weg, bedden: akkers, huizen: [], poorten,
     schatten: { gewoon: ['zonnebloem', 'ei', 'hoefijzer', 'lieveheer'] as Schat[], zeldzaam: 'goudei' as Schat, per: 8 },
+    dieren: { soort: 'schaap' as const, zone: WEI, n: 4 },
   }
   return { ...s, bereik: bereikVan(s, [2, 11]) }
 }
