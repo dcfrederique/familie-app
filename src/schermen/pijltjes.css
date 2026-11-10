@@ -49,11 +49,11 @@
 @media (max-height: 500px) and (orientation: landscape) {
   .pj { gap: 2px; }
   .pj-zij { gap: 4px; }
-  .pj-pijlen { grid-template-columns: repeat(3, 52px); grid-template-rows: repeat(3, 44px); gap: 2px; }
-  .pj-pijlen .pj-knop { width: 52px; height: 44px; }
+  .pj-pijlen { grid-template-columns: repeat(3, 52px); grid-template-rows: repeat(3, 42px); gap: 2px; }
+  .pj-pijlen .pj-knop { width: 52px; height: 42px; }
   .pj-knop svg { width: 24px; height: 24px; }
-  .pj-route { grid-template-columns: repeat(8, 26px); gap: 2px; }
-  .pj-vak { width: 26px; height: 26px; }
+  .pj-route { grid-template-columns: repeat(10, 24px); gap: 2px; }
+  .pj-vak { width: 24px; height: 24px; }
   .pj-vak svg { width: 18px; height: 18px; }
   .pj-tekst { font-size: 13px; }
 }

@@ -88,6 +88,8 @@ export const zin = {
   verfmengenKlaar: "Alle pakjes zijn geverfd!",
   glijdenUitleg: "Het pinguïntje glijdt tot het ergens tegen botst. Kies een pijltje en breng het naar het visje.",
   glijdenKlaar: "Het pinguïntje heeft alle visjes!",
+  nimUitleg: "Pak om de beurt pepernoten, samen met het paardje. Tik op een pepernoot en dan op de groene knop. Wie de laatste pepernoot pakt, wint.",
+  nimKlaar: "Jij pakte telkens de laatste pepernoot!",
   roosterUitleg: 'Zet elke kleur één keer in elke rij en in elke kolom.',
   roosterKlaar: 'Alle pakjes staan op hun plaats!',
   torensUitleg: 'Verhuis alle pakjes naar de gouden plank. Een groot pakje mag nooit op een klein pakje.',

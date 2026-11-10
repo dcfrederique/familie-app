@@ -16,7 +16,7 @@ export type SpringLevel = string
 /** Hoe een level eruitziet: lucht, grond en achtergrond (springenVeld.ts tekent elke stijl). */
 export type SpringStijl = 'weide' | 'bos' | 'wolken' | 'strand' | 'sneeuw'
 /** Hoe een wereld eruitziet op de landkaart (Springen.tsx tekent elke kleur). */
-export type WereldStijl = 'groen' | 'zand' | 'sneeuw' | 'snoep' | 'hemel' | 'nacht' | 'speelgoed' | 'herfst'
+export type WereldStijl = 'groen' | 'zand' | 'sneeuw' | 'snoep' | 'hemel' | 'nacht' | 'speelgoed' | 'herfst' | 'daken'
 
 export interface SpringWereld {
   id: string
@@ -53,6 +53,7 @@ export const springWerelden: SpringWereld[] = [
   { id: 'lichtjesbos', naam: 'Lichtjesbos', stijl: 'nacht' },
   { id: 'speelgoedland', naam: 'Speelgoedland', stijl: 'speelgoed' },
   { id: 'paddenstoelenbos', naam: 'Paddenstoelenbos', stijl: 'herfst' },
+  { id: 'dakenstad', naam: 'Dakenstad', stijl: 'daken' },
 ]
 
 /** Alle levels in speelvolgorde; nieuwe levels komen achteraan (bij de laatste wereld). */
@@ -879,6 +880,23 @@ export const springLevelLijst: SpringLevelInfo[] = [
       '  P   o o o  o    e                  o C o           B         H  ',
       '############################  ######  ############################',
       '############################~~######~~############################',
+    ],
+  },
+  {
+    id: 'eerstedak', wereld: 'dakenstad', stijl: 'wolken',
+    naam: 'Het eerste dak', beestje: 'slak', fruit: 'kers', snelheid: 1,
+    kaart: [
+      '                                                                                                    ',
+      '                                                                                                    ',
+      '                                                                                                    ',
+      '                                                                                                    ',
+      '                        * *                                       * *                               ',
+      '                       =====                                     =====                              ',
+      '                                            o o o                                     o o           ',
+      '                                           =====                                     ====           ',
+      '  P   o o oe                o o  #               C   e                o o e               o o o  H  ',
+      '##################  ##################   ###################  #################   ##################',
+      '##################~~##################~~~###################~~#################~~~##################',
     ],
   },
 ]

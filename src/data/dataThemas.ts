@@ -237,6 +237,17 @@ const poezen = wikkel(`<g class="tn-nacht" fill="#FFF3C4"><circle cx="140" cy="3
   <g transform="translate(220 178)" class="thema-zweef"><circle r="18" fill="#E5484D"/><path d="M-16 -6Q0 4 16 -6M-14 8Q0 -2 14 8M-6 -17Q4 0 -6 17" stroke="#B5361F" stroke-width="2.5" fill="none"/><path d="M14 8Q40 20 60 6" stroke="#E5484D" stroke-width="3" fill="none"/></g>
   <g transform="translate(780 186)"><ellipse rx="24" ry="8" fill="#9CC9E4"/><ellipse cy="-4" rx="18" ry="5" fill="#FFFFFF"/><path d="M40 -40c-6-6-14 0-8 8l8 8 8-8c6-8-2-14-8-8z" fill="#E5484D" class="thema-zweef"/></g>`)
 
+const dinos = wikkel(`<g class="tn-nacht" fill="#FFF3C4"><circle cx="120" cy="34" r="2.5"/><circle cx="520" cy="22" r="2"/><circle cx="910" cy="40" r="2"/></g>
+  <path d="M0 200C140 186 300 194 470 188C650 182 820 192 1000 186V200Z" fill="#8FBF5A" opacity=".8"/>
+  <path d="M660 190L740 90L820 190Z" fill="#7A8B9A" opacity=".55"/><path d="M720 190L800 110L880 190Z" fill="#8E9DAA" opacity=".5"/>
+  <g transform="translate(450 190)"><path d="M-90 0C-96 -40 -60 -66 -10 -64C30 -62 50 -40 56 -22L110 -60C122 -66 130 -56 120 -46L60 4Z" fill="#5BAF5A"/>
+    <path d="M-60 0V22M-20 0V22M20 0V22M40 0V22" stroke="#4A9A49" stroke-width="16" stroke-linecap="round"/>
+    <path d="M-90 -6C-120 -4 -140 -20 -150 -36C-130 -26 -112 -24 -92 -24Z" fill="#5BAF5A"/>
+    <path d="M-60 -60L-50 -78L-40 -62M-30 -64L-20 -82L-10 -64M0 -62L10 -78L18 -60" fill="#F2C530"/>
+    <circle cx="112" cy="-56" r="3.5" fill="#1C2433"/><path d="M104 -48q8 4 14 0" stroke="#1C2433" stroke-width="2.5" fill="none" stroke-linecap="round"/></g>
+  <g transform="translate(180 186)"><path d="M0 0V-60" stroke="#8A5A33" stroke-width="8"/><path d="M0 -60C-24 -70 -40 -58 -46 -46M0 -60C24 -72 40 -60 46 -48M0 -60C-10 -84 -32 -86 -40 -78M0 -60C10 -86 34 -86 40 -76" stroke="#3E8E41" stroke-width="9" stroke-linecap="round" fill="none"/></g>
+  <g transform="translate(860 184)" class="thema-zweef"><ellipse rx="16" ry="20" fill="#F4EEDD"/><path d="M-14 -4L-6 2L0 -6L6 2L14 -4" stroke="#C9B98E" stroke-width="2.5" fill="none"/></g>`)
+
 const vink = (kleur: string) => `<path d="M-16 0L-6 10L16 -12" stroke="${kleur}" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
 
 export const dataThemas: DataThema[] = [
@@ -670,6 +681,22 @@ export const dataThemas: DataThema[] = [
     slot: '<circle r="18" fill="#B8BFCB"/><path d="M-8 -2L-7 -12L-1 -6ZM8 -2L7 -12L1 -6Z" fill="#5B6B7A"/><circle cy="2" r="8" fill="#5B6B7A"/>',
     feest: [ster('#F2C530'), '<circle r="6" fill="#E0739A"/>', '<path d="M0 6l-6-6c-4-4 2-10 6-5c4-5 10 1 6 5z" fill="#E5484D"/>'], confetti: ['#E0739A', '#F2A65A', '#F2C530', '#E5484D', '#FFFFFF'],
     tegelRadius: '22px', tegelRand: '4px solid var(--kid)',
+  },
+  {
+    sleutel: 'dinos', naam: 'Dinovallei', kidKleur: '#3E9B47', shirt: 'groen', verhouding: 1,
+    ondertitels: { spelen: 'Bij de varens', verhalen: 'Verhalen uit de oertijd', kleurplaten: 'Dino’s kleuren', figuurtje: 'De dinoredder', huis: 'Mijn hut in de vallei' },
+    klaarTekst: 'ROAAR! Alles gedaan!', nogTeDoen: (n) => `Nog ${n} ${n === 1 ? 'voetstap' : 'voetstappen'} tot het dino-ei uitkomt`,
+    licht: { bg: '#F5FAF0', surface: '#FFFFFF', soft: '#E6F2DC', ink: '#1E2E17', muted: '#5A7050', line: '#D4E6C6', shade: '#AFCB9A', kid: '#3E9B47', 'kid-tint': '#DCEFD6', 'on-solid': '#FFFFFF',
+      'tn-grond': '#8FBF5A', 'tn-nacht': 'none', 'tn-banner': 'linear-gradient(#FFF0C8,#F5FAF0)', 'tn-titel': '#1E2E17', 'tn-sub': '#B5541E', 'tn-spoor': '#D4E6C6' },
+    donker: { bg: '#0D150A', surface: '#172412', soft: '#1E2E18', ink: '#EEF6E8', muted: '#A9C49A', line: '#2B3F24', shade: '#040703', kid: '#7CD07F', 'kid-tint': '#244026', 'on-solid': '#0D150A',
+      'tn-grond': '#2E4A22', 'tn-nacht': 'inline', 'tn-banner': 'linear-gradient(#040703,#1F3A1A)', 'tn-titel': '#FFFFFF', 'tn-sub': '#F2C530', 'tn-spoor': '#2B3F24' },
+    prent: dinos,
+    voortgang: { mover: '<path d="M-10 4C-10 -4 -2 -8 4 -6L10 -10L9 -2L4 6Z" fill="#5BAF5A"/><circle cx="7" cy="-7" r="1.2" fill="#1C2433"/>', doel: '<ellipse rx="8" ry="10" fill="#F4EEDD"/><path d="M-7 -2L-3 1L0 -3L3 1L7 -2" stroke="#C9B98E" stroke-width="1.5" fill="none"/>' },
+    nieuw: '<ellipse rx="8" ry="10" fill="#F4EEDD"/><circle cx="-2" cy="-3" r="2" fill="#5BAF5A"/><circle cx="3" cy="3" r="1.5" fill="#5BAF5A"/>',
+    vink: `<circle r="20" fill="#3E9B47"/><g transform="scale(.9)">${vink('#fff')}</g>`,
+    slot: '<circle r="18" fill="#B8BFCB"/><ellipse rx="8" ry="10" fill="#5B6B7A"/>',
+    feest: [ster('#F2C530'), '<ellipse rx="5" ry="6" fill="#F4EEDD"/>', '<circle r="6" fill="#5BAF5A"/>'], confetti: ['#3E9B47', '#F2C530', '#B5541E', '#7CD07F', '#F4EEDD'],
+    tegelRadius: '14px', tegelRand: '4px solid var(--kid)',
   },
 ]
 

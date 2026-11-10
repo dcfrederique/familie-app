@@ -139,7 +139,7 @@ export interface Versiersel { soort: string; groot: boolean; x: number; y: numbe
 
 const groot: Record<string, string[]> = {
   groen: ['molen', 'vijver', 'huisjes'], zand: ['zandkasteel', 'oase', 'vuurtoren'],
-  sneeuw: ['sneeuwman', 'ijsvijver', 'iglo'], snoep: ['taarthuis', 'snoepvijver', 'zuurstokpoort'], hemel: ['wolkenhuis', 'regenboog', 'zonnepoort'], nacht: ['lantaarnhuis', 'maanvijver', 'lichtjesboom'], speelgoed: ['blokkenkasteel', 'treintje', 'draaitol'], herfst: ['paddenstoelhuis', 'holleboom', 'bladerhoop'],
+  sneeuw: ['sneeuwman', 'ijsvijver', 'iglo'], snoep: ['taarthuis', 'snoepvijver', 'zuurstokpoort'], hemel: ['wolkenhuis', 'regenboog', 'zonnepoort'], nacht: ['lantaarnhuis', 'maanvijver', 'lichtjesboom'], speelgoed: ['blokkenkasteel', 'treintje', 'draaitol'], herfst: ['paddenstoelhuis', 'holleboom', 'bladerhoop'], daken: ['kerktoren', 'dakpaard', 'groteschoorsteen'],
 }
 const klein: Record<string, string[]> = {
   groen: ['boom', 'boom', 'boom', 'struik', 'bloemen', 'bloemen', 'steen', 'paddenstoel'],
@@ -150,6 +150,7 @@ const klein: Record<string, string[]> = {
   nacht: ['den', 'den', 'lampionnetje', 'sterretje', 'lampionnetje', 'struik'],
   speelgoed: ['blokje', 'blokje', 'knikker', 'teddy', 'balletje', 'blokje'],
   herfst: ['herfstboom', 'herfstboom', 'paddenstoel', 'blaadje', 'eikel', 'herfstboom', 'blaadje'],
+  daken: ['schoorsteentje', 'dakraam', 'pakje', 'schoorsteentje', 'pepernootje', 'dakraam'],
 }
 
 /** Vaste willekeur per wereld (zelfde kaart bij elk bezoek). */

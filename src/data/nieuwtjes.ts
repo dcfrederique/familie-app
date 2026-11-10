@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.142',
+    datum: '2026-11-10',
+    titel: "De laatste pepernoot, Dakenstad en Dinovallei",
+    tekst: "Nieuw verhaal \"De laatste pepernoot\" (Pip en Mo pakken om beurten pepernoten en leggen de laatste in de schoen voor het paard) en nieuwe kleurplaat \"Een wortel voor het paard\", meteen te lezen en in te kleuren. Het spelletje De laatste pepernoot kost 25 sterren: pak om beurten pepernoten van de schaal, tegen het paardje van de Sint; wie de laatste pepernoot pakt, wint. Makkelijk: één rij, 1 of 2 pakken, het paardje vergist zich vaak, met hulp. Middel: een lange rij, 1 tot 3 pakken, met hulp. Moeilijk: vier rijen, uit één rij zoveel je wil, en het paardje vergist zich nooit: wie één keer fout pakt, verliest; klokje en pluimen. In Springland begint een nieuwe wereld: Dakenstad, met Het eerste dak. Nieuw kinderthema: Dinovallei, te kiezen bij Mijn thema.",
+    verhaal: "De laatste pepernoot",
+    spel: { naam: "De laatste pepernoot", prijs: 25 },
+    stukken: ["Figuurtje: Haarband met een hoefijzer (15), Trui met pepernoten (20), Zakje pepernoten (15)", "Mijn huis: Stalletje voor het paard van de Sint (25), Bak met wortels (15), Schoen met een wortel bij de deur (15)"],
+    open: "Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.",
+  },
+  {
     versie: '0.141',
     datum: '2026-11-10',
     titel: "Glijden op het ijs, De eend op het ijs en de Bromzwam",

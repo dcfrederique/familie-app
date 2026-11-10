@@ -487,7 +487,7 @@ export function startNiveaus(kind: Gebruiker, kinderen: Gebruiker[]): { memory: 
   return oudsteLezer?.id === kind.id ? { memory: 'groot', rekenen: 'tot100' } : { memory: 'middel', rekenen: 'tot20' }
 }
 
-export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'weegschaal' | 'torens' | 'rooster' | 'glijden' | 'verfmengen' | 'eenlijn' | 'raadselprent' | 'pijltjes' | 'domino' | 'eikels' | 'knikkers' | 'klok' | 'lampionlied' | 'piramide' | 'patroon' | 'kalaha' | 'spiegel' | 'slingers' | 'bruggen' | 'schuif' | 'vlek' | 'hekjes' | 'zoeken' | 'geheim' | 'springen'
+export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'weegschaal' | 'torens' | 'rooster' | 'nim' | 'glijden' | 'verfmengen' | 'eenlijn' | 'raadselprent' | 'pijltjes' | 'domino' | 'eikels' | 'knikkers' | 'klok' | 'lampionlied' | 'piramide' | 'patroon' | 'kalaha' | 'spiegel' | 'slingers' | 'bruggen' | 'schuif' | 'vlek' | 'hekjes' | 'zoeken' | 'geheim' | 'springen'
 
 export interface SpelInfo {
   sleutel: SpelSleutel
@@ -549,6 +549,8 @@ export const spelMenu: SpelInfo[] = [
     icoon: 'M12 2v3M8 6h8l1 13H7zM12 6v13M7.5 12h9' },
   { sleutel: 'rooster', naam: 'Kleurenrooster', uitleg: 'Zet elke kleur één keer in elke rij en kolom', prijs: 25,
     icoon: 'M4 4h16v16H4zM4 9.3h16M4 14.7h16M9.3 4v16M14.7 4v16' },
+  { sleutel: 'nim', naam: "De laatste pepernoot", uitleg: "Pak om beurten pepernoten: wie de laatste pakt, wint", prijs: 25,
+    icoon: 'M5 12a3 3 0 1 0 6 0a3 3 0 1 0-6 0M13 12a3 3 0 1 0 6 0a3 3 0 1 0-6 0M9 6a3 3 0 1 0 6 0a3 3 0 1 0-6 0' },
   { sleutel: 'glijden', naam: "Glijden op het ijs", uitleg: "Laat het pinguïntje over het ijs naar het visje glijden", prijs: 25,
     icoon: 'M4 18h16M7 15c0-5 2-9 5-9s5 4 5 9M10 10h0M14 10h0' },
   { sleutel: 'verfmengen', naam: "Verf mengen", uitleg: "Meng rood, geel, blauw en wit tot je de kleur van het pakje hebt", prijs: 20,

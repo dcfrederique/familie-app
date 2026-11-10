@@ -69,6 +69,22 @@ export function Grond({ w }: { w: KaartWereld }) {
         <rect x={x + 44} y={H * 0.12 + 14} width={b - 88} height={H * 0.76 - 28} rx="22" fill="none" stroke="#FFFFFF" strokeWidth="5" strokeDasharray="14 12" />
       </g>
     )
+    case 'daken': return (
+      <g>
+        <rect x={x} y="0" width={b} height={H} fill="#C8664C" />
+        {/* Rijen dakpannen, telkens een halve pan verschoven */}
+        {Array.from({ length: Math.ceil(H / 26) }, (_, r) => (
+          <g key={r}>
+            <path d={`M${x} ${r * 26 + 24}H${x + b}`} stroke="#A84E37" strokeWidth="3" />
+            {Array.from({ length: Math.ceil(b / 36) + 1 }, (_, i) => (
+              <path key={i} d={`M${x + i * 36 + (r % 2) * 18} ${r * 26}a18 14 0 0 0 0 24`} stroke="#B5583F" strokeWidth="2" fill="none" />
+            ))}
+          </g>
+        ))}
+        {/* Een nok met een lichte rand */}
+        <rect x={x} y={H * 0.48} width={b} height="10" fill="#8E2A20" opacity=".55" />
+      </g>
+    )
     case 'herfst': return (
       <g>
         <rect x={x} y="0" width={b} height={H} fill="#E9CB8E" />
@@ -392,6 +408,34 @@ export function Versiersel({ v }: { v: Versiersel }) {
         <circle cx="0" cy="-16" r="22" fill={['#E07A2E', '#E8A33A', '#C2662D'][Math.floor(v.x) % 3]} /><circle cx="-10" cy="-8" r="13" fill="#D96B27" /><circle cx="11" cy="-9" r="13" fill="#E8A33A" />
       </g>
     </>} />
+    case 'kerktoren': return <Stuk v={v} kind={<>
+      <ellipse cx="0" cy="44" rx="34" ry="7" fill="rgba(0,0,0,.15)" />
+      <rect x="-22" y="-10" width="44" height="54" fill="#E9DCC6" stroke="#B8A88C" strokeWidth="2" />
+      <path d="M-26 -10L0 -70L26 -10Z" fill="#5B6B7A" /><path d="M0 -70V-86M-6 -80H6" stroke="#C9971A" strokeWidth="4" strokeLinecap="round" />
+      <circle cx="0" cy="10" r="11" fill="#FFFFFF" stroke="#33414F" strokeWidth="2" /><path d="M0 10V3M0 10L5 12" stroke="#33414F" strokeWidth="2" strokeLinecap="round" />
+      <path d="M-8 44V30a8 8 0 0 1 16 0V44Z" fill="#8A5A33" />
+    </>} />
+    case 'dakpaard': return <Stuk v={v} kind={<>
+      <ellipse cx="0" cy="30" rx="40" ry="7" fill="rgba(0,0,0,.15)" />
+      <g className="k-knik" style={d}>
+        <ellipse cx="-2" cy="4" rx="28" ry="14" fill="#FFFFFF" stroke="#C9D3DD" strokeWidth="2" />
+        <path d="M-22 12V30M-10 14V30M10 14V30M20 12V30" stroke="#FFFFFF" strokeWidth="7" strokeLinecap="round" />
+        <path d="M18 -2C20 -18 30 -28 40 -24C46 -22 46 -14 40 -10L30 2Z" fill="#FFFFFF" stroke="#C9D3DD" strokeWidth="2" />
+        <path d="M20 -4C18 -18 26 -28 34 -28C28 -20 26 -10 26 0Z" fill="#8A5A33" /><path d="M-30 0C-40 4 -42 14 -38 20" stroke="#8A5A33" strokeWidth="6" fill="none" strokeLinecap="round" />
+        <circle cx="38" cy="-18" r="2" fill="#33414F" /><path d="M-16 -8H10V-2H-16Z" fill="#E5484D" />
+      </g>
+    </>} />
+    case 'groteschoorsteen': return <Stuk v={v} kind={<>
+      <ellipse cx="0" cy="40" rx="30" ry="6" fill="rgba(0,0,0,.15)" />
+      <rect x="-20" y="-20" width="40" height="60" fill="#B5503A" /><rect x="-26" y="-28" width="52" height="12" rx="2" fill="#8E2A20" />
+      <path d="M-20 0H20M-20 20H20M0 -16V0M-10 0V20M10 0V20M0 20V40" stroke="rgba(0,0,0,.18)" strokeWidth="2" />
+      <g transform="translate(0 -40)"><rect x="-12" y="-10" width="24" height="18" rx="3" fill="#43A047" /><path d="M0 -10V8M-12 -1H12" stroke="#F2C530" strokeWidth="4" /></g>
+      <path d="M14 -36q8 -10 0 -20q-8 -10 2 -20" stroke="#C9C2B8" strokeWidth="6" fill="none" strokeLinecap="round" className="k-wieg" style={d} />
+    </>} />
+    case 'schoorsteentje': return <Stuk v={v} kind={<g><rect x="-9" y="-16" width="18" height="22" fill="#B5503A" /><rect x="-12" y="-20" width="24" height="6" fill="#8E2A20" /><path d="M-9 -6H9M0 -14V-6" stroke="rgba(0,0,0,.18)" strokeWidth="1.5" /></g>} />
+    case 'dakraam': return <Stuk v={v} kind={<g><path d="M-14 8V-6L0 -16L14 -6V8Z" fill="#E9DCC6" stroke="#8E2A20" strokeWidth="2" /><rect x="-7" y="-6" width="14" height="12" fill="#FFE27A" stroke="#8A5A33" strokeWidth="1.5" /><path d="M0 -6V6M-7 0H7" stroke="#8A5A33" strokeWidth="1.5" /></g>} />
+    case 'pakje': return <Stuk v={v} kind={<g className="k-knik" style={d}><rect x="-9" y="-8" width="18" height="15" rx="2" fill="#2F80C9" /><path d="M0 -8V7M-9 -1H9" stroke="#F2C530" strokeWidth="3" /><path d="M0 -8q-5 -6 -7 -1M0 -8q5 -6 7 -1" stroke="#F2C530" strokeWidth="2" fill="none" /></g>} />
+    case 'pepernootje': return <Stuk v={v} kind={<g><circle r="6" fill="#B8732E" /><circle cx="-2" cy="-2" r="2" fill="#D9984F" /><circle cx="9" cy="5" r="4" fill="#B8732E" /></g>} />
     case 'blaadje': return <Stuk v={v} kind={<g className="k-knik" style={d}><path d="M0-10C9-9 12 0 0 10C-12 0-9-9 0-10Z" fill="#E07A2E" /><path d="M0-8V9" stroke="#B5432B" strokeWidth="1.5" /></g>} />
     case 'eikel': return <Stuk v={v} kind={<g><ellipse cy="3" rx="6" ry="8" fill="#C98A4B" /><path d="M-8-2Q-7-9 0-9Q7-9 8-2Q0 0-8-2Z" fill="#8A5A33" /><path d="M0-9q1-3 3-4" stroke="#6B4226" strokeWidth="2" fill="none" /></g>} />
     case 'lampionnetje': return <Stuk v={v} kind={<g className="k-wieg" style={d}>

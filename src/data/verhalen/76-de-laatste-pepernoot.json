@@ -1,0 +1,56 @@
+{
+  "nr": 76,
+  "titel": "De laatste pepernoot",
+  "reeks": "kleine-oortjes",
+  "leeftijd": 4,
+  "thema": "Sinterklaas, om beurten pepernoten pakken",
+  "bladzijden": [
+    {
+      "tekst": "Het is bijna Sinterklaas. Het hele huis ruikt naar kaneel, want mama heeft pepernoten gebakken. Op de tafel staat een schaaltje met pepernoten, nog een beetje warm. Pip telt ze met haar vinger. Een, twee, drie, vier, vijf, zes, zeven! \"Mogen we er een paar?\" vraagt Mo. Mama knikt. \"Maar wel om de beurt,\" zegt ze. \"Ik leer jullie een spelletje. Om de beurt pak je één of twee pepernoten. Meer mag niet. En wie de laatste pepernoot pakt, die wint.\"",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pip",
+          "mo",
+          "pipmama",
+          "koek"
+        ]
+      }
+    },
+    {
+      "tekst": "Pip mag beginnen. Ze pakt er twee. Hap, hap. Mo pakt er ook twee. Hap, hap. Nu liggen er nog drie. Pip denkt na. Pakt ze er één, dan liggen er twee, en dan pakt Mo ze allebei. Pakt ze er twee, dan ligt er nog één, en dan pakt Mo de laatste. \"Oei,\" zegt Pip. \"Ik kan niet meer winnen.\" Ze pakt er één. Mo pakt de laatste twee en lacht. \"Gewonnen!\"",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pip",
+          "mo",
+          "koek"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Nog een keer!\" roept Pip. Mama legt er weer zeven op het schaaltje. Nu begint Pip met maar één pepernoot. Dan liggen er nog zes. Mo pakt er twee, dus Pip pakt er één. Nu liggen er nog drie, en Mo is aan de beurt. Mo kijkt en kijkt. Wat hij ook pakt, Pip pakt de laatste. \"Hoe weet jij dat?\" vraagt Mo. \"Ik laat er altijd drie liggen,\" fluistert Pip, \"of zes.\"",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pip",
+          "mo",
+          "pipmama",
+          "koek"
+        ]
+      }
+    },
+    {
+      "tekst": "Die avond zetten Pip en Mo hun schoen bij de deur. Er gaat een tekening in, een wortel voor het paard, en een pepernoot. De allerlaatste pepernoot van het schaaltje. \"Die is voor het paard,\" zegt Mo. \"Dan wint het paard,\" lacht Pip. 's Morgens is de wortel weg en de pepernoot ook. In de schoen ligt een briefje met een hoefijzer erop getekend. Mama leest het voor: Dank je wel voor de lekkere wortel. En ik heb de laatste pepernoot gepakt. Ik heb gewonnen!",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "mo",
+          "schoen",
+          "wortel"
+        ]
+      }
+    }
+  ]
+}
