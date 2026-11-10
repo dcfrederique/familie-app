@@ -257,3 +257,23 @@ test('het nieuwe dorp: een ouder gaat door de oostpoort naar het Meer', async ({
   await page.keyboard.up('ArrowRight')
   expect(fouten).toEqual([])
 })
+
+test('het Dorpsbord: drie opdrachtjes klaar, dan de dagschat ophalen', async ({ page }) => {
+  const fouten: string[] = []
+  page.on('pageerror', (e) => fouten.push(e.message))
+  await startAls(page, 'luca')
+  await doorWelkomstpad(page)
+  // alles van vandaag al gedaan (zoals na een ochtend in het dorp), en Luca staat bij het bord
+  await page.evaluate(() => {
+    const p = (n: number) => String(n).padStart(2, '0'), d = new Date(), dag = `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}`
+    localStorage.setItem('dorp-voortgang-luca', JSON.stringify({ dag, glinsters: Array.from({ length: 12 }, (_, i) => `g${i}`), appels: { appel0: 3, appel1: 3 }, boek: {}, nieuw: [], teller: { vis: 5, aai: 5, bram: 1, kamer: 1 }, schat: false }))
+    sessionStorage.setItem('dorp-plek-luca', JSON.stringify({ s: 'dorp', tx: 13, ty: 8 }))
+  })
+  await naar(page, '/kind/luca/wereld')
+  await page.getByRole('button', { name: 'Dorpsbord', exact: true }).click()
+  const bord = page.getByRole('dialog', { name: 'Het Dorpsbord' })
+  await expect(bord).toBeVisible()
+  await bord.getByRole('button', { name: 'Dagschat ophalen' }).click()
+  await expect(page.getByRole('dialog', { name: 'Hoera!' })).toBeVisible()
+  expect(fouten).toEqual([])
+})

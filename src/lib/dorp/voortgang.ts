@@ -1,6 +1,6 @@
 // Wat een kind in het dorp vond: de glinsters en appels van vandaag en het Schatboek (alles ooit gevonden).
-// Fase 2 bewaart dit op het toestel zelf (elke tablet hoort bij één kind); het levert geen sterren op, dus de server hoeft
-// het niet te controleren. Fase 3 (Dorpsbord, dagschat) zet het op de server (docs/wereld-nieuw.md).
+// Dit staat op het toestel zelf (elke tablet hoort bij één kind); het levert geen sterren op, dus de server hoeft het niet te
+// controleren. Alleen de dagschat (een gratis stuk) loopt via de server, die hem één keer per dag geeft (wereld_dagschat).
 import type { Schat } from './kaart.ts'
 
 export interface Voortgang {
@@ -13,6 +13,10 @@ export interface Voortgang {
   boek: Partial<Record<Schat, number>>
   /** Wat nieuw in het Schatboek kwam en nog niet bekeken is. */
   nieuw: Schat[]
+  /** Wat vandaag gedaan is voor het Dorpsbord buiten glinsters en appels: vissen, aaien, Bram, de kamer. */
+  teller: Partial<Record<'vis' | 'aai' | 'bram' | 'kamer', number>>
+  /** De dagschat van vandaag is al opgehaald. */
+  schat: boolean
 }
 
 const sleutel = (kindId: string) => `dorp-voortgang-${kindId}`
@@ -23,7 +27,7 @@ export function dagVan(nu: Date): string {
   return `${nu.getFullYear()}-${p(nu.getMonth() + 1)}-${p(nu.getDate())}`
 }
 
-export function leegVoortgang(dag: string): Voortgang { return { dag, glinsters: [], appels: {}, boek: {}, nieuw: [] } }
+export function leegVoortgang(dag: string): Voortgang { return { dag, glinsters: [], appels: {}, boek: {}, nieuw: [], teller: {}, schat: false } }
 
 /** Leest de voortgang; een nieuwe dag begint met nieuwe glinsters en volle bomen, het Schatboek blijft. */
 export function leesVoortgang(kindId: string, dag: string, opslag: Pick<Storage, 'getItem'> | null = veiligeOpslag()): Voortgang {
@@ -33,7 +37,8 @@ export function leesVoortgang(kindId: string, dag: string, opslag: Pick<Storage,
     const boek = r.boek && typeof r.boek === 'object' ? r.boek : {}
     const nieuw = Array.isArray(r.nieuw) ? r.nieuw : []
     if (r.dag !== dag) return { ...leegVoortgang(dag), boek, nieuw }
-    return { dag, glinsters: Array.isArray(r.glinsters) ? r.glinsters.filter((x) => typeof x === 'string') : [], appels: r.appels && typeof r.appels === 'object' ? r.appels : {}, boek, nieuw }
+    return { dag, glinsters: Array.isArray(r.glinsters) ? r.glinsters.filter((x) => typeof x === 'string') : [], appels: r.appels && typeof r.appels === 'object' ? r.appels : {}, boek, nieuw,
+             teller: r.teller && typeof r.teller === 'object' ? r.teller : {}, schat: r.schat === true }
   } catch { return leegVoortgang(dag) }
 }
 
@@ -42,6 +47,9 @@ export function bewaarVoortgang(kindId: string, v: Voortgang, opslag: Pick<Stora
 }
 
 /** Een schat gevonden: telt in het Schatboek; de eerste keer is hij nieuw. Geeft terug of hij nieuw was. */
+/** Eén keer iets gedaan voor het Dorpsbord (een vis gevangen, het huisdier geaaid, ...). */
+export function tel(v: Voortgang, wat: keyof Voortgang['teller']) { v.teller[wat] = (v.teller[wat] ?? 0) + 1 }
+
 export function vind(v: Voortgang, soort: Schat): boolean {
   const eerste = !v.boek[soort]
   v.boek[soort] = (v.boek[soort] ?? 0) + 1

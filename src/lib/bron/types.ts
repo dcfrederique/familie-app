@@ -409,6 +409,11 @@ export interface Bron {
    * daarna en zonder migratie 20261025000400_dagelijks_hoera null. `kandidaten` ('soort:sleutel') = wat het kind te zien krijgt.
    */
   dagelijksHoera(kindId: string, kandidaten: string[]): Promise<Hoera | null>
+  /**
+   * De dagschat van het Dorpsbord (docs/wereld-nieuw.md): een gratis stuk, één keer per dag. Geeft het stuk (of null als er
+   * niets meer te geven is); 'al' als de dagschat van vandaag al opgehaald is. Zonder migratie 20261110000600 'al'.
+   */
+  wereldDagschat(kindId: string, kandidaten: string[]): Promise<{ soort: string; sleutel: string } | null | 'al'>
   /** Het weekmenu van `van` tot en met `tot` ('JJJJ-MM-DD'); leeg zonder migratie 20261024000600_weekmenu. */
   weekmenu(van: string, tot: string): Promise<Maaltijd[]>
   /** Onze taken: alles wat nog open staat, en wat de laatste 7 dagen gedaan is. Alleen voor een ouder-account. */

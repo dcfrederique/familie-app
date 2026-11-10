@@ -24,7 +24,11 @@ export interface DorpDing {
   /** Een appelboom: hier kun je plukken. */
   appel?: boolean
   doe?: KamerDoe
+  /** Een plek in het dorp waar iets te doen is als je ernaast staat: het Dorpsbord, Bakker Bram of de steiger om te vissen. */
+  plek?: Plek
 }
+
+export type Plek = 'bord' | 'bram' | 'vis'
 
 /** Een deur: je gaat binnen door vanaf de stoep (rij `stoep`) omhoog te lopen, of met de doen-knop. */
 export interface Deur {
@@ -107,6 +111,10 @@ export function maakDorp(bewoners: { id: string; naam: string }[]): Scene {
     { id: 'wijzerN', s: 'wijzer', f: [16, 4, 1, 1], w: 90, h: 100, v: 'berg', sch: 'klein' },
     lantaarn('l0', 19, 4),
     { id: 'fontein', s: 'fontein', f: [17, 8, 2, 2], w: 170, h: 170, sch: 'rond' },
+    // het Dorpsbord met de opdrachtjes van vandaag, Bakker Bram voor zijn bakkerij en de steiger aan de vijver
+    { id: 'bord', s: 'bord', f: [13, 7, 1, 1], w: 120, h: 132, sch: 'klein', plek: 'bord' },
+    { id: 'bram', s: 'bram', f: [3, 5, 1, 1], w: 0, h: 0, plek: 'bram' },
+    { id: 'steiger', s: 'steiger', f: [28, 19, 1, 1], w: 64, h: 96, plek: 'vis' },
     { id: 'bank1', s: 'bank', f: [14, 10, 2, 1], w: 110, h: 70, sch: 'klein' }, { id: 'bank2', s: 'bank', f: [20, 10, 2, 1], w: 110, h: 70, sch: 'klein' },
     { id: 'bak1', s: 'bak', f: [15, 7, 1, 1], w: 60, h: 70, sch: 'klein' }, { id: 'bak2', s: 'bak', f: [20, 7, 1, 1], w: 60, h: 70, sch: 'klein' },
     lantaarn('l1', 12, 6), lantaarn('l2', 23, 6), lantaarn('l3', 12, 11), lantaarn('l4', 23, 11),
@@ -235,10 +243,13 @@ export function aankomstDorp(zijde: Zijde): [number, number, Richting] {
 // ---------- glinsters: elke dag twaalf nieuwe schatjes om te vinden (docs/wereld-nieuw.md) ----------
 
 export const SCHATTEN = ['roos', 'geel', 'paars', 'madelief', 'paddenstoel', 'veer', 'klaver'] as const
-export type Schat = (typeof SCHATTEN)[number] | 'appel'
+export type Schat = (typeof SCHATTEN)[number] | 'appel' | 'vis' | 'goudvis'
 export const SCHAT_NAAM: Record<Schat, string> = {
   roos: 'Klaproos', geel: 'Boterbloem', paars: 'Viooltje', madelief: 'Madeliefje', paddenstoel: 'Vliegenzwam', veer: 'Blauwe veer', klaver: 'Klavertje vier', appel: 'Appel',
+  vis: 'Visje', goudvis: 'Goudvis',
 }
+/** Alles wat in het Schatboek van het dorp kan staan, in volgorde. */
+export const SCHATBOEK: Schat[] = [...SCHATTEN, 'appel', 'vis', 'goudvis']
 export const GLINSTERS_PER_DAG = 12
 
 export interface Glinster { sleutel: string; x: number; y: number; soort: (typeof SCHATTEN)[number]; t0: number }
@@ -261,6 +272,17 @@ export function glinstersVan(s: Scene, kindId: string, dag: string): Glinster[] 
 export const APPELS_PER_BOOM = 3
 /** Waar je moet staan om een appelboom te plukken: naast of onder de boom. */
 export const bijBoom = (d: DorpDing, tx: number, ty: number) => Math.abs(tx - d.f[0]) + Math.abs(ty - d.f[1]) === 1
+
+/** De plek (bord, Bram, steiger) waar het kind naast staat; bij de steiger alleen erboven, op de oever. */
+export function plekBij(s: Scene, tx: number, ty: number): DorpDing | undefined {
+  return s.dingen.find((d) => {
+    if (!d.plek) return false
+    if (d.plek === 'vis') return tx === d.f[0] && ty === d.f[1] - 1
+    const [x, y, w, h] = d.f
+    const dx = tx < x ? x - tx : tx >= x + w ? tx - (x + w - 1) : 0, dy = ty < y ? y - ty : ty >= y + h ? ty - (y + h - 1) : 0
+    return dx + dy === 1
+  })
+}
 
 /** Of het kind naast een meubel in de kamer staat (eronder of ernaast). */
 export function meubelBij(s: Scene, tx: number, ty: number): DorpDing | undefined {

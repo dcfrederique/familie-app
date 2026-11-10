@@ -1,7 +1,7 @@
 // Tekent het nieuwe dorp en de kamer (docs/wereld-nieuw.md). De grond met paden, plein, bloemen, schaduwen en bosrand wordt
 // één keer gebakken; elk vast ding is één keer een plaatje. Per beeld: één blit voor de grond, dan alleen drawImage van
 // plaatjes en wat beweegt. Nooit `filter`, `shadowBlur` of `getImageData` in de beeldlus (dat liet de oude wereld haperen).
-import type { Figuurtje } from '../../data/figuurtje.ts'
+import { basisFiguurtje, type Figuurtje } from '../../data/figuurtje.ts'
 import type { Huis } from '../../data/huis.ts'
 import { HUIS_MAAT } from '../../data/wereld.ts'
 import { huisUitsnede, tekenHuis } from '../huis/tekenen.ts'
@@ -23,6 +23,12 @@ Object.assign(ICOON, {
   vis: (g: G) => {
     g.fillStyle = '#F2994A'; ipad(g, () => g.ellipse(-.1, 0, .62, .4, 0, 0, 7)); ipad(g, () => { g.moveTo(.4, 0); g.lineTo(.85, -.35); g.lineTo(.85, .35); g.closePath() })
     g.fillStyle = '#fff'; g.beginPath(); g.arc(-.34, -.08, .11, 0, 7); g.fill(); g.fillStyle = INK; g.beginPath(); g.arc(-.36, -.08, .055, 0, 7); g.fill()
+  },
+  goudvis: (g: G) => {
+    g.fillStyle = '#F7C531'; ipad(g, () => g.ellipse(-.1, 0, .62, .4, 0, 0, 7)); ipad(g, () => { g.moveTo(.4, 0); g.lineTo(.85, -.35); g.lineTo(.85, .35); g.closePath() })
+    g.fillStyle = '#FFE58A'; g.beginPath(); g.ellipse(-.05, -.12, .3, .1, 0, 0, 7); g.fill()
+    g.fillStyle = '#fff'; g.beginPath(); g.arc(-.34, -.08, .11, 0, 7); g.fill(); g.fillStyle = INK; g.beginPath(); g.arc(-.36, -.08, .055, 0, 7); g.fill()
+    g.fillStyle = '#fff'; sterPad(g, .55, -.55, .16); g.fill()
   },
   berg: (g: G) => {
     g.fillStyle = '#8E99AB'; ipad(g, () => { g.moveTo(-.85, .6); g.lineTo(-.2, -.6); g.lineTo(.35, .2); g.lineTo(.55, -.1); g.lineTo(.9, .6); g.closePath() })
@@ -58,6 +64,24 @@ const TEKEN: Record<string, Tekening> = {
     vorm(g, '#B9854D', () => g.roundRect(-22, -24, 44, 24, 5)); g.strokeStyle = 'rgba(0,0,0,.2)'; g.lineWidth = 2; g.beginPath(); g.moveTo(-8, -22); g.lineTo(-8, -2); g.moveTo(8, -22); g.lineTo(8, -2); g.stroke()
     kroon(g, [[-12, -30, 10], [12, -30, 10], [0, -34, 12]], '#3A8C47', '#52A957')
     for (const [x, y, k] of [[-13, -34, '#F0556E'], [0, -42, '#FFD84A'], [13, -34, '#C9A6F2']] as const) { g.save(); g.translate(x, y); g.scale(7, 7); bloem(g, k); g.restore() }
+  },
+  bord: (g) => {
+    for (const x of [-30, 22]) vorm(g, '#8A5A2B', () => g.roundRect(x, -60, 8, 60, 3), 2.5)
+    vorm(g, '#C99559', () => g.roundRect(-50, -112, 100, 64, 8))
+    vorm(g, '#F3E2BE', () => g.roundRect(-42, -104, 84, 48, 4), 2)
+    for (const [x, y, k, a] of [[-36, -100, '#FFF6D6', -.06], [-10, -101, '#BFE8FF', .05], [15, -99, '#FFD1DC', -.04]] as const) {
+      g.save(); g.translate(x + 11, y + 20); g.rotate(a); vorm(g, k, () => g.rect(-11, -17, 22, 34), 1.5)
+      g.fillStyle = '#E8493F'; g.beginPath(); g.arc(0, -12, 2.8, 0, 7); g.fill(); g.fillStyle = 'rgba(0,0,0,.28)'; g.fillRect(-7, -3, 14, 2); g.fillRect(-7, 3, 10, 2); g.restore()
+    }
+    vorm(g, '#8A5A2B', () => { g.moveTo(-58, -110); g.lineTo(0, -128); g.lineTo(58, -110); g.lineTo(52, -104); g.lineTo(-52, -104); g.closePath() })
+  },
+  // een houten steiger in de vijver; het figuurtje staat op de oever erboven om te vissen
+  steiger: (g) => {
+    for (const x of [-22, 16]) vorm(g, '#6E4A24', () => g.roundRect(x, -30, 7, 30, 2), 2)
+    vorm(g, '#B9854D', () => g.roundRect(-28, -90, 56, 70, 4))
+    g.strokeStyle = 'rgba(0,0,0,.22)'; g.lineWidth = 2
+    for (let y = -78; y < -22; y += 12) { g.beginPath(); g.moveTo(-26, y); g.lineTo(26, y); g.stroke() }
+    g.fillStyle = 'rgba(255,255,255,.22)'; g.fillRect(-24, -88, 48, 3)
   },
   kraam: (g) => {
     for (const x of [-50, 44]) vorm(g, '#8A5A2B', () => g.roundRect(x, -96, 6, 96, 2), 2.5)
@@ -251,6 +275,20 @@ export interface Beeld {
   schemer: number
   weer: Weer
   rustig: boolean
+  /** Er staat nog iets open op het Dorpsbord: een rood uitroepteken erboven. */
+  bordOpen?: boolean
+  /** Het huisdier dat achter het kind aan loopt (een plaatje), met waar het staat. */
+  dier?: { beeld: HTMLCanvasElement; px: number; py: number; links: boolean; loopt: boolean } | null
+}
+
+/** Bakker Bram: een eigen figuurtje met een witte bakkersmuts (geen bekend personage). */
+const BRAM: Figuurtje = { ...basisFiguurtje('blauw'), huid: 'perzik', haar: 'kort', haarKleur: 'bruin', gezicht: 'groot', shirt: 'tshirt', shirtKleur: 'wit', broek: 'lang', broekKleur: 'donker', hoofd: 'geen' }
+function bakkersmuts(g: G, x: number, y: number) {
+  g.save(); g.translate(x, y); g.lineWidth = 3; g.strokeStyle = INK; g.lineJoin = 'round'; g.fillStyle = '#fff'
+  g.beginPath(); g.arc(-12, -84, 11, 0, 7); g.arc(0, -90, 13, 0, 7); g.arc(12, -84, 11, 0, 7); g.fill(); g.stroke()
+  g.beginPath(); g.roundRect(-18, -78, 36, 12, 3); g.fill(); g.stroke()
+  g.fillRect(-15, -84, 30, 7)
+  g.restore()
 }
 
 const LAMP = (() => { let c: HTMLCanvasElement | null = null; return () => { if (!c) { c = maakCv(260, 260); const g = c.getContext('2d')!, r = g.createRadialGradient(130, 130, 6, 130, 130, 128); r.addColorStop(0, 'rgba(255,214,110,.55)'); r.addColorStop(1, 'rgba(255,214,110,0)'); g.fillStyle = r; g.fillRect(0, 0, 260, 260) } return c } })()
@@ -376,10 +414,20 @@ export class DorpTekenaar {
     for (const d of s.dingen) {
       const ax = (d.f[0] + d.f[2] / 2) * T, ay = (d.f[1] + d.f[3]) * T
       if (!zicht(ax, ay)) continue
-      lijst.push({ y: ay, f: () => {
+      if (d.s === 'bram') {
+        const x = ax, y = (d.f[1] + .5) * T
+        lijst.push({ y: y + 20, f: () => { tekenChibi(g, BRAM, 'down', 0, false, x, y + 14, t, 1); bakkersmuts(g, x, y + 14); g.drawImage(this.label('Bakker Bram', '#B96A3C'), x - 70, y - 112, 140, 30) } })
+        continue
+      }
+      lijst.push({ y: d.s === 'steiger' ? (d.f[1] - .5) * T : ay, f: () => {
         const v = d.appel ? String(b.appels[d.id] ?? APPELS_PER_BOOM) : d.v ?? ''
         g.drawImage(this.sprite(d, v), ax - d.w / 2, ay - d.h + 4, d.w, d.h)
         if (d.s === 'fontein' && !b.rustig) { g.strokeStyle = 'rgba(190,230,255,.9)'; g.lineWidth = 3; for (let i = 0; i < 5; i++) { const q = (t * .9 + i / 5) % 1, a = (i - 2) * .5; g.beginPath(); g.moveTo(ax, ay - 108); g.quadraticCurveTo(ax + a * 22, ay - 128 - 8 * (1 - q), ax + a * 40, ay - 88 + 44 * q); g.stroke() } }
+        if (d.s === 'bord' && b.bordOpen) {
+          const bob = b.rustig ? 0 : Math.abs(Math.sin(t * 3)) * 6
+          g.fillStyle = '#E8493F'; g.strokeStyle = '#fff'; g.lineWidth = 3; g.beginPath(); g.arc(ax, ay - 150 - bob, 15, 0, 7); g.fill(); g.stroke()
+          g.fillStyle = '#fff'; g.font = "900 20px Nunito, sans-serif"; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('!', ax, ay - 149 - bob)
+        }
         if (d.sch === 'huis' && !b.rustig) for (let i = 0; i < 3; i++) { const q = (t * .35 + i / 3) % 1; g.fillStyle = `rgba(245,245,250,${.7 * (1 - q)})`; g.beginPath(); g.arc(ax + 54 + q * 18, ay - 240 - q * 46, 6 + q * 8, 0, 7); g.fill() }
       } })
     }
@@ -397,6 +445,15 @@ export class DorpTekenaar {
       } })
     }
     const ik = b.ik
+    const dier = b.dier
+    if (dier) {
+      lijst.push({ y: dier.py + 10, f: () => {
+        const hop = dier.loopt && !b.rustig ? Math.abs(Math.sin(t * 12)) * 5 : 0
+        g.fillStyle = 'rgba(0,0,0,.16)'; g.beginPath(); g.ellipse(dier.px, dier.py + 14, 18, 6, 0, 0, 7); g.fill()
+        g.save(); g.translate(dier.px, dier.py + 18 - hop); if (dier.links) g.scale(-1, 1)
+        g.drawImage(dier.beeld, -38, -76, 76, 76); g.restore()
+      } })
+    }
     lijst.push({ y: ik.py + 20, f: () => tekenChibi(g, ik.figuur, ik.face, ik.fase, ik.loopt, ik.px, ik.py + 14, t, s.id === 'kamer' ? .9 : 1) })
     for (const a of b.anderen) {
       lijst.push({ y: a.py + 20, f: () => { tekenChibi(g, a.figuur, a.face, a.fase, a.loopt, a.px, a.py + 14, t, 1); g.drawImage(this.label(a.naam, a.kleur), a.px - 70, a.py - 106, 140, 30) } })
