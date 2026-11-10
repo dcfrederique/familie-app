@@ -294,6 +294,26 @@ test('het Platteland: een fiets nemen uit het rek', async ({ page }) => {
   expect(fouten).toEqual([])
 })
 
+test('feest in het dorp en zwaaien met een sticker', async ({ page }) => {
+  const fouten: string[] = []
+  page.on('pageerror', (e) => fouten.push(e.message))
+  await startAls(page, 'luca')
+  await page.clock.setFixedTime(new Date('2026-11-20T10:00:00'))
+  await doorWelkomstpad(page)
+  await page.evaluate(() => sessionStorage.setItem('dorp-plek-luca', JSON.stringify({ s: 'dorp', tx: 22, ty: 9 })))
+  await naar(page, '/kind/luca/wereld')
+  await page.getByRole('button', { name: 'Praat', exact: true }).click({ force: true })
+  await expect(page.locator('.dorp-melding')).toContainText('pepernoten')
+  await page.getByRole('button', { name: 'Zwaai met een sticker' }).click()
+  await page.getByRole('menuitem', { name: 'Hoera' }).click()
+  await expect(page.getByRole('menu', { name: 'Stickers' })).toHaveCount(0)
+  await page.getByRole('button', { name: /Mijn Schatboek/ }).click()
+  await page.getByRole('tab', { name: 'Feesten' }).click()
+  await expect(page.locator('.dorp-slot').first()).toHaveAttribute('aria-label', 'Nog niet gevonden')
+  await expect(page.getByLabel('Pepernoten: 1 keer')).toBeVisible()
+  expect(fouten).toEqual([])
+})
+
 test('de andere gebieden in de nieuwe stijl: elk iets te doen', async ({ page }) => {
   const fouten: string[] = []
   page.on('pageerror', (e) => fouten.push(e.message))

@@ -10,6 +10,11 @@ export type Bericht =
   | ({ t: 'pos' } & Positie)
   | { t: 'hallo'; id: string }
   | { t: 'weg'; id: string }
+  | { t: 'sticker'; id: string; s: Sticker }
+
+/** De stickers om naar elkaar te zwaaien in de wereld (docs/wereld-nieuw.md, Samen): prentjes, geen tekst. */
+export const STICKERS = ['hart', 'ster', 'lach', 'hoera', 'hand', 'vraag'] as const
+export type Sticker = (typeof STICKERS)[number]
 
 /** Zo vaak (ms) hoogstens een positie versturen: twee per seconde. */
 export const MIN_TUSSENTIJD = 500
@@ -26,6 +31,7 @@ export function leesBericht(ruw: unknown): Bericht | null {
   const b = ruw as Record<string, unknown>
   if (typeof b.id !== 'string' || b.id.length === 0 || b.id.length > 64) return null
   if (b.t === 'hallo' || b.t === 'weg') return { t: b.t, id: b.id }
+  if (b.t === 'sticker') { const st = STICKERS.find((x) => x === b.s); return st ? { t: 'sticker', id: b.id, s: st } : null }
   if (b.t !== 'pos') return null
   const x = Number(b.x), y = Number(b.y)
   if (!Number.isFinite(x) || !Number.isFinite(y)) return null
@@ -108,6 +114,8 @@ export function volg(a: Ander, dt: number): void {
 
 export interface Verbinding {
   stuur: (p: Positie) => void
+  /** Zwaai met een sticker naar de anderen. */
+  sticker: (s: Sticker) => void
   /** Laat weten dat je (weer) binnen bent: anderen antwoorden met hun plek. */
   hallo: () => void
   /** Laat weten dat je weg bent (bij verbergen of sluiten). */
@@ -132,6 +140,7 @@ export function verbind(opties: { gezin: string; ik: string; client: SupabaseCli
     kanaal.subscribe((status) => { if (status === 'SUBSCRIBED') { open = true; zend({ t: 'hallo', id: ik }) } })
     return {
       stuur: (p) => zend({ t: 'pos', ...p }),
+      sticker: (st) => zend({ t: 'sticker', id: ik, s: st }),
       hallo: () => zend({ t: 'hallo', id: ik }),
       weg: () => zend({ t: 'weg', id: ik }),
       stop: () => { zend({ t: 'weg', id: ik }); open = false; void client.removeChannel(kanaal) },
@@ -139,13 +148,14 @@ export function verbind(opties: { gezin: string; ik: string; client: SupabaseCli
   }
 
   // Demo: tussen tabbladen van dezelfde browser.
-  if (typeof BroadcastChannel === 'undefined') return { stuur() {}, hallo() {}, weg() {}, stop() {} }
+  if (typeof BroadcastChannel === 'undefined') return { stuur() {}, sticker() {}, hallo() {}, weg() {}, stop() {} }
   const kanaal = new BroadcastChannel(naam)
   kanaal.onmessage = (e) => aanKomst(e.data)
   const zend = (b: Bericht) => kanaal.postMessage(b)
   zend({ t: 'hallo', id: ik })
   return {
     stuur: (p) => zend({ t: 'pos', ...p }),
+    sticker: (st) => zend({ t: 'sticker', id: ik, s: st }),
     hallo: () => zend({ t: 'hallo', id: ik }),
     weg: () => zend({ t: 'weg', id: ik }),
     stop: () => { zend({ t: 'weg', id: ik }); kanaal.close() },
@@ -180,6 +190,7 @@ export function verbindZuinig(opties: Parameters<typeof verbind>[0] & { aanwezig
   const timer = setInterval(() => { if (!document.hidden) void kijk() }, KIJK_TUSSENTIJD)
   return {
     stuur: (p) => v?.stuur(p),
+    sticker: (st) => v?.sticker(st),
     hallo: () => { v?.hallo(); void kijk() },
     weg: () => v?.weg(),
     stop: () => { gestopt = true; clearInterval(timer); v?.stop(); v = null; afmelden?.() },

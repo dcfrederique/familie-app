@@ -45,6 +45,11 @@ describe('leesBericht', () => {
       expect(leesBericht(b)).toBeNull()
     }
   })
+  it('neemt alleen gekende stickers aan', () => {
+    expect(leesBericht({ t: 'sticker', id: 'luca', s: 'hart' })).toEqual({ t: 'sticker', id: 'luca', s: 'hart' })
+    expect(leesBericht({ t: 'sticker', id: 'luca', s: '<img>' })).toBeNull()
+    expect(leesBericht({ t: 'sticker', id: 'luca' })).toBeNull()
+  })
   it('valt bij een vreemde richting terug op omlaag', () => {
     expect(leesBericht({ t: 'pos', id: 'a', x: 1, y: 1, face: '<script>', moving: false })).toMatchObject({ face: 'down' })
   })

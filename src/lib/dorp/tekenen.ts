@@ -267,7 +267,11 @@ const DAG = '--huis-gras:transparent;--huis-gras2:#6AB55A;--huis-heuvel:#A6D98C;
 const NACHT = '--huis-gras:transparent;--huis-gras2:#264E30;--huis-heuvel:#1E3B4C;--huis-glas:#FFD66B;--huis-pad:#EAD9B0;--huis-rook:#7A859A;'
 
 export interface DorpHuis { id: string; naam: string; huis: Huis; kleur: string }
-export interface Speler { px: number; py: number; face: Richting; fase: number; loopt: boolean; figuur: Figuurtje; fiets?: boolean }
+export interface Speler {
+  px: number; py: number; face: Richting; fase: number; loopt: boolean; figuur: Figuurtje; fiets?: boolean
+  /** Een sticker om mee te zwaaien, boven het hoofd, met hoe ver hij al is (0 tot 1). */
+  sticker?: string; stickerOp?: number
+}
 export interface Ander extends Speler { naam: string; kleur: string }
 export interface Deeltje { t: 'vonk' | 'hart' | 'tik' | 'vlieg' | 'bal'; x: number; y: number; vx?: number; vy?: number; l: number; i?: string }
 
@@ -305,6 +309,7 @@ const BEWONERS: Record<string, { naam: string; kleur: string; figuur: Figuurtje;
   ivo: { naam: 'IJsjesman Ivo', kleur: '#E86A9A', figuur: { ...basisFiguurtje('roze'), huid: 'perzik', haar: 'kort', haarKleur: 'zwart', gezicht: 'lach', shirt: 'tshirt', shirtKleur: 'wit', broek: 'lang', broekKleur: 'jeans', hoofd: 'geen' }, muts: (g, x, y) => pet(g, x, y, '#F7A8C4') },
   sam: { naam: 'Strandwachter Sam', kleur: '#E8493F', figuur: { ...basisFiguurtje('oranje'), huid: 'bruin', haar: 'lang', haarKleur: 'zwart', gezicht: 'lach', shirt: 'tshirt', shirtKleur: 'geel', broek: 'kort', broekKleur: 'rood', hoofd: 'geen' }, muts: (g, x, y) => pet(g, x, y, '#E8493F') },
   tine: { naam: 'Trainer Tine', kleur: '#3E7CC9', figuur: { ...basisFiguurtje('blauw'), huid: 'licht', haar: 'lang', haarKleur: 'blond', gezicht: 'groot', shirt: 'trui', shirtKleur: 'blauw', broek: 'kort', broekKleur: 'donker', hoofd: 'geen' }, muts: (g, x, y) => pet(g, x, y, '#3E7CC9') },
+  sint: { naam: 'Sinterklaas', kleur: '#C9463D', figuur: { ...basisFiguurtje('oranje'), huid: 'licht', haar: 'kort', haarKleur: 'grijs', gezicht: 'lach', shirt: 'trui', shirtKleur: 'rood', broek: 'lang', broekKleur: 'rood', hoofd: 'geen' }, muts: (g, x, y) => mijter(g, x, y) },
   roos: { naam: 'Boerin Roos', kleur: '#2E9A45', figuur: { ...basisFiguurtje('roze'), huid: 'licht', haar: 'lang', haarKleur: 'rood', gezicht: 'lach', shirt: 'tshirt', shirtKleur: 'groen', broek: 'salopette', broekKleur: 'jeans', schoenen: 'laarzen', schoenKleur: 'geel', hoofd: 'geen' }, muts: (g, x, y) => strohoed(g, x, y) },
 }
 function strohoed(g: G, x: number, y: number) {
@@ -328,6 +333,14 @@ function pet(g: G, x: number, y: number, kleur: string) {
   g.beginPath(); g.ellipse(0, -76, 26, 7, 0, 0, 7); g.fill(); g.stroke()
   g.beginPath(); g.moveTo(-19, -78); g.quadraticCurveTo(-18, -100, 0, -100); g.quadraticCurveTo(18, -100, 19, -78); g.closePath(); g.fill(); g.stroke()
   g.fillStyle = '#fff'; g.beginPath(); g.arc(0, -100, 4, 0, 7); g.fill(); g.stroke()
+  g.restore()
+}
+/** De mijter en de witte baard van Sinterklaas. */
+function mijter(g: G, x: number, y: number) {
+  g.save(); g.translate(x, y); g.lineWidth = 3; g.strokeStyle = INK; g.lineJoin = 'round'
+  g.fillStyle = '#FFFFFF'; g.beginPath(); g.moveTo(-20, -56); g.quadraticCurveTo(-24, -24, 0, -18); g.quadraticCurveTo(24, -24, 20, -56); g.quadraticCurveTo(0, -46, -20, -56); g.fill(); g.stroke()
+  g.fillStyle = '#E8493F'; g.beginPath(); g.moveTo(-18, -78); g.quadraticCurveTo(-22, -112, 0, -126); g.quadraticCurveTo(22, -112, 18, -78); g.closePath(); g.fill(); g.stroke()
+  g.fillStyle = '#F7C531'; g.fillRect(-18, -84, 36, 6); g.fillRect(-3, -118, 6, 34)
   g.restore()
 }
 /** De bolmuts van Gids Gust. */
@@ -431,6 +444,19 @@ export class DorpTekenaar {
     return im
   }
 
+  /** Een wit wolkje met de sticker erin boven het hoofd: springt op, wiebelt even en vervaagt op het einde. */
+  private wolkje(w: Speler, y: number, rustig: boolean) {
+    if (!w.sticker || w.stickerOp === undefined) return
+    const g = this.g, p = w.stickerOp
+    const groei = rustig ? 1 : Math.min(1, p * 8) * (1 + Math.sin(Math.min(1, p * 8) * Math.PI) * .25)
+    g.save(); g.globalAlpha = p > .85 ? (1 - p) / .15 : 1
+    g.translate(w.px, y - (rustig ? 0 : Math.sin(p * Math.PI * 6) * 3)); g.scale(groei, groei)
+    g.fillStyle = '#fff'; g.strokeStyle = 'rgba(0,0,0,.18)'; g.lineWidth = 2
+    g.beginPath(); g.roundRect(-30, -30, 60, 54, 18); g.moveTo(-8, 24); g.lineTo(0, 36); g.lineTo(8, 24); g.fill(); g.stroke()
+    g.drawImage(icoonCanvas(w.sticker, this.Q), -22, -25, 44, 44)
+    g.restore()
+  }
+
   private label(naam: string, kleur: string) {
     const k = naam + kleur
     let c = this.labels.get(k)
@@ -523,7 +549,7 @@ export class DorpTekenaar {
         g.drawImage(dier.beeld, -38, -76, 76, 76); g.restore()
       } })
     }
-    lijst.push({ y: ik.py + 20, f: () => ik.fiets ? tekenFietser(g, ik, t) : tekenChibi(g, ik.figuur, ik.face, ik.fase, ik.loopt, ik.px, ik.py + 14, t, s.id === 'kamer' ? .9 : 1) })
+    lijst.push({ y: ik.py + 20, f: () => { if (ik.fiets) tekenFietser(g, ik, t); else tekenChibi(g, ik.figuur, ik.face, ik.fase, ik.loopt, ik.px, ik.py + 14, t, s.id === 'kamer' ? .9 : 1); this.wolkje(ik, ik.py - 118, b.rustig) } })
     // het Platteland: vlaggen bij de hoeken van de fietslus en schapen in de wei
     if (b.vlaggen) VLAGGEN.forEach(([vx, vy], i) => {
       const x = (vx < 10 ? vx - 1 : vx + 1) * T + T / 2, y = (vy < 10 ? vy - 1 : vy + 1) * T + T
@@ -542,7 +568,7 @@ export class DorpTekenaar {
       lijst.push({ y: y - 1, f: () => g.drawImage(icoonCanvas('eekhoorn', this.Q), x - 20, y - 64 - op * 14, 40, 40) })
     }
     for (const a of b.anderen) {
-      lijst.push({ y: a.py + 20, f: () => { tekenChibi(g, a.figuur, a.face, a.fase, a.loopt, a.px, a.py + 14, t, 1); g.drawImage(this.label(a.naam, a.kleur), a.px - 70, a.py - 106, 140, 30) } })
+      lijst.push({ y: a.py + 20, f: () => { tekenChibi(g, a.figuur, a.face, a.fase, a.loopt, a.px, a.py + 14, t, 1); g.drawImage(this.label(a.naam, a.kleur), a.px - 70, a.py - 106, 140, 30); this.wolkje(a, a.py - 150, b.rustig) } })
     }
     lijst.sort((p, q) => p.y - q.y)
     for (const e of lijst) e.f()
