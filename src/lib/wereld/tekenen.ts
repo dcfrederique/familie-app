@@ -215,19 +215,42 @@ export class Tekenaar {
     tekenChibi(this.g, f, l.face, l.fase, l.moving, x, y, t, o.schaal ?? 1)
   }
 
-  /** Een gebouw. Nieuw = gouden gloed langs de rand; nog niet gekocht = grijzer met een slotje op de deur. */
+  /** Voorgebakken varianten van een gebouwplaatje (grijs, gouden gloed): één keer getekend, daarna kost het tekenen een drawImage. */
+  private gebouwVarianten = new WeakMap<HTMLImageElement, { grijs?: HTMLCanvasElement; gloed?: HTMLCanvasElement }>()
+
+  private gebouwVariant(im: HTMLImageElement, soort: 'grijs' | 'gloed', w: number, h: number): HTMLCanvasElement {
+    const rij = this.gebouwVarianten.get(im) ?? {}
+    this.gebouwVarianten.set(im, rij)
+    const bestaand = rij[soort]
+    if (bestaand) return bestaand
+    const Q = this.Q, marge = soort === 'gloed' ? 30 : 0
+    const c = wasmaker()
+    c.width = Math.ceil((w + 2 * marge) * Q); c.height = Math.ceil((h + 2 * marge) * Q)
+    const x = c.getContext('2d')!
+    x.scale(Q, Q)
+    if (soort === 'grijs') { x.filter = 'grayscale(0.55) brightness(0.92)'; x.drawImage(im, 0, 0, w, h) }
+    else {
+      // alleen de gloed: het plaatje zelf wordt ver buiten beeld getekend, zijn schaduw valt in beeld
+      x.shadowColor = '#F2C230'; x.shadowBlur = 20; x.shadowOffsetX = 10000
+      x.drawImage(im, marge - 10000, marge, w, h)
+    }
+    rij[soort] = c
+    return c
+  }
+
+  /**
+   * Een gebouw. Nieuw = gouden gloed langs de rand; nog niet gekocht = grijzer met een slotje op de deur.
+   * Geen canvas-filter of schaduwgloed per beeld: dat kostte op tablets bijna al het rekenwerk (de wereld haperde).
+   */
   protected tekenGebouw(im: HTMLImageElement, b: GebouwBeeld, t: number) {
     const g = this.g, x = b.x - b.w / 2, h = b.w * 0.75, y = b.y - h * 285 / 300
-    g.save()
     if (b.nieuw) {
       const puls = this.rustig ? 1 : 0.75 + 0.25 * Math.sin(t * 3)
-      g.shadowColor = '#F2C230'; g.shadowBlur = 20 * puls
-      g.drawImage(im, x, y, b.w, h)
-      g.shadowBlur = 8 * puls
+      g.save(); g.globalAlpha = Math.min(1, puls)
+      g.drawImage(this.gebouwVariant(im, 'gloed', b.w, h), x - 30, y - 30, b.w + 60, h + 60)
+      g.restore()
     }
-    if (b.slot) g.filter = 'grayscale(0.55) brightness(0.92)'
-    g.drawImage(im, x, y, b.w, h)
-    g.restore()
+    g.drawImage(b.slot ? this.gebouwVariant(im, 'grijs', b.w, h) : im, x, y, b.w, h)
     if (b.slot) {
       // een slotje midden op de deur
       const sx = b.x, sy = b.y - h * 0.22, r = Math.max(16, b.w * 0.075)

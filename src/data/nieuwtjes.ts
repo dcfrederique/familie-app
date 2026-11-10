@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.146',
+    datum: '2026-11-10',
+    titel: 'De wereld haperde: nu vlot',
+    tekst: 'In De wereld haperde het beeld, vooral bij de gebouwen met een slotje of een gouden rand. Die zijn nu één keer voorgetekend in plaats van elk beeld opnieuw, en het loopt weer soepel, ook op de zwakke tablets. Het uiterlijk is hetzelfde gebleven.',
+  },
+  {
     versie: '0.145',
     datum: '2026-11-10',
     titel: 'Pepernoten zoeken: kussentjes met een glansje',
