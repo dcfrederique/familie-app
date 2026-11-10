@@ -31,7 +31,7 @@ export default function Kleerkast({ ouder = false }: { ouder?: boolean }) {
   // Een ouder maakt zijn eigen figuurtje voor de chat (alles vrij, geen sterren, geen winkel).
   const id = ouder ? account?.ouder_id ?? gebruikers.find((g) => g.rol === 'ouder')?.id : params.id
   const kind = (ouder ? gebruikers : kinderen).find((k) => k.id === id)
-  const terug = ouder ? '/ouder/chat' : `/kind/${id}`
+  const terug = ouder ? '/ouder/chat' : zoek.get('van') === 'wereld' ? `/kind/${id}/wereld` : `/kind/${id}`
   const { data: winkel, ververs } = useGegevens(bron && id && !ouder ? async () => {
     const [aankopen, saldi, aanbod] = await Promise.all([bron.aankopen(), bron.saldi(), bron.aanbod()])
     return { eigen: new Set(aankopen[id] ?? []), vrij: saldi[id]?.vrij ?? 0, aanbod }

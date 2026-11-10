@@ -129,14 +129,22 @@ Een Playwright-test in `e2e/` laadt De wereld, laat 3 seconden lopen zonder graf
 - Dagschat: een stuk uit de bestaande catalogus (`figuurtje_stukken`, `huis_stukken`) dat gratis in het bezit komt, net als het cadeautje in `docs/dagelijks-hoera.md`. Ouders kunnen het uitzetten bij Kinderen → Winkelaanbod.
 - Proberen: nieuwe schrijfacties komen in `GEBLOKKEERD` in `src/lib/proef.tsx`.
 
+## Zo zit het in de app (10 november 2026)
+
+- `src/lib/dorp/kaart.ts`: de plattegrond van het dorp (36 × 26 tegels) en de kamer (12 × 8), deuren, poorten, glinsters (vast toeval per kind en dag), zuivere logica met tests (`kaart.test.ts`).
+- `src/lib/dorp/stijl.ts` en `tekenen.ts`: de tekenstijl (inktlijn, licht van linksboven) en `DorpTekenaar`: grond één keer gebakken, plaatjes per ding, per beeld alleen wat beweegt. Nacht, schemer en weer met één vlak in vermenigvuldig-modus; nooit `filter` of `shadowBlur`.
+- `src/lib/dorp/voortgang.ts`: glinsters en appels van vandaag en het Schatboek, op het toestel (geen sterren, dus geen server nodig). Fase 3 zet dit op de server samen met het Dorpsbord.
+- `src/schermen/Dorp.tsx`: het scherm, door `Wereld.tsx` getoond voor het gebied `dorp` zolang Wereldinstellingen → Dorp op Nieuw staat (standaard). De andere gebieden en het dorp van vroeger gebruiken nog de oude tekenaar.
+- Lopen gaat in het dorp altijd tegel voor tegel. De gebouwen van de spelletjes staan niet in het nieuwe dorp (ze zitten in het Spellenhuis); Kaart bewerken werkt alleen nog voor de andere gebieden (een kindhuis dat in een ander gebied staat, verschijnt niet in het dorp).
+
 ## Fases
 
 | Fase | Wat | Gevolg voor de kinderen |
 | --- | --- | --- |
 | 0 | Hotfix: grijze en gloed-gebouwen voorbakken (**klaar**, nieuwtje 0.146, 5 naar 60 beelden per seconde in de demo) | De wereld loopt vlot |
-| 1 | Nieuwe tekenaanpak: atlas, adaptieve kwaliteit, prestatietest | Vlot, ook op de zwakste tablet |
-| 2 | Het dorp opnieuw getekend volgens de zeven regels, glinsters, Schatboek, doen-knop | Een mooi dorp met elke dag iets te zoeken |
-| 2b | Huizen binnenlopen: eigen kamer met ingangen naar Kleerkast, Mijn dag, huisdier, Schatboek | In je eigen huis kunnen |
+| 1 | Nieuwe tekenaanpak: atlas, adaptieve kwaliteit, prestatietest (**klaar voor het dorp**, `src/lib/dorp/tekenen.ts`, 60 beelden per seconde) | Vlot, ook op de zwakste tablet |
+| 2 | Het dorp opnieuw getekend volgens de zeven regels, glinsters, Schatboek, doen-knop, appels plukken (**klaar**, nieuwtje 0.148) | Een mooi dorp met elke dag iets te zoeken |
+| 2b | Huizen binnenlopen: eigen kamer met ingangen naar Kleerkast, Mijn dag, huisdier, Schatboek (**klaar**, nieuwtje 0.148) | In je eigen huis kunnen |
 | 3 | Bewoners, Dorpsbord met opdrachtjes, dagschat | Een reden om elke dag te komen |
 | 4 | Appels plukken, vissen, huisdier mee | Dingen om te doen buiten de deuren |
 | 4b | De andere zeven gebieden één voor één hertekenen en bevolken (Platteland met fietsen eerst) | Overal iets te doen |
