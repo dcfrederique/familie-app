@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.144',
+    datum: '2026-11-10',
+    titel: "Pakjessets, Drie op de kade en De dakgoten",
+    tekst: "Nieuw verhaal \"Drie op de kade\" (Daan en Noor leggen pakjes in groepjes van drie op de kade, net voor de stoomboot aankomt) en nieuwe kleurplaat \"De stoomboot komt aan\", meteen te lezen en in te kleuren. Het spelletje Pakjessets kost 25 sterren: drie pakjes horen bij elkaar als bij elke eigenschap (kleur, versiering, strik, grootte) alle drie hetzelfde of alle drie verschillend zijn. Makkelijk: twee eigenschappen, twee pakjes liggen al gekozen en je zoekt het derde, met een knipperend pakje als hulp. Middel: drie eigenschappen, zoek zelf zes sets, met uitleg welke eigenschap niet klopt en drie tips. Moeilijk: vier eigenschappen, 16 pakjes, drie rondes van 6, 8 en 10 sets, zonder hulp en met strafseconden bij een foute set; klokje en pluimen. In Springland kwam een derde level in Dakenstad: De dakgoten, een pittig level met vier gaten van 3, snelle vogels en twee schoorsteentjes. Er zijn ook drie nieuwe stukken voor het figuurtje en drie voor Mijn huis.",
+    verhaal: "Drie op de kade",
+    spel: { naam: "Pakjessets", prijs: 25 },
+    stukken: ["Figuurtje: Matrozenmuts (15), Matrozenshirt (20), Verrekijker (15)", "Mijn huis: Lantaarn aan de kade (20), Kadekar met pakjes (25), Scheepsbel (15)"],
+    open: "Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.",
+  },
+  {
     versie: '0.143',
     datum: '2026-11-10',
     titel: "Snoeppotjes, De snoeppotjes van de bakker en Feeënbos",

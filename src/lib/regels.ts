@@ -57,7 +57,7 @@ export function limietVoor(limieten: { kind_id: string | null; activiteit: strin
 }
 
 export type Activiteit = 'memory' | 'penalty_schieten' | 'penalty_keepen' | 'rekenen' | 'verhaal' | 'kleurplaat' | 'tekenen'
-  | 'racen' | 'basket' | 'koken' | 'touwspringen' | 'huisdier' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'weegschaal' | 'torens' | 'rooster' | 'snoeppotjes' | 'nim' | 'glijden' | 'verfmengen' | 'eenlijn' | 'raadselprent' | 'pijltjes' | 'domino' | 'eikels' | 'knikkers' | 'klok' | 'lampionlied' | 'piramide' | 'patroon' | 'kalaha' | 'spiegel' | 'slingers' | 'bruggen' | 'schuif' | 'vlek' | 'hekjes' | 'zoeken' | 'geheim' | 'springen' | 'zelf_gelezen' | 'schrijven'
+  | 'racen' | 'basket' | 'koken' | 'touwspringen' | 'huisdier' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'weegschaal' | 'torens' | 'rooster' | 'snoeppotjes' | 'nim' | 'glijden' | 'verfmengen' | 'eenlijn' | 'raadselprent' | 'pijltjes' | 'domino' | 'eikels' | 'knikkers' | 'klok' | 'lampionlied' | 'piramide' | 'patroon' | 'kalaha' | 'spiegel' | 'slingers' | 'bruggen' | 'schuif' | 'vlek' | 'hekjes' | 'zoeken' | 'geheim' | 'sets' | 'springen' | 'zelf_gelezen' | 'schrijven'
 
 /**
  * Sterren voor een afgewerkte activiteit (docs/spec.md, Activiteiten), nog vóór het dagplafond.
@@ -108,6 +108,7 @@ export function activiteitOmschrijving({ activiteit, inhoud }: { activiteit: Act
     case 'rooster': return 'Kleurenrooster'
     case 'snoeppotjes': return "Snoeppotjes"
     case 'nim': return "De laatste pepernoot"
+    case 'sets': return 'Pakjessets'
     case 'glijden': return "Glijden op het ijs"
     case 'verfmengen': return "Verf mengen"
     case 'eenlijn': return "In één lijn"

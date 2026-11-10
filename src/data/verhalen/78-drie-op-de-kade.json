@@ -1,0 +1,95 @@
+{
+  "nr": 78,
+  "titel": "Drie op de kade",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Sinterklaas, de kade, sorteren en samen kijken",
+  "bladzijden": [
+    {
+      "tekst": "Het is bijna Sinterklaas. Daan en Noor staan op de kade en wachten op de stoomboot. Naast hen staat een kar vol pakjes. \"Wij mogen de pakjes in groepjes van drie leggen,\" zegt de havenmeester. \"Maar het moet kloppen: drie dezelfde of drie verschillende.\"",
+      "prent": {
+        "decor": "kust",
+        "figuren": [
+          "daan",
+          "noor",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor pakt een rood pakje met een stip, nog een rood pakje met een stip en een derde rood pakje met een stip. \"Drie dezelfde!\" zegt ze. De havenmeester knikt. \"Dat is een groepje. Goed gekeken.\" Noor is er fier op en legt de drie pakjes netjes naast elkaar.",
+      "prent": {
+        "decor": "kust",
+        "figuren": [
+          "noor",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan pakt een rood pakje, een blauw pakje en een groen pakje. Alle drie hebben een strik. \"Elke kleur is anders, maar de strik is bij alle drie hetzelfde,\" zegt hij. \"Dat klopt ook!\" De havenmeester steekt zijn duim op. Daan voelt zich een echte havenwerker.",
+      "prent": {
+        "decor": "kust",
+        "figuren": [
+          "daan",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan pakt Noor een rood pakje met een stip en een blauw pakje met een stip. Ze zoekt een derde pakje en vindt een groen pakje met een streep. Nee, dat is niet goed: de stip is nu bij twee pakjes hetzelfde en bij één anders. \"Oei,\" zegt Noor. \"Dat klopt niet.\" Ze legt het pakje terug.",
+      "prent": {
+        "decor": "kust",
+        "figuren": [
+          "noor",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Tijs de hond snuffelt aan de kar. Met zijn neus duwt hij een groen pakje met een stip naar voren. \"Dat is het!\" roept Daan. \"Rood, blauw en groen, en alle drie een stip.\" Tijs kwispelt en blaft één keer, heel tevreden. Hij heeft goed gezocht.",
+      "prent": {
+        "decor": "kust",
+        "figuren": [
+          "daan",
+          "hond",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Nu zoeken ze samen verder. Soms moeten ze lang kijken en nadenken. Dan zeggen ze het hardop: \"Kleur: allemaal anders. Strik: allemaal hetzelfde.\" Dat helpt. Zo zie je meteen wat er nog ontbreekt. Het groepje komt er vanzelf. Langzaam wordt de kar leger en de kade netter.",
+      "prent": {
+        "decor": "kust",
+        "figuren": [
+          "noor",
+          "daan",
+          "hond"
+        ]
+      }
+    },
+    {
+      "tekst": "Ver weg klinkt een stoomfluit. De boot komt de haven in! Er blijft nog één groepje over. Daan en Noor leggen het net op tijd neer en tellen: vijf groepjes van drie. Alles klopt. De havenmeester klapt in zijn handen. \"Net op tijd,\" zegt hij.",
+      "prent": {
+        "decor": "kust",
+        "figuren": [
+          "noor",
+          "daan",
+          "boot"
+        ]
+      }
+    },
+    {
+      "tekst": "De Sint stapt van de boot en kijkt naar de kar. \"Wat mooi gesorteerd,\" zegt hij. \"Wie rustig kijkt, vindt altijd een groepje dat past.\" Daan en Noor krijgen een pepernoot, en Tijs krijgt een kleintje. Ze zijn trots, en ze hebben zin in de intocht.",
+      "prent": {
+        "decor": "kust",
+        "figuren": [
+          "daan",
+          "noor",
+          "hond",
+          "boot"
+        ]
+      }
+    }
+  ]
+}
