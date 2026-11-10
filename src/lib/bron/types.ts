@@ -414,6 +414,10 @@ export interface Bron {
    * niets meer te geven is); 'al' als de dagschat van vandaag al opgehaald is. Zonder migratie 20261110000600 'al'.
    */
   wereldDagschat(kindId: string, kandidaten: string[]): Promise<{ soort: string; sleutel: string } | null | 'al'>
+  /** Eén glinster gevonden in de wereld: telt mee voor het gezinsdoel van de week. Zonder migratie 20261110000700 niets. */
+  wereldGlinster(kindId: string): Promise<void>
+  /** Hoeveel glinsters elk kind deze week (maandag tot zondag) vond, voor het gezinsdoel; {} zonder migratie. */
+  wereldGezinsdoel(): Promise<Record<string, number>>
   /** Het weekmenu van `van` tot en met `tot` ('JJJJ-MM-DD'); leeg zonder migratie 20261024000600_weekmenu. */
   weekmenu(van: string, tot: string): Promise<Maaltijd[]>
   /** Onze taken: alles wat nog open staat, en wat de laatste 7 dagen gedaan is. Alleen voor een ouder-account. */

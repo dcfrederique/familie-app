@@ -1,7 +1,7 @@
 // Gebeurtenissen in de wereld (docs/wereld-nieuw.md, "Gebeurtenissen uit data"): rond een feest verschijnt er iets in een
 // gebied, met een schatje voor het Schatboek (één keer per dag). Een gebeurtenis toevoegen = een rij hier, met een tekening in
 // stadTekenen.ts (FEEST_TEKEN) als het iets nieuws is. Dit is wat de nachtroutine kan bijmaken in plaats van een gebouw.
-import type { DorpDing, Schat } from '../lib/dorp/kaart.ts'
+import { metDingen, type DorpDing, type Schat } from '../lib/dorp/kaart.ts'
 
 export interface Gebeurtenis {
   id: string
@@ -47,11 +47,5 @@ export function gebeurtenisOp(dag: string, gebied?: string): Gebeurtenis | null 
 
 /** De scène met de gebeurtenis erin: de dingen erbij, hun tegels vast en niet meer bereikbaar (geen glinster erop). */
 export function metGebeurtenis<S extends { dingen: DorpDing[]; solid: Set<string>; bereik: Set<string> }>(s: S, g: Gebeurtenis | null): S {
-  if (!g) return s
-  const solid = new Set(s.solid), bereik = new Set(s.bereik)
-  for (const d of g.dingen) {
-    const [x0, y0, w, h] = d.f
-    for (let y = y0; y < y0 + h; y++) for (let x = x0; x < x0 + w; x++) { solid.add(`${x},${y}`); bereik.delete(`${x},${y}`) }
-  }
-  return { ...s, dingen: [...s.dingen, ...g.dingen], solid, bereik }
+  return g ? metDingen(s, g.dingen) : s
 }

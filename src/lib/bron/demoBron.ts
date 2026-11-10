@@ -8,6 +8,7 @@ import { kiesCadeau } from '../../data/cadeau.ts'
 import { demoGebruikers, type Gebruiker } from '../../data/gezin.ts'
 import { standaardRegels as huisdierRegels, verzorgenKan, type HuisdierKind, type HuisdierRegels } from '../../data/huisdier.ts'
 import { dagVan } from '../datum.ts'
+import { weekBegin } from '../dorp/gezinsdoel.ts'
 import { maakWeergave, standaardWeergave, type WereldWeergave } from '../wereld/weergave.ts'
 import { leesOpgeslagen, leegOpgeslagen, type Opgeslagen as WereldKaart } from '../wereld/gebieden.ts'
 import { activiteitOmschrijving, activiteitSterren, blokKeuzes, limietVoor, regels as standaardRegels } from '../regels.ts'
@@ -41,6 +42,8 @@ interface Toestand {
   nieuwVrij: string[]
   hoeraDag: Record<string, string>
   dagschatDag: Record<string, string>
+  /** Glinsters per kind per dag, voor het gezinsdoel van de week. */
+  glinsters: Record<string, Record<string, number>>
   weekmenu: Maaltijd[]
   ouderTaken: OuderTaak[]
   notities: Notitie[]
@@ -97,7 +100,7 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
     aanbod: { dicht: [], nieuw: [], verborgen: {}, prijzen: {} },
     // Twee spelletjes net vrijgegeven, zodat het dagelijkse hoera meteen te zien is.
     nieuwVrij: ['pompoen', 'basket'],
-    hoeraDag: {}, dagschatDag: {},
+    hoeraDag: {}, dagschatDag: {}, glinsters: {},
     // Vandaag al iets op het menu, zodat het startscherm van de kinderen het meteen toont.
     weekmenu: [{ dag: dagVan(new Date()), moment: 'avond', gerecht: 'Spaghetti bolognese', prentje: null }],
     // Een kleine voorraad en één recept, zodat Voorraad en Recepten niet leeg openen.
@@ -290,6 +293,14 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       const cadeau = kiesCadeau(k.kan_lezen, kindId, new Set(eigen), t.aanbod)
       if (cadeau) eigen.push(bezitSleutel(cadeau.soort, cadeau.sleutel))
       return cadeau && { soort: cadeau.soort, sleutel: cadeau.sleutel }
+    },
+    async wereldGlinster(kindId) {
+      const per = (t.glinsters[kindId] ??= {}), dag = dagVan(new Date())
+      per[dag] = Math.min(60, (per[dag] ?? 0) + 1)
+    },
+    async wereldGezinsdoel() {
+      const van = weekBegin(dagVan(new Date()))
+      return Object.fromEntries(Object.entries(t.glinsters).map(([k, per]) => [k, Object.entries(per).filter(([d]) => d >= van).reduce((n, [, x]) => n + x, 0)]).filter(([, n]) => (n as number) > 0))
     },
     async aanbod() {
       const a = t.aanbod

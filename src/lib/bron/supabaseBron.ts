@@ -118,6 +118,15 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
       if (error || !data) return 'al'
       return (data as { cadeau?: { soort: string; sleutel: string } | null }).cadeau ?? null
     },
+    async wereldGlinster(kindId) {
+      await sb.rpc('wereld_glinster', { p_kind: kindId })
+    },
+    async wereldGezinsdoel() {
+      const { data, error } = await sb.rpc('wereld_gezinsdoel')
+      // Zonder migratie 20261110000700 is er nog geen gezinsdoel.
+      if (error || !data || typeof data !== 'object') return {}
+      return Object.fromEntries(Object.entries(data as Record<string, unknown>).map(([k, v]) => [k, Number(v) || 0]))
+    },
     async aanbod() {
       const [spel, stukken, huis, keuzes, verborgen] = await Promise.all([
         sb.from('spel_prijzen').select('sleutel, standaard_vrij'),
