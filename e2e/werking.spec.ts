@@ -198,3 +198,24 @@ test('huisdier: eten kost sterren en vult het buikje', async ({ page }) => {
   await expect(page.locator('.hd-vandaag')).toContainText('2 van 6')
   await expect(page.getByRole('button', { name: 'Eten', exact: true })).toBeDisabled()
 })
+
+test('het nieuwe dorp: in het eigen huis binnenlopen en weer buiten', async ({ page }) => {
+  const fouten: string[] = []
+  page.on('pageerror', (e) => fouten.push(e.message))
+  await startAls(page, 'luca')
+  await doorWelkomstpad(page)
+  await naar(page, '/kind/luca/wereld')
+  const veld = page.locator('canvas.wereld-veld')
+  await expect(veld).toHaveAttribute('aria-label', 'Het dorp')
+  // het kind staat voor zijn eigen deur: de doen-knop toont naar binnen
+  await expect(page.getByRole('button', { name: 'Naar binnen' })).toBeVisible()
+  await page.getByRole('button', { name: 'Naar binnen' }).click()
+  await expect(veld).toHaveAttribute('aria-label', 'Mijn kamer')
+  await page.keyboard.down('ArrowDown')
+  await page.waitForTimeout(500)
+  await page.keyboard.up('ArrowDown')
+  await expect(veld).toHaveAttribute('aria-label', 'Het dorp')
+  await page.getByRole('button', { name: /Schatboek/ }).click()
+  await expect(page.getByRole('dialog', { name: 'Mijn Schatboek' })).toBeVisible()
+  expect(fouten).toEqual([])
+})

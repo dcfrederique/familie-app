@@ -34,6 +34,6 @@ describe('weergave', () => {
   })
   it('houdt waarden binnen de grenzen', () => {
     const w = maakWeergave({ stijl: 'schuin', draaien: 200, kantelen: 5, diepte: 9, snelheid: 0, schaduw: false })
-    expect(w).toEqual({ stijl: 'schuin', draaien: 60, kantelen: 28, diepte: 1.5, schaduw: false, snelheid: 0.5, besturing: 'beide' })
+    expect(w).toEqual({ stijl: 'schuin', draaien: 60, kantelen: 28, diepte: 1.5, schaduw: false, snelheid: 0.5, besturing: 'beide', dorp: 'nieuw' })
   })
 })

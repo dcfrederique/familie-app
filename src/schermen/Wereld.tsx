@@ -9,9 +9,10 @@ import { zin } from '../data/zinnen.ts'
 import { U, gebouwenVoor, kidKleur, type GebouwBeeld } from '../data/wereld.ts'
 import {
   MAX_HUIZEN, deurYvan, dichtstbijVrij, inRechthoek, maakTegels, nieuweTegelStand, opDeurmat, richtingVan, stap, tegelMidden, tegelStap, voorHuisdeur,
-  huisRechthoek, type Loper, type TegelStand,
+  huisRechthoek, TEGENOVER, type Loper, type TegelStand, type Zijde,
 } from '../lib/wereld/kaart.ts'
-import { aankomstNa, effectieveItems, gebiedVan, leegOpgeslagen, maakGebiedKaart, poortOp, type GebiedId, type Opgeslagen, type Poort } from '../lib/wereld/gebieden.ts'
+import Dorp from './Dorp.tsx'
+import { GEBIEDEN, aankomstNa, effectieveItems, gebiedVan, leegOpgeslagen, maakGebiedKaart, poortOp, type GebiedId, type Opgeslagen, type Poort } from '../lib/wereld/gebieden.ts'
 import { Tekenaar25 } from '../lib/wereld/tekenen25.ts'
 import { standaardWeergave, type WereldWeergave } from '../lib/wereld/weergave.ts'
 import { DUUR, isToestel, naarBal, nieuweBal, pose, rol, schop, voorToestel, type Toestel } from '../lib/wereld/speel.ts'
@@ -112,8 +113,11 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
   const kleurVan = useCallback((kid: string) => kinderHuizen.find((h) => h.id === kid)?.kleur ?? '#6A5BD1', [kinderHuizen])
   // Elk gebied is een eigen kaart (docs/wereld-dorp.md); wat erin staat komt uit de standaardplekken en wat de ouders aanpasten.
   const items = useMemo(() => effectieveItems(bewoners.map((k) => k.id), winkel?.opgeslagen), [bewoners, winkel])
+  const dorpHuizen = useMemo(() => kinderHuizen.filter((h) => (items.find((i) => i.id === `huis:${h.id}`)?.gebied ?? 'dorp') === 'dorp'), [kinderHuizen, items])
   const [gebied, setGebied] = useState<GebiedId>(() => (ouder ? 'dorp' : leesPlek(kind.id)?.g ?? items.find((i) => i.id === `huis:${kind.id}`)?.gebied ?? 'dorp'))
   const gebiedRef = useRef(gebied)
+  /** Van welke kant het kind het nieuwe dorp binnenloopt (door een poort). */
+  const binnenVan = useRef<Zijde | null>(null)
   useEffect(() => { gebiedRef.current = gebied }, [gebied])
   const { kaart, huizen: huisPlekken, gebouwen: gebouwLijst } = useMemo(() => maakGebiedKaart(gebied, items, kinderHuizen, kleurVan, alleGebouwen), [gebied, items, kinderHuizen, kleurVan, alleGebouwen])
   const huizen = useMemo(() => huisPlekken.map((h) => {
@@ -196,6 +200,7 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
     }
     const aan = aankomstNa(poort)
     if (!aan) return
+    binnenVan.current = aan.gebied === 'dorp' ? TEGENOVER[poort.zijde] : null
     s.bezig = true
     setSluit(true)
     setTimeout(() => { s.aankomst = aan.tegel; setBericht(null); setGebied(aan.gebied); meld(gebiedVan(aan.gebied).naam, PRENT.gebied) }, minderBeweging() ? 150 : 450)
@@ -416,6 +421,32 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
 
   const lezer = kind.kan_lezen
   const thuis = ouder ? '/ouder' : `/kind/${kind.id}`
+  const instellingen = ouder && (
+    <>
+      <button type="button" className="wereld-instel-knop" aria-expanded={instelOpen} aria-label="Wereldinstellingen proberen" onClick={() => setInstelOpen((x) => !x)}>⚙</button>
+      {instelOpen && (
+        <div className="wereld-instel" role="dialog" aria-label="Wereldinstellingen">
+          <WereldWeergaveFormulier w={weergave} wijzig={wijzigWeergave} melding={weergaveMelding} compact />
+        </div>
+      )}
+    </>
+  )
+  // Het nieuwe dorp (docs/wereld-nieuw.md) heeft een eigen tekenaar en kaart; de andere gebieden blijven zoals ze waren.
+  // Een huis dat de ouders in een ander gebied zetten (Kaart bewerken), staat daar en niet in het dorp.
+  if (gebied === 'dorp' && weergave.dorp === 'nieuw') {
+    const naar = (zijde: Zijde) => {
+      const poort = GEBIEDEN[0].poorten.find((p) => p.zijde === zijde)
+      if (!poort) return
+      // terug uit Springland: aan de westpoort
+      if (poort.doel === 'springland') try { sessionStorage.setItem(`dorp-plek-${kind.id}`, JSON.stringify({ s: 'dorp', tx: 2, ty: 12 })) } catch { /* geen opslag */ }
+      toestand.current.bezig = false
+      reis(poort)
+    }
+    return (
+      <Dorp kind={kind} ouder={ouder} huizen={dorpHuizen} besturing={weergave.besturing} snelheid={weergave.snelheid} binnenVan={binnenVan.current}
+            reis={naar} saldo={ouder ? null : saldo ?? null} extra={instellingen} />
+    )
+  }
   return (
     <div className={`wereld kleur-${kind.thema ?? 'blauw'}`}>
       <canvas ref={canvasRef} className="wereld-veld" onPointerDown={tik}
@@ -423,16 +454,7 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
       {!ouder && saldo !== undefined && saldo !== null && (
         <div className="wereld-sterren" role="img" aria-label={`${saldo} sterren`}><Ster grootte={34} /><b className="display">{saldo}</b></div>
       )}
-      {ouder && (
-        <>
-          <button type="button" className="wereld-instel-knop" aria-expanded={instelOpen} aria-label="Wereldinstellingen proberen" onClick={() => setInstelOpen((x) => !x)}>⚙</button>
-          {instelOpen && (
-            <div className="wereld-instel" role="dialog" aria-label="Wereldinstellingen">
-              <WereldWeergaveFormulier w={weergave} wijzig={wijzigWeergave} melding={weergaveMelding} compact />
-            </div>
-          )}
-        </>
-      )}
+      {instellingen}
       <Link to={thuis} className="wereld-hub" aria-label={ouder ? "Terug naar het ouderdeel" : "Terug naar het startscherm"}
             onClick={() => { if (!lezer) leesVoor('Startscherm') }}>
         <svg className="ic" viewBox="0 0 24 24" width="34" height="34" aria-hidden="true"><path d="M4 11l8-7l8 7M6 10v10h4v-6h4v6h4V10" /></svg>

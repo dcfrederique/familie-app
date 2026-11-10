@@ -55,6 +55,13 @@ export function WereldWeergaveFormulier({ w, wijzig, melding, compact = false }:
       </>)}
       <label className="veld"><span>Loopsnelheid: {w.snelheid === 1 ? 'normaal' : `${w.snelheid.toFixed(1)} keer`}</span>
         <input type="range" min={0.5} max={2} step={0.1} value={w.snelheid} onChange={(e) => wijzig({ snelheid: Number(e.target.value) })} /></label>
+      <h2 className="display">Het dorp</h2>
+      <div className="knoppenrij" role="group" aria-label="Dorp">
+        {(['nieuw', 'oud'] as const).map((d) => (
+          <button key={d} type="button" className={`knop${w.dorp === d ? ' knop-primair' : ''}`} aria-pressed={w.dorp === d}
+                  onClick={() => wijzig({ dorp: d })}>{d === 'nieuw' ? 'Nieuw dorp' : 'Dorp van vroeger'}</button>
+        ))}
+      </div>
       <h2 className="display">Zo lopen de kinderen</h2>
       <div className="knoppenrij" role="group" aria-label="Besturing">
         {BESTURINGEN.map((b) => (

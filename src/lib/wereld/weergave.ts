@@ -16,6 +16,8 @@ export interface WereldWeergave {
   snelheid: number
   /** Hoe de kinderen lopen: met de joystick, door op de grond te tikken, of allebei. */
   besturing: Besturing
+  /** Het nieuwe dorp (docs/wereld-nieuw.md) of het dorp van vroeger. */
+  dorp: 'nieuw' | 'oud'
 }
 
 export type Besturing = 'beide' | 'joystick' | 'tikken'
@@ -23,7 +25,7 @@ export const BESTURINGEN: { id: Besturing; naam: string }[] = [
   { id: 'beide', naam: 'Joystick en tikken' }, { id: 'joystick', naam: 'Alleen joystick' }, { id: 'tikken', naam: 'Alleen tikken' },
 ]
 
-export const standaardWeergave: WereldWeergave = { stijl: 'plat', draaien: 18, kantelen: 48, diepte: 1, schaduw: true, snelheid: 1, besturing: 'beide' }
+export const standaardWeergave: WereldWeergave = { stijl: 'plat', draaien: 18, kantelen: 48, diepte: 1, schaduw: true, snelheid: 1, besturing: 'beide', dorp: 'nieuw' }
 
 export const HOEKEN = [
   { id: 'recht', naam: '3/4 recht', draaien: 0, kantelen: 52 },
@@ -48,5 +50,6 @@ export function maakWeergave(ruw: unknown): WereldWeergave {
     schaduw: typeof r.schaduw === 'boolean' ? r.schaduw : d.schaduw,
     snelheid: Math.round(tussen(r.snelheid, 0.5, 2, d.snelheid) * 10) / 10,
     besturing: r.besturing === 'joystick' || r.besturing === 'tikken' ? r.besturing : 'beide',
+    dorp: r.dorp === 'oud' ? 'oud' : 'nieuw',
   }
 }

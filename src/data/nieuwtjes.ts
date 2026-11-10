@@ -19,6 +19,13 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.148',
+    datum: '2026-11-10',
+    titel: 'Een nieuw dorp, en je eigen huis van binnen',
+    tekst: 'Het dorp in De wereld is helemaal opnieuw getekend: bakkerij, Spellenhuis en Winkel aan het plein met de fontein, de huizen van de kinderen aan hun eigen paadje, een boomgaard en een vijver, met een bosrand rondom. Het loopt vlot, ook op een gsm. Er is ook iets te doen: elke dag liggen er twaalf glinsters (bloemen, een veer, een paddenstoel en soms een klavertje vier) en hangen er appels om te plukken. Wat je vindt, komt in je Schatboek (linksboven). Een knop rechtsonder toont wat je op die plek kunt doen. Loop je in je eigen huis, dan sta je in je kamer: het bed opent Mijn dag, de kast de Kleerkast, de boekenkast het Schatboek, de mand je huisdier, de tafel de kleurplaten en de kist Mijn huis. De wereld geeft geen sterren. De poorten naar Springland, de Berg en het Meer blijven. Liever het oude dorp? Instellingen → Wereldinstellingen → Dorp van vroeger.',
+    open: 'Bakker Bram, het Dorpsbord met opdrachtjes en de dagschat, vissen en het huisdier dat meeloopt komen later. De gebouwen van de spelletjes staan niet meer in het dorp: die spelletjes vind je in het Spellenhuis. Huizen die je met Kaart bewerken verplaatste, en het tegel-of-vrij lopen per kind, gelden in het nieuwe dorp (nog) niet.',
+  },
+  {
     versie: '0.147',
     datum: '2026-11-10',
     titel: 'De wereld: joystick ruimer, en zelf kiezen hoe je loopt',

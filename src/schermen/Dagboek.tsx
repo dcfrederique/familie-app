@@ -18,7 +18,7 @@ const Pad = ({ d, g = 30 }: { d: string; g?: number }) => <svg className="ic" vi
 // Mijn dag (docs/sterrenpot-dagboek.md): hoe voel ik me, waarom, en eventueel iets erbij. Geen sterren; de ouders lezen mee.
 export default function DagboekScherm() {
   return (
-    <SpelKader titel="Mijn dag" scherm="figuurtje" terug={(id) => `/kind/${id}/ik`}>
+    <SpelKader titel="Mijn dag" scherm="figuurtje" wereldDeur terug={(id) => `/kind/${id}/ik`}>
       {(kind) => <DagInhoud kind={kind} />}
     </SpelKader>
   )

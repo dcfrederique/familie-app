@@ -33,7 +33,7 @@ function bewaarStadium(kindId: string, s: Stadium) { try { localStorage.setItem(
 // Mijn huisdier (docs/huisdier.md): een huisdier dat groeit door goedgekeurde taken en dat het kind met sterren verzorgt.
 export default function MijnHuisdierScherm() {
   return (
-    <SpelKader titel="Mijn huisdier" scherm="figuurtje" terug={(id) => `/kind/${id}/ik`}>
+    <SpelKader titel="Mijn huisdier" scherm="figuurtje" wereldDeur terug={(id) => `/kind/${id}/ik`}>
       {(kind) => <HuisdierInhoud kind={kind} />}
     </SpelKader>
   )
