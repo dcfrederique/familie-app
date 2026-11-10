@@ -5,7 +5,7 @@ import { T, rnd } from './stijl.ts'
 
 export type Rect = [number, number, number, number]
 export type Richting = 'up' | 'down' | 'left' | 'right'
-export type SceneId = 'dorp' | 'kamer'
+export type SceneId = 'dorp' | 'kamer' | 'platteland'
 
 /** Wat er in de kamer te doen is: elk meubel is een ingang naar een bestaand scherm. */
 export type KamerDoe = 'dag' | 'kleerkast' | 'schatboek' | 'huisdier' | 'tekenen' | 'mijnhuis'
@@ -28,7 +28,7 @@ export interface DorpDing {
   plek?: Plek
 }
 
-export type Plek = 'bord' | 'bram' | 'vis'
+export type Plek = 'bord' | 'bewoner' | 'vis' | 'rek' | 'groente'
 
 /** Een deur: je gaat binnen door vanaf de stoep (rij `stoep`) omhoog te lopen, of met de doen-knop. */
 export interface Deur {
@@ -57,6 +57,10 @@ export interface Scene {
   bereik: Set<string>
   /** Kindhuizen: tegel van het midden van de deur en wie er woont. */
   huizen: { id: string; naam: string; cx: number; gy: number }[]
+  /** De poorten aan de rand: wie op de rechthoek stapt, gaat naar het buurgebied; `aankomst` = waar je binnenkomt. */
+  poorten?: { zijde: Zijde; r: Rect; aankomst: [number, number, Richting] }[]
+  /** Welke schatjes hier als glinster liggen (het laatste is zeldzaam) en hoeveel per dag. */
+  schatten?: { gewoon: Schat[]; zeldzaam: Schat; per: number }
 }
 
 const k = (x: number, y: number) => x + ',' + y
@@ -67,7 +71,7 @@ export const midden = (t: number) => t * T + T / 2
 
 function vul(solid: Set<string>, [x0, y0, w, h]: Rect) { for (let y = y0; y < y0 + h; y++) for (let x = x0; x < x0 + w; x++) solid.add(k(x, y)) }
 
-function bereikVan(s: Omit<Scene, 'bereik'>, start: [number, number]): Set<string> {
+export function bereikVan(s: Omit<Scene, 'bereik'>, start: [number, number]): Set<string> {
   const uit = new Set<string>([k(...start)]), q: [number, number][] = [start]
   while (q.length) {
     const [x, y] = q.shift()!
@@ -113,7 +117,7 @@ export function maakDorp(bewoners: { id: string; naam: string }[]): Scene {
     { id: 'fontein', s: 'fontein', f: [17, 8, 2, 2], w: 170, h: 170, sch: 'rond' },
     // het Dorpsbord met de opdrachtjes van vandaag, Bakker Bram voor zijn bakkerij en de steiger aan de vijver
     { id: 'bord', s: 'bord', f: [13, 7, 1, 1], w: 120, h: 132, sch: 'klein', plek: 'bord' },
-    { id: 'bram', s: 'bram', f: [3, 5, 1, 1], w: 0, h: 0, plek: 'bram' },
+    { id: 'bram', s: 'bewoner', v: 'bram', f: [3, 5, 1, 1], w: 70, h: 110, plek: 'bewoner' },
     { id: 'steiger', s: 'steiger', f: [28, 19, 1, 1], w: 64, h: 96, plek: 'vis' },
     { id: 'bank1', s: 'bank', f: [14, 10, 2, 1], w: 110, h: 70, sch: 'klein' }, { id: 'bank2', s: 'bank', f: [20, 10, 2, 1], w: 110, h: 70, sch: 'klein' },
     { id: 'bak1', s: 'bak', f: [15, 7, 1, 1], w: 60, h: 70, sch: 'klein' }, { id: 'bak2', s: 'bak', f: [20, 7, 1, 1], w: 60, h: 70, sch: 'klein' },
@@ -160,7 +164,13 @@ export function maakDorp(bewoners: { id: string; naam: string }[]): Scene {
     const dx = (x + .5 - poel.cx) / (poel.rx + .25), dy = (y + .5 - poel.cy) / (poel.ry + .3)
     if (dx * dx + dy * dy < 1) solid.add(k(x, y))
   }
-  const s = { id: 'dorp' as const, GW: DORP_B, GH: DORP_H, solid, dingen, deuren, weg, plein, bedden, poel, huizen }
+  const poorten: Scene['poorten'] = [
+    { zijde: 'w', r: [0, STRAAT_RIJEN[0], 1, 2], aankomst: [2, STRAAT_RIJEN[0], 'right'] },
+    { zijde: 'o', r: [DORP_B - 1, STRAAT_RIJEN[0], 1, 2], aankomst: [DORP_B - 3, STRAAT_RIJEN[0], 'left'] },
+    { zijde: 'n', r: [POORT_N[0], 0, 2, 1], aankomst: [POORT_N[0], 3, 'down'] },
+  ]
+  const s = { id: 'dorp' as const, GW: DORP_B, GH: DORP_H, solid, dingen, deuren, weg, plein, bedden, poel, huizen, poorten,
+              schatten: { gewoon: ['roos', 'geel', 'paars', 'madelief', 'paddenstoel', 'veer'] as Schat[], zeldzaam: 'klaver' as Schat, per: GLINSTERS_PER_DAG } }
   return { ...s, bereik: bereikVan(s, [18, 11]) }
 }
 
@@ -226,45 +236,50 @@ export function deurOpTik(s: Scene, wx: number, wy: number) {
 
 /** Een poort aan de rand van het dorp: west naar Springland, oost naar het Meer, noord naar de Berg. */
 export function poortOp(s: Scene, tx: number, ty: number): Zijde | null {
-  if (s.id !== 'dorp') return null
-  if (tx <= 0) return 'w'
-  if (tx >= s.GW - 1) return 'o'
-  if (ty <= 0) return 'n'
-  return null
+  return s.poorten?.find((p) => opRect(p.r, tx, ty))?.zijde ?? null
 }
 
-/** Waar je binnenkomt als je door een poort het dorp inloopt. */
-export function aankomstDorp(zijde: Zijde): [number, number, Richting] {
-  if (zijde === 'w') return [2, STRAAT_RIJEN[0], 'right']
-  if (zijde === 'o') return [DORP_B - 3, STRAAT_RIJEN[0], 'left']
-  return [POORT_N[0], 3, 'down']
+/** Waar je binnenkomt als je door een poort aan die kant een gebied inloopt (zonder poort daar: de eerste poort). */
+export function aankomstIn(s: Scene, zijde: Zijde): [number, number, Richting] {
+  const p = s.poorten?.find((x) => x.zijde === zijde) ?? s.poorten?.[0]
+  return p ? p.aankomst : [Math.floor(s.GW / 2), Math.floor(s.GH / 2), 'down']
 }
+export const aankomstDorp = (zijde: Zijde) => aankomstIn(maakDorp([]), zijde)
 
 // ---------- glinsters: elke dag twaalf nieuwe schatjes om te vinden (docs/wereld-nieuw.md) ----------
 
 export const SCHATTEN = ['roos', 'geel', 'paars', 'madelief', 'paddenstoel', 'veer', 'klaver'] as const
 export type Schat = (typeof SCHATTEN)[number] | 'appel' | 'vis' | 'goudvis'
+  | 'zonnebloem' | 'ei' | 'hoefijzer' | 'lieveheer' | 'goudei' | 'wortel' | 'wol' | 'beker'
 export const SCHAT_NAAM: Record<Schat, string> = {
   roos: 'Klaproos', geel: 'Boterbloem', paars: 'Viooltje', madelief: 'Madeliefje', paddenstoel: 'Vliegenzwam', veer: 'Blauwe veer', klaver: 'Klavertje vier', appel: 'Appel',
   vis: 'Visje', goudvis: 'Goudvis',
+  zonnebloem: 'Zonnebloem', ei: 'Kippenei', hoefijzer: 'Hoefijzer', lieveheer: 'Lieveheersbeestje', goudei: 'Gouden ei', wortel: 'Wortel', wol: 'Bolletje wol', beker: 'Fietsbeker',
 }
-/** Alles wat in het Schatboek van het dorp kan staan, in volgorde. */
-export const SCHATBOEK: Schat[] = [...SCHATTEN, 'appel', 'vis', 'goudvis']
+/** Het Schatboek heeft een bladzijde per gebied. */
+export const SCHATBOEK_BLADEN: { id: string; naam: string; schatten: Schat[] }[] = [
+  { id: 'dorp', naam: 'Dorp', schatten: [...SCHATTEN, 'appel', 'vis', 'goudvis'] },
+  { id: 'platteland', naam: 'Platteland', schatten: ['zonnebloem', 'ei', 'hoefijzer', 'lieveheer', 'goudei', 'wortel', 'wol', 'beker'] },
+]
+/** Alles wat in het Schatboek kan staan, in volgorde. */
+export const SCHATBOEK: Schat[] = SCHATBOEK_BLADEN.flatMap((b) => b.schatten)
 export const GLINSTERS_PER_DAG = 12
 
-export interface Glinster { sleutel: string; x: number; y: number; soort: (typeof SCHATTEN)[number]; t0: number }
+export interface Glinster { sleutel: string; x: number; y: number; soort: Schat; t0: number }
 
 function zaad(tekst: string) { let h = 2166136261; for (let i = 0; i < tekst.length; i++) h = Math.imul(h ^ tekst.charCodeAt(i), 16777619); return h >>> 0 }
 
 /** De glinsters van vandaag voor dit kind: elke dag andere plekken, altijd dezelfde bij herladen. Klavertje vier is zeldzaam. */
 export function glinstersVan(s: Scene, kindId: string, dag: string): Glinster[] {
-  const r = rnd(zaad(kindId + '|' + dag)), uit: Glinster[] = []
-  const gewoon = SCHATTEN.filter((x) => x !== 'klaver')
-  for (let i = 0; uit.length < GLINSTERS_PER_DAG && i < 2000; i++) {
+  if (!s.schatten) return []
+  // het dorp houdt de oude sleutels (zonder gebied), zodat wat vandaag al gevonden is gevonden blijft
+  const r = rnd(zaad(kindId + '|' + dag + (s.id === 'dorp' ? '' : '|' + s.id))), uit: Glinster[] = []
+  const { gewoon, zeldzaam, per } = s.schatten, pre = s.id === 'dorp' ? dag : `${dag}:${s.id}`
+  for (let i = 0; uit.length < per && i < 2000; i++) {
     const x = 2 + Math.floor(r() * (s.GW - 4)), y = 3 + Math.floor(r() * (s.GH - 4))
-    if (!s.bereik.has(k(x, y)) || opWeg(s, x, y) || uit.some((g) => Math.abs(g.x - x) + Math.abs(g.y - y) < 3)) continue
-    const soort = r() < 0.07 ? 'klaver' : gewoon[uit.length % gewoon.length]
-    uit.push({ sleutel: `${dag}:${x}:${y}`, x, y, soort, t0: r() * 6 })
+    if (!s.bereik.has(k(x, y)) || opWeg(s, x, y) || poortOp(s, x, y) || uit.some((g) => Math.abs(g.x - x) + Math.abs(g.y - y) < 3)) continue
+    const soort = r() < 0.07 ? zeldzaam : gewoon[uit.length % gewoon.length]
+    uit.push({ sleutel: `${pre}:${x}:${y}`, x, y, soort, t0: r() * 6 })
   }
   return uit
 }

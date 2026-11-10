@@ -137,6 +137,7 @@ Een Playwright-test in `e2e/` laadt De wereld, laat 3 seconden lopen zonder graf
 - `src/schermen/Dorp.tsx`: het scherm, door `Wereld.tsx` getoond voor het gebied `dorp` zolang Wereldinstellingen → Dorp op Nieuw staat (standaard). De andere gebieden en het dorp van vroeger gebruiken nog de oude tekenaar.
 - Een ouder (`/ouder/wereld`) loopt bij elk kind binnen (de kamer van dat kind, meubels alleen bekijken) en gaat door alle poorten; de poort naar Springland opent `/ouder/springland` (nieuwtje 0.149).
 - Fase 3 en 4 (nieuwtje 0.150): Bakker Bram (`bram` in `kaart.ts`, getekend als figuurtje met bakkersmuts), het Dorpsbord (`src/lib/dorp/opdrachten.ts`: drie opdrachtjes per dag, niveau volgens leeftijd, vast toeval per kind en dag; `src/schermen/DorpBord.tsx`), de dagschat op de server (`wereld_dagschat`, migratie 20261110000600: één gratis stuk per dag, zelfde keuze als het cadeautje van het hoera), vissen aan de steiger (`src/schermen/DorpVissen.tsx`, visje en goudvis in het Schatboek) en het huisdier dat meeloopt (plaatje uit `dierSvg`, aaien = gratis knuffel). De opdrachtjes zelf tellen op de tablet (`voortgang.ts`), want ze leveren niets op wat de server moet bewaken.
+- Fase 4b, Platteland (nieuwtje 0.151): `src/lib/dorp/land.ts` (plattegrond 34 × 23, fietslus, vlaggen, wei) en `landTekenen.ts` (schuur, molen, hooi, rek, groentebak, gebakken grond). `Dorp.tsx` speelt elk gebied in de nieuwe stijl (`gebied`, lijst `NIEUWE_GEBIEDEN`); poorten en aankomst staan per scène in de data (`Scene.poorten`), glinsters per gebied (`Scene.schatten`), het Schatboek heeft een blad per gebied (`SCHATBOEK_BLADEN`). Een nieuw gebied: maker + bakfunctie + rij in `NIEUWE_GEBIEDEN` en `SCHATBOEK_BLADEN`.
 - Lopen gaat in het dorp altijd tegel voor tegel. De gebouwen van de spelletjes staan niet in het nieuwe dorp (ze zitten in het Spellenhuis); Kaart bewerken werkt alleen nog voor de andere gebieden (een kindhuis dat in een ander gebied staat, verschijnt niet in het dorp).
 
 ## Fases
@@ -149,7 +150,7 @@ Een Playwright-test in `e2e/` laadt De wereld, laat 3 seconden lopen zonder graf
 | 2b | Huizen binnenlopen: eigen kamer met ingangen naar Kleerkast, Mijn dag, huisdier, Schatboek (**klaar**, nieuwtje 0.148) | In je eigen huis kunnen |
 | 3 | Bewoners, Dorpsbord met opdrachtjes, dagschat (**klaar voor het dorp**, nieuwtje 0.150) | Een reden om elke dag te komen |
 | 4 | Appels plukken, vissen, huisdier mee (**klaar**, nieuwtje 0.150) | Dingen om te doen buiten de deuren |
-| 4b | De andere zeven gebieden één voor één hertekenen en bevolken (Platteland met fietsen eerst) | Overal iets te doen |
+| 4b | De andere zeven gebieden één voor één hertekenen en bevolken (Platteland met fietsen eerst; **Platteland klaar**, nieuwtje 0.151) | Overal iets te doen |
 | 5 | Stickers en samen-opdracht, gebeurtenissen uit data, rustiger gebouwen | Samen spelen, het dorp verandert |
 
 Elke fase is zelf af, krijgt een nieuwtje en is los terug te draaien.

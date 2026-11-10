@@ -45,7 +45,7 @@ describe('Dorpsbord', () => {
   it('het bord, Bakker Bram en de steiger zijn bereikbaar', () => {
     const s = maakDorp([{ id: 'a', naam: 'A' }])
     expect(plekBij(s, 13, 8)?.plek).toBe('bord')
-    expect(plekBij(s, 4, 5)?.plek).toBe('bram')
+    expect(plekBij(s, 4, 5)?.plek).toBe('bewoner')
     expect(plekBij(s, 28, 18)?.plek).toBe('vis')
     expect(plekBij(s, 27, 18)).toBeUndefined()
     for (const [x, y] of [[13, 8], [4, 5], [28, 18]]) expect(s.bereik.has(`${x},${y}`)).toBe(true)
