@@ -33,6 +33,13 @@
 @keyframes pj-schud { 25% { translate: -5px 0; } 75% { translate: 5px 0; } }
 @keyframes pj-puls { to { scale: 1.06; } }
 @keyframes pj-hup { to { scale: 1.02; } }
+/* Liggend: de route in rijen van acht, zodat een lange route (moeilijk) de pijltjes niet uit beeld duwt. */
+@media (orientation: landscape) {
+  .pj-zij { max-width: 330px; }
+  .pj-route { grid-template-columns: repeat(8, 34px); }
+  .pj-vak { width: 34px; height: 34px; }
+  .pj-vak svg { width: 22px; height: 22px; }
+}
 @media (orientation: portrait) {
   .pj-spel { flex-direction: column; }
   .pj-plek { width: calc(100vw - 32px); height: auto; }

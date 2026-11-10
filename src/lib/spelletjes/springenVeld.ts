@@ -460,6 +460,35 @@ export class SpringVeld {
     ctx.fillRect(x - T * 0.55, y - T * 0.55, T * 1.3, T * 0.14)
   }
 
+  /** De bromzwam onder de blaadjes: een bergje herfstblaadjes dat meeschuift; vlak voor hij opspringt, schudt het en
+   *  kijkt het puntje van zijn rode hoed er even uit. */
+  private tekenBladhoop(b: Baas, T: number) {
+    const { ctx } = this
+    const klok = this.spel.klok
+    const schud = b.toestand === 'aanloop'
+    ctx.save()
+    ctx.translate(b.x * T, b.y * T)
+    if (schud) ctx.rotate(Math.sin(klok * 40) * 0.06)
+    if (schud) {
+      ctx.fillStyle = '#D8452B'
+      ctx.beginPath(); ctx.ellipse(0, -T * 0.55, T * 0.6, T * 0.35, 0, Math.PI, 0); ctx.fill()
+      ctx.fillStyle = '#FFFFFF'
+      for (const dx of [-0.3, 0.2]) { ctx.beginPath(); ctx.arc(dx * T, -T * 0.7, T * 0.08, 0, Math.PI * 2); ctx.fill() }
+    }
+    const kleuren = ['#C8641E', '#E0952A', '#B5452A', '#D9A23A', '#9C6B2E']
+    for (let i = 0; i < 9; i++) {
+      const dx = (i - 4) * T * 0.2, dy = -T * (0.12 + 0.3 * (1 - Math.abs(i - 4) / 4)) + (schud ? Math.sin(klok * 30 + i) * T * 0.05 : 0)
+      ctx.fillStyle = kleuren[i % kleuren.length]
+      ctx.beginPath(); ctx.ellipse(dx, dy, T * 0.26, T * 0.13, (i % 3 - 1) * 0.6, 0, Math.PI * 2); ctx.fill()
+    }
+    // Twee oogjes tussen de blaadjes: hij kijkt waar je bent.
+    ctx.fillStyle = '#FFFFFF'
+    for (const dx of [-0.14, 0.14]) { ctx.beginPath(); ctx.arc(dx * T, -T * 0.3, T * 0.09, 0, Math.PI * 2); ctx.fill() }
+    ctx.fillStyle = '#1C2433'
+    for (const dx of [-0.14, 0.14]) { ctx.beginPath(); ctx.arc(dx * T + b.richting * T * 0.03, -T * 0.3, T * 0.05, 0, Math.PI * 2); ctx.fill() }
+    ctx.restore()
+  }
+
   /** De baas (pompoen of pepernoot): groot, boos-lief, duizelig met sterretjes na een hup, en een zwaaiende steel. */
   private tekenBaas(b: Baas, T: number) {
     const { ctx } = this
@@ -477,6 +506,7 @@ export class SpringVeld {
       const kx = b.doel * T, ky = b.y * T - T * 0.1, r = T * 0.35
       ctx.beginPath(); ctx.moveTo(kx - r, ky - r); ctx.lineTo(kx + r, ky + r); ctx.moveTo(kx + r, ky - r); ctx.lineTo(kx - r, ky + r); ctx.stroke()
     }
+    if (b.soort === 'zwam' && (b.toestand === 'loopt' || b.toestand === 'aanloop')) { this.tekenBladhoop(b, T); return }
     ctx.save()
     ctx.translate(b.x * T, (b.y - b.op) * T)
     // Hurken en trillen als er iets aankomt; een wiebel bij een hup of duizeligheid.
@@ -486,9 +516,9 @@ export class SpringVeld {
     ctx.rotate(rol)
     ctx.scale(1, plat)
     const soort = springLevels[this.spel.level].baas?.soort
-    const pepernoot = soort === 'pepernoot', sneeuw = soort === 'sneeuw', krab = soort === 'krab', wolk = soort === 'wolk', uil = soort === 'uil', robot = soort === 'robot'
+    const pepernoot = soort === 'pepernoot', sneeuw = soort === 'sneeuw', krab = soort === 'krab', wolk = soort === 'wolk', uil = soort === 'uil', robot = soort === 'robot', zwam = soort === 'zwam'
     // Pompoen: drie oranje bollen met een groene steel. Pepernoot: drie bruine koekjes met glazuurstreepjes en een rood mijtertje.
-    for (const [dx, kleur] of (robot ? [[-0.26, '#5B8DB8'], [0.26, '#4F7FA8'], [0, '#7FB0D8']] : uil ? [[-0.26, '#7A5A3C'], [0.26, '#6E5034'], [0, '#9A7650']] : wolk ? [[-0.26, '#B8C4D4'], [0.26, '#A9B7CA'], [0, '#D3DCE8']] : krab ? [[-0.26, '#D9452E'], [0.26, '#D9452E'], [0, '#EE6248']] : sneeuw ? [[-0.26, '#DCEAF6'], [0.26, '#C9DDEE'], [0, '#F4F9FD']] : pepernoot ? [[-0.26, '#A8693A'], [0.26, '#8A5A33'], [0, '#C08246']] : [[-0.26, '#EE8222'], [0.26, '#EE8222'], [0, '#F6A33B']]) as [number, string][]) {
+    for (const [dx, kleur] of (zwam ? [[-0.2, '#F1E3C6'], [0.2, '#E6D3AE'], [0, '#FAF1DD']] : robot ? [[-0.26, '#5B8DB8'], [0.26, '#4F7FA8'], [0, '#7FB0D8']] : uil ? [[-0.26, '#7A5A3C'], [0.26, '#6E5034'], [0, '#9A7650']] : wolk ? [[-0.26, '#B8C4D4'], [0.26, '#A9B7CA'], [0, '#D3DCE8']] : krab ? [[-0.26, '#D9452E'], [0.26, '#D9452E'], [0, '#EE6248']] : sneeuw ? [[-0.26, '#DCEAF6'], [0.26, '#C9DDEE'], [0, '#F4F9FD']] : pepernoot ? [[-0.26, '#A8693A'], [0.26, '#8A5A33'], [0, '#C08246']] : [[-0.26, '#EE8222'], [0.26, '#EE8222'], [0, '#F6A33B']]) as [number, string][]) {
       ctx.fillStyle = kleur
       ctx.beginPath(); ctx.ellipse(dx * w, -h * 0.48, w * (dx ? 0.3 : 0.27), h * 0.48, 0, 0, Math.PI * 2); ctx.fill()
     }
@@ -501,6 +531,16 @@ export class SpringVeld {
       ctx.beginPath(); ctx.moveTo(-w * 0.14, -h * 0.98); ctx.lineTo(0, -h * 1.3); ctx.lineTo(w * 0.14, -h * 0.98); ctx.closePath(); ctx.fill()
       ctx.fillStyle = '#F2B33D'
       ctx.fillRect(-w * 0.015, -h * 1.22, w * 0.03, h * 0.16); ctx.fillRect(-w * 0.06, -h * 1.17, w * 0.12, h * 0.03)
+    } else if (zwam) {
+      // Bromzwam: een dikke lichte steel met een grote rode hoed vol witte stippen, een paar witte stippen.
+      ctx.fillStyle = '#D8452B'
+      ctx.beginPath(); ctx.ellipse(0, -h * 0.9, w * 0.62, h * 0.42, 0, Math.PI, 0); ctx.fill()
+      ctx.fillStyle = '#B5361F'
+      ctx.fillRect(-w * 0.62, -h * 0.92, w * 1.24, h * 0.06)
+      ctx.fillStyle = '#FFFFFF'
+      for (const [x0, y0, r] of [[-0.36, 1.0, 0.13], [0, 1.18, 0.16], [0.34, 1.02, 0.12], [-0.14, 1.02, 0.08], [0.17, 1.24, 0.07]] as const) {
+        ctx.beginPath(); ctx.arc(x0 * w, -h * y0, T * r * 1.4, 0, Math.PI * 2); ctx.fill()
+      }
     } else if (robot) {
       // Bromrobot: een blauw opwindrobotje met een antenne en rood lampje, een paneel met knopjes en een draaiend opwindsleuteltje.
       ctx.strokeStyle = '#33414F'; ctx.lineWidth = T * 0.05; ctx.lineCap = 'round'

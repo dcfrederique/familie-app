@@ -32,6 +32,7 @@ import Delen from './schermen/Delen.tsx'
 import Weegschaal from './schermen/Weegschaal.tsx'
 import Torens from './schermen/Torens.tsx'
 import Rooster from './schermen/Rooster.tsx'
+import Glijden from './schermen/Glijden.tsx'
 import VerfMengen from './schermen/VerfMengen.tsx'
 import EenLijn from './schermen/EenLijn.tsx'
 import Raadselprent from './schermen/Raadselprent.tsx'
@@ -167,6 +168,7 @@ export default function App() {
         <Route path="weegschaal" element={<Weegschaal />} />
         <Route path="torens" element={<Torens />} />
         <Route path="rooster" element={<Rooster />} />
+        <Route path="glijden" element={<Glijden />} />
         <Route path="verfmengen" element={<VerfMengen />} />
         <Route path="eenlijn" element={<EenLijn />} />
         <Route path="raadselprent" element={<Raadselprent />} />

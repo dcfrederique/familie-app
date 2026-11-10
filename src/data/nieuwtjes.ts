@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.141',
+    datum: '2026-11-10',
+    titel: "Glijden op het ijs, De eend op het ijs en de Bromzwam",
+    tekst: "Nieuw verhaal \"De eend op het ijs\" (de eerste vorst: een eend glijdt over de bevroren vijver en kan niet remmen) en nieuwe kleurplaat \"De bevroren vijver\", meteen te lezen en in te kleuren. Het spelletje Glijden op het ijs kost 25 sterren: het pinguïntje glijdt over het ijs tot het tegen een steen of de rand botst; kies de juiste pijltjes (of tik op het ijs) om bij het visje te komen. Makkelijk: een klein meertje, over het visje glijden is ook goed, met hulp. Middel: een groter meer en je moet óp het visje stoppen, met hulp. Moeilijk: een groot meer met wakken (wie erin glijdt, begint opnieuw) en een route van zes tot tien keer glijden, zonder hulp; klokje en pluimen. In Springland heeft het Paddenstoelenbos nu zijn baas: de Bromzwam, een paddenstoel die onder de blaadjes naar je toe kruipt en opspringt waar de blaadjes schudden; daarna wiebelt hij en kan je op zijn hoed hupsen. Nieuw kinderthema: Poezenmand, te kiezen bij Mijn thema.",
+    verhaal: "De eend op het ijs",
+    spel: { naam: "Glijden op het ijs", prijs: 25 },
+    stukken: ["Figuurtje: Pinguïnmuts (15), Trui met een pinguïn (20), Glinsterende sneeuwvlok (15)", "Mijn huis: Pinguïn van ijs (20), Bevroren vijvertje met een eend (25), Vetbolletjes voor de vogels (15)"],
+    open: "Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.",
+  },
+  {
     versie: '0.140',
     datum: '2026-11-10',
     titel: "Verf mengen, Drie potjes verf en De mospaadjes",

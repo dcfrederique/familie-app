@@ -1,0 +1,57 @@
+/* Glijden op het ijs: het meer links (of boven, staand), de pijltjes ernaast. De SVG schaalt mee. */
+.gl { display: flex; flex-direction: column; align-items: center; gap: clamp(6px, 1.4dvh, 14px); width: 100%; }
+.gl-balk { display: flex; align-items: center; justify-content: center; gap: 18px; font-weight: 800; }
+.gl-spel { display: flex; align-items: center; justify-content: center; gap: clamp(12px, 3vw, 36px); width: 100%; }
+.gl-plek { display: grid; place-items: center; width: min(62vw, calc((100dvh - 230px) * 1.4)); height: calc(100dvh - 230px); }
+.gl-meer { max-width: 100%; max-height: 100%; width: 100%; height: auto; user-select: none; }
+.gl-ijs { fill: #E4F3FB; stroke: #BFDDF0; stroke-width: 2; cursor: pointer; }
+.gl-pinguin { transition: transform 0ms linear; }
+.gl-zetten { font-weight: 800; padding: 2px 10px; border-radius: 12px; background: var(--kid-tint); }
+.gl-zij { display: flex; flex-direction: column; align-items: center; gap: 10px; max-width: 300px; }
+.gl-tekst { margin: 0; text-align: center; font-weight: 800; font-size: clamp(15px, 2.3dvh, 21px); }
+.gl-pijlen { display: grid; grid-template-columns: repeat(3, 72px); grid-template-rows: repeat(3, 64px); gap: 4px; }
+.gl-op { grid-area: 1 / 2; } .gl-terug { grid-area: 3 / 1; } .gl-hulp { grid-area: 3 / 3; } .gl-links { grid-area: 2 / 1; } .gl-rechts { grid-area: 2 / 3; } .gl-neer { grid-area: 3 / 2; }
+.gl-pijlen .gl-knop { width: 72px; height: 64px; }
+.gl-knop {
+  display: grid; place-items: center; width: 72px; height: 72px; padding: 0; border: 3px solid var(--line); border-radius: 20px;
+  background: var(--surface); color: var(--ink); box-shadow: 0 4px 0 var(--shade); cursor: pointer; touch-action: manipulation;
+}
+.gl-knop svg { width: 34px; height: 34px; }
+.gl-knop.tip { border-color: #43A047; background: #E3F4E4; }
+.gl-knop:disabled { opacity: .45; cursor: default; }
+.gl-eindprent { width: clamp(200px, 34dvh, 320px); height: auto; }
+@media (prefers-reduced-motion: no-preference) {
+  .gl-schud { animation: gl-schud .3s ease-in-out 2; }
+  .gl-plons { animation: gl-plons .9s ease-in forwards; }
+  .gl-vis { animation: gl-spartel 1.2s ease-in-out infinite alternate; }
+  .gl-knop.tip { animation: gl-puls .7s ease-in-out infinite alternate; }
+  .gl-meer.viert { animation: gl-hup .45s ease-out 2 alternate; }
+}
+@media (prefers-reduced-motion: reduce) { .gl-pinguin { transition: none; } }
+@keyframes gl-schud { 25% { translate: -5px 0; } 75% { translate: 5px 0; } }
+@keyframes gl-plons { 40% { scale: 1.1; } to { scale: .2; opacity: 0; } }
+@keyframes gl-spartel { to { rotate: 8deg; } }
+@keyframes gl-puls { to { scale: 1.06; } }
+@keyframes gl-hup { to { scale: 1.02; } }
+@media (orientation: portrait) {
+  .gl-spel { flex-direction: column; }
+  .gl-plek { width: calc(100vw - 32px); height: auto; }
+  .gl-zij { max-width: none; flex-direction: row; flex-wrap: wrap; justify-content: center; }
+  .gl-tekst { flex-basis: 100%; }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .gl { gap: 2px; }
+  .gl-zij { gap: 4px; }
+  .gl-pijlen { grid-template-columns: repeat(3, 52px); grid-template-rows: repeat(3, 44px); gap: 2px; }
+  .gl-pijlen .gl-knop { width: 52px; height: 44px; }
+  .gl-knop svg { width: 24px; height: 24px; }
+  .gl-tekst { font-size: 13px; }
+}
+
+/* Volle opmaak (tablet, liggende gsm): het meer krijgt precies de vrije plaats. */
+@media (min-width: 600px) and (min-height: 560px), (orientation: landscape) and (max-height: 520px) and (min-width: 640px) {
+  .gl { flex: 1; min-height: 0; }
+  .gl-spel { flex: 1; min-height: 0; }
+  .gl-plek { flex: 1; align-self: stretch; width: auto; height: auto; min-width: 0; min-height: 0; container-type: size; }
+  .gl-plek .gl-meer { width: 100cqw; height: 100cqh; }
+}

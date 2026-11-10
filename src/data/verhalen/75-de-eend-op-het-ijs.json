@@ -1,0 +1,101 @@
+{
+  "nr": 75,
+  "titel": "De eend op het ijs",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Eerste vorst, glijden op het ijs",
+  "bladzijden": [
+    {
+      "tekst": "Als Pip 's morgens uit het raam kijkt, is alles wit. Het gras is wit, het dak van het schuurtje is wit en de bloempot glinstert. \"Mama! Het heeft gesneeuwd!\" roept Pip. Mama lacht. \"Dat is geen sneeuw. Dat is rijp. Het heeft vannacht gevroren.\"",
+      "prent": {
+        "decor": "huis",
+        "figuren": [
+          "pip",
+          "pipmama"
+        ]
+      }
+    },
+    {
+      "tekst": "Pip trekt snel haar dikke jas aan, haar muts en haar wanten. Buiten kraakt het gras onder haar laarzen. Krak, krak, krak. Haar adem maakt kleine wolkjes. \"Kijk, ik ben een draak,\" zegt ze, en ze blaast een grote wolk.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "pip"
+        ]
+      }
+    },
+    {
+      "tekst": "Bij de vijver in het park is het heel stil. Het water beweegt niet. Er ligt een dun laagje ijs op, zo glad als een spiegel. In het midden staat een eend. Ze kijkt heel verbaasd naar haar pootjes. Waar is het water gebleven?",
+      "prent": {
+        "decor": "vijver",
+        "figuren": [
+          "eend",
+          "pip"
+        ]
+      }
+    },
+    {
+      "tekst": "De eend zet een stapje. Zoef! Haar pootjes glijden weg. Ze schuift over het ijs, met haar vleugels wijd open, tot ze zacht tegen een tak botst. Daar staat ze weer stil. Pip moet zo hard lachen dat ze de hik krijgt.",
+      "prent": {
+        "decor": "vijver",
+        "figuren": [
+          "eend",
+          "pip",
+          "pipmama"
+        ]
+      }
+    },
+    {
+      "tekst": "De eend probeert het nog eens. Ze glijdt naar links tot ze tegen een steen botst. Dan glijdt ze naar voren tot ze tegen het riet botst. \"Ze kan niet remmen,\" zegt Pip. \"Ze glijdt altijd door tot ze ergens tegen komt.\" \"Net als een pinguïn,\" zegt mama.",
+      "prent": {
+        "decor": "vijver",
+        "figuren": [
+          "eend",
+          "pip"
+        ]
+      }
+    },
+    {
+      "tekst": "Aan de kant ligt een stukje brood. De eend wil erheen, maar elke keer glijdt ze er voorbij. Pip denkt na. \"Ze moet eerst naar de steen,\" zegt ze. \"En dan naar voren, tot tegen het riet. Dan ligt het brood er vlak naast.\" En ja hoor: zoef, bots, zoef, bots. Hap!",
+      "prent": {
+        "decor": "vijver",
+        "figuren": [
+          "eend",
+          "brood",
+          "pip"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Mag ik ook op het ijs?\" vraagt Pip. Mama schudt haar hoofd. \"Dit ijs is nog veel te dun. Een eend is licht, maar jij zou erdoor zakken. Op de vijver mag je pas als de grote mensen zeggen dat het ijs dik genoeg is.\" Pip knikt. Ze wil geen natte voeten.",
+      "prent": {
+        "decor": "vijver",
+        "figuren": [
+          "pipmama",
+          "pip"
+        ]
+      }
+    },
+    {
+      "tekst": "Maar thuis, op de stoep, ligt een kleine bevroren plas. Daar mag het wel. Pip neemt een aanloop en glijdt, met haar armen wijd open, net als de eend. Zoef! Ze botst zacht tegen de brievenbus. \"Ik ben een eend op het ijs!\" roept ze.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "pip",
+          "pipmama"
+        ]
+      }
+    },
+    {
+      "tekst": "Die middag maken mama en Pip warme chocomelk. Pip warmt haar handen aan de beker. Door het raam ziet ze de zon op de rijp schijnen. Alles fonkelt. \"Morgen,\" zegt Pip, \"ga ik weer naar de eend kijken. Misschien kan ze dan al remmen.\"",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pip",
+          "beker",
+          "pipmama"
+        ]
+      }
+    }
+  ]
+}

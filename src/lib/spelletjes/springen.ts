@@ -521,6 +521,23 @@ function patroon(s: Springen, b: Baas, dt: number, uit: SpringGebeurtenis[]) {
       }
       break
     }
+    case 'zwam': {
+      // Zit verstopt onder de blaadjes en kruipt naar je toe (een bergje blaadjes). Dan schudden de blaadjes op één plek:
+      // wegwezen, want daar schiet hij omhoog. Daarna staat hij te wiebelen op zijn steel; dan kan je op zijn hoed hupsen.
+      b.kwetsbaar = b.toestand === 'moe'
+      if (b.toestand === 'loopt') {
+        b.richting = naar
+        b.x = inArena(s, b, b.x + klem(s.x - b.x, -1, 1) * (3 + 0.4 * F) * dt)
+        if (b.tijd <= 0) { b.doel = inArena(s, b, s.x); naarToestand(b, 'aanloop', Math.max(0.8, 1.1 - 0.1 * F)) }
+      } else if (b.toestand === 'aanloop') {
+        b.x += (b.doel - b.x) * Math.min(1, 8 * dt)
+        if (b.tijd <= 0) { b.x = b.doel; b.teller = 0; naarToestand(b, 'actie', 0.5) }
+      } else if (b.toestand === 'actie') {
+        if (Math.abs(b.x - s.x) < 1.6 && s.y > b.y - 1.2 && s.knipper <= 0) geraaktDoor(s, b.x, uit)
+        if (b.tijd <= 0) naarToestand(b, 'moe', Math.max(1.8, 2.3 - 0.12 * F))
+      } else if (b.tijd <= 0) naarToestand(b, 'loopt', Math.max(1.2, 1.8 - 0.2 * F))
+      break
+    }
     default: {
       // Pompoen: rolt heen en weer en wordt na elke hup sneller. Altijd kwetsbaar.
       b.kwetsbaar = true
@@ -548,8 +565,8 @@ function kogelsBewegen(s: Springen, dt: number, uit: SpringGebeurtenis[]) {
 }
 
 /** Wanneer een baas je een hartje kost als je hem van opzij raakt: de wolk nooit (zijn druppels doen dat), de uil alleen
- *  in zijn duikvlucht, de anderen altijd. */
-const doetPijn = (b: Baas) => b.soort === 'wolk' ? false : b.soort === 'uil' ? b.toestand === 'actie' : true
+ *  in zijn duikvlucht, de zwam alleen als hij omhoog schiet, de anderen altijd. */
+const doetPijn = (b: Baas) => b.soort === 'wolk' ? false : b.soort === 'uil' || b.soort === 'zwam' ? b.toestand === 'actie' : true
 
 /** De baas volgt zijn eigen patroon. Een hup op zijn kop telt alleen als hij kwetsbaar is; ben je op het verkeerde
  *  moment aan de beurt, dan kaats je er gewoon af. Van opzij raken kost een hartje. */
@@ -564,6 +581,8 @@ function baasRolt(s: Springen, dt: number, uit: SpringGebeurtenis[]) {
   if (b.duizel > 0) b.kwetsbaar = false
   else if (dichtbij || b.soort === 'pompoen') patroon(s, b, dt, uit)
   else { b.kwetsbaar = false; b.op = Math.max(0, b.op - 4 * dt) }
+  // De bromzwam onder de blaadjes kan je niet raken (en hij jou ook niet): je loopt er gewoon over.
+  if (b.soort === 'zwam' && (b.toestand === 'loopt' || b.toestand === 'aanloop')) return
   const by = b.y - b.op
   const raakX = Math.abs(b.x - s.x) < (BREED + BAAS_BREED) / 2 - 0.1
   const raakY = s.y > by - BAAS_HOOG && s.y - HOOG < by

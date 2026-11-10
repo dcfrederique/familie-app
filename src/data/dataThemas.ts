@@ -228,6 +228,15 @@ const atelier = wikkel(`<g class="tn-nacht" fill="#FFF3C4"><circle cx="110" cy="
   <g transform="translate(790 186)" class="thema-zweef"><rect x="-8" y="-70" width="16" height="50" rx="3" fill="#C98A4B"/><path d="M-8 -20H8L4 0H-4Z" fill="#9AA6B5"/><path d="M-4 0Q0 14 4 0Z" fill="#8E5BD1"/></g>
   <g transform="translate(860 186)"><rect x="-22" y="-34" width="44" height="34" rx="6" fill="#2F80C9"/><rect x="-22" y="-34" width="44" height="10" rx="5" fill="#E5484D"/></g>`)
 
+const poezen = wikkel(`<g class="tn-nacht" fill="#FFF3C4"><circle cx="140" cy="38" r="2.5"/><circle cx="600" cy="26" r="2"/><circle cx="880" cy="44" r="2"/></g>
+  <path d="M0 200C160 190 340 196 520 190C700 186 860 194 1000 190V200Z" fill="#E8C9A0" opacity=".8"/>
+  <g transform="translate(470 192)"><ellipse cx="0" cy="-14" rx="110" ry="30" fill="#C98A4B"/><ellipse cx="0" cy="-26" rx="96" ry="20" fill="#F4B6C8"/>
+    <path d="M-110 -14Q-110 10 0 12Q110 10 110 -14" fill="#A86E38"/><path d="M-90 -6Q-40 8 0 6M10 6Q60 8 92 -6" stroke="#8A5A33" stroke-width="3" fill="none"/>
+    <g transform="translate(-34 -40)"><ellipse rx="34" ry="20" fill="#F2A65A"/><circle cx="26" cy="-12" r="17" fill="#F2A65A"/><path d="M14 -24L18 -40L28 -27ZM30 -27L40 -40L42 -22Z" fill="#F2A65A"/><path d="M20 -12q4 3 8 0M30 -12q4 3 8 0" stroke="#5B3A1E" stroke-width="2.5" fill="none" stroke-linecap="round"/><path d="M-32 6q-18 4 -22 -10" stroke="#F2A65A" stroke-width="8" fill="none" stroke-linecap="round"/></g>
+    <g transform="translate(46 -38)"><ellipse rx="26" ry="16" fill="#6E6E78"/><circle cx="-20" cy="-10" r="14" fill="#6E6E78"/><path d="M-30 -18L-32 -32L-22 -22ZM-16 -22L-8 -32L-8 -16Z" fill="#6E6E78"/><circle cx="-25" cy="-11" r="2.5" fill="#F2C530"/><circle cx="-16" cy="-11" r="2.5" fill="#F2C530"/><path d="M-21 -6v2" stroke="#F4B6C8" stroke-width="2"/></g></g>
+  <g transform="translate(220 178)" class="thema-zweef"><circle r="18" fill="#E5484D"/><path d="M-16 -6Q0 4 16 -6M-14 8Q0 -2 14 8M-6 -17Q4 0 -6 17" stroke="#B5361F" stroke-width="2.5" fill="none"/><path d="M14 8Q40 20 60 6" stroke="#E5484D" stroke-width="3" fill="none"/></g>
+  <g transform="translate(780 186)"><ellipse rx="24" ry="8" fill="#9CC9E4"/><ellipse cy="-4" rx="18" ry="5" fill="#FFFFFF"/><path d="M40 -40c-6-6-14 0-8 8l8 8 8-8c6-8-2-14-8-8z" fill="#E5484D" class="thema-zweef"/></g>`)
+
 const vink = (kleur: string) => `<path d="M-16 0L-6 10L16 -12" stroke="${kleur}" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
 
 export const dataThemas: DataThema[] = [
@@ -645,6 +654,22 @@ export const dataThemas: DataThema[] = [
     slot: '<circle r="18" fill="#B8BFCB"/><ellipse rx="9" ry="6" fill="#5B6B7A"/>',
     feest: [ster('#F2C530'), '<circle r="6" fill="#E5484D"/>', '<circle r="6" fill="#2F80C9"/>'], confetti: ['#8E5BD1', '#E5484D', '#F2C530', '#2F80C9', '#43A047'],
     tegelRadius: '18px', tegelRand: '4px solid var(--kid)',
+  },
+  {
+    sleutel: 'poezen', naam: 'Poezenmand', kidKleur: '#E0739A', shirt: 'roze', verhouding: 1,
+    ondertitels: { spelen: 'Spelen met het bolletje wol', verhalen: 'Verhalen in de mand', kleurplaten: 'Poezen kleuren', figuurtje: 'De poezenvriend', huis: 'Mijn poezenhuisje' },
+    klaarTekst: 'Prrrr, de poezen spinnen!', nogTeDoen: (n) => `Nog ${n} ${n === 1 ? 'kopje' : 'kopjes'} tot de poezen spinnen`,
+    licht: { bg: '#FFF7F9', surface: '#FFFFFF', soft: '#FCE8EE', ink: '#3A1A26', muted: '#85566A', line: '#F5D3DE', shade: '#E2B0C1', kid: '#E0739A', 'kid-tint': '#FCE1EA', 'on-solid': '#FFFFFF',
+      'tn-grond': '#E8C9A0', 'tn-nacht': 'none', 'tn-banner': 'linear-gradient(#FFE6EE,#FFF7F9)', 'tn-titel': '#3A1A26', 'tn-sub': '#B5361F', 'tn-spoor': '#F5D3DE' },
+    donker: { bg: '#1A0E13', surface: '#2A1820', soft: '#331E28', ink: '#FCEEF3', muted: '#D9A9BC', line: '#45283A', shade: '#080406', kid: '#FF9DBE', 'kid-tint': '#4A2335', 'on-solid': '#1A0E13',
+      'tn-grond': '#4A3826', 'tn-nacht': 'inline', 'tn-banner': 'linear-gradient(#080406,#3A1828)', 'tn-titel': '#FFFFFF', 'tn-sub': '#F2C530', 'tn-spoor': '#45283A' },
+    prent: poezen,
+    voortgang: { mover: '<circle r="8" fill="#F2A65A"/><path d="M-6 -4L-5 -12L0 -7ZM6 -4L5 -12L0 -7Z" fill="#F2A65A"/>', doel: '<circle r="9" fill="#E5484D"/><path d="M-7 -2Q0 4 7 -2M-3 -8Q2 0 -3 8" stroke="#B5361F" stroke-width="1.5" fill="none"/>' },
+    nieuw: '<circle r="9" fill="#F2A65A"/><path d="M-7 -4L-6 -14L0 -8ZM7 -4L6 -14L0 -8Z" fill="#F2A65A"/>',
+    vink: `<circle r="20" fill="#E0739A"/><g transform="scale(.9)">${vink('#fff')}</g>`,
+    slot: '<circle r="18" fill="#B8BFCB"/><path d="M-8 -2L-7 -12L-1 -6ZM8 -2L7 -12L1 -6Z" fill="#5B6B7A"/><circle cy="2" r="8" fill="#5B6B7A"/>',
+    feest: [ster('#F2C530'), '<circle r="6" fill="#E0739A"/>', '<path d="M0 6l-6-6c-4-4 2-10 6-5c4-5 10 1 6 5z" fill="#E5484D"/>'], confetti: ['#E0739A', '#F2A65A', '#F2C530', '#E5484D', '#FFFFFF'],
+    tegelRadius: '22px', tegelRand: '4px solid var(--kid)',
   },
 ]
 
