@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.147',
+    datum: '2026-11-10',
+    titel: 'De wereld: joystick ruimer, en zelf kiezen hoe je loopt',
+    tekst: 'In De wereld stuurde je per ongeluk naar een plek op de grond als je duim net naast de joystick kwam. De hele hoek linksonder hoort nu bij de joystick: ook naast het rondje blijf je sturen. Nieuw in Instellingen → Wereldinstellingen, onder "Zo lopen de kinderen": kies Joystick en tikken, Alleen joystick of Alleen tikken. Het geldt voor het hele gezin.',
+  },
+  {
     versie: '0.146',
     datum: '2026-11-10',
     titel: 'De wereld haperde: nu vlot',

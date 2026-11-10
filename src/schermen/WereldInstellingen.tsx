@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useGegevens } from '../lib/gegevens.ts'
 import { useSessie } from '../lib/sessie.tsx'
-import { HOEKEN, maakWeergave, standaardWeergave, type WereldWeergave } from '../lib/wereld/weergave.ts'
+import { BESTURINGEN, HOEKEN, maakWeergave, standaardWeergave, type WereldWeergave } from '../lib/wereld/weergave.ts'
 import OuderKader from './OuderKader.tsx'
 
 // Wereldinstellingen (docs/wereld-25d.md): plat of schuin (2.5D), camerahoek, diepte, schaduw en loopsnelheid, voor het hele gezin.
@@ -55,6 +55,13 @@ export function WereldWeergaveFormulier({ w, wijzig, melding, compact = false }:
       </>)}
       <label className="veld"><span>Loopsnelheid: {w.snelheid === 1 ? 'normaal' : `${w.snelheid.toFixed(1)} keer`}</span>
         <input type="range" min={0.5} max={2} step={0.1} value={w.snelheid} onChange={(e) => wijzig({ snelheid: Number(e.target.value) })} /></label>
+      <h2 className="display">Zo lopen de kinderen</h2>
+      <div className="knoppenrij" role="group" aria-label="Besturing">
+        {BESTURINGEN.map((b) => (
+          <button key={b.id} type="button" className={`knop${w.besturing === b.id ? ' knop-primair' : ''}`} aria-pressed={w.besturing === b.id}
+                  onClick={() => wijzig({ besturing: b.id })}>{b.naam}</button>
+        ))}
+      </div>
       <div className="knoppenrij">
         <button type="button" className="knop" onClick={() => wijzig({ ...standaardWeergave })}>Terug naar standaard</button>
         {melding && <span className="tip" role="status">{melding}</span>}
