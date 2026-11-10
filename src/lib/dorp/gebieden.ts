@@ -146,3 +146,109 @@ export function maakBos(): Scene {
 export function eekhoornBij(zaad: number, gevonden: number): number {
   return (zaad + gevonden * 2) % STRONKEN.length
 }
+
+// ---------- het Stadje: 32 × 22, een marktplein met trapgevels ----------
+/** Waar de duiven op het plein scharrelen. */
+export const DUIVEN: Rect = [7, 11, 6, 3]
+
+export function maakStadje(): Scene {
+  const solid = new Set<string>(), gw = 32, gh = 22
+  const plein: Rect = [3, 6, 26, 10]
+  const weg: Rect[] = [[15, 0, 2, 6], [0, 10, 3, 2], plein, [14, 16, 4, 2]]
+  const kleuren = ['rood', 'geel', 'blauw', 'groen', 'roze', 'wit']
+  const huis = (id: string, x: number, i: number): DorpDing => ({ id, s: 'stadshuis', v: kleuren[i % kleuren.length], f: [x, 4, 2, 2], w: 120, h: 220, sch: 'klein' })
+  const lantaarn = (id: string, x: number, y: number): DorpDing => ({ id, s: 'lantaarn', f: [x, y, 1, 1], w: 60, h: 170, sch: 'klein' })
+  const dingen: DorpDing[] = [
+    ...[3, 5, 7, 9, 11].map((x, i) => huis('sh' + i, x, i)), ...[17, 19, 21, 23, 25, 27].map((x, i) => huis('sh' + (i + 5), x, i + 2)),
+    { id: 'fontein', s: 'fontein', f: [15, 9, 2, 2], w: 170, h: 170, sch: 'rond' },
+    { id: 'ijskraam', s: 'ijskraam', f: [21, 9, 2, 1], w: 150, h: 156, sch: 'klein', plek: 'ijs' },
+    { id: 'ivo', s: 'bewoner', v: 'ivo', f: [24, 9, 1, 1], w: 70, h: 110, plek: 'bewoner' },
+    { id: 'bank1', s: 'bank', f: [8, 15, 2, 1], w: 110, h: 70, sch: 'klein' }, { id: 'bank2', s: 'bank', f: [22, 15, 2, 1], w: 110, h: 70, sch: 'klein' },
+    { id: 'bak1', s: 'bloembak', f: [12, 7, 1, 1], w: 76, h: 50, sch: 'klein' }, { id: 'bak2', s: 'bloembak', f: [19, 7, 1, 1], w: 76, h: 50, sch: 'klein' },
+    { id: 'bak3', s: 'bloembak', f: [12, 13, 1, 1], w: 76, h: 50, sch: 'klein' }, { id: 'bak4', s: 'bloembak', f: [19, 13, 1, 1], w: 76, h: 50, sch: 'klein' },
+    lantaarn('l1', 4, 7), lantaarn('l2', 27, 7), lantaarn('l3', 4, 14), lantaarn('l4', 27, 14),
+    { id: 'kraam', s: 'kraam', f: [6, 8, 2, 1], w: 130, h: 130, sch: 'klein' },
+    wijzer('wijzerN', 14, 3, 'n:vis'), wijzer('wijzerW', 2, 9, 'w:schelp'),
+    boom('sb0', 4, 18), boom('sb1', 8, 19), boom('sb2', 12, 18, 'struik'), boom('sb3', 20, 18, 'struik'), boom('sb4', 24, 19), boom('sb5', 28, 18), boom('sb6', 16, 19),
+  ]
+  for (const d of dingen) vul(solid, d.f)
+  const poorten: Scene['poorten'] = [
+    { zijde: 'n', r: [15, 0, 2, 1], aankomst: [15, 3, 'down'] },
+    { zijde: 'w', r: [0, 10, 1, 2], aankomst: [2, 10, 'right'] },
+  ]
+  rand(solid, gw, gh, poorten, 3)
+  const s = {
+    id: 'stadje' as const, GW: gw, GH: gh, solid, dingen, deuren: [], weg, bedden: [], huizen: [], poorten, buiten: '#3A8C47',
+    schatten: { gewoon: ['muntje', 'knikker', 'ballon', 'sleutel'] as Schat[], zeldzaam: 'kroontje' as Schat, per: 8 },
+    bak: { gras: '#9BD070', gras2: '#7FBE5C', pad: ['#A39A8C', '#D9D2C4'] as [string, string], rand: 'loof' as const,
+           bloemen: [[6, 18, 12], [14, 20, 10], [22, 18, 12], [28, 20, 8]] as [number, number, number][] },
+    dieren: { soort: 'duif' as const, zone: DUIVEN, n: 4 },
+  }
+  return { ...s, bereik: bereikVan(s, [2, 10]) }
+}
+
+// ---------- het Strand: 32 × 22, onderaan de zee ----------
+export const ZEE = 16
+export const KRABBEN: Rect = [5, 14, 22, 2]
+
+export function maakStrand(): Scene {
+  const solid = new Set<string>(), gw = 32, gh = 22
+  const weg: Rect[] = [[0, 8, gw, 2]]
+  const kleuren = ['blauw', 'rood', 'geel', 'groen']
+  const dingen: DorpDing[] = [
+    ...[4, 6, 8, 10, 21, 23, 25, 27].map((x, i): DorpDing => ({ id: 'cab' + i, s: 'cabine', v: kleuren[i % 4], f: [x, 5, 1, 1], w: 80, h: 112, sch: 'klein' })),
+    { id: 'vuurtoren', s: 'vuurtoren', f: [27, 12, 2, 2], w: 110, h: 260, sch: 'rond' },
+    { id: 'post', s: 'post', f: [4, 11, 1, 1], w: 90, h: 170, sch: 'klein' },
+    { id: 'sam', s: 'bewoner', v: 'sam', f: [6, 12, 1, 1], w: 70, h: 110, plek: 'bewoner' },
+    { id: 'kasteel', s: 'zandkasteel', f: [16, 12, 1, 1], w: 110, h: 110, plek: 'kasteel' },
+    { id: 'par1', s: 'parasol', f: [10, 11, 1, 1], w: 110, h: 130, sch: 'klein' }, { id: 'par2', s: 'parasol', v: 'b', f: [21, 11, 1, 1], w: 110, h: 130, sch: 'klein' },
+    { id: 'stoel1', s: 'strandstoel', f: [11, 12, 1, 1], w: 70, h: 56 }, { id: 'stoel2', s: 'strandstoel', v: 'b', f: [22, 12, 1, 1], w: 70, h: 56 },
+    { id: 'boot', s: 'bootje', f: [12, 18, 1, 1], w: 110, h: 40 },
+    wijzer('wijzerO', 29, 7, 'o:huis'), wijzer('wijzerW', 2, 7, 'w:bal'),
+  ]
+  for (const d of dingen) vul(solid, d.f)
+  for (let y = ZEE; y < gh; y++) for (let x = 0; x < gw; x++) solid.add(k(x, y))
+  const poorten: Scene['poorten'] = [
+    { zijde: 'o', r: [gw - 1, 8, 1, 2], aankomst: [gw - 3, 8, 'left'] },
+    { zijde: 'w', r: [0, 8, 1, 2], aankomst: [2, 8, 'right'] },
+  ]
+  rand(solid, gw, gh, poorten, 3)
+  const s = {
+    id: 'strand' as const, GW: gw, GH: gh, solid, dingen, deuren: [], weg, bedden: [], huizen: [], poorten, buiten: '#3A9FD2',
+    schatten: { gewoon: ['schelp', 'zeester', 'zeeglas'] as Schat[], zeldzaam: 'flessenpost' as Schat, per: 8 },
+    bak: { gras: '#F2DFA7', gras2: '#E3C985', pad: ['#9C7B52', '#C9A97A'] as [string, string], zee: ZEE, rand: 'duin' as const, bloemen: [] },
+    dieren: { soort: 'krab' as const, zone: KRABBEN, n: 3 },
+  }
+  return { ...s, bereik: bereikVan(s, [gw - 3, 8]) }
+}
+
+// ---------- het Sportpark: 32 × 22, een voetbalveld met een looppiste errond ----------
+export const VELD: Rect = [5, 4, 18, 12]
+/** De stip: hier ligt de bal voor een strafschop, het doel staat erboven. */
+export const STIP: [number, number] = [14, 7]
+export const GOALS_VOOR_MEDAILLE = 3
+
+export function maakSport(): Scene {
+  const solid = new Set<string>(), gw = 32, gh = 22
+  const weg: Rect[] = [[4, 3, 20, 1], [4, 16, 20, 1], [4, 3, 1, 14], [23, 3, 1, 14], [24, 10, 8, 2]]
+  const dingen: DorpDing[] = [
+    { id: 'doel', s: 'doel', f: [12, 4, 4, 1], w: 230, h: 100 },
+    { id: 'bal', s: 'balplek', f: [STIP[0], STIP[1], 1, 1], w: 60, h: 56, plek: 'schiet' },
+    { id: 'tine', s: 'bewoner', v: 'tine', f: [17, 9, 1, 1], w: 70, h: 110, plek: 'bewoner' },
+    { id: 'tribune', s: 'tribune', f: [25, 4, 5, 2], w: 250, h: 130, sch: 'huis' },
+    { id: 'bank1', s: 'bank', f: [26, 14, 2, 1], w: 110, h: 70, sch: 'klein' },
+    wijzer('wijzerO', 29, 9, 'o:schelp'),
+    boom('sp0', 2, 4), boom('sp1', 2, 9, 'struik'), boom('sp2', 2, 14), boom('sp3', 7, 18), boom('sp4', 12, 19, 'struik'), boom('sp5', 17, 18),
+    boom('sp6', 22, 19), boom('sp7', 27, 18, 'struik'), boom('sp8', 29, 14),
+  ]
+  for (const d of dingen) vul(solid, d.f)
+  const poorten: Scene['poorten'] = [{ zijde: 'o', r: [gw - 1, 10, 1, 2], aankomst: [gw - 3, 10, 'left'] }]
+  rand(solid, gw, gh, poorten, 3)
+  const s = {
+    id: 'sport' as const, GW: gw, GH: gh, solid, dingen, deuren: [], weg, bedden: [], huizen: [], poorten, buiten: '#3A8C47',
+    schatten: { gewoon: ['fluitje', 'sportpet', 'bidon'] as Schat[], zeldzaam: 'goudbal' as Schat, per: 8 },
+    bak: { gras: '#9BD070', gras2: '#7FBE5C', pad: ['#9C4B3E', '#D9796A'] as [string, string], veld: VELD, rand: 'loof' as const,
+           bloemen: [[9, 19, 10], [20, 19, 10], [28, 17, 8]] as [number, number, number][] },
+  }
+  return { ...s, bereik: bereikVan(s, [gw - 3, 10]) }
+}
