@@ -22,7 +22,7 @@ export const nieuwtjes: Nieuwtje[] = [
     versie: '0.151',
     datum: '2026-11-10',
     titel: 'Het Platteland in de nieuwe stijl, met fietsen',
-    tekst: 'Het Platteland in De wereld is opnieuw getekend, in dezelfde stijl als het nieuwe dorp: een rood fietspad in een lus, een schuur, een molen, hooibalen, een groentebak en schapen in de wei, met Boerin Roos. Neem een fiets uit het rek bij de poort en rij een rondje langs de vier vlaggen (op het fietspad gaat het dubbel zo snel); een volledig rondje geeft een fietsbeker in het Schatboek. Aai een schaapje voor een bolletje wol, pluk wortels en zoek de glinsters van het Platteland (zonnebloem, ei, hoefijzer, lieveheersbeestje, soms een gouden ei). Het Schatboek heeft nu een bladzijde per gebied. Je komt er via de Berg of het Meer. De andere gebieden volgen in dezelfde stijl.',
+    tekst: 'Het Platteland in De wereld is opnieuw getekend, in dezelfde stijl als het nieuwe dorp: een rood fietspad in een lus, een schuur, een molen, hooibalen, een groentebak en schapen in de wei, met Boerin Roos. Neem een fiets uit het rek bij de poort en rij een rondje langs de vier vlaggen (op het fietspad gaat het dubbel zo snel); een volledig rondje geeft een fietsbeker in het Schatboek. Aai een schaapje voor een bolletje wol, pluk wortels en zoek de glinsters van het Platteland (zonnebloem, ei, hoefijzer, lieveheersbeestje, soms een gouden ei). Het Schatboek heeft nu een bladzijde per gebied. Je komt er via de Berg of het Meer. De andere gebieden volgen in dezelfde stijl. Ook verholpen: het dorp flikkerde even om de 20 seconden (als de gegevens ververst werden).',
   },
   {
     versie: '0.150',

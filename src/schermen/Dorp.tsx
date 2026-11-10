@@ -78,8 +78,20 @@ export interface DorpProps {
   extra?: ReactNode
 }
 
-export default function Dorp({ kind, ouder, huizen, besturing, snelheid, binnenVan, reis, saldo, extra, gebied = 'dorp' }: DorpProps) {
-  const { bron, gebruikers, account } = useSessie()
+/**
+ * Houdt dezelfde waarde zolang de inhoud gelijk blijft. De gegevens verversen elke 20 seconden (nieuwe lijsten met dezelfde
+ * inhoud); zonder dit zou de beeldlus telkens opnieuw starten en de grond opnieuw bakken: dat gaf een flikkering.
+ */
+function useVast<T>(waarde: T): T {
+  const ref = useRef({ sleutel: JSON.stringify(waarde), waarde })
+  const sleutel = JSON.stringify(waarde)
+  if (sleutel !== ref.current.sleutel) ref.current = { sleutel, waarde }
+  return ref.current.waarde
+}
+
+export default function Dorp({ kind: kindIn, ouder, huizen: huizenIn, besturing, snelheid, binnenVan, reis, saldo, extra, gebied = 'dorp' }: DorpProps) {
+  const { bron, gebruikers: gebruikersIn, account: accountIn } = useSessie()
+  const kind = useVast(kindIn), huizen = useVast(huizenIn), gebruikers = useVast(gebruikersIn), account = useVast(accountIn)
   const navigate = useNavigate()
   const lezer = kind.kan_lezen
   const canvasRef = useRef<HTMLCanvasElement>(null)
