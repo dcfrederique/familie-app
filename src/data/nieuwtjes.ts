@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.154',
+    datum: '2026-11-10',
+    titel: 'De wereld: zwaaien met stickers, samen spelen en feesten',
+    tekst: 'In De wereld zwaait je kind nu naar wie er ook rondloopt: tik op het handje linksboven en kies een sticker (hartje, ster, lach, hoera, hallo of een vraagteken), die verschijnt even in een wolkje boven het hoofd bij iedereen in hetzelfde gebied. Kom je iemand van het gezin tegen in de wereld, dan regent het hartjes. En het dorp viert mee: rond Sint-Maarten hangen er lampionnen op het plein, van half november tot 6 december staat Sinterklaas er met pepernoten, en met Kerstmis staat er een kerstboom en sneeuwt het. Elk feest geeft één keer per dag een schatje voor de nieuwe bladzijde Feesten in het Schatboek; een volle bladzijde krijgt een sterretje. Geen sterren, gewoon plezier.',
+  },
+  {
     versie: '0.153',
     datum: '2026-11-10',
     titel: 'Het Stadje, het Strand en het Sportpark in de nieuwe stijl',

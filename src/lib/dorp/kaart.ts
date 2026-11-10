@@ -34,7 +34,7 @@ export interface DorpDing {
  * Een plek waar iets te doen is als je ernaast staat: het Dorpsbord, een bewoner, de steiger, het fietsenrek, de groentebak,
  * de verrekijker en de vlag op de top van de Berg, en de boomstronken in het Bos waar de eekhoorn zich verstopt.
  */
-export type Plek = 'bord' | 'bewoner' | 'vis' | 'rek' | 'groente' | 'kijk' | 'top' | 'verstop' | 'ijs' | 'kasteel' | 'schiet'
+export type Plek = 'bord' | 'bewoner' | 'vis' | 'rek' | 'groente' | 'kijk' | 'top' | 'verstop' | 'ijs' | 'kasteel' | 'schiet' | 'feest'
 
 /** Een deur: je gaat binnen door vanaf de stoep (rij `stoep`) omhoog te lopen, of met de doen-knop. */
 export interface Deur {
@@ -290,6 +290,7 @@ export type Schat = (typeof SCHATTEN)[number] | 'appel' | 'vis' | 'goudvis'
   | 'muntje' | 'knikker' | 'ballon' | 'sleutel' | 'kroontje' | 'ijsje'
   | 'schelp' | 'zeester' | 'zeeglas' | 'flessenpost' | 'zandkasteel' | 'krab'
   | 'fluitje' | 'sportpet' | 'bidon' | 'goudbal' | 'medaille'
+  | 'lampion' | 'pepernoot' | 'kerstbal'
 export const SCHAT_NAAM: Record<Schat, string> = {
   roos: 'Klaproos', geel: 'Boterbloem', paars: 'Viooltje', madelief: 'Madeliefje', paddenstoel: 'Vliegenzwam', veer: 'Blauwe veer', klaver: 'Klavertje vier', appel: 'Appel',
   vis: 'Visje', goudvis: 'Goudvis',
@@ -300,6 +301,7 @@ export const SCHAT_NAAM: Record<Schat, string> = {
   muntje: 'Gouden muntje', knikker: 'Knikker', ballon: 'Ballon', sleutel: 'Oude sleutel', kroontje: 'Kroontje', ijsje: 'IJsje',
   schelp: 'Schelp', zeester: 'Zeester', zeeglas: 'Zeeglas', flessenpost: 'Flessenpost', zandkasteel: 'Zandkasteel', krab: 'Krabbetje',
   fluitje: 'Fluitje', sportpet: 'Pet', bidon: 'Drinkbus', goudbal: 'Gouden bal', medaille: 'Medaille',
+  lampion: 'Lampion', pepernoot: 'Pepernoten', kerstbal: 'Kerstbal',
 }
 /** Het Schatboek heeft een bladzijde per gebied. */
 export const SCHATBOEK_BLADEN: { id: string; naam: string; schatten: Schat[] }[] = [
@@ -311,6 +313,7 @@ export const SCHATBOEK_BLADEN: { id: string; naam: string; schatten: Schat[] }[]
   { id: 'stadje', naam: 'Stadje', schatten: ['muntje', 'knikker', 'ballon', 'sleutel', 'kroontje', 'ijsje'] },
   { id: 'strand', naam: 'Strand', schatten: ['schelp', 'zeester', 'zeeglas', 'flessenpost', 'zandkasteel', 'krab'] },
   { id: 'sport', naam: 'Sportpark', schatten: ['fluitje', 'sportpet', 'bidon', 'goudbal', 'medaille'] },
+  { id: 'feest', naam: 'Feesten', schatten: ['lampion', 'pepernoot', 'kerstbal'] },
 ]
 /** Alles wat in het Schatboek kan staan, in volgorde. */
 export const SCHATBOEK: Schat[] = SCHATBOEK_BLADEN.flatMap((b) => b.schatten)

@@ -264,7 +264,7 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
         if (!leden.has(b.id)) return
         if (b.t === 'weg') s.anderen.delete(b.id)
         else if (b.t === 'hallo') verbinding.stuur(zender.nu(nuPositie(), performance.now()))
-        else s.anderen.set(b.id, metPositie(s.anderen.get(b.id), b, performance.now()))
+        else if (b.t === 'pos') s.anderen.set(b.id, metPositie(s.anderen.get(b.id), b, performance.now()))
       },
     })
     const zichtbaarheid = () => { if (document.hidden) verbinding.weg(); else verbinding.hallo() }
