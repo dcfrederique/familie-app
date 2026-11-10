@@ -277,3 +277,19 @@ test('het Dorpsbord: drie opdrachtjes klaar, dan de dagschat ophalen', async ({ 
   await expect(page.getByRole('dialog', { name: 'Hoera!' })).toBeVisible()
   expect(fouten).toEqual([])
 })
+
+test('het Platteland: een fiets nemen uit het rek', async ({ page }) => {
+  const fouten: string[] = []
+  page.on('pageerror', (e) => fouten.push(e.message))
+  await startAls(page, 'luca')
+  await doorWelkomstpad(page)
+  await page.evaluate(() => {
+    sessionStorage.setItem('wereld-plek-luca', JSON.stringify({ g: 'platteland', tx: 0, ty: 0 }))
+    sessionStorage.setItem('dorp-plek-luca', JSON.stringify({ s: 'platteland', tx: 3, ty: 13 }))
+  })
+  await naar(page, '/kind/luca/wereld')
+  await expect(page.locator('canvas.wereld-veld')).toHaveAttribute('aria-label', 'Het Platteland')
+  await page.getByRole('button', { name: 'Fiets', exact: true }).click()
+  await expect(page.getByRole('button', { name: 'Zet terug' })).toBeVisible()
+  expect(fouten).toEqual([])
+})

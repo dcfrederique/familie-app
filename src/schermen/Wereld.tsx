@@ -11,8 +11,8 @@ import {
   MAX_HUIZEN, deurYvan, dichtstbijVrij, inRechthoek, maakTegels, nieuweTegelStand, opDeurmat, richtingVan, stap, tegelMidden, tegelStap, voorHuisdeur,
   huisRechthoek, TEGENOVER, type Loper, type TegelStand, type Zijde,
 } from '../lib/wereld/kaart.ts'
-import Dorp from './Dorp.tsx'
-import { GEBIEDEN, aankomstNa, effectieveItems, gebiedVan, leegOpgeslagen, maakGebiedKaart, poortOp, type GebiedId, type Opgeslagen, type Poort } from '../lib/wereld/gebieden.ts'
+import Dorp, { NIEUWE_GEBIEDEN, type NieuwGebied } from './Dorp.tsx'
+import { aankomstNa, effectieveItems, gebiedVan, leegOpgeslagen, maakGebiedKaart, poortOp, type GebiedId, type Opgeslagen, type Poort } from '../lib/wereld/gebieden.ts'
 import { Tekenaar25 } from '../lib/wereld/tekenen25.ts'
 import { standaardWeergave, type WereldWeergave } from '../lib/wereld/weergave.ts'
 import { DUUR, isToestel, naarBal, nieuweBal, pose, rol, schop, voorToestel, type Toestel } from '../lib/wereld/speel.ts'
@@ -200,7 +200,7 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
     }
     const aan = aankomstNa(poort)
     if (!aan) return
-    binnenVan.current = aan.gebied === 'dorp' ? TEGENOVER[poort.zijde] : null
+    binnenVan.current = TEGENOVER[poort.zijde]
     s.bezig = true
     setSluit(true)
     setTimeout(() => { s.aankomst = aan.tegel; setBericht(null); setGebied(aan.gebied); meld(gebiedVan(aan.gebied).naam, PRENT.gebied) }, minderBeweging() ? 150 : 450)
@@ -433,9 +433,9 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
   )
   // Het nieuwe dorp (docs/wereld-nieuw.md) heeft een eigen tekenaar en kaart; de andere gebieden blijven zoals ze waren.
   // Een huis dat de ouders in een ander gebied zetten (Kaart bewerken), staat daar en niet in het dorp.
-  if (gebied === 'dorp' && weergave.dorp === 'nieuw') {
+  if (NIEUWE_GEBIEDEN.includes(gebied) && weergave.dorp === 'nieuw') {
     const naar = (zijde: Zijde) => {
-      const poort = GEBIEDEN[0].poorten.find((p) => p.zijde === zijde)
+      const poort = gebiedVan(gebied).poorten.find((p) => p.zijde === zijde)
       if (!poort) return
       // terug uit Springland: aan de westpoort
       // een ouder gaat naar de eigen landkaart van Springland (meekijken en zelf proberen)
@@ -445,7 +445,7 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
       reis(poort)
     }
     return (
-      <Dorp kind={kind} ouder={ouder} huizen={dorpHuizen} besturing={weergave.besturing} snelheid={weergave.snelheid} binnenVan={binnenVan.current}
+      <Dorp key={gebied} gebied={gebied as NieuwGebied} kind={kind} ouder={ouder} huizen={gebied === 'dorp' ? dorpHuizen : []} besturing={weergave.besturing} snelheid={weergave.snelheid} binnenVan={binnenVan.current}
             reis={naar} saldo={ouder ? null : saldo ?? null} extra={instellingen} />
     )
   }

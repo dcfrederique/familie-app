@@ -14,7 +14,7 @@ export interface Voortgang {
   /** Wat nieuw in het Schatboek kwam en nog niet bekeken is. */
   nieuw: Schat[]
   /** Wat vandaag gedaan is voor het Dorpsbord buiten glinsters en appels: vissen, aaien, Bram, de kamer. */
-  teller: Partial<Record<'vis' | 'aai' | 'bram' | 'kamer', number>>
+  teller: Partial<Record<'vis' | 'aai' | 'bram' | 'kamer' | 'wortel' | 'schaap' | 'rondje' | 'roos', number>>
   /** De dagschat van vandaag is al opgehaald. */
   schat: boolean
 }
