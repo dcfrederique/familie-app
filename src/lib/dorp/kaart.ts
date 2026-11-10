@@ -5,7 +5,7 @@ import { T, rnd } from './stijl.ts'
 
 export type Rect = [number, number, number, number]
 export type Richting = 'up' | 'down' | 'left' | 'right'
-export type SceneId = 'dorp' | 'kamer' | 'platteland'
+export type SceneId = 'dorp' | 'kamer' | 'platteland' | 'meer' | 'berg' | 'bos'
 
 /** Wat er in de kamer te doen is: elk meubel is een ingang naar een bestaand scherm. */
 export type KamerDoe = 'dag' | 'kleerkast' | 'schatboek' | 'huisdier' | 'tekenen' | 'mijnhuis'
@@ -26,9 +26,15 @@ export interface DorpDing {
   doe?: KamerDoe
   /** Een plek in het dorp waar iets te doen is als je ernaast staat: het Dorpsbord, Bakker Bram of de steiger om te vissen. */
   plek?: Plek
+  /** Een struik of boom om te plukken (zoals de appelbomen): wat je plukt, hoogstens APPELS_PER_BOOM per dag. */
+  oogst?: Schat
 }
 
-export type Plek = 'bord' | 'bewoner' | 'vis' | 'rek' | 'groente'
+/**
+ * Een plek waar iets te doen is als je ernaast staat: het Dorpsbord, een bewoner, de steiger, het fietsenrek, de groentebak,
+ * de verrekijker en de vlag op de top van de Berg, en de boomstronken in het Bos waar de eekhoorn zich verstopt.
+ */
+export type Plek = 'bord' | 'bewoner' | 'vis' | 'rek' | 'groente' | 'kijk' | 'top' | 'verstop'
 
 /** Een deur: je gaat binnen door vanaf de stoep (rij `stoep`) omhoog te lopen, of met de doen-knop. */
 export interface Deur {
@@ -61,6 +67,29 @@ export interface Scene {
   poorten?: { zijde: Zijde; r: Rect; aankomst: [number, number, Richting] }[]
   /** Welke schatjes hier als glinster liggen (het laatste is zeldzaam) en hoeveel per dag. */
   schatten?: { gewoon: Schat[]; zeldzaam: Schat; per: number }
+  /** Hoe de grond eruitziet (Meer, Berg, Bos): gras, paden, water, berg en bosrand (gebiedTekenen.ts). */
+  bak?: BakStijl
+  /** De kleur buiten de kaart. */
+  buiten?: string
+  /** Dieren die rondlopen of zwemmen (schapen, eenden) in een zone in tegels; bij water een ellips. */
+  dieren?: { soort: 'schaap' | 'eend'; zone: Rect; n: number }
+  /** Wat je vist aan de steiger als je geluk hebt (standaard de goudvis). */
+  zeldzaamVis?: Schat
+}
+
+/** Hoe de grond van een buitengebied eruitziet (gebakken door bakBuiten in gebiedTekenen.ts). */
+export interface BakStijl {
+  gras: string
+  gras2: string
+  /** Paden: rand en vulling. */
+  pad: [string, string]
+  /** Water (ellipsen in tegels). */
+  water?: { cx: number; cy: number; rx: number; ry: number }[]
+  /** Een berg bovenaan: rotsen tot deze rij, met sneeuw op de top. */
+  berg?: number
+  /** Bosrand: loofbomen, dennen of gemengd. */
+  rand: 'loof' | 'den' | 'mix'
+  bloemen: [number, number, number][]
 }
 
 const k = (x: number, y: number) => x + ',' + y
@@ -251,15 +280,24 @@ export const aankomstDorp = (zijde: Zijde) => aankomstIn(maakDorp([]), zijde)
 export const SCHATTEN = ['roos', 'geel', 'paars', 'madelief', 'paddenstoel', 'veer', 'klaver'] as const
 export type Schat = (typeof SCHATTEN)[number] | 'appel' | 'vis' | 'goudvis'
   | 'zonnebloem' | 'ei' | 'hoefijzer' | 'lieveheer' | 'goudei' | 'wortel' | 'wol' | 'beker'
+  | 'libel' | 'waterlelie' | 'kiezel' | 'kikker' | 'parel' | 'snoek' | 'eendveer'
+  | 'edelweiss' | 'kristal' | 'denappel' | 'goudklomp' | 'topvlag' | 'verrekijker'
+  | 'eikel' | 'blad' | 'slakkenhuis' | 'mos' | 'uilenveer' | 'bes' | 'eekhoorn'
 export const SCHAT_NAAM: Record<Schat, string> = {
   roos: 'Klaproos', geel: 'Boterbloem', paars: 'Viooltje', madelief: 'Madeliefje', paddenstoel: 'Vliegenzwam', veer: 'Blauwe veer', klaver: 'Klavertje vier', appel: 'Appel',
   vis: 'Visje', goudvis: 'Goudvis',
   zonnebloem: 'Zonnebloem', ei: 'Kippenei', hoefijzer: 'Hoefijzer', lieveheer: 'Lieveheersbeestje', goudei: 'Gouden ei', wortel: 'Wortel', wol: 'Bolletje wol', beker: 'Fietsbeker',
+  libel: 'Libel', waterlelie: 'Waterlelie', kiezel: 'Gladde kiezel', kikker: 'Kikker', parel: 'Parel', snoek: 'Snoek', eendveer: 'Eendenveer',
+  edelweiss: 'Edelweiss', kristal: 'Kristal', denappel: 'Dennenappel', goudklomp: 'Goudklompje', topvlag: 'Topvlag', verrekijker: 'Verrekijker',
+  eikel: 'Eikel', blad: 'Herfstblad', slakkenhuis: 'Slakkenhuis', mos: 'Mos', uilenveer: 'Uilenveer', bes: 'Bosbessen', eekhoorn: 'Eekhoorn',
 }
 /** Het Schatboek heeft een bladzijde per gebied. */
 export const SCHATBOEK_BLADEN: { id: string; naam: string; schatten: Schat[] }[] = [
   { id: 'dorp', naam: 'Dorp', schatten: [...SCHATTEN, 'appel', 'vis', 'goudvis'] },
   { id: 'platteland', naam: 'Platteland', schatten: ['zonnebloem', 'ei', 'hoefijzer', 'lieveheer', 'goudei', 'wortel', 'wol', 'beker'] },
+  { id: 'meer', naam: 'Meer', schatten: ['libel', 'waterlelie', 'kiezel', 'kikker', 'parel', 'snoek', 'eendveer'] },
+  { id: 'berg', naam: 'Berg', schatten: ['edelweiss', 'kristal', 'denappel', 'goudklomp', 'topvlag', 'verrekijker'] },
+  { id: 'bos', naam: 'Bos', schatten: ['eikel', 'blad', 'slakkenhuis', 'mos', 'uilenveer', 'bes', 'eekhoorn'] },
 ]
 /** Alles wat in het Schatboek kan staan, in volgorde. */
 export const SCHATBOEK: Schat[] = SCHATBOEK_BLADEN.flatMap((b) => b.schatten)
@@ -287,6 +325,8 @@ export function glinstersVan(s: Scene, kindId: string, dag: string): Glinster[] 
 export const APPELS_PER_BOOM = 3
 /** Waar je moet staan om een appelboom te plukken: naast of onder de boom. */
 export const bijBoom = (d: DorpDing, tx: number, ty: number) => Math.abs(tx - d.f[0]) + Math.abs(ty - d.f[1]) === 1
+/** Wat je van dit ding plukt: appels van een appelboom, bessen van een bessenstruik. */
+export const oogstVan = (d: DorpDing): Schat | null => d.oogst ?? (d.appel ? 'appel' : null)
 
 /** De plek (bord, Bram, steiger) waar het kind naast staat; bij de steiger alleen erboven, op de oever. */
 export function plekBij(s: Scene, tx: number, ty: number): DorpDing | undefined {

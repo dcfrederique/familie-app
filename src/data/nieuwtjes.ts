@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.152',
+    datum: '2026-11-10',
+    titel: 'Het Meer, de Berg en het Bos in de nieuwe stijl',
+    tekst: 'Drie gebieden van De wereld zijn opnieuw getekend, in de stijl van het nieuwe dorp, elk met een bewoner en iets te doen. Aan het Meer woont Visser Wim: vis van de steiger (soms een snoek) en voer de eendjes, die naar je toe zwemmen; het eerste eendje van de dag laat een veer achter. Op de Berg wacht Gids Gust: klim de trap op naar de top, plant de vlag en kijk door de verrekijker. In het Bos woont Boswachter Bert: pluk bosbessen en zoek de eekhoorn, die zich telkens achter een andere boomstronk verstopt. Elk gebied heeft eigen glinsters en een eigen bladzijde in het Schatboek. Ook verholpen: de glinsters op het Platteland waren niet te zien. Het Stadje, het Strand en het Sportpark volgen.',
+  },
+  {
     versie: '0.151',
     datum: '2026-11-10',
     titel: 'Het Platteland in de nieuwe stijl, met fietsen',

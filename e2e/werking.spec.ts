@@ -293,3 +293,26 @@ test('het Platteland: een fiets nemen uit het rek', async ({ page }) => {
   await expect(page.getByRole('button', { name: 'Zet terug' })).toBeVisible()
   expect(fouten).toEqual([])
 })
+
+test('het Meer, de Berg en het Bos: een bewoner en iets te doen', async ({ page }) => {
+  const fouten: string[] = []
+  page.on('pageerror', (e) => fouten.push(e.message))
+  await startAls(page, 'luca')
+  await doorWelkomstpad(page)
+  for (const [g, naam, x, y, knop, melding] of [
+    ['meer', 'Het Meer', 4, 10, 'Praat', 'Visser Wim'],
+    ['berg', 'De Berg', 16, 4, 'Vlag', 'top'],
+    ['bos', 'Het Bos', 12, 9, 'Pluk', 'Bosbessen'],
+  ] as const) {
+    await page.evaluate(([g, x, y]) => {
+      sessionStorage.setItem('wereld-plek-luca', JSON.stringify({ g, tx: 0, ty: 0 }))
+      sessionStorage.setItem('dorp-plek-luca', JSON.stringify({ s: g, tx: x, ty: y }))
+    }, [g, x, y] as const)
+    await naar(page, '/kind/luca/wereld')
+    await expect(page.locator('canvas.wereld-veld')).toHaveAttribute('aria-label', naam)
+    await page.getByRole('button', { name: knop, exact: true }).click({ force: true })
+    await expect(page.locator('.dorp-melding')).toContainText(melding)
+    await naar(page, '/kind/luca')
+  }
+  expect(fouten).toEqual([])
+})
