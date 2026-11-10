@@ -1,0 +1,92 @@
+{
+  "nr": 77,
+  "titel": "De snoeppotjes van de bakker",
+  "reeks": "avonturiers",
+  "leeftijd": 8,
+  "thema": "Sinterklaas, snoepjes sorteren in de bakkerij",
+  "bladzijden": [
+    {
+      "tekst": "Het is woensdagmiddag, twee weken voor Sinterklaas. In de bakkerij van het dorp is het drukker dan ooit. Iedereen wil speculaas, marsepein en chocoladeletters. Noor en Daan helpen de bakker, want hun opa is zijn beste vriend. Ze mogen de snoeppotjes op de toonbank vullen. Daar zijn ze heel trots op.",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "bakker",
+          "noor",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Maar dan stoot Daan met zijn elleboog tegen de rij potjes. Ze wiebelen, ze botsen, en een doos met snoepjes valt om. Rode hartjes, gele sterren, blauwe ruitjes en groene blokjes rollen over de toonbank. Daan schept ze snel in de potjes terug. Maar nu zit alles door elkaar.",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "daan",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Oei,\" zegt Daan. \"De bakker wil in elk potje maar één soort.\" Noor bekijkt de potjes. Er zijn vier volle potjes en maar één leeg potje. \"We mogen de snoepjes niet op de toonbank leggen,\" zegt ze. \"Die is niet proper genoeg. We kunnen alleen het bovenste snoepje uit een potje nemen en het in een ander potje doen.\"",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "noor",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan begint meteen. Hij doet een rood hartje in het lege potje, en dan een gele ster erbovenop. \"Nee!\" roept Noor. \"Nu heb je geen leeg potje meer en zitten er twee soorten in.\" Daan zucht. Hij neemt de ster er weer uit, maar waar moet hij hem laten? Er is nergens nog plaats.",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "daan",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "Noor denkt na, net als bij een puzzel. \"Een snoepje mag alleen op een snoepje van dezelfde kleur,\" zegt ze, \"of in een leeg potje. En we moeten eerst kijken voor we iets verleggen.\" Ze wijst. \"Bovenaan dit potje ligt een rood hartje. Bovenaan dat potje ook. Dus dat kan zonder dat we het lege potje gebruiken.\"",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "noor",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Zo gaan ze verder. Elke keer zoeken ze eerst twee potjes met dezelfde kleur bovenaan. Pas als dat niet meer gaat, gebruiken ze het lege potje. En zodra een kleur helemaal bovenaan vrijkomt, schuift die er in één keer bij. Het eerste potje wordt helemaal rood. Dan wordt er één helemaal geel.",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "noor",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "De bakker komt uit de keuken met een plaat warme speculaas. Hij kijkt naar de toonbank. Daar staan vier potjes, elk met maar één soort snoepjes, en één leeg potje. \"Wat zijn die mooi,\" zegt hij. \"Precies zoals in een echte snoepwinkel.\" Daan bloost. Hij vertelt niet dat hij de doos heeft omgestoten.",
+      "prent": {
+        "decor": "bakkerij",
+        "figuren": [
+          "bakker",
+          "noor",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Maar Noor vertelt het wel, met een lach. De bakker lacht ook. \"Dan hebben jullie het dubbel verdiend,\" zegt hij, en hij geeft elk een warm stuk speculaas. Op weg naar huis zegt Daan: \"Morgen wil ik nog eens sorteren.\" \"Goed,\" zegt Noor. \"Maar dan duw ik de potjes om.\"",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "noor",
+          "daan",
+          "koek"
+        ]
+      }
+    }
+  ]
+}

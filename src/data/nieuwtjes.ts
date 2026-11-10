@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.143',
+    datum: '2026-11-10',
+    titel: "Snoeppotjes, De snoeppotjes van de bakker en Feeënbos",
+    tekst: "Nieuw verhaal \"De snoeppotjes van de bakker\" (Noor en Daan sorteren omgevallen snoepjes, met maar één leeg potje) en nieuwe kleurplaat \"Snoeppotjes op de toonbank\", meteen te lezen en in te kleuren. Het spelletje Snoeppotjes kost 25 sterren: tik op een potje en dan op een ander; het bovenste snoepje mag op een snoepje met dezelfde kleur of in een leeg potje, tot elk potje één soort heeft (elke kleur heeft ook een eigen vorm). Terug neemt een zet terug. Makkelijk: drie kleuren, met hulp. Middel: vijf kleuren, met hulp. Moeilijk: zeven kleuren en twee lege potjes, zonder hulp, met een teller tegenover het minste aantal zetten; klokje en pluimen. In Springland kwam het tweede level van Dakenstad erbij: De schoorstenen. Nieuw kinderthema: Feeënbos, te kiezen bij Mijn thema.",
+    verhaal: "De snoeppotjes van de bakker",
+    spel: { naam: "Snoeppotjes", prijs: 25 },
+    stukken: ["Figuurtje: Muts met zuurstokstrepen (15), Trui met snoepjes (20), Snoeppotje (15)", "Mijn huis: Snoepkraampje (25), Hekje van zuurstokken (20), Lolly-bloemen (15)"],
+    open: "Het spelletje en de zes stukken staan nog niet in de winkel: geef ze vrij in Kinderen → Winkelaanbod.",
+  },
+  {
     versie: '0.142',
     datum: '2026-11-10',
     titel: "De laatste pepernoot, Dakenstad en Dinovallei",

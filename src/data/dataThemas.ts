@@ -248,6 +248,16 @@ const dinos = wikkel(`<g class="tn-nacht" fill="#FFF3C4"><circle cx="120" cy="34
   <g transform="translate(180 186)"><path d="M0 0V-60" stroke="#8A5A33" stroke-width="8"/><path d="M0 -60C-24 -70 -40 -58 -46 -46M0 -60C24 -72 40 -60 46 -48M0 -60C-10 -84 -32 -86 -40 -78M0 -60C10 -86 34 -86 40 -76" stroke="#3E8E41" stroke-width="9" stroke-linecap="round" fill="none"/></g>
   <g transform="translate(860 184)" class="thema-zweef"><ellipse rx="16" ry="20" fill="#F4EEDD"/><path d="M-14 -4L-6 2L0 -6L6 2L14 -4" stroke="#C9B98E" stroke-width="2.5" fill="none"/></g>`)
 
+const feeen = wikkel(`<g class="tn-nacht" fill="#FFF3C4"><circle cx="100" cy="30" r="2.5"/><circle cx="560" cy="20" r="2"/><circle cx="930" cy="40" r="2"/></g>
+  <path d="M0 200C150 190 320 196 500 190C680 186 840 194 1000 190V200Z" fill="#9BD3A0" opacity=".8"/>
+  <g transform="translate(470 192)"><path d="M-6 0V-40" stroke="#43A047" stroke-width="6"/><path d="M-60 -40C-62 -86 62 -86 60 -40C30 -30 -30 -30 -60 -40Z" fill="#B48CF0"/>
+    <circle cx="-30" cy="-60" r="7" fill="#FFFFFF"/><circle cx="4" cy="-72" r="6" fill="#FFFFFF"/><circle cx="34" cy="-56" r="7" fill="#FFFFFF"/>
+    <path d="M-20 0V-34H14V0Z" fill="#FFF3E0"/><path d="M-8 0V-16a5 5 0 0 1 10 0V0Z" fill="#8A5A33"/><circle cx="8" cy="-26" r="4" fill="#FFE27A"/></g>
+  <g transform="translate(230 140)" class="thema-zweef"><ellipse cx="-12" cy="-6" rx="13" ry="9" fill="#F4B6C8" opacity=".9" transform="rotate(-25 -12 -6)"/><ellipse cx="12" cy="-6" rx="13" ry="9" fill="#F4B6C8" opacity=".9" transform="rotate(25 12 -6)"/>
+    <circle cy="-14" r="6" fill="#F2D6C2"/><path d="M-5 -2L0 14L5 -2Z" fill="#E0739A"/><path d="M8 -22l10 -10" stroke="#C9971A" stroke-width="2"/><path d="M18 -36l2 4 4 1 -3 3 1 4 -4 -2 -4 2 1 -4 -3 -3 4 -1z" fill="#F2C530"/></g>
+  <g transform="translate(780 186)"><path d="M0 0V-24" stroke="#43A047" stroke-width="4"/><circle cy="-30" r="10" fill="#F2C530"/><circle cy="-30" r="4" fill="#F28C28"/><path d="M40 0V-18" stroke="#43A047" stroke-width="4"/><circle cx="40" cy="-24" r="8" fill="#E0739A"/></g>
+  <g fill="#FFF3C4" class="thema-zweef"><circle cx="330" cy="70" r="3"/><circle cx="660" cy="96" r="2.5"/><circle cx="720" cy="56" r="3"/></g>`)
+
 const vink = (kleur: string) => `<path d="M-16 0L-6 10L16 -12" stroke="${kleur}" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
 
 export const dataThemas: DataThema[] = [
@@ -697,6 +707,22 @@ export const dataThemas: DataThema[] = [
     slot: '<circle r="18" fill="#B8BFCB"/><ellipse rx="8" ry="10" fill="#5B6B7A"/>',
     feest: [ster('#F2C530'), '<ellipse rx="5" ry="6" fill="#F4EEDD"/>', '<circle r="6" fill="#5BAF5A"/>'], confetti: ['#3E9B47', '#F2C530', '#B5541E', '#7CD07F', '#F4EEDD'],
     tegelRadius: '14px', tegelRand: '4px solid var(--kid)',
+  },
+  {
+    sleutel: 'feeen', naam: 'Feeënbos', kidKleur: '#9C6ADE', shirt: 'paars', verhouding: 1,
+    ondertitels: { spelen: 'Bij de paddenstoel', verhalen: 'Verhalen van de feeën', kleurplaten: 'Toverkleuren', figuurtje: 'De kleine fee', huis: 'Mijn feeënhuisje' },
+    klaarTekst: 'Pling! Alles is betoverd!', nogTeDoen: (n) => `Nog ${n} ${n === 1 ? 'toverstof' : 'toverstofjes'} tot de fee komt`,
+    licht: { bg: '#FAF6FF', surface: '#FFFFFF', soft: '#EFE6FB', ink: '#2B1A40', muted: '#6E5A8A', line: '#E0D2F4', shade: '#C2ACE2', kid: '#9C6ADE', 'kid-tint': '#ECE0FB', 'on-solid': '#FFFFFF',
+      'tn-grond': '#9BD3A0', 'tn-nacht': 'none', 'tn-banner': 'linear-gradient(#FDE8F4,#FAF6FF)', 'tn-titel': '#2B1A40', 'tn-sub': '#2E7D32', 'tn-spoor': '#E0D2F4' },
+    donker: { bg: '#120C1E', surface: '#1E152E', soft: '#271C3A', ink: '#F4EEFD', muted: '#BBA9DA', line: '#35274C', shade: '#05030A', kid: '#C4A0F5', 'kid-tint': '#33244E', 'on-solid': '#120C1E',
+      'tn-grond': '#22402A', 'tn-nacht': 'inline', 'tn-banner': 'linear-gradient(#05030A,#2A1A44)', 'tn-titel': '#FFFFFF', 'tn-sub': '#F2C530', 'tn-spoor': '#35274C' },
+    prent: feeen,
+    voortgang: { mover: '<ellipse cx="-5" cy="-3" rx="6" ry="4" fill="#F4B6C8"/><ellipse cx="5" cy="-3" rx="6" ry="4" fill="#F4B6C8"/><circle cy="-6" r="3.5" fill="#F2D6C2"/><path d="M-3 0L0 8L3 0Z" fill="#E0739A"/>', doel: '<path d="M0 -10l3 6 7 1 -5 5 1 7 -6 -3 -6 3 1 -7 -5 -5 7 -1z" fill="#F2C530"/>' },
+    nieuw: '<path d="M-10 6C-10 -12 10 -12 10 6Z" fill="#B48CF0"/><circle cx="-3" cy="-2" r="2" fill="#FFFFFF"/><circle cx="4" cy="0" r="2" fill="#FFFFFF"/>',
+    vink: `<circle r="20" fill="#9C6ADE"/><g transform="scale(.9)">${vink('#fff')}</g>`,
+    slot: '<circle r="18" fill="#B8BFCB"/><path d="M-9 4C-9 -10 9 -10 9 4Z" fill="#5B6B7A"/>',
+    feest: [ster('#F2C530'), '<circle r="5" fill="#F4B6C8"/>', '<circle r="5" fill="#B48CF0"/>'], confetti: ['#9C6ADE', '#F4B6C8', '#F2C530', '#9BD3A0', '#FFFFFF'],
+    tegelRadius: '20px', tegelRand: '4px solid var(--kid)',
   },
 ]
 
