@@ -361,7 +361,7 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
   // Tikken op de grond: loop erheen, of naar de deur van het gebouw of huis dat je aantikt.
   function tik(ev: React.PointerEvent<HTMLCanvasElement>) {
     const s = toestand.current
-    if (s.bezig) return
+    if (s.bezig || weergaveRef.current.besturing === 'joystick') return
     ev.preventDefault()
     setBericht(null); s.spelen = null
     const r = ev.currentTarget.getBoundingClientRect()
@@ -387,7 +387,7 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
 
   // Joystick: sleep, de lengte van de vector is het tempo.
   const joyZet = (ev: React.PointerEvent) => {
-    const el = joyRef.current, knop = knopRef.current, s = toestand.current
+    const el = joyRef.current?.querySelector('.joy'), knop = knopRef.current, s = toestand.current
     if (!el || !knop) return
     const r = el.getBoundingClientRect(), R = r.width / 2 - 26
     let dx = ev.clientX - (r.left + r.width / 2), dy = ev.clientY - (r.top + r.height / 2)
@@ -437,19 +437,20 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
             onClick={() => { if (!lezer) leesVoor('Startscherm') }}>
         <svg className="ic" viewBox="0 0 24 24" width="34" height="34" aria-hidden="true"><path d="M4 11l8-7l8 7M6 10v10h4v-6h4v6h4V10" /></svg>
       </Link>
-      <div ref={joyRef} className="joy" role="application" aria-label="Joystick: sleep om te lopen"
+      {/* De zone rond de joystick vangt elke aanraking op: wie naast het rondje duimt, stuurt nog altijd en tikt niet op de grond. */}
+      {weergave.besturing !== 'tikken' && <div ref={joyRef} className="joy-zone" role="application" aria-label="Joystick: sleep om te lopen"
            onPointerDown={(ev) => { ev.preventDefault(); joyRef.current?.classList.add('aan'); try { ev.currentTarget.setPointerCapture(ev.pointerId) } catch { /* oud toestel */ } joyZet(ev) }}
            onPointerMove={(ev) => { if (joyRef.current?.classList.contains('aan')) joyZet(ev) }}
            onPointerUp={joyLos} onPointerCancel={joyLos} onLostPointerCapture={joyLos}>
-        <div ref={knopRef} className="joy-knop" />
-      </div>
+        <div className="joy"><div ref={knopRef} className="joy-knop" /></div>
+      </div>}
       {bericht && (
         <div className="wereld-bericht" role="status">
           {lezer ? <span className="display">{bericht.tekst}</span> : <span className="wereld-prent" aria-label={bericht.tekst}>{bericht.prent}</span>}
           {!lezer && kanVoorlezen() && <button type="button" className="rond" aria-label="Lees voor" onClick={() => leesVoor(bericht.tekst)}>🔊</button>}
         </div>
       )}
-      {!bericht && lezer && <p className="wereld-tip">Sleep de joystick, of tik op de grond om er heen te lopen.</p>}
+      {!bericht && lezer && <p className="wereld-tip">{weergave.besturing === 'joystick' ? 'Sleep de joystick om te lopen.' : weergave.besturing === 'tikken' ? 'Tik op de grond om er heen te lopen.' : 'Sleep de joystick, of tik op de grond om er heen te lopen.'}</p>}
       <div className={`wereld-iris${sluit ? ' dicht' : ''}`} aria-hidden="true" />
     </div>
   )
