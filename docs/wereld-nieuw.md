@@ -30,6 +30,45 @@ Eén regel: binnen tien seconden lopen is er iets om naar toe te gaan, en er is 
 
 De nacht plaatst al geen gebouw meer (beslist 9 november). Wat er staat blijft werken, maar de tekening wordt rustiger: een gebouw dat nog op slot is, wordt een grijs gebouwtje zonder gloed; "nieuw" wordt een klein sterretje dat op en neer springt in plaats van een gouden rand. Een gebied toont hooguit zes deuren tegelijk, de rest staat in het Spellenhuis (de spelletjes zelf verhuizen niet). Dit staat open voor Frederique, zie Vragen.
 
+## Hoe het eruit moet zien (10 november, na de eerste mockup)
+
+Frederique: het idee is goed, maar het moet mooier en professioneler; nu is het leeg of staan dingen wanordelijk. De mockup is daarom opnieuw getekend met zeven vaste regels. Ze gelden voor elk gebied en voor alles wat de nacht later bijmaakt.
+
+1. **Een ontworpen plattegrond, geen strooisel.** Elk gebied heeft één duidelijk midden (in het dorp het ronde plein met de fontein), symmetrie eromheen (twee banken, twee bloembakken, vier lantaarns op de hoeken) en alles staat op het raster. Niets wordt met toeval geplaatst.
+2. **Een kader.** Rondom staat een dichte bosrand in twee rijen en onderaan een haag. De wereld houdt nergens zomaar op en er is geen lege rand meer.
+3. **Zones met een eigen karakter.** Boven de straat met gebouwen aan een wandelpad, in het midden het plein, linksonder de boomgaard in een wit hekje, rechtsonder de vijver met zandrand en steiger. Lege stukken gras bestaan niet: het is een pad, een perk, een bloemenwei of een zone.
+4. **Eén tekenstijl.** Alles heeft dezelfde donkere inktlijn als het figuurtje, dezelfde ronde hoeken en een klein palet. Huizen, bomen en bankjes horen daardoor bij elkaar en bij het manneke.
+5. **Licht van linksboven.** Elke kruin en elk dak heeft links een lichte kant en rechts een donkere, en elke schaduw valt naar rechts op de grond. Dat geeft diepte zonder 3D.
+6. **Afwerking.** Daken met pannen, ramen met luiken en bloembakken, een luifel bij de bakker, vlaggetjes aan het Spellenhuis, kasseien in ringen rond de fontein, paden met een rand, bloemen in groepjes in plaats van overal.
+7. **Rustige grond.** Warm grind en een zacht dambord in het gras in plaats van vlekken, zodat de dingen erop opvallen.
+
+Dit kost niets aan snelheid: de hele grond met bosrand, schaduwen, perken en plein is één gebakken beeld.
+
+## In de huizen (gevraagd door Frederique)
+
+Elk kind kan zijn huis binnenlopen: de deur opent een eigen kamer met dezelfde besturing. De kamer is de plek voor alles wat van het kind zelf is, en elk meubel is een ingang naar iets dat al bestaat:
+
+| Meubel | Opent |
+| --- | --- |
+| Bed | Mijn dag (dagboek) |
+| Kleerkast | Kleerkast van het figuurtje |
+| Boekenkast | Mijn Schatboek |
+| Mandje | Mijn huisdier verzorgen |
+| Tekentafel | Kleurplaten en Zelf tekenen |
+| Speelgoedkist | De dagschatten en cadeautjes |
+
+Later: de kamer inrichten met stukken uit de winkel (behang, tapijt, bed), bij broer of zus op bezoek gaan (kijken, niet verplaatsen), en bij Bakker Bram of in het Spellenhuis naar binnen. Behang en beddengoed volgen de themakleur van het kind. Mijn huis (de buitenkant) blijft zoals het is.
+
+## Twee totaal andere concepten
+
+Frederique liet de vrijheid om iets heel anders voor te stellen. Deze twee zijn eerlijke alternatieven, geen varianten.
+
+**B. De prentenkaart (geen vrij lopen).** Eén mooi getekende kaart zoals die van Springland. Het kind tikt op een plek, het figuurtje wandelt er zelf naartoe, en de plek opent als een groot kijkdoosbeeld (de bakkerij, de vijver, het bos) met vier of vijf dingen om op te tikken. Sterk: Feline kan alles, elk beeld kan echt prachtig zijn omdat het één tekening is, het hapert nooit en de nacht kan elke week een nieuw beeld maken. Zwak: geen joystick, dus minder het gevoel van zelf rondlopen en elkaar tegenkomen.
+
+**C. Mijn eiland (zelf bouwen met taken).** Geen vast dorp: elk kind heeft een eigen eilandje dat groeit. Een goedgekeurde taak geeft een bouwsteen, en daarmee zet het kind zelf een boom, een schuurtje, een dier of een brug. Broer en zus komen op bezoek. Sterk: de wereld hangt aan de taken, dus helpen in huis maakt je eiland mooier, en het is nooit af. Zwak: de grootste bouw, en bouwstenen zijn een tweede beloning naast sterren, waarover jullie moeten beslissen.
+
+**Mijn advies:** A (het dorp leeft, in de nieuwe tekenstijl, met de huizen van binnen) als basis, omdat het voortbouwt op wat de kinderen kennen en het snelst bij hen is. Uit C zou ik later één ding lenen: het dorp groeit zichtbaar mee met goedgekeurde taken (een nieuw perk, een vlaggetje, een eend in de vijver). Wil je B of C toch zien, dan maak ik er een mockup van.
+
 ## Technische aanpak
 
 ### Principe: bak wat stilstaat, teken alleen wat beweegt
@@ -72,7 +111,8 @@ Een Playwright-test in `e2e/` laadt De wereld, laat 3 seconden lopen zonder graf
 | --- | --- | --- |
 | 0 | Hotfix: grijze en gloed-gebouwen voorbakken (**klaar**, nieuwtje 0.146, 5 naar 60 beelden per seconde in de demo) | De wereld loopt vlot |
 | 1 | Nieuwe tekenaanpak: atlas, adaptieve kwaliteit, prestatietest | Vlot, ook op de zwakste tablet |
-| 2 | Glinsters, Schatboek, doen-knop | Elke dag iets te zoeken |
+| 2 | Het dorp opnieuw getekend volgens de zeven regels, glinsters, Schatboek, doen-knop | Een mooi dorp met elke dag iets te zoeken |
+| 2b | Huizen binnenlopen: eigen kamer met ingangen naar Kleerkast, Mijn dag, huisdier, Schatboek | In je eigen huis kunnen |
 | 3 | Bewoners, Dorpsbord met opdrachtjes, dagschat | Een reden om elke dag te komen |
 | 4 | Appels plukken, vissen, huisdier mee | Dingen om te doen buiten de deuren |
 | 5 | Stickers en samen-opdracht, gebeurtenissen uit data, rustiger gebouwen | Samen spelen, het dorp verandert |
@@ -85,4 +125,6 @@ Elke fase is zelf af, krijgt een nieuwtje en is los terug te draaien.
 2. **App-tijd.** Telt de wereld zelf mee als schermtijd? Nu niet (de spelletjes in het Spellenhuis wel). Vissen en plukken lijken me gewoon wereld, dus niet.
 3. **Opruimen.** Zes deuren per gebied, de rest in het Spellenhuis: ja of nee?
 4. **Welke bewoners** het eerst (visser, boswachter, strandwachter) en blijft Bakker Bram?
-5. **Volgorde.** Voorstel: fase 1 en 2 samen, dan 3, dan de rest.
+5. **Volgorde.** Voorstel: fase 1 en 2 samen, dan 2b en 3, dan de rest.
+6. **Tekenstijl.** Akkoord met de nieuwe look (inktlijn, warm grind, bosrand)? Dan worden de acht bestaande gebieden zo hertekend.
+7. **Concept.** A zoals voorgesteld, of eerst B of C als mockup zien?
