@@ -179,6 +179,25 @@ export function bakBuiten(s: Scene, Q: number, st: BakStijl): HTMLCanvasElement 
     g.strokeStyle = 'rgba(255,255,255,.5)'; g.lineWidth = 3; for (let i = 0; i < 10; i++) { const x = px + (R() - .5) * rx * 1.2, y = py + (R() - .5) * ry * 1.2; g.beginPath(); g.moveTo(x - 12, y); g.quadraticCurveTo(x, y - 4, x + 12, y); g.stroke() }
     for (let i = 0; i < 5; i++) { const a = R() * 6.28, x = px + Math.cos(a) * rx * .7, y = py + Math.sin(a) * ry * .7; vorm(g, '#4FA35A', () => { g.ellipse(x, y, 17, 10, 0, .5, 6.0); g.lineTo(x, y); g.closePath() }, 2); if (i % 2) vorm(g, '#F4A3C4', () => g.arc(x - 3, y - 3, 4.5, 0, 7), 1.5) }
   }
+  // de zee onderaan: natte zandrand, schuimlijn, twee tinten blauw en golfjes
+  if (st.zee) {
+    const zy = st.zee * T
+    g.fillStyle = '#E3C985'; g.fillRect(0, zy - 22, W, 26)
+    vorm(g, '#4FB3E3', () => { g.moveTo(-10, zy); for (let x = 0; x <= W + 40; x += 40) g.quadraticCurveTo(x - 20, zy - 10, x, zy); g.lineTo(W + 10, H + 10); g.lineTo(-10, H + 10); g.closePath() })
+    g.fillStyle = '#3A9FD2'; g.fillRect(0, zy + 2.5 * T, W, H)
+    g.strokeStyle = '#FFFFFF'; g.lineWidth = 4; g.beginPath(); for (let x = 0; x <= W; x += 40) { g.moveTo(x - 20, zy + 8); g.quadraticCurveTo(x - 10, zy + 2, x, zy + 8) } g.stroke()
+    g.strokeStyle = 'rgba(255,255,255,.45)'; g.lineWidth = 3; for (let i = 0; i < 30; i++) { const x = R() * W, y = zy + 30 + R() * (H - zy - 30); g.beginPath(); g.moveTo(x - 12, y); g.quadraticCurveTo(x, y - 4, x + 12, y); g.stroke() }
+  }
+  // een sportveld: gestreept gras met witte lijnen, middencirkel en strafschopgebied bovenaan
+  if (st.veld) {
+    const [a, b, w, h] = st.veld, x0 = a * T, y0 = b * T, vw = w * T, vh = h * T
+    for (let i = 0; i < h; i++) { g.fillStyle = i % 2 ? '#6FBF55' : '#7FCB62'; g.fillRect(x0, y0 + i * T, vw, T) }
+    g.strokeStyle = 'rgba(255,255,255,.9)'; g.lineWidth = 4
+    g.strokeRect(x0 + 10, y0 + 10, vw - 20, vh - 20); g.beginPath(); g.moveTo(x0 + 10, y0 + vh / 2); g.lineTo(x0 + vw - 10, y0 + vh / 2); g.stroke()
+    g.beginPath(); g.arc(x0 + vw / 2, y0 + vh / 2, 60, 0, 7); g.stroke()
+    g.strokeRect(x0 + vw / 2 - 150, y0 + 10, 300, 130); g.strokeRect(x0 + vw / 2 - 80, y0 + 10, 160, 60)
+    g.strokeRect(x0 + vw / 2 - 150, y0 + vh - 140, 300, 130)
+  }
   // paden
   const baan = (uit: number, kleur: string) => { g.fillStyle = kleur; for (const [a, b, w, h] of s.weg) { g.beginPath(); g.roundRect(a * T - uit, b * T - uit, w * T + uit * 2, h * T + uit * 2, 22 + uit); g.fill() } }
   baan(4, st.pad[0]); baan(0, st.pad[1])
@@ -205,17 +224,21 @@ export function bakBuiten(s: Scene, Q: number, st: BakStijl): HTMLCanvasElement 
   const open = (x: number, y: number) => (s.poorten ?? []).some((p) => { const [a, b, w, h] = p.r; return x > (a - 1.2) * T && x < (a + w + 1.2) * T && y > (b - 2.2) * T && y < (b + h + 2.4) * T })
   const rij: [number, number, number][] = []
   const boven = st.berg ? [] : [[0, 52, 0], [23, 104, 1]] as const
+  const onder = st.zee ? st.zee * T - 40 : H - 30
   for (let x = -10; x < W + 20; x += 46) for (const [dx, y, l] of boven) { const xx = x + dx + R() * 10, yy = y + R() * 8; if (!open(xx, yy)) rij.push([xx, yy, l]) }
-  for (const zx of [0, W - 96]) for (let y = st.berg ? st.berg * T + 30 : 160; y < H - 30; y += 44) { for (const [dx, dy, l] of [[26, 0, 1], [70, 22, 2]] as const) { const xx = zx + dx + R() * 10, yy = y + dy + R() * 8; if (!open(xx, yy)) rij.push([xx, yy, l]) } }
+  for (const zx of [0, W - 96]) for (let y = st.berg ? st.berg * T + 30 : 160; y < onder; y += 44) { for (const [dx, dy, l] of [[26, 0, 1], [70, 22, 2]] as const) { const xx = zx + dx + R() * 10, yy = y + dy + R() * 8; if (!open(xx, yy)) rij.push([xx, yy, l]) } }
   rij.sort((a, b) => a[1] - b[1])
   for (const [x, y, l] of rij) {
     g.save(); g.translate(x, y); g.fillStyle = 'rgba(20,50,20,.16)'; g.beginPath(); g.ellipse(12, -2, 34, 9, 0, 0, 7); g.fill()
     const loof = st.rand === 'loof' || (st.rand === 'mix' && (x * 7 + y) % 3 < 1.4)
-    if (loof) { stam(g, 40); kroon(g, [[-20, -62, 24], [20, -62, 24], [0, -84, 28]], l ? '#4A9E4C' : '#3A8C47', l ? '#69BC5F' : '#52A957') }
+    if (st.rand === 'duin') {
+      // een duintje met helmgras
+      vorm(g, l ? '#F2DFA7' : '#E9D293', () => { g.moveTo(-36, 0); g.quadraticCurveTo(0, -44, 36, 0); g.closePath() }, 2.5)
+      g.strokeStyle = '#7FA65A'; g.lineWidth = 3; for (const [hx, hh, a] of [[-12, 34, -.3], [-4, 44, -.1], [6, 40, .15], [14, 30, .35]]) { g.beginPath(); g.moveTo(hx, -18); g.lineTo(hx + Math.sin(a) * hh, -18 - hh); g.stroke() }
+    } else if (loof) { stam(g, 40); kroon(g, [[-20, -62, 24], [20, -62, 24], [0, -84, 28]], l ? '#4A9E4C' : '#3A8C47', l ? '#69BC5F' : '#52A957') }
     else den(g, .92 + l * .08, l ? '#2F7D50' : '#286B48', l ? '#3F9660' : '#35825A')
     g.restore()
   }
-  const hb: [number, number, number][] = []; for (let x = 10; x < W; x += 30) if (!open(x, H - 18)) hb.push([x, H - 18, 24])
-  kroon(g, hb, '#35874A', '#4AA35A')
+  if (!st.zee) { const hb: [number, number, number][] = []; for (let x = 10; x < W; x += 30) if (!open(x, H - 18)) hb.push([x, H - 18, 24]); kroon(g, hb, '#35874A', '#4AA35A') }
   return c
 }

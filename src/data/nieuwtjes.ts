@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.153',
+    datum: '2026-11-10',
+    titel: 'Het Stadje, het Strand en het Sportpark in de nieuwe stijl',
+    tekst: 'Nu is heel De wereld opnieuw getekend. In het Stadje staan trapgevels rond een marktplein met een fontein en duiven, en IJsjesman Ivo geeft elke dag twee ijsjes. Aan het Strand bouw je bij Strandwachter Sam een zandkasteel, aai je de krabbetjes en zoek je schelpen, zeesterren en soms een flessenpost; onderaan ligt de zee met een vuurtoren. In het Sportpark trap je strafschoppen bij Trainer Tine: drie goals op een dag geven een medaille. Elk gebied heeft eigen glinsters en een bladzijde in het Schatboek, dat nu met een prentje per gebied opent.',
+  },
+  {
     versie: '0.152',
     datum: '2026-11-10',
     titel: 'Het Meer, de Berg en het Bos in de nieuwe stijl',

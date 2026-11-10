@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { GEBIEDEN } from '../wereld/gebieden.ts'
 import { SCHATBOEK_BLADEN, aankomstIn, bijBoom, glinstersVan, isVrij, oogstVan, plekBij, poortOp, type Scene } from './kaart.ts'
-import { STRONKEN, eekhoornBij, maakBerg, maakBos, maakMeer } from './gebieden.ts'
+import { STIP, STRONKEN, eekhoornBij, maakBerg, maakBos, maakMeer, maakSport, maakStadje, maakStrand } from './gebieden.ts'
 
 const plekkenIn = (s: Scene) => {
   const uit = new Set<string>()
@@ -9,7 +9,7 @@ const plekkenIn = (s: Scene) => {
   return uit
 }
 
-describe.each([['meer', maakMeer], ['berg', maakBerg], ['bos', maakBos]] as const)('%s in de nieuwe stijl', (id, maak) => {
+describe.each([['meer', maakMeer], ['berg', maakBerg], ['bos', maakBos], ['stadje', maakStadje], ['strand', maakStrand], ['sport', maakSport]] as const)('%s in de nieuwe stijl', (id, maak) => {
   const s = maak()
 
   it('heeft dezelfde poorten als in de wereld, en elke poort is bereikbaar', () => {
@@ -60,5 +60,26 @@ describe('wat er te doen is', () => {
     expect(s.dingen.filter((d) => oogstVan(d) === 'bes').length).toBeGreaterThanOrEqual(3)
     // na elke vondst springt hij naar een andere stronk
     for (let n = 0; n < 6; n++) expect(eekhoornBij(12345, n + 1)).not.toBe(eekhoornBij(12345, n))
+  })
+
+  it('Stadje: de ijskraam van Ivo, en duiven op het plein', () => {
+    const s = maakStadje()
+    expect([...plekkenIn(s)].sort()).toEqual(['bewoner:ivo', 'ijs:ijskraam'])
+    expect(s.dieren?.soort).toBe('duif')
+  })
+
+  it('Strand: een zandkasteel bouwen bij Sam, krabbetjes op het zand en de zee is water', () => {
+    const s = maakStrand()
+    expect([...plekkenIn(s)].sort()).toEqual(['bewoner:sam', 'kasteel:kasteel'])
+    expect(isVrij(s, 16, s.GH - 2)).toBe(false)
+    const [zx, zy] = s.dieren!.zone
+    expect(isVrij(s, zx + 1, zy)).toBe(true)
+  })
+
+  it('Sportpark: de bal op de stip is bereikbaar, het doel staat erboven', () => {
+    const s = maakSport()
+    expect([...plekkenIn(s)].sort()).toEqual(['bewoner:tine', 'schiet:bal'])
+    expect(s.bereik.has(`${STIP[0]},${STIP[1] + 1}`)).toBe(true)
+    expect(isVrij(s, STIP[0], STIP[1] - 3)).toBe(false)
   })
 })

@@ -5,7 +5,7 @@ import { T, rnd } from './stijl.ts'
 
 export type Rect = [number, number, number, number]
 export type Richting = 'up' | 'down' | 'left' | 'right'
-export type SceneId = 'dorp' | 'kamer' | 'platteland' | 'meer' | 'berg' | 'bos'
+export type SceneId = 'dorp' | 'kamer' | 'platteland' | 'meer' | 'berg' | 'bos' | 'stadje' | 'strand' | 'sport'
 
 /** Wat er in de kamer te doen is: elk meubel is een ingang naar een bestaand scherm. */
 export type KamerDoe = 'dag' | 'kleerkast' | 'schatboek' | 'huisdier' | 'tekenen' | 'mijnhuis'
@@ -34,7 +34,7 @@ export interface DorpDing {
  * Een plek waar iets te doen is als je ernaast staat: het Dorpsbord, een bewoner, de steiger, het fietsenrek, de groentebak,
  * de verrekijker en de vlag op de top van de Berg, en de boomstronken in het Bos waar de eekhoorn zich verstopt.
  */
-export type Plek = 'bord' | 'bewoner' | 'vis' | 'rek' | 'groente' | 'kijk' | 'top' | 'verstop'
+export type Plek = 'bord' | 'bewoner' | 'vis' | 'rek' | 'groente' | 'kijk' | 'top' | 'verstop' | 'ijs' | 'kasteel' | 'schiet'
 
 /** Een deur: je gaat binnen door vanaf de stoep (rij `stoep`) omhoog te lopen, of met de doen-knop. */
 export interface Deur {
@@ -72,7 +72,7 @@ export interface Scene {
   /** De kleur buiten de kaart. */
   buiten?: string
   /** Dieren die rondlopen of zwemmen (schapen, eenden) in een zone in tegels; bij water een ellips. */
-  dieren?: { soort: 'schaap' | 'eend'; zone: Rect; n: number }
+  dieren?: { soort: 'schaap' | 'eend' | 'duif' | 'krab'; zone: Rect; n: number }
   /** Wat je vist aan de steiger als je geluk hebt (standaard de goudvis). */
   zeldzaamVis?: Schat
 }
@@ -87,8 +87,12 @@ export interface BakStijl {
   water?: { cx: number; cy: number; rx: number; ry: number }[]
   /** Een berg bovenaan: rotsen tot deze rij, met sneeuw op de top. */
   berg?: number
-  /** Bosrand: loofbomen, dennen of gemengd. */
-  rand: 'loof' | 'den' | 'mix'
+  /** De zee onderaan: vanaf deze rij is alles water (Strand). */
+  zee?: number
+  /** Een sportveld met witte lijnen (Sportpark). */
+  veld?: Rect
+  /** Bosrand: loofbomen, dennen, gemengd, of duinen met helmgras (Strand). */
+  rand: 'loof' | 'den' | 'mix' | 'duin'
   bloemen: [number, number, number][]
 }
 
@@ -283,6 +287,9 @@ export type Schat = (typeof SCHATTEN)[number] | 'appel' | 'vis' | 'goudvis'
   | 'libel' | 'waterlelie' | 'kiezel' | 'kikker' | 'parel' | 'snoek' | 'eendveer'
   | 'edelweiss' | 'kristal' | 'denappel' | 'goudklomp' | 'topvlag' | 'verrekijker'
   | 'eikel' | 'blad' | 'slakkenhuis' | 'mos' | 'uilenveer' | 'bes' | 'eekhoorn'
+  | 'muntje' | 'knikker' | 'ballon' | 'sleutel' | 'kroontje' | 'ijsje'
+  | 'schelp' | 'zeester' | 'zeeglas' | 'flessenpost' | 'zandkasteel' | 'krab'
+  | 'fluitje' | 'sportpet' | 'bidon' | 'goudbal' | 'medaille'
 export const SCHAT_NAAM: Record<Schat, string> = {
   roos: 'Klaproos', geel: 'Boterbloem', paars: 'Viooltje', madelief: 'Madeliefje', paddenstoel: 'Vliegenzwam', veer: 'Blauwe veer', klaver: 'Klavertje vier', appel: 'Appel',
   vis: 'Visje', goudvis: 'Goudvis',
@@ -290,6 +297,9 @@ export const SCHAT_NAAM: Record<Schat, string> = {
   libel: 'Libel', waterlelie: 'Waterlelie', kiezel: 'Gladde kiezel', kikker: 'Kikker', parel: 'Parel', snoek: 'Snoek', eendveer: 'Eendenveer',
   edelweiss: 'Edelweiss', kristal: 'Kristal', denappel: 'Dennenappel', goudklomp: 'Goudklompje', topvlag: 'Topvlag', verrekijker: 'Verrekijker',
   eikel: 'Eikel', blad: 'Herfstblad', slakkenhuis: 'Slakkenhuis', mos: 'Mos', uilenveer: 'Uilenveer', bes: 'Bosbessen', eekhoorn: 'Eekhoorn',
+  muntje: 'Gouden muntje', knikker: 'Knikker', ballon: 'Ballon', sleutel: 'Oude sleutel', kroontje: 'Kroontje', ijsje: 'IJsje',
+  schelp: 'Schelp', zeester: 'Zeester', zeeglas: 'Zeeglas', flessenpost: 'Flessenpost', zandkasteel: 'Zandkasteel', krab: 'Krabbetje',
+  fluitje: 'Fluitje', sportpet: 'Pet', bidon: 'Drinkbus', goudbal: 'Gouden bal', medaille: 'Medaille',
 }
 /** Het Schatboek heeft een bladzijde per gebied. */
 export const SCHATBOEK_BLADEN: { id: string; naam: string; schatten: Schat[] }[] = [
@@ -298,6 +308,9 @@ export const SCHATBOEK_BLADEN: { id: string; naam: string; schatten: Schat[] }[]
   { id: 'meer', naam: 'Meer', schatten: ['libel', 'waterlelie', 'kiezel', 'kikker', 'parel', 'snoek', 'eendveer'] },
   { id: 'berg', naam: 'Berg', schatten: ['edelweiss', 'kristal', 'denappel', 'goudklomp', 'topvlag', 'verrekijker'] },
   { id: 'bos', naam: 'Bos', schatten: ['eikel', 'blad', 'slakkenhuis', 'mos', 'uilenveer', 'bes', 'eekhoorn'] },
+  { id: 'stadje', naam: 'Stadje', schatten: ['muntje', 'knikker', 'ballon', 'sleutel', 'kroontje', 'ijsje'] },
+  { id: 'strand', naam: 'Strand', schatten: ['schelp', 'zeester', 'zeeglas', 'flessenpost', 'zandkasteel', 'krab'] },
+  { id: 'sport', naam: 'Sportpark', schatten: ['fluitje', 'sportpet', 'bidon', 'goudbal', 'medaille'] },
 ]
 /** Alles wat in het Schatboek kan staan, in volgorde. */
 export const SCHATBOEK: Schat[] = SCHATBOEK_BLADEN.flatMap((b) => b.schatten)
@@ -333,6 +346,8 @@ export function plekBij(s: Scene, tx: number, ty: number): DorpDing | undefined 
   return s.dingen.find((d) => {
     if (!d.plek) return false
     if (d.plek === 'vis') return tx === d.f[0] && ty === d.f[1] - 1
+    // de strafschop: recht onder de bal, of een stapje verder (dan zie je de bal liggen)
+    if (d.plek === 'schiet') return tx === d.f[0] && (ty === d.f[1] + 1 || ty === d.f[1] + 2)
     const [x, y, w, h] = d.f
     const dx = tx < x ? x - tx : tx >= x + w ? tx - (x + w - 1) : 0, dy = ty < y ? y - ty : ty >= y + h ? ty - (y + h - 1) : 0
     return dx + dy === 1

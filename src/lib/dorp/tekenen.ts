@@ -9,6 +9,7 @@ import { tekenChibi } from '../wereld/chibi.ts'
 import { WEER_TINT, type Weer } from '../wereld/weer.ts'
 import { LAND_TEKEN, bakLand } from './landTekenen.ts'
 import { GEBIED_TEKEN, bakBuiten } from './gebiedTekenen.ts'
+import { STAD_TEKEN } from './stadTekenen.ts'
 import { VLAGGEN } from './land.ts'
 import { APPELS_PER_BOOM, opWeg, type DorpDing, type Glinster, type Richting, type Scene } from './kaart.ts'
 import {
@@ -49,6 +50,7 @@ type Tekening = (g: G, w: number, h: number, v: string) => void
 const TEKEN: Record<string, Tekening> = {
   ...LAND_TEKEN,
   ...GEBIED_TEKEN,
+  ...STAD_TEKEN,
   boom: (g) => { stam(g); kroon(g, BOL, '#3A8C47', '#52A957') },
   appelboom: (g, _w, _h, v) => {
     stam(g); kroon(g, BOL, '#4A9E4C', '#69BC5F')
@@ -267,7 +269,7 @@ const NACHT = '--huis-gras:transparent;--huis-gras2:#264E30;--huis-heuvel:#1E3B4
 export interface DorpHuis { id: string; naam: string; huis: Huis; kleur: string }
 export interface Speler { px: number; py: number; face: Richting; fase: number; loopt: boolean; figuur: Figuurtje; fiets?: boolean }
 export interface Ander extends Speler { naam: string; kleur: string }
-export interface Deeltje { t: 'vonk' | 'hart' | 'tik' | 'vlieg'; x: number; y: number; vx?: number; vy?: number; l: number; i?: string }
+export interface Deeltje { t: 'vonk' | 'hart' | 'tik' | 'vlieg' | 'bal'; x: number; y: number; vx?: number; vy?: number; l: number; i?: string }
 
 export interface Beeld {
   t: number
@@ -300,6 +302,9 @@ const BEWONERS: Record<string, { naam: string; kleur: string; figuur: Figuurtje;
   wim: { naam: 'Visser Wim', kleur: '#2E7FB5', figuur: { ...basisFiguurtje('blauw'), huid: 'bruin', haar: 'kort', haarKleur: 'zwart', gezicht: 'lach', shirt: 'trui', shirtKleur: 'geel', broek: 'lang', broekKleur: 'jeans', schoenen: 'laarzen', schoenKleur: 'groen', hoofd: 'geen' }, muts: (g, x, y) => hoed(g, x, y, '#F2C94C', '#C9A227') },
   gust: { naam: 'Gids Gust', kleur: '#C9463D', figuur: { ...basisFiguurtje('oranje'), huid: 'perzik', haar: 'kort', haarKleur: 'grijs', gezicht: 'groot', shirt: 'trui', shirtKleur: 'rood', broek: 'kort', broekKleur: 'bruin', schoenen: 'laarzen', schoenKleur: 'bruin', hoofd: 'geen' }, muts: (g, x, y) => bolmuts(g, x, y) },
   bert: { naam: 'Boswachter Bert', kleur: '#4E7A3A', figuur: { ...basisFiguurtje('groen'), huid: 'licht', haar: 'kort', haarKleur: 'blond', gezicht: 'lach', shirt: 'tshirt', shirtKleur: 'groen', broek: 'lang', broekKleur: 'bruin', schoenen: 'laarzen', schoenKleur: 'bruin', hoofd: 'geen' }, muts: (g, x, y) => hoed(g, x, y, '#6E8B4A', '#4E6A32') },
+  ivo: { naam: 'IJsjesman Ivo', kleur: '#E86A9A', figuur: { ...basisFiguurtje('roze'), huid: 'perzik', haar: 'kort', haarKleur: 'zwart', gezicht: 'lach', shirt: 'tshirt', shirtKleur: 'wit', broek: 'lang', broekKleur: 'jeans', hoofd: 'geen' }, muts: (g, x, y) => pet(g, x, y, '#F7A8C4') },
+  sam: { naam: 'Strandwachter Sam', kleur: '#E8493F', figuur: { ...basisFiguurtje('oranje'), huid: 'bruin', haar: 'lang', haarKleur: 'zwart', gezicht: 'lach', shirt: 'tshirt', shirtKleur: 'geel', broek: 'kort', broekKleur: 'rood', hoofd: 'geen' }, muts: (g, x, y) => pet(g, x, y, '#E8493F') },
+  tine: { naam: 'Trainer Tine', kleur: '#3E7CC9', figuur: { ...basisFiguurtje('blauw'), huid: 'licht', haar: 'lang', haarKleur: 'blond', gezicht: 'groot', shirt: 'trui', shirtKleur: 'blauw', broek: 'kort', broekKleur: 'donker', hoofd: 'geen' }, muts: (g, x, y) => pet(g, x, y, '#3E7CC9') },
   roos: { naam: 'Boerin Roos', kleur: '#2E9A45', figuur: { ...basisFiguurtje('roze'), huid: 'licht', haar: 'lang', haarKleur: 'rood', gezicht: 'lach', shirt: 'tshirt', shirtKleur: 'groen', broek: 'salopette', broekKleur: 'jeans', schoenen: 'laarzen', schoenKleur: 'geel', hoofd: 'geen' }, muts: (g, x, y) => strohoed(g, x, y) },
 }
 function strohoed(g: G, x: number, y: number) {
@@ -317,7 +322,15 @@ function hoed(g: G, x: number, y: number, kleur: string, band: string) {
   g.fillStyle = band; g.fillRect(-16, -82, 32, 5)
   g.restore()
 }
-/** De rode bolmuts van Gids Gust. */
+/** Een pet met een klep naar voren (Ivo, Sam, Tine). */
+function pet(g: G, x: number, y: number, kleur: string) {
+  g.save(); g.translate(x, y); g.lineWidth = 3; g.strokeStyle = INK; g.lineJoin = 'round'; g.fillStyle = kleur
+  g.beginPath(); g.ellipse(0, -76, 26, 7, 0, 0, 7); g.fill(); g.stroke()
+  g.beginPath(); g.moveTo(-19, -78); g.quadraticCurveTo(-18, -100, 0, -100); g.quadraticCurveTo(18, -100, 19, -78); g.closePath(); g.fill(); g.stroke()
+  g.fillStyle = '#fff'; g.beginPath(); g.arc(0, -100, 4, 0, 7); g.fill(); g.stroke()
+  g.restore()
+}
+/** De bolmuts van Gids Gust. */
 function bolmuts(g: G, x: number, y: number) {
   g.save(); g.translate(x, y); g.lineWidth = 3; g.strokeStyle = INK; g.lineJoin = 'round'
   g.fillStyle = '#3E7CC9'; g.beginPath(); g.moveTo(-19, -74); g.quadraticCurveTo(-18, -100, 0, -100); g.quadraticCurveTo(18, -100, 19, -74); g.closePath(); g.fill(); g.stroke()
@@ -476,7 +489,7 @@ export class DorpTekenaar {
         continue
       }
       lijst.push({ y: d.s === 'steiger' ? (d.f[1] - .5) * T : ay, f: () => {
-        const v = d.appel || d.oogst || d.plek === 'groente' ? String(b.appels[d.id] ?? APPELS_PER_BOOM) : d.plek === 'rek' && b.ik.fiets ? 'leeg' : d.v ?? ''
+        const v = d.appel || d.oogst || d.plek === 'groente' || d.plek === 'kasteel' ? String(b.appels[d.id] ?? APPELS_PER_BOOM) : d.plek === 'rek' && b.ik.fiets ? 'leeg' : d.v ?? ''
         g.drawImage(this.sprite(d, v), ax - d.w / 2, ay - d.h + 4, d.w, d.h)
         if (d.s === 'fontein' && !b.rustig) { g.strokeStyle = 'rgba(190,230,255,.9)'; g.lineWidth = 3; for (let i = 0; i < 5; i++) { const q = (t * .9 + i / 5) % 1, a = (i - 2) * .5; g.beginPath(); g.moveTo(ax, ay - 108); g.quadraticCurveTo(ax + a * 22, ay - 128 - 8 * (1 - q), ax + a * 40, ay - 88 + 44 * q); g.stroke() } }
         if (d.s === 'bord' && b.bordOpen) {
@@ -516,12 +529,12 @@ export class DorpTekenaar {
       const x = (vx < 10 ? vx - 1 : vx + 1) * T + T / 2, y = (vy < 10 ? vy - 1 : vy + 1) * T + T
       lijst.push({ y, f: () => { g.save(); g.translate(x, y - 34); g.scale(34, 34); g.globalAlpha = b.vlaggen![i] ? 1 : .45; ICOON.vlag(g); g.restore() } })
     })
-    const eend = s.dieren?.soort === 'eend'
+    const soort = s.dieren?.soort ?? 'schaap', eend = soort === 'eend', naarLinks = eend || soort === 'duif'
+    const m = { schaap: 52, eend: 40, duif: 34, krab: 34 }[soort], op = soort === 'schaap' ? 24 : eend ? 14 : 16
     for (const sc of b.dieren ?? []) lijst.push({ y: sc.y, f: () => {
       if (eend) { g.strokeStyle = 'rgba(255,255,255,.7)'; g.lineWidth = 2.5; g.beginPath(); g.ellipse(sc.x, sc.y - 2, 22 + Math.sin(t * 3 + sc.x) * 3, 6, 0, 0, 7); g.stroke() }
-      else { g.fillStyle = 'rgba(0,0,0,.15)'; g.beginPath(); g.ellipse(sc.x, sc.y, 22, 7, 0, 0, 7); g.fill() }
-      const m = eend ? 40 : 52
-      g.save(); g.translate(sc.x, sc.y - (eend ? 14 : 24) - sc.hup * 18); if (sc.links !== eend) g.scale(-1, 1); g.drawImage(icoonCanvas(eend ? 'eend' : 'schaap', this.Q), -m / 2, -m / 2, m, m); g.restore()
+      else { g.fillStyle = 'rgba(0,0,0,.15)'; g.beginPath(); g.ellipse(sc.x, sc.y, m * .42, 6, 0, 0, 7); g.fill() }
+      g.save(); g.translate(sc.x, sc.y - op - sc.hup * 18); if (sc.links !== naarLinks) g.scale(-1, 1); g.drawImage(icoonCanvas(soort, this.Q), -m / 2, -m / 2, m, m); g.restore()
     } })
     // de eekhoorn piept achter een stronk uit
     if (b.eekhoorn) {
@@ -539,6 +552,7 @@ export class DorpTekenaar {
       if (p.l < 0) continue
       if (p.t === 'vonk') { p.x += (p.vx ?? 0) * b.dt; p.y += (p.vy ?? 0) * b.dt; p.vy = (p.vy ?? 0) + 300 * b.dt; g.fillStyle = `rgba(255,224,102,${Math.max(0, 1 - p.l / .8)})`; g.beginPath(); g.arc(p.x, p.y, 4, 0, 7); g.fill(); if (p.l > .8) b.deeltjes.splice(i, 1) }
       else if (p.t === 'hart') { g.globalAlpha = Math.max(0, 1 - p.l); g.drawImage(icoonCanvas('hart', this.Q), p.x - 12, p.y - p.l * 50 - 12, 24, 24); g.globalAlpha = 1; if (p.l > 1) b.deeltjes.splice(i, 1) }
+      else if (p.t === 'bal') { const q = Math.min(1, p.l / .45), x = p.x + ((p.vx ?? p.x) - p.x) * q, y = p.y + ((p.vy ?? p.y) - p.y) * q - Math.sin(q * 3.14) * 30; g.drawImage(icoonCanvas('bal', this.Q), x - 14, y - 14, 28, 28); if (p.l > .8) b.deeltjes.splice(i, 1) }
       else if (p.t === 'vlieg') { const q = Math.min(1, p.l / .6); g.drawImage(icoonCanvas(p.i ?? 'appel', this.Q), p.x + (ik.px - p.x) * q - 17, p.y + (ik.py - 40 - p.y) * q - Math.sin(q * 3.14) * 40 - 17, 34, 34); if (q >= 1) b.deeltjes.splice(i, 1) }
       else { g.strokeStyle = `rgba(255,255,255,${Math.max(0, .9 - p.l * 2)})`; g.lineWidth = 4; g.beginPath(); g.ellipse(p.x, p.y + 6, 10 + p.l * 40, 5 + p.l * 20, 0, 0, 7); g.stroke(); if (p.l > .45) b.deeltjes.splice(i, 1) }
     }

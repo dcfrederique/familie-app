@@ -113,8 +113,8 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
   const kleurVan = useCallback((kid: string) => kinderHuizen.find((h) => h.id === kid)?.kleur ?? '#6A5BD1', [kinderHuizen])
   // Elk gebied is een eigen kaart (docs/wereld-dorp.md); wat erin staat komt uit de standaardplekken en wat de ouders aanpasten.
   const items = useMemo(() => effectieveItems(bewoners.map((k) => k.id), winkel?.opgeslagen), [bewoners, winkel])
-  const dorpHuizen = useMemo(() => kinderHuizen.filter((h) => (items.find((i) => i.id === `huis:${h.id}`)?.gebied ?? 'dorp') === 'dorp'), [kinderHuizen, items])
-  const [gebied, setGebied] = useState<GebiedId>(() => (ouder ? 'dorp' : leesPlek(kind.id)?.g ?? items.find((i) => i.id === `huis:${kind.id}`)?.gebied ?? 'dorp'))
+  // In de nieuwe wereld staan alle kinderhuizen in het dorp; zonder bewaarde plek begin je daar.
+  const [gebied, setGebied] = useState<GebiedId>(() => (ouder ? 'dorp' : leesPlek(kind.id)?.g ?? (weergave.dorp === 'nieuw' ? 'dorp' : items.find((i) => i.id === `huis:${kind.id}`)?.gebied ?? 'dorp')))
   const gebiedRef = useRef(gebied)
   /** Van welke kant het kind het nieuwe dorp binnenloopt (door een poort). */
   const binnenVan = useRef<Zijde | null>(null)
@@ -445,7 +445,7 @@ function WereldScherm({ kind, ouder = false, winkel }: { kind: Gebruiker; ouder?
       reis(poort)
     }
     return (
-      <Dorp key={gebied} gebied={gebied as NieuwGebied} kind={kind} ouder={ouder} huizen={gebied === 'dorp' ? dorpHuizen : []} besturing={weergave.besturing} snelheid={weergave.snelheid} binnenVan={binnenVan.current}
+      <Dorp key={gebied} gebied={gebied as NieuwGebied} kind={kind} ouder={ouder} huizen={gebied === 'dorp' ? kinderHuizen : []} besturing={weergave.besturing} snelheid={weergave.snelheid} binnenVan={binnenVan.current}
             reis={naar} saldo={ouder ? null : saldo ?? null} extra={instellingen} />
     )
   }

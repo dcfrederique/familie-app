@@ -149,9 +149,9 @@ test('kaart bewerken: ouder zet het huis van Luca in het bos, Luca begint daar e
   await page.mouse.click(doos.x + doos.width * (20.5 / 56), doos.y + doos.height * (10.5 / 28))
   await page.getByRole('button', { name: 'Bewaar' }).click()
   await expect(page.locator('.kb-melding')).toContainText('Bewaard')
-  // Luca staat nu in het bos en kan er gewoon lopen
+  // in de nieuwe wereld staan alle huizen in het dorp: Luca begint daar en kan gewoon lopen
   await naar(page, '/kind/luca/wereld')
-  await expect(page.locator('canvas.wereld-veld')).toHaveAttribute('aria-label', 'De wereld: Bos')
+  await expect(page.locator('canvas.wereld-veld')).toHaveAttribute('aria-label', 'Het dorp')
   await page.keyboard.down('ArrowDown')
   await page.waitForTimeout(400)
   await page.keyboard.up('ArrowDown')
@@ -253,7 +253,7 @@ test('het nieuwe dorp: een ouder gaat door de oostpoort naar het Meer', async ({
   const veld = page.locator('canvas.wereld-veld')
   await expect(veld).toHaveAttribute('aria-label', 'Het dorp')
   await page.keyboard.down('ArrowRight')
-  await expect(veld).toHaveAttribute('aria-label', 'De wereld: Meer', { timeout: 8000 })
+  await expect(veld).toHaveAttribute('aria-label', 'Het Meer', { timeout: 8000 })
   await page.keyboard.up('ArrowRight')
   expect(fouten).toEqual([])
 })
@@ -294,7 +294,7 @@ test('het Platteland: een fiets nemen uit het rek', async ({ page }) => {
   expect(fouten).toEqual([])
 })
 
-test('het Meer, de Berg en het Bos: een bewoner en iets te doen', async ({ page }) => {
+test('de andere gebieden in de nieuwe stijl: elk iets te doen', async ({ page }) => {
   const fouten: string[] = []
   page.on('pageerror', (e) => fouten.push(e.message))
   await startAls(page, 'luca')
@@ -303,6 +303,9 @@ test('het Meer, de Berg en het Bos: een bewoner en iets te doen', async ({ page 
     ['meer', 'Het Meer', 4, 10, 'Praat', 'Visser Wim'],
     ['berg', 'De Berg', 16, 4, 'Vlag', 'top'],
     ['bos', 'Het Bos', 12, 9, 'Pluk', 'Bosbessen'],
+    ['stadje', 'Het Stadje', 20, 9, 'IJsje', 'ijsje'],
+    ['strand', 'Het Strand', 16, 11, 'Bouw', 'muur'],
+    ['sport', 'Het Sportpark', 14, 9, 'Schiet', '!'],
   ] as const) {
     await page.evaluate(([g, x, y]) => {
       sessionStorage.setItem('wereld-plek-luca', JSON.stringify({ g, tx: 0, ty: 0 }))
