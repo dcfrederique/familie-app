@@ -34,7 +34,7 @@ export interface DorpDing {
  * Een plek waar iets te doen is als je ernaast staat: het Dorpsbord, een bewoner, de steiger, het fietsenrek, de groentebak,
  * de verrekijker en de vlag op de top van de Berg, en de boomstronken in het Bos waar de eekhoorn zich verstopt.
  */
-export type Plek = 'bord' | 'bewoner' | 'vis' | 'rek' | 'groente' | 'kijk' | 'top' | 'verstop' | 'ijs' | 'kasteel' | 'schiet' | 'feest'
+export type Plek = 'bord' | 'bewoner' | 'vis' | 'rek' | 'groente' | 'kijk' | 'top' | 'verstop' | 'ijs' | 'kasteel' | 'schiet' | 'feest' | 'tuin' | 'doel'
 
 /** Een deur: je gaat binnen door vanaf de stoep (rij `stoep`) omhoog te lopen, of met de doen-knop. */
 export interface Deur {
@@ -97,6 +97,15 @@ export interface BakStijl {
 }
 
 const k = (x: number, y: number) => x + ',' + y
+/** De scène met extra dingen erin (een feest, het tuintje): hun tegels vast en niet meer bereikbaar (geen glinster erop). */
+export function metDingen<S extends { dingen: DorpDing[]; solid: Set<string>; bereik: Set<string> }>(s: S, dingen: DorpDing[]): S {
+  if (!dingen.length) return s
+  const solid = new Set(s.solid), bereik = new Set(s.bereik)
+  for (const d of dingen) for (const [x, y] of tegelsVan(d.f)) { solid.add(k(x, y)); bereik.delete(k(x, y)) }
+  return { ...s, dingen: [...s.dingen, ...dingen], solid, bereik }
+}
+const tegelsVan = ([x0, y0, w, h]: Rect) => Array.from({ length: w * h }, (_, i): [number, number] => [x0 + (i % w), y0 + Math.floor(i / w)])
+
 export const isVrij = (s: Scene, x: number, y: number) => x >= 0 && y >= 0 && x < s.GW && y < s.GH && !s.solid.has(k(x, y))
 export const opRect = (r: Rect, x: number, y: number) => x >= r[0] && y >= r[1] && x < r[0] + r[2] && y < r[1] + r[3]
 export const opWeg = (s: Scene, x: number, y: number) => s.weg.some((r) => opRect(r, x, y)) || (!!s.plein && opRect(s.plein, x, y))
@@ -150,6 +159,8 @@ export function maakDorp(bewoners: { id: string; naam: string }[]): Scene {
     { id: 'fontein', s: 'fontein', f: [17, 8, 2, 2], w: 170, h: 170, sch: 'rond' },
     // het Dorpsbord met de opdrachtjes van vandaag, Bakker Bram voor zijn bakkerij en de steiger aan de vijver
     { id: 'bord', s: 'bord', f: [13, 7, 1, 1], w: 120, h: 132, sch: 'klein', plek: 'bord' },
+    // de gezinsvlag: hij stijgt met de glinsters die het hele gezin deze week vond
+    { id: 'gezinsvlag', s: 'gezinsvlag', f: [8, 7, 1, 1], w: 110, h: 210, sch: 'klein', plek: 'doel' },
     { id: 'bram', s: 'bewoner', v: 'bram', f: [3, 5, 1, 1], w: 70, h: 110, plek: 'bewoner' },
     { id: 'steiger', s: 'steiger', f: [28, 19, 1, 1], w: 64, h: 96, plek: 'vis' },
     { id: 'bank1', s: 'bank', f: [14, 10, 2, 1], w: 110, h: 70, sch: 'klein' }, { id: 'bank2', s: 'bank', f: [20, 10, 2, 1], w: 110, h: 70, sch: 'klein' },
@@ -291,6 +302,7 @@ export type Schat = (typeof SCHATTEN)[number] | 'appel' | 'vis' | 'goudvis'
   | 'schelp' | 'zeester' | 'zeeglas' | 'flessenpost' | 'zandkasteel' | 'krab'
   | 'fluitje' | 'sportpet' | 'bidon' | 'goudbal' | 'medaille'
   | 'lampion' | 'pepernoot' | 'kerstbal'
+  | 'tulp' | 'aardbei' | 'pompoen' | 'radijs' | 'gezinsvlag'
 export const SCHAT_NAAM: Record<Schat, string> = {
   roos: 'Klaproos', geel: 'Boterbloem', paars: 'Viooltje', madelief: 'Madeliefje', paddenstoel: 'Vliegenzwam', veer: 'Blauwe veer', klaver: 'Klavertje vier', appel: 'Appel',
   vis: 'Visje', goudvis: 'Goudvis',
@@ -302,6 +314,7 @@ export const SCHAT_NAAM: Record<Schat, string> = {
   schelp: 'Schelp', zeester: 'Zeester', zeeglas: 'Zeeglas', flessenpost: 'Flessenpost', zandkasteel: 'Zandkasteel', krab: 'Krabbetje',
   fluitje: 'Fluitje', sportpet: 'Pet', bidon: 'Drinkbus', goudbal: 'Gouden bal', medaille: 'Medaille',
   lampion: 'Lampion', pepernoot: 'Pepernoten', kerstbal: 'Kerstbal',
+  tulp: 'Tulp', aardbei: 'Aardbei', pompoen: 'Pompoen', radijs: 'Radijsjes', gezinsvlag: 'Gezinsvlag',
 }
 /** Het Schatboek heeft een bladzijde per gebied. */
 export const SCHATBOEK_BLADEN: { id: string; naam: string; schatten: Schat[] }[] = [
@@ -314,6 +327,7 @@ export const SCHATBOEK_BLADEN: { id: string; naam: string; schatten: Schat[] }[]
   { id: 'strand', naam: 'Strand', schatten: ['schelp', 'zeester', 'zeeglas', 'flessenpost', 'zandkasteel', 'krab'] },
   { id: 'sport', naam: 'Sportpark', schatten: ['fluitje', 'sportpet', 'bidon', 'goudbal', 'medaille'] },
   { id: 'feest', naam: 'Feesten', schatten: ['lampion', 'pepernoot', 'kerstbal'] },
+  { id: 'tuin', naam: 'Tuin en samen', schatten: ['tulp', 'aardbei', 'pompoen', 'radijs', 'gezinsvlag'] },
 ]
 /** Alles wat in het Schatboek kan staan, in volgorde. */
 export const SCHATBOEK: Schat[] = SCHATBOEK_BLADEN.flatMap((b) => b.schatten)

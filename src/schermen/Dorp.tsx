@@ -6,7 +6,7 @@ import { kidKleur } from '../data/wereld.ts'
 import { figuurtjeVan } from '../data/figuurtje.ts'
 import {
   APPELS_PER_BOOM, KAMER_START, KAMER_UIT, SCHATBOEK, SCHATBOEK_BLADEN, SCHAT_NAAM, aankomstIn, bijBoom, deurBij, deurOpTik, glinstersVan, isVrij, maakDorp, maakKamer,
-  meubelBij, midden, oogstVan, plekBij, poortOp, zoekPad, type Deur, type DorpDing, type KamerDoe, type Richting, type Scene, type Schat,
+  meubelBij, metDingen, midden, oogstVan, plekBij, poortOp, zoekPad, type Deur, type DorpDing, type KamerDoe, type Richting, type Scene, type Schat,
 } from '../lib/dorp/kaart.ts'
 import { WORTELS_PER_DAG, maakPlatteland, opLus, vlagBij } from '../lib/dorp/land.ts'
 import { GOALS_VOOR_MEDAILLE, STRONKEN, eekhoornBij, maakBerg, maakBos, maakMeer, maakSport, maakStadje, maakStrand } from '../lib/dorp/gebieden.ts'
@@ -26,6 +26,9 @@ import type { Zijde } from '../lib/wereld/kaart.ts'
 import type { Besturing } from '../lib/wereld/weergave.ts'
 import { STICKERS, WEG_NA, Zender, metPositie, verbindZuinig, volg, type Ander, type Sticker, type Verbinding } from '../lib/wereld/live.ts'
 import { gebeurtenisOp, metGebeurtenis } from '../data/dorpsleven.ts'
+import { bewaarTuin, geefWater, leesTuin, oogst, plantVan, stadium, tuinDing, tuinDoe, tuinStand, TUIN_DAGEN } from '../lib/dorp/tuin.ts'
+import { GEZINSDOEL, gehaaldDezeWeek, somVan, vlagStand, weekBegin, zetGehaald } from '../lib/dorp/gezinsdoel.ts'
+import DorpSamen from './DorpSamen.tsx'
 import { supabase } from '../lib/supabase.ts'
 import { proefAan } from '../lib/proef.tsx'
 import { useSessie } from '../lib/sessie.tsx'
@@ -150,7 +153,12 @@ export default function Dorp({ kind: kindIn, ouder, huizen: huizenIn, besturing,
   const dag = dagVan(new Date())
   // een feest (Sint-Maarten, Sinterklaas, Kerstmis) zet iets extra in het gebied (src/data/dorpsleven.ts)
   const feest = useMemo(() => gebeurtenisOp(dag, gebied), [dag, gebied])
-  const dorp = useMemo(() => metGebeurtenis(gebied === 'dorp' ? maakDorp(huizen.map((h) => ({ id: h.id, naam: h.naam }))) : MAKERS[gebied](), feest), [feest, gebied, huizen])
+  const dorp = useMemo(() => {
+    const sc = metGebeurtenis(gebied === 'dorp' ? maakDorp(huizen.map((h) => ({ id: h.id, naam: h.naam }))) : MAKERS[gebied](), feest)
+    // Mijn tuintje: naast het eigen huis, alleen voor het kind zelf
+    const huis = !ouder && sc.id === 'dorp' ? sc.huizen.find((h) => h.id === kind.id) : undefined
+    return huis ? metDingen(sc, [tuinDing(huis.cx, huis.gy)]) : sc
+  }, [feest, gebied, huizen, kind.id, ouder])
   const kamer = useMemo(() => maakKamer(), [])
   const figuur = useMemo<Figuurtje>(() => figuurtjeVan(kind), [kind])
   const bewaren = !ouder && !proefAan()
@@ -186,9 +194,18 @@ export default function Dorp({ kind: kindIn, ouder, huizen: huizenIn, besturing,
     }),
     eekhoorn: hash(kind.id + dag),
     // stickers om te zwaaien: die van mij en die van de anderen, met wanneer ze kwamen
+    tuin: leesTuin(kind.id), gezin: {} as Record<string, number>, vlagWeek: '',
     verbinding: null as Verbinding | null, mijnSticker: null as { s: Sticker; t: number } | null, stickers: new Map<string, { s: Sticker; t: number }>(),
   })
   const [stickersOpen, setStickersOpen] = useState(false)
+  // het gezinsdoel van de week: alle glinsters van het gezin samen (de server telt)
+  const [gezin, setGezin] = useState<Record<string, number>>({})
+  const [samenOpen, setSamenOpen] = useState(false)
+  const laadGezin = useCallback(() => {
+    if (!bron) return
+    void bron.wereldGezinsdoel().then((g) => { s.current.gezin = g; setGezin(g) }, () => {})
+  }, [bron])
+  useEffect(() => { laadGezin(); const t = setInterval(laadGezin, 120_000); return () => clearInterval(t) }, [laadGezin])
   const zwaai = useCallback((x: Sticker) => {
     const st = s.current
     st.mijnSticker = { s: x, t: performance.now() }
@@ -308,6 +325,25 @@ export default function Dorp({ kind: kindIn, ouder, huizen: huizenIn, besturing,
     st.route = []; st.doel = null
     if (d.plek === 'bord') { if (ouder) zeg('boek', 'Het Dorpsbord: elke dag drie opdrachtjes voor de kinderen.'); else setBordOpen(true); return }
     if (d.plek === 'vis') { setVisOpen(true); return }
+    if (d.plek === 'doel') { setSamenOpen(true); return }
+    if (d.plek === 'tuin') {
+      const wat = tuinDoe(st.tuin, dag)
+      if (wat === 'morgen') { zeg('gieter', 'Je plantje kreeg vandaag al water. Kom morgen terug, dan is het weer gegroeid!'); return }
+      if (wat === 'water') {
+        st.tuin = geefWater(st.tuin, dag); if (bewaren) bewaarTuin(kind.id, st.tuin)
+        if (!minderBeweging()) for (let q = 0; q < 10; q++) st.deeltjes.push({ t: 'vonk', x: midden(d.f[0]) + (Math.random() - .5) * 30, y: d.f[1] * T, vx: (Math.random() - .5) * 60, vy: -Math.random() * 90, l: 0 })
+        const n = stadium(st.tuin)
+        zeg('gieter', n >= TUIN_DAGEN ? 'Kijk eens, je plantje is helemaal gegroeid! Tik nog eens om te oogsten.' : n === 1 ? 'Plons! Er komt een kiempje uit de grond. Kom morgen weer water geven.' : `Plons! Je plantje groeit. Nog ${TUIN_DAGEN - n} ${TUIN_DAGEN - n === 1 ? 'dag' : 'dagen'} water geven.`, true)
+        return
+      }
+      const r = oogst(st.tuin, dag)
+      if (!r) return
+      st.tuin = r.tuin; if (bewaren) bewaarTuin(kind.id, st.tuin)
+      const nieuw = vind(st.v, r.schat); bewaar(); setBoekTeller((q) => q + 1)
+      if (!minderBeweging()) for (let q = 0; q < 14; q++) st.deeltjes.push({ t: 'vonk', x: st.ik.px, y: st.ik.py - 40, vx: (Math.random() - .5) * 220, vy: -Math.random() * 160 - 20, l: 0 })
+      zeg(r.schat, `${SCHAT_NAAM[r.schat]} geoogst!${nieuw ? ' Nieuw in je Schatboek.' : ''} Er zit een nieuw zaadje in de grond.`, true)
+      return
+    }
     if (d.plek === 'feest' && feest) {
       const al = (st.v.teller.feest ?? 0) > 0
       if (ouder || al) { zeg(feest.icoon, feest.daarna, true); return }
@@ -409,7 +445,7 @@ export default function Dorp({ kind: kindIn, ouder, huizen: huizenIn, besturing,
     zeg('brood', allesKlaar(opdrachten, st.v) ? (st.v.schat ? 'Bakker Bram: "Wat een harde werker! Tot morgen."' : 'Bakker Bram: "Alles klaar? Haal je dagschat aan het bord!"')
       : al ? 'Bakker Bram: "Kijk op het Dorpsbord bij de fontein!"'
       : appel ? `Bakker Bram: "Hallo ${kind.naam}! Pluk je appels voor mijn appeltaart?"` : `Bakker Bram: "Hallo ${kind.naam}! Kijk eens op het Dorpsbord."`, true)
-  }, [bewaar, feest, kind.naam, opdrachten, ouder, zeg])
+  }, [bewaar, bewaren, dag, feest, kind.id, kind.naam, opdrachten, ouder, zeg])
 
   const aaiTijd = useRef(0)
   const aai = useCallback(() => {
@@ -456,6 +492,19 @@ export default function Dorp({ kind: kindIn, ouder, huizen: huizenIn, besturing,
     finally { setSchatBezig(false) }
   }, [bewaar, bron, kind.id, kind.kan_lezen, schatBezig, zeg])
 
+  /** Een glinster telt ook voor het gezinsdoel van de week; haalt het gezin het doel, dan gaat de vlag in top. */
+  const glinsterVoorGezin = useCallback(() => {
+    const st = s.current
+    if (!bewaren || !bron) return
+    const voor = somVan(st.gezin)
+    st.gezin = { ...st.gezin, [kind.id]: (st.gezin[kind.id] ?? 0) + 1 }; setGezin(st.gezin)
+    if (voor < GEZINSDOEL && voor + 1 >= GEZINSDOEL) {
+      if (!minderBeweging()) for (let q = 0; q < 20; q++) st.deeltjes.push({ t: 'vonk', x: st.ik.px, y: st.ik.py - 40, vx: (Math.random() - .5) * 260, vy: -Math.random() * 200 - 20, l: 0 })
+      setTimeout(() => zeg('gezinsvlag', 'Hoera! Samen hebben jullie het gezinsdoel gehaald. De gezinsvlag hangt in top op het plein!', true), 2700)
+    }
+    void bron.wereldGlinster(kind.id).then(laadGezin, () => {})
+  }, [bewaren, bron, kind.id, laadGezin, zeg])
+
   /** Wat de doen-knop nu kan, waar het figuurtje staat. */
   const doeHier = useCallback((): Doe | null => {
     const st = s.current, { tx, ty } = st.ik, sc = st.scene
@@ -470,8 +519,9 @@ export default function Dorp({ kind: kindIn, ouder, huizen: huizenIn, besturing,
       const [icoon, label] = plek.plek === 'bord' ? ['boek', 'Dorpsbord'] : plek.plek === 'vis' ? ['vis', 'Vissen'] : plek.plek === 'rek' ? ['fiets', st.fiets ? 'Zet terug' : 'Fiets']
         : plek.plek === 'groente' ? ['wortel', 'Pluk'] : plek.plek === 'top' ? ['topvlag', 'Vlag'] : plek.plek === 'kijk' ? ['verrekijker', 'Kijk']
         : plek.plek === 'verstop' ? ['eekhoorn', 'Zoek'] : plek.plek === 'ijs' ? ['ijsje', 'IJsje'] : plek.plek === 'kasteel' ? ['zandkasteel', 'Bouw']
-        : plek.plek === 'schiet' ? ['bal', 'Schiet'] : plek.plek === 'feest' ? [feest?.icoon ?? 'ster', plek.v === 'sint' ? 'Praat' : 'Kijk'] : [plek.v === 'bram' ? 'brood' : PRAAT[plek.v ?? '']?.icoon ?? 'praat', 'Praat']
-      return { id: plek.id + (st.fiets ? 'f' : ''), icoon, label, actie: () => bijPlek(plek) }
+        : plek.plek === 'schiet' ? ['bal', 'Schiet'] : plek.plek === 'feest' ? [feest?.icoon ?? 'ster', plek.v === 'sint' ? 'Praat' : 'Kijk'] : plek.plek === 'doel' ? ['gezinsvlag', 'Samen']
+        : plek.plek === 'tuin' ? (tuinDoe(st.tuin, dag) === 'oogst' ? [plantVan(st.tuin), 'Oogst'] : ['gieter', tuinDoe(st.tuin, dag) === 'water' ? 'Water' : 'Tuintje']) : [plek.v === 'bram' ? 'brood' : PRAAT[plek.v ?? '']?.icoon ?? 'praat', 'Praat']
+      return { id: plek.id + (st.fiets ? 'f' : '') + (plek.plek === 'tuin' ? tuinDoe(st.tuin, dag) : ''), icoon, label, actie: () => bijPlek(plek) }
     }
     if (sc.dieren) {
       const dier = DIER[sc.dieren.soort], [bx, by] = dier.afstand
@@ -482,11 +532,11 @@ export default function Dorp({ kind: kindIn, ouder, huizen: huizenIn, besturing,
     if (boom && !ouder) return { id: boom.id, icoon: oogstVan(boom)!, label: 'Pluk', actie: () => pluk(boom) }
     if (dierNaam && !ouder) return { id: 'aai', icoon: 'hart', label: `Aai ${dierNaam}`, actie: aai }
     return null
-  }, [aai, aaiSchaap, bijPlek, binnen, dierNaam, feest, kind.id, meubel, ouder, pluk])
+  }, [aai, aaiSchaap, bijPlek, binnen, dag, dierNaam, feest, kind.id, meubel, ouder, pluk])
 
   // De beeldlus leest de acties via een ref, zodat hij niet opnieuw start (en de grond niet opnieuw bakt) als gegevens binnenkomen.
-  const acties = useRef({ binnen, pluk, meubel, doeHier, reis, wissel, zeg, bewaar, snelheid, bijPlek, aai })
-  useEffect(() => { acties.current = { binnen, pluk, meubel, doeHier, reis, wissel, zeg, bewaar, snelheid, bijPlek, aai } })
+  const acties = useRef({ binnen, pluk, meubel, doeHier, reis, wissel, zeg, bewaar, snelheid, bijPlek, aai, glinsterVoorGezin })
+  useEffect(() => { acties.current = { binnen, pluk, meubel, doeHier, reis, wissel, zeg, bewaar, snelheid, bijPlek, aai, glinsterVoorGezin } })
 
   // ---------- de beeldlus ----------
   useEffect(() => {
@@ -578,6 +628,7 @@ export default function Dorp({ kind: kindIn, ouder, huizen: huizenIn, besturing,
           const l = glinsters.splice(i, 1)[0]
           st.v.glinsters.push(l.sleutel)
           const nieuw = vind(st.v, l.soort); A().bewaar(); setBoekTeller((n) => n + 1)
+          A().glinsterVoorGezin()
           if (!rustig) for (let q = 0; q < 10; q++) st.deeltjes.push({ t: 'vonk', x: l.x * T + 24, y: l.y * T + 10, vx: (Math.random() - .5) * 160, vy: -Math.random() * 120 - 20, l: 0 })
           A().zeg(l.soort, nieuw ? `${SCHAT_NAAM[l.soort]}! Nieuw in je Schatboek.` : `${SCHAT_NAAM[l.soort]}!`, nieuw)
         }
@@ -655,7 +706,7 @@ export default function Dorp({ kind: kindIn, ouder, huizen: huizenIn, besturing,
       const dierBeeld = extra2.current.dier
       tek.teken({
         t, dt, ik: { px: ik.px, py: ik.py, face: ik.face, fase: (ik.stappen + (ik.naar ? ik.p : 0)) * Math.PI, loopt: !!ik.naar, figuur, fiets: st.fiets, ...mijn },
-        anderen, glinsters: st.scene.id !== 'kamer' ? glinsters : [], appels: Object.fromEntries([...dorp.dingen.filter((x) => oogstVan(x)).map((x) => [x.id, APPELS_PER_BOOM - (st.v.appels[x.id] ?? 0)]), ['groente', WORTELS_PER_DAG - (st.v.teller.wortel ?? 0)], ['kasteel', Math.min(3, st.v.teller.kasteel ?? 0)]]),
+        anderen, glinsters: st.scene.id !== 'kamer' ? glinsters : [], appels: Object.fromEntries([...dorp.dingen.filter((x) => oogstVan(x)).map((x) => [x.id, APPELS_PER_BOOM - (st.v.appels[x.id] ?? 0)]), ['groente', WORTELS_PER_DAG - (st.v.teller.wortel ?? 0)], ['kasteel', Math.min(3, st.v.teller.kasteel ?? 0)], ['tuin', tuinStand(st.tuin)], ['gezinsvlag', vlagStand(somVan(st.gezin))]]),
         deeltjes: st.deeltjes, nacht: licht.nacht, schemer: licht.schemer, weer, rustig,
         bordOpen: !ouder && !st.v.schat, ...(st.scene.id === 'platteland' ? { vlaggen: st.fiets ? st.vlaggen : [false, false, false, false] } : {}),
         dieren: st.scene.id !== 'kamer' ? st.dieren : [], eekhoorn: st.scene.id === 'bos' ? STRONKEN[eekhoornBij(st.eekhoorn, st.v.teller.eekhoorn ?? 0)] : null, dier: dierBeeld ? { beeld: dierBeeld, px: dp.x, py: dp.y, links: dp.links, loopt: dp.loopt } : null,
@@ -798,6 +849,10 @@ export default function Dorp({ kind: kindIn, ouder, huizen: huizenIn, besturing,
       )}
       {bordOpen && <DorpBord opdrachten={opdrachten} voortgang={v} lezer={lezer} bezig={schatBezig} ophalen={() => { void dagschat() }} sluit={() => setBordOpen(false)} />}
       {visOpen && <DorpVissen figuur={figuur} lezer={lezer} zeldzaam={dorp.zeldzaamVis === 'snoek' ? 'snoek' : 'goudvis'} aantal={v.teller.vis ?? 0} gevangen={gevangen} sluit={() => setVisOpen(false)} />}
+      {samenOpen && <DorpSamen gezin={gezin} kinderen={gebruikers.filter((g) => g.rol === 'kind')} ik={ouder ? null : kind.id} lezer={lezer}
+        vlag={bewaren && somVan(gezin) >= GEZINSDOEL && s.current.vlagWeek !== weekBegin(dag) && !gehaaldDezeWeek(kind.id, weekBegin(dag))}
+        neemVlag={() => { const st = s.current; st.vlagWeek = weekBegin(dag); zetGehaald(kind.id, st.vlagWeek); const nieuw = vind(st.v, 'gezinsvlag'); bewaar(); setBoekTeller((q) => q + 1); setSamenOpen(false); zeg('gezinsvlag', nieuw ? 'Een gezinsvlag voor jou, nieuw in je Schatboek!' : 'Nog een gezinsvlag in je Schatboek!', true) }}
+        sluit={() => setSamenOpen(false)} />}
       {schatHoera && <DagelijksHoera kind={kind} hoera={schatHoera} sluit={() => setSchatHoera(null)} />}
       {boekOpen && <Schatboek voortgang={v} lezer={lezer} gebied={gebied} sluit={() => { v.nieuw = []; bewaar(); setBoekOpen(false) }} />}
       <div className={`wereld-iris${sluit ? ' dicht' : ''}`} aria-hidden="true" />

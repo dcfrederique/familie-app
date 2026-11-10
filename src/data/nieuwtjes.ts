@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.155',
+    datum: '2026-11-10',
+    titel: 'De wereld: Mijn tuintje en de gezinsvlag',
+    tekst: 'Naast het eigen huis in het dorp heeft elk kind nu een moestuinbakje. Elke dag één keer water geven laat het zaadje een stapje groeien; na vier dagen oogst je een tulp, aardbei, pompoen of radijsjes voor het Schatboek, en er komt een nieuw zaadje in. Op het grasveld naast het plein staat de gezinsvlag: alle glinsters die de kinderen deze week (maandag tot zondag) vinden, tellen samen, en de vlag stijgt tot het gezin er 100 heeft. Dan hangt hij in top en neemt elk kind een gezinsvlag mee voor het Schatboek. Tik op de vlag om te zien wie hoeveel vond (ook als ouder). Geen sterren, gewoon samen spelen.',
+  },
+  {
     versie: '0.154',
     datum: '2026-11-10',
     titel: 'De wereld: zwaaien met stickers, samen spelen en feesten',

@@ -108,7 +108,7 @@
   position: relative; width: min(640px, 100%); max-height: 100%; overflow: auto; background: #FFF6DC; color: #3A2410; border: 5px solid #2B2420; border-radius: 28px;
   box-shadow: 0 8px 0 rgba(43,36,32,.35); padding: 18px 22px 20px; font-family: 'Baloo 2', Nunito, sans-serif;
 }
-.dorp .dorp-kaart:has(.dorp-tabs) { width: min(720px, 100%); }
+.dorp .dorp-kaart:has(.dorp-tabs) { width: min(800px, 100%); }
 .dorp .dorp-kaart h2 { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; font-size: 28px; min-height: 56px; }
 .dorp .dorp-kaart h2 img { width: 56px; height: 56px; }
 .dorp .dorp-sluit { position: absolute; top: 12px; right: 12px; width: 64px; height: 64px; border-radius: 50%; border: 4px solid #2B2420; background: #fff; font-size: 26px; font-weight: 800; cursor: pointer; }
@@ -209,4 +209,20 @@
   .dorp .dorp-stickers { grid-template-columns: repeat(6, 52px); gap: 6px; padding: 6px; }
   .dorp .dorp-stickers button { width: 52px; height: 52px; }
   .dorp .dorp-stickers button img { width: 36px; height: 36px; }
+}
+
+/* de gezinsvlag: samen glinsters zoeken (gezinsdoel van de week) */
+.dorp .dorp-samen-balk { position: relative; height: 56px; border: 4px solid #2B2420; border-radius: 28px; background: #EFE8D4; overflow: hidden; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.dorp .dorp-samen-balk i { position: absolute; left: 0; top: 0; bottom: 0; background: linear-gradient(90deg, #5BB3E8, #3E7CC9); border-right: 3px solid #2B2420; }
+.dorp .dorp-samen-balk b { position: relative; font-size: 26px; color: #2B2420; }
+.dorp .dorp-samen-balk img { position: relative; width: 36px; height: 36px; }
+.dorp .dorp-samen-kinderen { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+.dorp .dorp-samen-kinderen li { display: flex; align-items: center; gap: 8px; padding: 6px 14px 6px 6px; background: #fff; border: 3px solid #2B2420; border-radius: 30px; font-weight: 800; font-size: 18px; }
+.dorp .dorp-samen-kinderen li.ik { box-shadow: 0 0 0 4px #FFD84A; }
+.dorp .dorp-samen-kinderen li b { font-size: 24px; }
+.dorp .dorp-samen-bol { width: 44px; height: 44px; border-radius: 50%; border: 3px solid #2B2420; display: grid; place-items: center; color: #fff; font: 800 22px 'Baloo 2', Nunito, sans-serif; }
+@media (max-height: 500px) {
+  .dorp .dorp-samen-balk { height: 44px; } .dorp .dorp-samen-balk b { font-size: 20px; }
+  .dorp .dorp-samen-kinderen { margin-top: 8px; } .dorp .dorp-samen-kinderen li { padding: 3px 10px 3px 3px; font-size: 15px; }
+  .dorp .dorp-samen-bol { width: 34px; height: 34px; font-size: 17px; }
 }

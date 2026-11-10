@@ -252,8 +252,8 @@ test('het nieuwe dorp: een ouder gaat door de oostpoort naar het Meer', async ({
   await naar(page, '/ouder/wereld')
   const veld = page.locator('canvas.wereld-veld')
   await expect(veld).toHaveAttribute('aria-label', 'Het dorp')
-  await page.keyboard.down('ArrowRight')
-  await expect(veld).toHaveAttribute('aria-label', 'Het Meer', { timeout: 8000 })
+  // een echte toets die je ingedrukt houdt, herhaalt zich; zo mist de test geen druk als het dorp net nog opstart
+  await expect.poll(async () => { await page.keyboard.down('ArrowRight'); return veld.getAttribute('aria-label') }, { timeout: 8000 }).toBe('Het Meer')
   await page.keyboard.up('ArrowRight')
   expect(fouten).toEqual([])
 })
@@ -291,6 +291,25 @@ test('het Platteland: een fiets nemen uit het rek', async ({ page }) => {
   await expect(page.locator('canvas.wereld-veld')).toHaveAttribute('aria-label', 'Het Platteland')
   await page.getByRole('button', { name: 'Fiets', exact: true }).click()
   await expect(page.getByRole('button', { name: 'Zet terug' })).toBeVisible()
+  expect(fouten).toEqual([])
+})
+
+test('Mijn tuintje water geven en de gezinsvlag bekijken', async ({ page }) => {
+  const fouten: string[] = []
+  page.on('pageerror', (e) => fouten.push(e.message))
+  await startAls(page, 'luca')
+  await doorWelkomstpad(page)
+  await page.evaluate(() => sessionStorage.setItem('dorp-plek-luca', JSON.stringify({ s: 'dorp', tx: 8, ty: 17 })))
+  await naar(page, '/kind/luca/wereld')
+  await page.getByRole('button', { name: 'Water', exact: true }).click({ force: true })
+  await expect(page.locator('.dorp-melding')).toContainText('kiempje')
+  await expect(page.getByRole('button', { name: 'Tuintje', exact: true })).toBeVisible()
+  await naar(page, '/kind/luca')
+  await page.evaluate(() => sessionStorage.setItem('dorp-plek-luca', JSON.stringify({ s: 'dorp', tx: 8, ty: 8 })))
+  await naar(page, '/kind/luca/wereld')
+  await page.getByRole('button', { name: 'Samen', exact: true }).click({ force: true })
+  await expect(page.getByRole('dialog', { name: 'De gezinsvlag' })).toContainText('Samen deze week')
+  await expect(page.getByLabel('Luca: 0 glinsters')).toBeVisible()
   expect(fouten).toEqual([])
 })
 

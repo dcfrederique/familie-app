@@ -10,6 +10,7 @@ import { WEER_TINT, type Weer } from '../wereld/weer.ts'
 import { LAND_TEKEN, bakLand } from './landTekenen.ts'
 import { GEBIED_TEKEN, bakBuiten } from './gebiedTekenen.ts'
 import { STAD_TEKEN } from './stadTekenen.ts'
+import { TUIN_TEKEN } from './tuinTekenen.ts'
 import { VLAGGEN } from './land.ts'
 import { APPELS_PER_BOOM, opWeg, type DorpDing, type Glinster, type Richting, type Scene } from './kaart.ts'
 import {
@@ -51,6 +52,7 @@ const TEKEN: Record<string, Tekening> = {
   ...LAND_TEKEN,
   ...GEBIED_TEKEN,
   ...STAD_TEKEN,
+  ...TUIN_TEKEN,
   boom: (g) => { stam(g); kroon(g, BOL, '#3A8C47', '#52A957') },
   appelboom: (g, _w, _h, v) => {
     stam(g); kroon(g, BOL, '#4A9E4C', '#69BC5F')
@@ -515,7 +517,7 @@ export class DorpTekenaar {
         continue
       }
       lijst.push({ y: d.s === 'steiger' ? (d.f[1] - .5) * T : ay, f: () => {
-        const v = d.appel || d.oogst || d.plek === 'groente' || d.plek === 'kasteel' ? String(b.appels[d.id] ?? APPELS_PER_BOOM) : d.plek === 'rek' && b.ik.fiets ? 'leeg' : d.v ?? ''
+        const v = d.appel || d.oogst || d.plek === 'groente' || d.plek === 'kasteel' ? String(b.appels[d.id] ?? APPELS_PER_BOOM) : d.plek === 'tuin' || d.plek === 'doel' ? String(b.appels[d.id] ?? 0) : d.plek === 'rek' && b.ik.fiets ? 'leeg' : d.v ?? ''
         g.drawImage(this.sprite(d, v), ax - d.w / 2, ay - d.h + 4, d.w, d.h)
         if (d.s === 'fontein' && !b.rustig) { g.strokeStyle = 'rgba(190,230,255,.9)'; g.lineWidth = 3; for (let i = 0; i < 5; i++) { const q = (t * .9 + i / 5) % 1, a = (i - 2) * .5; g.beginPath(); g.moveTo(ax, ay - 108); g.quadraticCurveTo(ax + a * 22, ay - 128 - 8 * (1 - q), ax + a * 40, ay - 88 + 44 * q); g.stroke() } }
         if (d.s === 'bord' && b.bordOpen) {
