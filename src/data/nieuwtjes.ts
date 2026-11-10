@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.145',
+    datum: '2026-11-10',
+    titel: 'Pepernoten zoeken: kussentjes met een glansje',
+    tekst: 'Bij Pepernoten zoeken hebben de dichte kussentjes nu een zacht glansje en een stikseltje rondom. De 24 nieuwe spelletjes van de voorbije dagen zijn nagekeken: ze passen allemaal zonder scrollen op elke tablet en op de gsm liggend.',
+  },
+  {
     versie: '0.144',
     datum: '2026-11-10',
     titel: "Pakjessets, Drie op de kade en De dakgoten",
