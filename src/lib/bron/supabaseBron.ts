@@ -113,6 +113,11 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
       const h = data as { nieuw?: string[]; cadeau?: { soort: string; sleutel: string } | null }
       return { nieuw: h.nieuw ?? [], cadeau: h.cadeau ?? null }
     },
+    async wereldDagschat(kindId, kandidaten) {
+      const { data, error } = await sb.rpc('wereld_dagschat', { p_kind: kindId, p_kandidaten: kandidaten })
+      if (error || !data) return 'al'
+      return (data as { cadeau?: { soort: string; sleutel: string } | null }).cadeau ?? null
+    },
     async aanbod() {
       const [spel, stukken, huis, keuzes, verborgen] = await Promise.all([
         sb.from('spel_prijzen').select('sleutel, standaard_vrij'),

@@ -40,6 +40,7 @@ interface Toestand {
   /** Spelletjes die de ouders net vrijgaven en kinderen nog niet hoorden; per kind de laatste dag van het hoera. */
   nieuwVrij: string[]
   hoeraDag: Record<string, string>
+  dagschatDag: Record<string, string>
   weekmenu: Maaltijd[]
   ouderTaken: OuderTaak[]
   notities: Notitie[]
@@ -96,7 +97,7 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
     aanbod: { dicht: [], nieuw: [], verborgen: {}, prijzen: {} },
     // Twee spelletjes net vrijgegeven, zodat het dagelijkse hoera meteen te zien is.
     nieuwVrij: ['pompoen', 'basket'],
-    hoeraDag: {},
+    hoeraDag: {}, dagschatDag: {},
     // Vandaag al iets op het menu, zodat het startscherm van de kinderen het meteen toont.
     weekmenu: [{ dag: dagVan(new Date()), moment: 'avond', gerecht: 'Spaghetti bolognese', prentje: null }],
     // Een kleine voorraad en één recept, zodat Voorraad en Recepten niet leeg openen.
@@ -278,6 +279,17 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
       const cadeau = kiesCadeau(k.kan_lezen, kindId, new Set(eigen), t.aanbod)
       if (cadeau) eigen.push(bezitSleutel(cadeau.soort, cadeau.sleutel))
       return { nieuw, cadeau: cadeau && { soort: cadeau.soort, sleutel: cadeau.sleutel } }
+    },
+    async wereldDagschat(kindId) {
+      const k = kinderen.find((x) => x.id === kindId)
+      if (!k) throw new Error('kind niet gevonden')
+      const dag = dagVan(new Date())
+      if (t.dagschatDag[kindId] === dag) return 'al'
+      t.dagschatDag[kindId] = dag
+      const eigen = (t.aankopen[kindId] ??= [])
+      const cadeau = kiesCadeau(k.kan_lezen, kindId, new Set(eigen), t.aanbod)
+      if (cadeau) eigen.push(bezitSleutel(cadeau.soort, cadeau.sleutel))
+      return cadeau && { soort: cadeau.soort, sleutel: cadeau.sleutel }
     },
     async aanbod() {
       const a = t.aanbod

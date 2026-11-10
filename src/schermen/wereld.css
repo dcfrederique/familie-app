@@ -102,7 +102,7 @@
   font: 800 20px 'Baloo 2', Nunito, sans-serif; z-index: 4;
 }
 .dorp .dorp-melding img { width: 48px; height: 48px; flex: none; }
-.dorp .wereld-tip { left: 100px; top: 30px; max-width: calc(100% - 340px); }
+.dorp .wereld-tip { left: 260px; top: 30px; max-width: calc(100% - 520px); }
 .dorp .dorp-ov { position: absolute; inset: 0; background: rgba(43,36,32,.45); display: grid; place-items: center; z-index: 8; padding: 16px; }
 .dorp .dorp-kaart {
   position: relative; width: min(640px, 100%); max-height: 100%; overflow: auto; background: #FFF6DC; color: #3A2410; border: 5px solid #2B2420; border-radius: 28px;
@@ -111,14 +111,66 @@
 .dorp .dorp-kaart h2 { display: flex; align-items: center; gap: 10px; margin: 0 0 12px; font-size: 28px; min-height: 56px; }
 .dorp .dorp-kaart h2 img { width: 56px; height: 56px; }
 .dorp .dorp-sluit { position: absolute; top: 12px; right: 12px; width: 64px; height: 64px; border-radius: 50%; border: 4px solid #2B2420; background: #fff; font-size: 26px; font-weight: 800; cursor: pointer; }
-.dorp .dorp-slots { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.dorp .dorp-slots { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
 .dorp .dorp-slot { position: relative; display: grid; justify-items: center; gap: 2px; padding: 10px 6px 8px; background: #fff; border: 3px solid #2B2420; border-radius: 18px; font-weight: 800; font-size: 15px; text-align: center; }
 .dorp .dorp-slot img { width: 64px; height: 64px; }
 .dorp .dorp-slot.leeg { background: #EFE8D4; border-style: dashed; color: #8A7F66; }
 .dorp .dorp-slot.nieuw { border-color: #E8493F; box-shadow: 0 0 0 4px #FFD84A; }
 .dorp .dorp-aantal { position: absolute; top: 6px; right: 8px; font-size: 14px; color: #8A5A2B; }
 .dorp .dorp-voet { margin: 12px 0 0; font-weight: 700; font-size: 17px; }
+/* Dorpsbord: stempels bovenaan, het bord met drie opdrachtjes, de dagschat */
+.dorp .dorp-stempels {
+  position: absolute; top: max(14px, env(safe-area-inset-top)); left: calc(max(14px, env(safe-area-inset-left)) + 86px); height: 72px; padding: 0 14px; display: flex; align-items: center; gap: 8px;
+  background: #FFF6DC; border: 4px solid #2B2420; border-radius: 22px; box-shadow: 0 5px 0 rgba(43,36,32,.35); cursor: pointer; z-index: 3;
+}
+.dorp .dorp-stempels i { width: 30px; height: 30px; border-radius: 50%; border: 3px dashed #8A7F66; background: #EFE8D4; }
+.dorp .dorp-stempels i.vol { border: 3px solid #2B2420; background: #E8493F radial-gradient(circle at 50% 50%, #FFD84A 0 30%, transparent 32%); }
+.dorp .dorp-stempels img { width: 40px; height: 40px; }
+.dorp .dorp-bord { width: min(760px, 100%); }
+.dorp .dorp-opdrachten { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.dorp .dorp-opdracht { position: relative; display: grid; justify-items: center; align-content: start; gap: 6px; padding: 12px 8px; background: #fff; border: 3px solid #2B2420; border-radius: 20px; text-align: center; font-weight: 800; font-size: 18px; line-height: 1.15; }
+.dorp .dorp-opdracht img { width: 96px; height: 96px; }
+.dorp .dorp-opdracht.klaar { background: #E3F4D6; }
+.dorp .dorp-opdracht.klaar::after { content: '✓'; position: absolute; top: 6px; left: 10px; width: 40px; height: 40px; border-radius: 50%; background: #2E9A45; color: #fff; border: 3px solid #2B2420; display: grid; place-items: center; font-size: 22px; }
+.dorp .dorp-luid { position: absolute; top: 6px; right: 6px; }
+.dorp .dorp-bolletjes { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; }
+.dorp .dorp-bolletjes i { width: 18px; height: 18px; border-radius: 50%; border: 2.5px solid #2B2420; background: #EFE8D4; }
+.dorp .dorp-bolletjes i.vol { background: #F7C531; }
+.dorp .dorp-schat { margin-top: 14px; display: flex; align-items: center; gap: 12px; padding: 10px 12px; background: #FFE9A8; border: 3px solid #2B2420; border-radius: 20px; font-weight: 800; font-size: 18px; }
+.dorp .dorp-schat.dicht { background: #EFE8D4; }
+.dorp .dorp-schat > img { width: 64px; height: 64px; flex: none; }
+.dorp .dorp-schat > span { flex: 1; }
+.dorp .dorp-schat .groot-knop { margin-left: auto; min-width: 110px; min-height: 64px; font-size: 22px; }
+.dorp .hoera { z-index: 9; }
+
+/* Vissen aan de steiger */
+.dorp .dorp-vissen { position: absolute; inset: 0; z-index: 8; background: #5FB0D9; }
+.dorp .dorp-vissen-veld { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.dorp .dorp-vissen-kop {
+  position: absolute; top: max(14px, env(safe-area-inset-top)); left: max(14px, env(safe-area-inset-left)); display: flex; align-items: center; gap: 10px; padding: 6px 18px 6px 8px;
+  background: #FFF6DC; color: #3A2410; border: 4px solid #2B2420; border-radius: 22px; font: 800 22px 'Baloo 2', Nunito, sans-serif; max-width: calc(100% - 120px);
+}
+.dorp .dorp-vissen-kop img { width: 52px; height: 52px; }
+.dorp .dorp-vissen .dorp-sluit { top: max(14px, env(safe-area-inset-top)); right: max(14px, env(safe-area-inset-right)); }
+.dorp .dorp-hijs {
+  position: absolute; right: max(28px, env(safe-area-inset-right)); bottom: max(28px, env(safe-area-inset-bottom)); min-width: 140px; height: 120px; padding: 0 22px;
+  display: flex; align-items: center; justify-content: center; gap: 10px; background: #FFF6DC; color: #3A2410; border: 5px solid #2B2420; border-radius: 36px;
+  box-shadow: 0 6px 0 rgba(43,36,32,.35); font: 800 28px 'Baloo 2', Nunito, sans-serif; cursor: pointer;
+}
+.dorp .dorp-hijs img { width: 72px; height: 72px; }
+.dorp .dorp-hijs.hap { background: #FFD84A; }
+@media (prefers-reduced-motion: no-preference) { .dorp .dorp-hijs.hap { animation: dorp-hap .5s ease-in-out infinite alternate; } }
+@keyframes dorp-hap { to { transform: scale(1.08); } }
+
 @media (max-height: 500px) {
+  .dorp .dorp-stempels { height: 56px; left: calc(max(14px, env(safe-area-inset-left)) + 68px); }
+  .dorp .dorp-stempels i { width: 24px; height: 24px; }
+  .dorp .dorp-opdracht img { width: 56px; height: 56px; }
+  .dorp .dorp-opdracht { font-size: 15px; padding: 8px 6px; }
+  .dorp .dorp-schat { margin-top: 8px; padding: 6px 10px; }
+  .dorp .dorp-schat > img { width: 44px; height: 44px; }
+  .dorp .dorp-hijs { height: 92px; min-width: 110px; font-size: 22px; }
+  .dorp .dorp-hijs img { width: 52px; height: 52px; }
   .dorp .dorp-boek, .dorp .dorp-thuis { width: 56px; height: 56px; border-radius: 18px; }
   .dorp .dorp-boek img, .dorp .dorp-thuis img { width: 38px; height: 38px; }
   .dorp .dorp-sterren { height: 50px; font-size: 22px; }
@@ -126,7 +178,8 @@
   .dorp .dorp-doe img { width: 56px; height: 56px; }
   .dorp .dorp-melding { font-size: 17px; }
   .dorp .dorp-kaart { padding: 12px 16px; }
-  .dorp .dorp-slots { grid-template-columns: repeat(8, 1fr); gap: 8px; }
+  .dorp .dorp-slots { grid-template-columns: repeat(10, 1fr); gap: 6px; }
+  .dorp .dorp-slot img { width: 40px; height: 40px; }
   .dorp .dorp-slot img { width: 44px; height: 44px; }
   .dorp .dorp-slot span { font-size: 12px; }
 }

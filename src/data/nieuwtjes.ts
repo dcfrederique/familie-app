@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.150',
+    datum: '2026-11-10',
+    titel: 'Bakker Bram, het Dorpsbord en vissen in het dorp',
+    tekst: 'In het dorp van De wereld staat nu Bakker Bram voor zijn bakkerij, en bij de fontein hangt het Dorpsbord met elke dag drie opdrachtjes per kind, op zijn niveau (bv. pluk 4 appels, vang een vis, zeg hallo tegen Bram). Zijn ze alle drie klaar, dan haalt het kind aan het bord de dagschat: een gratis stuk voor het figuurtje of Mijn huis uit de winkel, één keer per dag, zoals het cadeautje van de dag. Er zijn geen sterren mee te verdienen en een gemiste dag kost niets. Aan de vijver ligt een steiger om te vissen (wacht tot de dobber zakt en tik op Hijs!), vissen en de zeldzame goudvis komen in het Schatboek. Wie een huisdier heeft, ziet het nu achter zich aan lopen in de wereld en kan het aaien; dat telt ook als knuffel in Mijn huisdier.',
+  },
+  {
     versie: '0.149',
     datum: '2026-11-10',
     titel: 'Als ouder op bezoek in het dorp',

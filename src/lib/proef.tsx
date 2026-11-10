@@ -14,7 +14,7 @@ export const useProef = () => useContext(ProefContext)
 const GEBLOKKEERD: Record<string, unknown> = {
   activiteitOpslaan: 0, kopen: undefined, figuurtjeBewaren: undefined, huisBewaren: undefined,
   welkomAfronden: 0, themaKiezen: undefined, taakIndienen: undefined, tijdAanvragen: undefined,
-  chatSturen: undefined, potStorten: undefined, huisdierKiezen: undefined, huisdierVerzorgen: 0, dagboekOpslaan: undefined, gezinspotStorten: undefined, chatAanwezig: undefined, chatGelezen: undefined, dagelijksHoera: null,
+  chatSturen: undefined, potStorten: undefined, huisdierKiezen: undefined, huisdierVerzorgen: 0, dagboekOpslaan: undefined, gezinspotStorten: undefined, chatAanwezig: undefined, chatGelezen: undefined, dagelijksHoera: null, wereldDagschat: 'al',
 }
 
 /** Een bron die leest als de echte, maar de acties van het kind overslaat. */

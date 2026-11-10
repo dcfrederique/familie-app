@@ -136,6 +136,7 @@ Een Playwright-test in `e2e/` laadt De wereld, laat 3 seconden lopen zonder graf
 - `src/lib/dorp/voortgang.ts`: glinsters en appels van vandaag en het Schatboek, op het toestel (geen sterren, dus geen server nodig). Fase 3 zet dit op de server samen met het Dorpsbord.
 - `src/schermen/Dorp.tsx`: het scherm, door `Wereld.tsx` getoond voor het gebied `dorp` zolang Wereldinstellingen → Dorp op Nieuw staat (standaard). De andere gebieden en het dorp van vroeger gebruiken nog de oude tekenaar.
 - Een ouder (`/ouder/wereld`) loopt bij elk kind binnen (de kamer van dat kind, meubels alleen bekijken) en gaat door alle poorten; de poort naar Springland opent `/ouder/springland` (nieuwtje 0.149).
+- Fase 3 en 4 (nieuwtje 0.150): Bakker Bram (`bram` in `kaart.ts`, getekend als figuurtje met bakkersmuts), het Dorpsbord (`src/lib/dorp/opdrachten.ts`: drie opdrachtjes per dag, niveau volgens leeftijd, vast toeval per kind en dag; `src/schermen/DorpBord.tsx`), de dagschat op de server (`wereld_dagschat`, migratie 20261110000600: één gratis stuk per dag, zelfde keuze als het cadeautje van het hoera), vissen aan de steiger (`src/schermen/DorpVissen.tsx`, visje en goudvis in het Schatboek) en het huisdier dat meeloopt (plaatje uit `dierSvg`, aaien = gratis knuffel). De opdrachtjes zelf tellen op de tablet (`voortgang.ts`), want ze leveren niets op wat de server moet bewaken.
 - Lopen gaat in het dorp altijd tegel voor tegel. De gebouwen van de spelletjes staan niet in het nieuwe dorp (ze zitten in het Spellenhuis); Kaart bewerken werkt alleen nog voor de andere gebieden (een kindhuis dat in een ander gebied staat, verschijnt niet in het dorp).
 
 ## Fases
@@ -146,8 +147,8 @@ Een Playwright-test in `e2e/` laadt De wereld, laat 3 seconden lopen zonder graf
 | 1 | Nieuwe tekenaanpak: atlas, adaptieve kwaliteit, prestatietest (**klaar voor het dorp**, `src/lib/dorp/tekenen.ts`, 60 beelden per seconde) | Vlot, ook op de zwakste tablet |
 | 2 | Het dorp opnieuw getekend volgens de zeven regels, glinsters, Schatboek, doen-knop, appels plukken (**klaar**, nieuwtje 0.148) | Een mooi dorp met elke dag iets te zoeken |
 | 2b | Huizen binnenlopen: eigen kamer met ingangen naar Kleerkast, Mijn dag, huisdier, Schatboek (**klaar**, nieuwtje 0.148) | In je eigen huis kunnen |
-| 3 | Bewoners, Dorpsbord met opdrachtjes, dagschat | Een reden om elke dag te komen |
-| 4 | Appels plukken, vissen, huisdier mee | Dingen om te doen buiten de deuren |
+| 3 | Bewoners, Dorpsbord met opdrachtjes, dagschat (**klaar voor het dorp**, nieuwtje 0.150) | Een reden om elke dag te komen |
+| 4 | Appels plukken, vissen, huisdier mee (**klaar**, nieuwtje 0.150) | Dingen om te doen buiten de deuren |
 | 4b | De andere zeven gebieden één voor één hertekenen en bevolken (Platteland met fietsen eerst) | Overal iets te doen |
 | 5 | Stickers en samen-opdracht, gebeurtenissen uit data, rustiger gebouwen | Samen spelen, het dorp verandert |
 
