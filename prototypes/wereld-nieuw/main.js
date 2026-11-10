@@ -58,7 +58,7 @@ let solid = new Set()
 const sol = (x0, y0, w, h) => { for (let y = y0; y < y0 + h; y++) for (let x = x0; x < x0 + w; x++) solid.add(x + ',' + y) }
 const isVrij = (x, y) => x >= 0 && y >= 0 && x < GW && y < GH && !solid.has(x + ',' + y)
 const PLEIN = [12, 6, 10, 6], MIDDEN = [17 * T, 9 * T]
-const WEG = [[2, 5, 30, 1], [2, 12, 30, 2], [7, 6, 2, 6], [25, 6, 2, 6], [16, 14, 2, 4], [18, 17, 5, 1], [6, 14, 1, 1]]
+const WEG = [[2, 5, 30, 1], [0, 12, 32, 2], [7, 6, 2, 6], [25, 6, 2, 6], [16, 14, 2, 4], [18, 17, 5, 1], [6, 14, 1, 1]]
 const BEDDEN = [[10, 7, 1, 4], [23, 7, 1, 4], [15, 14, 1, 2], [18, 14, 1, 2]]
 const GAARD = [3, 14, 7, 6]
 let dingen = [
@@ -77,12 +77,13 @@ let dingen = [
   ...[[4, 15], [8, 15], [4, 17], [6, 17], [8, 17]].map(([x, y], i) => ({ id: 'appel' + i, s: 'appelboom', f: [x, y, 1, 1], w: 140, h: 160, appels: 4, sch: 'boom' })),
   { id: 'hekrij', s: 'hekrij', f: [3, 19, 7, 1], w: 336, h: 48 },
   ...[[12, 16], [13, 18], [20, 15], [30, 14], [3, 9], [30, 9]].map(([x, y], i) => ({ id: 'boom' + i, s: i % 2 ? 'struik' : 'boom', f: [x, y, 1, 1], w: i % 2 ? 90 : 140, h: i % 2 ? 70 : 160, sch: 'boom' })),
+  { id: 'wijzerL', s: 'wijzer', f: [3, 11, 1, 1], w: 90, h: 100, v: 'links', sch: 'klein' },
   { id: 'riet1', s: 'riet', f: [24, 19, 1, 1], w: 60, h: 90 }, { id: 'riet2', s: 'riet', f: [31, 16, 1, 1], w: 60, h: 90 },
 ]
 for (const d of dingen) sol(...d.f)
 for (const b of BEDDEN) sol(...b)
 sol(0, 0, GW, 3); sol(0, 0, 2, GH); sol(GW - 2, 0, 2, GH); sol(0, GH - 1, GW, 1); sol(2, 3, 4, 2); sol(28, 3, 4, 2)
-sol(GAARD[0], GAARD[1], GAARD[2], 1); sol(GAARD[0], GAARD[1], 1, GAARD[3]); sol(GAARD[0] + GAARD[2] - 1, GAARD[1], 1, GAARD[3]); solid.delete('6,14')
+sol(GAARD[0], GAARD[1], GAARD[2], 1); sol(GAARD[0], GAARD[1], 1, GAARD[3]); sol(GAARD[0] + GAARD[2] - 1, GAARD[1], 1, GAARD[3]); solid.delete('6,14'); solid.delete('1,12'); solid.delete('1,13')
 const POEL = { cx: 27.6, cy: 17.4, rx: 4.0, ry: 2.3 }
 for (let y = 0; y < GH; y++) for (let x = 0; x < GW; x++) { const dx = (x + .5 - POEL.cx) / (POEL.rx + .25), dy = (y + .5 - POEL.cy) / (POEL.ry + .3); if (dx * dx + dy * dy < 1) solid.add(x + ',' + y) }
 const BRAM = { x: 9, y: 6 }
@@ -201,7 +202,7 @@ const TEKEN = {
     embleem(g, -150, 'ster')
   },
 }
-const spriteVan = (d) => sprite(d.s, d.w, d.h, d.s === 'appelboom' ? d.appels : d.s === 'haag' ? d.w : 0, TEKEN[d.s])
+const spriteVan = (d) => sprite(d.s, d.w, d.h, d.s === 'appelboom' ? d.appels : d.s === 'haag' ? d.w : d.s === 'wijzer' ? d.v : d.s === 'vlagpaal' ? (LAND.vlaggen[d.vlag] ? 1 : 0) : 0, TEKEN[d.s])
 
 /* ---------- de grond: één keer gebakken, met schaduwen, bosrand, plein en vijver ---------- */
 const R = rnd(11)
@@ -270,7 +271,7 @@ function bakGrond() {
   // bosrand als kader: twee rijen, achteraan donkerder
   const rij = []
   for (let x = -10; x < WW + 20; x += 46) { rij.push([x + R() * 10, 52 + R() * 8, 0]); rij.push([x + 23 + R() * 10, 104 + R() * 10, 1]); rij.push([x + R() * 12, 148 + R() * 6, 2]) }
-  for (const zx of [0, WW - 96]) for (let y = 190; y < WH - 30; y += 44) { rij.push([zx + 26 + R() * 10, y + R() * 8, 1]); rij.push([zx + 70 + R() * 8, y + 22 + R() * 8, 2]) }
+  for (const zx of [0, WW - 96]) for (let y = 190; y < WH - 30; y += 44) { if (!zx && y > 11.6 * T && y < 14.4 * T) continue; rij.push([zx + 26 + R() * 10, y + R() * 8, 1]); rij.push([zx + 70 + R() * 8, y + 22 + R() * 8, 2]) }
   for (const [x0, x1] of [[96, 290], [1342, 1536]]) for (let x = x0; x < x1; x += 44) { rij.push([x + R() * 8, 196 + R() * 6, 2]); rij.push([x + 20 + R() * 8, 238 + R() * 4, 1]) }
   rij.sort((a, b) => a[1] - b[1])
   for (const [x, y, l] of rij) { g.save(); g.translate(x, y); g.fillStyle = 'rgba(20,50,20,.16)'; g.beginPath(); g.ellipse(12, -2, 34, 9, 0, 0, 7); g.fill(); if ((x * 7 + y) % 3 < 1.2) { stam(g, 40); kroon(g, [[-20, -62, 24], [20, -62, 24], [0, -84, 28]], l ? '#3A8C47' : '#2F7A45', l ? '#4FA555' : '#3F8F50') } else den(g, .92 + l * .08, l ? '#2F7D50' : '#286B48', l ? '#3F9660' : '#35825A'); g.restore() }
@@ -339,6 +340,74 @@ const OPDRACHTEN = {
   Yuna: [{ t: 'appel', n: 2, i: 'appel', tekst: 'Pluk 2 appels voor Bram' }, { t: 'vis', n: 1, i: 'vis', tekst: 'Vang een vis' }, { t: 'glinster', n: 3, i: 'glinster', tekst: 'Vind 3 glinsters' }],
   Feline: [{ t: 'appel', n: 1, i: 'appel', tekst: 'Pluk een appel' }, { t: 'aai', n: 1, i: 'hond', tekst: 'Aai je hondje' }, { t: 'glinster', n: 2, i: 'glinster', tekst: 'Vind 2 glinsters' }],
 }
+/* ---------- tweede gebied: het Platteland (fietspad in een lus, schapen, boerin Roos) ---------- */
+Object.assign(ICOON, {
+  fiets: (g) => { g.strokeStyle = INK; g.lineWidth = .1; for (const x of [-.5, .5]) { g.fillStyle = '#fff'; g.beginPath(); g.arc(x, .3, .34, 0, 7); g.fill(); g.stroke() } g.strokeStyle = '#E8493F'; g.lineWidth = .13; g.lineJoin = 'round'; g.beginPath(); g.moveTo(-.5, .3); g.lineTo(-.15, -.25); g.lineTo(.3, -.25); g.lineTo(.5, .3); g.moveTo(-.15, -.25); g.lineTo(.05, .3); g.lineTo(.3, -.25); g.moveTo(.3, -.25); g.lineTo(.25, -.55); g.lineTo(.5, -.55); g.moveTo(-.28, -.42); g.lineTo(-.02, -.42); g.stroke() },
+  schaap: (g) => { g.fillStyle = '#fff'; pad(g, () => { for (const [x, y] of [[-.35, -.1], [0, -.3], [.35, -.1], [-.2, .25], [.2, .25]]) { g.moveTo(x + .36, y); g.arc(x, y, .36, 0, 7) } }); g.fillStyle = '#fff'; g.beginPath(); g.arc(0, 0, .5, 0, 7); g.fill(); g.fillStyle = '#4A3F3A'; pad(g, () => g.ellipse(0, .1, .26, .32, 0, 0, 7)); g.fillStyle = '#fff'; g.beginPath(); g.arc(-.1, .02, .05, 0, 7); g.arc(.1, .02, .05, 0, 7); g.fill() },
+  vlag: (g) => { g.strokeStyle = INK; g.lineWidth = .12; g.beginPath(); g.moveTo(-.4, .8); g.lineTo(-.4, -.8); g.stroke(); g.fillStyle = '#E8493F'; pad(g, () => { g.moveTo(-.4, -.8); g.lineTo(.7, -.45); g.lineTo(-.4, -.1); g.closePath() }) },
+})
+Object.assign(TEKEN, {
+  schuur: (g) => {
+    vorm(g, '#C9463D', () => g.roundRect(-92, -110, 184, 110, 4)); g.fillStyle = 'rgba(0,0,0,.1)'; g.fillRect(36, -108, 54.5, 106)
+    g.strokeStyle = 'rgba(0,0,0,.14)'; g.lineWidth = 2; for (let x = -74; x < 90; x += 18) { g.beginPath(); g.moveTo(x, -108); g.lineTo(x, -2); g.stroke() }
+    const dak = () => { g.moveTo(-108, -104); g.lineTo(-78, -164); g.lineTo(-30, -200); g.lineTo(30, -200); g.lineTo(78, -164); g.lineTo(108, -104); g.closePath() }
+    vorm(g, '#6E7B8C', dak); g.fillStyle = 'rgba(255,255,255,.16)'; g.beginPath(); g.moveTo(-108, -104); g.lineTo(-78, -164); g.lineTo(-30, -200); g.lineTo(-8, -200); g.lineTo(-50, -104); g.fill(); g.lineWidth = 3; g.strokeStyle = INK; g.beginPath(); dak(); g.stroke()
+    vorm(g, '#FFFFFF', () => g.roundRect(-112, -110, 224, 9, 4))
+    vorm(g, '#8F2F2C', () => g.roundRect(-34, -74, 68, 74, 4)); g.strokeStyle = '#FFFFFF'; g.lineWidth = 4; g.strokeRect(-30, -70, 60, 68); g.beginPath(); g.moveTo(-30, -70); g.lineTo(30, -2); g.moveTo(30, -70); g.lineTo(-30, -2); g.stroke()
+    vorm(g, '#FFFFFF', () => g.arc(0, -138, 15, 0, 7)); g.fillStyle = '#4A3F3A'; g.beginPath(); g.arc(0, -138, 10, 0, 7); g.fill()
+  },
+  molen: (g) => { vorm(g, '#F6EBD3', () => { g.moveTo(-34, 0); g.lineTo(-20, -130); g.lineTo(20, -130); g.lineTo(34, 0); g.closePath() }); g.fillStyle = 'rgba(0,0,0,.08)'; g.beginPath(); g.moveTo(34, 0); g.lineTo(20, -130); g.lineTo(6, -130); g.lineTo(12, 0); g.fill(); vorm(g, '#B96A3C', () => { g.moveTo(-28, -128); g.lineTo(0, -168); g.lineTo(28, -128); g.closePath() }); vorm(g, '#8A5A2B', () => { g.moveTo(-12, 0); g.lineTo(-12, -34); g.arc(0, -34, 12, Math.PI, 0); g.lineTo(12, 0); g.closePath() }, 2.5); raam(g, -10, -96, 20, 22, null, false) },
+  hooi: (g) => { vorm(g, '#E9C465', () => g.ellipse(0, -24, 30, 24, 0, 0, 7)); g.strokeStyle = '#C99A3A'; g.lineWidth = 2.5; for (const r of [18, 10, 3]) { g.beginPath(); g.ellipse(-2, -24, r * 1.1, r * .9, 0, 0, 7); g.stroke() } },
+  rek: (g) => { for (const x of [-34, 0, 34]) { g.strokeStyle = INK; g.lineWidth = 8; g.beginPath(); g.arc(x, -6, 12, Math.PI, 0); g.stroke(); g.strokeStyle = '#8E99AB'; g.lineWidth = 4; g.beginPath(); g.arc(x, -6, 12, Math.PI, 0); g.stroke() } g.save(); g.translate(-4, -30); g.scale(30, 30); ICOON.fiets(g); g.restore() },
+  wijzer: (g, w, h, v) => { vorm(g, '#8A5A2B', () => g.roundRect(-4, -64, 8, 64, 3), 2.5); vorm(g, '#FFF6D6', () => { g.moveTo(-34, -92); g.lineTo(26, -92); g.lineTo(40, -74); g.lineTo(26, -56); g.lineTo(-34, -56); g.closePath() }); g.save(); if (v === 'links') { g.scale(-1, 1) } g.translate(v === 'links' ? 2 : -2, -74); g.scale(15, 15); ICOON[v === 'links' ? 'fiets' : 'huis'](g); g.restore() },
+  vlagpaal: (g, w, h, v) => { g.save(); g.translate(0, -30); g.scale(30, 30); g.globalAlpha = v ? 1 : .35; ICOON.vlag(g); g.restore() },
+  groentebak: (g) => { vorm(g, '#C9A27E', () => g.roundRect(-92, -92, 184, 92, 10)); vorm(g, '#7A5236', () => g.roundRect(-84, -84, 168, 76, 6), 2); for (let r = 0; r < 3; r++) for (let i = 0; i < 7; i++) { const x = -70 + i * 23.5, y = -68 + r * 24; if (r === 1) { vorm(g, '#F2994A', () => { g.moveTo(x - 4, y); g.lineTo(x + 4, y); g.lineTo(x, y + 9); g.closePath() }, 1.5); g.fillStyle = '#4FA35A'; g.beginPath(); g.arc(x, y - 3, 5, 0, 7); g.fill() } else vorm(g, r ? '#8FCB6A' : '#5BAE5A', () => g.arc(x, y, 8, 0, 7), 1.8) } },
+})
+const LAND = (() => {
+  const s = new Set(), gw = 34, gh = 21, R2 = rnd(23)
+  const zet = (x0, y0, w, h) => { for (let y = y0; y < y0 + h; y++) for (let x = x0; x < x0 + w; x++) s.add(x + ',' + y) }
+  zet(0, 0, gw, 4); zet(0, 0, 2, gh); zet(gw - 2, 0, 2, gh); zet(0, gh - 1, gw, 1); s.delete('32,11'); s.delete('32,12')
+  const weg = [[5, 6, 24, 2], [5, 16, 24, 2], [5, 6, 2, 12], [27, 6, 2, 12], [29, 11, 4, 2]]
+  const d = [
+    { id: 'schuur', s: 'schuur', f: [9, 9, 4, 2], w: 240, h: 220, sch: 'huis' },
+    { id: 'molen', s: 'molen', f: [23, 3, 2, 2], w: 120, h: 190, sch: 'rond' },
+    { id: 'groente', s: 'groentebak', f: [9, 13, 4, 2], w: 200, h: 104 },
+    { id: 'rek', s: 'rek', f: [30, 9, 2, 1], w: 110, h: 70, sch: 'klein' },
+    { id: 'wijzerH', s: 'wijzer', f: [30, 13, 1, 1], w: 90, h: 100, v: 'rechts', sch: 'klein' },
+    ...[[15, 9], [14, 14], [24, 14]].map(([x, y], i) => ({ id: 'hooi' + i, s: 'hooi', f: [x, y, 1, 1], w: 70, h: 60, sch: 'klein' })),
+    ...[[8, 3], [12, 3], [17, 3], [28, 3], [3, 9], [3, 14], [31, 16], [19, 12], [3, 18], [30, 18]].map(([x, y], i) => ({ id: 'lb' + i, s: i % 3 === 2 ? 'struik' : 'boom', f: [x, y, 1, 1], w: i % 3 === 2 ? 90 : 140, h: i % 3 === 2 ? 70 : 160, sch: 'boom' })),
+    ...[[5, 6], [27, 6], [27, 16], [5, 16]].map(([x, y], i) => ({ id: 'vlag' + i, s: 'vlagpaal', f: [x + (i === 0 || i === 3 ? -1 : 2), y + (i < 2 ? -1 : 2), 1, 1], w: 60, h: 70, vlag: i, cp: [x, y] })),
+  ]
+  for (const x of d) if (!x.cp) zet(...x.f)
+  const c = maakCv(gw * T * Q, gh * T * Q), g = c.getContext('2d'); g.scale(Q, Q); g.lineJoin = 'round'; g.lineCap = 'round'
+  const W = gw * T, H = gh * T, opW = (x, y) => weg.some(([a, b, w, h]) => x >= a && y >= b && x < a + w && y < b + h)
+  g.fillStyle = '#9BD070'; g.fillRect(0, 0, W, H)
+  g.fillStyle = 'rgba(255,255,255,.05)'; for (let y = 0; y < gh; y++) for (let x = y % 2; x < gw; x += 2) g.fillRect(x * T, y * T, T, T)
+  // akkers buiten de lus: gestreepte velden
+  for (const [a, b, w, h, k1, k2] of [[2, 4, 3, 2, '#E9D27A', '#DDC063'], [29, 14, 3, 2, '#B7DB7E', '#A3CC6A']]) { vorm(g, k1, () => g.roundRect(a * T + 6, b * T + 6, w * T - 12, h * T - 12, 10), 2.5); g.strokeStyle = k2; g.lineWidth = 5; for (let x = a * T + 20; x < (a + w) * T - 12; x += 14) { g.beginPath(); g.moveTo(x, b * T + 12); g.lineTo(x, (b + h) * T - 12); g.stroke() } }
+  g.strokeStyle = '#7FBE5C'; g.lineWidth = 2.2
+  for (let i = 0; i < 420; i++) { const x = R2() * W, y = R2() * H; if (opW((x / T) | 0, (y / T) | 0)) continue; g.beginPath(); g.moveTo(x - 4, y); g.lineTo(x - 5, y - 7); g.moveTo(x, y); g.lineTo(x, y - 9); g.moveTo(x + 4, y); g.lineTo(x + 5, y - 7); g.stroke() }
+  // fietspad: rood asfalt met witte stippellijn
+  const baan = (uit, kleur) => { g.fillStyle = kleur; for (const [a, b, w, h] of weg) { g.beginPath(); g.roundRect(a * T - uit, b * T - uit, w * T + uit * 2, h * T + uit * 2, 30 + uit); g.fill() } }
+  baan(6, '#9C4B3E'); baan(3, '#F4D9CF'); baan(0, '#D9796A')
+  g.strokeStyle = 'rgba(255,255,255,.85)'; g.lineWidth = 4; g.setLineDash([18, 16]); g.beginPath(); g.roundRect(6 * T, 7 * T, 22 * T, 10 * T, 26); g.stroke(); g.beginPath(); g.moveTo(28 * T + 30, 12 * T); g.lineTo(33 * T, 12 * T); g.stroke(); g.setLineDash([])
+  // bloemen in groepjes binnen de lus
+  const kl = ['#FFFFFF', '#FFD84A', '#FF8FB8', '#C9A6F2']
+  for (const [cx, cy, n] of [[17, 10, 18], [22, 12.5, 20], [16.5, 14, 14], [24, 9.5, 14], [20, 19, 16], [10, 19, 14], [14, 4.6, 12], [20, 4.8, 12]]) for (let i = 0; i < n; i++) { const a = R2() * 6.283, dd = Math.sqrt(R2()) * 60, x = cx * T + Math.cos(a) * dd * 1.5, y = cy * T + Math.sin(a) * dd * .7; if (opW((x / T) | 0, (y / T) | 0)) continue; g.fillStyle = kl[i % 4]; g.beginPath(); g.arc(x, y, 3.6, 0, 7); g.fill(); g.fillStyle = '#F2B33D'; g.beginPath(); g.arc(x, y, 1.4, 0, 7); g.fill() }
+  g.fillStyle = 'rgba(20,50,20,.17)'
+  for (const x of d) { const ax = (x.f[0] + x.f[2] / 2) * T, ay = (x.f[1] + x.f[3]) * T; if (x.sch === 'huis') { g.beginPath(); g.moveTo(ax - 92, ay); g.lineTo(ax + 92, ay); g.lineTo(ax + 150, ay - 44); g.lineTo(ax + 150, ay - 104); g.lineTo(ax + 92, ay - 60); g.closePath(); g.fill() } else if (x.sch) { g.beginPath(); g.ellipse(ax + 14, ay - 4, x.sch === 'klein' ? x.w * .4 : 46, x.sch === 'klein' ? 8 : 13, 0, 0, 7); g.fill() } }
+  const rij = []
+  for (let x = -10; x < W + 20; x += 46) { rij.push([x + R2() * 10, 52 + R2() * 8, 0]); rij.push([x + 23 + R2() * 10, 104 + R2() * 10, 1]); rij.push([x + R2() * 12, 150 + R2() * 6, 2]) }
+  for (const zx of [0, W - 96]) for (let y = 190; y < H - 30; y += 44) { if (zx && y > 10.6 * T && y < 13.6 * T) continue; rij.push([zx + 26 + R2() * 10, y + R2() * 8, 1]); rij.push([zx + 70 + R2() * 8, y + 22 + R2() * 8, 2]) }
+  rij.sort((a, b) => a[1] - b[1])
+  for (const [x, y, l] of rij) { g.save(); g.translate(x, y); g.fillStyle = 'rgba(20,50,20,.16)'; g.beginPath(); g.ellipse(12, -2, 34, 9, 0, 0, 7); g.fill(); if ((x * 7 + y) % 3 < 1.6) { stam(g, 40); kroon(g, [[-20, -62, 24], [20, -62, 24], [0, -84, 28]], l ? '#4A9E4C' : '#3A8C47', l ? '#69BC5F' : '#52A957') } else den(g, .92 + l * .08, l ? '#2F7D50' : '#286B48', l ? '#3F9660' : '#35825A'); g.restore() }
+  const hb = []; for (let x = 10; x < W; x += 30) hb.push([x, H - 18, 24]); kroon(g, hb, '#35874A', '#4AA35A')
+  const schapen = [[18, 10.5], [21, 11.5], [17, 13.5], [23, 13]].map(([x, y], i) => ({ x: x * T, y: y * T, tx: x * T, ty: y * T, w: i, face: 1, hup: 0 }))
+  return { GW: gw, GH: gh, solid: s, dingen: d, GROND: c, schapen, vlaggen: [false, false, false, false] }
+})()
+const ROOS = { x: 14, y: 11 }
+LAND.solid.add(ROOS.x + ',' + ROOS.y)
+const PLEKKEN = { dorp: DORP, huis: HUIS, land: LAND }
 const S = { plek: 'dorp', kind: 'Luca', maat: [1194, 834], tijd: 'dag', oud: false, voort: { appel: 0, vis: 0, glinster: 0, aai: 0 }, gevonden: new Set(), nieuw: new Set(), schatNaam: false, schatGehaald: false, sterren: 50, glinsters: [], bomen: {} }
 const leesNiet = () => S.kind === 'Feline'
 const opdr = () => OPDRACHTEN[S.kind]
@@ -392,7 +461,10 @@ addEventListener('keydown', (e) => { toets[e.key] = true; if (e.key === ' ' || e
 addEventListener('keyup', (e) => { toets[e.key] = false })
 cv.addEventListener('pointerdown', (e) => {
   const [mx, my] = lokaal(e), wx = mx / schaal + cam.x, wy = my / schaal + cam.y, tx = Math.floor(wx / T), ty = Math.floor(wy / T)
-  const pad = bfs(speler.tx, speler.ty, tx, ty)
+  const opHuis = S.plek === 'dorp' && tx >= 24 && tx <= 27 && ty >= 1 && ty <= 4
+  const pad = opHuis ? bfs(speler.tx, speler.ty, 26, 5) : bfs(speler.tx, speler.ty, tx, ty)
+  speler.doel = opHuis ? 'huis' : null
+  if (opHuis && pad && !pad.length) { ga('huis'); return }
   if (pad) { speler.route = pad; deeltjes.push({ t: 'tik', x: tx * T + 24, y: ty * T + 24, l: 0 }) }
 })
 function bfs(sx, sy, ex, ey) {
@@ -412,7 +484,7 @@ function bfs(sx, sy, ex, ey) {
 const richting = (dx, dy) => (Math.abs(dx) > Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : dy > 0 ? 'down' : 'up')
 function stapVan(m, dt, kies) {
   if (m.naar) {
-    m.p += dt / STAP
+    m.p += dt / STAP * (m.fiets ? 2.1 : 1)
     if (m.p >= 1) { m.tx = m.naar[0]; m.ty = m.naar[1]; m.px = m.tx * T + 24; m.py = m.ty * T + 24; m.naar = null; m.p = 0; m.stappen++; return 'aangekomen' }
     m.px = m.van[0] * T + 24 + (m.naar[0] - m.van[0]) * T * m.p; m.py = m.van[1] * T + 24 + (m.naar[1] - m.van[1]) * T * m.p
     return 'bezig'
@@ -426,31 +498,39 @@ function stapVan(m, dt, kies) {
 const dist = (x, y) => Math.hypot(speler.px - x, speler.py - y)
 /** Wissel tussen het dorp en het huis van binnen (met een korte overgang). */
 let fade = null
-function ga(plek) {
+function ga(plek, naar) {
+  if (ga.bezig) return
+  ga.bezig = true; setTimeout(() => { ga.bezig = false }, 700)
   if (!fade) { fade = document.createElement('div'); fade.style.cssText = 'position:absolute;inset:0;background:#2B2420;opacity:0;transition:opacity .22s;pointer-events:none;z-index:15'; stage.appendChild(fade) }
   fade.style.opacity = 1
   setTimeout(() => {
-    const w = plek === 'huis' ? HUIS : DORP
+    const w = PLEKKEN[plek]
     S.plek = plek; GW = w.GW; GH = w.GH; WW = GW * T; WH = GH * T; solid = w.solid; dingen = w.dingen; GROND = w.GROND
-    const [tx, ty] = plek === 'huis' ? [5, 6] : [26, 5]
-    Object.assign(speler, { tx, ty, px: tx * T + 24, py: ty * T + 24, naar: null, p: 0, route: [], face: plek === 'huis' ? 'up' : 'down' })
+    const [tx, ty, face] = naar ?? (plek === 'huis' ? [5, 6, 'up'] : [26, 5, 'down'])
+    Object.assign(speler, { tx, ty, px: tx * T + 24, py: ty * T + 24, naar: null, p: 0, route: [], face, fiets: false })
+    $('#bubbel').style.display = 'none'
     hond.x = speler.px - 46; hond.y = speler.py; hond.spoor = []; huidigDoe = null; frame.eerst = undefined
     pas(); fade.style.opacity = 0
   }, 240)
 }
 function dichtbij() {
+  if (S.plek === 'land') {
+    if (dist(31 * T, 10 * T + 10) < 100) return speler.fiets ? { id: 'fietsweg', icoon: 'fiets', label: 'Zet terug' } : { id: 'fiets', icoon: 'fiets', label: 'Fiets' }
+    if (dist(ROOS.x * T + 24, ROOS.y * T + 24) < 78) return { id: 'roos', icoon: 'praat', label: 'Praat' }
+    for (const sc of LAND.schapen) if (dist(sc.x, sc.y) < 62) return { id: 'schaap', icoon: 'hart', label: 'Aai', schaap: sc }
+    return dist(hond.x, hond.y) < 56 ? { id: 'hond', icoon: 'hart', label: 'Aai' } : null
+  }
   if (S.plek === 'huis') {
-    if (dist(hond.x, hond.y) < 56) return { id: 'hond', icoon: 'hart', label: 'Aai' }
     for (const d of dingen) if (d.doe && dist((d.f[0] + d.f[2] / 2) * T, (d.f[1] + d.f[3]) * T + 14) < 58) return { id: d.id, ...d.doe, kamer: true }
-    return null
+    return dist(hond.x, hond.y) < 56 ? { id: 'hond', icoon: 'hart', label: 'Aai' } : null
   }
   if (dist(BRAM.x * T + 24, BRAM.y * T + 24) < 78) return { id: 'bram', icoon: 'praat', label: 'Praat' }
   if (dist(14.5 * T, 7.5 * T) < 62) return { id: 'bord', icoon: 'boek', label: 'Bord' }
-  if (dist(hond.x, hond.y) < 70) return { id: 'hond', icoon: 'hart', label: 'Aai' }
   for (const d of dingen) if (d.appels > 0 && dist((d.f[0] + .5) * T, (d.f[1] + 1.2) * T) < 80) return { id: d.id, icoon: 'appel', label: 'Pluk', boom: d }
   if (dist(22.8 * T, 17.5 * T) < 60) return { id: 'vijver', icoon: 'hengel', label: 'Vis' }
   if (dist(26 * T, 5.5 * T) < 50) return { id: 'huis', icoon: 'huis', label: 'Naar huis' }
   if (dist(17 * T, 5.5 * T) < 50) return { id: 'spellen', icoon: 'ster', label: 'Spelen' }
+  if (dist(hond.x, hond.y) < 60) return { id: 'hond', icoon: 'hart', label: 'Aai' }
   return null
 }
 const doe = $('#doe')
@@ -464,9 +544,12 @@ function zetDoe(a) {
 }
 doe.addEventListener('click', () => {
   const a = huidigDoe; if (!a) return
-  if (a.id === 'bram') praat()
+  if (a.id === 'hond') { S.voort.aai++; for (let i = 0; i < 6; i++) deeltjes.push({ t: 'hart', x: hond.x + (Math.random() - .5) * 30, y: hond.y - 30, l: -i * .08 }); melding('hart', 'Wuf wuf!'); teken_hud() }
+  else if (a.id === 'bram') praat()
+  else if (a.id === 'fiets' || a.id === 'fietsweg') { speler.fiets = a.id === 'fiets'; melding('fiets', speler.fiets ? 'Fiets een rondje langs de vier vlaggen!' : 'Fiets staat in het rek'); huidigDoe = null }
+  else if (a.id === 'roos') praatRoos()
+  else if (a.id === 'schaap') { a.schaap.hup = .5; for (let i = 0; i < 5; i++) deeltjes.push({ t: 'hart', x: a.schaap.x + (Math.random() - .5) * 30, y: a.schaap.y - 30, l: -i * .08 }); melding('schaap', 'Bèèè!') }
   else if (a.id === 'bord') openBord()
-  else if (a.id === 'hond' && !a.kamer) { S.voort.aai++; for (let i = 0; i < 6; i++) deeltjes.push({ t: 'hart', x: hond.x + (Math.random() - .5) * 30, y: hond.y - 30, l: -i * .08 }); melding('hart', 'Wuf wuf!'); teken_hud() }
   else if (a.boom) pluk(a.boom)
   else if (a.id === 'vijver') openVis()
   else if (a.id === 'huis') ga('huis')
@@ -488,6 +571,11 @@ function praat() {
   const b = $('#bubbel'), alles = opdr().every(klaar)
   const rijen = opdr().map((o) => `<div class="rij"><img alt="" src="${ico(o.i, 76)}">${leesNiet() ? '' : `<span>${klaar(o) ? '✓ ' : ''}${S.voort[o.t] > o.n ? o.n : S.voort[o.t]}/${o.n}</span>`}</div>`).join('')
   b.innerHTML = alles ? `<div class="rij"><img alt="" src="${ico('bakker', 76)}"><span>${leesNiet() ? '' : 'Bedankt! Lekker!'}</span></div>` : (leesNiet() ? '' : `<div style="font-size:.8em;opacity:.7;margin-bottom:2px">Kun je me helpen?</div>`) + rijen
+  b.style.display = 'block'; b.dataset.tot = performance.now() + 4500
+}
+function praatRoos() {
+  const b = $('#bubbel'), n = LAND.vlaggen.filter(Boolean).length
+  b.innerHTML = (leesNiet() ? '' : `<div style="font-size:.8em;opacity:.7;margin-bottom:2px">${n === 4 ? 'Wat een fietser!' : 'Neem een fiets en rij een rondje'}</div>`) + `<div class="rij"><img alt="" src="${ico('fiets', 76)}"><img alt="" src="${ico('vlag', 76)}">${leesNiet() ? '' : `<span>${n}/4</span>`}</div><div class="rij"><img alt="" src="${ico('schaap', 76)}"><img alt="" src="${ico('hart', 76)}"></div>`
   b.style.display = 'block'; b.dataset.tot = performance.now() + 4500
 }
 /* ---------- overlays: dorpsbord, schatboek, hoera ---------- */
@@ -632,13 +720,21 @@ function frame(nu) {
     let dx = 0, dy = 0
     if (Math.abs(joy.x) > .3 || Math.abs(joy.y) > .3) { if (Math.abs(joy.x) > Math.abs(joy.y)) dx = Math.sign(joy.x); else dy = Math.sign(joy.y) }
     else { dx = (toets.ArrowRight ? 1 : 0) - (toets.ArrowLeft ? 1 : 0); dy = (toets.ArrowDown ? 1 : 0) - (toets.ArrowUp ? 1 : 0); if (dx && dy) dy = 0 }
-    if (dx || dy) { speler.route = []; return [speler.tx + dx, speler.ty + dy] }
+    if (dx || dy) { speler.route = []; speler.doel = null; if (S.plek === 'dorp' && dy < 0 && speler.ty === 5 && (speler.tx === 25 || speler.tx === 26)) { ga('huis'); return null } return [speler.tx + dx, speler.ty + dy] }
     if (speler.route.length) { const n = speler.route[0]; if (isVrij(n[0], n[1])) { speler.route.shift(); return n } speler.route = [] }
     return null
   }
   if (!vis.aan && !document.querySelector('.ov.aan')) {
     const r = stapVan(speler, dt, gekozen)
     if (r === 'aangekomen' && S.plek === 'huis' && speler.ty === 7) ga('dorp')
+    if (r === 'aangekomen' && S.plek === 'dorp' && speler.tx <= 1) ga('land', [31, speler.ty - 1, 'left'])
+    if (r === 'aangekomen' && S.plek === 'land' && speler.tx >= 32) ga('dorp', [2, speler.ty + 1, 'right'])
+    if (r === 'aangekomen' && S.plek === 'land' && speler.fiets) for (const d of dingen) if (d.cp && !LAND.vlaggen[d.vlag] && Math.abs(speler.tx - d.cp[0] - .5) < 1.6 && Math.abs(speler.ty - d.cp[1] - .5) < 1.6) {
+      LAND.vlaggen[d.vlag] = true; const n = LAND.vlaggen.filter(Boolean).length
+      for (let k = 0; k < 10; k++) deeltjes.push({ t: 'vonk', x: speler.px, y: speler.py - 20, vx: (Math.random() - .5) * 160, vy: -Math.random() * 120 - 20, l: 0 })
+      melding('vlag', n === 4 ? 'Rondje gefietst! Hoera!' : n + ' van 4 vlaggen', n === 4)
+    }
+    if (r === 'aangekomen' && S.plek === 'dorp' && speler.doel === 'huis' && !speler.route.length) { speler.doel = null; ga('huis') }
     if (r === 'aangekomen' && S.plek === 'dorp') {
       const i = S.glinsters.findIndex((l) => l.x === speler.tx && l.y === speler.ty)
       if (i >= 0) {
@@ -680,6 +776,7 @@ function frame(nu) {
   for (const d of dingen) { const ay = (d.f[1] + d.f[3]) * T; const ax = (d.f[0] + d.f[2] / 2) * T; if (ax < cam.x - 160 || ax > cam.x + vw + 160 || ay < cam.y - 20 || ay > cam.y + vh + 300) continue; lijst.push({ y: ay, d }) }
   lijst.push({ y: speler.py + 20, p: 'ik' }, { y: hond.y, p: 'hond' })
   if (dorp) lijst.push({ y: bot.py + 20, p: 'bot' }, { y: BRAM.y * T + 40, p: 'bram' })
+  if (S.plek === 'land') { lijst.push({ y: ROOS.y * T + 40, p: 'roos' }); for (const sc of LAND.schapen) { sc.w -= dt; if (sc.w <= 0) { sc.w = 2 + Math.random() * 4; sc.tx = (16 + Math.random() * 9) * T; sc.ty = (9.5 + Math.random() * 4.5) * T } const dx = sc.tx - sc.x, dy = sc.ty - sc.y, dd = Math.hypot(dx, dy); if (dd > 2) { sc.x += dx / dd * dt * 22; sc.y += dy / dd * dt * 22; sc.face = dx > 0 ? 1 : -1 } sc.hup = Math.max(0, sc.hup - dt); lijst.push({ y: sc.y, p: 'schaap', sc }) } }
   lijst.sort((a, b) => a.y - b.y)
   const oud = S.oud
   for (const e of lijst) {
@@ -689,9 +786,13 @@ function frame(nu) {
       else g.drawImage(sp, ax - d.w / 2, ay - d.h, d.w, d.h)
       n++
       if (d.s === 'bord' && opdr().some((o) => !klaar(o))) { const b = Math.abs(Math.sin(t * 3)) * 6; g.fillStyle = '#E8493F'; g.strokeStyle = '#fff'; g.lineWidth = 3; g.beginPath(); g.arc(ax, ay - 152 - b, 15, 0, 7); g.fill(); g.stroke(); g.fillStyle = '#fff'; g.font = '900 20px Nunito, sans-serif'; g.textAlign = 'center'; g.textBaseline = 'middle'; g.fillText('!', ax, ay - 151 - b) }
+      if (d.s === 'molen') { g.save(); g.translate(ax, ay - 134); g.rotate(t * .6); for (let i = 0; i < 4; i++) { g.rotate(Math.PI / 2); g.fillStyle = '#FFF6D6'; g.strokeStyle = INK; g.lineWidth = 2.5; g.beginPath(); g.rect(-9, -74, 18, 62); g.fill(); g.stroke(); g.beginPath(); g.moveTo(0, -74); g.lineTo(0, 0); g.stroke() } g.fillStyle = '#8A5A2B'; g.beginPath(); g.arc(0, 0, 7, 0, 7); g.fill(); g.stroke(); g.restore() }
       if (d.s === 'fontein') { g.strokeStyle = 'rgba(190,230,255,.9)'; g.lineWidth = 3; for (let i = 0; i < 5; i++) { const q = (t * .9 + i / 5) % 1, a = (i - 2) * .5; g.beginPath(); g.moveTo(ax, ay - 112); g.quadraticCurveTo(ax + a * 22, ay - 132 - 8 * (1 - q), ax + a * 40, ay - 92 + 44 * q); g.stroke() } }
-      if (d.sch === 'huis') { for (let i = 0; i < 3; i++) { const q = (t * .35 + i / 3) % 1; g.fillStyle = `rgba(245,245,250,${.7 * (1 - q)})`; g.beginPath(); g.arc(ax + 54 + q * 18, ay - 244 - q * 46, 6 + q * 8, 0, 7); g.fill() } }
-    } else if (e.p === 'ik') { tekenChibi(g, kinderen[S.kind], speler.face, (speler.stappen + (speler.naar ? speler.p : 0)) * Math.PI, !!speler.naar, speler.px, speler.py + 14, t, 1); n++ }
+      if (d.sch === 'huis' && d.s !== 'schuur') { for (let i = 0; i < 3; i++) { const q = (t * .35 + i / 3) % 1; g.fillStyle = `rgba(245,245,250,${.7 * (1 - q)})`; g.beginPath(); g.arc(ax + 54 + q * 18, ay - 244 - q * 46, 6 + q * 8, 0, 7); g.fill() } }
+    } else if (e.p === 'schaap') { const sc = e.sc, hy = Math.abs(Math.sin(sc.hup * 12)) * 8; g.fillStyle = 'rgba(0,0,0,.16)'; g.beginPath(); g.ellipse(sc.x, sc.y, 20, 6, 0, 0, 7); g.fill(); g.save(); g.translate(sc.x, sc.y - 20 - hy); g.scale(sc.face * 24, 24); g.lineJoin = 'round'; ICOON.schaap(g); g.restore(); g.strokeStyle = INK; g.lineWidth = 4; g.beginPath(); g.moveTo(sc.x - 8, sc.y - 6 - hy); g.lineTo(sc.x - 8, sc.y - hy * .3); g.moveTo(sc.x + 8, sc.y - 6 - hy); g.lineTo(sc.x + 8, sc.y - hy * .3); g.stroke(); n++ }
+    else if (e.p === 'roos') { const x = ROOS.x * T + 24, y = ROOS.y * T + 40; tekenChibi(g, kinderen.Roos, 'down', 0, false, x, y, t, 1); g.save(); g.translate(x, y); g.lineWidth = 3; g.strokeStyle = INK; g.fillStyle = '#E9C465'; g.beginPath(); g.ellipse(0, -70, 30, 8, 0, 0, 7); g.fill(); g.stroke(); g.beginPath(); g.arc(0, -72, 16, Math.PI, 0); g.closePath(); g.fill(); g.stroke(); g.fillStyle = '#E8493F'; g.fillRect(-15, -76, 30, 4); g.restore(); g.drawImage(label('Boerin Roos', '#2E9A45'), x - 60, y - 124, 120, 30); n += 2 }
+    else if (e.p === 'ik' && speler.fiets) { const x = speler.px, y = speler.py + 14, zij = speler.face === 'left' || speler.face === 'right', k = speler.face === 'left' ? -1 : 1; g.fillStyle = 'rgba(0,0,0,.16)'; g.beginPath(); g.ellipse(x, y, zij ? 30 : 12, 6, 0, 0, 7); g.fill(); g.strokeStyle = INK; g.lineWidth = 3; const wiel = (wx, wy, rx2) => { g.fillStyle = '#fff'; g.beginPath(); g.ellipse(wx, wy, rx2, 13, 0, 0, 7); g.fill(); g.stroke(); g.beginPath(); const a = t * 9; g.moveTo(wx - Math.cos(a) * rx2, wy - Math.sin(a) * 13); g.lineTo(wx + Math.cos(a) * rx2, wy + Math.sin(a) * 13); g.stroke() }; if (zij) { wiel(x - 22, y - 13, 13); wiel(x + 22, y - 13, 13); g.strokeStyle = '#E8493F'; g.lineWidth = 5; g.beginPath(); g.moveTo(x - 22, y - 13); g.lineTo(x - 4, y - 32); g.lineTo(x + 16 * k, y - 32); g.lineTo(x + 22 * k, y - 13); g.moveTo(x + 16 * k, y - 32); g.lineTo(x + 14 * k, y - 46); g.stroke() } else { if (speler.face === 'up') wiel(x, y - 12, 5) } tekenChibi(g, kinderen[S.kind], speler.face, 0, false, x, y - 16, t, 1); if (!zij && speler.face === 'down') { wiel(x, y - 12, 5); g.strokeStyle = '#E8493F'; g.lineWidth = 5; g.beginPath(); g.moveTo(x - 16, y - 40); g.lineTo(x + 16, y - 40); g.stroke() } n += 2 }
+    else if (e.p === 'ik') { tekenChibi(g, kinderen[S.kind], speler.face, (speler.stappen + (speler.naar ? speler.p : 0)) * Math.PI, !!speler.naar, speler.px, speler.py + 14, t, 1); n++ }
     else if (e.p === 'bot') { const nm = S.kind === 'Luca' ? 'Yuna' : 'Luca'; tekenChibi(g, kinderen[nm], bot.face, (bot.stappen + (bot.naar ? bot.p : 0)) * Math.PI, !!bot.naar, bot.px, bot.py + 14, t, 1); g.drawImage(label(nm, KIDKL[nm]), bot.px - 60, bot.py - 106, 120, 30); n += 2 }
     else if (e.p === 'hond') { tekenHond(hond.x, hond.y + 10, hond.face, t, hond.rent); n++ }
     else if (e.p === 'bram') { tekenBram(t); g.drawImage(label('Bakker Bram', KIDKL.Bram), BRAM.x * T + 24 - 60, BRAM.y * T - 104, 120, 30); n += 2 }
@@ -707,7 +808,7 @@ function frame(nu) {
     else if (p.t === 'tik') { g.strokeStyle = `rgba(255,255,255,${Math.max(0, .9 - p.l * 2)})`; g.lineWidth = 4; g.beginPath(); g.ellipse(p.x, p.y + 6, 10 + p.l * 40, 5 + p.l * 20, 0, 0, 7); g.stroke(); if (p.l > .45) deeltjes.splice(i, 1) }
   }
   // praatbel volgt Bram
-  const b = $('#bubbel'); if (b.style.display === 'block') { if (performance.now() > Number(b.dataset.tot)) b.style.display = 'none'; else { b.style.left = (BRAM.x * T + 24 - cam.x) * schaal + 'px'; b.style.top = (BRAM.y * T - 124 - cam.y) * schaal + 'px' } }
+  const b = $('#bubbel'); if (b.style.display === 'block') { if (performance.now() > Number(b.dataset.tot)) b.style.display = 'none'; else { const wie = S.plek === 'land' ? ROOS : BRAM; b.style.left = (wie.x * T + 24 - cam.x) * schaal + 'px'; b.style.top = (wie.y * T - 124 - cam.y) * schaal + 'px' } }
   // --- meten ---
   stats.ms += performance.now() - t0; stats.n++; stats.sprites = n; tAcc += dt
   if (tAcc >= 1) { stats.fps = stats.n / tAcc; stats.teken = stats.ms / stats.n; stats.n = 0; stats.ms = 0; tAcc = 0; toonTech() }
@@ -719,7 +820,7 @@ function toonTech() {
 
 /* ---------- bediening van de proef ---------- */
 function groep(id, f) { const el = $(id); el.addEventListener('click', (e) => { const b = e.target.closest('button'); if (!b) return; for (const x of el.querySelectorAll('button')) x.setAttribute('aria-pressed', x === b); f(b.dataset.v) }) }
-groep('#gKind', (v) => { if (S.plek === 'huis') ga('dorp'); S.kind = v; schatTab = 'Dorp'; nieuweDag(); S.gevonden.clear(); S.nieuw.clear(); huidigDoe = null; $('#bubbel').style.display = 'none'; teken_hud() })
+groep('#gKind', (v) => { if (S.plek !== 'dorp') ga('dorp', [16, 11, 'down']); S.kind = v; schatTab = 'Dorp'; nieuweDag(); S.gevonden.clear(); S.nieuw.clear(); huidigDoe = null; $('#bubbel').style.display = 'none'; teken_hud() })
 groep('#gMaat', (v) => { S.maat = v.split('x').map(Number); pas() })
 const TINT = { dag: '#fff', avond: '#F2B58F', nacht: '#7F8FD0' }
 groep('#gTijd', (v) => { S.tijd = v; $('#tint').style.background = TINT[v] })

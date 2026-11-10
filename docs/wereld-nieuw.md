@@ -44,6 +44,30 @@ Frederique: het idee is goed, maar het moet mooier en professioneler; nu is het 
 
 Dit kost niets aan snelheid: de hele grond met bosrand, schaduwen, perken en plein is één gebakken beeld.
 
+## Alle gebieden: even vol, even getekend, overal iets te doen
+
+Frederique (10 november): de navigatie naar de andere delen blijft, en elk deel moet even bevolkt en getekend zijn, met dingen om te doen zoals fietsen. De poorten blijven dus (loop van het pad het bos in, een wegwijzer toont waar je heen gaat) en elk gebied krijgt dezelfde vaste inhoud:
+
+- één duidelijk midden en de zeven tekenregels van hierboven;
+- één bewoner met een naam en een praatje;
+- één ding om **mee te bewegen** (fiets, step, bootje, slee) en één ding om **te verzorgen of te verzamelen**;
+- zes eigen glinsters voor het Schatboek en een opdrachtje voor het Dorpsbord.
+
+| Gebied | Midden | Bewoner | Bewegen | Doen |
+| --- | --- | --- | --- | --- |
+| Dorp | plein met fontein | Bakker Bram | wandelen | appels plukken, vissen, kraam, huizen binnen |
+| Platteland (in de mockup) | fietslus rond de wei | Boerin Roos | **fietsen**: rondje langs vier vlaggen | schapen aaien, moestuin water geven, molen |
+| Bos | open plek met kampvuur | Boswachter Jef | step over het bospad | paddenstoelen en eikels zoeken, eekhoorn voeren, hut bouwen |
+| Meer | steiger met bootjes | Visser Fien | roeibootje naar het eilandje | vissen, eendjes voeren, keilen |
+| Berg | uitkijktoren | Herder Lowie | slee of kabelbaan naar beneden | vlieger oplaten, geitjes, kristallen zoeken |
+| Strand en haven | vuurtoren | Strandwachter Nora | gocart op de dijk | schelpen graven, zandkasteel bouwen, krabben vangen |
+| Sportpark | voetbalveld | Trainer Sam | skateboard op de baan | penalty's, basket, hindernisbaan met tijd |
+| Stadje | marktplein | Marktvrouw Mia | tram of bus als snelreis | kraampjes, ijsje halen, duiven voeren |
+
+Fietsen werkt zo in de mockup: bij het rek neem je een fiets, je rijdt dubbel zo snel, en elk van de vier vlaggen licht op als je erlangs komt. Bij Feline (Vanzelf lopen) volgt de fiets het pad vanzelf als ze op een vlag tikt.
+
+De nachtroutine kan hieraan meebouwen zonder een gebouw te plaatsen: een nieuwe glinsterreeks, een opdrachtje, een dier of een gebeurtenis is telkens één rij data.
+
 ## In de huizen (gevraagd door Frederique)
 
 Elk kind kan zijn huis binnenlopen: de deur opent een eigen kamer met dezelfde besturing. De kamer is de plek voor alles wat van het kind zelf is, en elk meubel is een ingang naar iets dat al bestaat:
@@ -115,6 +139,7 @@ Een Playwright-test in `e2e/` laadt De wereld, laat 3 seconden lopen zonder graf
 | 2b | Huizen binnenlopen: eigen kamer met ingangen naar Kleerkast, Mijn dag, huisdier, Schatboek | In je eigen huis kunnen |
 | 3 | Bewoners, Dorpsbord met opdrachtjes, dagschat | Een reden om elke dag te komen |
 | 4 | Appels plukken, vissen, huisdier mee | Dingen om te doen buiten de deuren |
+| 4b | De andere zeven gebieden één voor één hertekenen en bevolken (Platteland met fietsen eerst) | Overal iets te doen |
 | 5 | Stickers en samen-opdracht, gebeurtenissen uit data, rustiger gebouwen | Samen spelen, het dorp verandert |
 
 Elke fase is zelf af, krijgt een nieuwtje en is los terug te draaien.
