@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.156',
+    datum: '2026-11-11',
+    titel: 'Pakjes bezorgen, Pip duwt de pakjes en Het dakterras',
+    tekst: 'Nieuw verhaal "Pip duwt de pakjes" (4 jaar, kleine oortjes) en kleurplaat "De bezorgfiets", meteen beschikbaar. Nieuw spelletje Pakjes bezorgen: een duwpuzzel waarin de bezorger de pakjes naar de groene matten duwt (duwen kan, trekken niet; een pakje in een hoekje blijft staan). Makkelijk toont voetstapjes na tien seconden, middel heeft drie tips, moeilijk is een echt breinbrekertje met pluimen, een klokje en maar één Terug per ronde. Het spel en de zes nieuwe stukken staan klaar om vrij te geven in Kinderen → Winkelaanbod. In Springland staat er in Dakenstad een nieuw, zacht level: Het dakterras.',
+    verhaal: 'Pip duwt de pakjes',
+    spel: { naam: 'Pakjes bezorgen', prijs: 25 },
+    stukken: ['Bezorgpet (hoofd, 15)', 'Bezorgjas (shirt, 20)', 'Pakjestas (extra, 15)', 'Welkomstmat (tuin, 15)', 'Bakfiets met pakjes (tuin, 25)', 'Gouden huisnummer (huisextra, 15)'],
+    open: 'Het spel en de stukken liggen pas in de winkel na vrijgave door een ouder.',
+  },
+  {
     versie: '0.155',
     datum: '2026-11-10',
     titel: 'De wereld: Mijn tuintje en de gezinsvlag',

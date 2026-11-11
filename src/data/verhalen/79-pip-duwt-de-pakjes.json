@@ -1,0 +1,53 @@
+{
+  "nr": 79,
+  "titel": "Pip duwt de pakjes",
+  "reeks": "kleine-oortjes",
+  "leeftijd": 4,
+  "thema": "Sinterklaas, pakjes duwen en nadenken",
+  "bladzijden": [
+    {
+      "tekst": "Het is bijna Sinterklaas. Pip en Mo helpen de pakjesman. Op de stoep staan drie pakjes met een grote strik. Voor elk huis ligt een mat. \"Elk pakje moet op een mat,\" zegt de pakjesman. \"Maar je mag alleen duwen. Trekken mag niet.\" Pip knikt. Dat kan ze wel. Mo kijkt naar de eerste mat. Hij ligt vlak naast de deur. Wat zal dat gemakkelijk gaan, denkt hij. De zon schijnt, en het ruikt naar speculaas.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "pip",
+          "mo",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Pip zet haar handen tegen het eerste pakje en duwt. Het pakje schuift over de stoep. Stap voor stap, zonder te haasten. Net voor de mat stopt ze even om adem te halen. Nog één duwtje, en het pakje ligt precies op de mat. \"Eén klaar!\" zegt Pip. Mo klapt in zijn handen. Dat ging gemakkelijk. Maar het tweede pakje staat veel dichter bij de muur. Zou dat ook zo goed gaan? De pakjesman knikt tevreden: dat is een goed begin.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "pip",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Het tweede pakje staat in een hoekje tegen de muur. Pip duwt, maar het pakje schuift niet. Het zit vast! \"Oei,\" zegt Pip. Ze wordt een beetje stil. Mo denkt na. \"Je moet eerst naar de andere kant,\" zegt hij. \"Dan kan je het wegduwen van de muur.\" Pip loopt om het pakje heen en duwt van de andere kant. Nu schuift het wel! Wie goed nadenkt, vindt altijd een weg. Even kijkt ze rond, en dan weet ze het.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "pip",
+          "mo",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Het derde pakje brengen ze ook naar zijn mat. Alle pakjes liggen op hun plaats. Pipmama komt kijken en lacht. \"Wat goed geduwd,\" zegt ze. \"En wat goed nagedacht.\" De pakjesman geeft Pip en Mo een pepernoot. Pip stopt de pepernoot zachtjes in haar mond. \"Duwen is leuk,\" zegt ze. \"Maar eerst kijken, dan duwen.\" Mo knikt, en samen zwaaien ze de pakjesman uit. Buiten wordt het al een beetje donker, en achter de ramen branden lichtjes.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "pip",
+          "mo",
+          "pipmama",
+          "doos"
+        ]
+      }
+    }
+  ]
+}

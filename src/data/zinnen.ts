@@ -88,6 +88,8 @@ export const zin = {
   verfmengenKlaar: "Alle pakjes zijn geverfd!",
   setsUitleg: 'Zoek drie pakjes die bij elkaar horen: bij alles drie dezelfde of drie verschillende.',
   setsKlaar: 'Alle pakjes liggen in groepjes!',
+  bezorgenUitleg: 'Duw alle pakjes naar een groene mat. Je kunt duwen, maar niet trekken.',
+  bezorgenKlaar: 'Alle pakjes zijn bezorgd!',
   glijdenUitleg: "Het pinguïntje glijdt tot het ergens tegen botst. Kies een pijltje en breng het naar het visje.",
   glijdenKlaar: "Het pinguïntje heeft alle visjes!",
   nimUitleg: "Pak om de beurt pepernoten, samen met het paardje. Tik op een pepernoot en dan op de groene knop. Wie de laatste pepernoot pakt, wint.",

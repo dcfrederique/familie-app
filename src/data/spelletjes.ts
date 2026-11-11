@@ -10,6 +10,7 @@ import type { WeegNiveau } from './weegschaal.ts'
 import type { TorenNiveau } from './torens.ts'
 import type { RoosterNiveau } from './rooster.ts'
 import type { SetsNiveau } from './sets.ts'
+import type { BezorgNiveau } from './bezorgen.ts'
 
 export type MemoryNiveau = 'klein' | 'middel' | 'groot'
 export type RekenNiveau = 'tellen' | 'tot10' | 'tot20' | 'tot100' | 'tot1000' | 'tafels'
@@ -369,6 +370,25 @@ export function startSetsNiveau(kind: Gebruiker, kinderen: Gebruiker[]): SetsNiv
   return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
 }
 
+/**
+ * Pakjes bezorgen. `hulp`: na tien seconden zonder zet tonen voetstapjes de volgende zetten (makkelijk); `tips`: hoeveel keer de Tip-knop de volgende zet toont;
+ * `terugEenKeer`: Terug mag maar één keer per ronde (moeilijk); `pluimen`/`seconden`: strenge score, tijd per ronde voor de snelheidspluim.
+ */
+export const bezorgNiveaus: Record<BezorgNiveau, {
+  label: string; hulp: boolean; tips: number; terugEenKeer: boolean; pluimen: boolean; seconden: number
+}> = {
+  makkelijk: { label: 'Makkelijk', hulp: true, tips: 0, terugEenKeer: false, pluimen: false, seconden: 0 },
+  middel: { label: 'Middel', hulp: false, tips: 3, terugEenKeer: false, pluimen: false, seconden: 0 },
+  moeilijk: { label: 'Moeilijk', hulp: false, tips: 0, terugEenKeer: true, pluimen: true, seconden: 120 },
+}
+
+/** Wie niet leest begint makkelijk, de oudste lezer moeilijk, andere lezers middel. */
+export function startBezorgNiveau(kind: Gebruiker, kinderen: Gebruiker[]): BezorgNiveau {
+  if (!kind.kan_lezen) return 'makkelijk'
+  const oudsteLezer = kinderen.filter((k) => k.kan_lezen).sort((a, b) => a.volgorde - b.volgorde)[0]
+  return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
+}
+
 /** Wie niet leest begint makkelijk, de oudste lezer moeilijk, andere lezers middel. */
 export function startRoosterNiveau(kind: Gebruiker, kinderen: Gebruiker[]): RoosterNiveau {
   if (!kind.kan_lezen) return 'makkelijk'
@@ -507,7 +527,7 @@ export function startNiveaus(kind: Gebruiker, kinderen: Gebruiker[]): { memory: 
   return oudsteLezer?.id === kind.id ? { memory: 'groot', rekenen: 'tot100' } : { memory: 'middel', rekenen: 'tot20' }
 }
 
-export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'weegschaal' | 'torens' | 'rooster' | 'snoeppotjes' | 'nim' | 'glijden' | 'verfmengen' | 'eenlijn' | 'raadselprent' | 'pijltjes' | 'domino' | 'eikels' | 'knikkers' | 'klok' | 'lampionlied' | 'piramide' | 'patroon' | 'kalaha' | 'spiegel' | 'slingers' | 'bruggen' | 'schuif' | 'vlek' | 'hekjes' | 'zoeken' | 'geheim' | 'sets' | 'springen'
+export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'weegschaal' | 'torens' | 'rooster' | 'snoeppotjes' | 'nim' | 'glijden' | 'verfmengen' | 'eenlijn' | 'raadselprent' | 'pijltjes' | 'domino' | 'eikels' | 'knikkers' | 'klok' | 'lampionlied' | 'piramide' | 'patroon' | 'kalaha' | 'spiegel' | 'slingers' | 'bruggen' | 'schuif' | 'vlek' | 'hekjes' | 'zoeken' | 'geheim' | 'sets' | 'bezorgen' | 'springen'
 
 export interface SpelInfo {
   sleutel: SpelSleutel
@@ -533,6 +553,8 @@ export const spelMenu: SpelInfo[] = [
     icoon: 'M3 11h14v3a5 5 0 0 1-5 5H8a5 5 0 0 1-5-5zM17 12h4M7 8c0-1.5 1.5-1.5 1.5-3M11.5 8c0-1.5 1.5-1.5 1.5-3' },
   { sleutel: 'sets', naam: 'Pakjessets', uitleg: 'Vind drie pakjes die bij elkaar horen', prijs: 25,
     icoon: 'M3 8h6v6H3zM9 6h6v6H9zM15 10h6v6h-6zM5 10l2 2M11 8l2 2' },
+  { sleutel: 'bezorgen', naam: 'Pakjes bezorgen', uitleg: 'Duw alle pakjes naar een mat', prijs: 25,
+    icoon: 'M4 4h16v16H4zM9 9h6v6H9zM12 2v2M12 20v2' },
   { sleutel: 'springen', naam: 'Springland', uitleg: 'Loop en spring met je figuurtje', prijs: 30,
     icoon: 'M12 3a2 2 0 1 0 0 .01M12 7v5M9 21l3-6l3 6M8 9l4 1l4-1M3 21h4M17 21h4M18 4l1 2l2 .3l-1.5 1.4l.4 2.1L18 8.8l-1.9 1l.4-2.1L15 6.3l2-.3z' },
   { sleutel: 'touwspringen', naam: 'Touwspringen', uitleg: 'Spring op het juiste moment', prijs: 30,
