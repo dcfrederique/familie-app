@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.157',
+    datum: '2026-11-11',
+    titel: 'Pakjes bezorgen: groter bord op een staande tablet',
+    tekst: 'Op een staande tablet is het bord van Pakjes bezorgen nu een stuk groter en staan Terug, Opnieuw en Tip met hun volledige naam naast de pijlen. Komt een pakje op zijn groene mat, dan tekent er zich een vinkje op.',
+  },
+  {
     versie: '0.156',
     datum: '2026-11-11',
     titel: 'Pakjes bezorgen, Pip duwt de pakjes en Het dakterras',

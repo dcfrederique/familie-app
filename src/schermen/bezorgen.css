@@ -29,12 +29,18 @@
 .bezorg-pluimen .aan { color: var(--gold); }
 @keyframes bezorg-voet { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
 @keyframes bezorg-hint { 0%, 100% { box-shadow: 0 0 0 0 rgba(242, 195, 48, 0); } 50% { box-shadow: 0 0 0 5px rgba(242, 195, 48, 0.7); } }
-@media (prefers-reduced-motion: reduce) { .bezorg-pijl.hint, .bezorg-voet { animation: none; } .bezorg-pakje { transition: none; } }
+/* Detail: het vinkje tekent zich als een pakje op zijn mat komt. */
+.bezorg-vink { stroke-dasharray: 10; animation: bezorg-vink 0.35s ease-out both; }
+@keyframes bezorg-vink { from { stroke-dashoffset: 10; } to { stroke-dashoffset: 0; } }
+@media (prefers-reduced-motion: reduce) { .bezorg-pijl.hint, .bezorg-voet, .bezorg-vink { animation: none; } .bezorg-pakje { transition: none; } }
 /* Staand: de pijlen onder het bord. */
 @media (orientation: portrait) {
   .bezorg-veld { flex-direction: column; }
-  .bezorg-tafel { --cel: min(calc(38dvh / var(--rijen)), calc(80vw / var(--kol)), 90px); }
+  /* Staand is er veel hoogte over: het bord neemt wat de kop, de balk en de pijlen laten. */
+  .bezorg-tafel { --cel: min(calc((100dvh - 480px) / var(--rijen)), calc(86vw / var(--kol)), 90px); }
   .bezorg-zij { flex-direction: row; gap: 16px; }
+  .bezorg-knoppen { max-width: none; flex-wrap: nowrap; }
+  .bezorg-actie { flex: none; }
 }
 /* Lage liggende tablet (7 inch). */
 @media (orientation: landscape) and (min-height: 501px) and (max-height: 700px) {

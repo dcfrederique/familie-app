@@ -57,7 +57,7 @@ function Bord({ spel, voetstap }: { spel: BezorgSpel; voetstap: number[] }) {
             <rect x="4.3" y="2" width="1.4" height="6.6" fill="#fff" opacity=".85" />
             <rect x="1.2" y="4.6" width="7.6" height="1.2" fill="#fff" opacity=".85" />
             <path d="M5 2C3 0.2 2 1.4 3 2M5 2C7 0.2 8 1.4 7 2" fill="none" stroke="#FFD54F" strokeWidth=".9" />
-            {op && <path d="M2.8 5.4l1.6 1.6 3-3.2" fill="none" stroke="#1F6B42" strokeWidth="1" strokeLinecap="round" />}
+            {op && <path className="bezorg-vink" pathLength={10} d="M2.8 5.4l1.6 1.6 3-3.2" fill="none" stroke="#1F6B42" strokeWidth="1" strokeLinecap="round" />}
           </g>
         )
       })}
