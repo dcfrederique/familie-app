@@ -23,20 +23,25 @@
 .karvrij-pijl-2 { grid-column: 2; grid-row: 2; }
 .karvrij-pijl-1 { grid-column: 3; grid-row: 2; }
 .karvrij-pijl.hint { animation: karvrij-hint 1.1s ease-in-out infinite; }
-.karvrij-knoppen { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 220px; }
-.karvrij-actie { white-space: nowrap; min-height: 64px; min-width: 64px; font-size: 17px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 0 14px; }
+.karvrij-knoppen { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; max-width: 260px; }
+.karvrij-actie { flex: none; white-space: nowrap; min-height: 64px; min-width: 64px; font-size: 17px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 0 14px; }
 .karvrij-eind { display: grid; justify-items: center; gap: 16px; }
 .karvrij-feest { width: clamp(200px, 40dvh, 380px); height: auto; }
 .karvrij-pluimen { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; max-width: 360px; font-size: 28px; color: var(--line); }
 .karvrij-pluimen .aan { color: var(--gold); }
 @keyframes karvrij-wiebel { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
 @keyframes karvrij-hint { 0%, 100% { box-shadow: 0 0 0 0 rgba(242, 195, 48, 0); } 50% { box-shadow: 0 0 0 5px rgba(242, 195, 48, 0.7); } }
-@media (prefers-reduced-motion: reduce) { .karvrij-pijl.hint, .karvrij-kar.hint { animation: none; } .karvrij-kar, .karvrij-kar.uit { transition: none; } }
+/* Detail: het vlaggetje aan de uitgang wappert zachtjes. */
+.karvrij-vlag { transform-box: fill-box; transform-origin: right center; animation: karvrij-wapper 1.6s ease-in-out infinite; }
+@keyframes karvrij-wapper { 0%, 100% { scale: 1 1; } 50% { scale: 0.72 1.08; } }
+@media (prefers-reduced-motion: reduce) { .karvrij-pijl.hint, .karvrij-kar.hint, .karvrij-vlag { animation: none; } .karvrij-kar, .karvrij-kar.uit { transition: none; } }
 /* Staand: de pijlen onder de straat. */
 @media (orientation: portrait) {
   .karvrij-veld { flex-direction: column; }
-  .karvrij-tafel { --cel: min(calc(38dvh / var(--rijen)), calc(80vw / (var(--kol) + 0.8)), 90px); }
+  /* Staand is er veel hoogte over: de straat neemt wat de kop, de balk en de pijlen laten. */
+  .karvrij-tafel { --cel: min(calc((100dvh - 480px) / var(--rijen)), calc(86vw / (var(--kol) + 0.8)), 90px); }
   .karvrij-zij { flex-direction: row; gap: 16px; }
+  .karvrij-knoppen { max-width: none; flex-wrap: nowrap; }
 }
 /* Lage liggende tablet (7 inch). */
 @media (orientation: landscape) and (min-height: 501px) and (max-height: 700px) {
@@ -53,5 +58,6 @@
   .karvrij-pijlen { grid-template-columns: repeat(3, 44px); grid-template-rows: repeat(2, 44px); gap: 4px; }
   .karvrij-pijl { font-size: 20px; }
   .karvrij-actie { min-height: 44px; min-width: 44px; font-size: 14px; padding: 0 8px; }
-  .karvrij-knoppen { gap: 4px; max-width: 170px; }
+  .karvrij-knoppen { gap: 4px; max-width: 200px; }
+  .karvrij-zij { gap: 4px; }
 }

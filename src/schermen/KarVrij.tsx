@@ -242,7 +242,7 @@ function KarScherm({ kind }: { kind: Gebruiker }) {
                   <path d={`M${bord.kol * 10} ${bord.poortRij * 10}H${bord.kol * 10 + 8}M${bord.kol * 10} ${bord.poortRij * 10 + 10}H${bord.kol * 10 + 8}`} stroke="#B3B3B3" strokeWidth=".6" strokeDasharray="1.5 1" />
                   <g>
                     <rect x={bord.kol * 10 + 5.4} y={bord.poortRij * 10 - 3} width="2" height="16" rx=".6" fill="#8A5A33" />
-                    <path d={`M${bord.kol * 10 + 5.4} ${bord.poortRij * 10 - 3}L${bord.kol * 10 + 1} ${bord.poortRij * 10 - 1}L${bord.kol * 10 + 5.4} ${bord.poortRij * 10 + 1}Z`} fill="#F2C530" />
+                    <path d={`M${bord.kol * 10 + 5.4} ${bord.poortRij * 10 - 3}L${bord.kol * 10 + 1} ${bord.poortRij * 10 - 1}L${bord.kol * 10 + 5.4} ${bord.poortRij * 10 + 1}Z`} fill="#F2C530" className="karvrij-vlag" />
                   </g>
                   {bord.blok.map((b, i) => b && (
                     <g key={`b${i}`} transform={`translate(${(i % bord.kol) * 10} ${Math.floor(i / bord.kol) * 10})`}>

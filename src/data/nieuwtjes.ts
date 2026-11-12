@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.159',
+    datum: '2026-11-12',
+    titel: 'Kar vrij! en Pakjes bezorgen: knoppen voluit en groter bord',
+    tekst: 'In Kar vrij! en Pakjes bezorgen staan Terug, Opnieuw en Tip nu altijd met hun volle naam (bij Yuna werden ze in elkaar geduwd). Op een staande tablet is de straat van Kar vrij! een stuk groter, en aan de uitgang wappert het vlaggetje.',
+  },
+  {
     versie: '0.158',
     datum: '2026-11-12',
     titel: 'Kar vrij!, De kar van de Sint zit vast en De torenspits',
