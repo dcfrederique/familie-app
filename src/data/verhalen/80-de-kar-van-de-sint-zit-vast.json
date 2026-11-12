@@ -1,0 +1,94 @@
+{
+  "nr": 80,
+  "titel": "De kar van de Sint zit vast",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Sinterklaas, de stalstraat en samen nadenken",
+  "bladzijden": [
+    {
+      "tekst": "Het is donderdagmiddag, drie weken voor Sinterklaas. Noor en Daan gaan met opa naar de stalstraat. Dat is een smal straatje achter de oude markt. Daar staan alle karren van de Sint geparkeerd. Ze staan netjes in een rij, kar naast kar. Opa heeft een sleutel mee en een zak wortels.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "noor",
+          "daan",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "Aan het einde van het straatje staat de stal van het paard van de Sint. Het paard steekt zijn kop over het deurtje. Het hinnikt blij toen het Noor zag. Noor geeft het een wortel. \"Morgen mag u weer werken,\" zegt ze. \"Dan moet de grote rode kar naar buiten.\" Het paard knikt.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "paard",
+          "noor"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan loopt langs de karren. Dan blijft hij staan. \"Opa, kijk,\" zegt hij. \"De rode kar kan niet weg.\" Voor de rode kar staat een kleine kar met drie pakjes. Daarachter staat een lange kar met hooi. Elke kar staat in de weg van een andere kar. Opa krabt aan zijn kin. \"Dat is een knoop,\" zegt hij. \"Maar knopen kan je ontwarren.\"",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "daan",
+          "opa",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "\"We mogen de karren niet optillen,\" zegt Noor. \"Ze zijn veel te zwaar.\" \"Dan schuiven we ze,\" zegt Daan. \"Een stukje naar voren of een stukje naar achteren. Maar niet opzij, want het straatje is te smal.\" Noor knikt. \"Eerst kijken welke kar vrij kan,\" zegt ze. \"Dan weten we waar we mogen beginnen.\"",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "noor",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan duwt de kleine kar met pakjes een stukje achteruit. Nu is er een gaatje. Noor trekt de kar met hooi in dat gaatje. Maar dan staat de hooikar weer in de weg van een andere kar! \"Oei,\" zegt Daan. \"Dat was niet slim.\" Noor lacht. \"Geen probleem. We schuiven hem gewoon terug.\"",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "daan",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Ze proberen het nog eens. Nu denken ze eerst na. Noor wijst naar de lange kar. \"Die moet eerst weg,\" zegt ze, \"want hij zit aan twee kanten vast.\" Opa knikt. \"Goed gezien. Soms moet je eerst een kar verschuiven die niets met de rode te maken heeft.\" De lantaarn gaat aan. Het wordt al een beetje donker.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "noor",
+          "opa",
+          "lantaarn"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan schuift de lange kar naar achteren, Noor de kleine kar naar voren. Nog één kar, en nog één. Dan is de weg vrij! De rode kar kan zachtjes naar buiten rollen. Het paard hinnikt van plezier. Daan geeft het de laatste wortel. \"Gelukt!\" roept hij. \"We hebben de knoop ontward.\"",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "daan",
+          "paard",
+          "wortel"
+        ]
+      }
+    },
+    {
+      "tekst": "Thuis krijgen ze warme chocomelk van oma. \"Waar waren jullie zo lang?\" vraagt ze. \"We hebben de kar van de Sint vrijgemaakt,\" zegt Noor trots. \"Eerst kijken welke kar vrij kan, en dan schuiven.\" Opa knipoogt. \"En als het niet lukt, begin je gewoon opnieuw,\" zegt hij. \"Dat doet de Sint ook.\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "daan",
+          "opa"
+        ]
+      }
+    }
+  ]
+}

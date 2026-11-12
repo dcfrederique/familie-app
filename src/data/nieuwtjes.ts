@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.158',
+    datum: '2026-11-12',
+    titel: 'Kar vrij!, De kar van de Sint zit vast en De torenspits',
+    tekst: 'Nieuw verhaal "De kar van de Sint zit vast" (6 jaar) en kleurplaat "Het stalletje van het paard", meteen beschikbaar. Nieuw spelletje Kar vrij!: een file-puzzel in de stalstraat waarin je karren in hun eigen richting schuift (slepen of tikken met pijltjes) tot de rode kar van de Sint naar de poort kan. Makkelijk heeft een wiebelende hulp-kar na tien seconden, middel drie tips, moeilijk is een echt breinbrekertje op een groot bord met boompjes in de weg, pluimen, een klokje en maar twee keer Terug per ronde. Het spel en de zes nieuwe stukken (stalhoed, staljas, wortelbosje, hooikar, drinkbak en hoefijzer boven de deur) staan klaar om vrij te geven in Kinderen → Winkelaanbod. In Springland heeft Dakenstad een nieuw, pittig level: De torenspits.',
+    verhaal: 'De kar van de Sint zit vast',
+    spel: { naam: 'Kar vrij!', prijs: 30 },
+    stukken: ['Stalhoed (hoofd, 15)', 'Staljas (shirt, 20)', 'Wortelbosje (extra, 15)', 'Hooikar (tuin, 25)', 'Drinkbak voor het paard (tuin, 15)', 'Hoefijzer boven de deur (huisextra, 15)'],
+    open: 'Het spel en de stukken liggen pas in de winkel na vrijgave door een ouder.',
+  },
+  {
     versie: '0.157',
     datum: '2026-11-11',
     titel: 'Pakjes bezorgen: groter bord op een staande tablet',

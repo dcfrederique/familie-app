@@ -11,6 +11,7 @@ import type { TorenNiveau } from './torens.ts'
 import type { RoosterNiveau } from './rooster.ts'
 import type { SetsNiveau } from './sets.ts'
 import type { BezorgNiveau } from './bezorgen.ts'
+import type { KarvrijNiveau } from './karvrij.ts'
 
 export type MemoryNiveau = 'klein' | 'middel' | 'groot'
 export type RekenNiveau = 'tellen' | 'tot10' | 'tot20' | 'tot100' | 'tot1000' | 'tafels'
@@ -382,6 +383,25 @@ export const bezorgNiveaus: Record<BezorgNiveau, {
   moeilijk: { label: 'Moeilijk', hulp: false, tips: 0, terugEenKeer: true, pluimen: true, seconden: 120 },
 }
 
+/**
+ * Kar vrij!. `hulp`: na tien seconden zonder zet wiebelt de kar die als eerste moet schuiven (makkelijk); `tips`: hoeveel keer de Tip-knop de volgende zet toont;
+ * `maxTerug`: hoeveel keer Terug mag per ronde (0 = onbeperkt); `pluimen`/`seconden`: strenge score, tijd per ronde voor de snelheidspluim.
+ */
+export const karvrijNiveaus: Record<KarvrijNiveau, {
+  label: string; hulp: boolean; tips: number; maxTerug: number; pluimen: boolean; seconden: number
+}> = {
+  makkelijk: { label: 'Makkelijk', hulp: true, tips: 0, maxTerug: 0, pluimen: false, seconden: 0 },
+  middel: { label: 'Middel', hulp: false, tips: 3, maxTerug: 0, pluimen: false, seconden: 0 },
+  moeilijk: { label: 'Moeilijk', hulp: false, tips: 0, maxTerug: 2, pluimen: true, seconden: 300 },
+}
+
+/** Wie niet leest begint makkelijk, de oudste lezer moeilijk, andere lezers middel. */
+export function startKarvrijNiveau(kind: Gebruiker, kinderen: Gebruiker[]): KarvrijNiveau {
+  if (!kind.kan_lezen) return 'makkelijk'
+  const oudsteLezer = kinderen.filter((k) => k.kan_lezen).sort((a, b) => a.volgorde - b.volgorde)[0]
+  return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
+}
+
 /** Wie niet leest begint makkelijk, de oudste lezer moeilijk, andere lezers middel. */
 export function startBezorgNiveau(kind: Gebruiker, kinderen: Gebruiker[]): BezorgNiveau {
   if (!kind.kan_lezen) return 'makkelijk'
@@ -527,7 +547,7 @@ export function startNiveaus(kind: Gebruiker, kinderen: Gebruiker[]): { memory: 
   return oudsteLezer?.id === kind.id ? { memory: 'groot', rekenen: 'tot100' } : { memory: 'middel', rekenen: 'tot20' }
 }
 
-export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'weegschaal' | 'torens' | 'rooster' | 'snoeppotjes' | 'nim' | 'glijden' | 'verfmengen' | 'eenlijn' | 'raadselprent' | 'pijltjes' | 'domino' | 'eikels' | 'knikkers' | 'klok' | 'lampionlied' | 'piramide' | 'patroon' | 'kalaha' | 'spiegel' | 'slingers' | 'bruggen' | 'schuif' | 'vlek' | 'hekjes' | 'zoeken' | 'geheim' | 'sets' | 'bezorgen' | 'springen'
+export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'weegschaal' | 'torens' | 'rooster' | 'snoeppotjes' | 'nim' | 'glijden' | 'verfmengen' | 'eenlijn' | 'raadselprent' | 'pijltjes' | 'domino' | 'eikels' | 'knikkers' | 'klok' | 'lampionlied' | 'piramide' | 'patroon' | 'kalaha' | 'spiegel' | 'slingers' | 'bruggen' | 'schuif' | 'vlek' | 'hekjes' | 'zoeken' | 'geheim' | 'sets' | 'bezorgen' | 'karvrij' | 'springen'
 
 export interface SpelInfo {
   sleutel: SpelSleutel
@@ -555,6 +575,8 @@ export const spelMenu: SpelInfo[] = [
     icoon: 'M3 8h6v6H3zM9 6h6v6H9zM15 10h6v6h-6zM5 10l2 2M11 8l2 2' },
   { sleutel: 'bezorgen', naam: 'Pakjes bezorgen', uitleg: 'Duw alle pakjes naar een mat', prijs: 25,
     icoon: 'M4 4h16v16H4zM9 9h6v6H9zM12 2v2M12 20v2' },
+  { sleutel: 'karvrij', naam: 'Kar vrij!', uitleg: 'Schuif de karren opzij en rij de kar van de Sint naar buiten', prijs: 30,
+    icoon: 'M3 9h10v5H3zM6 17a1.5 1.5 0 1 0 .01 0M10 17a1.5 1.5 0 1 0 .01 0M15 5v10M15 5l-2 2M15 5l2 2M17 12h4M21 12l-2-2M21 12l-2 2' },
   { sleutel: 'springen', naam: 'Springland', uitleg: 'Loop en spring met je figuurtje', prijs: 30,
     icoon: 'M12 3a2 2 0 1 0 0 .01M12 7v5M9 21l3-6l3 6M8 9l4 1l4-1M3 21h4M17 21h4M18 4l1 2l2 .3l-1.5 1.4l.4 2.1L18 8.8l-1.9 1l.4-2.1L15 6.3l2-.3z' },
   { sleutel: 'touwspringen', naam: 'Touwspringen', uitleg: 'Spring op het juiste moment', prijs: 30,

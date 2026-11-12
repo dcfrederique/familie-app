@@ -34,6 +34,7 @@ import Torens from './schermen/Torens.tsx'
 import Rooster from './schermen/Rooster.tsx'
 import Sets from './schermen/Sets.tsx'
 import Bezorgen from './schermen/Bezorgen.tsx'
+import KarVrij from './schermen/KarVrij.tsx'
 import Snoeppotjes from './schermen/Snoeppotjes.tsx'
 import Nim from './schermen/Nim.tsx'
 import Glijden from './schermen/Glijden.tsx'
@@ -176,6 +177,7 @@ export default function App() {
         <Route path="nim" element={<Nim />} />
         <Route path="sets" element={<Sets />} />
         <Route path="bezorgen" element={<Bezorgen />} />
+        <Route path="karvrij" element={<KarVrij />} />
         <Route path="glijden" element={<Glijden />} />
         <Route path="verfmengen" element={<VerfMengen />} />
         <Route path="eenlijn" element={<EenLijn />} />
