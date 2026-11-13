@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.162',
+    datum: '2026-11-13',
+    titel: 'Snoepjes ruilen: gehaalde doelen krijgen een vinkje',
+    tekst: 'In Snoepjes ruilen springt een doel bovenaan even op zodra het gehaald is, en het krijgt een gouden vinkje. Zo zien ook de kleintjes meteen wat er nog te doen is.',
+  },
+  {
     versie: '0.161',
     datum: '2026-11-13',
     titel: 'Snoepjes ruilen, Het gedicht voor opa en de Bromschoorsteen',

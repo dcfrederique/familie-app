@@ -32,7 +32,12 @@
 .ruil-pluimen .aan { color: var(--gold); }
 @keyframes ruil-wiebel { 0%, 100% { transform: scale(1) rotate(-4deg); } 50% { transform: scale(1.14) rotate(4deg); } }
 @keyframes ruil-hop { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14%); } }
-@media (prefers-reduced-motion: reduce) { .ruil-vak.hint, .ruil-vak.zwaai svg { animation: none; } .ruil-vak { transition: none; } }
+/* Detail: een gehaald doel springt even op en krijgt een gouden vinkje. */
+.ruil-doel { position: relative; }
+.ruil-doel.af { animation: ruil-doel-af 0.45s ease-out; }
+.ruil-doel.af::after { content: "✓"; position: absolute; top: -5px; right: -7px; width: 18px; height: 18px; border-radius: 50%; background: var(--gold); color: #3A2A00; font-size: 12px; font-weight: 800; line-height: 18px; text-align: center; }
+@keyframes ruil-doel-af { 0% { scale: 1; } 45% { scale: 1.18; } 100% { scale: 1; } }
+@media (prefers-reduced-motion: reduce) { .ruil-vak.hint, .ruil-vak.zwaai svg, .ruil-doel.af { animation: none; } .ruil-vak { transition: none; } }
 @media (orientation: portrait) {
   .ruil-veld { flex-direction: column; }
   .ruil-tafel { --cel: min(calc((100dvh - 440px) / var(--rijen)), calc(92vw / var(--kol)), 90px); }
