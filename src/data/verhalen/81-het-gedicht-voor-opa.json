@@ -1,0 +1,97 @@
+{
+  "nr": 81,
+  "titel": "Het gedicht voor opa",
+  "reeks": "avonturiers",
+  "leeftijd": 8,
+  "thema": "Sinterklaas, een surprise knutselen en een gedichtje schrijven",
+  "bladzijden": [
+    {
+      "tekst": "Het is vrijdagavond, drie weken voor Sinterklaas. Bij opa thuis hebben ze lootjes getrokken, zoals elk jaar. Noor heeft het lootje van opa gekregen. Dat vindt ze heel spannend, want ze moet een surprise voor hem maken. En bij elke surprise hoort een gedichtje. Opa weet nog van niets, hij zit rustig te lezen in zijn zetel.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "daan",
+          "opa"
+        ]
+      }
+    },
+    {
+      "tekst": "Daan helpt haar. Hij heeft een grote doos van de bakker meegebracht. \"Opa houdt van schepen,\" zegt Noor. \"We maken een stoomboot.\" Ze knippen een boeg uit karton. Daan plakt er een schoorsteen bovenop van een wc-rolletje. Noor schildert de romp rood en zwart. Het ruikt naar verf en lijm.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "daan",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Als de boot droog is, mogen ze er pakjes in leggen. Maar eerst moet het gedichtje af. Noor pakt een blad en een potlood. \"Opa is lief en opa is groot,\" schrijft ze. Dan stopt ze. Wat rijmt er nog op groot? Ze bijt op haar potlood. Daan kijkt over haar schouder. \"Brood!\" zegt hij. \"Opa eet graag brood!\" Noor lacht, maar dat klinkt nog niet goed.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "daan",
+          "tekening"
+        ]
+      }
+    },
+    {
+      "tekst": "Ze zoeken in een groot rijmwoordenboek. Daan leest de rijtjes voor. Boot, brood, groot, stoot, rood. \"Stoot is een rare,\" zegt Noor. \"Maar boot en rood kunnen wel!\" Ze schrijft: \"Hij zit in een boot, met zijn trui zo rood.\" Daan klapt. \"Dat klopt!\" zegt hij. Nu moeten ze nog drie regels vinden. Ze beginnen aan het volgende stukje.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "daan",
+          "boek"
+        ]
+      }
+    },
+    {
+      "tekst": "Na een uur hebben ze acht regels. Sommige zijn grappig, sommige zijn een beetje scheef. Maar ze zijn van henzelf. Noor leest het gedichtje twee keer hardop voor. \"Zou opa het mooi vinden?\" vraagt ze zachtjes. Daan haalt zijn schouders op. \"Hij vindt alles mooi wat wij maken,\" zegt hij. \"Maar we kunnen het nog een keer proberen.\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "daan"
+        ]
+      }
+    },
+    {
+      "tekst": "Op zaterdag dragen ze de boot samen naar opa's huis. Daan houdt de doos vast, Noor het gedichtje. De stoep is nat van de regen, en het is al een beetje donker. In de ramen van de huizen hangen sterren en lichtjes. Een buurvrouw zwaait vanuit haar tuin. \"Wat dragen jullie daar?\" vraagt ze. \"Dat is geheim,\" zeggen Noor en Daan tegelijk.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "noor",
+          "daan",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Opa maakt de doos open en zijn ogen worden groot. \"Een stoomboot!\" zegt hij. \"Met een schoorsteen!\" In de boot ligt het gedichtje. Opa zet zijn bril op en leest het langzaam. Bij de regel over de rode trui moet hij heel hard lachen. \"Dat is mijn lievelingstrui,\" zegt hij. \"Hoe wist je dat?\" Noor glimlacht. Ze heeft het goed gezien.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "daan",
+          "opa",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Opa zet de boot op de vensterbank, naast de foto van oma. \"Dit is de mooiste surprise ooit,\" zegt hij. Noor en Daan krijgen een speculaasje. \"Weet je wat het mooiste is?\" vraagt Daan. \"Dat we er samen aan gewerkt hebben.\" Noor knikt. Volgend jaar maken ze weer een gedichtje, en dan rijmt alles meteen.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "noor",
+          "daan",
+          "opa"
+        ]
+      }
+    }
+  ]
+}

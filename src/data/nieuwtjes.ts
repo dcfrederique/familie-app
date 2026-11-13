@@ -19,6 +19,15 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.161',
+    datum: '2026-11-13',
+    titel: 'Snoepjes ruilen, Het gedicht voor opa en de Bromschoorsteen',
+    tekst: 'Nieuw verhaal "Het gedicht voor opa" (8 jaar) en kleurplaat "De knutseltafel", meteen beschikbaar. Nieuw spelletje Snoepjes ruilen: ruil twee snoepjes van plaats en maak rijtjes van drie (veeg of tik twee buren). Makkelijk is rustig zonder zettenlimiet met een wiebelende hulp, middel heeft zes rondes met twee doelen, strooizakjes en drie tips, moeilijk is een echt breinbrekertje op een groot bord met ijs, vastgevroren snoepjes, meerdere doelen, een strakke zettenlimiet en pluimen. Het spel en de zes nieuwe stukken (krantenhoed, knutselschort, potlodenpot, surprisemand, knutseltafeltje en gedichtbrief aan de deur) staan klaar om vrij te geven in Kinderen → Winkelaanbod. In Springland wacht de baas van Dakenstad: de Bromschoorsteen, die pakjes laat vallen op plekken die je vooraf ziet. Dakenstad is nu vol; morgen begint een nieuwe wereld.',
+    verhaal: 'Het gedicht voor opa',
+    spel: { naam: 'Snoepjes ruilen', prijs: 30 },
+    stukken: ['Krantenhoed (hoofd, 15)', 'Knutselschort (shirt, 20)', 'Potlodenpot (extra, 15)', 'Surprisemand (tuin, 20)', 'Knutseltafeltje (tuin, 25)', 'Gedichtbrief aan de deur (huisextra, 15)'],
+  },
+  {
     versie: '0.160',
     datum: '2026-11-13',
     titel: 'Cadeaumelding past nu altijd op het scherm',

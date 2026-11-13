@@ -1,0 +1,58 @@
+/* Snoepjes ruilen: het bord met snoepjes en daarnaast de knoppen; alles schaalt mee met de hoogte (geen scrollen). */
+.ruil { display: flex; flex-direction: column; align-items: center; gap: clamp(4px, 1dvh, 10px); width: 100%; }
+.ruil-balk { display: flex; align-items: center; gap: 22px; min-height: 40px; font-weight: 700; flex-wrap: wrap; justify-content: center; }
+.ruil-teller { display: flex; gap: 6px; }
+.ruil-teller span { width: 14px; height: 14px; border-radius: 50%; background: var(--line); }
+.ruil-teller .af { background: var(--gold); }
+.ruil-teller .nu { background: var(--kid); }
+.ruil-doelen { display: flex; gap: 10px; align-items: center; }
+.ruil-doel { display: flex; align-items: center; gap: 4px; padding: 2px 10px 2px 6px; border-radius: 999px; background: var(--card, rgba(255,255,255,.7)); border: 2px solid var(--line); font-size: 22px; font-variant-numeric: tabular-nums; }
+.ruil-doel.af { border-color: var(--gold); opacity: 0.65; }
+.ruil-doelsnoep { width: 32px; height: 32px; }
+.ruil-icoon { font-size: 26px; line-height: 1; }
+.ruil-zetten { font-variant-numeric: tabular-nums; font-size: 22px; min-width: 4ch; }
+.ruil-zetten.laag { color: #C8372D; }
+.ruil-veld { display: flex; align-items: center; justify-content: center; gap: clamp(10px, 2.4vw, 28px); }
+.ruil-tafel { --cel: min(calc(60dvh / var(--rijen)), calc(70vw / var(--kol)), 90px); position: relative; width: calc(var(--cel) * var(--kol)); height: calc(var(--cel) * var(--rijen)); border-radius: 12px; overflow: hidden; border: 4px solid #A8693A; background: #FBE9D0; box-sizing: content-box; touch-action: none; user-select: none; }
+.ruil-tafel.klaar { border-color: #D9A441; }
+.ruil-rooster { display: grid; grid-template-columns: repeat(var(--kol), 1fr); grid-template-rows: repeat(var(--rijen), 1fr); width: 100%; height: 100%; }
+.ruil-vak { all: unset; box-sizing: border-box; display: grid; place-items: center; padding: 6%; cursor: pointer; border-radius: 10px; transition: transform 0.2s ease, opacity 0.25s ease; touch-action: none; }
+.ruil-vak svg { width: 100%; height: 100%; display: block; }
+.ruil-vak.ijs { background: rgba(160, 215, 240, 0.65); box-shadow: inset 0 0 0 3px rgba(255,255,255,.8), inset 0 0 12px rgba(80,160,210,.6); }
+.ruil-vak.kies { background: rgba(242, 195, 48, 0.4); transform: scale(1.1); }
+.ruil-vak.weg { transform: scale(0.2); opacity: 0; }
+.ruil-vak.hint { animation: ruil-wiebel 0.7s ease-in-out infinite; }
+.ruil-vak.zwaai svg { animation: ruil-hop 0.7s ease-in-out infinite; }
+.ruil-zij { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.ruil-actie { flex: none; white-space: nowrap; min-height: 64px; min-width: 64px; font-size: 17px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 0 14px; }
+.ruil-mislukt { position: absolute; inset: 0; background: rgba(255,255,255,.86); display: grid; place-content: center; justify-items: center; gap: 12px; text-align: center; padding: 12px; font-size: 24px; }
+.ruil-eind { display: grid; justify-items: center; gap: 16px; }
+.ruil-feest { width: clamp(200px, 40dvh, 360px); height: auto; }
+.ruil-pluimen { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; max-width: 360px; font-size: 28px; color: var(--line); }
+.ruil-pluimen .aan { color: var(--gold); }
+@keyframes ruil-wiebel { 0%, 100% { transform: scale(1) rotate(-4deg); } 50% { transform: scale(1.14) rotate(4deg); } }
+@keyframes ruil-hop { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14%); } }
+@media (prefers-reduced-motion: reduce) { .ruil-vak.hint, .ruil-vak.zwaai svg { animation: none; } .ruil-vak { transition: none; } }
+@media (orientation: portrait) {
+  .ruil-veld { flex-direction: column; }
+  .ruil-tafel { --cel: min(calc((100dvh - 440px) / var(--rijen)), calc(92vw / var(--kol)), 90px); }
+  .ruil-zij { flex-direction: row; gap: 16px; }
+}
+@media (orientation: landscape) and (min-height: 501px) and (max-height: 700px) {
+  .ruil-tafel { --cel: min(calc(46dvh / var(--rijen)), 80px); }
+  .ruil-actie { min-height: 56px; }
+  .ruil-doel { font-size: 18px; }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .ruil { gap: 2px; }
+  .ruil-balk { min-height: 28px; gap: 12px; }
+  .ruil-teller span { width: 10px; height: 10px; }
+  .ruil-doel { font-size: 15px; padding: 0 8px 0 4px; }
+  .ruil-doelsnoep { width: 22px; height: 22px; }
+  .ruil-icoon { font-size: 18px; }
+  .ruil-zetten { font-size: 15px; }
+  .ruil-tafel { --cel: min(calc(41dvh / var(--rijen)), 64px); border-width: 3px; }
+  .ruil-actie { min-height: 44px; min-width: 44px; font-size: 14px; padding: 0 8px; }
+  .ruil-zij { gap: 4px; }
+  .ruil-mislukt { font-size: 16px; }
+}

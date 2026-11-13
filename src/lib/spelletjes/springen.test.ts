@@ -41,7 +41,7 @@ function baasRobot(s: Springen, b: NonNullable<Springen['baas']>): { s: Springen
   let dir = 0
   // Ballen: erover springen. Druppels: opzij.
   const bal = s.kogels.find((k) => k.soort === 'bal' && Math.abs(k.x - s.x) < 2.3 && Math.sign(k.x - s.x) === -Math.sign(k.vx))
-  const druppel = s.kogels.find((k) => k.soort === 'druppel' && Math.abs(k.x - s.x) < 1.1)
+  const druppel = s.kogels.find((k) => (k.soort === 'druppel' || (k.soort === 'pakje' && !k.ligt)) && Math.abs(k.x - s.x) < 1.1)
   if (bal) spr = true
   else if (druppel) dir = s.x < druppel.x ? -1 : 1
   else if (b.soort === 'krab' && (b.toestand === 'aanloop' || b.toestand === 'actie') && Math.abs(dx) < 3.2) { spr = b.toestand === 'actie'; dir = Math.abs(dx) < 2.9 ? -Math.sign(dx) : 0 }
@@ -51,6 +51,13 @@ function baasRobot(s: Springen, b: NonNullable<Springen['baas']>): { s: Springen
   else if (b.soort === 'robot' && b.toestand === 'aanloop' && Math.abs(dx) < 4) dir = -Math.sign(dx)
   else if (b.soort === 'zwam' && (b.toestand === 'aanloop' || b.toestand === 'actie') && Math.abs(b.doel - s.x) < 2.4) dir = s.x < b.doel ? -1 : 1
   else if (b.soort === 'zwam' && b.toestand === 'loopt') dir = 0
+  else if (b.soort === 'schoorsteen' && (b.toestand === 'aanloop' || b.toestand === 'actie') && b.plekken.length) {
+    // De schaduwen op de grond tonen waar de pakjes vallen: ga naar het midden tussen twee schaduwen (of ernaast).
+    const p = b.plekken.slice().sort((x, y) => x - y)
+    const veilig = [p[0] - 1.4, ...p.slice(1).map((x, i) => (x + p[i]) / 2), p[p.length - 1] + 1.4]
+    const doel = veilig.reduce((m, x) => (Math.abs(x - s.x) < Math.abs(m - s.x) ? x : m))
+    dir = Math.abs(doel - s.x) > 0.15 ? Math.sign(doel - s.x) : 0
+  }
   else if (b.kwetsbaar && b.op < 0.5 && b.duizel <= 0) {
     // Dichtbij komen en hupsen als hij net voor je staat.
     dir = Math.abs(dx) > 1.9 ? Math.sign(dx) : 0
@@ -194,6 +201,27 @@ describe('Springland', () => {
     // Maar op het zwakke punt (moe) wel.
     const moe = { ...boven, baas: { ...b, toestand: 'moe' as const, tijd: 5 } }
     expect(speel(moe, 0.4).s.baas!.geraakt).toBe(1)
+  })
+
+  it('de Bromschoorsteen toont schaduwen, laat daar pakjes vallen en is moe daarna; zijn lijf doet geen pijn', () => {
+    const s0 = nieuwSpel('bromschoorsteen', 'zelf')
+    const b0 = s0.baas!
+    const s = { ...s0, x: b0.x - 4, baas: { ...b0, toestand: 'loopt' as const, tijd: 0.01 } }
+    const a = speel(s, 0.2).s
+    expect(a.baas!.toestand).toBe('aanloop')
+    expect(a.baas!.plekken.length).toBe(2)
+    const gaps = a.baas!.plekken.slice().sort((x, y) => x - y)
+    for (let i = 1; i < gaps.length; i++) expect(gaps[i] - gaps[i - 1]).toBeGreaterThanOrEqual(2.5)
+    // In de actie vallen er pakjes op die plekken; ze blijven daarna onschadelijk liggen.
+    let t = a
+    let pakjes = 0
+    for (let i = 0; i < 60 * 6 && t.baas!.toestand !== 'moe'; i++) { t = stap(t, 1 / 60, stil).spel; pakjes = Math.max(pakjes, t.kogels.filter((k) => k.soort === 'pakje').length) }
+    expect(pakjes).toBe(2)
+    expect(t.baas!.toestand).toBe('moe')
+    expect(stap(t, 1 / 60, stil).spel.baas!.kwetsbaar).toBe(true)
+    // Het lijf doet geen pijn: ernaast staan kost geen hartje.
+    const naast = { ...s0, x: b0.x - 1, y: b0.y, baas: { ...b0, toestand: 'loopt' as const, tijd: 5 } }
+    expect(speel(naast, 0.5).alles).not.toContain('geraakt')
   })
 
   it('een springveer kaatst hoog op', () => {

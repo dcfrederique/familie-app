@@ -34,7 +34,7 @@ export interface SpringLevelInfo {
   beestje: 'slak' | 'egel' | 'vogel'
   fruit: 'appel' | 'aardbei' | 'kers'
   /** Een baas op het einde van de wereld (het laatste level): de kaart is dan een kleine arena met B. */
-  baas?: { soort: 'pompoen' | 'pepernoot' | 'sneeuw' | 'krab' | 'wolk' | 'uil' | 'robot' | 'zwam'; naam: string }
+  baas?: { soort: 'pompoen' | 'pepernoot' | 'sneeuw' | 'krab' | 'wolk' | 'uil' | 'robot' | 'zwam' | 'schoorsteen'; naam: string }
   /** Hoe snel de beestjes wandelen, 1 = gewoon. Een pittig level mag er een tikje sneller zijn (tot 1.6). */
   snelheid?: number
   kaart: readonly string[]
@@ -965,6 +965,24 @@ export const springLevelLijst: SpringLevelInfo[] = [
       '  P   o o o o o               o #  C  e o         o      o o  e   C         o o ^     e o o       o o o  H  ',
       '####################   #####################  ########################   #####################  ############',
       '####################~~~#####################~~########################~~~#####################~~############',
+    ],
+  },
+  {
+    id: 'bromschoorsteen', wereld: 'dakenstad', stijl: 'wolken',
+    naam: 'De Bromschoorsteen', beestje: 'slak', fruit: 'kers', snelheid: 1,
+    baas: { soort: 'schoorsteen', naam: 'Bromschoorsteen' },
+    kaart: [
+      '                                                                  ',
+      '                                                                  ',
+      '                                                                  ',
+      '                  * *                                             ',
+      '                  ===                          * * *              ',
+      '                                                                  ',
+      '        o o              * *                                      ',
+      '                                  * * *                           ',
+      '  P   o o o  o    e                  o C o           B         H  ',
+      '############################  ######  ############################',
+      '############################~~######~~############################',
     ],
   },
 ]

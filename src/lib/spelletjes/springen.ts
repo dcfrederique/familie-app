@@ -86,9 +86,11 @@ export interface Baas {
   doel: number; van: number; duur: number
   /** Nog te gooien ballen of druppels in deze aanval. */
   teller: number
+  /** Waar de pakjes van de Bromschoorsteen gaan vallen (de schaduwen op de grond). */
+  plekken: number[]
 }
 /** Ballen (sneeuwbaas, rollen over de grond) en druppels (bromwolk, vallen uit de lucht) waar je overheen springt of voor wegloopt. */
-export interface Kogel { x: number; y: number; vx: number; vy: number; soort: 'bal' | 'druppel' }
+export interface Kogel { x: number; y: number; vx: number; vy: number; soort: 'bal' | 'druppel' | 'pakje'; ligt?: boolean }
 export interface Vlag { x: number; y: number; bereikt: boolean }
 
 export interface Springen {
@@ -153,7 +155,7 @@ export function nieuwSpel(level: SpringLevel, besturing: SpringBesturing): Sprin
       if (t === '*' || t === 'o') dingen.push({ x: c + 0.5, y: r + 0.5, soort: t === '*' ? 'ster' : 'fruit', weg: false })
       if (t === 'e') beestjes.push({ x: c + 0.5, y: r + 1, thuis: c + 0.5, richting: -1, hupKlok: 0, soort: springLevels[level].beestje, leven: BEESTJE_LEVENS[springLevels[level].beestje], weg: false, krul: 0, op: 0 })
       if (t === 'C') vlaggen.push({ x: c + 0.5, y: r + 1, bereikt: false })
-      if (t === 'B') baas = { x: c + 0.5, y: r + 1, thuis: c + 0.5, richting: -1, geraakt: 0, nodig: BAAS_NODIG[besturing], duizel: 0, hupKlok: 0, verslagen: false, soort: springLevels[level].baas?.soort ?? 'pompoen', toestand: 'loopt', tijd: 1.5, op: 0, kwetsbaar: false, doel: c + 0.5, van: c + 0.5, duur: 1, teller: 0 }
+      if (t === 'B') baas = { x: c + 0.5, y: r + 1, thuis: c + 0.5, richting: -1, geraakt: 0, nodig: BAAS_NODIG[besturing], duizel: 0, hupKlok: 0, verslagen: false, soort: springLevels[level].baas?.soort ?? 'pompoen', toestand: 'loopt', tijd: 1.5, op: 0, kwetsbaar: false, doel: c + 0.5, van: c + 0.5, duur: 1, teller: 0, plekken: [] }
       if (t === 'P') start = { x: c + 0.5, y: r + 1 }
       if (t === 'H') huis = { x: c + 0.5, y: r + 1 }
       return t === '#' || t === '=' || t === '^' || t === '~' ? t : ' '
@@ -538,6 +540,37 @@ function patroon(s: Springen, b: Baas, dt: number, uit: SpringGebeurtenis[]) {
       } else if (b.tijd <= 0) naarToestand(b, 'loopt', Math.max(1.2, 1.8 - 0.2 * F))
       break
     }
+    case 'schoorsteen': {
+      // Glijdt heen en weer op zijn dak. Dan verschijnen er 2 tot 4 schaduwen op de grond (de aanloop toont waar) en laat hij daar
+      // pakjes vallen: blijf er niet onder staan. Daarna hoest hij van het roet (moe, de top staat open): dan kan je op hem hupsen.
+      b.kwetsbaar = b.toestand === 'moe'
+      if (b.toestand === 'loopt') {
+        const voor = b.x + b.richting * 1.1 * dt
+        if (inArena(s, b, voor) !== voor) b.richting = b.richting === 1 ? -1 : 1
+        else b.x = voor
+        if (b.tijd <= 0) {
+          const n = Math.min(4, 2 + b.geraakt)
+          const grens = s.huis.x - POORT_AFSTAND - 1
+          const lijst: number[] = []
+          for (const o of [0, -2.6, 2.6, 5.2, -5.2]) {
+            const x = s.x + o
+            if (lijst.length < n && x > b.thuis - BAAS_BEREIK && x < grens) lijst.push(x)
+          }
+          b.plekken = lijst
+          naarToestand(b, 'aanloop', Math.max(0.9, 1.3 - 0.1 * F))
+        }
+      } else if (b.toestand === 'aanloop') {
+        if (b.tijd <= 0) { b.duur = 0; naarToestand(b, 'actie', b.plekken.length * 0.35 + 1.2) }
+      } else if (b.toestand === 'actie') {
+        b.duur -= dt
+        if (b.duur <= 0) {
+          const nog = b.plekken.find((p) => !s.kogels.some((k) => k.soort === 'pakje' && Math.abs(k.x - p) < 0.01))
+          if (nog !== undefined) { s.kogels.push({ x: nog, y: b.y - 7, vx: 0, vy: 8, soort: 'pakje' }); b.duur = Math.max(0.25, 0.4 - 0.05 * F) }
+        }
+        if (b.tijd <= 0) { s.kogels = s.kogels.filter((k) => k.soort !== 'pakje'); b.plekken = []; naarToestand(b, 'moe', Math.max(1.8, 2.4 - 0.15 * F)) }
+      } else if (b.tijd <= 0) naarToestand(b, 'loopt', Math.max(0.9, 1.6 - 0.2 * F))
+      break
+    }
     default: {
       // Pompoen: rolt heen en weer en wordt na elke hup sneller. Altijd kwetsbaar.
       b.kwetsbaar = true
@@ -553,20 +586,26 @@ function patroon(s: Springen, b: Baas, dt: number, uit: SpringGebeurtenis[]) {
 function kogelsBewegen(s: Springen, dt: number, uit: SpringGebeurtenis[]) {
   const b = s.baas
   for (const k of s.kogels) {
+    if (k.ligt) continue
     k.x += k.vx * dt; k.y += k.vy * dt
     const grond = b ? b.y : s.hoog
-    const hoogK = k.soort === 'bal' ? 0.8 : 0.3
-    const raakX = Math.abs(k.x - s.x) < (BREED + (k.soort === 'bal' ? 0.8 : 0.5)) / 2
+    const hoogK = k.soort === 'bal' ? 0.8 : k.soort === 'pakje' ? 0.7 : 0.3
+    const raakX = Math.abs(k.x - s.x) < (BREED + (k.soort === 'bal' ? 0.8 : k.soort === 'pakje' ? 0.8 : 0.5)) / 2
     const raakY = s.y > k.y - hoogK && s.y - HOOG < k.y
     if (raakX && raakY && s.knipper <= 0) { geraaktDoor(s, k.x, uit); k.y = 999 }
+    else if (k.soort === 'pakje' && k.y >= grond) {
+      // Een pakje blijft even liggen (doet niets meer) en zijn schaduw verdwijnt.
+      k.ligt = true; k.y = grond; k.vy = 0
+      if (b) b.plekken = b.plekken.filter((p) => Math.abs(p - k.x) > 0.01)
+    }
     else if ((k.soort === 'druppel' && k.y >= grond) || (b && (k.x < b.thuis - BAAS_BEREIK - 3 || k.x > s.huis.x)) || isVast(s, Math.floor(k.x), Math.round(k.y) - 1) && k.soort === 'bal') k.y = 999
   }
   s.kogels = s.kogels.filter((k) => k.y < 998)
 }
 
-/** Wanneer een baas je een hartje kost als je hem van opzij raakt: de wolk nooit (zijn druppels doen dat), de uil alleen
+/** Wanneer een baas je een hartje kost als je hem van opzij raakt: de wolk en de schoorsteen nooit (hun druppels en pakjes doen dat), de uil alleen
  *  in zijn duikvlucht, de zwam alleen als hij omhoog schiet, de anderen altijd. */
-const doetPijn = (b: Baas) => b.soort === 'wolk' ? false : b.soort === 'uil' || b.soort === 'zwam' ? b.toestand === 'actie' : true
+const doetPijn = (b: Baas) => b.soort === 'wolk' || b.soort === 'schoorsteen' ? false : b.soort === 'uil' || b.soort === 'zwam' ? b.toestand === 'actie' : true
 
 /** De baas volgt zijn eigen patroon. Een hup op zijn kop telt alleen als hij kwetsbaar is; ben je op het verkeerde
  *  moment aan de beurt, dan kaats je er gewoon af. Van opzij raken kost een hartje. */
@@ -591,7 +630,7 @@ function baasRolt(s: Springen, dt: number, uit: SpringGebeurtenis[]) {
     // Van boven: hup! Alleen op het zwakke moment telt het; anders (of als hij duizelig is) is hij een trampoline.
     s.vy = -HUP - 2; s.y = by - BAAS_HOOG
     if (b.duizel <= 0 && b.kwetsbaar) {
-      b.geraakt++; b.duizel = BAAS_DUIZEL; b.hupKlok = 0.5; b.op = 0; b.teller = 0
+      b.geraakt++; b.duizel = BAAS_DUIZEL; b.hupKlok = 0.5; b.op = 0; b.teller = 0; b.plekken = []
       if (b.soort === 'pepernoot') naarToestand(b, 'aanloop', 0.4); else naarToestand(b, 'loopt', 1.2)
       s.kogels = []
       if (b.geraakt >= b.nodig) { b.verslagen = true; uit.push('verslagen') } else uit.push('baas')

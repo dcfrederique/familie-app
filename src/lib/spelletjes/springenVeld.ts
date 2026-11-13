@@ -443,6 +443,16 @@ export class SpringVeld {
       ctx.beginPath(); ctx.arc(0, 0, T * 0.4, 0, Math.PI * 2); ctx.fill(); ctx.stroke()
       ctx.fillStyle = '#C9DDEE'
       ctx.beginPath(); ctx.arc(-T * 0.12, -T * 0.1, T * 0.1, 0, Math.PI * 2); ctx.arc(T * 0.14, T * 0.12, T * 0.07, 0, Math.PI * 2); ctx.fill()
+    } else if (k.soort === 'pakje') {
+      // Een pakje van de Bromschoorsteen: rood met een gouden strik; als het ligt, is het onschadelijk en wat doorzichtig.
+      if (k.ligt) ctx.globalAlpha = 0.55
+      ctx.rotate(k.ligt ? 0 : Math.sin(this.spel.klok * 9 + k.x) * 0.25)
+      ctx.fillStyle = '#D63A32'; ctx.strokeStyle = 'rgba(0,0,0,.35)'; ctx.lineWidth = T * 0.04
+      ctx.beginPath(); ctx.roundRect(-T * 0.38, -T * 0.7, T * 0.76, T * 0.66, T * 0.06); ctx.fill(); ctx.stroke()
+      ctx.fillStyle = '#FFFFFF'
+      ctx.fillRect(-T * 0.06, -T * 0.7, T * 0.12, T * 0.66); ctx.fillRect(-T * 0.38, -T * 0.42, T * 0.76, T * 0.12)
+      ctx.strokeStyle = '#F2C530'; ctx.lineWidth = T * 0.07; ctx.lineCap = 'round'
+      ctx.beginPath(); ctx.moveTo(0, -T * 0.7); ctx.quadraticCurveTo(-T * 0.3, -T * 0.98, -T * 0.16, -T * 0.7); ctx.moveTo(0, -T * 0.7); ctx.quadraticCurveTo(T * 0.3, -T * 0.98, T * 0.16, -T * 0.7); ctx.stroke()
     } else {
       ctx.fillStyle = '#4C9BF0'
       ctx.beginPath(); ctx.moveTo(0, -T * 0.3); ctx.quadraticCurveTo(T * 0.2, -T * 0.05, 0, 0); ctx.quadraticCurveTo(-T * 0.2, -T * 0.05, 0, -T * 0.3); ctx.fill()
@@ -489,6 +499,95 @@ export class SpringVeld {
     ctx.restore()
   }
 
+  /** De Bromschoorsteen: een rode baksteenschoorsteen met een sneeuwmuts, een sjaaltje en een rookpluim. De schaduwen op de grond
+   *  tonen waar de pakjes vallen; als hij moe is, hoest hij en staat zijn top open (dan kan je erop hupsen). */
+  private tekenSchoorsteen(b: Baas, T: number) {
+    const { ctx } = this
+    const klok = this.spel.klok
+    // Schaduwen waar de pakjes vallen.
+    const pulse = 0.5 + 0.5 * Math.sin(klok * 14)
+    for (const p of b.plekken) {
+      ctx.fillStyle = b.toestand === 'actie' ? `rgba(200,50,40,${0.35 + 0.2 * pulse})` : 'rgba(200,50,40,.2)'
+      ctx.beginPath(); ctx.ellipse(p * T, b.y * T - T * 0.05, T * 0.62, T * 0.14, 0, 0, Math.PI * 2); ctx.fill()
+    }
+    const w = BAAS_BREED * T * 0.72, h = BAAS_HOOG * T
+    ctx.save()
+    ctx.translate(b.x * T, b.y * T)
+    const klaar = b.toestand === 'aanloop'
+    const wiebel = b.duizel > 0 ? Math.sin(klok * 10) * 0.08 : klaar ? Math.sin(klok * 40) * 0.04 : b.toestand === 'moe' ? Math.sin(klok * 14) * 0.03 : 0
+    ctx.rotate(wiebel)
+    ctx.scale(1, b.hupKlok > 0 ? 0.75 : klaar ? 0.94 : 1)
+    // Romp: baksteen met voegen.
+    ctx.fillStyle = '#C0533A'; ctx.strokeStyle = '#7A3220'; ctx.lineWidth = T * 0.06
+    ctx.beginPath(); ctx.roundRect(-w / 2, -h * 0.95, w, h * 0.95, T * 0.1); ctx.fill(); ctx.stroke()
+    ctx.strokeStyle = 'rgba(255,255,255,.55)'; ctx.lineWidth = T * 0.035
+    for (let r = 1; r < 6; r++) {
+      const y = -h * 0.95 + (r * h * 0.95) / 6
+      ctx.beginPath(); ctx.moveTo(-w / 2, y); ctx.lineTo(w / 2, y); ctx.stroke()
+      for (let c = 0; c < 3; c++) {
+        const x = -w / 2 + ((c + (r % 2 ? 0.25 : 0.65)) * w) / 3
+        ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y - (h * 0.95) / 6); ctx.stroke()
+      }
+    }
+    // Rand bovenaan en de opening (open als hij moe is).
+    ctx.fillStyle = '#8F3A27'
+    ctx.beginPath(); ctx.roundRect(-w * 0.58, -h * 1.05, w * 1.16, h * 0.14, T * 0.06); ctx.fill()
+    ctx.fillStyle = b.toestand === 'moe' ? '#2A2220' : '#4A3028'
+    ctx.beginPath(); ctx.ellipse(0, -h * 1.05, w * 0.44, h * 0.045, 0, 0, Math.PI * 2); ctx.fill()
+    if (b.toestand === 'moe') {
+      ctx.fillStyle = 'rgba(40,40,40,.55)'
+      for (let i = 0; i < 3; i++) {
+        const f = (klok * 1.4 + i / 3) % 1
+        ctx.beginPath(); ctx.arc((i - 1) * T * 0.2 + Math.sin(klok * 3 + i) * T * 0.1, -h * 1.1 - f * T * 0.8, T * (0.1 + 0.16 * f), 0, Math.PI * 2); ctx.fill()
+      }
+    } else {
+      ctx.fillStyle = 'rgba(210,215,222,.8)'
+      for (let i = 0; i < 3; i++) {
+        const f = (klok * 0.5 + i / 3) % 1
+        ctx.beginPath(); ctx.arc(Math.sin(klok * 2 + i * 2) * T * 0.12, -h * 1.1 - f * T * 0.9, T * (0.1 + 0.18 * f), 0, Math.PI * 2); ctx.fill()
+      }
+    }
+    // Sneeuwmuts naast de opening en een sjaaltje.
+    ctx.fillStyle = '#FFFFFF'
+    ctx.beginPath(); ctx.ellipse(-w * 0.34, -h * 1.07, w * 0.2, h * 0.06, -0.15, 0, Math.PI * 2); ctx.fill()
+    ctx.fillStyle = '#2F80C9'
+    ctx.beginPath(); ctx.roundRect(-w * 0.52, -h * 0.28, w * 1.04, h * 0.1, h * 0.05); ctx.fill()
+    ctx.fillRect(w * 0.2, -h * 0.22, w * 0.1, h * 0.26)
+    // Gezicht.
+    ctx.strokeStyle = '#3A1E12'; ctx.lineWidth = T * 0.1; ctx.lineCap = 'round'
+    if (b.duizel > 0) {
+      for (const dx of [-0.2, 0.2]) {
+        ctx.beginPath(); ctx.moveTo(dx * w - T * 0.16, -h * 0.62 - T * 0.16); ctx.lineTo(dx * w + T * 0.16, -h * 0.62 + T * 0.16)
+        ctx.moveTo(dx * w + T * 0.16, -h * 0.62 - T * 0.16); ctx.lineTo(dx * w - T * 0.16, -h * 0.62 + T * 0.16); ctx.stroke()
+      }
+      ctx.beginPath(); ctx.ellipse(0, -h * 0.42, T * 0.18, T * 0.13, 0, 0, Math.PI * 2); ctx.stroke()
+      ctx.fillStyle = '#F2B33D'
+      for (let i = 0; i < 3; i++) {
+        const a = klok * 5 + (i * Math.PI * 2) / 3
+        ctx.beginPath(); ctx.arc(Math.cos(a) * w * 0.5, -h * 1.25 + Math.sin(a) * T * 0.2, T * 0.13, 0, Math.PI * 2); ctx.fill()
+      }
+    } else {
+      ctx.beginPath(); ctx.moveTo(-0.34 * w, -h * 0.8); ctx.lineTo(-0.1 * w, -h * 0.72); ctx.moveTo(0.34 * w, -h * 0.8); ctx.lineTo(0.1 * w, -h * 0.72); ctx.stroke()
+      ctx.fillStyle = '#FFFFFF'
+      for (const dx of [-0.2, 0.2]) { ctx.beginPath(); ctx.arc(dx * w, -h * 0.62, T * 0.2, 0, Math.PI * 2); ctx.fill() }
+      ctx.fillStyle = '#1C2433'
+      for (const dx of [-0.2, 0.2]) { ctx.beginPath(); ctx.arc(dx * w + b.richting * T * 0.06, -h * 0.62, T * 0.1, 0, Math.PI * 2); ctx.fill() }
+      ctx.beginPath()
+      if (b.toestand === 'moe') ctx.ellipse(0, -h * 0.44, T * 0.14, T * 0.1, 0, 0, Math.PI * 2)
+      else ctx.arc(0, -h * 0.5, T * 0.3, 0.15 * Math.PI, 0.85 * Math.PI)
+      ctx.stroke()
+    }
+    // Een wippende pijl boven zijn top: nu kan je op hem hupsen!
+    if (b.kwetsbaar && b.duizel <= 0) {
+      const wip = Math.sin(klok * 8) * T * 0.12, y0 = -h * 1.7 + wip
+      ctx.fillStyle = '#F2B33D'; ctx.strokeStyle = '#8A5A10'; ctx.lineWidth = T * 0.05
+      ctx.beginPath(); ctx.moveTo(0, y0 + T * 0.3); ctx.lineTo(-T * 0.3, y0 - T * 0.1); ctx.lineTo(-T * 0.12, y0 - T * 0.1)
+      ctx.lineTo(-T * 0.12, y0 - T * 0.45); ctx.lineTo(T * 0.12, y0 - T * 0.45); ctx.lineTo(T * 0.12, y0 - T * 0.1); ctx.lineTo(T * 0.3, y0 - T * 0.1)
+      ctx.closePath(); ctx.fill(); ctx.stroke()
+    }
+    ctx.restore()
+  }
+
   /** De baas (pompoen of pepernoot): groot, boos-lief, duizelig met sterretjes na een hup, en een zwaaiende steel. */
   private tekenBaas(b: Baas, T: number) {
     const { ctx } = this
@@ -507,6 +606,7 @@ export class SpringVeld {
       ctx.beginPath(); ctx.moveTo(kx - r, ky - r); ctx.lineTo(kx + r, ky + r); ctx.moveTo(kx + r, ky - r); ctx.lineTo(kx - r, ky + r); ctx.stroke()
     }
     if (b.soort === 'zwam' && (b.toestand === 'loopt' || b.toestand === 'aanloop')) { this.tekenBladhoop(b, T); return }
+    if (b.soort === 'schoorsteen') { this.tekenSchoorsteen(b, T); return }
     ctx.save()
     ctx.translate(b.x * T, (b.y - b.op) * T)
     // Hurken en trillen als er iets aankomt; een wiebel bij een hup of duizeligheid.
