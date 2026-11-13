@@ -1,10 +1,10 @@
 /* Dagelijks hoera (docs/dagelijks-hoera.md): feestelijke melding bij de eerste keer openen per dag. */
-.hoera { z-index: 30; overflow: hidden; }
+.hoera { z-index: 30; overflow: hidden; grid-template-rows: minmax(0, 1fr); }
 .hoera-confetti { position: absolute; inset: 0; pointer-events: none; overflow: hidden; }
 .hoera-confetti span { position: absolute; top: -24px; left: var(--x); width: 12px; height: 20px; border-radius: 3px; background: var(--kleur);
   animation: hoera-val var(--duur) linear var(--vertraging) infinite; }
 @keyframes hoera-val { to { transform: translateY(110vh) rotate(var(--draai)); } }
-.hoera-dialoog { position: relative; width: min(760px, 100%); gap: 20px; max-height: 100%; box-sizing: border-box; grid-template-rows: auto minmax(0, 1fr) auto; border: 6px solid var(--gold-bg, #F2B705); }
+.hoera-dialoog { position: relative; width: min(760px, 100%); gap: 20px; max-height: calc(100dvh - 32px); max-height: min(100%, calc(100dvh - 32px)); box-sizing: border-box; grid-template-rows: auto minmax(0, 1fr) auto; border: 6px solid var(--gold-bg, #F2B705); }
 .hoera-titel { font-size: clamp(44px, 7vw, 72px); line-height: 1; color: var(--accent, inherit); animation: hoera-pop .6s ease-out; }
 @keyframes hoera-pop { 0% { transform: scale(.4); opacity: 0; } 70% { transform: scale(1.12); } 100% { transform: scale(1); opacity: 1; } }
 .hoera-kaarten { display: flex; flex-wrap: wrap; gap: 16px; justify-content: center; align-content: flex-start; width: 100%; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
@@ -13,6 +13,8 @@
 .hoera-spellen.veel .hoera-spel-prent { width: 64px; height: 64px; border-radius: 20px; }
 .hoera-spellen.veel .hoera-spel-prent .ic { width: 40px; height: 40px; }
 .hoera-spellen.veel li { font-size: 16px; gap: 2px; }
+/* Meer dan zeven nieuwe spelletjes: de eerste zeven en een "+N"-tegel, zodat niets hoeft te scrollen. */
+.hoera-spel-meer { font-weight: 800; font-size: 28px; }
 @media (max-height: 560px) {
   .hoera-dialoog { padding: 14px 18px; gap: 10px; border-width: 4px; }
   .hoera-titel { font-size: 32px; }
@@ -20,6 +22,9 @@
   .hoera-kaart h3 { font-size: 20px; }
   .hoera-cadeau-prent { width: 100px; height: 100px; }
   .hoera-spel-prent { width: 64px; height: 64px; }
+  .hoera-spellen.veel .hoera-spel-prent { width: 48px; height: 48px; border-radius: 14px; }
+  .hoera-spellen.veel .hoera-spel-prent .ic { width: 30px; height: 30px; }
+  .hoera-spellen.veel li { font-size: 13px; }
 }
 .hoera-kaart { flex: 1 1 260px; display: grid; justify-items: center; align-content: start; gap: 10px; padding: 16px; border-radius: 28px; background: var(--surface-2, rgb(0 0 0 / .05)); }
 .hoera-kaart h3 { margin: 0; font-size: 26px; line-height: 1.1; }
@@ -33,6 +38,7 @@
 .hoera-cadeau-naam { margin: 0; font-size: 24px; }
 .hoera-cadeau-naam small { display: block; font-size: 16px; color: var(--muted); font-weight: 700; }
 .hoera-knoppen { justify-content: center; }
+@media (max-height: 420px) { .hoera-cadeau-prent { width: 72px; height: 72px; } .hoera-kaart h3 { font-size: 18px; } .hoera-titel { font-size: 28px; } .hoera-dialoog { gap: 6px; } }
 @media (prefers-reduced-motion: reduce) {
   .hoera-confetti span, .hoera-titel, .hoera-cadeau-prent { animation: none; }
   .hoera-confetti span { top: 12%; }

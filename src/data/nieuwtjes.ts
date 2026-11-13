@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.160',
+    datum: '2026-11-13',
+    titel: 'Cadeaumelding past nu altijd op het scherm',
+    tekst: 'Als er veel spelletjes tegelijk vrijkomen, werd de hoera-melding bij Yuna te hoog en kon ze hem niet sluiten. Nu past het venster altijd op het scherm, de knoppen blijven zichtbaar, en bij heel veel spelletjes toont het er zeven plus een "+N"-tegel.',
+  },
+  {
     versie: '0.159',
     datum: '2026-11-12',
     titel: 'Kar vrij! en Pakjes bezorgen: knoppen voluit en groter bord',

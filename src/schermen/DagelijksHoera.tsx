@@ -14,6 +14,8 @@ import Figuurtje from './Figuurtje.tsx'
 import { HuisKeuzePrent } from './HuisPrent.tsx'
 import './hoera.css'
 
+// Meer tegels dan dit past niet op een lage gsm: de rest wordt een "+N"-tegel.
+const MAX_TEGELS = 7
 const KLEUREN = ['#F2B705', '#E8553E', '#3AA7E0', '#4CB782', '#B070E0', '#F28BB5']
 
 // Confetti: vaste verdeling, zodat het scherm niet bij elke render springt.
@@ -59,7 +61,7 @@ export default function DagelijksHoera({ kind, hoera, sluit }: { kind: Gebruiker
             <section className="hoera-kaart" aria-label="Nieuw in de winkel">
               {lezer && <h3 className="display">Nieuw in de winkel!</h3>}
               <ul className={`hoera-spellen${spellen.length > 6 ? ' veel' : ''}`}>
-                {spellen.map((s) => (
+                {spellen.slice(0, MAX_TEGELS).map((s) => (
                   <li key={s.sleutel}>
                     <span className="hoera-spel-prent">
                       <svg className="ic" viewBox="0 0 24 24" width="56" height="56" aria-hidden="true"><path d={s.icoon} /></svg>
@@ -67,6 +69,9 @@ export default function DagelijksHoera({ kind, hoera, sluit }: { kind: Gebruiker
                     {lezer && <span className="display">{s.naam}</span>}
                   </li>
                 ))}
+                {spellen.length > MAX_TEGELS && (
+                  <li><span className="hoera-spel-prent hoera-spel-meer" aria-label={`En nog ${spellen.length - MAX_TEGELS} andere`}>+{spellen.length - MAX_TEGELS}</span></li>
+                )}
               </ul>
             </section>
           )}
