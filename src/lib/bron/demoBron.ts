@@ -455,7 +455,7 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
     async gezinspotInstellen(i, pin): Promise<OuderUitkomst> {
       if (!pinOk(pin)) return 'pincode_fout'
       if (i.aan && !i.naam.trim()) throw new Error('geef de pot een doel')
-      const g = (t.potten.gezin ??= { aan: false, naam: '', prent: 'pretpark', doel: 300, max_per_kind: 100, bijdragen: {} })
+      const g = (t.potten.gezin ??= { aan: false, naam: '', prent: 'pretpark', doel: 300, max_per_kind: 300, bijdragen: {} })
       if (!i.aan) g.bijdragen = {}
       Object.assign(g, { aan: i.aan, naam: i.naam.trim().slice(0, 60), prent: i.prent, doel: i.doel, max_per_kind: i.max_per_kind })
       return 'ingesteld'

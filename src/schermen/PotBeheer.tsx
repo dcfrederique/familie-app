@@ -97,7 +97,7 @@ export function GezinspotBeheer({ ververs }: { ververs: () => Promise<void> }) {
   const [melding, setMelding] = useState('')
   if (!bron) return null
 
-  const huidig = { aan: pot?.aan ?? false, naam: naam ?? pot?.naam ?? '', prent: prent ?? pot?.prent ?? 'pretpark', doel: doel ?? pot?.doel ?? 300, max_per_kind: max ?? pot?.max_per_kind ?? 100 }
+  const huidig = { aan: pot?.aan ?? false, naam: naam ?? pot?.naam ?? '', prent: prent ?? pot?.prent ?? 'pretpark', doel: doel ?? pot?.doel ?? 300, max_per_kind: max ?? pot?.max_per_kind ?? (doel ?? pot?.doel ?? 300) }
   const pin = ouderPin(account?.soort)
 
   async function doe(actie: () => Promise<string>, gelukt: string) {
@@ -127,6 +127,9 @@ export function GezinspotBeheer({ ververs }: { ververs: () => Promise<void> }) {
         <label className="veld"><span>Maximum per kind</span>
           <input type="number" inputMode="numeric" min={1} max={5000} value={huidig.max_per_kind} onChange={(e) => setMax(e.target.valueAsNumber || 0)} /></label>
       </div>
+      {huidig.max_per_kind * Math.max(1, kinderen.length) < huidig.doel && (
+        <p className="tip">Let op: met dit maximum geven de kinderen samen hoogstens {huidig.max_per_kind * Math.max(1, kinderen.length)} sterren, minder dan het doel van {huidig.doel}. Zet het maximum per kind hoger.</p>
+      )}
       <div className="knoppen">
         <button type="button" className="knop" disabled={!huidig.naam.trim() || huidig.doel < 1 || huidig.max_per_kind < 1} onClick={() => bewaar(true)}>{pot?.aan ? 'Bewaren' : 'Gezinspot aanzetten'}</button>
         {pot?.aan && <button type="button" className="knop knop-licht" onClick={() => bewaar(false)}>Uitzetten</button>}

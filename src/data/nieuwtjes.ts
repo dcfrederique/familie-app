@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.163',
+    datum: '2026-11-13',
+    titel: 'Gezinspot: maximum per kind volgt het doel',
+    tekst: 'Een nieuwe gezinspot start met een maximum per kind gelijk aan het doel, en een bestaande pot met het oude maximum van 100 en een groter doel krijgt het doel als maximum. Kinderen kunnen dus weer sparen tot het doel. In Kinderen en tijd waarschuwt de app als het maximum per kind te klein is om het doel te halen.',
+  },
+  {
     versie: '0.162',
     datum: '2026-11-13',
     titel: 'Snoepjes ruilen: gehaalde doelen krijgen een vinkje',
