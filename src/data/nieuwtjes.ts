@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.165',
+    datum: '2026-11-14',
+    titel: 'Themaprentjes zweven weer op hun plek',
+    tekst: 'In de kop van de kinderschermen zweefden sommige prentjes van de thema\'s over het scherm, zoals de tovenaarshoed van Toverschool die over de naam schoof. Ze blijven nu op hun plek en wiegen zachtjes.',
+  },
+  {
     versie: '0.164',
     datum: '2026-11-14',
     titel: 'Lichtstraal, Pip zingt voor de Sint, De Speeldoos en drie nieuwe thema\'s',

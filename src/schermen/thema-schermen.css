@@ -463,7 +463,8 @@
 @keyframes thema-rij { from { transform: translateX(-260px); } to { transform: translateX(1260px); } }
 @keyframes thema-wuif { 50% { transform: rotate(-14deg); } }
 @keyframes thema-fladder { to { transform: scaleX(.4); } }
-@keyframes thema-zweef { 50% { transform: translate(20px, -10px); } }
+/* Met de eigenschap translate (niet transform): veel zwevende prentjes hebben zelf een transform-attribuut, dat anders mee-animeert en het prentje over de banner doet schuiven. */
+@keyframes thema-zweef { 50% { translate: 20px -10px; } }
 @keyframes thema-zweef-op { 50% { transform: translateY(-8px); } }
 @keyframes thema-knipper { 50% { opacity: .45; } }
 @keyframes thema-stuiter { 0%, 100% { transform: translateY(0); } 45% { transform: translateY(-14px); } }
