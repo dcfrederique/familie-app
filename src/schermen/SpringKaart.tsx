@@ -26,6 +26,7 @@ const wereldKleur: Record<WereldStijl, { pad: string; rand: string }> = {
   speelgoed: { pad: '#FFE9A8', rand: '#E0AE17' },
   herfst: { pad: '#F6E3B4', rand: '#B7793A' },
   daken: { pad: '#F3E2C6', rand: '#8E2A20' },
+  speeldoos: { pad: '#F7E2A3', rand: '#B9892B' },
 }
 
 /** Klein prentje van de stijl van een level, voor in het plekje en op de knop Volgend level. */

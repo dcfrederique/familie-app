@@ -258,6 +258,41 @@ const feeen = wikkel(`<g class="tn-nacht" fill="#FFF3C4"><circle cx="100" cy="30
   <g transform="translate(780 186)"><path d="M0 0V-24" stroke="#43A047" stroke-width="4"/><circle cy="-30" r="10" fill="#F2C530"/><circle cy="-30" r="4" fill="#F28C28"/><path d="M40 0V-18" stroke="#43A047" stroke-width="4"/><circle cx="40" cy="-24" r="8" fill="#E0739A"/></g>
   <g fill="#FFF3C4" class="thema-zweef"><circle cx="330" cy="70" r="3"/><circle cx="660" cy="96" r="2.5"/><circle cx="720" cy="56" r="3"/></g>`)
 
+const gear = (cx: number, cy: number, r: number) => `<g transform="translate(${cx} ${cy})" class="thema-zweef"><circle r="${r}" fill="none" stroke-width="${Math.round(r / 3)}" stroke-dasharray="${Math.round(r / 2.6)} ${Math.round(r / 3.4)}" style="stroke:var(--tn-tandwiel)"/><circle r="${r * 0.72}" style="fill:var(--tn-tandwiel)"/><circle r="${r * 0.3}" style="fill:var(--tn-banner-gat, #0003)" opacity=".35"/></g>`
+
+const robotlab = wikkel(`${nachtSterren(34)}
+  <rect x="330" y="186" width="670" height="40" style="fill:var(--tn-tandwiel)"/><path d="M330 186H1000" stroke="#55687A" stroke-width="4"/>
+  ${gear(470, 150, 44)}${gear(880, 140, 52)}${gear(540, 84, 24)}
+  <g transform="translate(680 186)"><rect x="-26" y="-22" width="14" height="22" rx="4" fill="#55687A"/><rect x="12" y="-22" width="14" height="22" rx="4" fill="#55687A"/>
+    <rect x="-52" y="-120" width="104" height="100" rx="14" style="fill:var(--tn-robot)" stroke="#55687A" stroke-width="5"/>
+    <rect x="-36" y="-100" width="72" height="34" rx="8" fill="#F4F7FA" opacity=".85"/><circle cx="-14" cy="-83" r="9" style="fill:var(--tn-oog)"/><circle cx="14" cy="-83" r="9" style="fill:var(--tn-oog)"/><circle cx="-14" cy="-83" r="3.5" fill="#1D2A36"/><circle cx="14" cy="-83" r="3.5" fill="#1D2A36"/>
+    <circle cx="-22" cy="-48" r="6" fill="#E8553A"/><circle cx="0" cy="-48" r="6" fill="#4FD0C0"/><circle cx="22" cy="-48" r="6" style="fill:var(--tn-oog)"/>
+    <path d="M0 -120V-146" stroke="#55687A" stroke-width="5"/><circle cy="-152" r="8" fill="#E8553A" class="thema-zweef"/>
+    <path d="M-52 -92H-84L-96 -64M52 -92H84L96 -64" stroke="#55687A" stroke-width="9" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M-96 -64l-8 -8M-96 -64l-10 4M96 -64l8 -8M96 -64l10 4" stroke="#55687A" stroke-width="5" stroke-linecap="round"/></g>
+  <g transform="translate(400 186)"><rect x="-20" y="-16" width="40" height="16" rx="4" fill="#E8553A"/><rect x="-8" y="-30" width="16" height="14" rx="3" style="fill:var(--tn-oog)"/></g>
+  <g transform="translate(960 150)"><path d="M0 0V-26" stroke="#55687A" stroke-width="3"/><circle cy="-38" r="12" style="fill:var(--tn-oog)" opacity=".9"/></g>`)
+
+const tover = wikkel(`${nachtSterren(36)}
+  <path d="M340 210C420 190 520 200 620 196C740 192 860 198 1000 194V230H340Z" style="fill:var(--tn-boek)" opacity=".35"/>
+  <g transform="translate(700 190)"><path d="M-70 0L0 -26L70 0L0 12Z" style="fill:var(--tn-boek)" stroke="#5B2FA0" stroke-width="3" stroke-linejoin="round"/><path d="M0 -26V12" stroke="#5B2FA0" stroke-width="3"/><path d="M-52 -2L-8 -16M-48 6L-8 -6M52 -2L8 -16M48 6L8 -6" stroke="#fff" stroke-width="2.5" opacity=".7"/></g>
+  <g transform="translate(700 80)" class="thema-zweef"><path d="M-62 60C-50 20 -22 -14 0 -62C22 -14 50 20 62 60Z" style="fill:var(--tn-hoed)"/><ellipse cy="60" rx="92" ry="16" style="fill:var(--tn-hoed)"/><path d="M-62 48Q0 66 62 48V62Q0 80 -62 62Z" style="fill:var(--tn-ster)"/><g transform="translate(-4 8) scale(.9)">${ster('#FFD84D')}</g></g>
+  <g class="thema-zweef" fill="#FFD84D"><g transform="translate(620 40) scale(.5)">${ster('#FFD84D')}</g><g transform="translate(790 30) scale(.6)">${ster('#FFD84D')}</g><g transform="translate(560 120) scale(.4)">${ster('#fff')}</g><g transform="translate(850 110) scale(.45)">${ster('#fff')}</g></g>
+  <g transform="translate(470 160) rotate(-35)"><rect x="-4" y="-50" width="8" height="100" rx="4" fill="#5B2FA0"/><rect x="-4" y="-50" width="8" height="18" rx="4" style="fill:var(--tn-ster)"/></g>
+  <g transform="translate(450 96) scale(.7)">${ster('#FFD84D')}</g>
+  <g transform="translate(930 168)"><rect x="-30" y="-6" width="60" height="16" rx="3" style="fill:var(--tn-boek)"/><rect x="-24" y="-18" width="48" height="14" rx="3" style="fill:var(--tn-hoed)"/><rect x="-5" y="-48" width="10" height="30" rx="3" fill="#FFF3C4"/><path d="M0 -62Q-9 -52 0 -48Q9 -52 0 -62Z" fill="#FFB020" class="thema-zweef"/></g>`)
+
+const sneeuwpret = wikkel(`${nachtSterren(34)}<g class="tn-nacht"><circle cx="900" cy="50" r="26" fill="#FFF3C4"/></g>
+  <path d="M330 206C450 168 560 176 680 196C800 178 900 176 1000 190V230H330Z" style="fill:var(--tn-sneeuw)"/>
+  <g transform="translate(640 196) scale(.74)"><circle cy="-48" r="50" style="fill:var(--tn-sneeuw)" stroke="#9CC6E8" stroke-width="4"/><circle cy="-112" r="36" style="fill:var(--tn-sneeuw)" stroke="#9CC6E8" stroke-width="4"/><circle cy="-158" r="27" style="fill:var(--tn-sneeuw)" stroke="#9CC6E8" stroke-width="4"/>
+    <circle cx="-10" cy="-164" r="4" fill="#222"/><circle cx="10" cy="-164" r="4" fill="#222"/><path d="M0 -156L26 -150L0 -146Z" style="fill:var(--tn-neus)"/>
+    <path d="M-38 -138Q0 -122 38 -138V-126Q0 -110 -38 -126Z" fill="#E5484D"/><path d="M-20 -134v12M0 -131v12M20 -134v12" stroke="#fff" stroke-width="5"/>
+    <path d="M-24 -176Q0 -214 24 -176Z" style="fill:var(--tn-muts)"/><rect x="-28" y="-182" width="56" height="10" rx="4" fill="#fff"/><circle cy="-212" r="7" fill="#fff"/>
+    <circle cy="-118" r="4" fill="#222"/><circle cy="-100" r="4" fill="#222"/><path d="M-36 -108L-78 -134M36 -108L78 -134" stroke="#8A5A33" stroke-width="6" stroke-linecap="round"/></g>
+  <g transform="translate(430 198) rotate(-12)"><ellipse rx="30" ry="14" fill="#2B2F36"/><ellipse cx="2" cy="2" rx="22" ry="9" fill="#fff"/><path d="M26 -2L44 2L26 6Z" style="fill:var(--tn-neus)"/><circle cx="18" cy="-4" r="3" fill="#fff"/><circle cx="19" cy="-4" r="1.5" fill="#000"/></g>
+  <g transform="translate(850 190)"><rect x="-44" y="-18" width="88" height="14" rx="6" style="fill:var(--tn-muts)"/><path d="M-52 -2Q-60 6 -44 6H44Q60 6 52 -2" fill="none" stroke="#8A5A33" stroke-width="5" stroke-linecap="round"/><rect x="-14" y="-40" width="28" height="22" rx="3" fill="#2F80C9"/><path d="M0 -40V-18M-14 -29H14" stroke="#fff" stroke-width="4"/></g>
+  <g fill="#fff" class="thema-zweef" opacity=".9"><circle cx="400" cy="50" r="6"/><circle cx="520" cy="90" r="5"/><circle cx="560" cy="30" r="7"/><circle cx="780" cy="60" r="6"/><circle cx="960" cy="100" r="5"/><circle cx="470" cy="150" r="4"/></g>`)
+
 const vink = (kleur: string) => `<path d="M-16 0L-6 10L16 -12" stroke="${kleur}" stroke-width="7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`
 
 export const dataThemas: DataThema[] = [
@@ -723,6 +758,54 @@ export const dataThemas: DataThema[] = [
     slot: '<circle r="18" fill="#B8BFCB"/><path d="M-9 4C-9 -10 9 -10 9 4Z" fill="#5B6B7A"/>',
     feest: [ster('#F2C530'), '<circle r="5" fill="#F4B6C8"/>', '<circle r="5" fill="#B48CF0"/>'], confetti: ['#9C6ADE', '#F4B6C8', '#F2C530', '#9BD3A0', '#FFFFFF'],
     tegelRadius: '20px', tegelRand: '4px solid var(--kid)',
+  },
+  {
+    sleutel: 'robotlab', naam: 'Robotlab', kidKleur: '#55687A', shirt: 'blauw', verhouding: 1,
+    ondertitels: { spelen: 'De werkbank', verhalen: 'Lezen bij de lasbril', kleurplaten: 'De blauwdruk', figuurtje: 'Robotbouwer', huis: 'Mijn werkplaats' },
+    klaarTekst: 'Alles gedaan, de robot loopt!', nogTeDoen: (n) => `Nog ${n} ${n === 1 ? 'taak' : 'taken'} tot de robot loopt`,
+    licht: { bg: '#EEF2F6', surface: '#FFFFFF', soft: '#DDE5EC', ink: '#1D2A36', muted: '#53667A', line: '#CBD6E0', shade: '#CBD6E0', kid: '#55687A', 'kid-tint': '#E1E8EE', 'on-solid': '#FFFFFF',
+      'tn-grond': '#9FB0C0', 'tn-nacht': 'none', 'tn-banner': 'linear-gradient(#C9D6E2,#EEF2F6)', 'tn-titel': '#1D2A36', 'tn-sub': '#2E6E8E', 'tn-spoor': '#CBD6E0', 'tn-tandwiel': '#9FB0C0', 'tn-robot': '#7FA3C0', 'tn-oog': '#F5B700' },
+    donker: { bg: '#0F161D', surface: '#1A2530', soft: '#243342', ink: '#E8EEF4', muted: '#A9B8C7', line: '#2F4152', shade: '#070B0F', kid: '#8FB4D2', 'kid-tint': '#22303D', 'on-solid': '#0F161D',
+      'tn-grond': '#3A4D60', 'tn-nacht': 'inline', 'tn-banner': 'linear-gradient(#0F161D,#243342)', 'tn-titel': '#FFFFFF', 'tn-sub': '#F5B700', 'tn-spoor': '#2F4152', 'tn-tandwiel': '#3A4D60', 'tn-robot': '#4F7390', 'tn-oog': '#FFD84D' },
+    prent: robotlab,
+    voortgang: { mover: '<rect x="-9" y="-10" width="18" height="16" rx="4" fill="#7FA3C0" stroke="#55687A" stroke-width="2"/><circle cx="-3.5" cy="-4" r="2.5" fill="#F5B700"/><circle cx="3.5" cy="-4" r="2.5" fill="#F5B700"/><circle cx="-6" cy="10" r="3.5" fill="#55687A"/><circle cx="6" cy="10" r="3.5" fill="#55687A"/><path d="M0 -10V-16" stroke="#55687A" stroke-width="2"/>', doel: '<circle r="11" fill="#F5B700"/><path d="M-5 11h10v5h-10z" fill="#9FB0C0"/><path d="M-4 -3l4 5l4 -5" stroke="#B07A00" stroke-width="2" fill="none"/>' },
+    nieuw: '<rect x="-4" y="-14" width="8" height="28" rx="2" fill="#F5B700"/><path d="M-10 -14h20" stroke="#B07A00" stroke-width="4" stroke-linecap="round"/><path d="M-4 -4h8M-4 2h8M-4 8h8" stroke="#B07A00" stroke-width="1.6"/>',
+    vink: `<circle r="20" fill="#55687A"/><g transform="scale(.9)">${vink('#fff')}</g>`,
+    slot: '<circle r="16" fill="#9FB0C0"/><circle r="9" fill="#53667A"/><circle r="4" fill="#F5B700"/>',
+    feest: [ster('#F5B700'), '<circle r="8" fill="none" stroke="#9FB0C0" stroke-width="5" stroke-dasharray="4 3"/>', '<rect x="-5" y="-9" width="10" height="18" rx="2" fill="#E8553A"/>'], confetti: ['#F5B700', '#8FB4D2', '#E8553A', '#4FD0C0'],
+    tegelRadius: '14px', tegelRand: '7px solid #9FB0C0',
+  },
+  {
+    sleutel: 'tover', naam: 'Toverschool', kidKleur: '#7A3FC4', shirt: 'paars', verhouding: 1,
+    ondertitels: { spelen: 'De toverklas', verhalen: 'Lezen in het toverboek', kleurplaten: 'De kleurenspreuk', figuurtje: 'Tovenaarsleerling', huis: 'Mijn toverhuis' },
+    klaarTekst: 'Alles gedaan, de spreuk werkt!', nogTeDoen: (n) => `Nog ${n} ${n === 1 ? 'taak' : 'taken'} tot de spreuk werkt`,
+    licht: { bg: '#F5EEFD', surface: '#FFFFFF', soft: '#E9DAF9', ink: '#2D1650', muted: '#6A4C94', line: '#DCC8F3', shade: '#DCC8F3', kid: '#7A3FC4', 'kid-tint': '#EDE0FA', 'on-solid': '#FFFFFF',
+      'tn-grond': '#D3B3F2', 'tn-nacht': 'none', 'tn-banner': 'linear-gradient(#DCC4F7,#F5EEFD)', 'tn-titel': '#2D1650', 'tn-sub': '#7A3FC4', 'tn-spoor': '#DCC8F3', 'tn-hoed': '#5B2FA0', 'tn-ster': '#F2B705', 'tn-boek': '#C77DFF' },
+    donker: { bg: '#150B26', surface: '#221238', soft: '#301A4E', ink: '#F3EAFD', muted: '#C7AEEA', line: '#3C2461', shade: '#0A0514', kid: '#C79BFF', 'kid-tint': '#2D1B4A', 'on-solid': '#150B26',
+      'tn-grond': '#3C2461', 'tn-nacht': 'inline', 'tn-banner': 'linear-gradient(#150B26,#301A4E)', 'tn-titel': '#FFFFFF', 'tn-sub': '#FFD84D', 'tn-spoor': '#3C2461', 'tn-hoed': '#8E5BD1', 'tn-ster': '#FFD84D', 'tn-boek': '#A06CE0' },
+    prent: tover,
+    voortgang: { mover: '<path d="M-10 8L6 -8" stroke="#5B2FA0" stroke-width="3.5" stroke-linecap="round"/><path d="M8 -12l2 4 4 1 -3 3 1 4 -4 -2 -4 2 1 -4 -3 -3 4 -1z" fill="#F2B705"/>', doel: '<path d="M0 -12l3.5 7 8 1 -6 5.5 1.6 8 -7.1 -4 -7.1 4 1.6 -8 -6 -5.5 8 -1z" fill="#F2B705"/>' },
+    nieuw: '<path d="M0 -14l4 8 9 1 -6.5 6 1.8 9 -8.3 -4.5 -8.3 4.5 1.8 -9 -6.5 -6 9 -1z" fill="#F2B705"/><circle cx="12" cy="-12" r="2" fill="#C77DFF"/><circle cx="-13" cy="8" r="2" fill="#C77DFF"/>',
+    vink: `<circle r="20" fill="#7A3FC4"/><g transform="scale(.9)">${vink('#fff')}</g>`,
+    slot: '<rect x="-12" y="-14" width="24" height="28" rx="3" fill="#5B2FA0"/><rect x="-9" y="-11" width="18" height="22" rx="2" fill="#7A3FC4"/><circle cy="0" r="4" fill="#F2B705"/>',
+    feest: [ster('#F2B705'), ster('#C79BFF'), '<circle r="5" fill="#FFFFFF"/>'], confetti: ['#F2B705', '#C79BFF', '#FF8FC7', '#7FE0D2'],
+    tegelRadius: '40px', tegelRand: '7px solid #C77DFF',
+  },
+  {
+    sleutel: 'sneeuwpret', naam: 'Sneeuwpret', kidKleur: '#3C8DCC', shirt: 'blauw', verhouding: 1,
+    ondertitels: { spelen: 'In de sneeuw', verhalen: 'Luisteren bij de kachel', kleurplaten: 'De sneeuwpop', figuurtje: 'Muts en sjaal', huis: 'Mijn iglo' },
+    klaarTekst: 'Alles gedaan, de sneeuwpop is af!', nogTeDoen: (n) => `Nog ${n} ${n === 1 ? 'taak' : 'taken'} tot de sneeuwpop af is`,
+    licht: { bg: '#EAF5FF', surface: '#FFFFFF', soft: '#D6EAFA', ink: '#14345A', muted: '#4E7096', line: '#C5DDF1', shade: '#C5DDF1', kid: '#3C8DCC', 'kid-tint': '#DCEEFC', 'on-solid': '#FFFFFF',
+      'tn-grond': '#FFFFFF', 'tn-nacht': 'none', 'tn-banner': 'linear-gradient(#BFE0F7,#EAF5FF)', 'tn-titel': '#14345A', 'tn-sub': '#2C6FA8', 'tn-spoor': '#C5DDF1', 'tn-sneeuw': '#FFFFFF', 'tn-muts': '#E5484D', 'tn-neus': '#F2994A' },
+    donker: { bg: '#0A1626', surface: '#13243A', soft: '#1B3350', ink: '#EAF5FF', muted: '#A8C4E0', line: '#254463', shade: '#050B14', kid: '#7FBDF0', 'kid-tint': '#1A3048', 'on-solid': '#0A1626',
+      'tn-grond': '#DCEBFA', 'tn-nacht': 'inline', 'tn-banner': 'linear-gradient(#0A1626,#1B3350)', 'tn-titel': '#FFFFFF', 'tn-sub': '#FFD84D', 'tn-spoor': '#254463', 'tn-sneeuw': '#DCEBFA', 'tn-muts': '#FF6B6F', 'tn-neus': '#FFA85C' },
+    prent: sneeuwpret,
+    voortgang: { mover: '<circle r="9" fill="#FFFFFF" stroke="#9CC6E8" stroke-width="2.5"/><path d="M-4 -4Q-1 -7 2 -5" stroke="#C5DDF1" stroke-width="2" fill="none" stroke-linecap="round"/>', doel: '<circle cy="2" r="10" fill="#FFFFFF" stroke="#9CC6E8" stroke-width="2"/><path d="M-8 -6Q0 -18 8 -6Z" fill="#E5484D"/><circle cx="-3" cy="2" r="1.5" fill="#222"/><circle cx="3" cy="2" r="1.5" fill="#222"/><path d="M0 5L5 6L0 8Z" fill="#F2994A"/>' },
+    nieuw: '<path d="M0 -15V15M-13 -7.5L13 7.5M-13 7.5L13 -7.5" stroke="#3C8DCC" stroke-width="3.5" stroke-linecap="round"/><circle r="4" fill="#fff" stroke="#3C8DCC" stroke-width="2"/>',
+    vink: `<circle r="20" fill="#3C8DCC"/><g transform="scale(.9)">${vink('#fff')}</g>`,
+    slot: '<rect x="-14" y="-12" width="28" height="26" rx="6" fill="#BFE0F7" stroke="#7FBDF0" stroke-width="2.5"/><path d="M-5 -2a5 5 0 0 1 10 0v4h-10z" fill="#4E7096"/><rect x="-6" y="1" width="12" height="8" rx="1.5" fill="#4E7096"/>',
+    feest: ['<path d="M0 -15V15M-13 -7.5L13 7.5M-13 7.5L13 -7.5" stroke="#FFFFFF" stroke-width="4" stroke-linecap="round"/>', '<path d="M-10 4Q0 -14 10 4Z" fill="#E5484D"/>', ster('#FFD84D')], confetti: ['#FFFFFF', '#7FBDF0', '#E5484D', '#FFD84D'],
+    tegelRadius: '48px', tegelRand: '7px solid #C5DDF1',
   },
 ]
 

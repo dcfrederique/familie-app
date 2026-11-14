@@ -1,0 +1,93 @@
+{
+  "nr": 82,
+  "titel": "Pip zingt voor de Sint",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Sinterklaas, een liedje durven zingen",
+  "bladzijden": [
+    {
+      "tekst": "Het is bijna Sinterklaas. In de klas van Pip en Mo oefenen ze een liedje voor de Sint. Volgende week komt hij op bezoek! \"Wie wil het eerste stukje alleen zingen?\" vraagt de juf. Mo steekt zijn vinger op. Nog meer kinderen steken hun vinger op. Maar Pip kijkt naar haar schoenen. Haar buik voelt raar, alsof er pepernoten in rammelen.",
+      "prent": {
+        "decor": "klas",
+        "figuren": [
+          "pip",
+          "mo",
+          "juf"
+        ]
+      }
+    },
+    {
+      "tekst": "Na het oefenen blijft Pip bij de kapstok staan. \"Wil jij niet?\" vraagt Mo zachtjes. \"Ik zing graag,\" zegt Pip. \"Maar niet alleen. Als iedereen naar me kijkt, blijft mijn stem in mijn keel steken.\" Mo denkt even na. \"Weet je wat?\" zegt hij dan. \"Dan oefenen we samen. Vanmiddag bij jou thuis.\"",
+      "prent": {
+        "decor": "klas",
+        "figuren": [
+          "pip",
+          "mo"
+        ]
+      }
+    },
+    {
+      "tekst": "'s Middags zitten Pip en Mo op de bank. Mama haalt een kussen en zet het rechtop op een stoel. \"Dit is de Sint,\" zegt ze. \"Zing maar voor hem.\" Pip zingt heel zacht. Het kussen luistert, het kijkt niet raar en het lacht niet. Mama klapt. \"Nog een keer, een beetje luider?\" Pip zingt opnieuw, en haar stem wordt een tikje groter.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "mo",
+          "pipmama"
+        ]
+      }
+    },
+    {
+      "tekst": "Terwijl Mo een glas water haalt, gaat mama naast Pip zitten. \"Ik was vroeger ook bang om te zingen,\" zegt ze. \"Wat deed u dan?\" vraagt Pip. \"Ik zocht één vriendelijk gezicht in de zaal,\" zegt mama. \"En ik zong alleen voor die persoon.\" Pip knikt langzaam. Dat wil ze wel proberen. Ze weet ook meteen wie het gezicht wordt.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "pipmama"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Ik kijk de hele tijd naar jou,\" zegt Pip aan Mo. \"En ik blijf de hele tijd lachen,\" zegt Mo. Ze zingen het liedje drie keer na elkaar. Bij de derde keer vergeet Mo zijn eigen stukje. Hij zingt een verkeerd woord, en dat is zo grappig dat ze allebei moeten giechelen. Lachen helpt, merkt Pip. Haar buik voelt al veel rustiger.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "mo"
+        ]
+      }
+    },
+    {
+      "tekst": "De volgende dag vraagt de juf het nog een keer. \"Wie wil het eerste stukje zingen?\" Pips hart gaat bonzen. Heel langzaam gaat haar vinger omhoog. Hij trilt een beetje. \"Pip!\" zegt de juf blij. \"Wat fijn dat je het wil proberen.\" Mo steekt zijn duim naar haar op.",
+      "prent": {
+        "decor": "klas",
+        "figuren": [
+          "pip",
+          "mo",
+          "juf"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan komt de grote dag. De Sint zit op zijn stoel, en alle kinderen staan in een rij. Pip staat vooraan. Even wordt alles stil. Ze zoekt Mo, en Mo lacht naar haar. Dan zingt Pip het eerste stukje. Eerst zacht, maar de woorden komen er allemaal uit. Bij de tweede regel wordt haar stem groter, en dan zingen alle kinderen mee.",
+      "prent": {
+        "decor": "feest",
+        "figuren": [
+          "pip",
+          "mo",
+          "juf"
+        ]
+      }
+    },
+    {
+      "tekst": "De Sint klapt als eerste. \"Wat een mooie stem,\" zegt hij. Pip krijgt een speculaasje, en Mo ook. Thuis vraagt mama: \"Was het eng?\" Pip schudt haar hoofd. \"Een klein beetje,\" zegt ze. \"Maar toen ik naar Mo keek, ging het vanzelf.\" Mama geeft haar een dikke knuffel. Volgend jaar zingt Pip misschien wel het hele liedje alleen.",
+      "prent": {
+        "decor": "feest",
+        "figuren": [
+          "pip",
+          "pipmama"
+        ]
+      }
+    }
+  ]
+}

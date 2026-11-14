@@ -69,6 +69,17 @@ export function Grond({ w }: { w: KaartWereld }) {
         <rect x={x + 44} y={H * 0.12 + 14} width={b - 88} height={H * 0.76 - 28} rx="22" fill="none" stroke="#FFFFFF" strokeWidth="5" strokeDasharray="14 12" />
       </g>
     )
+    case 'speeldoos': return (
+      <g>
+        <rect x={x} y="0" width={b} height={H} fill="#8E2F3B" />
+        {vlekken('#9E3B48', 9)}
+        {/* Fluwelen bekleding met gouden stipjes en een notenbalk van lange lijntjes */}
+        {Array.from({ length: Math.floor(b / 38) * 2 }, (_, i) => (
+          <circle key={i} cx={x + ((i * 61) % b)} cy={18 + ((i * 113) % (H - 36))} r="2.5" fill="#F2C530" opacity=".55" />
+        ))}
+        {[0.3, 0.38, 0.46, 0.54, 0.62].map((f, i) => <path key={i} d={`M${x} ${H * f}H${x + b}`} stroke="#E8C766" strokeWidth="2" opacity=".25" />)}
+      </g>
+    )
     case 'daken': return (
       <g>
         <rect x={x} y="0" width={b} height={H} fill="#C8664C" />
@@ -445,6 +456,30 @@ export function Versiersel({ v }: { v: Versiersel }) {
     case 'sterretje': return <Stuk v={v} kind={<path className="k-glinster" style={d} d="M0-10l3 7l7 1l-5 5l1 7l-6-4l-6 4l1-7l-5-5l7-1z" fill="#FFE27A" />} />
     case 'zonnetje': return <Stuk v={v} kind={<g className="k-glinster" style={d}><circle r="9" fill="#FFD84D" />{Array.from({ length: 8 }, (_, i) => <rect key={i} x="-1.5" y="-17" width="3" height="6" rx="1.5" fill="#FFD84D" transform={`rotate(${i * 45})`} />)}</g>} />
     case 'veer': return <Stuk v={v} kind={<path d="M-4 8Q-16-8 2-16Q14-14 6 4Q2 8-4 8ZM-4 8L-10 16" fill="#FFFFFF" stroke="#BFE0F5" strokeWidth="2" />} />
+    case 'speeldoosje': return <Stuk v={v} kind={<>
+      <ellipse cx="0" cy="40" rx="42" ry="7" fill="rgba(0,0,0,.2)" />
+      <rect x="-40" y="0" width="80" height="40" rx="6" fill="#A8693A" /><rect x="-40" y="0" width="80" height="9" rx="4" fill="#C98A4B" />
+      <path d="M-40 -2L-48 -34H48L40 -2Z" fill="#7A4524" opacity=".0" />
+      <rect x="-36" y="-34" width="72" height="32" rx="4" fill="#C98A4B" stroke="#8A5A33" strokeWidth="2" />
+      <circle cx="0" cy="-44" r="5" fill="#F4D7B8" /><path d="M0 -39V-24M-12 -24H12M0 -24L-10 -12M0 -24L10 -12" stroke="#E86A9B" strokeWidth="4" strokeLinecap="round" className="k-wieg" style={d} />
+      <path d="M-14 -22Q0 -18 14 -22" stroke="#F2C530" strokeWidth="3" fill="none" />
+      <circle cx="30" cy="22" r="4" fill="#F2C530" />
+    </>} />
+    case 'tandwielen': return <Stuk v={v} kind={<g className="k-wieg" style={d}>
+      <circle cx="-14" cy="6" r="22" fill="none" stroke="#C9971A" strokeWidth="9" strokeDasharray="8 6" /><circle cx="-14" cy="6" r="15" fill="#E8C766" /><circle cx="-14" cy="6" r="5" fill="#8E2F3B" />
+      <circle cx="20" cy="-12" r="14" fill="none" stroke="#B9892B" strokeWidth="7" strokeDasharray="6 5" /><circle cx="20" cy="-12" r="9" fill="#F2D88A" /><circle cx="20" cy="-12" r="3" fill="#8E2F3B" />
+    </g>} />
+    case 'notenstandaard': return <Stuk v={v} kind={<>
+      <ellipse cx="0" cy="40" rx="24" ry="5" fill="rgba(0,0,0,.2)" />
+      <path d="M0 -4V38M-14 40L0 32L14 40" stroke="#4A2E1E" strokeWidth="4" fill="none" strokeLinecap="round" />
+      <path d="M-26 -4L26 -4L30 -40H-30Z" fill="#FFFDF5" stroke="#8A5A33" strokeWidth="2.5" strokeLinejoin="round" />
+      <path d="M-22 -30H24M-22 -24H24M-22 -18H24M-22 -12H24" stroke="#8A8574" strokeWidth="1.4" />
+      <circle cx="-10" cy="-16" r="3.5" fill="#222" /><path d="M-7 -16V-30" stroke="#222" strokeWidth="2" /><circle cx="8" cy="-22" r="3.5" fill="#222" /><path d="M11 -22V-34" stroke="#222" strokeWidth="2" />
+    </>} />
+    case 'noot': return <Stuk v={v} kind={<g className="k-knik" style={d}><ellipse cx="-3" cy="6" rx="6" ry="4.5" fill="#F2C530" transform="rotate(-20 -3 6)" /><path d="M2 5V-12L9 -8" stroke="#F2C530" strokeWidth="3" fill="none" strokeLinecap="round" /></g>} />
+    case 'tandwieltje': return <Stuk v={v} kind={<g><circle r="10" fill="none" stroke="#C9971A" strokeWidth="5" strokeDasharray="4 3" /><circle r="6" fill="#E8C766" /><circle r="2" fill="#8E2F3B" /></g>} />
+    case 'kaarsje': return <Stuk v={v} kind={<g><rect x="-4" y="-6" width="8" height="16" rx="2" fill="#FFF3E0" /><path d="M0 -8Q-5 -14 0 -20Q5 -14 0 -8Z" fill="#FFB020" className="k-glinster" style={d} /></g>} />
+    case 'notenbalkje': return <Stuk v={v} kind={<g stroke="#E8C766" strokeWidth="1.5" opacity=".85"><path d="M-16 -6H16M-16 -2H16M-16 2H16M-16 6H16" /><circle cx="-6" cy="2" r="2.4" fill="#E8C766" stroke="none" /><circle cx="8" cy="-2" r="2.4" fill="#E8C766" stroke="none" /></g>} />
     default: return null
   }
 }

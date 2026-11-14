@@ -94,6 +94,8 @@ export const zin = {
   karvrijKlaar: 'De kar van de Sint is vrij!',
   snoepruilenUitleg: 'Ruil twee snoepjes. Maak een rijtje van drie.',
   snoepruilenKlaar: 'Wat een lekker feest!',
+  lichtstraalUitleg: 'Draai de spiegeltjes. Laat de pakjes gloeien.',
+  lichtstraalKlaar: 'Alle pakjes gloeien!',
   glijdenUitleg: "Het pinguïntje glijdt tot het ergens tegen botst. Kies een pijltje en breng het naar het visje.",
   glijdenKlaar: "Het pinguïntje heeft alle visjes!",
   nimUitleg: "Pak om de beurt pepernoten, samen met het paardje. Tik op een pepernoot en dan op de groene knop. Wie de laatste pepernoot pakt, wint.",

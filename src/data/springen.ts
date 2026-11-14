@@ -16,7 +16,7 @@ export type SpringLevel = string
 /** Hoe een level eruitziet: lucht, grond en achtergrond (springenVeld.ts tekent elke stijl). */
 export type SpringStijl = 'weide' | 'bos' | 'wolken' | 'strand' | 'sneeuw'
 /** Hoe een wereld eruitziet op de landkaart (Springen.tsx tekent elke kleur). */
-export type WereldStijl = 'groen' | 'zand' | 'sneeuw' | 'snoep' | 'hemel' | 'nacht' | 'speelgoed' | 'herfst' | 'daken'
+export type WereldStijl = 'groen' | 'zand' | 'sneeuw' | 'snoep' | 'hemel' | 'nacht' | 'speelgoed' | 'herfst' | 'daken' | 'speeldoos'
 
 export interface SpringWereld {
   id: string
@@ -54,6 +54,7 @@ export const springWerelden: SpringWereld[] = [
   { id: 'speelgoedland', naam: 'Speelgoedland', stijl: 'speelgoed' },
   { id: 'paddenstoelenbos', naam: 'Paddenstoelenbos', stijl: 'herfst' },
   { id: 'dakenstad', naam: 'Dakenstad', stijl: 'daken' },
+  { id: 'speeldoos', naam: 'De Speeldoos', stijl: 'speeldoos' },
 ]
 
 /** Alle levels in speelvolgorde; nieuwe levels komen achteraan (bij de laatste wereld). */
@@ -983,6 +984,23 @@ export const springLevelLijst: SpringLevelInfo[] = [
       '  P   o o o  o    e                  o C o           B         H  ',
       '############################  ######  ############################',
       '############################~~######~~############################',
+    ],
+  },
+  {
+    id: 'eerstenoot', wereld: 'speeldoos', stijl: 'wolken',
+    naam: 'De eerste noot', beestje: 'slak', fruit: 'kers', snelheid: 1,
+    kaart: [
+      '                                                                                                        ',
+      '                                                                                                        ',
+      '                                                                                                        ',
+      '                                                                                                        ',
+      '                                       **                 o o o                                         ',
+      '                                      ====               =====                                          ',
+      '                                                                                                        ',
+      '          o                                         ##                                   *              ',
+      '  P   o  o  o  o        o o e o o  ^    o       C ######      e o o         o o C      o o oo   o   H   ',
+      '#################  #########################   #######################  ##########   ###################',
+      '#################~~#########################~~~#######################~~##########~~~###################',
     ],
   },
 ]

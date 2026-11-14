@@ -19,6 +19,15 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.164',
+    datum: '2026-11-14',
+    titel: 'Lichtstraal, Pip zingt voor de Sint, De Speeldoos en drie nieuwe thema\'s',
+    tekst: 'Nieuw verhaal "Pip zingt voor de Sint" (6 jaar) en kleurplaat "De zingende klas", meteen beschikbaar. Nieuw spelletje Lichtstraal: draai spiegeltjes tot het licht van de lantaarn alle pakjes laat gloeien. Makkelijk is een klein bord met een wiebelende hulp, middel heeft zes rondes met steenblokken en drie tips, moeilijk is een echt breinbrekertje op een groot bord met twee of drie gekleurde lantaarns, pakjes die een straal van een andere kleur tegenhouden, vaste spiegels, een limiet op het aantal tikken en pluimen. Het spel en de zes nieuwe stukken (koorlintje, koorjasje, notenblad, muziekstandaard, podiumpje en krans van gouden noten) staan klaar om vrij te geven in Kinderen → Winkelaanbod. In Springland is Dakenstad vol, dus begint de tiende wereld: De Speeldoos, met het zachte level De eerste noot. Nieuw bij Mijn thema (elke zaterdag komen er drie bij, voor elk kind een): Robotlab, Toverschool en Sneeuwpret.',
+    verhaal: 'Pip zingt voor de Sint',
+    spel: { naam: 'Lichtstraal', prijs: 30 },
+    stukken: ['Koorlintje (hoofd, 15)', 'Koorjasje (shirt, 20)', 'Notenblad (extra, 15)', 'Muziekstandaard (tuin, 15)', 'Podiumpje met lichtslinger (tuin, 25)', 'Krans van gouden noten (huisextra, 20)'],
+  },
+  {
     versie: '0.163',
     datum: '2026-11-13',
     titel: 'Gezinspot: maximum per kind volgt het doel',

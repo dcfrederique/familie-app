@@ -1,0 +1,60 @@
+/* Lichtstraal: de pakjeskamer met spiegeltjes en daarnaast de knoppen; alles schaalt mee met de hoogte (geen scrollen). */
+.straal { display: flex; flex-direction: column; align-items: center; gap: clamp(4px, 1dvh, 10px); width: 100%; }
+.straal-balk { display: flex; align-items: center; gap: 22px; min-height: 40px; font-weight: 700; flex-wrap: wrap; justify-content: center; }
+.straal-teller { display: flex; gap: 6px; }
+.straal-teller span { width: 14px; height: 14px; border-radius: 50%; background: var(--line); }
+.straal-teller .af { background: var(--gold); }
+.straal-teller .nu { background: var(--kid); }
+.straal-doelen { display: flex; gap: 10px; align-items: center; }
+.straal-doel { display: flex; align-items: center; gap: 4px; padding: 2px 10px 2px 6px; border-radius: 999px; background: var(--card, rgba(255,255,255,.7)); border: 2px solid var(--line); font-size: 22px; font-variant-numeric: tabular-nums; }
+.straal-doel.af { border-color: var(--gold); opacity: 0.65; }
+.straal-doel svg { width: 28px; height: 28px; }
+
+.straal-tikken { font-variant-numeric: tabular-nums; font-size: 22px; min-width: 4ch; }
+.straal-tikken.laag { color: #C8372D; }
+.straal-veld { display: flex; align-items: center; justify-content: center; gap: clamp(10px, 2.4vw, 28px); }
+.straal-tafel { --cel: min(calc(60dvh / var(--rijen)), calc(70vw / var(--kol)), 90px); position: relative; width: calc(var(--cel) * var(--kol)); height: calc(var(--cel) * var(--rijen)); border-radius: 12px; overflow: hidden; border: 4px solid #3D4C7A; background: #1B2440; box-sizing: content-box; touch-action: none; user-select: none; }
+.straal-tafel.klaar { border-color: #D9A441; }
+.straal-zij { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.straal-actie { flex: none; white-space: nowrap; min-height: 64px; min-width: 64px; font-size: 17px; display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 0 14px; }
+.straal-mislukt { position: absolute; inset: 0; background: rgba(255,255,255,.88); color: #14233F; display: grid; place-content: center; justify-items: center; gap: 12px; text-align: center; padding: 12px; font-size: 24px; }
+.straal-eind { display: grid; justify-items: center; gap: 16px; }
+.straal-feest { width: clamp(200px, 40dvh, 360px); height: auto; }
+.straal-pluimen { display: flex; gap: 4px; flex-wrap: wrap; justify-content: center; max-width: 360px; font-size: 28px; color: var(--line); }
+.straal-pluimen .aan { color: var(--gold); }
+@keyframes straal-puls { 0%, 100% { opacity: 1; } 50% { opacity: 0.55; } }
+@keyframes straal-wipt { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-0.5px); } }
+.straal-plaat { transition: transform 0.16s ease-out; }
+.straal-knop { cursor: pointer; outline: none; }
+.straal-knop:focus-visible rect { stroke: #fff; stroke-width: 0.6; }
+.straal-hint { animation: straal-puls 0.7s ease-in-out infinite; fill: rgba(242, 195, 48, 0.55) !important; }
+.straal-gloei { animation: straal-wipt 0.8s ease-in-out infinite; }
+.straal-bord { display: block; width: 100%; height: 100%; }
+.straal-doel.af { opacity: 0.7; }
+/* Detail: een gehaald doel springt even op en krijgt een gouden vinkje. */
+.straal-doel { position: relative; }
+.straal-doel.af { animation: straal-doel-af 0.45s ease-out; }
+.straal-doel.af::after { content: "✓"; position: absolute; top: -5px; right: -7px; width: 18px; height: 18px; border-radius: 50%; background: var(--gold); color: #3A2A00; font-size: 12px; font-weight: 800; line-height: 18px; text-align: center; }
+@keyframes straal-doel-af { 0% { scale: 1; } 45% { scale: 1.18; } 100% { scale: 1; } }
+@media (prefers-reduced-motion: reduce) { .straal-hint, .straal-gloei, .straal-doel.af { animation: none; } .straal-plaat { transition: none; } }
+@media (orientation: portrait) {
+  .straal-veld { flex-direction: column; }
+  .straal-tafel { --cel: min(calc((100dvh - 440px) / var(--rijen)), calc(92vw / var(--kol)), 90px); }
+  .straal-zij { flex-direction: row; gap: 16px; }
+}
+@media (orientation: landscape) and (min-height: 501px) and (max-height: 700px) {
+  .straal-tafel { --cel: min(calc(46dvh / var(--rijen)), 80px); }
+  .straal-actie { min-height: 56px; }
+  .straal-doel { font-size: 18px; }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .straal { gap: 2px; }
+  .straal-balk { min-height: 28px; gap: 12px; }
+  .straal-teller span { width: 10px; height: 10px; }
+  .straal-doel { font-size: 15px; padding: 0 8px 0 4px; }
+  .straal-tikken { font-size: 15px; }
+  .straal-tafel { --cel: min(calc(41dvh / var(--rijen)), 64px); border-width: 3px; }
+  .straal-actie { min-height: 44px; min-width: 44px; font-size: 14px; padding: 0 8px; }
+  .straal-zij { gap: 4px; }
+  .straal-mislukt { font-size: 16px; }
+}
