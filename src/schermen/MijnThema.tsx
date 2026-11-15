@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import type { Kleur } from '../data/gezin.ts'
 import { themaKeuzes } from '../data/thema.ts'
 import { zin } from '../data/zinnen.ts'
@@ -12,7 +12,7 @@ import { ThemaFeest } from './ThemaDelen.tsx'
 // en de hele app kleurt mee; de ouders kunnen het nog altijd aanpassen bij Kinderen.
 export default function MijnThema() {
   return (
-    <SpelKader titel="Mijn thema" terug={(id) => `/kind/${id}`} vol>
+    <SpelKader titel="Mijn thema" terug={(id) => `/kind/${id}`} vol themaKiezer>
       {(kind) => <Kiezer kindId={kind.id} lezer={kind.kan_lezen} thema={kind.thema ?? 'blauw'} />}
     </SpelKader>
   )
@@ -22,10 +22,14 @@ function Kiezer({ kindId, lezer, thema }: { kindId: string; lezer: boolean; them
   const { bron, herlaad } = useSessie()
   const [feest, setFeest] = useState(0)
   const [fout, setFout] = useState('')
+  const [bezig, setBezig] = useState(false)
+  const bewaren = useRef(false)
 
   async function kies(t: Kleur) {
     if (!lezer) leesVoor(themaKeuzes.find((k) => k.kleur === t)!.naam)
-    if (!bron || t === thema) return
+    if (!bron || t === thema || bewaren.current) return
+    bewaren.current = true
+    setBezig(true)
     setFout('')
     try {
       await bron.themaKiezen(kindId, t)
@@ -33,6 +37,9 @@ function Kiezer({ kindId, lezer, thema }: { kindId: string; lezer: boolean; them
       setFeest((n) => n + 1)
     } catch (e) {
       setFout(foutmelding(e as Error))
+    } finally {
+      bewaren.current = false
+      setBezig(false)
     }
   }
 
@@ -44,7 +51,7 @@ function Kiezer({ kindId, lezer, thema }: { kindId: string; lezer: boolean; them
           <svg className="ic" viewBox="0 0 24 24" width="30" height="30" aria-hidden="true"><path d="M4 10h4l5-4v12l-5-4H4z" /><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a7.5 7.5 0 0 1 0 11" /></svg>
         </button>
       )}
-      <ThemaKiezen lezer={lezer} thema={thema} kies={kies} titel="Hoe ziet jouw app eruit?" />
+      <ThemaKiezen lezer={lezer} thema={thema} kies={kies} titel="Kies jouw wereld" bezig={bezig} />
       {fout && <p className="fout" role="alert">{fout}</p>}
     </div>
   )

@@ -1,0 +1,33 @@
+name: Themagalerij
+
+# Gerichte controle van de galerij; de volledige schermrondgang blijft nachtelijk.
+on:
+  pull_request:
+    paths:
+      - 'src/schermen/ThemaKiezen.tsx'
+      - 'src/schermen/MijnThema.tsx'
+      - 'src/schermen/thema-kiezen.css'
+      - 'src/data/themaIllustraties*'
+      - 'public/themas/keuzes/**'
+      - 'e2e/thema.spec.ts'
+      - '.github/workflows/thema-galerij.yml'
+
+jobs:
+  galerij:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test e2e/thema.spec.ts --workers=2
+      - if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: themagalerij-schermen
+          path: test-results/
+          retention-days: 7
