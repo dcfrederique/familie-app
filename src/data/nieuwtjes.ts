@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.169',
+    datum: '2026-11-15',
+    titel: "Dino’s en auto’s: een nieuwe racevallei",
+    tekst: 'Het thema Dino’s en auto’s heeft op Thuis en Taken een rijk geïllustreerde banner met een vriendelijke dino en de rode raceauto. Het eigen aankleedbare figuurtje blijft linksboven staan en opent nog steeds de kleerkast. De taakkaarten zijn rustiger afgewerkt en op Taken rijdt een autootje naar de finish naarmate taken zijn goedgekeurd. De spelregels blijven hetzelfde.',
+  },
+  {
     versie: '0.168',
     datum: '2026-11-15',
     titel: 'Mijn verlanglijstje voor de Sint en Kerstmis',

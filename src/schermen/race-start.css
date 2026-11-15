@@ -1,0 +1,22 @@
+/* De racevallei is decor; figuurtje, tekst en knoppen blijven echte app-elementen. */
+.banner-race { background: #14264b; }
+.banner-race .race-illustratie { object-fit: contain; object-position: right center; pointer-events: none; }
+.banner-race::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, #14264b 0%, #14264bf0 22%, #14264b90 43%, transparent 66%); pointer-events: none; }
+.banner-race .banner-inhoud { z-index: 1; right: 20px; }
+.banner-race .kop { width: fit-content; max-width: 100%; }
+.banner-race .kop-tekst { text-shadow: 0 2px 5px #0b1738; }
+.banner-race .avatar { outline: 3px solid #fff; box-shadow: 0 3px 12px #08142b60; }
+.banner-race .sterren-pil { background: #ffe5a0; color: #513800; }
+.taken-kop { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 24px; margin-bottom: 10px; flex: none; }
+.taken-kop .sectie-titel { margin-bottom: 0; }
+.race-taakvoortgang { width: clamp(180px, 28vw, 340px); display: grid; justify-items: center; gap: 2px; font-size: 14px; font-weight: 800; }
+.race-taakvoortgang .thema-weg { width: 100%; margin: 0; }
+.race-start .taak-kaart { border: 2px solid var(--kid-tint); border-radius: 24px; box-shadow: 0 3px 8px #16264a12; }
+.race-start .taak-klaar { background: #162e5c; color: #fff; border-radius: 18px; }
+.race-start .taak-status { width: 100%; justify-content: center; padding: 6px; border-radius: 18px; background: var(--gold-bg); color: var(--gold-ink); }
+.race-start .taak-gedaan .taak-status { background: var(--ok-bg); color: var(--ok-ink); }
+.race-start .taak-gedaan { background: var(--surface); }
+@media (max-height: 500px) and (orientation: landscape) {
+  .race-taakvoortgang { display: none; }
+  .taken-kop { margin-bottom: 4px; }
+}

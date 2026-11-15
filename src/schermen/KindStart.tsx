@@ -8,6 +8,8 @@ import { cadeauStukken } from '../data/cadeau.ts'
 import { maaltijdPrentje } from '../data/maaltijden.ts'
 import { MaaltijdPrent } from '../data/maaltijdPrenten.tsx'
 import { Prentje } from '../data/prentjes.tsx'
+import { ThemaVoortgang } from './ThemaDelen.tsx'
+import './race-start.css'
 import { bannerVoorKleur } from '../data/thema.ts'
 import type { Hoera, LogRegel, Maaltijd, Taak } from '../lib/bron/types.ts'
 import { dagVan, vandaag } from '../lib/datum.ts'
@@ -96,7 +98,7 @@ function StartLezer({ deel, kind, lijst, geladen, vrij, eten, kies }: {
   const titel = <h1 className="kop-titel display">Hoi {kind.naam}!</h1>
 
   return (
-    <div className={`kind-scherm${banner ? ' met-banner' : ''}`}>
+    <div className={`kind-scherm${banner === 'race' ? ' race-start' : ''}${banner ? ' met-banner' : ''}`}>
       {banner ? (
         <header className={`banner banner-${banner}`}>
           <Banner soort={banner} />
@@ -143,7 +145,15 @@ function StartLezer({ deel, kind, lijst, geladen, vrij, eten, kies }: {
           <section aria-label="De wereld"><WereldKnop kind={kind} /></section>
         ) : (
           <section aria-labelledby="taken-titel">
-            <h2 id="taken-titel" className="sectie-titel display">Mijn taken vandaag</h2>
+            <div className="taken-kop">
+              <h2 id="taken-titel" className="sectie-titel display">Mijn taken vandaag</h2>
+              {banner === 'race' && geladen && lijst.length > 0 && (
+                <div className="race-taakvoortgang">
+                  <ThemaVoortgang thema="race" deel={gedaan / lijst.length} label={`${gedaan} van ${lijst.length} taken gedaan`} />
+                  <span aria-hidden="true">{gedaan} van {lijst.length} gedaan</span>
+                </div>
+              )}
+            </div>
             <Bladzijden items={lijst} maat={TAAK_MAAT} className="taken-raster" label="Meer taken"
                         toon={({ taak, status }) => <TaakKaart key={taak.id} taak={taak} status={status} kies={() => kies(taak)} />} />
             {geladen && lijst.length === 0 && <p className="leeg">Vandaag geen taken. Lekker spelen!</p>}
