@@ -10,7 +10,7 @@ async function openThemas(page: Page, kind = 'luca') {
   await page.goto(`/kind/${kind}/welkom`)
   await page.getByRole('button', { name: 'Starten' }).click()
   await page.getByRole('button', { name: 'Verder' }).click()
-  await page.getByRole('button', { name: 'Weet ik niet' }).click()
+  await page.locator('.welkom-knop.overslaan').click()
   await page.getByRole('button', { name: 'Verder' }).click()
   await page.getByRole('button', { name: 'Naar mijn startscherm' }).click()
   const hoera = page.getByRole('button', { name: 'Super!' })
