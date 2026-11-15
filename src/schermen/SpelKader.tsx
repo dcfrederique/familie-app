@@ -1,5 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react'
 import { Link, Navigate, useParams, useSearchParams } from 'react-router-dom'
+import { figuurtjeVan } from '../data/figuurtje.ts'
+import Figuurtje, { hoofdUitsnede } from './Figuurtje.tsx'
 import { kleurKlasse, type Gebruiker } from '../data/gezin.ts'
 import { themaVan, type ThemaScherm } from '../data/thema.ts'
 import { geluidAan, geluidBewaren } from '../lib/spelletjes/opslag.ts'
@@ -11,7 +13,9 @@ import './spelletjes.css'
 
 // Kader rond een spelletje: terugknop, titel en geluid aan of uit.
 // Met een thema (race, kasteel, tuin) krijgt de kop de prent van dat thema en kleurt het hele scherm mee.
-export default function SpelKader({ titel, terug, scherm = 'spel', vol = scherm !== 'spel', speler, wereldDeur = false, children }: {
+export default function SpelKader({ titel, terug, scherm = 'spel', vol = scherm !== 'spel', speler, wereldDeur = false, themaKiezer = false, children }: {
+  /** Rustige kop met het eigen figuurtje voor de themagalerij. */
+  themaKiezer?: boolean
   titel: string; terug: (kindId: string) => string; scherm?: ThemaScherm
   /** Het spelletje heeft een eigen gebouw in de wereld: wie daarvandaan kwam (`?van=wereld`), gaat daar ook terug naartoe. */
   wereldDeur?: boolean
@@ -48,8 +52,17 @@ export default function SpelKader({ titel, terug, scherm = 'spel', vol = scherm 
 
   return (
     <ThemaBron value={thema}>
-      <div className={`kind ${kleurKlasse(kind)}${vol ? ' kind-vol' : ''}${thema ? ` thema thema-${thema} thema-scherm-${scherm}` : ''}`}>
-        {thema ? (
+      <div className={`kind ${kleurKlasse(kind)}${vol ? ' kind-vol' : ''}${themaKiezer ? ' kind-thema-kiezer' : ''}${thema && !themaKiezer ? ` thema thema-${thema} thema-scherm-${scherm}` : ''}`}>
+        {themaKiezer ? (
+          <header className="thema-kiezer-kop">
+            <Link to={`/kind/${kind.id}/figuurtje`} className="thema-kiezer-avatar met-figuurtje" aria-label="Mijn figuurtje aankleden">
+              <Figuurtje figuurtje={figuurtjeVan(kind)} uitsnede={hoofdUitsnede} />
+            </Link>
+            {terugKnop}
+            <h1 className="display">{kind.kan_lezen ? titel : <span aria-label={titel}>🎨</span>}</h1>
+            {geluidKnop}
+          </header>
+        ) : thema ? (
           <ThemaKop thema={thema} scherm={scherm} titel={titel} lezer={kind.kan_lezen} links={terugKnop} rechts={geluidKnop} />
         ) : (
           <header className="balk">

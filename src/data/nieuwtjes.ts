@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.170',
+    datum: '2026-11-15',
+    titel: 'Mijn thema: grote prenten en rustig bladeren',
+    tekst: 'Alle 39 bestaande keuzes hebben een eigen geïllustreerde kaart. Op tablets blader je door acht grote kaarten per bladzijde; op een lage gsm zijn het er vier. Mijn thema opent bij het gekozen thema, met het eigen aankleedbare figuurtje linksboven. Dezelfde galerij staat in het welkomstpad. Een tik bewaart het thema zoals voordien; voor wie nog niet leest blijven de prenten en het voorlezen centraal.',
+  },
+  {
     versie: '0.169',
     datum: '2026-11-15',
     titel: "Dino’s en auto’s: een nieuwe racevallei",
