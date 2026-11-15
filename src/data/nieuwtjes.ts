@@ -19,6 +19,15 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.166',
+    datum: '2026-11-15',
+    titel: 'Draden ontwarren, De lichtjes in de knoop en Het tandwielpad',
+    tekst: 'Nieuw verhaal "De lichtjes in de knoop" (8 jaar) en kleurplaat "Het huis met lichtjes", meteen beschikbaar. Nieuw spelletje Draden ontwarren: sleep de lampjes tot geen enkele draad nog over een andere ligt (draden die kruisen zijn rood). Makkelijk heeft 5 tot 7 lampjes met een wiebelend lampje als hulp; middel 8 tot 10 lampjes met drie tips; moeilijk is een pak zwaarder: 16 tot 20 lampjes met tot 42 draden, vaste lampjes met een slotje, een limiet op het aantal sleepbewegingen, geen hulp en pluimen per ronde. Het spelletje kost 30 sterren en komt pas in de winkel na vrijgave in Kinderen → Winkelaanbod. Zes nieuwe stukken staan ook klaar om vrij te geven (opapet, gebreide trui, haspel met touw, ladder met lamp, struik met lampjes en raamslinger). In Springland heeft De Speeldoos een tweede level: Het tandwielpad, een gewoon level met egels.',
+    verhaal: 'De lichtjes in de knoop',
+    spel: { naam: 'Draden ontwarren', prijs: 30 },
+    stukken: ['Opapet (hoofd, 15)', 'Gebreide trui (shirt, 20)', 'Haspel met touw (extra, 15)', 'Ladder met lamp (tuin, 20)', 'Struik met lampjes (tuin, 20)', 'Raamslinger van sterretjes (huisextra, 15)'],
+  },
+  {
     versie: '0.165',
     datum: '2026-11-14',
     titel: 'Themaprentjes zweven weer op hun plek',

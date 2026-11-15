@@ -14,6 +14,7 @@ import type { BezorgNiveau } from './bezorgen.ts'
 import type { KarvrijNiveau } from './karvrij.ts'
 import type { RuilNiveau } from './snoepruilen.ts'
 import type { StraalNiveau } from './lichtstraal.ts'
+import type { OntwarNiveau } from './ontwarren.ts'
 
 export type MemoryNiveau = 'klein' | 'middel' | 'groot'
 export type RekenNiveau = 'tellen' | 'tot10' | 'tot20' | 'tot100' | 'tot1000' | 'tafels'
@@ -422,6 +423,23 @@ export function startRuilNiveau(kind: Gebruiker, kinderen: Gebruiker[]): RuilNiv
 }
 
 /**
+ * Draden ontwarren. `hulp`: na tien seconden zonder slepen wiebelt het lampje met de meeste kruisingen (makkelijk); `tips`: hoeveel keer de Tip-knop er een toont;
+ * `pluimen`: strenge score met een limiet op het aantal sleepbewegingen, vaste lampjes en geen teller van de kruisingen (moeilijk).
+ */
+export const ontwarNiveaus: Record<OntwarNiveau, { label: string; hulp: boolean; tips: number; pluimen: boolean }> = {
+  makkelijk: { label: 'Makkelijk', hulp: true, tips: 0, pluimen: false },
+  middel: { label: 'Middel', hulp: false, tips: 3, pluimen: false },
+  moeilijk: { label: 'Moeilijk', hulp: false, tips: 0, pluimen: true },
+}
+
+/** Wie niet leest begint makkelijk, de oudste lezer moeilijk, andere lezers middel. */
+export function startOntwarNiveau(kind: Gebruiker, kinderen: Gebruiker[]): OntwarNiveau {
+  if (!kind.kan_lezen) return 'makkelijk'
+  const oudsteLezer = kinderen.filter((k) => k.kan_lezen).sort((a, b) => a.volgorde - b.volgorde)[0]
+  return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
+}
+
+/**
  * Lichtstraal. `hulp`: na tien seconden zonder tik wiebelt een spiegeltje dat anders moet staan (makkelijk); `tips`: hoeveel keer de Tip-knop er een toont;
  * `pluimen`: strenge score met een limiet op het aantal tikken (moeilijk).
  */
@@ -583,7 +601,7 @@ export function startNiveaus(kind: Gebruiker, kinderen: Gebruiker[]): { memory: 
   return oudsteLezer?.id === kind.id ? { memory: 'groot', rekenen: 'tot100' } : { memory: 'middel', rekenen: 'tot20' }
 }
 
-export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'weegschaal' | 'torens' | 'rooster' | 'snoeppotjes' | 'nim' | 'glijden' | 'verfmengen' | 'eenlijn' | 'raadselprent' | 'pijltjes' | 'domino' | 'eikels' | 'knikkers' | 'klok' | 'lampionlied' | 'piramide' | 'patroon' | 'kalaha' | 'spiegel' | 'slingers' | 'bruggen' | 'schuif' | 'vlek' | 'hekjes' | 'zoeken' | 'geheim' | 'sets' | 'bezorgen' | 'karvrij' | 'snoepruilen' | 'lichtstraal' | 'springen'
+export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'weegschaal' | 'torens' | 'rooster' | 'snoeppotjes' | 'nim' | 'glijden' | 'verfmengen' | 'eenlijn' | 'raadselprent' | 'pijltjes' | 'domino' | 'eikels' | 'knikkers' | 'klok' | 'lampionlied' | 'piramide' | 'patroon' | 'kalaha' | 'spiegel' | 'slingers' | 'bruggen' | 'schuif' | 'vlek' | 'hekjes' | 'zoeken' | 'geheim' | 'sets' | 'bezorgen' | 'karvrij' | 'snoepruilen' | 'lichtstraal' | 'ontwarren' | 'springen'
 
 export interface SpelInfo {
   sleutel: SpelSleutel
@@ -617,6 +635,8 @@ export const spelMenu: SpelInfo[] = [
     icoon: 'M3 7h7v7H3zM14 10h7v7h-7zM11 10l3-3M14 7h-3v3M10 14l-3 3M7 14v3h3' },
   { sleutel: 'lichtstraal', naam: 'Lichtstraal', uitleg: 'Draai de spiegeltjes tot het licht alle pakjes bereikt', prijs: 30,
     icoon: 'M3 12h7M13 12l4-4M17 8h4M13 12l4 4M17 16h4M10 8v8M13 6l-6 12' },
+  { sleutel: 'ontwarren', naam: 'Draden ontwarren', uitleg: 'Sleep de lampjes tot geen enkele draad nog over een andere ligt', prijs: 30,
+    icoon: 'M4 6l16 12M4 18L20 6M4 6a1.5 1.5 0 1 0 .01 0M20 18a1.5 1.5 0 1 0 .01 0M4 18a1.5 1.5 0 1 0 .01 0M20 6a1.5 1.5 0 1 0 .01 0' },
   { sleutel: 'springen', naam: 'Springland', uitleg: 'Loop en spring met je figuurtje', prijs: 30,
     icoon: 'M12 3a2 2 0 1 0 0 .01M12 7v5M9 21l3-6l3 6M8 9l4 1l4-1M3 21h4M17 21h4M18 4l1 2l2 .3l-1.5 1.4l.4 2.1L18 8.8l-1.9 1l.4-2.1L15 6.3l2-.3z' },
   { sleutel: 'touwspringen', naam: 'Touwspringen', uitleg: 'Spring op het juiste moment', prijs: 30,

@@ -37,6 +37,7 @@ import Bezorgen from './schermen/Bezorgen.tsx'
 import KarVrij from './schermen/KarVrij.tsx'
 import Snoepruilen from './schermen/Snoepruilen.tsx'
 import Lichtstraal from './schermen/Lichtstraal.tsx'
+import Ontwarren from './schermen/Ontwarren.tsx'
 import Snoeppotjes from './schermen/Snoeppotjes.tsx'
 import Nim from './schermen/Nim.tsx'
 import Glijden from './schermen/Glijden.tsx'
@@ -182,6 +183,7 @@ export default function App() {
         <Route path="karvrij" element={<KarVrij />} />
         <Route path="snoepruilen" element={<Snoepruilen />} />
         <Route path="lichtstraal" element={<Lichtstraal />} />
+        <Route path="ontwarren" element={<Ontwarren />} />
         <Route path="glijden" element={<Glijden />} />
         <Route path="verfmengen" element={<VerfMengen />} />
         <Route path="eenlijn" element={<EenLijn />} />

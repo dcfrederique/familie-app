@@ -95,6 +95,8 @@ export const zin = {
   snoepruilenUitleg: 'Ruil twee snoepjes. Maak een rijtje van drie.',
   snoepruilenKlaar: 'Wat een lekker feest!',
   lichtstraalUitleg: 'Draai de spiegeltjes. Laat de pakjes gloeien.',
+  ontwarrenUitleg: 'Sleep de lampjes. Laat geen draden over elkaar liggen.',
+  ontwarrenKlaar: 'Alle lampjes branden!',
   lichtstraalKlaar: 'Alle pakjes gloeien!',
   glijdenUitleg: "Het pinguïntje glijdt tot het ergens tegen botst. Kies een pijltje en breng het naar het visje.",
   glijdenKlaar: "Het pinguïntje heeft alle visjes!",

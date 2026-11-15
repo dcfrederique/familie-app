@@ -358,3 +358,22 @@ test('de andere gebieden in de nieuwe stijl: elk iets te doen', async ({ page })
   }
   expect(fouten).toEqual([])
 })
+
+test('draden ontwarren: een lampje slepen verplaatst het', async ({ page }) => {
+  await startAls(page, 'luca')
+  await doorWelkomstpad(page)
+  await naar(page, '/kind/luca/ontwarren')
+  await page.getByRole('button', { name: 'Makkelijk' }).click()
+  const bord = page.locator('svg.draad-bord')
+  await expect(bord).toBeVisible()
+  const lamp = bord.locator('g.draad-lamp').first()
+  const voor = await lamp.locator('circle').nth(0).boundingBox()
+  const vak = (await bord.boundingBox())!
+  // Een lampje zit op zijn plek (x, y in bordeenheden): sleep het naar de linkerbovenhoek van het bord.
+  await page.mouse.move(voor!.x + voor!.width / 2, voor!.y + voor!.height / 2)
+  await page.mouse.down()
+  await page.mouse.move(vak.x + 30, vak.y + 30, { steps: 8 })
+  await page.mouse.up()
+  const na = await bord.locator('g.draad-lamp').first().locator('rect').first().boundingBox()
+  expect(Math.abs(na!.x - voor!.x) + Math.abs(na!.y - voor!.y)).toBeGreaterThan(5)
+})
