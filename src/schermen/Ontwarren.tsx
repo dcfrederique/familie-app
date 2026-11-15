@@ -192,7 +192,7 @@ function OntwarScherm({ kind }: { kind: Gebruiker }) {
             <div className={`draad-tafel${feest ? ' klaar' : ''}`}>
               <svg ref={svgRef} viewBox={`0 0 ${BREED} ${HOOG}`} className="draad-bord" role="img" aria-label="Lampjes met draden"
                    onPointerDown={neer} onPointerMove={beweeg} onPointerUp={los} onPointerCancel={los}>
-                <rect width={BREED} height={HOOG} fill="#16213F" />
+                <rect width={BREED} height={HOOG} fill="#16213F" className="draad-lucht" />
                 {[[10, 8], [34, 80], [60, 6], [88, 82], [110, 14], [18, 52], [104, 58]].map(([x, y]) => <circle key={x} cx={x} cy={y} r=".5" fill="#fff" opacity=".4" />)}
                 {b.draden.map(([a, c], i) => {
                   const rd = rood.has(i) && !feest

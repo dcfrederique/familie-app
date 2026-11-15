@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.167',
+    datum: '2026-11-15',
+    titel: 'Draden ontwarren: avondgloed en een vinkje dat opspringt',
+    tekst: 'Het bord van Draden ontwarren heeft nu een zachte avondgloed. Loopt er geen enkele draad meer over een andere, dan springt het groene vinkje bovenaan even op.',
+  },
+  {
     versie: '0.166',
     datum: '2026-11-15',
     titel: 'Draden ontwarren, De lichtjes in de knoop en Het tandwielpad',

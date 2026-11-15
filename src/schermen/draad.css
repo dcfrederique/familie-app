@@ -30,8 +30,13 @@
 /* Detail: bij een gehaalde ronde gloeien de lampjes zacht. */
 .draad-tafel.klaar .draad-lamp { animation: draad-gloei 1s ease-in-out infinite; }
 @keyframes draad-gloei { 0%, 100% { opacity: 1; } 50% { opacity: .75; } }
+/* Detail: een zachte avondgloed bovenaan het bord, en het vinkje springt op als er geen draad meer over een andere loopt. */
+.draad-lucht { fill-opacity: 0; }
+.draad-tafel { background-image: radial-gradient(120% 70% at 50% 0%, rgb(120 140 230 / .3), transparent 65%), radial-gradient(60% 40% at 85% 100%, rgb(255 217 90 / .12), transparent 70%); }
+.draad-rood.goed { animation: draad-goed .5s ease-out; }
+@keyframes draad-goed { 0% { scale: 1; } 40% { scale: 1.35; } 100% { scale: 1; } }
 @media (prefers-reduced-motion: reduce) {
-  .draad-hint, .draad-rood-lijn, .draad-doel, .draad-tafel.klaar .draad-lamp { animation: none; }
+  .draad-hint, .draad-rood-lijn, .draad-doel, .draad-tafel.klaar .draad-lamp, .draad-rood.goed { animation: none; }
   .draad-rood-lijn { stroke-width: 2px; }
   .draad-hint circle { stroke: #fff; stroke-width: 1.2px; }
 }
