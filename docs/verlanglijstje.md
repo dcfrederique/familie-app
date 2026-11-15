@@ -1,6 +1,6 @@
-# Mijn verlanglijstje (plan, 15 november 2026, nog niet gebouwd)
+# Mijn verlanglijstje (gebouwd op 15 november 2026)
 
-Idee van de nachtelijke verbeterideeën (14 november, nr. 1); Frederique vond het de moeite om uit te werken. Sinterklaas is op 6 december, Kerstmis volgt. Dit document is het plan; er is nog niets gebouwd.
+Idee van de nachtelijke verbeterideeën (14 november, nr. 1); Frederique vond het de moeite om uit te werken. Sinterklaas is op 6 december, Kerstmis volgt. Gebouwd met Frederiques akkoord (standaard uit, 10 wensen, typen voor wie leest, afvinken met het ouder-account, niet delen met opa en oma). Verschil met het plan: het menu toont geen teller voor nieuwe wensen.
 
 ## Wat het is
 Elk kind heeft op Ik een bladzijde **Mijn verlanglijstje**. Het kiest daar prentjes (of tekent of typt) van wat het graag zou krijgen. De ouders zien de lijsten op hun gsm en vinken af wat al gekocht is. Het kind ziet dat afvinken nooit. Geen sterren, geen winkel, geen prijzen.

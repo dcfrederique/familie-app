@@ -1,0 +1,7 @@
+.wens-rij { display: flex; align-items: center; gap: 12px; min-height: 64px; border-top: 1px solid var(--line); padding: 8px 0; }
+.wens-rij.gekocht { opacity: .6; }
+.wens-rij-inhoud { width: 64px; flex: none; display: grid; place-items: center; color: var(--muted); }
+.wens-rij-inhoud .wens-tekening { width: 64px; }
+.wens-rij-inhoud .wens-tekst { font-size: 14px; }
+.wens-rij-tekst { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+.wens-rij select { min-height: 48px; font: inherit; padding: 0 8px; }

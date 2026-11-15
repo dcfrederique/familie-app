@@ -119,6 +119,27 @@ export interface DagboekOverzicht {
   /** De laatste twee weken; alleen een ouder-account krijgt ze, een tablet krijgt een lege lijst. */
   dagen: DagboekDag[]
 }
+export type WensSoort = 'prent' | 'tekening' | 'tekst'
+export type WensStatus = 'nieuw' | 'gekocht' | 'later' | 'liever_niet'
+/** Een wens op het verlanglijstje (docs/verlanglijstje.md). De status ziet alleen een ouder-account; het kind nooit. */
+export interface Wens {
+  id: string
+  kind_id: string
+  soort: WensSoort
+  prent: string | null
+  tekst: string
+  tekening: Tekening | null
+  favoriet: boolean
+  status?: WensStatus
+  aangemaakt: string
+}
+export interface WensInvoer { soort: WensSoort; prent?: string; tekst?: string; tekening?: Tekening | null }
+export interface VerlanglijstOverzicht {
+  /** Per kind: heeft een ouder het verlanglijstje aangezet? */
+  aan: Record<string, boolean>
+  /** Alle wensen van het gezin met status; alleen een ouder-account krijgt ze, een tablet krijgt een lege lijst. */
+  wensen: Wens[]
+}
 export interface PotInstelling { aan: boolean; naam: string; prent: DoelPrent; doel: number }
 
 export interface LogRegel {
@@ -467,6 +488,16 @@ export interface Bron {
   dagboekOpslaan(kindId: string, invoer: DagboekInvoer): Promise<void>
   dagboekInstellen(kindId: string, aan: boolean, pin: string | null): Promise<OuderUitkomst>
   dagboekGezien(kindId: string, dag: string): Promise<void>
+  /** Mijn verlanglijstje (docs/verlanglijstje.md): wie het aan heeft en (voor ouders) alle wensen. Leeg als de migratie ontbreekt. */
+  verlanglijstOverzicht(): Promise<VerlanglijstOverzicht>
+  /** De eigen wensen van dit kind, zonder status. */
+  verlanglijst(kindId: string): Promise<Wens[]>
+  verlanglijstToevoegen(kindId: string, wens: WensInvoer): Promise<void>
+  verlanglijstVerwijderen(kindId: string, wensId: string): Promise<void>
+  verlanglijstFavoriet(kindId: string, wensId: string, favoriet: boolean): Promise<void>
+  /** Een ouder zet de status van een wens. */
+  verlanglijstStatus(wensId: string, status: WensStatus): Promise<void>
+  verlanglijstInstellen(kindId: string, aan: boolean, pin: string | null): Promise<OuderUitkomst>
   /** Mijn huisdier (docs/huisdier.md): regels en per kind wat er staat; leeg als de migratie ontbreekt. */
   huisdieren(): Promise<Huisdieren>
   /** Het kind kiest zijn ei en geeft het een naam (eenmalig). */

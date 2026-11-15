@@ -1,0 +1,68 @@
+/* Mijn verlanglijstje (Verlanglijst.tsx): zonder scrollen op een tablet, liggend en staand, en op een lage gsm liggend. */
+.wens-kop { flex: none; display: flex; align-items: center; gap: 14px; min-height: 64px; }
+.wens-hint { flex: 1; font-size: 24px; font-weight: 700; color: var(--muted); }
+.wens-kop .vraag-stem { width: 64px; height: 64px; flex: none; }
+.wens-teller { margin-left: auto; font-size: 30px; color: var(--kid); }
+.wens-raster { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.wens-tegel { position: relative; min-height: 0; background: var(--surface); border-radius: 28px; box-shadow: 0 6px 0 var(--shade); border: 6px solid transparent; display: grid; place-items: center; color: var(--kid); overflow: hidden; }
+.wens-tegel.fav { border-color: #F2B33D; background: var(--gold-bg, var(--kid-tint)); }
+.wens-vlak { position: absolute; inset: 0; border: 0; background: none; display: grid; place-items: center; padding: 14px 14px 38px; color: inherit; font: inherit; min-height: 0; }
+.wens-vlak .ic { width: auto; height: 100%; max-height: 100%; stroke-width: 1.8; }
+.wens-tekening { width: 100%; display: block; border-radius: 12px; overflow: hidden; }
+.wens-tekst { font-size: 26px; text-align: center; color: var(--ink); line-height: 1.1; overflow-wrap: anywhere; }
+.wens-hart, .wens-weg { position: absolute; bottom: 6px; width: 56px; height: 56px; border: 0; border-radius: 50%; display: grid; place-items: center; background: var(--soft); color: var(--muted); }
+.wens-hart { left: 6px; }
+.wens-weg { right: 6px; }
+.wens-hart.aan { background: #F2B33D; color: #3A2A00; }
+.wens-hart.aan .ic { fill: currentColor; }
+.wens-hart:disabled { opacity: .35; }
+.wens-zeker { position: absolute; inset: 0; background: color-mix(in srgb, var(--surface) 92%, transparent); display: flex; align-items: center; justify-content: center; gap: 12px; z-index: 2; }
+.wens-nieuw { border: 6px dashed var(--kid); background: var(--kid-tint); font: inherit; gap: 4px; align-content: center; }
+.wens-nieuw b { font-size: 22px; color: var(--ink); }
+.wens-kies { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(var(--kol, 3), minmax(0, 1fr)); gap: 18px; }
+.wens-kies .vertel-knop { gap: 8px; }
+.prent-raster { flex: 1; min-height: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); grid-template-rows: repeat(4, minmax(0, 1fr)); gap: 12px; }
+.prent-tegel { min-height: 0; border: 6px solid transparent; background: var(--surface); border-radius: 24px; box-shadow: 0 5px 0 var(--shade); color: var(--kid); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; padding: 4px; font: inherit; }
+.prent-tegel .ic { height: 100%; min-height: 0; width: auto; max-width: 100%; stroke-width: 1.8; }
+.prent-tegel small { font: 800 16px Nunito, sans-serif; color: var(--ink); }
+.prent-tegel.gekozen { border-color: var(--kid); background: var(--kid-tint); }
+.wens-teken { flex: 1; min-height: 0; display: grid; }
+.wens-teken .doek { min-height: 0; }
+.wens-typ { flex: 1; min-height: 0; display: grid; grid-template-rows: auto auto; align-content: center; gap: 10px; }
+.wens-typ input { border: 0; outline: 0; font: 600 40px 'Baloo 2', Nunito, sans-serif; color: #1C2433; background: transparent; min-width: 0; }
+.wens-typ small { color: #5b6577; font-weight: 800; font-size: 18px; }
+@media (orientation: portrait) {
+  .wens-raster { grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(4, minmax(0, 1fr)); }
+  .prent-raster { grid-template-columns: repeat(4, minmax(0, 1fr)); grid-template-rows: repeat(6, minmax(0, 1fr)); }
+  .wens-kies { grid-template-columns: 1fr; }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .wens-kop { min-height: 44px; }
+  .wens-kop .vraag-stem { width: 44px; height: 44px; }
+  .wens-hint { font-size: 18px; }
+  .wens-teller { font-size: 22px; }
+  .wens-raster, .prent-raster { gap: 8px; }
+  .wens-tegel { border-width: 4px; border-radius: 20px; }
+  .wens-vlak { padding: 8px 8px 30px; }
+  .wens-hart, .wens-weg { width: 44px; height: 44px; bottom: 4px; }
+  .wens-tekst { font-size: 18px; }
+  .prent-tegel { border-width: 4px; border-radius: 16px; }
+  .prent-tegel small { font-size: 13px; }
+  .wens-typ input { font-size: 28px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .wens-tegel.fav { animation: wens-glans 2.4s ease-in-out infinite alternate; }
+  @keyframes wens-glans { from { box-shadow: 0 6px 0 var(--shade); } to { box-shadow: 0 6px 0 var(--shade), 0 0 18px #F2B33D88; } }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .wens-teken .teken-kleuren { grid-template-columns: repeat(4, 32px); gap: 4px; right: 8px; top: 8px; }
+  .wens-teken .teken-kleuren button { width: 32px; height: 32px; border-width: 3px; }
+}
+@media (max-height: 500px) and (orientation: landscape) {
+  .prent-raster { grid-template-columns: repeat(8, minmax(0, 1fr)); grid-template-rows: repeat(3, minmax(0, 1fr)); }
+  .prent-tegel { flex-direction: row; gap: 6px; }
+  .prent-tegel .ic { height: 100%; max-height: 40px; }
+  .prent-tegel small { display: none; }
+  .wens-kies, .wens-teken { }
+  .wens-teken ~ .dag-voet .groot-knop-m, .prent-raster ~ .dag-voet .groot-knop-m { min-height: 52px; }
+}

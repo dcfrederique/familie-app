@@ -3,7 +3,7 @@ import type { Aanbod } from '../../data/aanbod.ts'
 import { leegHuisdieren, type Huisdieren } from '../../data/huisdier.ts'
 import { maakWeergave, type WereldWeergave } from '../wereld/weergave.ts'
 import { leesOpgeslagen, type Opgeslagen as WereldKaart } from '../wereld/gebieden.ts'
-import type { DagboekOverzicht, DagboekDag, Gevoel, ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, ChatOverzicht, GezondheidProfiel, SpraakToken, Inzending, LogRegel, Maaltijd, NieuweNotitie, NieuweOuderTaak, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Saldo, Sterrenpot, Gezinspot, Potten, Spelregels, Taak, Tijdverzoek, Winkel, VoorraadArtikel, VoorraadLogRegel, VoorraadOverzicht, Recept, Moment, WeekmenuInstellingen } from './types.ts'
+import type { VerlanglijstOverzicht, Wens, WensStatus, DagboekOverzicht, DagboekDag, Gevoel, ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, ChatOverzicht, GezondheidProfiel, SpraakToken, Inzending, LogRegel, Maaltijd, NieuweNotitie, NieuweOuderTaak, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Saldo, Sterrenpot, Gezinspot, Potten, Spelregels, Taak, Tijdverzoek, Winkel, VoorraadArtikel, VoorraadLogRegel, VoorraadOverzicht, Recept, Moment, WeekmenuInstellingen } from './types.ts'
 
 // Postgres numeric komt als tekst of getal binnen.
 const getal = (w: unknown) => (w === null || w === undefined ? null : Number(w))
@@ -297,6 +297,41 @@ export function supabaseBron(sb: SupabaseClient, gezinId: string): Bron {
     },
     async dagboekGezien(kindId, dag) {
       fout((await sb.rpc('dagboek_gezien', { p_kind: kindId, p_dag: dag })).error)
+    },
+    async verlanglijstOverzicht() {
+      const leeg: VerlanglijstOverzicht = { aan: {}, wensen: [] }
+      const [aan, wensen] = await Promise.all([
+        sb.from('verlanglijst_instelling').select('kind_id, aan'),
+        sb.from('verlanglijst').select('id, kind_id, soort, prent, tekst, tekening, favoriet, status, aangemaakt').order('aangemaakt'),
+      ])
+      if (aan.error || wensen.error) return leeg
+      return {
+        aan: Object.fromEntries((aan.data ?? []).map((r) => [r.kind_id, r.aan])),
+        wensen: (wensen.data ?? []) as Wens[],
+      }
+    },
+    async verlanglijst(kindId) {
+      const { data, error } = await sb.rpc('verlanglijst_van_kind', { p_kind: kindId })
+      if (error) return []
+      return ((data ?? []) as Omit<Wens, 'kind_id'>[]).map((w) => ({ ...w, kind_id: kindId })) as Wens[]
+    },
+    async verlanglijstToevoegen(kindId, w) {
+      const { error } = await sb.rpc('verlanglijst_toevoegen', { p_kind: kindId, p_soort: w.soort, p_prent: w.prent ?? null, p_tekst: w.tekst ?? '', p_tekening: w.tekening ?? null })
+      fout(error)
+    },
+    async verlanglijstVerwijderen(kindId, wensId) {
+      fout((await sb.rpc('verlanglijst_verwijderen', { p_kind: kindId, p_id: wensId })).error)
+    },
+    async verlanglijstFavoriet(kindId, wensId, favoriet) {
+      fout((await sb.rpc('verlanglijst_favoriet', { p_kind: kindId, p_id: wensId, p_favoriet: favoriet })).error)
+    },
+    async verlanglijstStatus(wensId, status: WensStatus) {
+      fout((await sb.rpc('verlanglijst_status', { p_id: wensId, p_status: status })).error)
+    },
+    async verlanglijstInstellen(kindId, aan, pin) {
+      const { data, error } = await sb.rpc('verlanglijst_instellen', { p_kind: kindId, p_aan: aan, p_pin: pin })
+      fout(error)
+      return data as OuderUitkomst
     },
     async huisdieren() {
       // Zonder migratie 20261107000500_huisdier is er nog niets.

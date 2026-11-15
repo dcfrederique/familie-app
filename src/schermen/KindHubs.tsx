@@ -83,10 +83,12 @@ function IkInhoud({ kind }: { kind: Gebruiker }) {
   const { perKind, bron } = useSessie()
   const { data: dagboek } = useGegevens(bron ? () => bron.dagboekOverzicht() : null, [bron])
   const dagAan = !!dagboek?.aan[kind.id]
+  const { data: verlanglijst } = useGegevens(bron ? () => bron.verlanglijstOverzicht() : null, [bron])
+  const wensAan = !!verlanglijst?.aan[kind.id]
   const { data: huisdieren } = useGegevens(bron ? () => bron.huisdieren() : null, [bron])
   const hdKind = huisdieren?.kinderen[kind.id]
   const hdAan = !!hdKind?.aan
-  const kolommen = 3 + (dagAan ? 1 : 0) + (hdAan ? 1 : 0)
+  const kolommen = 3 + (dagAan ? 1 : 0) + (hdAan ? 1 : 0) + (wensAan ? 1 : 0)
   return (
     <>
       <div className="hub-raster" style={{ '--kol': kolommen } as React.CSSProperties}>
@@ -98,6 +100,7 @@ function IkInhoud({ kind }: { kind: Gebruiker }) {
         {hdAan && <HubTegel kind={kind} naar={`/kind/${kind.id}/mijn-huisdier`} naam="Mijn huisdier" uitleg="Verzorgen en groeien" kleur="oranje" icoon={HARTJE}
                                   prent={hdKind?.soort ? <span className="hub-hoofd"><HuisdierPrent soort={hdKind.soort} stadium={stadiumVan(hdKind.pootjes, huisdieren!.regels)} /></span> : undefined} />}
         {dagAan && <HubTegel kind={kind} naar={`/kind/${kind.id}/dag`} naam="Mijn dag" uitleg="Hoe voel ik me?" kleur="goud" icoon={DAG} />}
+        {wensAan && <HubTegel kind={kind} naar={`/kind/${kind.id}/verlanglijstje`} naam="Mijn verlanglijstje" uitleg="Wat wil ik graag?" kleur="oranje" icoon={HARTJE} />}
       </div>
       <div className="hub-tijd">
         <Link to={perKind ? '/ouder' : '/kinderen'} className="hub-ouders" aria-label={perKind ? 'Voor mama of papa' : 'Terug naar wie speelt er'}>

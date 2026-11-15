@@ -19,6 +19,13 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.168',
+    datum: '2026-11-15',
+    titel: 'Mijn verlanglijstje voor de Sint en Kerstmis',
+    tekst: 'Een kind kan tot 10 wensen op een verlanglijstje zetten: een prentje uit een vaste set (bal, pop, trein, puzzel, ...), een eigen tekening of, voor wie leest, een korte tekst. Drie wensen mogen een allerliefste zijn. Ouders zetten het per kind aan in Kinderen → Verlanglijstjes (standaard uit) en zien daar de lijst; per wens zet je een status (nieuw, gekocht, later, liever niet) die het kind nooit ziet. Het kind vindt het onder Ik, met de zin "Mama en papa lezen mee". Geen sterren, geen foto\'s, geen links of prijzen.',
+    open: 'Standaard staat het voor niemand aan: zet het per kind aan onder Kinderen → Verlanglijstjes.',
+  },
+  {
     versie: '0.167',
     datum: '2026-11-15',
     titel: 'Draden ontwarren: avondgloed en een vinkje dat opspringt',

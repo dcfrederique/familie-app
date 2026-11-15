@@ -52,6 +52,7 @@ const iconen: Record<MenuIcoon | 'menu' | 'bel' | 'terug', ReactNode> = {
   // Speelknop in een rondje.
   // Een lachend gezichtje.
   huisdier: <><path d="M12 21s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6-8 11-8 11z" /></>,
+  verlanglijst: <path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.5A4 4 0 0 1 19 10c0 5.5-7 10-7 10z" />,
   dagboek: <><circle cx="12" cy="12" r="8.5" /><path d="M9 10h.01M15 10h.01M8.5 14c1 1.5 2.2 2.2 3.5 2.2s2.5-.7 3.5-2.2" /></>,
   proberen: <><circle cx="12" cy="12" r="8.5" /><path d="M10 8.5l5.5 3.5-5.5 3.5z" /></>,
   // De wereld: een huisje aan een weg met een boom.

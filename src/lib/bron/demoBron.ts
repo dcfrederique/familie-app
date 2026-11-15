@@ -14,7 +14,7 @@ import { leesOpgeslagen, leegOpgeslagen, type Opgeslagen as WereldKaart } from '
 import { activiteitOmschrijving, activiteitSterren, blokKeuzes, limietVoor, regels as standaardRegels } from '../regels.ts'
 import type { Weging } from '../gewicht.ts'
 import { etersVoor, kookSleutel, standaardVoor, verbruikMetDelen } from '../voorraad.ts'
-import type { WeekmenuInstellingen, ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, GezondheidProfiel, Inzending, LogRegel, Maaltijd, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Spelregels, Potten, DagboekDag, Taak, Tijdverzoek, VoorraadArtikel, VoorraadLogRegel, Recept, Winkel } from './types.ts'
+import type { WeekmenuInstellingen, ActiviteitLimiet, ActiviteitRegel, Bericht, Boodschap, Bron, Categorie, GezondheidProfiel, Inzending, LogRegel, Maaltijd, NieuweTaak, Notitie, OuderTaak, OuderUitkomst, Spelregels, Potten, DagboekDag, Wens, Taak, Tijdverzoek, VoorraadArtikel, VoorraadLogRegel, Recept, Winkel } from './types.ts'
 
 const DEMO_PIN = '1234'
 const WELKOM = 'Welkom! Je eerste sterren'
@@ -37,6 +37,8 @@ interface Toestand {
   /** Aantal goedgekeurde taken toen het ei gekozen werd (de demo kent geen beoordeeld_op). */
   huisdierBasis: Record<string, number>
   dagboek: DagboekDag[]
+  verlanglijstAan: Record<string, boolean>
+  verlanglijst: Wens[]
   aanbod: Aanbod
   /** Spelletjes die de ouders net vrijgaven en kinderen nog niet hoorden; per kind de laatste dag van het hoera. */
   nieuwVrij: string[]
@@ -97,6 +99,8 @@ function nieuweToestand(kinderen: Gebruiker[]): Toestand {
     huisdieren: { regels: { ...huisdierRegels }, kinderen: Object.fromEntries(kinderen.map((k) => [k.id, nieuwHuisdier(true)])) },
     huisdierBasis: {},
     dagboek: [],
+    verlanglijstAan: {},
+    verlanglijst: [],
     aanbod: { dicht: [], nieuw: [], verborgen: {}, prijzen: {} },
     // Twee spelletjes net vrijgegeven, zodat het dagelijkse hoera meteen te zien is.
     nieuwVrij: ['pompoen', 'basket'],
@@ -363,6 +367,37 @@ export function demoBron(kinderen: Gebruiker[]): Bron {
     async dagboekGezien(kindId, dag) {
       const d = t.dagboek.find((x) => x.kind_id === kindId && x.dag === dag)
       if (d) d.gezien_op = new Date().toISOString()
+    },
+    async verlanglijstOverzicht() { return { aan: { ...t.verlanglijstAan }, wensen: structuredClone(t.verlanglijst) } },
+    async verlanglijst(kindId) {
+      // Een kind ziet nooit de status.
+      return structuredClone(t.verlanglijst.filter((w) => w.kind_id === kindId)).map((w) => { delete w.status; return w })
+    },
+    async verlanglijstToevoegen(kindId, w) {
+      if (!t.verlanglijstAan[kindId]) throw new Error('het verlanglijstje staat uit')
+      if (t.verlanglijst.filter((x) => x.kind_id === kindId).length >= 10) throw new Error('je lijstje is vol (10 wensen)')
+      t.verlanglijst.push({
+        id: id(), kind_id: kindId, soort: w.soort, prent: w.soort === 'prent' ? w.prent ?? null : null,
+        tekst: w.soort === 'tekst' ? (w.tekst ?? '').trim().slice(0, 40) : '', tekening: w.soort === 'tekening' ? w.tekening ?? null : null,
+        favoriet: false, status: 'nieuw', aangemaakt: new Date().toISOString(),
+      })
+    },
+    async verlanglijstVerwijderen(kindId, wensId) {
+      t.verlanglijst = t.verlanglijst.filter((w) => !(w.id === wensId && w.kind_id === kindId))
+    },
+    async verlanglijstFavoriet(kindId, wensId, favoriet) {
+      if (favoriet && t.verlanglijst.filter((w) => w.kind_id === kindId && w.favoriet && w.id !== wensId).length >= 3) throw new Error('je kan maar 3 allerliefste wensen hebben')
+      const w = t.verlanglijst.find((x) => x.id === wensId && x.kind_id === kindId)
+      if (w) w.favoriet = favoriet
+    },
+    async verlanglijstStatus(wensId, status) {
+      const w = t.verlanglijst.find((x) => x.id === wensId)
+      if (w) w.status = status
+    },
+    async verlanglijstInstellen(kindId, aan, pin): Promise<OuderUitkomst> {
+      if (!pinOk(pin)) return 'pincode_fout'
+      t.verlanglijstAan[kindId] = aan
+      return 'ingesteld'
     },
     async huisdieren() {
       const kinderen = Object.fromEntries(Object.entries(t.huisdieren.kinderen).map(([id, h]) => [id, { ...h, pootjes: goedgekeurd(id) - (t.huisdierBasis[id] ?? 0) }]))

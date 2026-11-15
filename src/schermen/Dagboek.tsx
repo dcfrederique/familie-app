@@ -142,7 +142,7 @@ function DagInhoud({ kind }: { kind: Gebruiker }) {
 }
 
 /** Tekenvlak met de vinger: lijnen in een vlak van 600 × 260, zes kleuren en een gum voor de laatste lijn. */
-function Tekenvlak({ tekening, zet }: { tekening: Tekening; zet: (t: Tekening) => void }) {
+export function Tekenvlak({ tekening, zet }: { tekening: Tekening; zet: (t: Tekening) => void }) {
   const svg = useRef<SVGSVGElement>(null)
   const [kleur, setKleur] = useState(tekenKleuren[0])
   const bezig = useRef(false)
