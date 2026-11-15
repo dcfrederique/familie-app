@@ -52,7 +52,7 @@ export default function SpelKader({ titel, terug, scherm = 'spel', vol = scherm 
 
   return (
     <ThemaBron value={thema}>
-      <div className={`kind ${kleurKlasse(kind)}${vol ? ' kind-vol' : ''}${themaKiezer ? ' kind-thema-kiezer' : ''}${thema ? ` thema thema-${thema} thema-scherm-${scherm}` : ''}`}>
+      <div className={`kind ${kleurKlasse(kind)}${vol ? ' kind-vol' : ''}${themaKiezer ? ' kind-thema-kiezer' : ''}${thema && !themaKiezer ? ` thema thema-${thema} thema-scherm-${scherm}` : ''}`}>
         {themaKiezer ? (
           <header className="thema-kiezer-kop">
             <Link to={`/kind/${kind.id}/figuurtje`} className="thema-kiezer-avatar met-figuurtje" aria-label="Mijn figuurtje aankleden">

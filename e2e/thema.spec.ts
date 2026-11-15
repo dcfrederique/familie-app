@@ -52,6 +52,7 @@ for (const kind of ['luca', 'feline']) {
         await page.setViewportSize({ width, height })
         await expect(page.locator('.thema-kaart')).toHaveCount(height <= 520 ? 4 : 8)
         await page.evaluate(() => document.fonts.ready)
+        await expect.poll(() => page.locator('.thema-kaart img').evaluateAll((imgs) => imgs.every((im) => (im as HTMLImageElement).complete && (im as HTMLImageElement).naturalWidth > 0))).toBe(true)
         const maten = await page.evaluate(() => {
           const se = document.scrollingElement!
           const knoppen = [...document.querySelectorAll('.thema-kaart, .thema-bladeren button')]
