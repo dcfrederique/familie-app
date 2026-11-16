@@ -53,6 +53,9 @@
 @media (prefers-reduced-motion: no-preference) {
   .wens-tegel.fav { animation: wens-glans 2.4s ease-in-out infinite alternate; }
   @keyframes wens-glans { from { box-shadow: 0 6px 0 var(--shade); } to { box-shadow: 0 6px 0 var(--shade), 0 0 18px #F2B33D88; } }
+  /* Detail: is het lijstje nog leeg, dan nodigt het plusje zachtjes uit om een eerste wens te kiezen. */
+  .wens-raster > .wens-nieuw:first-child .ic { animation: wens-uitnodig 1.8s ease-in-out infinite; }
+  @keyframes wens-uitnodig { 0%, 100% { scale: 1; } 50% { scale: 1.14; } }
 }
 @media (max-height: 500px) and (orientation: landscape) {
   .wens-teken .teken-kleuren { grid-template-columns: repeat(4, 32px); gap: 4px; right: 8px; top: 8px; }

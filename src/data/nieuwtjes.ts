@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.172',
+    datum: '2026-11-16',
+    titel: 'Mijn verlanglijstje: het plusje nodigt uit',
+    tekst: 'Is het verlanglijstje van een kind nog leeg, dan wordt het plusje zachtjes groter en kleiner, zodat ook de kleinsten zien waar ze een eerste wens kiezen.',
+  },
+  {
     versie: '0.171',
     datum: '2026-11-16',
     titel: 'Rode en groene pakjes, Pip bakt speculaas en De trommelrol',
