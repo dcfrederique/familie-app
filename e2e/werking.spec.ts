@@ -408,3 +408,17 @@ test('verlanglijstje: ouder zet het aan, Luca kiest een prentje en tikt een wens
   await kaart.getByLabel('Status').first().selectOption('gekocht')
   await expect(kaart.getByLabel('Status').first()).toHaveValue('gekocht')
 })
+
+test('rode en groene pakjes: een tik zet een pakje in een leeg vakje', async ({ page }) => {
+  await startAls(page, 'luca')
+  await doorWelkomstpad(page)
+  await naar(page, '/kind/luca/pakjesrij')
+  await page.getByRole('button', { name: 'Makkelijk' }).click()
+  const raster = page.getByRole('grid', { name: 'Het bord met pakjes' })
+  await expect(raster).toBeVisible()
+  const leeg = raster.getByRole('gridcell', { name: 'Leeg vakje' })
+  const voor = await leeg.count()
+  await leeg.first().click()
+  // Op makkelijk gaat een pakje dat niet past na een wiebel weer weg; meteen erna staat er in elk geval één pakje.
+  await expect(leeg).toHaveCount(voor - 1)
+})

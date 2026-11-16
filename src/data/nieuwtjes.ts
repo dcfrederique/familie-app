@@ -19,6 +19,15 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.171',
+    datum: '2026-11-16',
+    titel: 'Rode en groene pakjes, Pip bakt speculaas en De trommelrol',
+    tekst: 'Nieuw verhaal "Pip bakt speculaas" (4 jaar) en kleurplaat "De koekjesplaat", meteen beschikbaar. Nieuw spelletje Rode en groene pakjes (een takuzu): zet in elk vakje een rood of groen pakje, nooit drie dezelfde naast elkaar en in elke rij en kolom evenveel van elke kleur. Makkelijk is een klein bord met veel pakjes al op hun plek en een wiebelend pakje als iets niet past; middel heeft borden tot 8 × 8, toont wat niet klopt en geeft drie tips; moeilijk is een pak zwaarder: 8 × 8 en 10 × 10 met weinig vooraf ingevulde pakjes, een extra regel (geen twee gelijke rijen of kolommen), geen enkele hulp of waarschuwing en pluimen per ronde (alleen een vol bord wordt gecontroleerd). Het spelletje kost 30 sterren en komt pas in de winkel na vrijgave in Kinderen → Winkelaanbod. Zes nieuwe stukken staan ook klaar om vrij te geven (koekjeskroon, badjas, ovenwant, sleetje met pakje, wensster op een paal en kaars in het raam). In Springland heeft De Speeldoos een derde level: De trommelrol, het eerste pittige level van die wereld met snelle vogels en gaten kort na elkaar.',
+    verhaal: 'Pip bakt speculaas',
+    spel: { naam: 'Rode en groene pakjes', prijs: 30 },
+    stukken: ['Koekjeskroon (hoofd, 15)', 'Badjas (shirt, 20)', 'Ovenwant (extra, 15)', 'Sleetje met pakje (tuin, 25)', 'Wensster op een paal (tuin, 20)', 'Kaars in het raam (huisextra, 15)'],
+  },
+  {
     versie: '0.170',
     datum: '2026-11-15',
     titel: 'Mijn thema: grote prenten en rustig bladeren',

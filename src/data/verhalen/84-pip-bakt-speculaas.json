@@ -1,0 +1,56 @@
+{
+  "nr": 84,
+  "titel": "Pip bakt speculaas",
+  "reeks": "kleine-oortjes",
+  "leeftijd": 4,
+  "thema": "Sinterklaas, speculaas bakken en geduld hebben",
+  "bladzijden": [
+    {
+      "tekst": "Het is bijna Sinterklaas. Pip en mama bakken speculaas. Het deeg ligt uitgerold op de tafel. Pip mag de vormpjes kiezen. Ze pakt een hartje, een sterretje en een rond vormpje. \"Duwen maar,\" zegt mama. Pip duwt het hartje in het deeg. Er blijft een mooi koekje liggen. Mo komt kijken. \"Mag ik ook?\" vraagt hij. Hij kiest een maantje. Samen steken ze tien koekjes uit. Ze leggen ze op de bakplaat. De koekjes liggen dicht tegen elkaar, want de plaat is vol. De keuken ruikt al naar kaneel.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pip",
+          "pipmama",
+          "mo",
+          "koek"
+        ]
+      }
+    },
+    {
+      "tekst": "Mama schuift de plaat in de oven. \"Nu even wachten,\" zegt ze. Pip kijkt door het glaasje. Het is nog deeg. \"Is het al klaar?\" vraagt ze. \"Nog niet,\" zegt mama. \"Tot de bel gaat.\" Pip telt tot tien. Dan nog een keer tot tien. Ding! Daar gaat de bel. Mama doet een dikke ovenwant aan en haalt de plaat uit de oven. De koekjes zijn bruin en ze ruiken heerlijk. \"Nog niet aankomen,\" zegt mama. \"Ze zijn heet. Ze moeten eerst afkoelen.\" Pip en Mo zitten stil op hun handen.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pipmama",
+          "pip",
+          "mo"
+        ]
+      }
+    },
+    {
+      "tekst": "Nu mag Pip de koekjes losmaken. Ze schuift de spatel onder het hartje. Het hartje wipt omhoog, en het sterretje ernaast wipt mee! Pip lacht. \"Ze dansen!\" Mo klapt in zijn handen. Eén voor één komen de koekjes los. Wip, wip, wip. Pip legt ze in de trommel. Ze telt: één, twee, drie, vier, vijf, zes, zeven, acht, negen, tien. Alle tien de koekjes zijn heel. Niet één is gebroken.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pip",
+          "koek",
+          "mo"
+        ]
+      }
+    },
+    {
+      "tekst": "Mama geeft Pip een koekje om te proeven. Het is nog een beetje warm, zacht en zoet. \"Mmm,\" zegt Pip. Mo krijgt ook een koekje. Mama neemt het maantje, want dat vindt zij het mooist. 's Avonds zet Pip haar schoen klaar. Er ligt een koekje in en een wortel voor het paard. Pip gaapt. \"Slaap lekker,\" zegt mama. Pip kruipt in bed en denkt aan de koekjes die dansten. Dan slaapt ze in.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pipmama",
+          "pip",
+          "mo",
+          "schoen",
+          "wortel"
+        ]
+      }
+    }
+  ]
+}
