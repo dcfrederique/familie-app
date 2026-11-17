@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.174',
+    datum: '2026-11-17',
+    titel: 'Gelijk plaatje: kaartjes als echte speelkaarten',
+    tekst: 'De ronde kaarten van Gelijk plaatje hebben nu een zacht papierlicht en een gestippelde rand binnenin, zoals echte speelkaartjes.',
+  },
+  {
     versie: '0.173',
     datum: '2026-11-17',
     titel: 'Gelijk plaatje, De tekening voor de buurvrouw en Het ballerinapad',
