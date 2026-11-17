@@ -1,0 +1,84 @@
+{
+  "nr": 85,
+  "titel": "De tekening voor de buurvrouw",
+  "reeks": "grote-ogen",
+  "leeftijd": 6,
+  "thema": "Sinterklaas, een tekening geven aan de buurvrouw",
+  "bladzijden": [
+    {
+      "tekst": "Het is bijna Sinterklaas. Pip zit aan tafel met haar kleurpotloden. Ze tekent een brief voor de Sint: een grote fiets met een rode bel. \"Mooi,\" zegt mama. \"Dat ziet hij vast.\" Pip kleurt de bel rood en de fiets blauw. Dan legt ze de tekening klaar bij haar schoen.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "pipmama",
+          "tekening"
+        ]
+      }
+    },
+    {
+      "tekst": "Mama en Pip gaan naar de bakker. Op de stoep staat de buurvrouw, mevrouw Jansen, met een zware tas. \"Dag Pip,\" zegt ze. \"Is de Sint al bij jullie geweest?\" Pip schudt haar hoofd. \"Nog niet. Maar hij komt wel.\" Mevrouw Jansen glimlacht. \"Bij mij komt hij niet. Ik ben al groot. Maar ik vind Sinterklaas nog altijd mooi.\"",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "pip",
+          "pipmama",
+          "buurvrouw"
+        ]
+      }
+    },
+    {
+      "tekst": "Pip denkt na terwijl ze naar huis lopen. Een grote mens kan toch ook iets moois krijgen? \"Mama,\" zegt ze. \"Mag ik nog een tekening maken?\" \"Voor de Sint?\" vraagt mama. \"Nee,\" zegt Pip. \"Voor mevrouw Jansen.\" Mama knikt en lacht. \"Dat is een heel goed idee.\"",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "pip",
+          "pipmama",
+          "buurvrouw"
+        ]
+      }
+    },
+    {
+      "tekst": "Thuis pakt Pip een nieuw blad. Ze tekent een grote gele ster en een kopje warme chocomelk. Daarnaast tekent ze mevrouw Jansen, met een brede lach. Ze zoekt de mooiste kleuren: geel, oranje en roze. Ze kleurt en kleurt, tot de tekening helemaal af is. Dan blaast ze er zachtjes op, zodat de verf kan drogen.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "tekening"
+        ]
+      }
+    },
+    {
+      "tekst": "Pip belt aan. Mevrouw Jansen doet open. \"Dit is voor u,\" zegt Pip. \"Van de Sint?\" vraagt mevrouw Jansen. \"Nee, van mij. Maar de Sint vindt hem vast ook mooi.\" Mevrouw Jansen kijkt lang naar de tekening. Dan wordt haar gezicht helemaal zacht.",
+      "prent": {
+        "decor": "huis",
+        "figuren": [
+          "pip",
+          "buurvrouw",
+          "tekening"
+        ]
+      }
+    },
+    {
+      "tekst": "\"Wat een mooie ster,\" zegt ze. \"Die hang ik in mijn raam. Dan ziet iedereen hem.\" Ze geeft Pip een mandarijn en een pepernoot. Pip bedankt haar en loopt naar huis. Haar buik voelt warm en blij. Een tekening geven kost niets, en toch is het het mooiste cadeau.",
+      "prent": {
+        "decor": "huis",
+        "figuren": [
+          "buurvrouw",
+          "pip"
+        ]
+      }
+    },
+    {
+      "tekst": "'s Avonds zet Pip haar schoen klaar. Ze kijkt nog even uit het raam. In het huis van mevrouw Jansen hangt een gele ster te schitteren. Pip glimlacht, kruipt in bed en droomt van een grote fiets met een rode bel.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "schoen",
+          "ster"
+        ]
+      }
+    }
+  ]
+}

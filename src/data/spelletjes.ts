@@ -16,6 +16,7 @@ import type { RuilNiveau } from './snoepruilen.ts'
 import type { StraalNiveau } from './lichtstraal.ts'
 import type { OntwarNiveau } from './ontwarren.ts'
 import type { RijNiveau } from './pakjesrij.ts'
+import type { GelijkNiveau } from './gelijkplaatje.ts'
 
 export type MemoryNiveau = 'klein' | 'middel' | 'groot'
 export type RekenNiveau = 'tellen' | 'tot10' | 'tot20' | 'tot100' | 'tot1000' | 'tafels'
@@ -441,6 +442,20 @@ export function startRijNiveau(kind: Gebruiker, kinderen: Gebruiker[]): RijNivea
   return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
 }
 
+/** Gelijk plaatje: de instellingen per niveau staan in `data/gelijkplaatje.ts`; hier de namen voor de knoppen. */
+export const gelijkNiveaus: Record<GelijkNiveau, { label: string }> = {
+  makkelijk: { label: 'Makkelijk' },
+  middel: { label: 'Middel' },
+  moeilijk: { label: 'Moeilijk' },
+}
+
+/** Wie niet leest begint makkelijk, de oudste lezer moeilijk, andere lezers middel. */
+export function startGelijkNiveau(kind: Gebruiker, kinderen: Gebruiker[]): GelijkNiveau {
+  if (!kind.kan_lezen) return 'makkelijk'
+  const oudsteLezer = kinderen.filter((k) => k.kan_lezen).sort((a, b) => a.volgorde - b.volgorde)[0]
+  return oudsteLezer?.id === kind.id ? 'moeilijk' : 'middel'
+}
+
 /**
  * Draden ontwarren. `hulp`: na tien seconden zonder slepen wiebelt het lampje met de meeste kruisingen (makkelijk); `tips`: hoeveel keer de Tip-knop er een toont;
  * `pluimen`: strenge score met een limiet op het aantal sleepbewegingen, vaste lampjes en geen teller van de kruisingen (moeilijk).
@@ -620,7 +635,7 @@ export function startNiveaus(kind: Gebruiker, kinderen: Gebruiker[]): { memory: 
   return oudsteLezer?.id === kind.id ? { memory: 'groot', rekenen: 'tot100' } : { memory: 'middel', rekenen: 'tot20' }
 }
 
-export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'weegschaal' | 'torens' | 'rooster' | 'snoeppotjes' | 'nim' | 'glijden' | 'verfmengen' | 'eenlijn' | 'raadselprent' | 'pijltjes' | 'domino' | 'eikels' | 'knikkers' | 'klok' | 'lampionlied' | 'piramide' | 'patroon' | 'kalaha' | 'spiegel' | 'slingers' | 'bruggen' | 'schuif' | 'vlek' | 'hekjes' | 'zoeken' | 'geheim' | 'sets' | 'bezorgen' | 'karvrij' | 'snoepruilen' | 'lichtstraal' | 'ontwarren' | 'pakjesrij' | 'springen'
+export type SpelSleutel = 'rekenen' | 'memory' | 'penalty' | 'huisdier' | 'racen' | 'koken' | 'touwspringen' | 'basket' | 'puzzel' | 'pompoen' | 'bladeren' | 'ketting' | 'schoen' | 'weg' | 'lichtjes' | 'schaduw' | 'verkleed' | 'doolhof' | 'winterslaap' | 'kastanjes' | 'pakjesschuiven' | 'stippen' | 'inpakken' | 'daken' | 'delen' | 'lantaarns' | 'kistslot' | 'buizen' | 'verschillen' | 'vieropeenrij' | 'weegschaal' | 'torens' | 'rooster' | 'snoeppotjes' | 'nim' | 'glijden' | 'verfmengen' | 'eenlijn' | 'raadselprent' | 'pijltjes' | 'domino' | 'eikels' | 'knikkers' | 'klok' | 'lampionlied' | 'piramide' | 'patroon' | 'kalaha' | 'spiegel' | 'slingers' | 'bruggen' | 'schuif' | 'vlek' | 'hekjes' | 'zoeken' | 'geheim' | 'sets' | 'bezorgen' | 'karvrij' | 'snoepruilen' | 'lichtstraal' | 'ontwarren' | 'pakjesrij' | 'gelijkplaatje' | 'springen'
 
 export interface SpelInfo {
   sleutel: SpelSleutel
@@ -658,6 +673,8 @@ export const spelMenu: SpelInfo[] = [
     icoon: 'M4 6l16 12M4 18L20 6M4 6a1.5 1.5 0 1 0 .01 0M20 18a1.5 1.5 0 1 0 .01 0M4 18a1.5 1.5 0 1 0 .01 0M20 6a1.5 1.5 0 1 0 .01 0' },
   { sleutel: 'pakjesrij', naam: 'Rode en groene pakjes', uitleg: 'Zet elk pakje op zijn plek: nooit drie dezelfde naast elkaar', prijs: 30,
     icoon: 'M3 4h7v7H3zM14 4h7v7h-7zM3 14h7v7H3zM14 14h7v7h-7zM6.5 4v7M3 7.5h7M17.5 14v7M14 17.5h7' },
+  { sleutel: 'gelijkplaatje', naam: 'Gelijk plaatje', uitleg: 'Zoek het plaatje dat op allebei de kaarten staat', prijs: 25,
+    icoon: 'M9 12a5 5 0 1 0 .01 0M15 12a5 5 0 1 0 .01 0M12 8.4v7.2' },
   { sleutel: 'springen', naam: 'Springland', uitleg: 'Loop en spring met je figuurtje', prijs: 30,
     icoon: 'M12 3a2 2 0 1 0 0 .01M12 7v5M9 21l3-6l3 6M8 9l4 1l4-1M3 21h4M17 21h4M18 4l1 2l2 .3l-1.5 1.4l.4 2.1L18 8.8l-1.9 1l.4-2.1L15 6.3l2-.3z' },
   { sleutel: 'touwspringen', naam: 'Touwspringen', uitleg: 'Spring op het juiste moment', prijs: 30,

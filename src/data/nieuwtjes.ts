@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.173',
+    datum: '2026-11-17',
+    titel: 'Gelijk plaatje, De tekening voor de buurvrouw en Het ballerinapad',
+    tekst: 'Nieuw verhaal "De tekening voor de buurvrouw" (6 jaar) en kleurplaat "De tekentafel", meteen beschikbaar. Nieuw spelletje Gelijk plaatje: twee kaarten vol Sint-plaatjes, en precies één plaatje staat op allebei. Tik het aan! Makkelijk: drie plaatjes per kaart zonder tijd, met een wiebel als hulp. Middel: vier per kaart en drie Tips. Moeilijk is een echt snelheidsspel voor Luca: zes plaatjes per kaart, gedraaid en in wisselende grootte, met lokvogels in dezelfde vorm of kleur, een tijdsbalk die per blok korter wordt en een foute tik die twee seconden kost; pluimen per blok. Er zijn ook zes nieuwe stukken. Springland: het vierde level van De Speeldoos, Het ballerinapad (zacht, met slakken).',
+    verhaal: 'De tekening voor de buurvrouw',
+    spel: { naam: 'Gelijk plaatje', prijs: 25 },
+    stukken: ['Papieren mijter (figuurtje, 15)', 'Shirt met brieven (figuurtje, 20)', 'Tekenrol (figuurtje, 15)', 'Schoenenrek (huis, 25)', 'Mandarijnboompje (huis, 20)', 'Kaartenslinger (huis, 15)'],
+    open: 'Het spelletje en de zes stukken staan klaar om vrij te geven in Kinderen → Winkelaanbod. Het level Het ballerinapad gaat open door De trommelrol uit te spelen.',
+  },
+  {
     versie: '0.172',
     datum: '2026-11-16',
     titel: 'Mijn verlanglijstje: het plusje nodigt uit',

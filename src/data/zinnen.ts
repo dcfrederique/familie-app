@@ -97,6 +97,8 @@ export const zin = {
   lichtstraalUitleg: 'Draai de spiegeltjes. Laat de pakjes gloeien.',
   pakjesrijUitleg: 'Zet de pakjes in de rij. Nooit drie dezelfde naast elkaar.',
   pakjesrijKlaar: 'Alle pakjes staan goed!',
+  gelijkplaatjeUitleg: 'Zoek het plaatje dat op allebei de kaarten staat.',
+  gelijkplaatjeKlaar: 'Je hebt ze allemaal gevonden!',
   ontwarrenUitleg: 'Sleep de lampjes. Laat geen draden over elkaar liggen.',
   ontwarrenKlaar: 'Alle lampjes branden!',
   lichtstraalKlaar: 'Alle pakjes gloeien!',

@@ -422,3 +422,15 @@ test('rode en groene pakjes: een tik zet een pakje in een leeg vakje', async ({ 
   // Op makkelijk gaat een pakje dat niet past na een wiebel weer weg; meteen erna staat er in elk geval één pakje.
   await expect(leeg).toHaveCount(voor - 1)
 })
+
+test('gelijk plaatje: een tik op een plaatje van de kaart', async ({ page }) => {
+  await startAls(page, 'luca')
+  await doorWelkomstpad(page)
+  await naar(page, '/kind/luca/gelijkplaatje')
+  await page.getByRole('button', { name: 'Makkelijk' }).click()
+  const plaatjes = page.locator('.twin-plaatje')
+  await expect(plaatjes).toHaveCount(6)
+  // Makkelijk: drie plaatjes per kaart; een tik op de kaart wiebelt of haalt de ronde, in elk geval blijft het spel doorlopen.
+  await plaatjes.first().click()
+  await expect(page.locator('.twin-teller')).toBeVisible()
+})

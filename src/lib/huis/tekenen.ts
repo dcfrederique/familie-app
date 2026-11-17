@@ -348,6 +348,21 @@ function raamkaars(dx: number) {
   return `<circle cx="${cx}" cy="${y - 22}" r="15" fill="#FFE27A" opacity=".3"/><rect x="${cx - 9}" y="${y - 2}" width="18" height="17" rx="3.5" fill="#CFE8F5" opacity=".85" stroke="#7FA6BF" stroke-width="2"/><rect x="${cx - 3.5}" y="${y - 15}" width="7" height="16" rx="1.5" fill="#FFFDF5" stroke="#CDBA8A" stroke-width="1.5"/><path d="M${cx} ${y - 17}q-4.5 -6 0 -13q4.5 7 0 13z" fill="#FFB02E" stroke="#E8772E" stroke-width="1.2"/>`
 }
 
+// Een touwtje met vijf kaartjes (ster, hartje, pakje) rechts van de deur.
+function kaartenslinger(dx: number) {
+  const x0 = dx + 14, x1 = dx + 74, y = BASIS - 142
+  let s = `<path d="M${x0} ${y}Q${(x0 + x1) / 2} ${y + 12} ${x1} ${y}" fill="none" stroke="#6E4A28" stroke-width="2"/>`
+  const kleur = ['#FFE08A', '#F6B8C8', '#BFE3F5', '#FFE08A', '#F6B8C8']
+  for (let i = 0; i < 5; i++) {
+    const t = (i + 0.5) / 5, cx = x0 + (x1 - x0) * t, cy = y + 24 * t * (1 - t) + 2
+    s += `<rect x="${(cx - 6).toFixed(1)}" y="${cy.toFixed(1)}" width="12" height="16" rx="1.5" fill="${kleur[i]}" stroke="#8A6A3A" stroke-width="1.2"/>`
+    s += i % 3 === 0 ? `<path d="M${cx.toFixed(1)} ${(cy + 3).toFixed(1)}l1.6 3.4l3.6 .4l-2.7 2.4l.8 3.6l-3.3 -1.9l-3.3 1.9l.8 -3.6l-2.7 -2.4l3.6 -.4z" fill="#E5A81A"/>`
+      : i % 3 === 1 ? `<path d="M${cx.toFixed(1)} ${(cy + 13).toFixed(1)}C${(cx - 7).toFixed(1)} ${(cy + 7).toFixed(1)} ${(cx - 3).toFixed(1)} ${(cy + 3).toFixed(1)} ${cx.toFixed(1)} ${(cy + 7).toFixed(1)}C${(cx + 3).toFixed(1)} ${(cy + 3).toFixed(1)} ${(cx + 7).toFixed(1)} ${(cy + 7).toFixed(1)} ${cx.toFixed(1)} ${(cy + 13).toFixed(1)}Z" fill="#E5484D"/>`
+      : `<rect x="${(cx - 4).toFixed(1)}" y="${(cy + 6).toFixed(1)}" width="8" height="7" fill="#E5484D"/><path d="M${cx.toFixed(1)} ${(cy + 6).toFixed(1)}V${(cy + 13).toFixed(1)}" stroke="#F2C530" stroke-width="1.5"/>`
+  }
+  return s
+}
+
 // Een slinger van gele sterretjes langs het raam naast de deur.
 function raamslinger(dx: number) {
   const x0 = dx - 74, x1 = dx - 12, y = BASIS - 142
@@ -567,6 +582,8 @@ export function tuinStuk(id: string): string {
     case 'hooikar': return '<ellipse cx="0" cy="-2" rx="54" ry="6" fill="#000" opacity=".08"/><circle cx="-26" cy="-17" r="16" fill="none" stroke="#6E4A28" stroke-width="5"/><circle cx="-26" cy="-17" r="3" fill="#6E4A28"/><path d="M-26 -33V1M-42 -17H-10M-37 -28L-15 -6M-37 -6L-15 -28" stroke="#6E4A28" stroke-width="2"/><path d="M-46 -34H40L32 -12H-38Z" fill="#A8693A" stroke="#6E4A28" stroke-width="2.5"/><path d="M-42 -34Q-30 -64 -8 -58Q10 -70 28 -52Q40 -44 38 -34Z" fill="#E8C766" stroke="#B8923A" stroke-width="2"/><path d="M-30 -44l6 8M-6 -50l4 12M14 -48l6 10" stroke="#B8923A" stroke-width="2" stroke-linecap="round"/><path d="M40 -26L66 -26M66 -26L66 -74M60 -74H72M60 -66H72M60 -58H72" fill="none" stroke="#6E4A28" stroke-width="3" stroke-linecap="round"/><path d="M40 -22L58 -8" stroke="#6E4A28" stroke-width="4" stroke-linecap="round"/>'
     case 'drinkbak': return '<ellipse cx="0" cy="-1" rx="52" ry="5" fill="#000" opacity=".08"/><path d="M-46 -34H46L40 -4H-40Z" fill="#A8693A" stroke="#6E4A28" stroke-width="2.5"/><path d="M-42 -30H42L41 -26H-41Z" fill="#6FB6E8"/><path d="M-40 -30H40" stroke="#4A90C8" stroke-width="3"/><path d="M-46 -16H46" stroke="#6E4A28" stroke-width="2"/><g fill="#fff" opacity=".9"><circle cx="-18" cy="-27" r="2"/><circle cx="6" cy="-28" r="2.4"/><circle cx="26" cy="-27" r="1.8"/></g><path d="M-30 -4V6M30 -4V6" stroke="#6E4A28" stroke-width="5" stroke-linecap="round"/>'
     case 'muziekstandaard': return '<ellipse cx="0" cy="-2" rx="34" ry="5" fill="#000" opacity=".08"/><path d="M0 -50V-6M-16 -2L0 -12L16 -2" fill="none" stroke="#333" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/><path d="M-26 -52L26 -52L30 -90H-30Z" fill="#FFFDF5" stroke="#555" stroke-width="3" stroke-linejoin="round"/><path d="M-22 -80H24M-22 -74H24M-22 -68H24M-22 -62H24" stroke="#8A8574" stroke-width="1.4"/><circle cx="-10" cy="-66" r="3.5" fill="#222"/><path d="M-7 -66V-80" stroke="#222" stroke-width="2"/><circle cx="8" cy="-72" r="3.5" fill="#222"/><path d="M11 -72V-84" stroke="#222" stroke-width="2"/><path d="M-7 -80L11 -84" stroke="#222" stroke-width="3"/><path d="M-4 -52L-14 -44L2 -44Z" fill="#E53935"/>'
+    case 'schoenenrek': return '<ellipse cx="0" cy="-2" rx="58" ry="5" fill="#000" opacity=".08"/><rect x="-52" y="-34" width="104" height="8" rx="2" fill="#A8693A" stroke="#6E4A28" stroke-width="2.5"/><path d="M-46 -26V-4M46 -26V-4" stroke="#6E4A28" stroke-width="5" stroke-linecap="round"/><rect x="-52" y="-12" width="104" height="6" rx="2" fill="#A8693A" stroke="#6E4A28" stroke-width="2"/><g stroke="#333" stroke-width="2"><path d="M-40 -34V-58H-26V-48H-18V-34Z" fill="#D63A32"/><path d="M-10 -34V-58H4V-48H12V-34Z" fill="#2F80C9"/><path d="M26 -34V-58H40V-48H48V-34Z" fill="#F2C530"/></g><path d="M-8 -58L-4 -72M-5 -58L2 -70" stroke="#E87722" stroke-width="5" stroke-linecap="round"/><path d="M-6 -72L-12 -76M-3 -70L2 -76" stroke="#2E7031" stroke-width="3" stroke-linecap="round"/>'
+    case 'mandarijnboompje': return '<ellipse cx="0" cy="-2" rx="30" ry="5" fill="#000" opacity=".08"/><path d="M-20 -30H20L15 -2H-15Z" fill="#B5543A" stroke="#7A3524" stroke-width="2.5"/><rect x="-3" y="-60" width="6" height="30" fill="#8A5A33"/><circle cx="0" cy="-78" r="30" fill="#3E9B4C" stroke="#2E7031" stroke-width="2.5"/><g fill="#F59A23" stroke="#C26F0A" stroke-width="1.5"><circle cx="-14" cy="-84" r="6"/><circle cx="12" cy="-90" r="6"/><circle cx="6" cy="-68" r="6"/><circle cx="-16" cy="-66" r="6"/></g><path d="M-12 -34L0 -26L12 -34L0 -40Z" fill="#E5484D" stroke="#9E2A1F" stroke-width="1.5"/>'
     case 'sleetje': return '<ellipse cx="0" cy="-2" rx="62" ry="6" fill="#000" opacity=".08"/><path d="M-54 -4H46Q62 -4 62 -22" fill="none" stroke="#6E4A28" stroke-width="5" stroke-linecap="round"/><path d="M-34 -14V-5M34 -14V-5" stroke="#6E4A28" stroke-width="4" stroke-linecap="round"/><rect x="-48" y="-26" width="96" height="12" rx="4" fill="#B07A45" stroke="#8A5A33" stroke-width="2.5"/><path d="M-20 -26V-14M8 -26V-14" stroke="#8A5A33" stroke-width="1.6" opacity=".6"/><rect x="-16" y="-52" width="30" height="26" rx="3" fill="#E5484D" stroke="#B3261E" stroke-width="2"/><path d="M-1 -52V-26M-16 -39H14" stroke="#fff" stroke-width="4"/><path d="M-1 -52C-9 -62 -14 -54 -1 -52C12 -54 7 -62 -1 -52Z" fill="#fff"/>'
     case 'wensster': return '<ellipse cx="0" cy="-2" rx="22" ry="4" fill="#000" opacity=".08"/><rect x="-3.5" y="-110" width="7" height="110" fill="#8A5A33"/><circle cx="0" cy="-128" r="30" fill="#FFE27A" opacity=".25"/><path d="M0 -150L7 -134L25 -132L11 -120L16 -103L0 -112L-16 -103L-11 -120L-25 -132L-7 -134Z" fill="#F2C530" stroke="#C48A12" stroke-width="2.5" stroke-linejoin="round"/><path d="M0 -96Q-16 -88 -12 -72M0 -96Q16 -86 12 -70" fill="none" stroke="#F2D24E" stroke-width="3.5" stroke-linecap="round"/>'
     case 'ladder': {
@@ -665,6 +682,7 @@ export function tekenHuis(h: Huis, o: TekenOpties): string {
   if (heeft('notenkrans')) g.push(notenkrans(dx))
   if (heeft('raamslinger')) g.push(raamslinger(dx))
   if (heeft('raamkaars')) g.push(raamkaars(dx))
+  if (heeft('kaartenslinger')) g.push(kaartenslinger(dx))
   if (heeft('kerstster')) g.push(kerstster(dx))
   if (heeft('sterrenslinger')) g.push(sterrenslinger(mx + 10, mx + m.w - 10, my + 2))
   if (heeft('windwijzer')) g.push(windwijzer(...(vlagOp ?? [m.cx, r.top])))
