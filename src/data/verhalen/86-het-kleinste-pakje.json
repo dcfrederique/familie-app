@@ -1,0 +1,86 @@
+{
+  "nr": 86,
+  "titel": "Het kleinste pakje",
+  "reeks": "avonturiers",
+  "leeftijd": 8,
+  "thema": "Sinterklaas, een klein cadeau met een raadselroute",
+  "bladzijden": [
+    {
+      "tekst": "Het is bijna Sinterklaas. Op school wisselen de kinderen een surprise uit, en Pip heeft Noor getrokken. Thuis zit ze op de vloer, tussen het inpakpapier en een rol rood lint. Ze heeft maar één cadeautje: een gladde blauwe steen die ze op het strand vond, met een glinsterend streepje erin. \"Hij is zo klein,\" zucht Pip. \"De andere kinderen hebben vast grote pakjes.\" Mama gaat naast haar zitten. \"Klein kan heel bijzonder zijn,\" zegt ze. \"Het hangt ervan af wat je ermee doet.\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "pipmama",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Pip denkt lang na, met haar kin in haar hand. Dan krijgt ze een idee. Ze legt de steen in een heel klein doosje. Dat doosje gaat in een iets groter doosje, en dat in een nog groter doosje. Zo maakt ze vijf doosjes, elk een beetje groter dan het vorige. In elk doosje legt ze een briefje met een raadsel. \"Wat glinstert, maar is geen ster?\" schrijft ze op het eerste briefje. \"Wat is hard, maar groeit niet aan een boom?\" schrijft ze op het tweede. Ze rijmt en schrijft tot haar potlood stomp is.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "doos",
+          "tekening"
+        ]
+      }
+    },
+    {
+      "tekst": "Dan komt het lint. Pip legt het rode lint over het grootste doosje. Ze wikkelt het kruislings over de hoeken, nog een keer, en nog een keer. Het lint loopt rond en rond, maar het kruist zichzelf nergens. \"Je moet het lint volgen,\" legt ze uit aan mama. \"Zomaar scheuren mag niet.\" Mama lacht. \"Dat is een pakje met een route,\" zegt ze. Pip maakt een grote strik en voelt zich meteen een beetje trotser.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "pipmama",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "De volgende ochtend draagt Pip het pakje met twee handen naar school. Op de speelplaats ziet ze de pakjes van de andere kinderen. Er zijn grote, glimmende pakjes met gouden kaartjes bij. Het pakje van Pip is niet zo groot. Haar hart klopt snel. \"Misschien is het toch te gewoon,\" denkt ze. Maar dan komt Noor aangelopen. \"Is dat voor mij?\" roept ze. Haar ogen worden groot.",
+      "prent": {
+        "decor": "straat",
+        "figuren": [
+          "pip",
+          "noor",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "In de klas mag Noor als eerste. Ze trekt aan de strik, maar het lint blijft zitten. \"Je moet het volgen,\" zegt Pip zachtjes. Noor lacht en volgt het lint met haar vinger: over de hoek, onder de strik door, en nog een hoek. Dan valt het lint los en gaat het deksel open. Er zit een doosje in, en een briefje. \"Wat glinstert, maar is geen ster?\" leest Noor voor. Ze denkt na. \"Een ijspegel! Nee, een druppel dauw. Nee, een knikker!\" Ze maakt het volgende doosje open.",
+      "prent": {
+        "decor": "huis",
+        "figuren": [
+          "pip",
+          "noor",
+          "doos"
+        ]
+      }
+    },
+    {
+      "tekst": "Doosje na doosje komt Noor dichter bij het kleinste pakje. Bij elk raadsel schuiven er meer kinderen naar haar toe. Iedereen helpt mee met raden. Niemand kijkt nog naar de grote pakjes. Bij het laatste doosje wordt het stil in de klas. Noor opent het heel voorzichtig. In het kleinste pakje ligt de blauwe steen. Hij glinstert in het licht van het raam. \"Dat is het mooiste pakje van de hele klas,\" fluistert ze.",
+      "prent": {
+        "decor": "huis",
+        "figuren": [
+          "noor",
+          "pip",
+          "tekening"
+        ]
+      }
+    },
+    {
+      "tekst": "'s Avonds zet Pip haar schoen klaar. Ze denkt aan het gezicht van Noor, en aan alle kinderen die meeraadden. Een klein cadeau kan een groot avontuur worden, als je er iets leuks van maakt. Ze kijkt naar de gele ster in het raam en glimlacht. Dan kruipt ze in bed en droomt van een lint dat nergens eindigt.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "schoen",
+          "ster"
+        ]
+      }
+    }
+  ]
+}

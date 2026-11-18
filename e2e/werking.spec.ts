@@ -434,3 +434,20 @@ test('gelijk plaatje: een tik op een plaatje van de kaart', async ({ page }) => 
   await plaatjes.first().click()
   await expect(page.locator('.twin-teller')).toBeVisible()
 })
+
+test('linten verbinden: een lint trekken met de vinger tussen twee pakjes', async ({ page }) => {
+  await startAls(page, 'luca')
+  await doorWelkomstpad(page)
+  await naar(page, '/kind/luca/linten')
+  await page.getByRole('button', { name: 'Makkelijk' }).click()
+  const bord = page.getByRole('img', { name: 'Het bord met pakjes en linten' })
+  await expect(bord).toBeVisible()
+  const doos = await bord.boundingBox()
+  expect(doos).not.toBeNull()
+  // Een sleep over het bord loopt zonder fout; de teller van de borden blijft zichtbaar.
+  await page.mouse.move(doos!.x + 10, doos!.y + 10)
+  await page.mouse.down()
+  await page.mouse.move(doos!.x + doos!.width - 10, doos!.y + 10, { steps: 6 })
+  await page.mouse.up()
+  await expect(page.locator('.lint-teller')).toBeVisible()
+})

@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.175',
+    datum: '2026-11-18',
+    titel: 'Linten verbinden, Het kleinste pakje en De draaimolen',
+    tekst: 'Nieuw verhaal "Het kleinste pakje" (8 jaar) en kleurplaat "Het inpaktafeltje", meteen beschikbaar. Nieuw spelletje Linten verbinden: trek met je vinger een lint tussen de pakjes met dezelfde kleur, zonder dat linten elkaar kruisen. Makkelijk: kleine borden (4 × 4 en 5 × 5) met hulp na tien seconden. Middel: 6 × 6 en 7 × 7 met drie Tips. Moeilijk is een echt breinbrekertje voor Luca: borden van 9 × 9 en 10 × 10 met tot 10 kleuren waarop elk vakje gevuld moet zijn, zonder hulp of Tip, en pluimen volgens het aantal strepen. Er zijn ook zes nieuwe stukken. Springland: het vijfde level van De Speeldoos, De draaimolen (gewoon, met egels).',
+    verhaal: 'Het kleinste pakje',
+    spel: { naam: 'Linten verbinden', prijs: 30 },
+    stukken: ['Pakpapierhoed (figuurtje, 15)', 'Lintshirt (figuurtje, 20)', 'Het grote boek (figuurtje, 15)', 'Lintboog (huis, 25)', 'Brievenbus voor de Sint (huis, 20)', 'Pepernotenkrans (huis, 20)'],
+    open: 'Het spelletje en de zes stukken staan klaar om vrij te geven in Kinderen → Winkelaanbod. Het level De draaimolen gaat open door Het ballerinapad uit te spelen; daarna volgt alleen nog de baas van De Speeldoos.',
+  },
+  {
     versie: '0.174',
     datum: '2026-11-17',
     titel: 'Gelijk plaatje: kaartjes als echte speelkaarten',
