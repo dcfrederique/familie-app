@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.176',
+    datum: '2026-11-18',
+    titel: 'Linten verbinden: groter bord en een gouden gloed',
+    tekst: 'In Linten verbinden is het bord voor Feline en Yuna op een grote tablet een stuk groter (tot 460 in plaats van 356 pixels), en ook op de gsm iets groter. Is alles verbonden, dan krijgt de tafel een gouden gloed.',
+  },
+  {
     versie: '0.175',
     datum: '2026-11-18',
     titel: 'Linten verbinden, Het kleinste pakje en De draaimolen',
