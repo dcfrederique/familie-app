@@ -16,7 +16,7 @@ import './sterrenpot.css'
 // Het kind doet sterren in de pot; alleen een ouder haalt ze er weer uit en tikt op Gedaan.
 export default function SterrenPotScherm() {
   return (
-    <SpelKader titel="Sterrenpot" scherm="spelen" terug={(id) => `/kind/${id}`}>
+    <SpelKader titel="Sterrenpot" scherm="spel" terug={(id) => `/kind/${id}`}>
       {(kind) => <PotInhoud kind={kind} />}
     </SpelKader>
   )

@@ -1,3 +1,4 @@
+import { Draai } from './Springen.tsx'
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { Link, Navigate, useNavigate, useParams } from 'react-router-dom'
 import type { Gebruiker } from '../data/gezin.ts'
@@ -59,7 +60,8 @@ export function OuderWereld() {
   const id = account?.ouder_id ?? gebruikers.find((g) => g.rol === 'ouder')?.id
   const ouder = gebruikers.find((g) => g.id === id && g.rol === 'ouder')
   if (!ouder || account?.soort === 'tablet') return <Navigate to="/ouder" replace />
-  return <WereldLader kind={ouder} ouder />
+  // Op een gsm rechtop is de wereld te krap (hint en knoppen vallen over elkaar): eerst draaien, zoals bij Springland.
+  return <><WereldLader kind={ouder} ouder /><Draai terug="/ouder" /></>
 }
 
 /**

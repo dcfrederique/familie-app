@@ -56,7 +56,7 @@
 @media (max-height: 500px) and (orientation: landscape) {
   .pakjes { gap: 4px; }
   .pakjes-speel { gap: 16px; }
-  .pakjes-veld { height: 40dvh; }
+  .pakjes-veld { height: 45dvh; }
   .pakjes-balk { min-height: 22px; }
   .pakjes-teller span { width: 10px; height: 10px; }
   .pakjes-kruis { grid-template-columns: repeat(3, 48px); grid-template-rows: repeat(2, 48px); gap: 6px; }

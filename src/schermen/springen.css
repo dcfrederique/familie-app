@@ -157,6 +157,7 @@
   }
   .spring-draai svg { fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; animation: spring-draai 2.4s ease-in-out infinite; }
   .spring-draai p { font: 800 24px 'Baloo 2', Nunito, sans-serif; margin: 0; }
+  .spring-draai-terug { margin-top: 8px; padding: 14px 22px; min-height: 48px; border-radius: 14px; background: var(--kid, #3B6FE0); color: #fff; font: 800 18px Nunito, sans-serif; text-decoration: none; }
 }
 @keyframes spring-draai { 0%, 30% { transform: rotate(0); } 60%, 100% { transform: rotate(-90deg); } }
 @media (prefers-reduced-motion: reduce) { .spring-draai svg { animation: none; } }

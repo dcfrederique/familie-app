@@ -52,7 +52,7 @@
   .bezorg { gap: 2px; }
   .bezorg-balk { min-height: 16px; }
   .bezorg-teller span { width: 10px; height: 10px; }
-  .bezorg-tafel { --cel: min(calc(40dvh / var(--rijen)), 64px); border-width: 3px; }
+  .bezorg-tafel { --cel: min(calc(46dvh / var(--rijen)), 80px); border-width: 3px; }
   .bezorg-pijlen { grid-template-columns: repeat(3, 44px); grid-template-rows: repeat(2, 44px); gap: 4px; }
   .bezorg-pijl { font-size: 20px; }
   .bezorg-actie { min-height: 44px; min-width: 44px; font-size: 14px; padding: 0 8px; }

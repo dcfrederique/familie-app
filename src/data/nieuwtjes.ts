@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.178',
+    datum: '2026-11-18',
+    titel: 'Grotere borden op de gsm en netter ouderscherm',
+    tekst: 'Op een liggende gsm zijn het bord van Pakjes bezorgen, Pakjes schuiven en Lichtjesboom een stuk groter. De Sterrenpot heeft geen verkeerde ondertitel meer. In het ouderdeel vraagt De wereld op een gsm rechtop om te draaien (met een knop terug naar het menu), want daar viel alles over elkaar.',
+  },
+  {
     versie: '0.177',
     datum: '2026-11-18',
     titel: 'Mijn dag past nu op een lage tablet en een liggende gsm',

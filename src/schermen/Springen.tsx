@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type PointerEvent as ReactPointerEvent } from 'react'
-import { Navigate } from 'react-router-dom'
+import { Link, Navigate } from 'react-router-dom'
 import { figuurtjeVan } from '../data/figuurtje.ts'
 import type { Gebruiker } from '../data/gezin.ts'
 import { springBesturing, springLevels, springVolgorde, type SpringBesturing, type SpringLevel } from '../data/springen.ts'
@@ -121,7 +121,7 @@ function SpringScherm({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolea
   if (!level) {
     return (
       <div className="spring-kaart-scherm spring-scherm">
-        <Draai />
+        <Draai terug={ouder ? "/ouder" : undefined} />
         <Chips label="Lopen" opties={springBesturing} gekozen={besturing}
                kies={(b) => { setBesturing(b); niveauBewaren(kind.id, 'springen', b) }} />
         <SpringKaart figuur={figuurUrl} lezer={lezer} af={isAf} best={(l) => record(kind.id, `springen-${l}`)} alles={proef}
@@ -140,7 +140,7 @@ function SpringScherm({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolea
 
   return (
     <div className="penalty spring spring-scherm">
-      <Draai />
+      <Draai terug={ouder ? "/ouder" : undefined} />
       <div className="spel-boven">
         <button type="button" className="chip" onClick={() => naarKaart()} aria-label="Naar de kaart">
           <svg className="ic" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true"><path d={KAART} /></svg>
@@ -205,11 +205,12 @@ function SpringScherm({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolea
 }
 
 /** Op een gsm rechtop: vraag om de gsm te draaien (alleen zichtbaar via springen.css). */
-function Draai() {
+export function Draai({ terug }: { terug?: string } = {}) {
   return (
-    <div className="spring-draai" aria-hidden="true">
+    <div className="spring-draai" aria-hidden={terug ? undefined : 'true'}>
       <svg viewBox="0 0 24 24" width="64" height="64"><rect x="7" y="2" width="10" height="18" rx="2" /><path d="M20 14a8 8 0 0 1-6 7.5M14 21.5l1.6-2.6M14 21.5l2.8.9" /></svg>
       <p>Draai je gsm</p>
+      {terug && <Link to={terug} className="spring-draai-terug">Terug naar het menu</Link>}
     </div>
   )
 }

@@ -23,7 +23,7 @@
 .licht-eind { display: grid; justify-items: center; gap: 12px; }
 /* Liggende gsm: de boom wordt kleiner en de stippen vallen weg, zodat alles zonder scrollen past. */
 @media (max-height: 500px) and (orientation: landscape) {
-  .licht-veld { height: 40dvh; }
+  .licht-veld { height: 45dvh; }
   .licht-lamp { width: 48px; height: 48px; }
   .licht-stippen { display: none; }
 }
