@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.177',
+    datum: '2026-11-18',
+    titel: 'Mijn dag past nu op een lage tablet en een liggende gsm',
+    tekst: 'Op een tablet van 1024 × 600 en op een liggende gsm werd Mijn dag te krap: de gezichtjes werden platgedrukt tot dunne balkjes en bij "Wil je er iets bij doen?" lagen de knoppen over elkaar. De gevoelens en de redenen staan nu in één rij, het stemknopje is kleiner en schrijven of tekenen past weer zonder scrollen.',
+  },
+  {
     versie: '0.176',
     datum: '2026-11-18',
     titel: 'Linten verbinden: groter bord en een gouden gloed',

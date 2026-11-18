@@ -49,9 +49,40 @@
 .klaar-sub { font-size: 22px; color: var(--muted); }
 .klaar-dagen { display: flex; gap: 14px; margin-top: 12px; background: var(--surface); padding: 10px 22px; border-radius: 28px; box-shadow: 0 6px 0 var(--shade); }
 .klaar-dagen span { display: grid; justify-items: center; font-weight: 800; }
+/* Lage tablet (1024 x 600) en gsm liggend: stap 3 (schrijven of tekenen) past anders niet. */
+@media (max-height: 640px) and (orientation: landscape) {
+  .dag-vraag:empty, .dag-vraag:has(+ .vertel-raster) { display: none; }
+  .praten-rij { min-height: 44px; padding: 2px 14px; border-radius: 22px; }
+  .praten-tekst { font-size: 16px; }
+  .praten-schakel { width: 60px; height: 34px; }
+  .praten-schakel i { width: 26px; height: 26px; }
+  .praten-rij.aan .praten-schakel i { transform: translateX(26px); }
+  .vertel-raster { gap: 10px; }
+  .vertel-keuzes { gap: 8px; }
+  .vertel-knop { border-radius: 20px; border-width: 4px; flex-direction: row; gap: 8px; padding: 0 8px; }
+  .vertel-knop b { font-size: 16px; }
+  .vertel-knop svg { width: 34px; height: 34px; }
+  .doek.tekst { padding: 8px 16px; }
+  .doek.tekst textarea { font-size: 22px; }
+  .teken-kleuren { grid-auto-flow: column; gap: 6px; right: 8px; top: 8px; }
+  .teken-kleuren button { width: 40px; height: 40px; border-width: 3px; }
+}
 @media (max-height: 500px) and (orientation: landscape) {
-  .dag-vraag { font-size: 24px; min-height: 44px; }
+  .dag-vraag { font-size: 24px; min-height: 44px; gap: 10px; }
+  .vraag-stem { width: 48px; height: 48px; }
+  .vraag-stem svg { width: 28px; height: 28px; }
+  .dag-vraag svg { max-height: 44px; width: auto; }
+  .gevoel-raster, .reden-raster { gap: 8px; }
+  .gevoel-raster { grid-template-columns: repeat(6, 1fr); grid-template-rows: minmax(0, 1fr); }
+  .gevoel-tegel { border-radius: 22px; }
+  .gevoel-tegel svg { max-height: 80%; }
+  .reden-raster { grid-template-columns: repeat(8, 1fr); grid-template-rows: minmax(0, 1fr); }
+  .reden-tegel { border-radius: 20px; border-width: 4px; }
   .gevoel-tegel b, .reden-tegel b { font-size: 18px; }
   .vertel-raster { grid-template-columns: 170px minmax(0, 1fr); }
+  .doek.tekst { grid-template-rows: minmax(0, 1fr); }
+  .sneltekst { display: none; }
+  .groot-knop-m { min-height: 52px; font-size: 18px; padding: 0 20px; }
+  .dag-voet { padding-top: 0; }
   .klaar-titel { font-size: 36px; }
 }
