@@ -501,6 +501,95 @@ export class SpringVeld {
 
   /** De Bromschoorsteen: een rode baksteenschoorsteen met een sneeuwmuts, een sjaaltje en een rookpluim. De schaduwen op de grond
    *  tonen waar de pakjes vallen; als hij moe is, hoest hij en staat zijn top open (dan kan je erop hupsen). */
+  /** De Bromspringpop: een speelgoeddoos met rode en gele ruiten; de pop schiet op een veer omhoog en hangt dan slap op zijn zwakke moment. */
+  private tekenPop(b: Baas, T: number) {
+    const { ctx } = this
+    const klok = this.spel.klok
+    const w = BAAS_BREED * T * 0.85, h = BAAS_HOOG * T
+    // Wat er aankomt: een rode streep op de grond onder de doos (hij waarschuwt, daar schiet de veer omhoog).
+    if (b.toestand === 'aanloop' || b.toestand === 'actie') {
+      const puls = 0.5 + 0.5 * Math.sin(klok * 16)
+      ctx.fillStyle = b.toestand === 'actie' ? `rgba(217,69,46,${0.4 + 0.2 * puls})` : 'rgba(217,69,46,.22)'
+      ctx.beginPath(); ctx.ellipse(b.x * T, b.y * T - T * 0.05, 1.2 * T, T * 0.28, 0, 0, Math.PI * 2); ctx.fill()
+    } else {
+      ctx.fillStyle = 'rgba(0,0,0,.15)'
+      ctx.beginPath(); ctx.ellipse(b.x * T, b.y * T, w * 0.5, T * 0.1, 0, 0, Math.PI * 2); ctx.fill()
+    }
+    ctx.save()
+    ctx.translate(b.x * T + (b.toestand === 'aanloop' ? Math.sin(klok * 45) * T * 0.05 : 0), b.y * T)
+    const open = b.op > 0.3 || b.toestand === 'aanloop'
+    const dichtgedrukt = b.hupKlok > 0 ? 0.85 : 1
+    const op = b.op * T
+    // De veer (een spiraal) en de kop van de pop; de doos komt er daarna overheen, zodat hij er zichtbaar uit komt.
+    if (b.op > 0.3) {
+      const y0 = -h * 0.9, y1 = -op
+      ctx.strokeStyle = '#8E9AA8'; ctx.lineWidth = T * 0.09; ctx.lineJoin = 'round'
+      const n = Math.max(3, Math.round((y0 - y1) / (T * 0.3)))
+      const zwaai = b.toestand === 'moe' ? 0.8 + 0.3 * Math.sin(klok * 10) : 1
+      ctx.beginPath(); ctx.moveTo(0, y0)
+      for (let i = 1; i < n; i++) ctx.lineTo((i % 2 ? 1 : -1) * T * 0.32 * zwaai, y0 + ((y1 - y0) * i) / n)
+      ctx.lineTo(0, y1); ctx.stroke()
+      const cy = -(b.op + 1) * T, wiebel = b.toestand === 'moe' ? Math.sin(klok * 7) * 0.12 : 0
+      ctx.save(); ctx.translate(0, cy); ctx.rotate(wiebel)
+      ctx.fillStyle = '#FBD9B0'; ctx.strokeStyle = '#B5835A'; ctx.lineWidth = T * 0.05
+      ctx.beginPath(); ctx.arc(0, 0, T * 0.82, 0, Math.PI * 2); ctx.fill(); ctx.stroke()
+      ctx.fillStyle = 'rgba(240,120,130,.5)'
+      for (const z of [-1, 1]) { ctx.beginPath(); ctx.arc(z * T * 0.46, T * 0.2, T * 0.17, 0, Math.PI * 2); ctx.fill() }
+      // Puntmuts met een belletje.
+      ctx.fillStyle = '#2F80C9'; ctx.strokeStyle = '#1F5A94'
+      ctx.beginPath(); ctx.moveTo(-T * 0.62, -T * 0.42); ctx.lineTo(0, -T * 1.55); ctx.lineTo(T * 0.62, -T * 0.42); ctx.closePath(); ctx.fill(); ctx.stroke()
+      ctx.fillStyle = '#FFFFFF'; ctx.fillRect(-T * 0.66, -T * 0.5, T * 1.32, T * 0.14)
+      ctx.fillStyle = '#F2C530'; ctx.beginPath(); ctx.arc(0, -T * 1.58, T * 0.14, 0, Math.PI * 2); ctx.fill()
+      ctx.strokeStyle = '#3A1E12'; ctx.lineWidth = T * 0.08; ctx.lineCap = 'round'
+      if (b.duizel > 0) {
+        for (const z of [-1, 1]) {
+          const x = z * T * 0.3, y = -T * 0.1
+          ctx.beginPath(); ctx.moveTo(x - T * 0.13, y - T * 0.13); ctx.lineTo(x + T * 0.13, y + T * 0.13); ctx.moveTo(x + T * 0.13, y - T * 0.13); ctx.lineTo(x - T * 0.13, y + T * 0.13); ctx.stroke()
+        }
+        ctx.beginPath(); ctx.ellipse(0, T * 0.38, T * 0.16, T * 0.11, 0, 0, Math.PI * 2); ctx.stroke()
+      } else {
+        ctx.fillStyle = '#FFFFFF'
+        for (const z of [-1, 1]) {
+          ctx.beginPath(); ctx.arc(z * T * 0.3, -T * 0.1, T * 0.16, 0, Math.PI * 2); ctx.fill(); ctx.stroke()
+          ctx.fillStyle = '#1C2433'; ctx.beginPath(); ctx.arc(z * T * 0.3, -T * 0.08, T * 0.07, 0, Math.PI * 2); ctx.fill(); ctx.fillStyle = '#FFFFFF'
+          ctx.beginPath(); ctx.moveTo(z * T * 0.12, -T * 0.4 + z * T * 0.04); ctx.lineTo(z * T * 0.46, -T * 0.34 - z * T * 0.04); ctx.stroke()
+        }
+        ctx.beginPath(); ctx.arc(0, T * 0.2, T * 0.34, 0.15 * Math.PI, 0.85 * Math.PI); ctx.stroke()
+      }
+      ctx.restore()
+    }
+    // De doos: rood met gele ruiten; het deksel schudt (aanloop), staat open (pop erboven) of ligt dicht.
+    ctx.save(); ctx.scale(1, dichtgedrukt)
+    ctx.fillStyle = '#D8452B'; ctx.strokeStyle = '#8E2A1A'; ctx.lineWidth = T * 0.06
+    ctx.beginPath(); ctx.roundRect(-w / 2, -h * 0.9, w, h * 0.9, T * 0.1); ctx.fill(); ctx.stroke()
+    ctx.fillStyle = '#F2C530'
+    for (const [x0, y0] of [[-0.25, 0.25], [0.25, 0.25], [0, 0.5], [-0.25, 0.75], [0.25, 0.75]] as const) {
+      ctx.beginPath(); ctx.moveTo(x0 * w, -h * (0.9 * y0) - T * 0.2); ctx.lineTo(x0 * w + T * 0.2, -h * (0.9 * y0)); ctx.lineTo(x0 * w, -h * (0.9 * y0) + T * 0.2); ctx.lineTo(x0 * w - T * 0.2, -h * (0.9 * y0)); ctx.closePath(); ctx.fill()
+    }
+    ctx.save(); ctx.translate(-w / 2, -h * 0.9)
+    ctx.rotate(open ? (b.toestand === 'aanloop' ? Math.sin(klok * 50) * 0.12 - 0.15 : -1.15) : 0)
+    ctx.fillStyle = '#F2B33D'; ctx.strokeStyle = '#8A5A10'
+    ctx.beginPath(); ctx.roundRect(-T * 0.06, -T * 0.22, w + T * 0.12, T * 0.24, T * 0.05); ctx.fill(); ctx.stroke()
+    ctx.restore(); ctx.restore()
+    // Een wippende pijl boven zijn muts: nu kan je op hem hupsen (via de springveer)!
+    if (b.kwetsbaar && b.duizel <= 0) {
+      const wip = Math.sin(klok * 8) * T * 0.12, y0 = -(b.op + 2.9) * T + wip
+      ctx.fillStyle = '#F2B33D'; ctx.strokeStyle = '#8A5A10'; ctx.lineWidth = T * 0.05
+      ctx.beginPath(); ctx.moveTo(0, y0 + T * 0.3); ctx.lineTo(-T * 0.3, y0 - T * 0.1); ctx.lineTo(-T * 0.12, y0 - T * 0.1)
+      ctx.lineTo(-T * 0.12, y0 - T * 0.45); ctx.lineTo(T * 0.12, y0 - T * 0.45); ctx.lineTo(T * 0.12, y0 - T * 0.1); ctx.lineTo(T * 0.3, y0 - T * 0.1)
+      ctx.closePath(); ctx.fill(); ctx.stroke()
+    }
+    // Duizelig: sterretjes rond de doos.
+    if (b.duizel > 0) {
+      ctx.fillStyle = '#F2C530'
+      for (let i = 0; i < 3; i++) {
+        const a = klok * 5 + (i * Math.PI * 2) / 3
+        ctx.beginPath(); ctx.arc(Math.cos(a) * w * 0.5, -h * 1.1 + Math.sin(a) * T * 0.15, T * 0.1, 0, Math.PI * 2); ctx.fill()
+      }
+    }
+    ctx.restore()
+  }
+
   private tekenSchoorsteen(b: Baas, T: number) {
     const { ctx } = this
     const klok = this.spel.klok
@@ -593,6 +682,7 @@ export class SpringVeld {
     const { ctx } = this
     const w = BAAS_BREED * T, h = BAAS_HOOG * T
     const klok = this.spel.klok
+    if (b.soort === 'pop') { this.tekenPop(b, T); return }
     // Schaduw op de grond (kleiner als hij hoog zweeft), en wat er aankomt: een rode vlek (krab), een kruisje (uil).
     ctx.fillStyle = 'rgba(0,0,0,.15)'
     ctx.beginPath(); ctx.ellipse(b.x * T, b.y * T, w * 0.5 * (1 - Math.min(0.5, b.op * 0.12)), T * 0.1, 0, 0, Math.PI * 2); ctx.fill()

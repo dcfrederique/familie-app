@@ -41,6 +41,7 @@ import Ontwarren from './schermen/Ontwarren.tsx'
 import Pakjesrij from './schermen/Pakjesrij.tsx'
 import Gelijkplaatje from './schermen/Gelijkplaatje.tsx'
 import Linten from './schermen/Linten.tsx'
+import Omsluiten from './schermen/Omsluiten.tsx'
 import Snoeppotjes from './schermen/Snoeppotjes.tsx'
 import Nim from './schermen/Nim.tsx'
 import Glijden from './schermen/Glijden.tsx'
@@ -193,6 +194,7 @@ export default function App() {
         <Route path="pakjesrij" element={<Pakjesrij />} />
         <Route path="gelijkplaatje" element={<Gelijkplaatje />} />
         <Route path="linten" element={<Linten />} />
+        <Route path="omsluiten" element={<Omsluiten />} />
         <Route path="glijden" element={<Glijden />} />
         <Route path="verfmengen" element={<VerfMengen />} />
         <Route path="eenlijn" element={<EenLijn />} />

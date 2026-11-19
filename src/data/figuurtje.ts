@@ -147,6 +147,7 @@ export const categorieen: CategorieInfo[] = [
       { id: 'stalhoed', naam: 'Stalhoed', prijs: 15, prenten: true },
       { id: 'pepernootmuts', naam: "Muts met pepernoten", prijs: 15, prenten: true },
       { id: 'blokjespet', naam: "Pet met blokjes", prijs: 15, prenten: true },
+      { id: 'oorklepmuts', naam: 'Oorklepmuts', prijs: 15, prenten: true },
     ] },
   { id: 'shirt', naam: 'Shirt', uitsnede: '24 100 152 128', prenten: true, kleur: { veld: 'shirtKleur', palet: kledingKleuren },
     icoon: 'M8 4l-5 3l2 4l3-1v10h8V10l3 1l2-4l-5-3a4 4 0 0 1-8 0z',
@@ -209,6 +210,7 @@ export const categorieen: CategorieInfo[] = [
       { id: 'tuinbroekshirt', naam: "Geruit boerenhemd", prijs: 20, prenten: true },
       { id: 'knoopjesshirt', naam: "Rood shirt met gouden knoopjes", prijs: 20, prenten: true },
       { id: 'blokjeshart', naam: "Shirt met blokjeshart", prijs: 20, prenten: true },
+      { id: 'wintervest', naam: 'Wintervest', prijs: 20, prenten: true },
     ] },
   { id: 'broek', naam: 'Broek', uitsnede: '30 186 140 104', prenten: true, kleur: { veld: 'broekKleur', palet: kledingKleuren },
     icoon: 'M7 3h10l1 18h-4l-2-11l-2 11H6z',
@@ -284,6 +286,7 @@ export const categorieen: CategorieInfo[] = [
       { id: 'hooivork', naam: "Hooivorkje", prijs: 15, prenten: true },
       { id: 'rodevlag', naam: "Rood vlaggetje", prijs: 15, prenten: true },
       { id: 'mantelhelft', naam: "Halve rode mantel", prijs: 15, prenten: true },
+      { id: 'zaadzakje', naam: 'Zaadzakje', prijs: 15, prenten: true },
     ] },
 ]
 

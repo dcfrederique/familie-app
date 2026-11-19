@@ -200,6 +200,24 @@ const eend: Figuur = {
   ),
 }
 
+/** Een koolmeesje: gele buik, zwarte kop met witte wangen, klein. */
+const mees: Figuur = {
+  h: 34,
+  teken: () => (
+    <g>
+      <path d="M-13 -14l-8 -4 3 9z" fill="#5B7FA3" />
+      <ellipse cx={-1} cy={-13} rx={13} ry={11} fill="#F7D046" />
+      <ellipse cx={-3} cy={-16} rx={9} ry={6} fill="#5B7FA3" />
+      <path d="M-2 -11l1 -9" stroke="#2B2B2B" strokeWidth={2.4} />
+      <circle cx={9} cy={-25} r={8} fill="#2B2B2B" />
+      <ellipse cx={11} cy={-22} rx={5} ry={3.6} fill="#FFFFFF" />
+      <path d="M16 -26l6 2 -6 2z" fill="#F2994A" />
+      <Oog x={11} y={-27} r={1.5} />
+      <path d="M-3 -2v4M3 -2v4" stroke="#6B4A2A" strokeWidth={1.4} />
+    </g>
+  ),
+}
+
 function beerVorm(vacht: string, buik: string, h: number): Figuur {
   return {
     h,
@@ -492,7 +510,7 @@ export const figuren: Record<string, Figuur> = {
   // vaste personages
   dirk, mo, pip: pinguin(52), pipmama: pinguin(78),
   // dieren
-  kat: kat('#F2994A'), poes: kat('#B9BDC2', 34), eend, beer: beerVorm('#8B5E3C', '#C8A27C', 78), konijn: konijnVorm(false),
+  kat: kat('#F2994A'), poes: kat('#B9BDC2', 34), eend, mees, beer: beerVorm('#8B5E3C', '#C8A27C', 78), konijn: konijnVorm(false),
   juf: konijnVorm(true), tijs, hond, koe, varken, schaap, kip, paard, vos, eekhoorn: eekhoorn('#C1662F'),
   eekhoorn2: eekhoorn('#8E4B2A'), kikker, rex: dino('blauw'), dino: dino('paars'), grotedino, robot,
   // mensen

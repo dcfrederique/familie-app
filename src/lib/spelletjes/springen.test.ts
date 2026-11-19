@@ -58,6 +58,22 @@ function baasRobot(s: Springen, b: NonNullable<Springen['baas']>): { s: Springen
     const doel = veilig.reduce((m, x) => (Math.abs(x - s.x) < Math.abs(m - s.x) ? x : m))
     dir = Math.abs(doel - s.x) > 0.15 ? Math.sign(doel - s.x) : 0
   }
+  else if (b.soort === 'pop') {
+    // De pop is alleen van boven te raken, via een springveer (aan elke kant 5 vakjes van de doos): wacht ver genoeg weg,
+    // en spring naar de veer zodra hij moe aan zijn veer hangt (de sprong brengt je ± 4 vakjes verder, op de veer).
+    const kant = s.x <= b.x ? -1 : 1 // aan welke kant van de doos het robotje staat
+    const d = Math.abs(dx)
+    const naar = -kant
+    const gevaar = b.toestand === 'aanloop' || b.toestand === 'actie'
+    if (b.kwetsbaar && b.duizel <= 0) {
+      if (!s.opGrond) dir = Math.abs(dx) < 0.4 ? 0 : Math.sign(dx)
+      else if (d > 5.6) { dir = naar; spr = true }
+      else dir = kant // tussen veer en doos: tot aan de veer lopen en wachten tot hij niet meer moe is
+    } else if (!s.opGrond) dir = d < 3.5 ? kant : d > 9.1 ? naar : d < 8.3 ? kant : 0 // snel weg boven de doos, en naast de veer landen
+    else if (d > 5.6) dir = d < 8.3 ? kant : d > 9.1 ? naar : 0
+    else if (gevaar) dir = d < 3 ? kant : 0
+    else { dir = kant; spr = d > 4 } // tegen de veer: erover springen, naast de veer landen
+  }
   else if (b.kwetsbaar && b.op < 0.5 && b.duizel <= 0) {
     // Dichtbij komen en hupsen als hij net voor je staat.
     dir = Math.abs(dx) > 1.9 ? Math.sign(dx) : 0

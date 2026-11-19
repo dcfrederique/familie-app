@@ -34,7 +34,7 @@ export interface SpringLevelInfo {
   beestje: 'slak' | 'egel' | 'vogel'
   fruit: 'appel' | 'aardbei' | 'kers'
   /** Een baas op het einde van de wereld (het laatste level): de kaart is dan een kleine arena met B. */
-  baas?: { soort: 'pompoen' | 'pepernoot' | 'sneeuw' | 'krab' | 'wolk' | 'uil' | 'robot' | 'zwam' | 'schoorsteen'; naam: string }
+  baas?: { soort: 'pompoen' | 'pepernoot' | 'sneeuw' | 'krab' | 'wolk' | 'uil' | 'robot' | 'zwam' | 'schoorsteen' | 'pop'; naam: string }
   /** Hoe snel de beestjes wandelen, 1 = gewoon. Een pittig level mag er een tikje sneller zijn (tot 1.6). */
   snelheid?: number
   kaart: readonly string[]
@@ -1069,6 +1069,24 @@ export const springLevelLijst: SpringLevelInfo[] = [
       '  P   o o o     e               C     ####      e               e         C   ^         o o o e           H ',
       '#########################   ##############################  ##########   ###################################',
       '#########################~~~##############################~~##########~~~###################################',
+    ],
+  },
+  {
+    id: 'springpop', wereld: 'speeldoos', stijl: 'wolken',
+    naam: 'De Bromspringpop', beestje: 'slak', fruit: 'kers', snelheid: 1,
+    baas: { soort: 'pop', naam: 'Bromspringpop' },
+    kaart: [
+      '                                                                        ',
+      '                                                                        ',
+      '                                                                        ',
+      '                  **                                                    ',
+      '                  ===                                                   ',
+      '                                                                        ',
+      '        o o               o o     o o   oo o                            ',
+      '                                                                        ',
+      '  P   o o o   e   o   o       C   o o o o   o o    ^    B    ^       H  ',
+      '####################  ##################################################',
+      '####################~~##################################################',
     ],
   },
 ]

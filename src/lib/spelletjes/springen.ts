@@ -32,6 +32,9 @@ export const LEVENS: Record<SpringBesturing, number> = { zelf: 2, vanzelf: 3 }
 export const BAAS_NODIG: Record<SpringBesturing, number> = { zelf: 4, vanzelf: 2 }
 export const BAAS_BREED = 2.2
 export const BAAS_HOOG = 2
+/** Hoe hoog de pop van de Bromspringpop boven de grond hangt als hij schiet of moe is: hoger dan een gewone hup (± 3,4), lager dan een hup van de veer (± 7). */
+export const POP_BREED = 3.4
+export const POP_HOOG = 4
 /** Na een hup is de baas even duizelig: onschadelijk en je kan er gewoon langs. */
 export const BAAS_DUIZEL = 2
 export const BAAS_SNELHEID = 1.6
@@ -571,6 +574,29 @@ function patroon(s: Springen, b: Baas, dt: number, uit: SpringGebeurtenis[]) {
       } else if (b.tijd <= 0) naarToestand(b, 'loopt', Math.max(0.9, 1.6 - 0.2 * F))
       break
     }
+    case 'pop': {
+      // De Bromspringpop zit in een doos die op zijn plek blijft. De doos rammelt (de aanloop toont de rode streep op de grond), dan schiet de pop
+      // op een veer omhoog (alleen dan doet hij pijn) en hangt hij slap op POP_HOOG: te hoog voor een gewone hup, alleen vanaf de springveer te raken.
+      b.kwetsbaar = b.toestand === 'moe'
+      if (b.toestand === 'loopt') {
+        b.op = Math.max(0, b.op - 8 * dt)
+        if (b.tijd <= 0) { b.teller = b.geraakt >= 2 ? 1 : 0; naarToestand(b, 'aanloop', Math.max(0.6, 1.0 - 0.12 * F)) }
+      } else if (b.toestand === 'aanloop') {
+        b.op = Math.max(0, b.op - 8 * dt)
+        if (b.tijd <= 0) naarToestand(b, 'actie', 0.6)
+      } else if (b.toestand === 'actie') {
+        b.op += (POP_HOOG - b.op) * Math.min(1, 12 * dt)
+        if (Math.abs(b.x - s.x) < 1.1 && s.y > b.y - b.op && s.knipper <= 0) geraaktDoor(s, b.x, uit)
+        if (b.tijd <= 0) {
+          if (b.teller > 0) { b.teller--; b.op = 0; naarToestand(b, 'aanloop', 0.35) }
+          else naarToestand(b, 'moe', Math.max(2.0, 3.0 - 0.33 * F))
+        }
+      } else {
+        b.op += (POP_HOOG - b.op) * Math.min(1, 12 * dt)
+        if (b.tijd <= 0) naarToestand(b, 'loopt', Math.max(0.8, 1.5 - 0.2 * F))
+      }
+      break
+    }
     default: {
       // Pompoen: rolt heen en weer en wordt na elke hup sneller. Altijd kwetsbaar.
       b.kwetsbaar = true
@@ -605,7 +631,7 @@ function kogelsBewegen(s: Springen, dt: number, uit: SpringGebeurtenis[]) {
 
 /** Wanneer een baas je een hartje kost als je hem van opzij raakt: de wolk en de schoorsteen nooit (hun druppels en pakjes doen dat), de uil alleen
  *  in zijn duikvlucht, de zwam alleen als hij omhoog schiet, de anderen altijd. */
-const doetPijn = (b: Baas) => b.soort === 'wolk' || b.soort === 'schoorsteen' ? false : b.soort === 'uil' || b.soort === 'zwam' ? b.toestand === 'actie' : true
+const doetPijn = (b: Baas) => b.soort === 'wolk' || b.soort === 'schoorsteen' || b.soort === 'pop' ? false : b.soort === 'uil' || b.soort === 'zwam' ? b.toestand === 'actie' : true
 
 /** De baas volgt zijn eigen patroon. Een hup op zijn kop telt alleen als hij kwetsbaar is; ben je op het verkeerde
  *  moment aan de beurt, dan kaats je er gewoon af. Van opzij raken kost een hartje. */
@@ -623,7 +649,8 @@ function baasRolt(s: Springen, dt: number, uit: SpringGebeurtenis[]) {
   // De bromzwam onder de blaadjes kan je niet raken (en hij jou ook niet): je loopt er gewoon over.
   if (b.soort === 'zwam' && (b.toestand === 'loopt' || b.toestand === 'aanloop')) return
   const by = b.y - b.op
-  const raakX = Math.abs(b.x - s.x) < (BREED + BAAS_BREED) / 2 - 0.1
+  // De pop met zijn muts is breder dan de doos: een hup van de veer mag er ruim naast beginnen.
+  const raakX = Math.abs(b.x - s.x) < (BREED + (b.soort === 'pop' ? POP_BREED : BAAS_BREED)) / 2 - 0.1
   const raakY = s.y > by - BAAS_HOOG && s.y - HOOG < by
   if (!raakX || !raakY) return
   if (s.vy > 0 && s.y < by - BAAS_HOOG + 1.2) {

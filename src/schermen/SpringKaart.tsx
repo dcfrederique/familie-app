@@ -189,7 +189,18 @@ export default function SpringKaart({ figuur, lezer, af, best, alles, plek, mete
               {p.level.baas && (
                 // De baas van de wereld: een grote pompoen of pepernoot op het eilandje.
                 <g transform="translate(0 -26)" className="k-dobber">
-                  {p.level.baas.soort === 'schoorsteen' ? (
+                  {p.level.baas.soort === 'pop' ? (
+                    <>
+                      <ellipse cy="26" rx="24" ry="5" fill="rgba(0,0,0,.12)" />
+                      <path d="M0-4q-7-5 0-9t0-9" stroke="#2F80C9" strokeWidth="3" fill="none" strokeLinecap="round" />
+                      <circle cy="-30" r="10" fill="#FBD9B5" /><path d="M-10-34L0-52L10-34Z" fill="#E5484D" /><circle cy="-53" r="3" fill="#F2C530" />
+                      <circle cx="-4" cy="-31" r="2" fill="#1C2433" /><circle cx="4" cy="-31" r="2" fill="#1C2433" />
+                      <path d="M-4-25Q0-22 4-25" stroke="#7A3220" strokeWidth="2" fill="none" strokeLinecap="round" />
+                      <rect x="-24" y="-6" width="48" height="32" rx="4" fill="#C0533A" stroke="#7A3220" strokeWidth="2" />
+                      <path d="M0-6L10 5L0 16L-10 5ZM-16 16L-8 22L-16 26L-24 22ZM16 16L24 22L16 26L8 22Z" fill="#F2C530" opacity=".85" />
+                      <rect x="-27" y="-10" width="54" height="7" rx="3" fill="#8F3A27" />
+                    </>
+                  ) : p.level.baas.soort === 'schoorsteen' ? (
                     <>
                       <ellipse cy="26" rx="22" ry="5" fill="rgba(0,0,0,.12)" />
                       <rect x="-20" y="-24" width="40" height="50" rx="4" fill="#C0533A" stroke="#7A3220" strokeWidth="2" />

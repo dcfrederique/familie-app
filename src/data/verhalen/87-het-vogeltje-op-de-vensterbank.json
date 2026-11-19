@@ -1,0 +1,52 @@
+{
+  "nr": 87,
+  "titel": "Het vogeltje op de vensterbank",
+  "reeks": "kleine-oortjes",
+  "leeftijd": 4,
+  "thema": "Eerste vorst, de vogeltjes helpen",
+  "bladzijden": [
+    {
+      "tekst": "Het is koud geworden. Vanmorgen lag er een wit laagje op het gras. Dat is de eerste vorst. Pip staat bij het raam en kijkt naar buiten. Op de vensterbank zit een klein vogeltje. Het is een koolmees, met een gele buik en een zwart mutsje. Hij trippelt heen en weer op zijn dunne pootjes. Hij pikt in de koude steen, maar er is niets te eten. Pip legt haar vleugeltje tegen het glas. \"Mama,\" zegt ze zachtjes. \"Dat vogeltje heeft honger.\"",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "pipmama",
+          "mees"
+        ]
+      }
+    },
+    {
+      "tekst": "Mama komt kijken. \"In de winter ligt het eten van de vogeltjes onder het ijs,\" zegt ze. \"Wij kunnen hen helpen.\" Ze haalt een zakje met zaadjes uit de kast. Pip mag het in een bakje schudden. Sjjj, sjjj, sjjj, klinkt het. Dan bindt mama een touwtje aan een vetbol. \"Die hangen we in de struik,\" zegt ze. \"Dat vinden ze heerlijk.\" Pip trekt haar dikke muts aan en haar warme handschoenen.",
+      "prent": {
+        "decor": "keuken",
+        "figuren": [
+          "pipmama",
+          "pip"
+        ]
+      }
+    },
+    {
+      "tekst": "Buiten is de lucht scherp en koud. Pip zet het bakje met zaad op de houten plank. Mama hangt de vetbol aan een tak van de struik. Dan gaan ze snel weer naar binnen, want ze willen de vogeltjes niet bang maken. Pip zit stil bij het raam. Ze telt tot tien. Er komt niemand. Ze telt tot twintig. Dan fladdert er iets naar de plank: de koolmees! Hij pikt een zaadje, en nog een. Zijn veertjes staan bol van de kou.",
+      "prent": {
+        "decor": "tuin",
+        "figuren": [
+          "pip",
+          "pipmama",
+          "struik"
+        ]
+      }
+    },
+    {
+      "tekst": "Er komen nog meer vogeltjes: een roodborstje en een mus. Ze pikken om beurten en niemand duwt. Pip houdt haar adem in en lacht zonder geluid. Mama legt een deken om haar schouders. 's Avonds is het bakje bijna leeg. \"Morgen vullen we het weer bij,\" zegt Pip. Mama knikt. Buiten is het koud, maar in Pips buik is het warm. \"Slaap lekker, vogeltjes,\" fluistert ze.",
+      "prent": {
+        "decor": "kamer",
+        "figuren": [
+          "pip",
+          "pipmama",
+          "mees"
+        ]
+      }
+    }
+  ]
+}

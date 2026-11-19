@@ -19,6 +19,16 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.179',
+    datum: '2026-11-19',
+    titel: 'Blaadjes en vlokjes, Het vogeltje op de vensterbank en de baas van De Speeldoos',
+    tekst: 'Nieuw verhaal "Het vogeltje op de vensterbank" (4 jaar, met een nieuw koolmeesje) en kleurplaat "De vensterbank", meteen beschikbaar. Nieuw spelletje Blaadjes en vlokjes (zoals Reversi): zet een herfstblaadje zo dat je de vlokjes van de computer omsluit, dan draaien ze om. Makkelijk is een klein bord van 4 × 4 waarbij alle toegelaten vakjes gloeien. Middel is 6 × 6 met gloed en drie Tips. Moeilijk is een echte denkstrijd voor Luca: drie rondes op 6 × 6 en twee keer 8 × 8 tegen een computer die vooruit rekent en hoeken pakt, zonder gloed of Tip, met pluimen per ronde. Er zijn ook zes nieuwe stukken. Springland: De Speeldoos heeft nu zijn baas, de Bromspringpop, een pop in een doos. Hij hangt te hoog voor een gewone hup: je moet via een springveer (aan beide kanten van de doos) op zijn muts landen. Daarmee is De Speeldoos vol.',
+    verhaal: 'Het vogeltje op de vensterbank',
+    spel: { naam: 'Blaadjes en vlokjes', prijs: 30 },
+    stukken: ['Oorklepmuts (figuurtje, 15)', 'Wintervest (figuurtje, 20)', 'Zaadzakje (figuurtje, 15)', 'IJslantaarn (huis, 20)', 'Sneeuwburcht (huis, 25)', 'IJsbloemen (huis, 20)'],
+    open: 'Het spelletje en de zes stukken staan klaar om vrij te geven in Kinderen → Winkelaanbod. De baas van De Speeldoos gaat open door De draaimolen uit te spelen; daarna begint een nieuwe wereld.',
+  },
+  {
     versie: '0.178',
     datum: '2026-11-18',
     titel: 'Grotere borden op de gsm en netter ouderscherm',

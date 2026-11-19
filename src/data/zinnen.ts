@@ -101,6 +101,8 @@ export const zin = {
   gelijkplaatjeKlaar: 'Je hebt ze allemaal gevonden!',
   lintenUitleg: 'Trek een lint tussen de pakjes met dezelfde kleur. De linten mogen elkaar niet kruisen.',
   lintenKlaar: 'Alle pakjes hangen aan een lint!',
+  omsluitenUitleg: 'Zet een blaadje op een gloeiend vakje. Zo draaien de vlokjes om naar jouw kant.',
+  omsluitenKlaar: 'Mooi gespeeld!',
   ontwarrenUitleg: 'Sleep de lampjes. Laat geen draden over elkaar liggen.',
   ontwarrenKlaar: 'Alle lampjes branden!',
   lichtstraalKlaar: 'Alle pakjes gloeien!',

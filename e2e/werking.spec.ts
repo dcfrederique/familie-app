@@ -451,3 +451,20 @@ test('linten verbinden: een lint trekken met de vinger tussen twee pakjes', asyn
   await page.mouse.up()
   await expect(page.locator('.lint-teller')).toBeVisible()
 })
+
+test('blaadjes en vlokjes: een blaadje zetten op een gloeiend vakje', async ({ page }) => {
+  await startAls(page, 'luca')
+  await doorWelkomstpad(page)
+  await naar(page, '/kind/luca/omsluiten')
+  await page.getByRole('button', { name: 'Makkelijk' }).click()
+  const bord = page.getByRole('img', { name: 'Het bord met blaadjes en vlokjes' })
+  await expect(bord).toBeVisible()
+  const doos = await bord.boundingBox()
+  expect(doos).not.toBeNull()
+  // Op een 4 × 4-bord mogen precies vier vakjes; (rij 0, kolom 1) omsluit het vlokje eronder.
+  await expect(page.locator('.oms-vak.gloed')).toHaveCount(4)
+  const vak = doos!.width / 4
+  await page.mouse.click(doos!.x + vak * 1.5, doos!.y + vak * 0.5)
+  // Daarna antwoordt de computer en gloeit het bord weer voor het kind.
+  await expect(page.locator('.oms-vak.gloed').first()).toBeVisible()
+})
