@@ -8,6 +8,9 @@
 .oms-stand { display: flex; gap: 14px; font-size: 26px; }
 .oms-stand span { display: inline-flex; align-items: center; gap: 6px; padding: 2px 12px; border-radius: 999px; background: var(--card, rgba(255,255,255,.7)); border: 2px solid var(--line); }
 .oms-stand .voor { border-color: var(--gold); }
+/* Detail: wie voor staat, krijgt een warm goudkleurig bolletje dat zacht groter wordt. */
+.oms-stand span { transition: scale .25s ease, background-color .25s ease; }
+.oms-stand .voor { background: #FFF3C4; color: #3A2A00; scale: 1.08; }
 .oms-klein { width: 30px; height: 30px; }
 .oms-slaap { display: inline-flex; align-items: center; gap: 4px; font-size: 26px; }
 .oms-tip-knop { flex: none; white-space: nowrap; min-height: 64px; font-size: 17px; display: inline-flex; align-items: center; gap: 6px; padding: 0 16px; }
@@ -31,6 +34,7 @@
 @keyframes oms-puls { 0%, 100% { opacity: .65; } 50% { opacity: .25; } }
 @media (prefers-reduced-motion: reduce) {
   .oms-vak.gloed, .oms-vak.tip, .oms-steen.draai, .oms-wiebel { animation: none; }
+  .oms-stand span { transition: none; }
 }
 @media (orientation: portrait) {
   .oms-tafel { --cel: min(calc((100dvh - 420px) / var(--n)), calc(88vw / var(--n)), 110px); }

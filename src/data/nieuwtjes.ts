@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.180',
+    datum: '2026-11-19',
+    titel: 'Blaadjes en vlokjes: zie meteen wie voor staat',
+    tekst: 'Bovenaan Blaadjes en vlokjes krijgt de stand van wie voor staat nu een warm goudkleurig bolletje dat iets groter wordt. Zo zien ook de kleinsten wie aan het winnen is.',
+  },
+  {
     versie: '0.179',
     datum: '2026-11-19',
     titel: 'Blaadjes en vlokjes, Het vogeltje op de vensterbank en de baas van De Speeldoos',
