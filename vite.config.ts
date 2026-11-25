@@ -12,7 +12,7 @@ export default defineConfig({
       injectRegister: false,
       includeAssets: ['icon.svg'],
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,woff2}', '{themas,prenten}/**/*.webp'],
+        globPatterns: ['**/*.{js,css,html,svg,png,woff2}', '{themas,prenten,assets}/**/*.webp'],
         // De hoofdbundel is groter dan de standaardgrens van 2 MiB (alle spelletjes en prenten); zonder deze grens
         // stopt de bouw en komt er niets online. Ze moet wel vooraf in de cache, anders werkt de app niet offline.
         maximumFileSizeToCacheInBytes: 4 * 1024 * 1024,

@@ -275,7 +275,9 @@ export function tekenFiguurtje(f: Figuurtje, clipId: string, houding?: FiguurHou
   if (f.soort && f.soort !== 'kind' && Object.hasOwn(soortTekeningen, f.soort)) {
     const s: string[] = []
     if (f.extra === 'cape') s.push(CAPE)
-    s.push(soortTekeningen[f.soort])
+    const beweegHouding = houding && f.extra && !['cape', 'bril', 'geen'].includes(f.extra)
+      ? { ...houding, linkerArm: 0, rechterArm: 0 } : houding
+    s.push(soortTekeningen[f.soort](beweegHouding))
     extrasVooraan(f, s)
     return s.join('')
   }

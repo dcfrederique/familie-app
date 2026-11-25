@@ -105,6 +105,20 @@ describe('soorten figuurtjes', () => {
       expect(svg).toContain('#D93A3A')
     }
   })
+  it('beweegt de ledematen van elk eigen figuurtje', () => {
+    for (const soort of ['robot', 'kat', 'ridder', 'astronaut', 'draak']) {
+      const f = { ...basisFiguurtje(null), soort }
+      const stil = tekenFiguurtje(f, 'f')
+      const pose = tekenFiguurtje(f, 'f', {
+        linkerBeen: 23, rechterBeen: -23, linkerArm: -23, rechterArm: 23,
+      })
+      expect(pose).not.toBe(stil)
+      expect(pose).toContain('<g transform="rotate(23 ')
+      expect(pose).toContain('<g transform="rotate(-23 ')
+      expect(pose.match(/<g transform=/g)?.length).toBeGreaterThanOrEqual(6)
+      expect(pose).not.toContain('undefined')
+    }
+  })
   it('toont bij een andere soort alleen Soort en Extra', () => {
     expect(zichtbareCategorieen(true, 'robot').map((c) => c.id)).toEqual(['soort', 'extra'])
     expect(zichtbareCategorieen(true, 'kind').length).toBe(categorieen.length)
