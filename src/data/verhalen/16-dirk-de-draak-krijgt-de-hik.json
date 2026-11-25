@@ -11,7 +11,8 @@
         "decor": "dorp",
         "figuren": [
           "dirk:vuur"
-        ]
+        ],
+        "beeld": "dirk-hik-1.webp"
       }
     },
     {
@@ -20,7 +21,8 @@
         "decor": "dorp",
         "figuren": [
           "dirk:vuur"
-        ]
+        ],
+        "beeld": "dirk-hik-2.webp"
       }
     },
     {
@@ -29,7 +31,8 @@
         "decor": "dorp",
         "figuren": [
           "dirk"
-        ]
+        ],
+        "beeld": "dirk-hik-3.webp"
       }
     },
     {
@@ -39,7 +42,8 @@
         "figuren": [
           "bakker",
           "dirk"
-        ]
+        ],
+        "beeld": "dirk-hik-4.webp"
       }
     },
     {
@@ -49,7 +53,8 @@
         "figuren": [
           "dirk:vuur",
           "oven"
-        ]
+        ],
+        "beeld": "dirk-hik-5.webp"
       }
     },
     {
@@ -60,7 +65,8 @@
           "bakker",
           "dirk",
           "brood"
-        ]
+        ],
+        "beeld": "dirk-hik-6.webp"
       }
     }
   ]

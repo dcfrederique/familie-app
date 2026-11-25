@@ -93,6 +93,54 @@ test('een verhaal lezen', async ({ page }) => {
   await expect(page.locator('.verhaal-prent, svg').first()).toBeVisible()
 })
 
+test('Dirk: verhaalprenten, puzzelstukken en aantikbare kleurvlakken', async ({ page }) => {
+  await startAls(page, 'feline')
+  await doorWelkomstpad(page)
+  const prenten = [
+    ...Array.from({ length: 4 }, (_, i) => `dirk-${i + 1}`),
+    ...Array.from({ length: 6 }, (_, i) => `dirk-hik-${i + 1}`),
+    ...Array.from({ length: 8 }, (_, i) => `dirk-vulkaan-${i + 1}`),
+    'dirk-kleur', 'dirk-bakkerij', 'dirk-water',
+  ]
+  for (const naam of prenten) {
+    const antwoord = await page.request.get(`/prenten/${naam}.webp`)
+    expect(antwoord.ok()).toBeTruthy()
+    expect(antwoord.headers()['content-type']).toBe('image/webp')
+  }
+
+  for (const [nr, beeld] of [[1, 'dirk-1'], [16, 'dirk-hik-1'], [30, 'dirk-vulkaan-1']]) {
+    await naar(page, `/kind/feline/verhaal/${nr}`)
+    await expect(page.locator('.verhaal-prent image')).toHaveAttribute('href', `/prenten/${beeld}.webp`)
+  }
+
+  await naar(page, '/kind/feline/puzzel')
+  await page.getByRole('button', { name: 'Dirk de draak telt sterren' }).click({ force: true })
+  await expect(page.locator('#puzzel-beeld image')).toHaveAttribute('href', '/prenten/dirk-4.webp')
+  await expect(page.locator('.puzzel-stuk use')).toHaveCount(4)
+
+  const kleurplaten = [
+    { naam: 'Dirk en de ster', inkt: 'dirk-kleur', x: 330, y: 90 },
+    { naam: 'Dirk bij de bakker', inkt: 'dirk-bakkerij', x: 300, y: 160 },
+    { naam: 'Dirk blust de vulkaan', inkt: 'dirk-water', x: 250, y: 135 },
+  ]
+  for (const { naam, inkt, x, y } of kleurplaten) {
+    await naar(page, '/kind/feline/kleurplaten')
+    await page.getByRole('link', { name: naam }).click({ force: true })
+    const plaat = page.locator('.kleur-blad .kleurplaat')
+    await expect(plaat.locator('image')).toHaveAttribute('href', `/prenten/${inkt}.webp`)
+    const plek = await plaat.evaluate((svg: SVGSVGElement, punt) => {
+      const p = new DOMPoint(punt.x, punt.y).matrixTransform(svg.getScreenCTM()!)
+      return { x: p.x, y: p.y }
+    }, { x, y })
+    const ongekleurd = plaat.locator('path[fill="#FFFFFF"]')
+    const vlakken = await ongekleurd.count()
+    await page.mouse.click(plek.x, plek.y)
+    await expect(ongekleurd).toHaveCount(vlakken - 1)
+    await page.getByRole('button', { name: 'Ongedaan maken' }).click()
+    await expect(ongekleurd).toHaveCount(vlakken)
+  }
+})
+
 async function doorWelkomstpad(page: Page) {
   for (let i = 0; i < 12 && page.url().includes('/welkom') || i === 0; i++) {
     await page.waitForTimeout(300)

@@ -87,9 +87,12 @@ function PlaatSvg({ plaat, kleuren, kies }: { plaat: Kleurplaat; kleuren: (strin
   return (
     <svg viewBox="0 0 400 300" className="kleurplaat" role={kies ? 'group' : 'img'} aria-label={plaat.titel}>
       {plaat.vlakken.map((v, i) => (
-        <VlakVorm key={i} vlak={v} fill={kleuren[i] ?? '#FFFFFF'} stroke={INKT} strokeWidth={3} strokeLinejoin="round"
+        <VlakVorm key={i} vlak={v} fill={kleuren[i] ?? '#FFFFFF'}
+                  fillRule={plaat.inktPrent ? 'evenodd' : undefined}
+                  stroke={plaat.inktPrent ? undefined : INKT} strokeWidth={3} strokeLinejoin="round"
                   onPointerDown={kies ? () => kies(i) : undefined} />
       ))}
+      {plaat.inktPrent && <image href={`/prenten/${plaat.inktPrent}`} width={400} height={300} pointerEvents="none" />}
       {plaat.lijnen?.map((d) => <path key={d} d={d} fill="none" stroke={INKT} strokeWidth={3} strokeLinecap="round" pointerEvents="none" />)}
     </svg>
   )

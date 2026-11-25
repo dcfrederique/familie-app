@@ -1,6 +1,10 @@
 // Kleurplaten als data: elke plaat bestaat uit vlakken die je met één tik inkleurt (viewBox 400 × 300).
 // Vlakken liggen op elkaar in deze volgorde; lijnen zijn alleen versiering en kleur je niet in. Eigen ontwerp.
 
+import dirkBakkerij from './kleurplaten/dirk-bakkerij.json'
+import dirkSterren from './kleurplaten/dirk-sterren.json'
+import dirkWater from './kleurplaten/dirk-water.json'
+
 export type Vlak =
   | { d: string }
   | { c: [number, number, number] }
@@ -12,6 +16,8 @@ export interface Kleurplaat {
   titel: string
   vlakken: Vlak[]
   lijnen?: string[]
+  /** Transparante lijnprent boven de aanklikbare kleurvlakken. */
+  inktPrent?: string
   /** Ingekleurd voorbeeld voor de lijst om te kiezen: één kleur per vlak. */
   voorbeeld: string[]
 }
@@ -24,6 +30,9 @@ const ster = (x: number, y: number, r: number): Vlak => ({
 })
 
 export const kleurplaten: Kleurplaat[] = [
+  dirkSterren,
+  dirkBakkerij,
+  dirkWater,
   {
     sleutel: 'dino', titel: 'Dino in de zon',
     vlakken: [

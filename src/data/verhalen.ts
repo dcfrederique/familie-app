@@ -12,6 +12,8 @@ export interface Verhaal {
   reeks: Reeks
   leeftijd: number
   thema: string
+  /** Bladzijde voor de puzzel, vanaf 1. */
+  puzzelBladzijde?: number
   bladzijden: Bladzijde[]
 }
 

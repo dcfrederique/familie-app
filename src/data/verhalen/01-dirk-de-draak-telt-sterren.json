@@ -8,6 +8,7 @@
     {
       "tekst": "Op een hoge heuvel woonde Dirk de draak. Dirk was groot en groen, maar hij was altijd een beetje moe.",
       "prent": {
+        "beeld": "dirk-1.webp",
         "decor": "nacht",
         "figuren": [
           "dirk",
@@ -18,6 +19,7 @@
     {
       "tekst": "Elke avond telde hij de sterren. Eén, twee, drie, vier … en dan viel hij al in slaap.",
       "prent": {
+        "beeld": "dirk-2.webp",
         "decor": "nacht",
         "figuren": [
           "dirk:slaapt",
@@ -28,6 +30,7 @@
     {
       "tekst": "Op een nacht miste er één ster. Dirk zocht en zocht, tot hij hem vond: hij lag te glimmen op zijn eigen staart!",
       "prent": {
+        "beeld": "dirk-3.webp",
         "decor": "nacht",
         "figuren": [
           "dirk",
@@ -38,6 +41,7 @@
     {
       "tekst": "Dirk legde de ster voorzichtig terug aan de hemel. Hij gaapte heel groot. Welterusten, Dirk.",
       "prent": {
+        "beeld": "dirk-4.webp",
         "decor": "nacht",
         "figuren": [
           "dirk:slaapt",

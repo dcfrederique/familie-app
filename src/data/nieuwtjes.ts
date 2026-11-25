@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.181',
+    datum: '2026-11-25',
+    titel: 'Nieuwe prenten voor Dirk de draak',
+    tekst: 'Drie verhalen over Dirk de draak hebben nieuwe prenten: Telt sterren, Krijgt de hik en De vulkaan. Je vindt die prenten ook bij Puzzels. Bij Kleurplaten staan drie nieuwe tekeningen om Dirk in te kleuren.',
+  },
+  {
     versie: '0.180',
     datum: '2026-11-19',
     titel: 'Blaadjes en vlokjes: zie meteen wie voor staat',

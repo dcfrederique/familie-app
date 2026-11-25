@@ -1,5 +1,4 @@
-// Puzzels: een prent uit een verhaal in stukjes (docs/spelletjes.md). Later komen er gegenereerde prenten bij
-// (docs/azure-extra.md, stap 3); tot dan gebruiken we de getekende prenten van de verhalen.
+// Puzzels gebruiken dezelfde illustraties als de verhalen (docs/spelletjes.md).
 import type { Gebruiker } from './gezin.ts'
 import type { PrentData } from './verhaalPrent.tsx'
 import { verhalen } from './verhalen.ts'
@@ -16,11 +15,12 @@ export const puzzelNiveaus: Record<PuzzelNiveau, { label: string; kolommen: numb
 
 export interface Puzzel { sleutel: string; titel: string; prent: PrentData }
 
-/** Per verhaal de drukste bladzijde (meeste figuren): daar valt het meest te puzzelen. */
+/** Gebruik de gekozen puzzelprent of de bladzijde met de meeste figuren. */
 export const puzzels: Puzzel[] = verhalen.map((v) => ({
   sleutel: `verhaal-${v.nr}`,
   titel: v.titel,
-  prent: v.bladzijden.reduce((best, b) => (b.prent.figuren.length > best.prent.figuren.length ? b : best)).prent,
+  prent: (v.bladzijden[(v.puzzelBladzijde ?? 0) - 1] ??
+    v.bladzijden.reduce((best, b) => (b.prent.figuren.length > best.prent.figuren.length ? b : best))).prent,
 }))
 
 /** Startniveau: wie niet leest 4 stukjes, de oudste lezer 20, andere lezers 12. */

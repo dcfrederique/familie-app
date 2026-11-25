@@ -4,6 +4,7 @@
   "reeks": "avonturiers",
   "leeftijd": 8,
   "thema": "Helpen",
+  "puzzelBladzijde": 5,
   "bladzijden": [
     {
       "tekst": "Naast de heuvel van Dirk de draak ligt een oude vulkaan. Al honderd jaar slaapt hij. Maar vanochtend voelt Dirk de grond trillen onder zijn poten.",
@@ -12,7 +13,8 @@
         "figuren": [
           "dirk",
           "vulkaan"
-        ]
+        ],
+        "beeld": "dirk-vulkaan-1.webp"
       }
     },
     {
@@ -22,7 +24,8 @@
         "figuren": [
           "vulkaan:uitbarsting",
           "dorp"
-        ]
+        ],
+        "beeld": "dirk-vulkaan-2.webp"
       }
     },
     {
@@ -33,7 +36,8 @@
           "bakker",
           "dirk",
           "jongen"
-        ]
+        ],
+        "beeld": "dirk-vulkaan-3.webp"
       }
     },
     {
@@ -43,7 +47,8 @@
         "figuren": [
           "dirk",
           "meer"
-        ]
+        ],
+        "beeld": "dirk-vulkaan-4.webp"
       }
     },
     {
@@ -53,7 +58,8 @@
         "figuren": [
           "dirk:spuit",
           "vulkaan"
-        ]
+        ],
+        "beeld": "dirk-vulkaan-5.webp"
       }
     },
     {
@@ -63,7 +69,8 @@
         "figuren": [
           "dirk",
           "meer"
-        ]
+        ],
+        "beeld": "dirk-vulkaan-6.webp"
       }
     },
     {
@@ -74,7 +81,8 @@
           "dirk",
           "vulkaan:slaapt",
           "huis"
-        ]
+        ],
+        "beeld": "dirk-vulkaan-7.webp"
       }
     },
     {
@@ -85,7 +93,8 @@
           "dirk:slaapt",
           "taart",
           "sterren"
-        ]
+        ],
+        "beeld": "dirk-vulkaan-8.webp"
       }
     }
   ]

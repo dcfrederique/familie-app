@@ -1,4 +1,8 @@
-# Prenten met Azure OpenAI
+# Prenten
+
+De nieuwe Dirk-prenten staan als WebP in `public/prenten`. Het veld `prent.beeld` in het verhaal wijst naar de bestandsnaam. Verhalen en puzzels gebruiken dezelfde illustratie. Een kleurplaat kan met `inktPrent` een transparante lijntekening tonen boven haar aantikbare vlakken. De app bewaart de WebP-bestanden ook voor offline gebruik. Met `puzzelBladzijde` kan een verhaal een specifieke prent voor de puzzel kiezen.
+
+## Eerdere aanpak met Azure OpenAI
 
 **Beslist 24 oktober 2026: geen Azure OpenAI.** Het aanmaken van het beeldmodel liep vast op quotum en was te omslachtig. Claude tekent de prenten zelf als SVG in een rijkere stijl (goedgekeurd door Frederique op 24 oktober): vlak, twee à drie tinten per kleur, wangetjes en glans in de ogen, wolken, graspollen en bloempjes. Dirk, Mo en Pip staan in die stijl in `src/data/verhaalFiguren.tsx`, de details in `src/data/verhaalPrent.tsx`. Kost niets, geen Azure, alles in de repo.
 

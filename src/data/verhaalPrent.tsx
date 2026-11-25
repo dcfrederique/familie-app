@@ -3,7 +3,12 @@
 import type { ReactNode } from 'react'
 import { figuren } from './verhaalFiguren.tsx'
 
-export interface PrentData { decor: string; figuren: string[] }
+export interface PrentData {
+  decor: string
+  figuren: string[]
+  /** Bestandsnaam van een illustratie in public/prenten. */
+  beeld?: string
+}
 
 const B = 400, H = 250
 
@@ -169,6 +174,9 @@ export function VerhaalPrent({ prent, label }: { prent: PrentData; label?: strin
 
 /** Alleen de tekening (400 × 250), om in een andere SVG te gebruiken, zoals bij de puzzels. */
 export function PrentTekening({ prent, idVoorvoegsel = 'l' }: { prent: PrentData; idVoorvoegsel?: string }) {
+  if (prent.beeld) {
+    return <image href={`/prenten/${prent.beeld}`} width={B} height={H} />
+  }
   const d = decors[prent.decor] ?? decors.weide
   const horizon = d.horizon ?? 175
   const geplaatst = plaatsFiguren(prent.figuren, horizon)
