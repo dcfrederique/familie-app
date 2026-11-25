@@ -4,6 +4,7 @@
   "reeks": "kleine-oortjes",
   "leeftijd": 4,
   "thema": "Durven",
+  "puzzelBladzijde": 4,
   "bladzijden": [
     {
       "tekst": "Alle pinguïns springen in het water. Plons, plons, plons! Maar Pip blijft op het ijs staan.",
@@ -12,7 +13,8 @@
         "figuren": [
           "pip",
           "pipmama"
-        ]
+        ],
+        "beeld": "pip-zwemmen-1.webp"
       }
     },
     {
@@ -22,7 +24,8 @@
         "figuren": [
           "pipmama",
           "pip"
-        ]
+        ],
+        "beeld": "pip-zwemmen-2.webp"
       }
     },
     {
@@ -32,7 +35,8 @@
         "figuren": [
           "pip",
           "pipmama"
-        ]
+        ],
+        "beeld": "pip-zwemmen-3.webp"
       }
     },
     {
@@ -42,7 +46,8 @@
         "figuren": [
           "pip:zwemt",
           "pipmama:zwemt"
-        ]
+        ],
+        "beeld": "pip-zwemmen-4.webp"
       }
     }
   ]

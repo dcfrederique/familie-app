@@ -4,6 +4,7 @@
   "reeks": "grote-ogen",
   "leeftijd": 6,
   "thema": "Nieuw zijn",
+  "puzzelBladzijde": 4,
   "bladzijden": [
     {
       "tekst": "Het is de eerste schooldag van Pip. Hij is nieuw in de klas en kent niemand.",
@@ -11,7 +12,8 @@
         "decor": "klas",
         "figuren": [
           "pip"
-        ]
+        ],
+        "beeld": "pip-school-1.webp"
       }
     },
     {
@@ -22,7 +24,8 @@
           "pip",
           "konijn",
           "eekhoorn"
-        ]
+        ],
+        "beeld": "pip-school-2.webp"
       }
     },
     {
@@ -32,7 +35,8 @@
         "figuren": [
           "pip",
           "koek"
-        ]
+        ],
+        "beeld": "pip-school-3.webp"
       }
     },
     {
@@ -43,7 +47,8 @@
           "pip",
           "koek",
           "vos"
-        ]
+        ],
+        "beeld": "pip-school-4.webp"
       }
     },
     {
@@ -53,7 +58,8 @@
         "figuren": [
           "pip",
           "vos"
-        ]
+        ],
+        "beeld": "pip-school-5.webp"
       }
     },
     {
@@ -63,7 +69,8 @@
         "figuren": [
           "pipmama",
           "pip"
-        ]
+        ],
+        "beeld": "pip-school-6.webp"
       }
     }
   ]

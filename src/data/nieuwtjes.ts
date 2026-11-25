@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.182',
+    datum: '2026-11-25',
+    titel: 'Pip duikt in nieuwe prenten',
+    tekst: 'Pip wil ook zwemmen en Pip gaat naar school kregen nieuwe prenten en puzzelbeelden. Bij Kleurplaten kan je Pip maakt een plons inkleuren.',
+  },
+  {
     versie: '0.181',
     datum: '2026-11-25',
     titel: 'Nieuwe prenten voor Dirk de draak',
