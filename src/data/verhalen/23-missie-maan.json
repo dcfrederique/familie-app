@@ -4,6 +4,7 @@
   "reeks": "avonturiers",
   "leeftijd": 8,
   "thema": "Ruimte",
+  "puzzelBladzijde": 4,
   "bladzijden": [
     {
       "tekst": "Sam en Jade bouwen in de woonkamer een raket van kartonnen dozen. Ze tekenen knoppen, plakken een raam en maken helmen van een vergiet. \"Missie Maan begint morgen,\" zegt Jade.",
@@ -13,7 +14,8 @@
           "jongen",
           "raket:karton",
           "meisje"
-        ]
+        ],
+        "beeld": "missie-maan-1.webp"
       }
     },
     {
@@ -23,7 +25,8 @@
         "figuren": [
           "raket",
           "sterren"
-        ]
+        ],
+        "beeld": "missie-maan-2.webp"
       }
     },
     {
@@ -33,7 +36,8 @@
         "figuren": [
           "aarde",
           "raket"
-        ]
+        ],
+        "beeld": "missie-maan-3.webp"
       }
     },
     {
@@ -44,7 +48,8 @@
           "jongen",
           "vlag",
           "meisje"
-        ]
+        ],
+        "beeld": "missie-maan-4.webp"
       }
     },
     {
@@ -54,7 +59,8 @@
         "figuren": [
           "maanstorm",
           "raket"
-        ]
+        ],
+        "beeld": "missie-maan-5.webp"
       }
     },
     {
@@ -64,7 +70,8 @@
         "figuren": [
           "raket",
           "sterren"
-        ]
+        ],
+        "beeld": "missie-maan-6.webp"
       }
     },
     {
@@ -74,7 +81,8 @@
         "figuren": [
           "raket:karton",
           "jongen"
-        ]
+        ],
+        "beeld": "missie-maan-7.webp"
       }
     }
   ]

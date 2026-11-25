@@ -4,6 +4,7 @@
   "reeks": "kleine-oortjes",
   "leeftijd": 4,
   "thema": "Zoeken, kleuren",
+  "puzzelBladzijde": 4,
   "bladzijden": [
     {
       "tekst": "Mo de muis heeft één rode sok. Waar is de andere rode sok?",
@@ -12,7 +13,8 @@
         "figuren": [
           "mo",
           "sok"
-        ]
+        ],
+        "beeld": "mo-sok-1.webp"
       }
     },
     {
@@ -24,7 +26,8 @@
           "mo",
           "bed",
           "bal"
-        ]
+        ],
+        "beeld": "mo-sok-2.webp"
       }
     },
     {
@@ -35,7 +38,8 @@
           "boom",
           "mo",
           "bloem"
-        ]
+        ],
+        "beeld": "mo-sok-3.webp"
       }
     },
     {
@@ -45,7 +49,8 @@
         "figuren": [
           "mo",
           "kat:sok"
-        ]
+        ],
+        "beeld": "mo-sok-4.webp"
       }
     }
   ]

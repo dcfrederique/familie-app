@@ -102,7 +102,10 @@ test('Eigen prenten: verhalen, puzzelstukken en aantikbare kleurvlakken', async 
     ...Array.from({ length: 8 }, (_, i) => `dirk-vulkaan-${i + 1}`),
     ...Array.from({ length: 4 }, (_, i) => `pip-zwemmen-${i + 1}`),
     ...Array.from({ length: 6 }, (_, i) => `pip-school-${i + 1}`),
-    'dirk-kleur', 'dirk-bakkerij', 'dirk-water', 'pip-plons',
+    ...Array.from({ length: 4 }, (_, i) => `mo-sok-${i + 1}`),
+    ...Array.from({ length: 6 }, (_, i) => `mo-zonnebloem-${i + 1}`),
+    ...Array.from({ length: 7 }, (_, i) => `missie-maan-${i + 1}`),
+    'dirk-kleur', 'dirk-bakkerij', 'dirk-water', 'pip-plons', 'mo-water', 'maanraket',
   ]
   for (const naam of prenten) {
     const antwoord = await page.request.get(`/prenten/${naam}.webp`)
@@ -110,7 +113,7 @@ test('Eigen prenten: verhalen, puzzelstukken en aantikbare kleurvlakken', async 
     expect(antwoord.headers()['content-type']).toBe('image/webp')
   }
 
-  for (const [nr, beeld] of [[1, 'dirk-1'], [3, 'pip-zwemmen-1'], [12, 'pip-school-1'], [16, 'dirk-hik-1'], [30, 'dirk-vulkaan-1']]) {
+  for (const [nr, beeld] of [[1, 'dirk-1'], [2, 'mo-sok-1'], [3, 'pip-zwemmen-1'], [12, 'pip-school-1'], [14, 'mo-zonnebloem-1'], [16, 'dirk-hik-1'], [23, 'missie-maan-1'], [30, 'dirk-vulkaan-1']]) {
     await naar(page, `/kind/feline/verhaal/${nr}`)
     await expect(page.locator('.verhaal-prent image')).toHaveAttribute('href', `/prenten/${beeld}.webp`)
   }
@@ -124,15 +127,38 @@ test('Eigen prenten: verhalen, puzzelstukken en aantikbare kleurvlakken', async 
   await expect(page.locator('#puzzel-beeld image')).toHaveAttribute('href', '/prenten/pip-zwemmen-4.webp')
   await expect(page.locator('.puzzel-stuk use')).toHaveCount(4)
 
+  await page.getByRole('button', { name: 'Andere prent' }).click()
+  await page.getByRole('button', { name: 'Waar is de sok van Mo?' }).click({ force: true })
+  await expect(page.locator('#puzzel-beeld image')).toHaveAttribute('href', '/prenten/mo-sok-4.webp')
+  await expect(page.locator('.puzzel-stuk use')).toHaveCount(4)
+
+  await page.getByRole('button', { name: 'Andere prent' }).click()
+  const maanpuzzel = page.getByRole('button', { name: 'Missie Maan', exact: true })
+  const volgendePuzzels = page.getByRole('navigation', { name: 'Meer puzzels' }).getByRole('button', { name: 'Volgende bladzijde' })
+  while (!(await maanpuzzel.isVisible()) && await volgendePuzzels.isEnabled()) {
+    await volgendePuzzels.click()
+  }
+  await maanpuzzel.click({ force: true })
+  await expect(page.locator('#puzzel-beeld image')).toHaveAttribute('href', '/prenten/missie-maan-4.webp')
+  await expect(page.locator('.puzzel-stuk use')).toHaveCount(4)
+
   const kleurplaten = [
     { naam: 'Dirk en de ster', inkt: 'dirk-kleur', x: 330, y: 90 },
     { naam: 'Dirk bij de bakker', inkt: 'dirk-bakkerij', x: 300, y: 160 },
     { naam: 'Dirk blust de vulkaan', inkt: 'dirk-water', x: 250, y: 135 },
     { naam: 'Pip maakt een plons', inkt: 'pip-plons', x: 145, y: 210 },
+    { naam: 'Mo geeft water', inkt: 'mo-water', x: 289, y: 103 },
+    { naam: 'Raket naar de maan', inkt: 'maanraket', x: 245, y: 115 },
   ]
   for (const { naam, inkt, x, y } of kleurplaten) {
     await naar(page, '/kind/feline/kleurplaten')
-    await page.getByRole('link', { name: naam }).click({ force: true })
+    await expect(page.getByRole('link', { name: 'Zelf tekenen' })).toBeVisible()
+    const kaart = page.getByRole('link', { name: naam })
+    const volgendePlaten = page.getByRole('navigation', { name: 'Meer kleurplaten' }).getByRole('button', { name: 'Volgende bladzijde' })
+    while (!(await kaart.isVisible()) && await volgendePlaten.isEnabled()) {
+      await volgendePlaten.click()
+    }
+    await kaart.click({ force: true })
     const plaat = page.locator('.kleur-blad .kleurplaat')
     await expect(plaat.locator('image')).toHaveAttribute('href', `/prenten/${inkt}.webp`)
     const plek = await plaat.evaluate((svg: SVGSVGElement, punt) => {

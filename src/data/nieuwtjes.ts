@@ -19,6 +19,18 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.184',
+    datum: '2026-11-25',
+    titel: 'Nieuwe maanprenten voor Sam en Jade',
+    tekst: 'Missie Maan heeft zeven nieuwe prenten. Leg de maanlanding bij Puzzels of kleur de raket bij Kleurplaten.',
+  },
+  {
+    versie: '0.183',
+    datum: '2026-11-25',
+    titel: 'Nieuwe prenten voor Mo de muis',
+    tekst: 'Waar is de sok van Mo? en Mo en de grote zonnebloem hebben nieuwe prenten, ook bij Puzzels. Bij Kleurplaten kan je Mo geeft water inkleuren.',
+  },
+  {
     versie: '0.182',
     datum: '2026-11-25',
     titel: 'Pip duikt in nieuwe prenten',

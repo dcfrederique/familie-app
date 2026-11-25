@@ -4,6 +4,7 @@
   "reeks": "grote-ogen",
   "leeftijd": 6,
   "thema": "Geduld, planten",
+  "puzzelBladzijde": 5,
   "bladzijden": [
     {
       "tekst": "Mo de muis vindt een zonnebloempit. Hij stopt de pit in de grond.",
@@ -12,7 +13,8 @@
         "figuren": [
           "mo",
           "pit"
-        ]
+        ],
+        "beeld": "mo-zonnebloem-1.webp"
       }
     },
     {
@@ -22,7 +24,8 @@
         "figuren": [
           "mo",
           "gieter"
-        ]
+        ],
+        "beeld": "mo-zonnebloem-2.webp"
       }
     },
     {
@@ -32,7 +35,8 @@
         "figuren": [
           "mo",
           "spruit"
-        ]
+        ],
+        "beeld": "mo-zonnebloem-3.webp"
       }
     },
     {
@@ -43,7 +47,8 @@
           "mo",
           "zonnebloem:half",
           "hond"
-        ]
+        ],
+        "beeld": "mo-zonnebloem-4.webp"
       }
     },
     {
@@ -54,7 +59,8 @@
           "huis",
           "zonnebloem:groot",
           "mo"
-        ]
+        ],
+        "beeld": "mo-zonnebloem-5.webp"
       }
     },
     {
@@ -65,7 +71,8 @@
           "mo",
           "pit",
           "zonnebloem:groot"
-        ]
+        ],
+        "beeld": "mo-zonnebloem-6.webp"
       }
     }
   ]

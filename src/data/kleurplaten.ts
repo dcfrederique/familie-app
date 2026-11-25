@@ -4,6 +4,8 @@
 import dirkBakkerij from './kleurplaten/dirk-bakkerij.json'
 import dirkSterren from './kleurplaten/dirk-sterren.json'
 import dirkWater from './kleurplaten/dirk-water.json'
+import maanraket from './kleurplaten/maanraket.json'
+import moWater from './kleurplaten/mo-water.json'
 import pipPlons from './kleurplaten/pip-plons.json'
 
 export type Vlak =
@@ -35,6 +37,8 @@ export const kleurplaten: Kleurplaat[] = [
   dirkBakkerij,
   dirkWater,
   pipPlons,
+  moWater,
+  maanraket,
   {
     sleutel: 'dino', titel: 'Dino in de zon',
     vlakken: [
