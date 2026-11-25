@@ -75,6 +75,7 @@ function SpringScherm({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolea
   useEffect(() => {
     if (!level) return
     const v = new SpringVeld(canvas.current!, figuurSvg, {
+      figuurtje: figuurtjeVan(kind),
       opStand: setStand,
       opGebeurtenis: (g) => {
         if (lezer) return

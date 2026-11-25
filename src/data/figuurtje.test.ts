@@ -75,6 +75,22 @@ describe('tekenen', () => {
     expect(raar).not.toContain('<script>')
     expect(raar).not.toContain('a"b')
   })
+
+  it('behoudt het gekozen uiterlijk in de bewegende houding', () => {
+    const figuurtje = { ...basisFiguurtje(null), haar: 'staartjes', extra: 'cape', schoenen: 'laarzen', broek: 'rok' }
+    const stil = tekenFiguurtje(figuurtje, 'houding')
+    const pose = tekenFiguurtje(figuurtje, 'houding', {
+      linkerBeen: 23, rechterBeen: -23, linkerArm: -23, rechterArm: 23,
+    })
+    expect(pose).toContain('rotate(23 80 203)')
+    expect(pose).toContain('rotate(-23 120 203)')
+    expect(pose).toContain('rotate(-23 52 124)')
+    expect(pose).toContain('rotate(23 148 124)')
+    expect(pose.slice(pose.indexOf('<rect x="88" y="102"'))).toBe(stil.slice(stil.indexOf('<rect x="88" y="102"')))
+    expect(pose).toContain('#D93A3A')
+    expect(pose).toContain('x="60" y="244" width="38" height="40"')
+    expect(pose).toContain('M62 196L138 196L152 244')
+  })
 })
 
 describe('soorten figuurtjes', () => {

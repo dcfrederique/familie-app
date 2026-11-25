@@ -263,7 +263,14 @@ function extrasVooraan(f: Figuurtje, s: string[]) {
 
 const CAPE = '<path d="M66 118L134 118L164 262Q100 274 36 262Z" fill="#D93A3A"/>'
 
-export function tekenFiguurtje(f: Figuurtje, clipId: string): string {
+export interface FiguurHouding {
+  linkerBeen: number
+  rechterBeen: number
+  linkerArm: number
+  rechterArm: number
+}
+
+export function tekenFiguurtje(f: Figuurtje, clipId: string, houding?: FiguurHouding): string {
   // Robot, katje, ridder, astronaut of draakje: eigen lijf, enkel een extra erbij.
   if (f.soort && f.soort !== 'kind' && Object.hasOwn(soortTekeningen, f.soort)) {
     const s: string[] = []
@@ -285,32 +292,76 @@ export function tekenFiguurtje(f: Figuurtje, clipId: string): string {
   if (!bedekt) s.push(haarAchter(f, haar))
   if (f.extra === 'cape') s.push(CAPE)
 
-  // Benen en broek
-  const blotebenen = (y: number) =>
-    `<rect x="66" y="${y}" width="30" height="${270 - y}" fill="${huid}"/><rect x="104" y="${y}" width="30" height="${270 - y}" fill="${huid}"/>`
-  if (f.broek === 'rok') {
-    s.push(blotebenen(208), `<path d="M62 196L138 196L152 244Q100 254 48 244Z" fill="${broek}"/>`)
-  } else {
-    s.push(`<rect x="60" y="196" width="80" height="16" rx="4" fill="${broek}"/>`)
-    if (f.broek === 'short') s.push(blotebenen(232), `<rect x="62" y="206" width="36" height="28" rx="4" fill="${broek}"/><rect x="102" y="206" width="36" height="28" rx="4" fill="${broek}"/>`)
-    else s.push(`<rect x="62" y="206" width="36" height="64" rx="4" fill="${broek}"/><rect x="102" y="206" width="36" height="64" rx="4" fill="${broek}"/>`)
-    s.push(`<path d="M100 212V270" stroke="${donkerder(broek, 0.75)}" stroke-width="3"/>`)
-  }
+  if (houding) {
+    // Teken schoenen en handen in dezelfde groep als het lidmaat waar ze aan vastzitten.
+    for (const links of [true, false]) {
+      const midden = links ? 80 : 120
+      const x = links ? 62 : 102
+      const hoek = links ? houding.linkerBeen : houding.rechterBeen
+      if (hoek) s.push(`<g transform="rotate(${hoek} ${midden} 203)">`)
+      if (f.broek === 'rok' || f.broek === 'short') {
+        const y = f.broek === 'rok' ? 208 : 232
+        s.push(`<rect x="${links ? 66 : 104}" y="${y}" width="30" height="${270 - y}" fill="${huid}"/>`)
+      }
+      if (f.broek !== 'rok') {
+        s.push(`<rect x="${x}" y="206" width="36" height="${f.broek === 'short' ? 28 : 64}" rx="4" fill="${broek}"/>`)
+      }
+      if (f.schoenen === 'laarzen') {
+        const schoenX = links ? 60 : 102
+        s.push(`<rect x="${schoenX}" y="244" width="38" height="40" rx="7" fill="${schoen}"/><rect x="${schoenX}" y="244" width="38" height="8" rx="4" fill="${donkerder(schoen, 0.8)}"/>`)
+      } else if (f.schoenen === 'bloot') {
+        s.push(`<ellipse cx="${midden}" cy="274" rx="20" ry="8" fill="${huid}"/>`)
+      } else {
+        const rand = donkerder(schoen, 0.75)
+        const schoenX = links ? 58 : 100
+        s.push(`<path d="M${schoenX} 264h42v12q0 8-8 8h-26q-8 0-8-8z" fill="${schoen}" stroke="${rand}" stroke-width="2"/><rect x="${schoenX + 2}" y="279" width="38" height="4" fill="${rand}"/>`)
+      }
+      if (hoek) s.push('</g>')
+    }
+    if (f.broek === 'rok') s.push(`<path d="M62 196L138 196L152 244Q100 254 48 244Z" fill="${broek}"/>`)
+    else {
+      s.push(`<rect x="60" y="196" width="80" height="16" rx="4" fill="${broek}"/>`)
+    }
 
-  // Schoenen
-  if (f.schoenen === 'laarzen') {
-    s.push(`<rect x="60" y="244" width="38" height="40" rx="7" fill="${schoen}"/><rect x="102" y="244" width="38" height="40" rx="7" fill="${schoen}"/><rect x="60" y="244" width="38" height="8" rx="4" fill="${donkerder(schoen, 0.8)}"/><rect x="102" y="244" width="38" height="8" rx="4" fill="${donkerder(schoen, 0.8)}"/>`)
-  } else if (f.schoenen === 'bloot') {
-    s.push(`<ellipse cx="80" cy="274" rx="20" ry="8" fill="${huid}"/><ellipse cx="120" cy="274" rx="20" ry="8" fill="${huid}"/>`)
-  } else {
-    const rand = donkerder(schoen, 0.75)
-    s.push(`<path d="M58 264h42v12q0 8-8 8h-26q-8 0-8-8z" fill="${schoen}" stroke="${rand}" stroke-width="2"/><path d="M100 264h42v12q0 8-8 8h-26q-8 0-8-8z" fill="${schoen}" stroke="${rand}" stroke-width="2"/><rect x="60" y="279" width="38" height="4" fill="${rand}"/><rect x="102" y="279" width="38" height="4" fill="${rand}"/>`)
-  }
+    const arm = donkerder(shirt, 0.92)
+    for (const links of [true, false]) {
+      const schouder = links ? 52 : 148
+      const hand = links ? 40 : 160
+      const hoek = f.extra && !['cape', 'bril', 'geen'].includes(f.extra) ? 0 : links ? houding.linkerArm : houding.rechterArm
+      if (hoek) s.push(`<g transform="rotate(${hoek} ${schouder} 124)">`)
+      s.push(`<rect x="${links ? 40 : 138}" y="120" width="22" height="66" rx="11" fill="${arm}" transform="rotate(${links ? 10 : -10} ${schouder} 124)"/><circle cx="${hand}" cy="192" r="12" fill="${huid}"/><circle cx="${hand}" cy="194" r="5" fill="${huidDonker}"/>`)
+      if (hoek) s.push('</g>')
+    }
 
-  // Armen en handen
-  const arm = donkerder(shirt, 0.92)
-  s.push(`<rect x="40" y="120" width="22" height="66" rx="11" fill="${arm}" transform="rotate(10 52 124)"/><rect x="138" y="120" width="22" height="66" rx="11" fill="${arm}" transform="rotate(-10 148 124)"/>`)
-  s.push(`<circle cx="40" cy="192" r="12" fill="${huid}"/><circle cx="40" cy="194" r="5" fill="${huidDonker}"/><circle cx="160" cy="192" r="12" fill="${huid}"/><circle cx="160" cy="194" r="5" fill="${huidDonker}"/>`)
+  } else {
+    // Benen en broek
+    const blotebenen = (y: number) =>
+      `<rect x="66" y="${y}" width="30" height="${270 - y}" fill="${huid}"/><rect x="104" y="${y}" width="30" height="${270 - y}" fill="${huid}"/>`
+    if (f.broek === 'rok') {
+      s.push(blotebenen(208), `<path d="M62 196L138 196L152 244Q100 254 48 244Z" fill="${broek}"/>`)
+    } else {
+      s.push(`<rect x="60" y="196" width="80" height="16" rx="4" fill="${broek}"/>`)
+      if (f.broek === 'short') s.push(blotebenen(232), `<rect x="62" y="206" width="36" height="28" rx="4" fill="${broek}"/><rect x="102" y="206" width="36" height="28" rx="4" fill="${broek}"/>`)
+      else s.push(`<rect x="62" y="206" width="36" height="64" rx="4" fill="${broek}"/><rect x="102" y="206" width="36" height="64" rx="4" fill="${broek}"/>`)
+      s.push(`<path d="M100 212V270" stroke="${donkerder(broek, 0.75)}" stroke-width="3"/>`)
+    }
+
+    // Schoenen
+    if (f.schoenen === 'laarzen') {
+      s.push(`<rect x="60" y="244" width="38" height="40" rx="7" fill="${schoen}"/><rect x="102" y="244" width="38" height="40" rx="7" fill="${schoen}"/><rect x="60" y="244" width="38" height="8" rx="4" fill="${donkerder(schoen, 0.8)}"/><rect x="102" y="244" width="38" height="8" rx="4" fill="${donkerder(schoen, 0.8)}"/>`)
+    } else if (f.schoenen === 'bloot') {
+      s.push(`<ellipse cx="80" cy="274" rx="20" ry="8" fill="${huid}"/><ellipse cx="120" cy="274" rx="20" ry="8" fill="${huid}"/>`)
+    } else {
+      const rand = donkerder(schoen, 0.75)
+      s.push(`<path d="M58 264h42v12q0 8-8 8h-26q-8 0-8-8z" fill="${schoen}" stroke="${rand}" stroke-width="2"/><path d="M100 264h42v12q0 8-8 8h-26q-8 0-8-8z" fill="${schoen}" stroke="${rand}" stroke-width="2"/><rect x="60" y="279" width="38" height="4" fill="${rand}"/><rect x="102" y="279" width="38" height="4" fill="${rand}"/>`)
+    }
+
+    // Armen en handen
+    const arm = donkerder(shirt, 0.92)
+    s.push(`<rect x="40" y="120" width="22" height="66" rx="11" fill="${arm}" transform="rotate(10 52 124)"/><rect x="138" y="120" width="22" height="66" rx="11" fill="${arm}" transform="rotate(-10 148 124)"/>`)
+    s.push(`<circle cx="40" cy="192" r="12" fill="${huid}"/><circle cx="40" cy="194" r="5" fill="${huidDonker}"/><circle cx="160" cy="192" r="12" fill="${huid}"/><circle cx="160" cy="194" r="5" fill="${huidDonker}"/>`)
+
+  }
 
   // Romp
   if (f.shirt === 'regenjas') s.push(`<rect x="58" y="190" width="84" height="30" rx="5" fill="${shirt}"/>`)

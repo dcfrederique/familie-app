@@ -2,12 +2,29 @@
 // lopen, volgt het figuurtje met de camera en luistert naar de pijltjestoetsen, de spatiebalk en tikken.
 import { springLevels, type SpringBesturing, type SpringLevel, type SpringStijl } from '../../data/springen.ts'
 import { geluid } from './geluid.ts'
+import achtergrondUrl from '../../assets/springland/tandwielpad/achtergrond.webp'
+import grasUrl from '../../assets/springland/tandwielpad/gras.webp'
+import steenUrl from '../../assets/springland/tandwielpad/steen.webp'
+import veerUrl from '../../assets/springland/tandwielpad/veer.webp'
+import poortUrl from '../../assets/springland/tandwielpad/poort.webp'
 import {
   BAAS_BREED, BAAS_HOOG, BEESTJE_HOOG, HOOG, nieuwSpel, spring, stap, type Baas, type Beestje, type Kogel, type Ding, type Knoppen,
   type SpringGebeurtenis, type Springen,
 } from './springen.ts'
 
+import type { Figuurtje } from '../../data/figuurtje.ts'
+import { tekenFiguurtje, volledigeUitsnede, type FiguurHouding } from '../figuurtje/tekenen.ts'
+
+const loopHoudingen: FiguurHouding[] = Array.from({ length: 8 }, (_, i) => {
+  const zwaai = Math.round(Math.sin(i * Math.PI / 4) * 23)
+  return { linkerBeen: zwaai, rechterBeen: -zwaai, linkerArm: -zwaai, rechterArm: zwaai }
+})
+const sprongHouding: FiguurHouding = { linkerBeen: 24, rechterBeen: -13, linkerArm: -30, rechterArm: 24 }
+const valHouding: FiguurHouding = { linkerBeen: -9, rechterBeen: 12, linkerArm: 23, rechterArm: -23 }
+const landHouding: FiguurHouding = { linkerBeen: 12, rechterBeen: -12, linkerArm: 16, rechterArm: -16 }
+
 interface Opties {
+  figuurtje: Figuurtje
   opStand: (spel: Springen) => void
   opKlaar: (spel: Springen) => void
   /** Bijzondere gebeurtenissen (omvallen, baas geraakt), bv. om voor te lezen. */
@@ -27,6 +44,16 @@ const kleuren: Record<SpringStijl, { lucht: [string, string]; grond: string; gra
   sneeuw: { lucht: ['#A9CCEB', '#F2F7FC'], grond: '#8FA3B8', gras: '#FFFFFF', plank: '#9C6B45', water: '#7FB7E0' },
 }
 
+const tandwielBeeldUrls = {
+  achtergrond: achtergrondUrl, gras: grasUrl, steen: steenUrl, veer: veerUrl, poort: poortUrl,
+}
+
+function laadBeeld(url: string) {
+  const beeld = new Image()
+  beeld.src = url
+  return beeld
+}
+
 interface Glinster { x: number; y: number; t: number; kleur: string }
 
 export class SpringVeld {
@@ -41,6 +68,9 @@ export class SpringVeld {
   private veerKlok = 0
   private glinsters: Glinster[] = []
   private figuur = new Image()
+  private figuurFrames?: HTMLImageElement[]
+  private landing = 0
+  private tandwielBeelden?: { [K in keyof typeof tandwielBeeldUrls]: HTMLImageElement }
   private knoppen: Knoppen = { links: false, rechts: false }
   private toetsen = new Set<string>()
   private readonly maatKijker: ResizeObserver
@@ -73,6 +103,24 @@ export class SpringVeld {
 
   start(level: SpringLevel, besturing: SpringBesturing) {
     this.spel = nieuwSpel(level, besturing)
+    this.landing = 0
+    const figuurtje = this.opties.figuurtje
+    if (level === 'tandwielpad' && !this.figuurFrames && (!figuurtje.soort || figuurtje.soort === 'kind')) {
+      this.figuurFrames = [...loopHoudingen, sprongHouding, valHouding, landHouding].map((houding) => {
+        const inhoud = tekenFiguurtje(figuurtje, 'springhouding', houding)
+        const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${volledigeUitsnede}" width="416" height="604">${inhoud}</svg>`
+        return laadBeeld(`data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`)
+      })
+    }
+    if (level === 'tandwielpad' && !this.tandwielBeelden) {
+      this.tandwielBeelden = {
+        achtergrond: laadBeeld(tandwielBeeldUrls.achtergrond),
+        gras: laadBeeld(tandwielBeeldUrls.gras),
+        steen: laadBeeld(tandwielBeeldUrls.steen),
+        veer: laadBeeld(tandwielBeeldUrls.veer),
+        poort: laadBeeld(tandwielBeeldUrls.poort),
+      }
+    }
     this.glinsters = []
     this.knoppen = { links: false, rechts: false }
     this.loopt = true
@@ -111,7 +159,9 @@ export class SpringVeld {
       links: this.knoppen.links || this.toetsen.has('ArrowLeft'),
       rechts: this.knoppen.rechts || this.toetsen.has('ArrowRight'),
     }
+    const wasInDeLucht = !this.spel.opGrond
     const { spel, gebeurtenissen } = stap(this.spel, dt, knoppen)
+    this.landing = wasInDeLucht && spel.opGrond ? 0.13 : Math.max(0, this.landing - dt)
     this.spel = spel
     this.veerKlok = Math.max(0, this.veerKlok - dt)
     for (const g of gebeurtenissen) {
@@ -145,6 +195,10 @@ export class SpringVeld {
       return
     }
     this.raf = requestAnimationFrame(this.beeld)
+  }
+
+  private get tandwiel() {
+    return this.spel.level === 'tandwielpad' ? this.tandwielBeelden : undefined
   }
 
   private get stijl(): SpringStijl { return springLevels[this.spel.level].stijl }
@@ -198,6 +252,21 @@ export class SpringVeld {
 
   private achtergrond(cam: number, T: number) {
     const { ctx, W, H } = this
+    const decor = this.tandwiel?.achtergrond
+    if (decor?.complete && decor.naturalWidth) {
+      const breedte = Math.max(W, H * decor.naturalWidth / decor.naturalHeight)
+      const hoogte = breedte * decor.naturalHeight / decor.naturalWidth
+      const scroll = cam * 0.17
+      const eerste = Math.floor(scroll / breedte)
+      for (let i = eerste; i * breedte - scroll < W; i++) {
+        ctx.save()
+        ctx.translate(i * breedte - scroll, (H - hoogte) / 2)
+        if (i % 2) { ctx.translate(breedte, 0); ctx.scale(-1, 1) }
+        ctx.drawImage(decor, 0, 0, breedte, hoogte)
+        ctx.restore()
+      }
+      return
+    }
     const stijl = this.stijl
     if (stijl === 'weide' || stijl === 'sneeuw') {
       if (stijl === 'sneeuw') this.sneeuwvlokjes()
@@ -256,6 +325,22 @@ export class SpringVeld {
     const x = c * T, y = r * T
     const k = kleuren[this.stijl]
     const bovenOpen = r === 0 || spel.vakken[r - 1][c] !== '#'
+    const tandwiel = this.tandwiel
+    if (tandwiel && (v === '#' || v === '=')) {
+      const tegel = v === '=' || bovenOpen ? tandwiel.gras : tandwiel.steen
+      if (tegel.complete && tegel.naturalWidth) {
+        const hoogte = v === '=' ? T * 0.45 : T + 0.5
+        const bronHoogte = v === '=' ? Math.floor(tegel.naturalHeight * 0.45) : tegel.naturalHeight
+        ctx.fillStyle = '#9C612F'
+        ctx.fillRect(x - 0.5, y, T + 1, hoogte)
+        ctx.drawImage(tegel, 0, 0, tegel.naturalWidth, bronHoogte, x - 0.5, y, T + 1, hoogte)
+        if (bovenOpen) {
+          ctx.fillStyle = '#E9D69C'
+          ctx.fillRect(x - 0.5, y, T + 1, Math.max(1, T * 0.025))
+        }
+        return
+      }
+    }
     if (v === '#') {
       if (this.stijl === 'wolken') {
         ctx.fillStyle = r === spel.hoog - 1 || !bovenOpen ? '#EEF4FF' : '#FFFFFF'
@@ -291,6 +376,11 @@ export class SpringVeld {
     } else if (v === '^') {
       // Springpaddenstoel: drukt in als je erop landt.
       const plat = this.veerKlok > 0 && Math.abs(spel.x - (c + 0.5)) < 1 ? 0.25 : 0
+      const veer = tandwiel?.veer
+      if (veer?.complete && veer.naturalWidth) {
+        ctx.drawImage(veer, x + T * 0.05, y + T * (0.1 + plat), T * 0.9, T * (0.9 - plat))
+        return
+      }
       ctx.fillStyle = '#FFF3E0'
       ctx.fillRect(x + T * 0.32, y + T * (0.45 + plat), T * 0.36, T * (0.55 - plat))
       ctx.fillStyle = '#E53935'
@@ -310,6 +400,13 @@ export class SpringVeld {
 
   private tekenHuis(x: number, y: number, T: number) {
     const { ctx } = this
+    const poort = this.tandwiel?.poort
+    if (poort?.complete && poort.naturalWidth) {
+      const hoogte = T * 2.8
+      const breedte = hoogte * poort.naturalWidth / poort.naturalHeight
+      ctx.drawImage(poort, x - breedte / 2, y - hoogte, breedte, hoogte)
+      return
+    }
     ctx.fillStyle = '#FFE0B2'
     ctx.fillRect(x - T * 1.1, y - T * 1.8, T * 2.2, T * 1.8)
     ctx.fillStyle = '#E8772E'
@@ -883,10 +980,18 @@ export class SpringVeld {
     ctx.save()
     ctx.translate(spel.x * T, spel.y * T - hup)
     ctx.rotate(draai)
-    ctx.scale(spel.kijkt, spel.opGrond ? 1 : 1.04)
+    const proef = spel.level === 'tandwielpad'
+    const land = proef && spel.opGrond ? this.landing / 0.13 : 0
+    ctx.scale(spel.kijkt * (1 + land * 0.09), spel.opGrond ? 1 - land * 0.14 : 1.04)
     ctx.fillStyle = 'rgba(0,0,0,.15)'
     if (spel.opGrond) { ctx.beginPath(); ctx.ellipse(0, hup, b * 0.35, T * 0.08, 0, 0, Math.PI * 2); ctx.fill() }
-    if (this.figuur.complete && this.figuur.naturalWidth) ctx.drawImage(this.figuur, -b / 2, -h, b, h)
+    const loopFrames = loopHoudingen.length
+    const frame = !spel.opGrond ? loopFrames + (spel.vy < 0 ? 0 : 1)
+      : land > 0 ? loopFrames + 2
+      : loopt ? Math.floor(spel.stappen * 5) % loopFrames : -1
+    const houding = proef ? this.figuurFrames?.[frame] : undefined
+    const beeld = houding?.complete && houding.naturalWidth ? houding : this.figuur
+    if (beeld.complete && beeld.naturalWidth) ctx.drawImage(beeld, -b / 2, -h, b, h)
     else { ctx.fillStyle = '#2F7BD8'; ctx.beginPath(); ctx.roundRect(-b / 3, -h, (b * 2) / 3, h, b / 3); ctx.fill() }
     ctx.restore()
     ctx.globalAlpha = 1
