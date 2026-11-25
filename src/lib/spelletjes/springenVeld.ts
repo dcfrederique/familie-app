@@ -2,7 +2,7 @@
 // lopen, volgt het figuurtje met de camera en luistert naar de pijltjestoetsen, de spatiebalk en tikken.
 import { springLevels, type SpringBesturing, type SpringLevel, type SpringStijl } from '../../data/springen.ts'
 import { geluid } from './geluid.ts'
-import { springBeeldUrls } from './springenBeelden.ts'
+import { springBeeldUrls, springSpriteNamen, springSpriteUrl } from './springenBeelden.ts'
 import {
   BAAS_BREED, BAAS_HOOG, BEESTJE_HOOG, HOOG, nieuwSpel, spring, stap, type Baas, type Beestje, type Kogel, type Ding, type Knoppen,
   type SpringGebeurtenis, type Springen,
@@ -64,6 +64,7 @@ export class SpringVeld {
   private landing = 0
   private beelden?: { [K in keyof ReturnType<typeof springBeeldUrls>]?: HTMLImageElement }
   private beeldLevel?: SpringLevel
+  private sprites?: Partial<Record<typeof springSpriteNamen[number], HTMLImageElement>>
   private knoppen: Knoppen = { links: false, rechts: false }
   private toetsen = new Set<string>()
   private readonly maatKijker: ResizeObserver
@@ -104,6 +105,13 @@ export class SpringVeld {
         const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${volledigeUitsnede}" width="416" height="604">${inhoud}</svg>`
         return laadBeeld(`data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`)
       })
+    }
+    if (!this.sprites) {
+      this.sprites = {}
+      for (const naam of springSpriteNamen) {
+        const url = springSpriteUrl(naam)
+        if (url) this.sprites[naam] = laadBeeld(url)
+      }
     }
     if (level !== this.beeldLevel) {
       this.beeldLevel = level
@@ -312,6 +320,15 @@ export class SpringVeld {
     ctx.fill()
   }
 
+  private tekenSprite(naam: typeof springSpriteNamen[number], x: number, y: number, breedte: number, hoogte: number, anker = 0.5) {
+    const beeld = this.sprites?.[naam]
+    if (!beeld?.complete || !beeld.naturalWidth) return false
+    const maat = Math.min(breedte / beeld.naturalWidth, hoogte / beeld.naturalHeight)
+    const b = beeld.naturalWidth * maat, h = beeld.naturalHeight * maat
+    this.ctx.drawImage(beeld, x - b / 2, y - h * anker, b, h)
+    return true
+  }
+
   private tekenVak(c: number, r: number, T: number) {
     const { ctx, spel } = this
     const v = spel.vakken[r][c]
@@ -376,6 +393,10 @@ export class SpringVeld {
         ctx.drawImage(veer, x + T * 0.05, y + T * (0.1 + plat), T * 0.9, T * (0.9 - plat))
         return
       }
+      if (this.sprites?.springpaddenstoel?.complete && this.sprites.springpaddenstoel.naturalWidth) {
+        ctx.drawImage(this.sprites.springpaddenstoel, x - T * 0.02, y + T * plat, T * 1.04, T * (1 - plat))
+        return
+      }
       ctx.fillStyle = '#FFF3E0'
       ctx.fillRect(x + T * 0.32, y + T * (0.45 + plat), T * 0.36, T * (0.55 - plat))
       ctx.fillStyle = '#E53935'
@@ -387,6 +408,10 @@ export class SpringVeld {
     } else if (v === '~') {
       ctx.fillStyle = k.water
       ctx.fillRect(x - 0.5, y + T * 0.3, T + 1, T * 0.7)
+      const water = this.sprites?.water
+      if (water?.complete && water.naturalWidth) {
+        ctx.drawImage(water, x - 0.5, y + T * 0.3, T + 1, T * 0.7)
+      }
       ctx.fillStyle = 'rgba(255,255,255,.55)'
       const golf = Math.sin(spel.klok * 3 + c) * T * 0.05
       ctx.beginPath(); ctx.ellipse(x + T / 2, y + T * 0.35 + golf, T * 0.3, T * 0.06, 0, 0, Math.PI * 2); ctx.fill()
@@ -421,6 +446,8 @@ export class SpringVeld {
   private tekenDing(d: Ding, T: number) {
     const { ctx } = this
     const x = d.x * T, y = d.y * T + Math.sin(this.spel.klok * 4 + d.x) * T * 0.06
+    const fruit = springLevels[this.spel.level].fruit
+    if (this.tekenSprite(d.soort === 'ster' ? 'ster' : fruit, x, y, T * 0.75, T * 0.75)) return
     if (d.soort === 'ster') {
       const s = T * 0.75 / 24
       ctx.save(); ctx.translate(x - 12 * s, y - 12 * s); ctx.scale(s, s)
@@ -429,7 +456,6 @@ export class SpringVeld {
       ctx.restore()
       return
     }
-    const fruit = springLevels[this.spel.level].fruit
     if (fruit === 'appel') {
       ctx.fillStyle = '#E53935'
       ctx.beginPath(); ctx.arc(x - T * 0.1, y + T * 0.04, T * 0.22, 0, Math.PI * 2); ctx.arc(x + T * 0.1, y + T * 0.04, T * 0.22, 0, Math.PI * 2); ctx.fill()
@@ -454,15 +480,27 @@ export class SpringVeld {
 
   private tekenBeestje(b: Beestje, T: number) {
     const { ctx } = this
-    const soort = springLevels[this.spel.level].beestje
+    const soort = b.soort
     const plat = b.hupKlok > 0 ? 0.65 : 1
     ctx.save()
     ctx.translate(b.x * T, (b.y - b.op) * T)
-    ctx.scale(b.richting, plat)
     const h = BEESTJE_HOOG * T
-    if (b.krul > 0 && soort === 'egel') {
+    if (b.op > 0) {
+      ctx.fillStyle = 'rgba(0,0,0,.12)'
+      ctx.beginPath(); ctx.ellipse(0, b.op * T, T * 0.4, T * 0.07, 0, 0, Math.PI * 2); ctx.fill()
+    }
+    ctx.scale(b.richting, plat)
+    const opgerold = b.krul > 0 && soort === 'egel'
+    if (opgerold) ctx.rotate(Math.sin(this.spel.klok * 12) * 0.12)
+    const breedte = opgerold ? T * 0.78 : T * 1.15
+    if (this.tekenSprite(opgerold ? 'egelrol' : soort, 0, 0, breedte, h, 1)) {
+      ctx.restore()
+      return
+    }
+    // De oorspronkelijke vectortekeningen kijken naar links.
+    ctx.scale(-1, 1)
+    if (opgerold) {
       // Opgerold tot een stekelbolletje: onschadelijk, wiebelt even.
-      ctx.rotate(Math.sin(this.spel.klok * 12) * 0.12)
       ctx.fillStyle = '#6D4C41'
       ctx.beginPath()
       for (let i = 0; i < 14; i++) {
@@ -474,11 +512,6 @@ export class SpringVeld {
       ctx.beginPath(); ctx.arc(0, -h * 0.4, h * 0.2, 0, Math.PI * 2); ctx.fill()
       ctx.restore()
       return
-    }
-    if (b.op > 0) {
-      // Een vogel fladdert: schaduwtje op de grond en wiekjes.
-      ctx.fillStyle = 'rgba(0,0,0,.12)'
-      ctx.beginPath(); ctx.ellipse(0, b.op * T, T * 0.4, T * 0.07, 0, 0, Math.PI * 2); ctx.fill()
     }
     if (soort === 'slak') {
       ctx.fillStyle = '#C5E1A5'
@@ -515,9 +548,10 @@ export class SpringVeld {
     ctx.restore()
   }
 
-  /** Een vlaggetje: grijs tot je erlangs liep, daarna rood en vrolijk wapperend. */
+  /** Een checkpoint krijgt een gouden ster zodra het actief is. */
   private tekenVlag(x: number, y: number, T: number, bereikt: boolean) {
     const { ctx } = this
+    if (this.tekenSprite(bereikt ? 'checkpoint-actief' : 'checkpoint', x, y, T * 1.2, T * 1.48, 1)) return
     ctx.strokeStyle = '#5B6472'; ctx.lineWidth = T * 0.07
     ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x, y - T * 1.3); ctx.stroke()
     ctx.fillStyle = bereikt ? '#E53935' : '#B8C0CC'
@@ -531,6 +565,7 @@ export class SpringVeld {
     ctx.save(); ctx.translate(k.x * T, k.y * T)
     if (k.soort === 'bal') {
       ctx.translate(0, -T * 0.4); ctx.rotate(this.spel.klok * 6 * Math.sign(k.vx))
+      if (this.tekenSprite('bal', 0, 0, T * 0.8, T * 0.8)) { ctx.restore(); return }
       ctx.fillStyle = '#F4F9FD'; ctx.strokeStyle = '#9DB9D4'; ctx.lineWidth = T * 0.05
       ctx.beginPath(); ctx.arc(0, 0, T * 0.4, 0, Math.PI * 2); ctx.fill(); ctx.stroke()
       ctx.fillStyle = '#C9DDEE'
@@ -539,6 +574,7 @@ export class SpringVeld {
       // Een pakje van de Bromschoorsteen: rood met een gouden strik; als het ligt, is het onschadelijk en wat doorzichtig.
       if (k.ligt) ctx.globalAlpha = 0.55
       ctx.rotate(k.ligt ? 0 : Math.sin(this.spel.klok * 9 + k.x) * 0.25)
+      if (this.tekenSprite('pakje', 0, 0, T * 0.8, T * 0.83, 1)) { ctx.restore(); return }
       ctx.fillStyle = '#D63A32'; ctx.strokeStyle = 'rgba(0,0,0,.35)'; ctx.lineWidth = T * 0.04
       ctx.beginPath(); ctx.roundRect(-T * 0.38, -T * 0.7, T * 0.76, T * 0.66, T * 0.06); ctx.fill(); ctx.stroke()
       ctx.fillStyle = '#FFFFFF'
@@ -546,6 +582,7 @@ export class SpringVeld {
       ctx.strokeStyle = '#F2C530'; ctx.lineWidth = T * 0.07; ctx.lineCap = 'round'
       ctx.beginPath(); ctx.moveTo(0, -T * 0.7); ctx.quadraticCurveTo(-T * 0.3, -T * 0.98, -T * 0.16, -T * 0.7); ctx.moveTo(0, -T * 0.7); ctx.quadraticCurveTo(T * 0.3, -T * 0.98, T * 0.16, -T * 0.7); ctx.stroke()
     } else {
+      if (this.tekenSprite('druppel', 0, 0, T * 0.35, T * 0.36, 1)) { ctx.restore(); return }
       ctx.fillStyle = '#4C9BF0'
       ctx.beginPath(); ctx.moveTo(0, -T * 0.3); ctx.quadraticCurveTo(T * 0.2, -T * 0.05, 0, 0); ctx.quadraticCurveTo(-T * 0.2, -T * 0.05, 0, -T * 0.3); ctx.fill()
     }
@@ -556,6 +593,7 @@ export class SpringVeld {
   private tekenPoort(spel: Springen, T: number) {
     const { ctx } = this
     const x = (spel.huis.x - 2.2) * T, y = spel.huis.y * T
+    if (this.tekenSprite('baashekje', x, y, T * 1.38, T * 1.4, 1)) return
     ctx.fillStyle = '#C98B4E'
     for (let i = 0; i < 4; i++) ctx.fillRect(x - T * 0.5 + i * T * 0.3, y - T * 1.4, T * 0.18, T * 1.4)
     ctx.fillRect(x - T * 0.55, y - T * 1.1, T * 1.3, T * 0.14)

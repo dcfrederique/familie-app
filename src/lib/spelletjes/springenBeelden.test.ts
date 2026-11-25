@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { springLevelLijst, springLevels } from '../../data/springen.ts'
-import { springBeeldUrls } from './springenBeelden.ts'
+import { springBeeldUrls, springSpriteNamen, springSpriteUrl } from './springenBeelden.ts'
 
 describe('Springland-beelden', () => {
   it('heeft een achtergrond, terrein en eindpoort voor elk bestaand level', () => {
@@ -11,6 +11,10 @@ describe('Springland-beelden', () => {
       expect(beelden.ondergrond, level.id).toBeTruthy()
       expect(beelden.poort, level.id).toBeTruthy()
     }
+  })
+
+  it('bundelt voor elk spelobject een sprite', () => {
+    for (const naam of springSpriteNamen) expect(springSpriteUrl(naam), naam).toBeTruthy()
   })
 
   it('geeft de eerste wereld vijf verschillende achtergronden en gebruikt een losse tandwieltegel', () => {

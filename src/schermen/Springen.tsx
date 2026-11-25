@@ -14,7 +14,7 @@ import { gepakt, springPunten, totaal, type Springen as SpringStand } from '../l
 import { SpringVeld } from '../lib/spelletjes/springenVeld.ts'
 import { leesVoor } from '../lib/voorlezen.ts'
 import { useProef } from '../lib/proef.tsx'
-import { Ster } from './onderdelen.tsx'
+import { springSpriteUrl } from '../lib/spelletjes/springenBeelden.ts'
 import SpelKader, { Chips, EindKnoppen } from './SpelKader.tsx'
 import SpringKaart, { StijlIcoon } from './SpringKaart.tsx'
 import './springen.css'
@@ -160,7 +160,7 @@ function SpringScherm({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolea
           )}
         </div>
         <div className="spel-score display" aria-live="polite">
-          <Ster grootte={28} /> {stand ? gepakt(stand) : 0}<small> / {stand ? totaal(stand) : 0}</small>
+          <img src={springSpriteUrl('ster')} width="28" height="28" alt="" /> {stand ? gepakt(stand) : 0}<small> / {stand ? totaal(stand) : 0}</small>
         </div>
       </div>
 
@@ -188,7 +188,7 @@ function SpringScherm({ kind, ouder = false }: { kind: Gebruiker; ouder?: boolea
           <div className="penalty-einde reken-kaart" role="dialog" aria-label="Thuis!">
             <h2 className="display klaar-titel">{lezer ? (springLevels[level].baas ? 'Baas verslagen!' : 'Je bent thuis!') : 'Hoera!'}</h2>
             <p className="klaar-uitleg spring-uitslag">
-              <Ster grootte={30} /> {gepakt(klaar)} / {totaal(klaar)}
+              <img src={springSpriteUrl('ster')} width="30" height="30" alt="" /> {gepakt(klaar)} / {totaal(klaar)}
               {lezer && nieuwRecord && <span> · nieuw record!</span>}
             </p>
             {volgende && (

@@ -5,7 +5,7 @@ import {
   KAART_HOOG, MIST_BREED, aankleding, bocht, kaartIndeling, lengte, levelOpen, opWandeling, padPunten, wandeling, type Punt,
 } from '../lib/spelletjes/springKaart.ts'
 import { Grond, LevelLand, Leven, Mistwolken, Rivier, Versiersel } from './SpringKaartPrent.tsx'
-import { Ster } from './onderdelen.tsx'
+import { springSpriteUrl } from '../lib/spelletjes/springenBeelden.ts'
 
 // De landkaart van Springland van bovenaf (docs/springland.md): tik op een plekje en je figuurtje wandelt erheen
 // langs het pad; daar aangekomen begint het level. Op slot = nog niet uitgespeeld wat ervoor komt.
@@ -286,7 +286,7 @@ export default function SpringKaart({ figuur, lezer, af, best, alles, plek, mete
               {b !== null && (
                 <g transform="translate(44 -40)">
                   <rect x="-38" y="-16" width="76" height="32" rx="16" fill="#FFFFFF" />
-                  <g transform="translate(-30 -12)"><Ster grootte={24} /></g>
+                  <image href={springSpriteUrl('ster')} x="-30" y="-12" width="24" height="24" aria-hidden="true" />
                   <text x="10" y="8" className="spring-best-tekst" textAnchor="middle">{b}</text>
                 </g>
               )}

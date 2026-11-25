@@ -60,3 +60,13 @@ export function springBeeldUrls(level: SpringLevelInfo) {
     poort: urls[wortel + 'poort/' + poort + '.webp'],
   }
 }
+
+export const springSpriteNamen = [
+  'ster', 'appel', 'aardbei', 'kers', 'egel', 'egelrol', 'slak', 'vogel',
+  'checkpoint', 'checkpoint-actief', 'springpaddenstoel', 'water',
+  'bal', 'pakje', 'druppel', 'baashekje',
+] as const
+
+export function springSpriteUrl(naam: typeof springSpriteNamen[number]) {
+  return urls[wortel + 'sprites/' + naam + '.webp']
+}
