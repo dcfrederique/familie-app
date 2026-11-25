@@ -1,9 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import { Link } from 'react-router-dom'
+import huisdierPrent from '../assets/spelen/huisdier-wassen.webp'
+import memoryPrent from '../assets/spelen/memory.webp'
+import racenPrent from '../assets/spelen/racen.webp'
+import springlandPrent from '../assets/spelen/springland.webp'
 import { inAanbod, leegAanbod, metPrijs } from '../data/aanbod.ts'
 import { bezitSleutel } from '../data/figuurtje.ts'
 import type { Gebruiker } from '../data/gezin.ts'
-import { spelIsVrij, spelMenu, spelPrijs, type SpelInfo } from '../data/spelletjes.ts'
+import { spelIsVrij, spelMenu, spelPrijs, type SpelInfo, type SpelSleutel } from '../data/spelletjes.ts'
 import { useGegevens } from '../lib/gegevens.ts'
 import { useSessie } from '../lib/sessie.tsx'
 import { geluid } from '../lib/spelletjes/geluid.ts'
@@ -19,6 +23,17 @@ import Bladzijden from './Bladzijden.tsx'
 // Hoogte gedeeld door breedte van een tegel per thema (kasteel: wimpel erboven, tuin: paddenstoel met steel).
 import { dataThemaVan } from '../data/dataThemas.ts'
 const VERHOUDING = { race: 1, kasteel: 1.3, tuin: 1.2, voetbal: 1 }
+
+const spelPrenten: Partial<Record<SpelSleutel, string>> = {
+  huisdier: huisdierPrent, memory: memoryPrent, racen: racenPrent, springen: springlandPrent,
+}
+
+function spelPrent(spel: SpelInfo, maat: number) {
+  const prent = spelPrenten[spel.sleutel]
+  return prent
+    ? <img className="spel-prent" src={prent} width={maat} height={maat} decoding="async" alt="" />
+    : <svg className="ic" viewBox="0 0 24 24" width={maat} height={maat} aria-hidden="true"><path d={spel.icoon} /></svg>
+}
 
 const SLOT = 'M7 11V8a5 5 0 0 1 10 0v3M5 11h14v10H5zM12 15v2'
 
@@ -67,10 +82,6 @@ function SpelMenu({ kind }: { kind: Gebruiker }) {
     tipKlok.current = window.setTimeout(() => setTip(null), 2600)
   }
 
-  const icoon = (s: SpelInfo, maat: number) => (
-    <svg className="ic" viewBox="0 0 24 24" width={maat} height={maat} aria-hidden="true"><path d={s.icoon} /></svg>
-  )
-
   return (
     <>
       {data && spellen.some((s) => !spelIsVrij(s, v)) && (
@@ -83,7 +94,7 @@ function SpelMenu({ kind }: { kind: Gebruiker }) {
           const dicht = !spelIsVrij(s, v)
           const tegel = (
             <span className="spel-tegel">
-              {icoon(s, 56)}
+              {spelPrent(s, 56)}
               {dicht && thema && <ThemaSlot thema={thema} />}
               {dicht && !thema && (
                 <span className="spel-slot" aria-hidden="true">
@@ -122,7 +133,7 @@ function SpelMenu({ kind }: { kind: Gebruiker }) {
           )
         }} />
       {koop && bron && (
-        <KoopVraag kind={kind} naam={koop.naam} prijs={spelPrijs(koop, v)} vrij={vrij} prent={icoon(koop, 110)}
+        <KoopVraag kind={kind} naam={koop.naam} prijs={spelPrijs(koop, v)} vrij={vrij} prent={spelPrent(koop, 110)}
                    koop={async () => { await bron.kopen(kind.id, 'spel', koop.sleutel, koop.naam); await ververs() }}
                    sluit={() => setKoop(null)} />
       )}

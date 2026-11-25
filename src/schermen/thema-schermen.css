@@ -203,6 +203,7 @@
   box-shadow: inset -7px 0 0 #F2E2C4;
 }
 .thema-tuin .spel-tegel > svg.ic { position: relative; width: 30%; height: auto; aspect-ratio: 1; padding: 7%; margin-top: 4%; border-radius: 50%; background: #FFFFFF; color: #8A3FC0; box-sizing: content-box; }
+.thema-tuin .spel-tegel > .spel-prent { width: 66%; height: 84%; }
 .thema-tuin .spel-knop:nth-child(8n+2) { --hoed: #8A3FC0; }
 .thema-tuin .spel-knop:nth-child(8n+3) { --hoed: #E0672E; }
 .thema-tuin .spel-knop:nth-child(8n+4) { --hoed: #4D9BE8; }

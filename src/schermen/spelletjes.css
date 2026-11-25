@@ -9,6 +9,9 @@
 }
 .spel-knop:active { transform: translateY(4px); box-shadow: 0 2px 0 var(--shade); }
 .spel-tegel { position: relative; width: 42%; aspect-ratio: 1; border-radius: 28px; background: var(--kid-tint); color: var(--kid); display: grid; place-items: center; }
+.spel-prent { display: block; object-fit: contain; }
+.spel-tegel > .spel-prent { position: relative; width: 88%; height: 88%; }
+.koop-prent > .spel-prent { width: 80%; height: 80%; }
 .spel-naam { font-size: clamp(20px, 2.2vw, 30px); line-height: 1; padding: 0 8px; }
 .spel-uitleg { display: inline-flex; align-items: center; gap: 4px; padding: 0 10px; font-size: 16px; font-weight: 700; color: var(--muted); }
 .spel-knop.op-slot .spel-tegel { background: var(--soft); color: var(--muted); }
