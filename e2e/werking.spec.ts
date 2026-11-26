@@ -105,9 +105,10 @@ test('Eigen prenten: verhalen, puzzelstukken en aantikbare kleurvlakken', async 
     ...Array.from({ length: 4 }, (_, i) => `mo-sok-${i + 1}`),
     ...Array.from({ length: 6 }, (_, i) => `mo-zonnebloem-${i + 1}`),
     ...Array.from({ length: 7 }, (_, i) => `missie-maan-${i + 1}`),
-    ...['eendjes-vijver', 'beer-ruimt-op', 'kleine-wolkje'].flatMap((reeks) =>
+    ...['eendjes-vijver', 'beer-ruimt-op', 'kleine-wolkje', 'tijs-poetst', 'kleurenregen', 'poesje-doos'].flatMap((reeks) =>
       Array.from({ length: 4 }, (_, i) => `${reeks}-${i + 1}`)),
     'eendjes-vijver', 'beer-met-de-bal', 'wolkje-en-bloemen',
+    'tijs-poetst', 'regenboog-kleuren', 'poesje-in-de-doos',
     'dirk-kleur', 'dirk-bakkerij', 'dirk-water', 'pip-plons', 'mo-water', 'maanraket',
   ]
   for (const naam of prenten) {
@@ -116,7 +117,13 @@ test('Eigen prenten: verhalen, puzzelstukken en aantikbare kleurvlakken', async 
     expect(antwoord.headers()['content-type']).toBe('image/webp')
   }
 
-  for (const [nr, beeld] of [[1, 'dirk-1'], [2, 'mo-sok-1'], [3, 'pip-zwemmen-1'], [4, 'eendjes-vijver-1'], [5, 'beer-ruimt-op-1'], [8, 'kleine-wolkje-1'], [12, 'pip-school-1'], [14, 'mo-zonnebloem-1'], [16, 'dirk-hik-1'], [23, 'missie-maan-1'], [30, 'dirk-vulkaan-1']]) {
+  const eerstePrenten = [
+    [1, 'dirk-1'], [2, 'mo-sok-1'], [3, 'pip-zwemmen-1'], [4, 'eendjes-vijver-1'],
+    [5, 'beer-ruimt-op-1'], [6, 'tijs-poetst-1'], [7, 'kleurenregen-1'], [8, 'kleine-wolkje-1'],
+    [9, 'poesje-doos-1'], [12, 'pip-school-1'], [14, 'mo-zonnebloem-1'], [16, 'dirk-hik-1'],
+    [23, 'missie-maan-1'], [30, 'dirk-vulkaan-1'],
+  ]
+  for (const [nr, beeld] of eerstePrenten) {
     await naar(page, `/kind/feline/verhaal/${nr}`)
     await expect(page.locator('.verhaal-prent image')).toHaveAttribute('href', `/prenten/${beeld}.webp`)
   }
@@ -155,6 +162,9 @@ test('Eigen prenten: verhalen, puzzelstukken en aantikbare kleurvlakken', async 
     { naam: 'Eendjes in de vijver', inkt: 'eendjes-vijver', x: 105, y: 129 },
     { naam: 'Beer en zijn bal', inkt: 'beer-met-de-bal', x: 178, y: 62 },
     { naam: 'Wolkje geeft de bloemen water', inkt: 'wolkje-en-bloemen', x: 197, y: 65 },
+    { naam: 'Tijs poetst zijn tanden', inkt: 'tijs-poetst', x: 202, y: 61 },
+    { naam: 'Een regenboog vol kleuren', inkt: 'regenboog-kleuren', x: 198, y: 86 },
+    { naam: 'Het poesje in de doos', inkt: 'poesje-in-de-doos', x: 184, y: 90 },
   ]
   for (const { naam, inkt, x, y } of kleurplaten) {
     await naar(page, '/kind/feline/kleurplaten')

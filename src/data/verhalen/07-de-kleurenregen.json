@@ -13,7 +13,8 @@
           "konijn",
           "eend",
           "beer"
-        ]
+        ],
+        "beeld": "kleurenregen-1.webp"
       }
     },
     {
@@ -24,7 +25,8 @@
           "kleurregen",
           "konijn",
           "eend"
-        ]
+        ],
+        "beeld": "kleurenregen-2.webp"
       }
     },
     {
@@ -37,7 +39,8 @@
           "eend",
           "vos",
           "konijn"
-        ]
+        ],
+        "beeld": "kleurenregen-3.webp"
       }
     },
     {
@@ -50,7 +53,8 @@
           "eend",
           "vos",
           "konijn"
-        ]
+        ],
+        "beeld": "kleurenregen-4.webp"
       }
     }
   ]

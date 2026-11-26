@@ -11,7 +11,8 @@
         "decor": "badkamer",
         "figuren": [
           "tijs"
-        ]
+        ],
+        "beeld": "tijs-poetst-1.webp"
       }
     },
     {
@@ -21,7 +22,8 @@
         "figuren": [
           "tijs",
           "tandenborstel"
-        ]
+        ],
+        "beeld": "tijs-poetst-2.webp"
       }
     },
     {
@@ -31,7 +33,8 @@
         "figuren": [
           "tijs",
           "tandenborstel"
-        ]
+        ],
+        "beeld": "tijs-poetst-3.webp"
       }
     },
     {
@@ -40,7 +43,8 @@
         "decor": "badkamer",
         "figuren": [
           "tijs:lacht"
-        ]
+        ],
+        "beeld": "tijs-poetst-4.webp"
       }
     }
   ]

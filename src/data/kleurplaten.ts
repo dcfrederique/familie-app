@@ -1,6 +1,9 @@
 // Kleurplaten als data: elke plaat bestaat uit vlakken die je met één tik inkleurt (viewBox 400 × 300).
 // Vlakken liggen op elkaar in deze volgorde; lijnen zijn alleen versiering en kleur je niet in. Eigen ontwerp.
 
+import tijsPoetst from './kleurplaten/tijs-poetst.json'
+import regenboogKleuren from './kleurplaten/regenboog-kleuren.json'
+import poesjeInDeDoos from './kleurplaten/poesje-in-de-doos.json'
 import beerMetDeBal from './kleurplaten/beer-met-de-bal.json'
 import eendjesVijver from './kleurplaten/eendjes-vijver.json'
 import wolkjeEnBloemen from './kleurplaten/wolkje-en-bloemen.json'
@@ -45,6 +48,9 @@ export const kleurplaten: Kleurplaat[] = [
   eendjesVijver,
   beerMetDeBal,
   wolkjeEnBloemen,
+  tijsPoetst,
+  regenboogKleuren,
+  poesjeInDeDoos,
   {
     sleutel: 'dino', titel: 'Dino in de zon',
     vlakken: [

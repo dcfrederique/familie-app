@@ -11,7 +11,8 @@
         "decor": "kamer",
         "figuren": [
           "doos"
-        ]
+        ],
+        "beeld": "poesje-doos-1.webp"
       }
     },
     {
@@ -21,7 +22,8 @@
         "figuren": [
           "doos",
           "hond"
-        ]
+        ],
+        "beeld": "poesje-doos-2.webp"
       }
     },
     {
@@ -30,7 +32,8 @@
         "decor": "kamer",
         "figuren": [
           "doos"
-        ]
+        ],
+        "beeld": "poesje-doos-3.webp"
       }
     },
     {
@@ -40,7 +43,8 @@
         "figuren": [
           "doos:open",
           "poes"
-        ]
+        ],
+        "beeld": "poesje-doos-4.webp"
       }
     }
   ]
