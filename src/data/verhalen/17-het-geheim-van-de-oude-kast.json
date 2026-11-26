@@ -12,7 +12,8 @@
         "figuren": [
           "kast",
           "meisje"
-        ]
+        ],
+        "beeld": "oude-kast-1.webp"
       }
     },
     {
@@ -21,7 +22,8 @@
         "decor": "kamer",
         "figuren": [
           "kast:open"
-        ]
+        ],
+        "beeld": "oude-kast-2.webp"
       }
     },
     {
@@ -30,7 +32,8 @@
         "decor": "sneeuwbos",
         "figuren": [
           "meisje"
-        ]
+        ],
+        "beeld": "oude-kast-3.webp"
       }
     },
     {
@@ -40,7 +43,8 @@
         "figuren": [
           "meisje",
           "vos"
-        ]
+        ],
+        "beeld": "oude-kast-4.webp"
       }
     },
     {
@@ -51,7 +55,8 @@
           "lantaarn",
           "vos",
           "meisje"
-        ]
+        ],
+        "beeld": "oude-kast-5.webp"
       }
     },
     {
@@ -61,7 +66,8 @@
         "figuren": [
           "meisje",
           "kast"
-        ]
+        ],
+        "beeld": "oude-kast-6.webp"
       }
     }
   ]

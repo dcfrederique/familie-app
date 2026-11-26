@@ -113,6 +113,9 @@ test('Eigen prenten: verhalen, puzzelstukken en aantikbare kleurvlakken', async 
     ...Array.from({ length: 5 }, (_, i) => `noor-taart-${i + 1}`),
     ...Array.from({ length: 6 }, (_, i) => `tilda-tovert-${i + 1}`),
     'koe-slaapt', 'bob-en-de-taart', 'kikker-met-hoed',
+    ...['paard-danst', 'oude-kast', 'eekhoorns-ruilen'].flatMap((reeks) =>
+      Array.from({ length: 6 }, (_, i) => `${reeks}-${i + 1}`)),
+    'dansend-paard', 'vos-met-sjaal', 'eekhoorns-in-het-bos',
     'dirk-kleur', 'dirk-bakkerij', 'dirk-water', 'pip-plons', 'mo-water', 'maanraket',
   ]
   for (const naam of prenten) {
@@ -126,6 +129,7 @@ test('Eigen prenten: verhalen, puzzelstukken en aantikbare kleurvlakken', async 
     [5, 'beer-ruimt-op-1'], [6, 'tijs-poetst-1'], [7, 'kleurenregen-1'], [8, 'kleine-wolkje-1'],
     [9, 'poesje-doos-1'], [10, 'welterusten-boerderij-1'], [11, 'noor-taart-1'],
     [12, 'pip-school-1'], [13, 'tilda-tovert-1'], [14, 'mo-zonnebloem-1'], [16, 'dirk-hik-1'],
+    [15, 'paard-danst-1'], [17, 'oude-kast-1'], [18, 'eekhoorns-ruilen-1'],
     [23, 'missie-maan-1'], [30, 'dirk-vulkaan-1'],
   ]
   for (const [nr, beeld] of eerstePrenten) {
@@ -173,6 +177,9 @@ test('Eigen prenten: verhalen, puzzelstukken en aantikbare kleurvlakken', async 
     { naam: 'De koe gaat slapen', inkt: 'koe-slaapt', x: 145, y: 155 },
     { naam: 'Bob en de aardbeientaart', inkt: 'bob-en-de-taart', x: 113, y: 83 },
     { naam: 'De kikker met zijn toverhoed', inkt: 'kikker-met-hoed', x: 155, y: 204 },
+    { naam: 'Het dansende paard', inkt: 'dansend-paard', x: 201, y: 198 },
+    { naam: 'De vos met de rode sjaal', inkt: 'vos-met-sjaal', x: 154, y: 96 },
+    { naam: 'De eekhoorns en hun nootjes', inkt: 'eekhoorns-in-het-bos', x: 130, y: 77 },
   ]
   for (const { naam, inkt, x, y } of kleurplaten) {
     await naar(page, '/kind/feline/kleurplaten')
