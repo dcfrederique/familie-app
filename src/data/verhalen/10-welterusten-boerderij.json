@@ -14,7 +14,8 @@
           "koe",
           "varken",
           "kip"
-        ]
+        ],
+        "beeld": "welterusten-boerderij-1.webp"
       }
     },
     {
@@ -24,7 +25,8 @@
         "figuren": [
           "koe",
           "varken"
-        ]
+        ],
+        "beeld": "welterusten-boerderij-2.webp"
       }
     },
     {
@@ -34,7 +36,8 @@
         "figuren": [
           "schaap",
           "kip"
-        ]
+        ],
+        "beeld": "welterusten-boerderij-3.webp"
       }
     },
     {
@@ -46,7 +49,8 @@
           "schaap:slaapt",
           "varken:slaapt",
           "maan"
-        ]
+        ],
+        "beeld": "welterusten-boerderij-4.webp"
       }
     }
   ]

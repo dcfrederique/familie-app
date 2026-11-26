@@ -109,6 +109,10 @@ test('Eigen prenten: verhalen, puzzelstukken en aantikbare kleurvlakken', async 
       Array.from({ length: 4 }, (_, i) => `${reeks}-${i + 1}`)),
     'eendjes-vijver', 'beer-met-de-bal', 'wolkje-en-bloemen',
     'tijs-poetst', 'regenboog-kleuren', 'poesje-in-de-doos',
+    ...Array.from({ length: 4 }, (_, i) => `welterusten-boerderij-${i + 1}`),
+    ...Array.from({ length: 5 }, (_, i) => `noor-taart-${i + 1}`),
+    ...Array.from({ length: 6 }, (_, i) => `tilda-tovert-${i + 1}`),
+    'koe-slaapt', 'bob-en-de-taart', 'kikker-met-hoed',
     'dirk-kleur', 'dirk-bakkerij', 'dirk-water', 'pip-plons', 'mo-water', 'maanraket',
   ]
   for (const naam of prenten) {
@@ -120,7 +124,8 @@ test('Eigen prenten: verhalen, puzzelstukken en aantikbare kleurvlakken', async 
   const eerstePrenten = [
     [1, 'dirk-1'], [2, 'mo-sok-1'], [3, 'pip-zwemmen-1'], [4, 'eendjes-vijver-1'],
     [5, 'beer-ruimt-op-1'], [6, 'tijs-poetst-1'], [7, 'kleurenregen-1'], [8, 'kleine-wolkje-1'],
-    [9, 'poesje-doos-1'], [12, 'pip-school-1'], [14, 'mo-zonnebloem-1'], [16, 'dirk-hik-1'],
+    [9, 'poesje-doos-1'], [10, 'welterusten-boerderij-1'], [11, 'noor-taart-1'],
+    [12, 'pip-school-1'], [13, 'tilda-tovert-1'], [14, 'mo-zonnebloem-1'], [16, 'dirk-hik-1'],
     [23, 'missie-maan-1'], [30, 'dirk-vulkaan-1'],
   ]
   for (const [nr, beeld] of eerstePrenten) {
@@ -165,6 +170,9 @@ test('Eigen prenten: verhalen, puzzelstukken en aantikbare kleurvlakken', async 
     { naam: 'Tijs poetst zijn tanden', inkt: 'tijs-poetst', x: 202, y: 61 },
     { naam: 'Een regenboog vol kleuren', inkt: 'regenboog-kleuren', x: 198, y: 86 },
     { naam: 'Het poesje in de doos', inkt: 'poesje-in-de-doos', x: 184, y: 90 },
+    { naam: 'De koe gaat slapen', inkt: 'koe-slaapt', x: 145, y: 155 },
+    { naam: 'Bob en de aardbeientaart', inkt: 'bob-en-de-taart', x: 113, y: 83 },
+    { naam: 'De kikker met zijn toverhoed', inkt: 'kikker-met-hoed', x: 155, y: 204 },
   ]
   for (const { naam, inkt, x, y } of kleurplaten) {
     await naar(page, '/kind/feline/kleurplaten')

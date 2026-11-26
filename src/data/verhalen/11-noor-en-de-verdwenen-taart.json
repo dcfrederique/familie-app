@@ -11,7 +11,8 @@
         "decor": "keuken",
         "figuren": [
           "noor"
-        ]
+        ],
+        "beeld": "noor-taart-1.webp"
       }
     },
     {
@@ -21,7 +22,8 @@
         "figuren": [
           "noor",
           "kruimels"
-        ]
+        ],
+        "beeld": "noor-taart-2.webp"
       }
     },
     {
@@ -31,7 +33,8 @@
         "figuren": [
           "noor:spiegel",
           "kruimels"
-        ]
+        ],
+        "beeld": "noor-taart-3.webp"
       }
     },
     {
@@ -41,7 +44,8 @@
         "figuren": [
           "noor",
           "hond:room"
-        ]
+        ],
+        "beeld": "noor-taart-4.webp"
       }
     },
     {
@@ -52,7 +56,8 @@
           "noor",
           "taart",
           "hond"
-        ]
+        ],
+        "beeld": "noor-taart-5.webp"
       }
     }
   ]

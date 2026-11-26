@@ -11,7 +11,8 @@
         "decor": "bos",
         "figuren": [
           "tovenares"
-        ]
+        ],
+        "beeld": "tilda-tovert-1.webp"
       }
     },
     {
@@ -21,7 +22,8 @@
         "figuren": [
           "tovenares",
           "kikker:hoed"
-        ]
+        ],
+        "beeld": "tilda-tovert-2.webp"
       }
     },
     {
@@ -31,7 +33,8 @@
         "figuren": [
           "tovenares",
           "knopen"
-        ]
+        ],
+        "beeld": "tilda-tovert-3.webp"
       }
     },
     {
@@ -41,7 +44,8 @@
         "figuren": [
           "tovenares",
           "kat:groen"
-        ]
+        ],
+        "beeld": "tilda-tovert-4.webp"
       }
     },
     {
@@ -51,7 +55,8 @@
         "figuren": [
           "kikker:hoed",
           "tovenares"
-        ]
+        ],
+        "beeld": "tilda-tovert-5.webp"
       }
     },
     {
@@ -60,7 +65,8 @@
         "decor": "bos",
         "figuren": [
           "kikker:hoed"
-        ]
+        ],
+        "beeld": "tilda-tovert-6.webp"
       }
     }
   ]
