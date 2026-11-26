@@ -105,6 +105,9 @@ test('Eigen prenten: verhalen, puzzelstukken en aantikbare kleurvlakken', async 
     ...Array.from({ length: 4 }, (_, i) => `mo-sok-${i + 1}`),
     ...Array.from({ length: 6 }, (_, i) => `mo-zonnebloem-${i + 1}`),
     ...Array.from({ length: 7 }, (_, i) => `missie-maan-${i + 1}`),
+    ...['eendjes-vijver', 'beer-ruimt-op', 'kleine-wolkje'].flatMap((reeks) =>
+      Array.from({ length: 4 }, (_, i) => `${reeks}-${i + 1}`)),
+    'eendjes-vijver', 'beer-met-de-bal', 'wolkje-en-bloemen',
     'dirk-kleur', 'dirk-bakkerij', 'dirk-water', 'pip-plons', 'mo-water', 'maanraket',
   ]
   for (const naam of prenten) {
@@ -113,7 +116,7 @@ test('Eigen prenten: verhalen, puzzelstukken en aantikbare kleurvlakken', async 
     expect(antwoord.headers()['content-type']).toBe('image/webp')
   }
 
-  for (const [nr, beeld] of [[1, 'dirk-1'], [2, 'mo-sok-1'], [3, 'pip-zwemmen-1'], [12, 'pip-school-1'], [14, 'mo-zonnebloem-1'], [16, 'dirk-hik-1'], [23, 'missie-maan-1'], [30, 'dirk-vulkaan-1']]) {
+  for (const [nr, beeld] of [[1, 'dirk-1'], [2, 'mo-sok-1'], [3, 'pip-zwemmen-1'], [4, 'eendjes-vijver-1'], [5, 'beer-ruimt-op-1'], [8, 'kleine-wolkje-1'], [12, 'pip-school-1'], [14, 'mo-zonnebloem-1'], [16, 'dirk-hik-1'], [23, 'missie-maan-1'], [30, 'dirk-vulkaan-1']]) {
     await naar(page, `/kind/feline/verhaal/${nr}`)
     await expect(page.locator('.verhaal-prent image')).toHaveAttribute('href', `/prenten/${beeld}.webp`)
   }
@@ -149,6 +152,9 @@ test('Eigen prenten: verhalen, puzzelstukken en aantikbare kleurvlakken', async 
     { naam: 'Pip maakt een plons', inkt: 'pip-plons', x: 145, y: 210 },
     { naam: 'Mo geeft water', inkt: 'mo-water', x: 289, y: 103 },
     { naam: 'Raket naar de maan', inkt: 'maanraket', x: 245, y: 115 },
+    { naam: 'Eendjes in de vijver', inkt: 'eendjes-vijver', x: 105, y: 129 },
+    { naam: 'Beer en zijn bal', inkt: 'beer-met-de-bal', x: 178, y: 62 },
+    { naam: 'Wolkje geeft de bloemen water', inkt: 'wolkje-en-bloemen', x: 197, y: 65 },
   ]
   for (const { naam, inkt, x, y } of kleurplaten) {
     await naar(page, '/kind/feline/kleurplaten')

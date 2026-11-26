@@ -11,7 +11,8 @@
         "decor": "vijver",
         "figuren": [
           "eend"
-        ]
+        ],
+        "beeld": "eendjes-vijver-1.webp"
       }
     },
     {
@@ -20,7 +21,8 @@
         "decor": "vijver",
         "figuren": [
           "eend*3"
-        ]
+        ],
+        "beeld": "eendjes-vijver-2.webp"
       }
     },
     {
@@ -29,7 +31,8 @@
         "decor": "vijver",
         "figuren": [
           "eend*5"
-        ]
+        ],
+        "beeld": "eendjes-vijver-3.webp"
       }
     },
     {
@@ -38,7 +41,8 @@
         "decor": "vijver",
         "figuren": [
           "eend:zwemt*5"
-        ]
+        ],
+        "beeld": "eendjes-vijver-4.webp"
       }
     }
   ]

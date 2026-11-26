@@ -12,7 +12,8 @@
         "figuren": [
           "beer",
           "speelgoed"
-        ]
+        ],
+        "beeld": "beer-ruimt-op-1.webp"
       }
     },
     {
@@ -23,7 +24,8 @@
           "konijn",
           "speelgoed",
           "beer"
-        ]
+        ],
+        "beeld": "beer-ruimt-op-2.webp"
       }
     },
     {
@@ -33,7 +35,8 @@
         "figuren": [
           "beer",
           "konijn"
-        ]
+        ],
+        "beeld": "beer-ruimt-op-3.webp"
       }
     },
     {
@@ -44,7 +47,8 @@
           "beer",
           "bal",
           "konijn"
-        ]
+        ],
+        "beeld": "beer-ruimt-op-4.webp"
       }
     }
   ]

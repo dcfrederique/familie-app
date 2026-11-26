@@ -12,7 +12,8 @@
         "figuren": [
           "wolkje",
           "bloem*3"
-        ]
+        ],
+        "beeld": "kleine-wolkje-1.webp"
       }
     },
     {
@@ -22,7 +23,8 @@
         "figuren": [
           "wolkje",
           "bloem*3"
-        ]
+        ],
+        "beeld": "kleine-wolkje-2.webp"
       }
     },
     {
@@ -31,7 +33,8 @@
         "decor": "lucht",
         "figuren": [
           "wolk*3"
-        ]
+        ],
+        "beeld": "kleine-wolkje-3.webp"
       }
     },
     {
@@ -42,7 +45,8 @@
           "wolk",
           "regen",
           "bloem*4"
-        ]
+        ],
+        "beeld": "kleine-wolkje-4.webp"
       }
     }
   ]
