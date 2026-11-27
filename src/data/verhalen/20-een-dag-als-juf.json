@@ -11,7 +11,8 @@
         "decor": "klas",
         "figuren": [
           "juf"
-        ]
+        ],
+        "beeld": "juf-fien-1.webp"
       }
     },
     {
@@ -22,7 +23,8 @@
           "juf",
           "vos",
           "eekhoorn"
-        ]
+        ],
+        "beeld": "juf-fien-2.webp"
       }
     },
     {
@@ -33,7 +35,8 @@
           "eekhoorn",
           "juf",
           "beer:slaapt"
-        ]
+        ],
+        "beeld": "juf-fien-3.webp"
       }
     },
     {
@@ -43,7 +46,8 @@
         "figuren": [
           "juf",
           "vos"
-        ]
+        ],
+        "beeld": "juf-fien-4.webp"
       }
     },
     {
@@ -52,7 +56,8 @@
         "decor": "klas",
         "figuren": [
           "juf"
-        ]
+        ],
+        "beeld": "juf-fien-5.webp"
       }
     },
     {
@@ -62,7 +67,8 @@
         "figuren": [
           "juf",
           "tekening"
-        ]
+        ],
+        "beeld": "juf-fien-6.webp"
       }
     }
   ]

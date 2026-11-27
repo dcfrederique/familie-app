@@ -12,7 +12,8 @@
         "figuren": [
           "oudeauto",
           "jongen"
-        ]
+        ],
+        "beeld": "bertha-auto-1.webp"
       }
     },
     {
@@ -22,7 +23,8 @@
         "figuren": [
           "oudeauto:ogen",
           "jongen"
-        ]
+        ],
+        "beeld": "bertha-auto-2.webp"
       }
     },
     {
@@ -33,7 +35,8 @@
           "opa",
           "oudeauto:ogen",
           "jongen"
-        ]
+        ],
+        "beeld": "bertha-auto-3.webp"
       }
     },
     {
@@ -44,7 +47,8 @@
           "auto:rood",
           "oudeauto",
           "auto:geel"
-        ]
+        ],
+        "beeld": "bertha-auto-4.webp"
       }
     },
     {
@@ -54,7 +58,8 @@
         "figuren": [
           "auto:rood",
           "oudeauto"
-        ]
+        ],
+        "beeld": "bertha-auto-5.webp"
       }
     },
     {
@@ -65,7 +70,8 @@
           "auto:geel",
           "auto:rood",
           "oudeauto:ogen"
-        ]
+        ],
+        "beeld": "bertha-auto-6.webp"
       }
     },
     {
@@ -76,7 +82,8 @@
           "opa",
           "oudeauto:ogen",
           "jongen"
-        ]
+        ],
+        "beeld": "bertha-auto-7.webp"
       }
     },
     {
@@ -87,7 +94,8 @@
           "opa",
           "oudeauto:ogen",
           "jongen"
-        ]
+        ],
+        "beeld": "bertha-auto-8.webp"
       }
     }
   ]

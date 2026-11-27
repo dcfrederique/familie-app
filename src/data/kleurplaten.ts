@@ -1,6 +1,10 @@
 // Kleurplaten als data: elke plaat bestaat uit vlakken die je met één tik inkleurt (viewBox 400 × 300).
 // Vlakken liggen op elkaar in deze volgorde; lijnen zijn alleen versiering en kleur je niet in. Eigen ontwerp.
 
+import rodeVlieger from './kleurplaten/rode-vlieger.json'
+import fienLeestVoor from './kleurplaten/fien-leest-voor.json'
+import rexEnZijnBeker from './kleurplaten/rex-en-zijn-beker.json'
+import berthaDeBlauweAuto from './kleurplaten/bertha-de-blauwe-auto.json'
 import dansendPaard from './kleurplaten/dansend-paard.json'
 import vosMetSjaal from './kleurplaten/vos-met-sjaal.json'
 import eekhoornsInHetBos from './kleurplaten/eekhoorns-in-het-bos.json'
@@ -63,6 +67,10 @@ export const kleurplaten: Kleurplaat[] = [
   dansendPaard,
   vosMetSjaal,
   eekhoornsInHetBos,
+  rodeVlieger,
+  fienLeestVoor,
+  rexEnZijnBeker,
+  berthaDeBlauweAuto,
   {
     sleutel: 'dino', titel: 'Dino in de zon',
     vlakken: [

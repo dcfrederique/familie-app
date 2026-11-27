@@ -11,7 +11,8 @@
         "decor": "jungle",
         "figuren": [
           "rex"
-        ]
+        ],
+        "beeld": "rex-dinorace-1.webp"
       }
     },
     {
@@ -22,7 +23,8 @@
           "rex",
           "dino:paars",
           "dino:oranje"
-        ]
+        ],
+        "beeld": "rex-dinorace-2.webp"
       }
     },
     {
@@ -32,7 +34,8 @@
         "figuren": [
           "dino:oranje",
           "rex:spiegel"
-        ]
+        ],
+        "beeld": "rex-dinorace-3.webp"
       }
     },
     {
@@ -42,7 +45,8 @@
         "figuren": [
           "dino:paars",
           "struik"
-        ]
+        ],
+        "beeld": "rex-dinorace-4.webp"
       }
     },
     {
@@ -52,7 +56,8 @@
         "figuren": [
           "dino:groen:klein",
           "steen"
-        ]
+        ],
+        "beeld": "rex-dinorace-5.webp"
       }
     },
     {
@@ -62,7 +67,8 @@
         "figuren": [
           "rex",
           "dino:groen:klein"
-        ]
+        ],
+        "beeld": "rex-dinorace-6.webp"
       }
     },
     {
@@ -73,7 +79,8 @@
           "dino:paars",
           "rex",
           "dino:groen:klein"
-        ]
+        ],
+        "beeld": "rex-dinorace-7.webp"
       }
     },
     {
@@ -84,7 +91,8 @@
           "rex",
           "beker",
           "dino:groen:klein"
-        ]
+        ],
+        "beeld": "rex-dinorace-8.webp"
       }
     }
   ]

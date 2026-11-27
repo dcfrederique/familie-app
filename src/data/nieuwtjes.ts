@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.186',
+    datum: '2026-11-27',
+    titel: 'Vier nieuwe reeksen verhaalprenten',
+    tekst: 'Volg de rode vlieger, ga een dag mee met juf Fien, loop de dinorace met Rex of ontdek wat Bertha, de blauwe auto van opa, allemaal kan. Alle bladzijden hebben een eigen prent. Bij Kleurplaten staat voor ieder verhaal een tekening om in te kleuren.',
+  },
+  {
     versie: '0.185',
     datum: '2026-11-27',
     titel: 'Twaalf verhalen met nieuwe prenten en kleurplaten',

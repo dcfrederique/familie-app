@@ -12,7 +12,8 @@
         "figuren": [
           "vlieger",
           "jongen"
-        ]
+        ],
+        "beeld": "rode-vlieger-1.webp"
       }
     },
     {
@@ -21,7 +22,8 @@
         "decor": "bergen",
         "figuren": [
           "vlieger"
-        ]
+        ],
+        "beeld": "rode-vlieger-2.webp"
       }
     },
     {
@@ -31,7 +33,8 @@
         "figuren": [
           "vlieger",
           "boot"
-        ]
+        ],
+        "beeld": "rode-vlieger-3.webp"
       }
     },
     {
@@ -40,7 +43,8 @@
         "decor": "stad",
         "figuren": [
           "vlieger"
-        ]
+        ],
+        "beeld": "rode-vlieger-4.webp"
       }
     },
     {
@@ -50,7 +54,8 @@
         "figuren": [
           "vlieger",
           "wolk"
-        ]
+        ],
+        "beeld": "rode-vlieger-5.webp"
       }
     },
     {
@@ -60,7 +65,8 @@
         "figuren": [
           "jongen",
           "vlieger:laag"
-        ]
+        ],
+        "beeld": "rode-vlieger-6.webp"
       }
     }
   ]

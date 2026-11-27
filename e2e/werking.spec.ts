@@ -94,6 +94,7 @@ test('een verhaal lezen', async ({ page }) => {
 })
 
 test('Eigen prenten: verhalen, puzzelstukken en aantikbare kleurvlakken', async ({ page }) => {
+  test.setTimeout(60_000)
   await startAls(page, 'feline')
   await doorWelkomstpad(page)
   const prenten = [
@@ -116,6 +117,9 @@ test('Eigen prenten: verhalen, puzzelstukken en aantikbare kleurvlakken', async 
     ...['paard-danst', 'oude-kast', 'eekhoorns-ruilen'].flatMap((reeks) =>
       Array.from({ length: 6 }, (_, i) => `${reeks}-${i + 1}`)),
     'dansend-paard', 'vos-met-sjaal', 'eekhoorns-in-het-bos',
+    ...['rode-vlieger', 'juf-fien'].flatMap((reeks) => Array.from({ length: 6 }, (_, i) => `${reeks}-${i + 1}`)),
+    ...['rex-dinorace', 'bertha-auto'].flatMap((reeks) => Array.from({ length: 8 }, (_, i) => `${reeks}-${i + 1}`)),
+    'rode-vlieger', 'fien-leest-voor', 'rex-en-zijn-beker', 'bertha-de-blauwe-auto',
     'dirk-kleur', 'dirk-bakkerij', 'dirk-water', 'pip-plons', 'mo-water', 'maanraket',
   ]
   for (const naam of prenten) {
@@ -130,6 +134,7 @@ test('Eigen prenten: verhalen, puzzelstukken en aantikbare kleurvlakken', async 
     [9, 'poesje-doos-1'], [10, 'welterusten-boerderij-1'], [11, 'noor-taart-1'],
     [12, 'pip-school-1'], [13, 'tilda-tovert-1'], [14, 'mo-zonnebloem-1'], [16, 'dirk-hik-1'],
     [15, 'paard-danst-1'], [17, 'oude-kast-1'], [18, 'eekhoorns-ruilen-1'],
+    [19, 'rode-vlieger-1'], [20, 'juf-fien-1'], [21, 'rex-dinorace-1'], [22, 'bertha-auto-1'],
     [23, 'missie-maan-1'], [30, 'dirk-vulkaan-1'],
   ]
   for (const [nr, beeld] of eerstePrenten) {
@@ -180,6 +185,10 @@ test('Eigen prenten: verhalen, puzzelstukken en aantikbare kleurvlakken', async 
     { naam: 'Het dansende paard', inkt: 'dansend-paard', x: 201, y: 198 },
     { naam: 'De vos met de rode sjaal', inkt: 'vos-met-sjaal', x: 154, y: 96 },
     { naam: 'De eekhoorns en hun nootjes', inkt: 'eekhoorns-in-het-bos', x: 130, y: 77 },
+    { naam: 'De rode vlieger', inkt: 'rode-vlieger', x: 130, y: 73 },
+    { naam: 'Juf Fien leest voor', inkt: 'fien-leest-voor', x: 160, y: 84 },
+    { naam: 'Rex en zijn beker', inkt: 'rex-en-zijn-beker', x: 158, y: 206 },
+    { naam: 'Bertha de blauwe auto', inkt: 'bertha-de-blauwe-auto', x: 150, y: 175 },
   ]
   for (const { naam, inkt, x, y } of kleurplaten) {
     await naar(page, '/kind/feline/kleurplaten')
