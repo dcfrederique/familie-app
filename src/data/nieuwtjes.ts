@@ -19,6 +19,12 @@ export interface Nieuwtje {
 
 export const nieuwtjes: Nieuwtje[] = [
   {
+    versie: '0.185',
+    datum: '2026-11-27',
+    titel: 'Twaalf verhalen met nieuwe prenten en kleurplaten',
+    tekst: 'Bij Verhalen hebben twaalf verhalen nu op elke bladzijde een eigen prent, waaronder Het paard dat wilde dansen, Het geheim van de oude kast en Twee eekhoorns ruilen. Bij Kleurplaten vind je bij elk verhaal een bijpassende plaat. Tik op een vlak om het in te kleuren.',
+  },
+  {
     versie: '0.184',
     datum: '2026-11-25',
     titel: 'Nieuwe maanprenten voor Sam en Jade',
